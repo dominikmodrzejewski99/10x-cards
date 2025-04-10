@@ -121,5 +121,3 @@ The project is currently in active development. Key metrics for success:
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
-
-For more information about the project, please contact the development team or refer to the project documentation. 
