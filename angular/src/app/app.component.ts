@@ -1,27 +1,44 @@
 import { Component, OnInit } from '@angular/core'
-import { SupabaseService } from './supabase.service'
-import {AccountComponent} from './account/account.component';
-import {AuthComponent} from './auth/auth.component';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { environment } from '../environments/environments';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  standalone: true,
   imports: [
-    AccountComponent,
-    AuthComponent
+    CommonModule
   ]
 })
 export class AppComponent implements OnInit {
-  title = 'angular-user-management'
+  title = 'angular';
+  private supabase: SupabaseClient;
 
-  session: any = null;
-
-  constructor(private readonly supabase: SupabaseService) {
-    this.session = this.supabase.session;
+  constructor() {
+    this.supabase = createClient(
+      environment.supabaseUrl,
+      environment.supabaseKey,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: false
+        }
+      }
+    )
   }
 
-  ngOnInit() {
-    this.supabase.authChanges((_, session) => (this.session = session))
+  async ngOnInit() {
+
+    const {data, error} = await this.supabase
+      .from('test')
+      .select('*');
+
+    console.log(data, error);
+
   }
+
+
 }
