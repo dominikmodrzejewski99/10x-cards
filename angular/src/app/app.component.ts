@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core'
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { Component, OnInit } from '@angular/core';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { createBrowserClient } from '@supabase/ssr';
 import { environment } from '../environments/environments';
 import { CommonModule } from '@angular/common';
 
@@ -8,37 +9,25 @@ import { CommonModule } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [
-    CommonModule
-  ]
+  imports: [CommonModule],
 })
 export class AppComponent implements OnInit {
   title = 'angular';
   private supabase: SupabaseClient;
+  data: string;
 
   constructor() {
-    this.supabase = createClient(
-      environment.supabaseUrl,
-      environment.supabaseKey,
-      {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: false
-        }
-      }
-    )
+    this.supabase = createBrowserClient(environment.supabaseUrl, environment.supabaseKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: false,
+      },
+    });
   }
 
   async ngOnInit() {
-
-    const {data, error} = await this.supabase
-      .from('test')
-      .select('*');
-
+    const { data, error } = await this.supabase.from('users').select('*');
     console.log(data, error);
-
   }
-
-
 }
