@@ -1,2 +1,35 @@
-<h1 class="text-3xl font-bold underline">Hello world!</h1>
-{{data}}
+<div class="app-container">
+  <header class="app-header">
+    <div class="header-content">
+      <div class="logo">
+        <img src="assets/images/logo.svg" alt="10xCards Logo" class="logo-image">
+        <span>10xCards</span>
+      </div>
+      <nav class="main-nav">
+        <ul>
+          <li><a routerLink="/generate" routerLinkActive="active">Generuj fiszki</a></li>
+          <li><a routerLink="/flashcards" routerLinkActive="active">Lista fiszek</a></li>
+        </ul>
+      </nav>
+      <div class="user-info">
+        <button class="auth-button" routerLink="/auth">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 15C15.3137 15 18 12.3137 18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9C6 12.3137 8.68629 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 21C3 16.5 7 15 12 15C17 15 21 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Konto</span>
+        </button>
+      </div>
+    </div>
+  </header>
+  
+  <main class="app-content">
+    <router-outlet></router-outlet>
+  </main>
+  
+  <footer class="app-footer">
+    <div class="footer-content">
+      <p>&copy; {{ currentYear }} 10xCards - Aplikacja do tworzenia fiszek</p>
+    </div>
+  </footer>
+</div> 

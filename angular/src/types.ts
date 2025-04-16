@@ -33,6 +33,8 @@ export interface UserDTO {
   updated_at: string;
 }
 
+export type Source = 'ai-full' | 'ai-edited' | 'manual';
+
 /** ---------- Flashcards ---------- */
 
 // Flashcard DTO corresponds to a record from the flashcards table
@@ -40,11 +42,17 @@ export interface FlashcardDTO {
   id: number;
   front: string;
   back: string;
-  source: 'ai-full' | 'ai-edited' | 'manual';
+  source: Source;
   created_at: string;
   updated_at: string;
   user_id: string;
   generation_id: number | null;
+}
+
+export interface FlashcardProposalDTO {
+  front: string;
+  back: string;
+  source: Source;
 }
 
 // Command model for creating a flashcard

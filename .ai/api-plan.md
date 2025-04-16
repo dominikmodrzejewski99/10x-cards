@@ -81,7 +81,7 @@
 ### Generation Endpoints (AI Flashcard Generation)
 
 - **POST /generations**
-  - Description: Generates flashcard suggestions using an AI model.
+  - Description: Initiate the AI generation process for flashcards based on user-provided text.
   - Request Payload:
     ```json
     {
@@ -90,6 +90,8 @@
     }
     ```
   - Business Logic:
+    - Call the AI service to generate flashcards
+    - Store the generation metadata and associated generated flashcards
     - Validates that the input text length is within the allowed range.
   - Response Codes:
     - 200: Returns generated flashcard suggestions along with metadata (e.g., generated_count).
@@ -135,7 +137,6 @@
 - **Business Logic:**
   - The `/generations` endpoint leverages an AI model to generate flashcard suggestions, which users can review, edit, and selectively save.
   - Manual creation, updating, and deletion of flashcards are handled via the `/flashcards` endpoints.
-  - The `/study-session` endpoint utilizes a spaced repetition algorithm to facilitate effective learning.
 - **Pagination, Filtering, and Sorting:**
   - List endpoints support pagination via `limit` and `offset` parameters, along with sorting and filtering options to efficiently retrieve data.
 - **Performance:**

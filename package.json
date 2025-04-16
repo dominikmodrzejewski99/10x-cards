@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@primeng/themes": "^19.0.10",
+    "primeng": "^19.0.10"
+  }
+}
