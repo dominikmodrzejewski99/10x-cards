@@ -1,0 +1,16 @@
+/* Większość stylów obsługiwana przez PrimeNG i Tailwind CSS */
+
+.p-inputtext, .p-inputtextarea {
+  width: 100%;
+}
+
+/* Nadpisanie stylów walidacji */
+.ng-invalid.ng-touched {
+  border-color: var(--red-500);
+}
+
+/* Zwiększenie czytelności etykiet formularza */
+label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+} 

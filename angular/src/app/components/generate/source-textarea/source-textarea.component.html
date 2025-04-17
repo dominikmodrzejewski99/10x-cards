@@ -1,0 +1,31 @@
+<div class="source-textarea-container">
+  <label for="sourceText" class="block text-lg font-medium mb-2">Tekst źródłowy</label>
+  
+  <textarea
+    id="sourceText"
+    pTextarea
+    [formControl]="textControl"
+    class="w-full p-2 border rounded"
+    placeholder="Wklej tutaj tekst źródłowy (1000-10000 znaków)">
+  </textarea>
+  
+  <div class="flex justify-between mt-2">
+    <div>
+      <small class="p-error block" *ngIf="hasRequiredError">
+        Pole nie może być puste.
+      </small>
+      <small class="p-error block" *ngIf="hasMinLengthError">
+        Tekst musi zawierać co najmniej {{ minLength }} znaków.
+      </small>
+      <small class="p-error block" *ngIf="hasMaxLengthError">
+        Tekst może zawierać maksymalnie {{ maxLength }} znaków.
+      </small>
+    </div>
+    
+    <div class="text-right">
+      <small [class.text-red-500]="currentLength > maxLength || currentLength < minLength && currentLength > 0" [class.text-gray-500]="!(currentLength > maxLength || currentLength < minLength && currentLength > 0)">
+        {{ currentLength }}/{{ maxLength }}
+      </small>
+    </div>
+  </div>
+</div> 

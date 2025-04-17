@@ -1,0 +1,61 @@
+<div class="generate-container max-w-4xl mx-auto px-4 py-8">
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-2">Generator Fiszek AI</h1>
+    <p class="text-lg text-gray-600">Wklej poniżej fragment tekstu (najlepiej 1000 - 10000 znaków), a my wygenerujemy dla Ciebie propozycje fiszek!</p>
+  </div>
+
+  <div class="mb-6">
+    <textarea
+      #sourceTextarea
+      class="w-full h-64 p-4 border-2 border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:shadow-md transition duration-200 ease-in-out text-base placeholder-gray-500 text-gray-900"
+      placeholder="Wklej tutaj swój tekst..."
+      [(ngModel)]="sourceText"
+      [attr.minlength]="minTextLength"
+      [attr.maxlength]="maxTextLength">
+    </textarea>
+    <p
+      class="text-sm mt-2 text-right transition-colors duration-200 ease-in-out"
+      [ngClass]="{'text-red-600': !isTextValid() && sourceText().length > 0, 'text-gray-600': isTextValid() || sourceText().length === 0}">
+      {{ sourceText().length }} / {{ maxTextLength }} znaków (min. {{ minTextLength }})
+    </p>
+  </div>
+
+  <div class="text-center mb-8">
+    <button
+      class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-lg text-lg inline-flex items-center gap-2"
+      [disabled]="!canGenerate()"
+      (click)="generate()">
+      <svg *ngIf="!isGenerating()" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+      </svg>
+      <svg *ngIf="isGenerating()" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      {{ isGenerating() ? 'Generowanie...' : 'Generuj Fiszki' }}
+    </button>
+  </div>
+
+  <div class="mb-6" *ngIf="isLoading() && !isGenerating()">
+    <app-loading-indicator [isLoading]="isLoading()"></app-loading-indicator>
+  </div>
+
+  <div class="mb-6" *ngIf="errorMessage()">
+    <app-error-message [errorMessage]="errorMessage()"></app-error-message>
+  </div>
+
+  <div class="mb-6" *ngIf="proposals().length > 0">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-semibold text-gray-700">Propozycje Fiszek</h2>
+      <app-bulk-save-button
+        [disabled]="!canSave()"
+        [loading]="isSaving()"
+        (saveAllClick)="saveAllProposals()">
+      </app-bulk-save-button>
+    </div>
+
+    <app-flashcard-proposal-list [proposals]="proposals()"></app-flashcard-proposal-list>
+  </div>
+</div>
+
+<p-toast></p-toast>
