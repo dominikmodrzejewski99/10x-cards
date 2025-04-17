@@ -2,18 +2,27 @@
   <header class="app-header">
     <div class="header-content">
       <div class="logo">
-        <img src="assets/images/logo.svg" alt="10xCards Logo" class="logo-image">
-        <span>10xCards</span>
+        <a href="/" aria-label="Strona główna 10xCards">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-image">
+            <rect width="40" height="40" rx="10" fill="#2563EB" />
+            <path d="M10 12H14L16.5 20L19 12H23L18 26H14L10 12Z" fill="white" />
+            <path d="M24 12H28V16H24V12Z" fill="white" />
+            <path d="M24 18H28V26H24V18Z" fill="white" />
+            <path d="M32 12L35 16L32 20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M8 28L5 24L8 20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <h1 class="logo-text">10xCards</h1>
+        </a>
       </div>
-      <nav class="main-nav">
+      <nav class="main-nav" aria-label="Menu główne">
         <ul>
           <li><a routerLink="/generate" routerLinkActive="active">Generuj fiszki</a></li>
           <li><a routerLink="/flashcards" routerLinkActive="active">Lista fiszek</a></li>
         </ul>
       </nav>
       <div class="user-info">
-        <button class="auth-button" routerLink="/auth">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <button class="auth-button" routerLink="/auth" aria-label="Przejdź do konta użytkownika">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M12 15C15.3137 15 18 12.3137 18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9C6 12.3137 8.68629 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M3 21C3 16.5 7 15 12 15C17 15 21 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -22,14 +31,33 @@
       </div>
     </div>
   </header>
-  
+
   <main class="app-content">
+
     <router-outlet></router-outlet>
   </main>
-  
+
   <footer class="app-footer">
     <div class="footer-content">
-      <p>&copy; {{ currentYear }} 10xCards - Aplikacja do tworzenia fiszek</p>
+      <div class="footer-logo">
+        <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="10" fill="#2563EB" />
+          <path d="M10 12H14L16.5 20L19 12H23L18 26H14L10 12Z" fill="white" />
+          <path d="M24 12H28V16H24V12Z" fill="white" />
+          <path d="M24 18H28V26H24V18Z" fill="white" />
+          <path d="M32 12L35 16L32 20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M8 28L5 24L8 20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <h2 class="footer-title">10xCards</h2>
+      </div>
+      <p class="copyright">&copy; {{ currentYear }} 10xCards - Aplikacja do tworzenia i zarządzania fiszkami</p>
+      <nav class="footer-nav" aria-label="Menu stopki">
+        <ul>
+          <li><a href="/privacy">Polityka prywatności</a></li>
+          <li><a href="/terms">Warunki użytkowania</a></li>
+          <li><a href="/contact">Kontakt</a></li>
+        </ul>
+      </nav>
     </div>
   </footer>
-</div> 
+</div>
