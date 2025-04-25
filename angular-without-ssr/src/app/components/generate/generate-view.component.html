@@ -1,0 +1,75 @@
+<div class="min-h-screen p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Nagłówek główny -->
+    <div class="text-center my-8 animate__animated animate__fadeIn">
+      <h1 class="text-3xl md:text-4xl font-bold text-blue-700 tracking-tight">Generator Fiszek AI</h1>
+      <p class="mt-4 text-md md:text-lg text-gray-700 max-w-2xl mx-auto">
+        Wklej poniżej fragment tekstu
+        <span class="text-sm block text-gray-500">(najlepiej 1000 – 10000 znaków)</span>
+        a my wygenerujemy dla Ciebie propozycje fiszek!
+      </p>
+      <div class="border-b-2 border-blue-200 w-24 mx-auto mt-4"></div>
+    </div>
+
+    <!-- Sekcja generowania -->
+    <div class="bg-white rounded-xl shadow-lg p-5 md:p-6 mb-6 transition-all duration-300 hover:shadow-xl">
+      <h2 class="text-xl md:text-2xl font-semibold text-blue-700 mb-4 pb-2 border-b border-gray-100">Generuj Fiszki</h2>
+      
+      <!-- Pole tekstowe z przekazaniem eventów -->
+      <app-source-textarea
+        (textChange)="onTextChange($event)"
+        (validityChange)="onValidityChange($event)">
+      </app-source-textarea>
+      
+      <!-- Przyciski akcji -->
+      <div class="flex justify-end mt-4">
+        <app-generate-button
+          [disabled]="!canGenerate()"
+          [loading]="isGenerating || isLoading"
+          (generateClick)="generate()">
+        </app-generate-button>
+      </div>
+      
+      <!-- Wskaźnik ładowania -->
+      <div class="mt-4 flex justify-center" *ngIf="isLoading">
+        <app-loading-indicator [isLoading]="isLoading"></app-loading-indicator>
+      </div>
+      
+      <!-- Komunikat błędu -->
+      <div class="mt-4" *ngIf="errorMessage">
+        <app-error-message [errorMessage]="errorMessage"></app-error-message>
+      </div>
+    </div>
+
+    <!-- Sekcja propozycji fiszek -->
+    <div *ngIf="proposals.length > 0" class="bg-white rounded-xl shadow-lg p-5 md:p-6 transition-all duration-300 hover:shadow-xl animate__animated animate__fadeIn">
+      <h2 class="text-xl md:text-2xl font-semibold text-green-700 mb-4 pb-2 border-b border-gray-100">Lista Propozycji Fiszek</h2>
+      
+      <!-- Lista propozycji -->
+      <app-flashcard-proposal-list [proposals]="proposals"></app-flashcard-proposal-list>
+      
+      <!-- Przyciski akcji dla propozycji -->
+      <div class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-3">
+        <app-bulk-save-button
+          [disabled]="!canSave()"
+          [loading]="isSaving"
+          (saveAllClick)="saveAllProposals()">
+        </app-bulk-save-button>
+        
+        <button type="button" class="w-full sm:w-auto bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-300 hover:bg-green-800 hover:shadow-lg flex items-center justify-center">
+          <i class="pi pi-plus mr-2"></i>
+          Dodaj nową fiszkę
+        </button>
+      </div>
+    </div>
+
+    <!-- Informacja gdy nie ma żadnych fiszek -->
+    <div *ngIf="!isLoading && !proposals.length && sourceText.length > 0 && isSourceValid" class="text-center my-10 text-gray-500 animate__animated animate__fadeIn">
+      <i class="pi pi-arrow-up text-3xl mb-2 block"></i>
+      <p>Kliknij "Generuj Fiszki" aby stworzyć propozycje fiszek</p>
+    </div>
+  </div>
+</div>
+
+<!-- Toast do wyświetlania komunikatów -->
+<p-toast position="bottom-right"></p-toast>

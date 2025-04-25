@@ -1,0 +1,26 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bulbGradient" x1="32" y1="8" x2="32" y2="48" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#60A5FA"/> <!-- Jasny niebieski -->
+      <stop offset="1" stop-color="#2563EB"/> <!-- Główny niebieski -->
+    </linearGradient>
+    <linearGradient id="baseGradient" x1="24" y1="46" x2="40" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#BFDBFE"/> <!-- Bardzo jasny niebieski -->
+      <stop offset="1" stop-color="#93C5FD"/> <!-- Jasny niebieski -->
+    </linearGradient>
+  </defs>
+
+  <!-- Baza żarówki -->
+  <rect x="24" y="46" width="16" height="10" rx="2" fill="url(#baseGradient)"/>
+  <rect x="26" y="48" width="12" height="2" rx="1" fill="#DBEAFE"/>
+  <rect x="26" y="52" width="12" height="2" rx="1" fill="#DBEAFE"/>
+
+  <!-- Bańka żarówki -->
+  <path d="M32 8 C19.8497 8 10 17.8497 10 30 C10 38.8366 15.1634 46 24 46 L40 46 C48.8366 46 54 38.8366 54 30 C54 17.8497 44.1503 8 32 8 Z" fill="url(#bulbGradient)"/>
+
+  <!-- Żarnik (symbolizujący pomysł/wiedzę) -->
+  <path d="M32 20 C28 24 28 32 32 36 M32 20 C36 24 36 32 32 36" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.8"/>
+
+  <!-- Błysk/promień światła -->
+  <path d="M32 4 L32 0 M48 16 L52 12 M56 30 L60 30 M48 44 L52 48 M32 56 L32 60 M16 44 L12 48 M8 30 L4 30 M16 16 L12 12" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+</svg>

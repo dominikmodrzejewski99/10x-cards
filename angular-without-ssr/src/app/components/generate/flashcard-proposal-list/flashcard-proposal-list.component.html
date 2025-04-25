@@ -1,0 +1,27 @@
+<div class="overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white rounded-lg overflow-hidden">
+      <thead>
+        <tr>
+          <th class="py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold text-left">Front</th>
+          <th class="py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold text-left">Back</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let proposal of proposals" class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-150">
+          <td class="py-3 px-4 text-gray-800">{{ proposal.front }}</td>
+          <td class="py-3 px-4 text-gray-800">{{ proposal.back }}</td>
+        </tr>
+        <tr *ngIf="proposals.length === 0">
+          <td colspan="2" class="py-4 px-4 text-center text-gray-500">
+            Brak propozycji fiszek do wyświetlenia
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="mt-4 text-right text-sm text-gray-500" *ngIf="proposals.length > 0">
+    Liczba propozycji: <span class="font-semibold">{{ proposals.length }}</span>
+  </div>
+</div>

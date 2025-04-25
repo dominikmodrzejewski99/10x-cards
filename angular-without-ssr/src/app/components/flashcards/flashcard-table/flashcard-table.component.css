@@ -1,0 +1,280 @@
+/* Nadpisanie stylów PrimeNG dla tabeli */
+:host ::ng-deep .p-datatable,
+:host ::ng-deep .custom-table {
+  background-color: #ffffff !important;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  background-color: #f8f9fa !important;
+  color: #495057 !important;
+  border-color: #e9ecef !important;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr {
+  background-color: #ffffff !important;
+  color: #495057 !important;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr:nth-child(even) {
+  background-color: #f8f9fa !important;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  border-color: #e9ecef !important;
+}
+
+/* Style dla paginacji */
+:host ::ng-deep .p-paginator {
+  background-color: #ffffff !important;
+  border-top: 1px solid #e9ecef !important;
+  padding: 1rem !important;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+  color: #495057 !important;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-first,
+:host ::ng-deep .p-paginator .p-paginator-prev,
+:host ::ng-deep .p-paginator .p-paginator-next,
+:host ::ng-deep .p-paginator .p-paginator-last {
+  color: #6c757d !important;
+}
+
+:host ::ng-deep .p-paginator .p-dropdown {
+  background-color: #ffffff !important;
+  border-color: #ced4da !important;
+  color: #495057 !important;
+}
+
+/* Style dla kontenera karty */
+.card {
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+}
+
+/* Style dla przycisków akcji - obsługiwane przez globalne style przycisków */
+
+/* Style dla stanu pustego i ładowania */
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr.p-datatable-emptymessage > td {
+  background-color: #ffffff !important;
+  color: #6c757d !important;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+/* Style dla pola wyszukiwania */
+:host ::ng-deep .p-input-icon-left {
+  width: 100%;
+  max-width: 100%;
+}
+
+:host ::ng-deep .p-inputtext {
+  background-color: #ffffff !important;
+  color: #495057 !important;
+  border: 1px solid #ced4da !important;
+  padding: 0.5rem 0.75rem !important;
+  border-radius: 0.375rem !important;
+  width: 100%;
+}
+
+:host ::ng-deep .p-inputtext:focus {
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25) !important;
+}
+
+:host ::ng-deep .p-inputtext::placeholder {
+  color: #6c757d !important;
+}
+
+:host ::ng-deep .pi-search {
+  color: #2563eb !important;
+  font-size: 1rem !important;
+}
+
+/* Style dla przycisków wyszukiwania - obsługiwane przez globalne style przycisków */
+
+/* Style dla pola wyszukiwania */
+.search-input {
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25) !important;
+}
+
+/* Globalne style dla przycisków w komponencie */
+:host ::ng-deep .p-button {
+  background-color: transparent !important;
+  color: #6c757d !important;
+  border-color: #ced4da !important;
+}
+
+:host ::ng-deep .p-button:not(:disabled):hover {
+  background-color: rgba(108, 117, 125, 0.04) !important;
+  border-color: #b1b7bd !important;
+}
+
+/* Style dla ikony przycisku czyszczenia */
+:host ::ng-deep .clear-button .p-button-icon {
+  color: #dc3545 !important; /* Czerwony kolor dla ikony X */
+  font-size: 1rem !important;
+  font-weight: bold !important;
+}
+
+:host ::ng-deep .clear-button:hover .p-button-icon {
+  color: #c82333 !important; /* Ciemniejszy czerwony przy najechaniu */
+}
+
+/* Style dla przycisku wyszukiwania */
+:host ::ng-deep .search-button.p-button-primary {
+  color: #2563eb !important; /* Niebieski kolor dla przycisku wyszukiwania */
+  border-color: #2563eb !important;
+}
+
+:host ::ng-deep .search-button.p-button-primary:hover {
+  background-color: rgba(37, 99, 235, 0.04) !important;
+}
+
+:host ::ng-deep .search-button .p-button-icon {
+  color: #2563eb !important;
+  font-size: 1rem !important;
+}
+
+:host ::ng-deep .p-button.p-button-danger {
+  color: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+
+:host ::ng-deep .p-button.p-button-danger:not(:disabled):hover {
+  background-color: rgba(220, 53, 69, 0.04) !important;
+}
+
+:host ::ng-deep .p-button.p-button-secondary {
+  color: #6c757d !important;
+  border-color: #6c757d !important;
+}
+
+:host ::ng-deep .p-button.p-button-secondary:not(:disabled):hover {
+  background-color: rgba(108, 117, 125, 0.04) !important;
+}
+
+/* Dodatkowe style dla poprawienia czytelności */
+:host ::ng-deep .p-datatable .p-sortable-column:hover {
+  background-color: #e9ecef !important;
+  color: #495057 !important;
+}
+
+:host ::ng-deep .p-datatable .p-sortable-column.p-highlight {
+  background-color: #f8f9fa !important;
+  color: #2563eb !important;
+}
+
+:host ::ng-deep .p-datatable .p-sortable-column.p-highlight .p-sortable-column-icon {
+  color: #2563eb !important;
+}
+
+/* Style dla tabeli */
+:host ::ng-deep .custom-table {
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+/* Style dla pola wyszukiwania */
+:host ::ng-deep .search-input {
+    border-radius: 0.375rem;
+    transition: all 0.3s ease;
+}
+
+:host ::ng-deep .search-input:focus {
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+    border-color: #3b82f6;
+}
+
+/* Style dla paginatora - całkowicie przerobione, aby uniknąć czarnych elementów */
+:host ::ng-deep .p-paginator.clean-paginator {
+    background-color: #FFFFFF !important;
+    border: none !important;
+    padding: 0.5rem !important;
+}
+
+:host ::ng-deep .p-paginator.clean-paginator .p-paginator-element {
+    color: #64748b !important;
+    border-color: #e2e8f0 !important;
+    background-color: #FFFFFF !important;
+    border-radius: 0.375rem !important;
+    margin: 0 0.125rem !important;
+    min-width: 2rem !important;
+    height: 2rem !important;
+}
+
+:host ::ng-deep .p-paginator.clean-paginator .p-paginator-element.p-highlight {
+    background-color: #f1f5f9 !important;
+    color: #0f172a !important;
+    border-color: #e2e8f0 !important;
+    font-weight: 600 !important;
+}
+
+:host ::ng-deep .p-paginator.clean-paginator .p-paginator-element:not(.p-highlight):hover {
+    background-color: #f8fafc !important;
+    color: #1e293b !important;
+    border-color: #cbd5e1 !important;
+}
+
+:host ::ng-deep .p-paginator.clean-paginator .p-dropdown {
+    background-color: #FFFFFF !important;
+    border-color: #e2e8f0 !important;
+    border-radius: 0.375rem !important;
+    color: #64748b !important;
+}
+
+:host ::ng-deep .p-paginator.clean-paginator .p-dropdown-label {
+    color: #64748b !important;
+    padding: 0.25rem 0.5rem !important;
+    background-color: #FFFFFF !important;
+}
+
+:host ::ng-deep .p-paginator.clean-paginator .p-dropdown-trigger {
+    background-color: #FFFFFF !important;
+}
+
+:host ::ng-deep .p-paginator.clean-paginator .p-dropdown-trigger-icon {
+    color: #64748b !important;
+}
+
+:host ::ng-deep .p-paginator.clean-paginator .p-dropdown:hover {
+    border-color: #cbd5e1 !important;
+}
+
+:host ::ng-deep .p-paginator.clean-paginator .p-paginator-first,
+:host ::ng-deep .p-paginator.clean-paginator .p-paginator-prev,
+:host ::ng-deep .p-paginator.clean-paginator .p-paginator-next,
+:host ::ng-deep .p-paginator.clean-paginator .p-paginator-last {
+    background-color: #FFFFFF !important;
+}
+
+/* Dodatkowe style dla dropdown menu w paginatorze */
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items {
+    background-color: #FFFFFF !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-item {
+    color: #64748b !important;
+    background-color: #FFFFFF !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-item:hover {
+    background-color: #f8fafc !important;
+    color: #1e293b !important;
+}
+
+/* Style dla górnego panelu wyszukiwania */
+.card .bg-gray-50 {
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}

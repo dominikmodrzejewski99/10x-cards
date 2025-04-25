@@ -1,0 +1,32 @@
+.chat-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 8px;
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+  background: #c5c5c5;
+  border-radius: 8px;
+}
+
+.chat-container::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+}
+
+.message {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.message-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 4px;
+}
+
+/* Stylizacja spinner */
+:host ::ng-deep .custom-spinner .p-progress-spinner-circle {
+  stroke: var(--primary-color) !important;
+}

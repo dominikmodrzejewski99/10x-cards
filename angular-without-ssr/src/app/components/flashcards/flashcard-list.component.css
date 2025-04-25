@@ -1,0 +1,34 @@
+/* Style dla dialogu */
+:host ::ng-deep .modern-dialog .p-dialog-header {
+  background-color: #f8fafc !important;
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155 !important;
+  font-weight: 600;
+}
+
+:host ::ng-deep .modern-dialog .p-dialog-content {
+  background-color: white !important;
+  color: #374151 !important;
+}
+
+:host ::ng-deep .modern-dialog .p-dialog-footer {
+  background-color: #f8fafc !important;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* Style dla przycisku dodaj fiszkę */
+:host ::ng-deep .add-flashcard-btn {
+  background: linear-gradient(to right, #2563eb, #3b82f6);
+  transition: all 0.3s ease;
+}
+
+:host ::ng-deep .add-flashcard-btn:hover {
+  background: linear-gradient(to right, #1d4ed8, #2563eb);
+  transform: translateY(-1px);
+}
+
+/* Style dla tabeli z fiszkami */
+:host ::ng-deep .flashcard-table {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}

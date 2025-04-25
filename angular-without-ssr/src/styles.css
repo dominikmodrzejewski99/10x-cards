@@ -1,0 +1,128 @@
+/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+/* Import PrimeNG icons */
+@import "primeicons/primeicons.css";
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Apply font family to body */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+/* Jeszcze bardziej specyficzne style dla dropdown */
+body .p-dropdown,
+html .p-dropdown,
+body .p-component.p-dropdown {
+  background-color: #FFFFFF !important;
+  color: #64748b !important;
+  border-color: #e2e8f0 !important;
+}
+
+body .p-dropdown-label,
+html .p-dropdown-label,
+body .p-component.p-dropdown .p-dropdown-label {
+  color: #64748b !important;
+  background-color: #FFFFFF !important;
+}
+
+body .p-dropdown-trigger,
+html .p-dropdown-trigger,
+body .p-component.p-dropdown .p-dropdown-trigger {
+  background-color: #FFFFFF !important;
+}
+
+body .p-dropdown-trigger-icon,
+html .p-dropdown-trigger-icon,
+body .p-component.p-dropdown .p-dropdown-trigger-icon {
+  color: #64748b !important;
+}
+
+/* Globalne style dla wszystkich dropdown komponentów PrimeNG */
+.p-dropdown {
+  background-color: #FFFFFF !important;
+  color: #64748b !important;
+  border-color: #e2e8f0 !important;
+}
+
+.p-dropdown-label {
+  color: #64748b !important;
+  background-color: #FFFFFF !important;
+}
+
+.p-dropdown-trigger {
+  background-color: #FFFFFF !important;
+}
+
+.p-dropdown-trigger-icon {
+  color: #64748b !important;
+}
+
+/* Style dla p-dropdown-panel i wszystkich jego elementów */
+.p-dropdown-panel {
+  background-color: #FFFFFF !important;
+  color: #64748b !important;
+  border-color: #e2e8f0 !important;
+}
+
+.p-dropdown-panel .p-dropdown-header,
+.p-dropdown-panel .p-dropdown-footer {
+  background-color: #FFFFFF !important;
+  color: #64748b !important;
+  border-color: #e2e8f0 !important;
+}
+
+.p-dropdown-panel .p-dropdown-items {
+  background-color: #FFFFFF !important;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  background-color: #FFFFFF !important;
+  color: #64748b !important;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item:hover {
+  background-color: #f8fafc !important;
+  color: #1e293b !important;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+/* Style dla paginatora i jego elementów dropdown */
+.p-paginator .p-dropdown,
+.p-paginator .p-dropdown-label,
+.p-paginator .p-dropdown-trigger,
+.p-paginator .p-dropdown-trigger-icon {
+  background-color: #FFFFFF !important;
+  color: #64748b !important;
+}
+
+/* Style dla portalu - miejsce gdzie PrimeNG renderuje dropdown */
+.p-component-overlay,
+.p-connected-overlay {
+  background-color: #FFFFFF !important;
+}
+
+/* Pełna kontrola nad stylami w portalu */
+body .p-connected-overlay .p-dropdown-panel,
+html .p-connected-overlay .p-dropdown-panel {
+  background-color: #FFFFFF !important;
+  border-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+
+body .p-connected-overlay .p-dropdown-panel .p-dropdown-items,
+html .p-connected-overlay .p-dropdown-panel .p-dropdown-items {
+  background-color: #FFFFFF !important;
+}
+
+body .p-connected-overlay .p-dropdown-panel .p-dropdown-items .p-dropdown-item,
+html .p-connected-overlay .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  background-color: #FFFFFF !important;
+  color: #64748b !important;
+}

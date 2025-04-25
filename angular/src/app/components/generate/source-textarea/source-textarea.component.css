@@ -1,6 +1,0 @@
-/* Style specyficzne dla SourceTextareaComponent */
-/* Większość stylów jest obsługiwana przez Tailwind CSS */
-
-textarea {
-  min-height: 150px;
-} 

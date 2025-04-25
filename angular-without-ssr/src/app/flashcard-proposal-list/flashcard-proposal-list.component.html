@@ -1,0 +1,23 @@
+<div class="overflow-x-auto">
+  <table class="min-w-full bg-white">
+    <thead>
+      <tr>
+        <th class="py-2 px-4 bg-blue-600 text-white font-bold">Front</th>
+        <th class="py-2 px-4 bg-blue-600 text-white font-bold">Back</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let proposal of proposals" class="border-b hover:bg-gray-100">
+        <td class="py-2 px-4">{{ proposal.front }}</td>
+        <td class="py-2 px-4">{{ proposal.back }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="mt-4 flex justify-end">
+  <button type="button"
+    class="bg-green-500 text-white font-bold py-2 px-4 rounded transition-colors duration-300 hover:bg-green-600">
+    Dodaj nową fiszkę
+  </button>
+</div> 

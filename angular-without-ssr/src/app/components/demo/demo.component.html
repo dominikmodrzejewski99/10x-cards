@@ -1,0 +1,95 @@
+<div class="container mx-auto my-8 p-4 max-w-4xl">
+  <p-toast></p-toast>
+
+  <div class="mb-6 text-center">
+    <h1 class="text-2xl font-bold mb-2">Demo OpenRouter API</h1>
+    <p class="text-gray-600">Przetestuj integrację z OpenRouter - wpisz wiadomość i otrzymaj odpowiedź od modelu AI</p>
+  </div>
+
+  <!-- Przycisk nowej sesji -->
+  <div class="mb-4 flex justify-end">
+    <p-button
+      label="Nowa sesja"
+      icon="pi pi-refresh"
+      [disabled]="isLoading()"
+      (onClick)="createNewSession()"
+      styleClass="p-button-sm">
+    </p-button>
+  </div>
+
+  <!-- Historia konwersacji -->
+  <p-card styleClass="mb-4">
+    <div class="chat-container h-96 overflow-y-auto mb-4 p-2">
+      @if (currentSession() && currentSession()!.messages.length > 0) {
+        @for (message of currentSession()!.messages; track message.timestamp) {
+          <div class="message-wrapper mb-3" [class.text-right]="message.role === 'user'">
+            <div class="message p-3 rounded-lg inline-block max-w-[80%]"
+                 [class.bg-blue-100]="message.role === 'user'"
+                 [class.bg-gray-100]="message.role === 'assistant'"
+                 [class.ml-auto]="message.role === 'user'">
+              <div class="message-header mb-1">
+                <span class="font-semibold">{{ message.role === 'user' ? 'Ty' : 'Asystent' }}</span>
+                <span class="text-xs text-gray-500 ml-2">{{ formatTimestamp(message.timestamp) }}</span>
+              </div>
+              <div class="message-content whitespace-pre-wrap">{{ message.content }}</div>
+            </div>
+          </div>
+        }
+      } @else {
+        <div class="flex items-center justify-center h-full">
+          <div class="text-gray-500 text-center">
+            <i class="pi pi-comments text-4xl mb-3 block"></i>
+            <p>Twoja konwersacja pojawi się tutaj. Rozpocznij, wysyłając wiadomość poniżej.</p>
+          </div>
+        </div>
+      }
+    </div>
+
+    @if (isLoading()) {
+      <div class="flex justify-center items-center my-4">
+        <p-progressSpinner [style]="{width: '30px', height: '30px'}" styleClass="custom-spinner" strokeWidth="4"></p-progressSpinner>
+        <span class="ml-3">Generowanie odpowiedzi...</span>
+      </div>
+    }
+
+    <!-- Formularz wiadomości -->
+    <form [formGroup]="messageForm" (ngSubmit)="sendMessage()" class="flex">
+      <div class="flex-grow relative">
+        <input pInputText
+               formControlName="message"
+               placeholder="Wpisz wiadomość..."
+               class="w-full p-inputtext-sm p-3"
+               [disabled]="isLoading()">
+
+        @if (messageForm.get('message')?.invalid && messageForm.get('message')?.touched) {
+          <small class="p-error absolute -bottom-5 left-0">
+            @if (messageForm.get('message')?.hasError('required')) {
+              Wiadomość jest wymagana
+            }
+            @if (messageForm.get('message')?.hasError('minlength')) {
+              Wiadomość musi zawierać co najmniej 2 znaki
+            }
+          </small>
+        }
+      </div>
+
+      <p-button
+        type="submit"
+        icon="pi pi-send"
+        [disabled]="!canSendMessage"
+        [loading]="isLoading()"
+        styleClass="ml-2">
+        Wyślij
+      </p-button>
+    </form>
+  </p-card>
+
+  <!-- Informacje o sesji -->
+  @if (currentSession()) {
+    <div class="text-sm text-gray-500 mt-4">
+      <span>ID sesji: {{ currentSession()!.id }}</span>
+      <span class="ml-4">Wiadomości: {{ currentSession()!.messages.length }}</span>
+      <span class="ml-4">Utworzono: {{ currentSession()!.createdAt | date:'short' }}</span>
+    </div>
+  }
+</div>

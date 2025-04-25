@@ -1,0 +1,52 @@
+/* Większość stylów obsługiwana przez PrimeNG i Tailwind CSS */
+
+.p-inputtext, .p-inputtextarea {
+  width: 100%;
+}
+
+/* Nadpisanie stylów walidacji */
+.ng-invalid.ng-touched {
+  border-color: var(--red-500);
+}
+
+/* Zwiększenie czytelności etykiet formularza */
+label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+/* Styl dla p-textarea */
+:host ::ng-deep .p-inputtextarea,
+:host ::ng-deep p-textarea textarea {
+  background-color: white !important;
+  background: white !important;
+  color: #333 !important;
+}
+
+/* Style dla textarea focus */
+:host ::ng-deep .p-inputtextarea:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 0.1rem rgba(59, 130, 246, 0.25) !important;
+}
+
+/* Style dla inputtext */
+:host ::ng-deep .p-inputtext {
+  background-color: white !important;
+  background: white !important;
+  color: #333 !important;
+}
+
+/* Style dla dropdown */
+:host ::ng-deep .p-dropdown,
+:host ::ng-deep .p-dropdown-panel,
+:host ::ng-deep .p-dropdown-items-wrapper {
+  background-color: white !important;
+}
+
+:host ::ng-deep .p-dropdown-item {
+  color: #333 !important;
+}
+
+:host ::ng-deep .p-dropdown-item:hover {
+  background-color: #f3f4f6 !important;
+} 

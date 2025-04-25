@@ -1,0 +1,23 @@
+/* Style dla textarea */
+:host ::ng-deep textarea,
+:host ::ng-deep .p-inputtextarea,
+:host ::ng-deep .p-textarea,
+:host ::ng-deep p-inputtextarea textarea,
+:host ::ng-deep p-textarea textarea {
+  background-color: white !important;
+  background: white !important;
+  color: #333 !important;
+}
+
+/* Style dla kontenera */
+.textarea-container {
+  position: relative;
+  background-color: white;
+}
+
+/* Dodatkowe style dla focus */
+:host ::ng-deep textarea:focus {
+  background-color: white !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25) !important;
+}

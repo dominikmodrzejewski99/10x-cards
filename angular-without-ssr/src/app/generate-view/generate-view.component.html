@@ -1,0 +1,25 @@
+<div class="min-h-screen bg-gray-100 p-6">
+  <div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-lg shadow p-6 mb-6">
+      <h1 class="text-3xl font-semibold text-blue-700 mb-4 text-center">Generowanie Fiszek</h1>
+      <app-source-textarea 
+         (textChange)="onTextChange($event)"
+         (validityChange)="onValidityChange($event)">
+      </app-source-textarea>
+      <div class="flex items-center justify-end mt-4">
+         <app-generate-button (generateClick)="generate()" [disabled]="!canGenerate" [loading]="isLoading"></app-generate-button>
+      </div>
+      <app-error-message [errorMessage]="errorMessage" class="mt-4"></app-error-message>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6">
+      <h2 class="text-3xl font-semibold text-green-700 mb-4 text-center">Lista Propozycji Fiszek</h2>
+      <app-flashcard-proposal-list [proposals]="proposals"></app-flashcard-proposal-list>
+      <div class="flex items-center justify-between mt-6">
+         <app-bulk-save-button (saveAllClick)="saveAllProposals()" [disabled]="!canSave" [loading]="isLoading"></app-bulk-save-button>
+         <button type="button" class="bg-green-700 text-white font-bold py-2 px-4 rounded shadow-lg transition-colors duration-300 hover:bg-green-800">
+            Dodaj nową fiszkę
+         </button>
+      </div>
+    </div>
+  </div>
+</div> 

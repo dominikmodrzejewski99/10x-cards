@@ -1,0 +1,19 @@
+/* Style specyficzne dla BulkSaveButtonComponent */
+/* Większość stylów jest obsługiwana przez PrimeNG i Tailwind CSS */
+
+:host ::ng-deep .p-button {
+  border-radius: 9999px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  transition: all 0.3s ease !important;
+  font-weight: 600;
+}
+
+:host ::ng-deep .p-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+:host ::ng-deep .p-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}

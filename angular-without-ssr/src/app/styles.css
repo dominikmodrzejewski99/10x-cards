@@ -1,0 +1,32 @@
+/* Globalne style dla p-dropdown-panel i wszystkich jego elementów */
+.p-dropdown-panel {
+  background-color: #FFFFFF !important;
+  color: #64748b !important;
+  border-color: #e2e8f0 !important;
+}
+
+.p-dropdown-panel .p-dropdown-header,
+.p-dropdown-panel .p-dropdown-footer {
+  background-color: #FFFFFF !important;
+  color: #64748b !important;
+  border-color: #e2e8f0 !important;
+}
+
+.p-dropdown-panel .p-dropdown-items {
+  background-color: #FFFFFF !important;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  background-color: #FFFFFF !important;
+  color: #64748b !important;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item:hover {
+  background-color: #f8fafc !important;
+  color: #1e293b !important;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+} 
