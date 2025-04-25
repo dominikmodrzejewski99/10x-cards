@@ -32,9 +32,20 @@ export class OpenRouterService {
    * Wysyła wiadomość użytkownika do modelu AI i zwraca odpowiedź
    * @param userMessage Wiadomość od użytkownika
    * @param sessionId Opcjonalny identyfikator sesji
+   * @param options Opcjonalne parametry dla zapytania
    * @returns Promise z odpowiedzią od modelu AI
    */
-  public async sendMessage(userMessage: string, sessionId?: string): Promise<string> {
+  public async sendMessage(
+    userMessage: string,
+    sessionId?: string,
+    options?: {
+      systemMessage?: string;
+      temperature?: number;
+      max_tokens?: number;
+      model?: string;
+      useJsonFormat?: boolean;
+    }
+  ): Promise<string> {
     try {
       // Pobieramy istniejącą sesję lub tworzymy nową
       let session: Session;
@@ -66,30 +77,24 @@ export class OpenRouterService {
       if (messages.length === 0 || messages[0].role !== 'system') {
         messages.unshift({
           role: 'system',
-          content: 'Witaj w usłudze OpenRouter!'
+          content: options?.systemMessage || 'Witaj w usłudze OpenRouter!'
         });
       }
 
       // Wywołujemy API
       const payload: OpenRouterRequestPayload = {
-        model: this.defaultModel,
+        model: options?.model || this.defaultModel,
         messages: messages,
-        temperature: 0.7,
-        max_tokens: 150,
-        response_format: {
-          type: 'json_schema',
-          json_schema: {
-            name: 'response_schema',
-            strict: true,
-            schema: {
-              type: 'object',
-              properties: {
-                response: { type: 'string' }
-              }
-            }
-          }
-        }
+        temperature: options?.temperature || 0.7,
+        max_tokens: options?.max_tokens || 1000
       };
+
+      // Dodajemy format JSON jeśli potrzebny
+      if (options?.useJsonFormat) {
+        payload.response_format = {
+          type: 'json_object'
+        };
+      }
 
       const response = await firstValueFrom(this.callApi(payload));
 
@@ -163,7 +168,8 @@ export class OpenRouterService {
       // Błąd serwera
       switch (error.status) {
         case 401:
-          errorMessage = 'Brak autoryzacji. Sprawdź swój klucz API.';
+          errorMessage = 'Brak autoryzacji. Sprawdź swój klucz API w pliku environments.ts. Upewnij się, że klucz jest aktywny i ma odpowiednie uprawnienia.';
+          console.error('Szczegóły błędu autoryzacji:', error.error);
           break;
         case 403:
           errorMessage = 'Brak dostępu do wybranego modelu lub przekroczone limity.';

@@ -203,4 +203,76 @@ export class GenerateViewComponent implements OnInit {
       };
     });
   }
+
+  // Metody obsługi zdarzeń z listy propozycji
+
+  /**
+   * Obsługuje akceptację propozycji fiszki
+   * @param proposal Zaakceptowana propozycja fiszki
+   */
+  acceptProposal(proposal: FlashcardProposalDTO): void {
+    // Zapisujemy pojedynczą fiszkę
+    this.isSaving = true;
+
+    this.flashcardApi.createFlashcards([proposal]).subscribe({
+      next: (savedFlashcards) => {
+        // Usuwamy zaakceptowaną propozycję z listy
+        this.proposals = this.proposals.filter(p =>
+          p.front !== proposal.front || p.back !== proposal.back
+        );
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sukces',
+          detail: 'Fiszka została zapisana.'
+        });
+
+        this.isSaving = false;
+      },
+      error: (error) => {
+        console.error('Błąd zapisywania fiszki:', error);
+        this.handleApiError(error, 'zapisywania');
+        this.isSaving = false;
+      }
+    });
+  }
+
+  /**
+   * Obsługuje odrzucenie propozycji fiszki
+   * @param proposal Odrzucona propozycja fiszki
+   */
+  rejectProposal(proposal: FlashcardProposalDTO): void {
+    // Usuwamy odrzuconą propozycję z listy
+    this.proposals = this.proposals.filter(p =>
+      p.front !== proposal.front || p.back !== proposal.back
+    );
+
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Informacja',
+      detail: 'Propozycja fiszki została odrzucona.'
+    });
+  }
+
+  /**
+   * Obsługuje edycję propozycji fiszki
+   * @param event Obiekt zawierający oryginalną i zedytowaną propozycję
+   */
+  editProposal(event: {original: FlashcardProposalDTO, edited: FlashcardProposalDTO}): void {
+    // Znajdujemy indeks oryginalnej propozycji
+    const index = this.proposals.findIndex(p =>
+      p.front === event.original.front && p.back === event.original.back
+    );
+
+    if (index !== -1) {
+      // Zastępujemy oryginalną propozycję zedytowaną
+      this.proposals[index] = event.edited;
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Sukces',
+        detail: 'Propozycja fiszki została zaktualizowana.'
+      });
+    }
+  }
 }

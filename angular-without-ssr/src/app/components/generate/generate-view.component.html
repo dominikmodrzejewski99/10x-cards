@@ -14,13 +14,13 @@
     <!-- Sekcja generowania -->
     <div class="bg-white rounded-xl shadow-lg p-5 md:p-6 mb-6 transition-all duration-300 hover:shadow-xl">
       <h2 class="text-xl md:text-2xl font-semibold text-blue-700 mb-4 pb-2 border-b border-gray-100">Generuj Fiszki</h2>
-      
+
       <!-- Pole tekstowe z przekazaniem eventów -->
       <app-source-textarea
         (textChange)="onTextChange($event)"
         (validityChange)="onValidityChange($event)">
       </app-source-textarea>
-      
+
       <!-- Przyciski akcji -->
       <div class="flex justify-end mt-4">
         <app-generate-button
@@ -29,12 +29,12 @@
           (generateClick)="generate()">
         </app-generate-button>
       </div>
-      
+
       <!-- Wskaźnik ładowania -->
       <div class="mt-4 flex justify-center" *ngIf="isLoading">
         <app-loading-indicator [isLoading]="isLoading"></app-loading-indicator>
       </div>
-      
+
       <!-- Komunikat błędu -->
       <div class="mt-4" *ngIf="errorMessage">
         <app-error-message [errorMessage]="errorMessage"></app-error-message>
@@ -44,10 +44,15 @@
     <!-- Sekcja propozycji fiszek -->
     <div *ngIf="proposals.length > 0" class="bg-white rounded-xl shadow-lg p-5 md:p-6 transition-all duration-300 hover:shadow-xl animate__animated animate__fadeIn">
       <h2 class="text-xl md:text-2xl font-semibold text-green-700 mb-4 pb-2 border-b border-gray-100">Lista Propozycji Fiszek</h2>
-      
+
       <!-- Lista propozycji -->
-      <app-flashcard-proposal-list [proposals]="proposals"></app-flashcard-proposal-list>
-      
+      <app-flashcard-proposal-list
+        [proposals]="proposals"
+        (accept)="acceptProposal($event)"
+        (reject)="rejectProposal($event)"
+        (edit)="editProposal($event)">
+      </app-flashcard-proposal-list>
+
       <!-- Przyciski akcji dla propozycji -->
       <div class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-3">
         <app-bulk-save-button
@@ -55,7 +60,7 @@
           [loading]="isSaving"
           (saveAllClick)="saveAllProposals()">
         </app-bulk-save-button>
-        
+
         <button type="button" class="w-full sm:w-auto bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-300 hover:bg-green-800 hover:shadow-lg flex items-center justify-center">
           <i class="pi pi-plus mr-2"></i>
           Dodaj nową fiszkę

@@ -1,27 +1,117 @@
-<div class="overflow-hidden">
-  <div class="overflow-x-auto">
-    <table class="min-w-full bg-white rounded-lg overflow-hidden">
-      <thead>
-        <tr>
-          <th class="py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold text-left">Front</th>
-          <th class="py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold text-left">Back</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let proposal of proposals" class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-150">
-          <td class="py-3 px-4 text-gray-800">{{ proposal.front }}</td>
-          <td class="py-3 px-4 text-gray-800">{{ proposal.back }}</td>
-        </tr>
-        <tr *ngIf="proposals.length === 0">
-          <td colspan="2" class="py-4 px-4 text-center text-gray-500">
-            Brak propozycji fiszek do wyświetlenia
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<div class="flashcard-proposals">
+  <!-- Komunikat gdy brak propozycji -->
+  <div *ngIf="proposals.length === 0" class="text-center py-8 text-gray-500">
+    <p class="text-lg">Brak propozycji fiszek do wyświetlenia</p>
+    <p class="text-sm mt-2">Wygeneruj fiszki, aby zobaczyć propozycje</p>
   </div>
-  
-  <div class="mt-4 text-right text-sm text-gray-500" *ngIf="proposals.length > 0">
+
+  <!-- Grid z kartami propozycji fiszek -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" *ngIf="proposals.length > 0">
+    <div *ngFor="let proposal of proposals; let i = index" class="col-span-1">
+      <p-card styleClass="h-full shadow-md hover:shadow-lg transition-shadow duration-200">
+        <ng-template pTemplate="header">
+          <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-3 text-white font-semibold">
+            Propozycja #{{ i + 1 }}
+          </div>
+        </ng-template>
+
+        <div class="p-2">
+          <div class="mb-4">
+            <h4 class="text-sm font-semibold text-gray-500 mb-1">Przód:</h4>
+            <p class="text-gray-800 p-2 bg-gray-50 rounded min-h-[60px]">{{ proposal.front }}</p>
+          </div>
+
+          <div>
+            <h4 class="text-sm font-semibold text-gray-500 mb-1">Tył:</h4>
+            <p class="text-gray-800 p-2 bg-gray-50 rounded min-h-[60px]">{{ proposal.back }}</p>
+          </div>
+        </div>
+
+        <ng-template pTemplate="footer">
+          <div class="flex justify-between">
+            <p-button
+              icon="pi pi-check"
+              styleClass="p-button-success p-button-sm"
+              (onClick)="onAccept(proposal)"
+              pTooltip="Akceptuj fiszkę"
+              tooltipPosition="top">
+            </p-button>
+
+            <p-button
+              icon="pi pi-pencil"
+              styleClass="p-button-primary p-button-sm"
+              (onClick)="openEditDialog(proposal)"
+              pTooltip="Edytuj fiszkę"
+              tooltipPosition="top">
+            </p-button>
+
+            <p-button
+              icon="pi pi-times"
+              styleClass="p-button-danger p-button-sm"
+              (onClick)="onReject(proposal)"
+              pTooltip="Odrzuć fiszkę"
+              tooltipPosition="top">
+            </p-button>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Licznik propozycji -->
+  <div class="mt-6 text-right text-sm text-gray-500" *ngIf="proposals.length > 0">
     Liczba propozycji: <span class="font-semibold">{{ proposals.length }}</span>
   </div>
+
+  <!-- Dialog edycji fiszki -->
+  <p-dialog
+    [(visible)]="editDialogVisible"
+    [style]="{width: '500px'}"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    header="Edytuj fiszkę">
+
+    <div class="p-fluid">
+      <div class="field mb-4">
+        <label for="front" class="block mb-2 font-medium">Przód fiszki</label>
+        <textarea
+          id="front"
+          pTextarea
+          [(ngModel)]="editedProposal.front"
+          [autoResize]="true"
+          rows="3"
+          class="w-full">
+        </textarea>
+      </div>
+
+      <div class="field">
+        <label for="back" class="block mb-2 font-medium">Tył fiszki</label>
+        <textarea
+          id="back"
+          pTextarea
+          [(ngModel)]="editedProposal.back"
+          [autoResize]="true"
+          rows="3"
+          class="w-full">
+        </textarea>
+      </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <div class="flex justify-end gap-2">
+        <p-button
+          label="Anuluj"
+          icon="pi pi-times"
+          styleClass="p-button-text"
+          (onClick)="closeEditDialog()">
+        </p-button>
+        <p-button
+          label="Zapisz"
+          icon="pi pi-check"
+          (onClick)="saveEdit()">
+        </p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
 </div>
