@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, from, map, of, catchError } from 'rxjs';
+import { Observable, from, map, catchError } from 'rxjs';
 import { GenerateFlashcardsCommand, GenerationDTO, FlashcardProposalDTO } from '../../types';
 import { OpenRouterService } from './openrouter.service';
 
@@ -24,12 +24,8 @@ export class GenerationApiService {
     generation: GenerationDTO,
     flashcards: FlashcardProposalDTO[]
   }> {
-    try {
-      return this.generateFlashcardsWithOpenRouter(command);
-    } catch (error) {
-      // W przypadku błędu zwracamy dane testowe
-      return of(this.generateMockFlashcards(command));
-    }
+    // Używamy wyłącznie OpenRouter API do generowania fiszek
+    return this.generateFlashcardsWithOpenRouter(command);
   }
 
   /**
@@ -76,8 +72,8 @@ export class GenerationApiService {
     })).pipe(
       catchError((error: any) => {
         console.error('Błąd podczas wywołania OpenRouter:', error);
-        // Zwracamy dane testowe w przypadku błędu
-        return of(JSON.stringify(this.generateMockFlashcards(command).flashcards));
+        // Przekazujemy błąd dalej zamiast zwracać mock
+        throw error;
       }),
       map(response => {
         // Parsowanie odpowiedzi JSON
@@ -139,89 +135,5 @@ export class GenerationApiService {
       hash = hash & hash; // Konwersja do 32-bitowej liczby całkowitej
     }
     return hash.toString(16); // Konwersja do hex
-  }
-
-  /**
-   * Generuje testowe dane fiszek w przypadku niedostępności OpenRouter
-   * @param command Komenda generowania fiszek
-   * @returns Obiekt z wygenerowanymi fiszkami i metadanymi
-   */
-  private generateMockFlashcards(command: GenerateFlashcardsCommand): {
-    generation: GenerationDTO,
-    flashcards: FlashcardProposalDTO[]
-  } {
-    const startTime = new Date();
-    const endTime = new Date(startTime.getTime() + 2000); // Symulacja 2 sekundy generacji
-
-    // Wyciągnięcie kilku słów z tekstu źródłowego do użycia w fiszkach
-    const words = command.text
-      .split(/\s+/)
-      .filter(word => word.length > 5)
-      .slice(0, 20);
-
-    // Generowanie 5 przykładowych fiszek
-    const flashcards: FlashcardProposalDTO[] = [
-      {
-        front: 'Co to jest uczenie maszynowe?',
-        back: 'Dziedzina sztucznej inteligencji zajmująca się tworzeniem systemów, które uczą się na podstawie danych.',
-        source: 'ai-full'
-      },
-      {
-        front: 'Czym jest algorytm?',
-        back: 'Zbiór instrukcji lub reguł służących do rozwiązania problemu lub wykonania zadania.',
-        source: 'ai-full'
-      },
-      {
-        front: 'Co to jest API?',
-        back: 'Interfejs programowania aplikacji, który umożliwia różnym programom komunikację między sobą.',
-        source: 'ai-full'
-      },
-      {
-        front: 'Czym jest framework?',
-        back: 'Struktura programistyczna, która dostarcza podstawowe komponenty i narzędzia do tworzenia aplikacji.',
-        source: 'ai-full'
-      },
-      {
-        front: 'Co to jest baza danych?',
-        back: 'Zorganizowany zbiór danych przechowywanych elektronicznie w systemie komputerowym.',
-        source: 'ai-full'
-      }
-    ];
-
-    // Jeśli mamy wystarczająco słów, dodajemy jeszcze kilka fiszek na podstawie tekstu
-    if (words.length >= 10) {
-      flashcards.push(
-        {
-          front: `Co oznacza termin "${words[0]}"?`,
-          back: `${words[0]} to kluczowy element w kontekście ${words[5]}.`,
-          source: 'ai-full'
-        },
-        {
-          front: `Jaką rolę pełni ${words[2]}?`,
-          back: `${words[2]} jest odpowiedzialny za ${words[7]} w procesie ${words[3]}.`,
-          source: 'ai-full'
-        }
-      );
-    }
-
-    // Utworzenie obiektu GenerationDTO
-    const generation: GenerationDTO = {
-      id: Date.now(),
-      generated_count: flashcards.length,
-      generation_duration: 2.0, // 2 sekundy
-      model: 'mock-model',
-      source_text_hash: this.hashString(command.text),
-      source_text_length: command.text.length,
-      accepted_edited_count: null,
-      accepted_unedited_count: null,
-      created_at: startTime.toISOString(),
-      updated_at: endTime.toISOString(),
-      user_id: 'mock-user'
-    };
-
-    return {
-      generation,
-      flashcards
-    };
   }
 }
