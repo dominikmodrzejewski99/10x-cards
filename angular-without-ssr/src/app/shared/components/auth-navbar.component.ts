@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 import { UserMenuComponent } from '../../auth/components/user-menu.component';
+import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
 
 @Component({
   selector: 'app-auth-navbar',
@@ -23,7 +26,7 @@ import { UserMenuComponent } from '../../auth/components/user-menu.component';
             <span class="logo-text">10xCards</span>
           </a>
 
-          <div class="nav-links">
+          <div class="nav-links" *ngIf="isAuthenticated">
             <a routerLink="/generate" routerLinkActive="active" class="nav-link">Generuj fiszki</a>
             <a routerLink="/flashcards" routerLinkActive="active" class="nav-link">Moje fiszki</a>
           </div>
@@ -114,4 +117,21 @@ import { UserMenuComponent } from '../../auth/components/user-menu.component';
     }
   `]
 })
-export class AuthNavbarComponent {}
+export class AuthNavbarComponent implements OnInit, OnDestroy {
+  isAuthenticated = false;
+  private subscription = new Subscription();
+
+  constructor(private store: Store) {}
+
+  ngOnInit(): void {
+    this.subscription.add(
+      this.store.select(selectIsAuthenticated).subscribe(isAuthenticated => {
+        this.isAuthenticated = isAuthenticated;
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+}

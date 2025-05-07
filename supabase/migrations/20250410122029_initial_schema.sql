@@ -23,6 +23,10 @@ create policy "Użytkownicy mogą aktualizować tylko swoje dane"
     on public.users for update
     using (auth.uid() = id);
 
+create policy "Użytkownicy mogą tworzyć tylko swoje dane"
+    on public.users for insert
+    with check (auth.uid() = id);
+
 -- Tabela generation
 create table public.generation (
     id bigserial primary key,
@@ -148,4 +152,4 @@ create trigger handle_generation_updated_at
 create trigger handle_generation_error_logs_updated_at
     before update on public.generation_error_logs
     for each row
-    execute function public.handle_updated_at(); 
+    execute function public.handle_updated_at();

@@ -55,4 +55,12 @@ export class SupabaseClientFactory {
 
     return this.supabaseClient;
   }
+
+  /**
+   * Gets the existing Supabase client or creates a new one
+   * @returns SupabaseClient instance
+   */
+  getClient(): SupabaseClient {
+    return this.createClient();
+  }
 }

@@ -11,7 +11,7 @@ export const routes: Routes = [
   {
     path: 'generate',
     component: GenerateViewComponent,
-    canActivate: [partialAuthGuard]
+    canActivate: [authGuard]
   },
   {
     path: 'flashcards',

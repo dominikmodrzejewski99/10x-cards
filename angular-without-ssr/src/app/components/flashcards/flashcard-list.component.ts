@@ -6,6 +6,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 import { FlashcardApiService } from '../../services/flashcard-api.service';
 import { FlashcardTableComponent } from './flashcard-table/flashcard-table.component';
@@ -73,7 +74,8 @@ export class FlashcardListComponent implements OnInit {
     private flashcardApiService: FlashcardApiService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -118,10 +120,25 @@ export class FlashcardListComponent implements OnInit {
       },
       error: (error) => {
         console.error('Błąd podczas pobierania fiszek:', error);
+        let errorMessage = 'Nie udało się pobrać fiszek. Spróbuj ponownie później.';
+
+        // Sprawdzamy, czy błąd jest związany z autentykacją
+        if (error.message && error.message.includes('nie jest zalogowany')) {
+          errorMessage = 'Musisz być zalogowany, aby zobaczyć swoje fiszki.';
+
+          // Wyświetlamy komunikat w toaście
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Błąd autoryzacji',
+            detail: errorMessage,
+            life: 5000
+          });
+        }
+
         this.state.update(state => ({
           ...state,
           loading: false,
-          error: 'Nie udało się pobrać fiszek. Spróbuj ponownie później.'
+          error: errorMessage
         }));
       }
     });
@@ -512,27 +529,49 @@ export class FlashcardListComponent implements OnInit {
   // Pomocnicza metoda do obsługi błędów API
   private handleApiError(error: any, action: string): void {
     console.error(`Błąd podczas ${action} fiszki:`, error);
-    this.state.update(state => ({
-      ...state,
-      loading: false,
-      // Tymczasowo wyłączono komunikat o błędzie
-      error: null
-    }));
 
-    // Tymczasowo wyłączono wyświetlanie komunikatu o błędzie
-    // let errorMessage = `Nie udało się wykonać operacji ${action}. Spróbuj ponownie później.`;
+    let errorMessage = `Nie udało się wykonać operacji ${action}. Spróbuj ponownie później.`;
+    let summary = 'Błąd';
+    let redirectToLogin = false;
 
-    if (error.status === 404) {
+    if (error.status === 401) {
+      errorMessage = 'Błąd autoryzacji. Zaloguj się ponownie.';
+      summary = 'Błąd autoryzacji';
+      redirectToLogin = true;
+    } else if (error.status === 403) {
+      errorMessage = 'Brak uprawnień do wykonania tej operacji.';
+      summary = 'Błąd uprawnień';
+    } else if (error.status === 404) {
+      errorMessage = 'Nie znaleziono fiszki. Może została już usunięta.';
       // Odświeżenie listy w przypadku próby edycji/usunięcia nieistniejącej fiszki
       this.loadFlashcards();
     }
 
-    // Tymczasowo wyłączono wyświetlanie komunikatu o błędzie
-    // this.messageService.add({
-    //   severity: 'error',
-    //   summary: 'Błąd',
-    //   detail: errorMessage,
-    //   life: 5000
-    // });
+    // Sprawdzamy, czy błąd jest związany z autentykacją
+    if (error.message && (error.message.includes('nie jest zalogowany') || error.message.includes('Sesja wygasła') || error.message.includes('problem z kontem'))) {
+      errorMessage = 'Musisz być zalogowany, aby zarządzać fiszkami.';
+      summary = 'Błąd autoryzacji';
+      redirectToLogin = true;
+    }
+
+    this.state.update(state => ({
+      ...state,
+      loading: false,
+      error: errorMessage
+    }));
+
+    this.messageService.add({
+      severity: 'error',
+      summary: summary,
+      detail: errorMessage,
+      life: 5000
+    });
+
+    // Przekierowanie do strony logowania, jeśli to konieczne
+    if (redirectToLogin) {
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 2000);
+    }
   }
 }

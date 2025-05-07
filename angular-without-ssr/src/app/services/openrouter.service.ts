@@ -14,18 +14,19 @@ import { environment } from '../../environments/environments';
   providedIn: 'root'
 })
 export class OpenRouterService {
-  private apiKey: string;
   private apiUrl: string;
   private sessionManager: SessionManager;
-  private defaultModel = 'gpt-3.5-turbo';
+  private defaultModel = 'openai/gpt-3.5-turbo';
 
   constructor(
     private http: HttpClient,
     sessionManager: SessionManager
   ) {
-    this.apiKey = environment.openRouterKey;
     this.apiUrl = 'https://openrouter.ai/api/v1/chat/completions';
     this.sessionManager = sessionManager;
+
+    // Sprawdzamy, czy klucz API jest dostępny
+    console.log('OpenRouter API key:', environment.openRouterKey);
   }
 
   /**
@@ -171,11 +172,18 @@ export class OpenRouterService {
    * @returns Observable z odpowiedzią API
    */
   private callApi(payload: OpenRouterRequestPayload): Observable<OpenRouterResponse> {
+    // Logowanie dla debugowania
+    console.log('Calling OpenRouter API with payload:', payload);
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.apiKey}`,
-      'HTTP-Referer': window.location.origin
+      'Authorization': `Bearer ${environment.openRouterKey}`,
+      'HTTP-Referer': window.location.origin,
+      'X-Title': '10xCards'
     });
+
+    // Logowanie nagłówków
+    console.log('Headers:', headers.get('Authorization'));
 
     return this.http.post<OpenRouterResponse>(this.apiUrl, payload, { headers })
       .pipe(
@@ -189,7 +197,7 @@ export class OpenRouterService {
    * @param error Błąd HTTP
    * @returns Observable z błędem
    */
-  private handleHttpError(error: HttpErrorResponse) {
+  private handleHttpError = (error: HttpErrorResponse) => {
     let errorMessage = 'Wystąpił nieznany błąd podczas komunikacji z API';
 
     if (error.error instanceof ErrorEvent) {
@@ -201,6 +209,8 @@ export class OpenRouterService {
         case 401:
           errorMessage = 'Brak autoryzacji. Sprawdź swój klucz API w pliku environments.ts. Upewnij się, że klucz jest aktywny i ma odpowiednie uprawnienia.';
           console.error('Szczegóły błędu autoryzacji:', error.error);
+          console.error('Klucz API:', environment.openRouterKey);
+          console.error('Nagłówek Authorization:', `Bearer ${environment.openRouterKey}`);
           break;
         case 403:
           errorMessage = 'Brak dostępu do wybranego modelu lub przekroczone limity.';

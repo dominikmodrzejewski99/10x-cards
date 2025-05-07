@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { Observable, from, map, catchError, throwError, of } from 'rxjs';
+import { Observable, from, map, catchError, throwError, of, switchMap } from 'rxjs';
 import { LoginUserCommand, RegisterUserCommand, UserDTO } from '../../types';
 import { SupabaseClientFactory } from '../services/supabase-client.factory';
 
@@ -11,7 +11,71 @@ export class AuthService {
   private supabase: SupabaseClient;
 
   constructor(private supabaseFactory: SupabaseClientFactory) {
-    this.supabase = this.supabaseFactory.createClient();
+    this.supabase = this.supabaseFactory.getClient();
+  }
+
+  /**
+   * Tworzy rekord użytkownika w tabeli users
+   * @param user Dane użytkownika
+   * @returns Observable zawierający utworzony rekord
+   */
+  private createUserRecord(user: UserDTO): Observable<UserDTO> {
+    console.log('Tworzenie rekordu użytkownika w tabeli users:', user);
+
+    // Najpierw sprawdźmy, czy rekord użytkownika już istnieje
+    return from(this.supabase
+      .from('users')
+      .select('*')
+      .eq('id', user.id)
+      .single()
+    ).pipe(
+      switchMap(response => {
+        console.log('Odpowiedź z Supabase (sprawdzenie użytkownika):', response);
+
+        // Jeśli rekord istnieje, zwracamy użytkownika
+        if (!response.error && response.data) {
+          console.log('Rekord użytkownika już istnieje:', response.data);
+          return of(user);
+        }
+
+        console.log('Rekord użytkownika nie istnieje. Tworzenie nowego rekordu...');
+
+        // Jeśli rekord nie istnieje, tworzymy go
+        // Wykonujemy bezpośrednie zapytanie INSERT, aby utworzyć rekord użytkownika
+        return from(this.supabase
+          .from('users')
+          .insert({
+            id: user.id,
+            email: user.email || 'user@example.com',
+            encrypted_password: 'managed-by-supabase-auth',
+            created_at: user.created_at || new Date().toISOString(),
+            updated_at: user.updated_at || user.created_at || new Date().toISOString()
+          })
+          .select()
+        ).pipe(
+          map(response => {
+            console.log('Odpowiedź z Supabase (createUserRecord):', response);
+            if (response.error) {
+              console.error('Błąd podczas tworzenia rekordu użytkownika:', response.error);
+              throw response.error;
+            }
+            console.log('Rekord użytkownika utworzony pomyślnie:', response.data);
+            return user;
+          }),
+          catchError(error => {
+            console.error('Błąd podczas tworzenia rekordu użytkownika:', error);
+            // Zwracamy oryginalnego użytkownika, nawet jeśli nie udało się utworzyć rekordu
+            // Nie chcemy, aby to blokowało proces logowania/rejestracji
+            return of(user);
+          })
+        );
+      }),
+      catchError(error => {
+        console.error('Błąd podczas sprawdzania rekordu użytkownika:', error);
+        // Zwracamy oryginalnego użytkownika, nawet jeśli nie udało się sprawdzić rekordu
+        return of(user);
+      })
+    );
   }
 
   /**
@@ -31,6 +95,7 @@ export class AuthService {
         }
         return this.mapUserToDTO(response.data.user);
       }),
+      switchMap(user => this.createUserRecord(user)),
       catchError(error => {
         console.error('Błąd rejestracji:', error);
         return throwError(() => this.handleAuthError(error));
@@ -53,8 +118,9 @@ export class AuthService {
         if (!response.data.user) {
           throw new Error('Nie udało się zalogować. Spróbuj ponownie.');
         }
-        return this.mapToUserDTO(response.data.user);
+        return this.mapUserToDTO(response.data.user);
       }),
+      switchMap(user => this.createUserRecord(user)),
       catchError(error => {
         console.error('Błąd logowania:', error);
         return throwError(() => this.handleAuthError(error));

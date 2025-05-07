@@ -5,9 +5,14 @@ import { inject } from '@angular/core';
 import { SupabaseClientFactory } from './supabase-client.factory';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  // Pomijamy żądania do OpenRouter API
+  if (req.url.includes('openrouter.ai')) {
+    return next(req);
+  }
+
   // Tworzymy klienta Supabase używając fabryki
   const supabaseFactory = inject(SupabaseClientFactory);
-  const supabase: SupabaseClient = supabaseFactory.createClient();
+  const supabase: SupabaseClient = supabaseFactory.getClient();
 
   // Pobieramy sesję użytkownika i konwertujemy Promise na Observable
   return from(supabase.auth.getSession()).pipe(

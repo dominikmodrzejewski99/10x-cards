@@ -5,12 +5,14 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import * as AuthActions from './auth.actions';
 import { AuthService } from '../auth.service';
+import { AuthRedirectService } from '../services/auth-redirect.service';
 
 @Injectable()
 export class AuthEffects {
   private actions$ = inject(Actions);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private authRedirectService = inject(AuthRedirectService);
 
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -28,7 +30,10 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.loginSuccess),
-        tap(() => this.router.navigate(['/generate']))
+        tap(() => {
+          // Przekieruj do zapisanego URL-a lub do strony generowania fiszek
+          this.authRedirectService.redirectToSavedUrlOrDefault('/generate');
+        })
       ),
     { dispatch: false }
   );
@@ -36,12 +41,17 @@ export class AuthEffects {
   register$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.register),
-      switchMap(({ email, password }) =>
-        this.authService.register({ email, password }).pipe(
+      switchMap(({ email, password, passwordConfirmation }) => {
+        // Sprawdzamy, czy hasła są zgodne
+        if (password !== passwordConfirmation) {
+          return of(AuthActions.registerFailure({ error: 'Hasła nie są zgodne' }));
+        }
+
+        return this.authService.register({ email, password }).pipe(
           map((user) => AuthActions.registerSuccess({ user })),
           catchError((error) => of(AuthActions.registerFailure({ error: this.handleError(error) })))
-        )
-      )
+        );
+      })
     )
   );
 
@@ -49,7 +59,10 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.registerSuccess),
-        tap(() => this.router.navigate(['/generate']))
+        tap(() => {
+          // Przekieruj do zapisanego URL-a lub do strony generowania fiszek
+          this.authRedirectService.redirectToSavedUrlOrDefault('/generate');
+        })
       ),
     { dispatch: false }
   );

@@ -1,5 +1,16 @@
 <div class="min-h-screen p-4 md:p-6">
   <div class="max-w-4xl mx-auto">
+    <!-- Komunikat o wymaganym logowaniu -->
+    <div *ngIf="!isAuthenticated" class="bg-white rounded-xl shadow-lg p-5 md:p-6 mb-6 transition-all duration-300 hover:shadow-xl animate__animated animate__fadeIn">
+      <h2 class="text-xl md:text-2xl font-semibold text-red-600 mb-4 pb-2 border-b border-gray-100">Wymagane logowanie</h2>
+      <p class="text-gray-700 mb-6">Aby korzystać z generowania fiszek, musisz być zalogowany.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button pButton type="button" label="Zaloguj się" icon="pi pi-sign-in" class="p-button-primary" routerLink="/login"></button>
+        <button pButton type="button" label="Zarejestruj się" icon="pi pi-user-plus" class="p-button-outlined" routerLink="/register"></button>
+      </div>
+    </div>
+
+    <ng-container *ngIf="isAuthenticated">
     <!-- Nagłówek główny -->
     <div class="text-center my-8 animate__animated animate__fadeIn">
       <h1 class="text-3xl md:text-4xl font-bold text-blue-700 tracking-tight">Generator Fiszek AI</h1>
@@ -73,6 +84,7 @@
       <i class="pi pi-arrow-up text-3xl mb-2 block"></i>
       <p>Kliknij "Generuj Fiszki" aby stworzyć propozycje fiszek</p>
     </div>
+    </ng-container>
   </div>
 </div>
 

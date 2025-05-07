@@ -1,11 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { GenerationApiService } from '../../services/generation-api.service';
 import { FlashcardApiService } from '../../services/flashcard-api.service';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 import { GenerateFlashcardsCommand, GenerationDTO, FlashcardProposalDTO } from '../../../types';
+import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
 
 // Import komponentów potomnych
 import { LoadingIndicatorComponent } from './loading-indicator/loading-indicator.component';
@@ -32,6 +37,8 @@ interface Flashcard {
     CommonModule,
     ToastModule,
     FormsModule,
+    RouterModule,
+    ButtonModule,
     LoadingIndicatorComponent,
     ErrorMessageComponent,
     FlashcardProposalListComponent,
@@ -43,7 +50,7 @@ interface Flashcard {
   templateUrl: './generate-view.component.html',
   styleUrls: ['./generate-view.component.css']
 })
-export class GenerateViewComponent implements OnInit {
+export class GenerateViewComponent implements OnInit, OnDestroy {
   // Standardowe zmienne zamiast sygnałów
   proposals: FlashcardProposalViewModel[] = [];
   generationResult: GenerationDTO | null = null;
@@ -58,14 +65,34 @@ export class GenerateViewComponent implements OnInit {
   sourceText = '';
   isSourceValid = false;
 
+  // Zmienne dla autentykacji
+  isAuthenticated = false;
+  private subscription = new Subscription();
+
   constructor(
     private generationApi: GenerationApiService,
     private flashcardApi: FlashcardApiService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private store: Store,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    console.log('22222')
+    // Sprawdź, czy użytkownik jest zalogowany
+    this.subscription.add(
+      this.store.select(selectIsAuthenticated).subscribe(isAuthenticated => {
+        this.isAuthenticated = isAuthenticated;
+
+        if (!isAuthenticated) {
+          // Jeśli użytkownik nie jest zalogowany, przekieruj go do strony logowania
+          this.router.navigate(['/login']);
+        }
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   // Metody obsługujące zdarzenia z komponentu SourceTextareaComponent
@@ -156,13 +183,26 @@ export class GenerateViewComponent implements OnInit {
 
         // Wyświetlamy szczegółowy komunikat o błędzie
         let errorMessage = 'Wystąpił błąd podczas zapisu fiszek.';
+        let summary = 'Błąd';
+
         if (error.message) {
-          errorMessage = `Błąd: ${error.message}`;
+          errorMessage = `${error.message}`;
+
+          // Sprawdzamy, czy błąd jest związany z autentykacją
+          if (error.message.includes('nie jest zalogowany')) {
+            summary = 'Błąd autoryzacji';
+            errorMessage = 'Musisz być zalogowany, aby zapisać fiszki.';
+
+            // Przekierowanie do strony logowania
+            setTimeout(() => {
+              this.router.navigate(['/login']);
+            }, 2000);
+          }
         }
 
         this.messageService.add({
           severity: 'error',
-          summary: 'Błąd',
+          summary: summary,
           detail: errorMessage,
           life: 5000
         });
@@ -176,6 +216,8 @@ export class GenerateViewComponent implements OnInit {
   private handleApiError(error: any, action: 'generowania' | 'zapisywania'): void {
     const defaultMessage = `Wystąpił nieoczekiwany błąd podczas ${action}. Spróbuj ponownie później.`;
     let message = defaultMessage;
+    let summary = 'Błąd';
+    let redirectToLogin = false;
 
     if (error.status === 400) {
       message = `Błąd walidacji danych wejściowych podczas ${action}. Sprawdź dane.`;
@@ -184,17 +226,33 @@ export class GenerateViewComponent implements OnInit {
       }
     } else if (error.status === 401) {
       message = 'Błąd autoryzacji. Zaloguj się ponownie.';
+      summary = 'Błąd autoryzacji';
+      redirectToLogin = true;
     } else if (error.status >= 500) {
       message = `Błąd serwera podczas ${action}. Spróbuj ponownie później.`;
+    }
+
+    // Sprawdzamy, czy błąd jest związany z autentykacją
+    if (error.message && (error.message.includes('nie jest zalogowany') || error.message.includes('Sesja wygasła') || error.message.includes('problem z kontem'))) {
+      summary = 'Błąd autoryzacji';
+      message = `Musisz być zalogowany, aby korzystać z funkcji ${action}.`;
+      redirectToLogin = true;
     }
 
     this.errorMessage = message;
     this.messageService.add({
       severity: 'error',
-      summary: 'Błąd',
+      summary: summary,
       detail: message,
-      sticky: true
+      life: 5000
     });
+
+    // Przekierowanie do strony logowania, jeśli to konieczne
+    if (redirectToLogin) {
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 2000);
+    }
   }
 
   private clearMessagesAndProposals(): void {
@@ -253,13 +311,26 @@ export class GenerateViewComponent implements OnInit {
 
         // Wyświetlamy szczegółowy komunikat o błędzie
         let errorMessage = 'Wystąpił błąd podczas zapisu fiszki.';
+        let summary = 'Błąd';
+
         if (error.message) {
-          errorMessage = `Błąd: ${error.message}`;
+          errorMessage = `${error.message}`;
+
+          // Sprawdzamy, czy błąd jest związany z autentykacją
+          if (error.message.includes('nie jest zalogowany')) {
+            summary = 'Błąd autoryzacji';
+            errorMessage = 'Musisz być zalogowany, aby zapisać fiszkę.';
+
+            // Przekierowanie do strony logowania
+            setTimeout(() => {
+              this.router.navigate(['/login']);
+            }, 2000);
+          }
         }
 
         this.messageService.add({
           severity: 'error',
-          summary: 'Błąd',
+          summary: summary,
           detail: errorMessage,
           life: 5000
         });
