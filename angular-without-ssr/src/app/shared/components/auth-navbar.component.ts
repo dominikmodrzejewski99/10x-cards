@@ -1,8 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { UserMenuComponent } from '../../auth/components/user-menu.component';
-import { UserDTO } from '../../../types';
 
 @Component({
   selector: 'app-auth-navbar',
@@ -26,16 +25,12 @@ import { UserDTO } from '../../../types';
 
           <div class="nav-links">
             <a routerLink="/generate" routerLinkActive="active" class="nav-link">Generuj fiszki</a>
-            <a routerLink="/flashcards" routerLinkActive="active" class="nav-link" *ngIf="isAuthenticated">Moje fiszki</a>
+            <a routerLink="/flashcards" routerLinkActive="active" class="nav-link">Moje fiszki</a>
           </div>
         </div>
 
         <div class="navbar-right">
-          <app-user-menu
-            [isAuthenticated]="isAuthenticated"
-            [user]="currentUser"
-            (logout)="onLogout()">
-          </app-user-menu>
+          <app-user-menu></app-user-menu>
         </div>
       </div>
     </nav>
@@ -119,12 +114,4 @@ import { UserDTO } from '../../../types';
     }
   `]
 })
-export class AuthNavbarComponent {
-  @Input() isAuthenticated = false;
-  @Input() currentUser: UserDTO | null = null;
-
-  onLogout(): void {
-    console.log('Logout clicked');
-    // W rzeczywistej implementacji wywołalibyśmy tutaj serwis AuthService
-  }
-}
+export class AuthNavbarComponent {}

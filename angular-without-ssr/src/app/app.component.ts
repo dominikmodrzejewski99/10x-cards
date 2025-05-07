@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { SupabaseClient } from '@supabase/supabase-js';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
-import { SupabaseClientFactory } from './services/supabase-client.factory';
+import { Store } from '@ngrx/store';
 import { AuthNavbarComponent } from './shared/components/auth-navbar.component';
+import * as AuthActions from './auth/store/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -16,15 +16,11 @@ import { AuthNavbarComponent } from './shared/components/auth-navbar.component';
 export class AppComponent implements OnInit {
   title = 'angular';
   currentYear = new Date().getFullYear();
-  private supabase: SupabaseClient;
-  data: string = '';
 
-  constructor(private supabaseFactory: SupabaseClientFactory) {
-    this.supabase = this.supabaseFactory.createClient();
-  }
+  constructor(private store: Store) {}
 
-  async ngOnInit() {
-    const { data, error } = await this.supabase.from('users').select('*');
-    console.log(data, error);
+  ngOnInit() {
+    // Sprawdź stan autentykacji przy starcie aplikacji
+    this.store.dispatch(AuthActions.checkAuthState());
   }
 }

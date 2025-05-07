@@ -1,9 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, OnDestroy, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from './auth.service';
-import { LoginUserCommand, RegisterUserCommand } from '../../types';
 import { Router, RouterModule } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { LoginUserCommand, RegisterUserCommand } from '../../types';
+import * as AuthActions from './store/auth.actions';
+import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
 
 @Component({
   selector: 'app-auth-form',
@@ -178,7 +181,7 @@ import { Router, RouterModule } from '@angular/router';
     }
   `]
 })
-export class AuthFormComponent implements OnInit {
+export class AuthFormComponent implements OnInit, OnDestroy {
   @Input() isLoginMode = true;
   @Output() modeChange = new EventEmitter<boolean>();
 
@@ -187,9 +190,11 @@ export class AuthFormComponent implements OnInit {
   loading = false;
   error = '';
 
+  private subscriptions = new Subscription();
+
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private store: Store,
     private router: Router
   ) {}
 
@@ -198,6 +203,23 @@ export class AuthFormComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+
+    // Subskrybuj stan ładowania i błędów z NgRx store
+    this.subscriptions.add(
+      this.store.select(selectAuthLoading).subscribe(loading => {
+        this.loading = loading;
+      })
+    );
+
+    this.subscriptions.add(
+      this.store.select(selectAuthError).subscribe(error => {
+        this.error = error || '';
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   get f() {
@@ -218,38 +240,22 @@ export class AuthFormComponent implements OnInit {
 
   onSubmit(): void {
     this.submitted = true;
-    this.error = '';
+    this.store.dispatch(AuthActions.clearAuthError());
 
     if (this.authForm.invalid) {
       return;
     }
 
-    this.loading = true;
-
     const { email, password } = this.authForm.value;
 
     if (this.isLoginMode) {
-      const loginCommand: LoginUserCommand = { email, password };
-      this.authService.login(loginCommand).subscribe({
-        next: () => {
-          this.loading = false;
-        },
-        error: (err) => {
-          this.error = err.message || 'Wystąpił błąd podczas logowania';
-          this.loading = false;
-        }
-      });
+      this.store.dispatch(AuthActions.login({ email, password }));
     } else {
-      const registerCommand: RegisterUserCommand = { email, password };
-      this.authService.register(registerCommand).subscribe({
-        next: () => {
-          this.loading = false;
-        },
-        error: (err) => {
-          this.error = err.message || 'Wystąpił błąd podczas rejestracji';
-          this.loading = false;
-        }
-      });
+      this.store.dispatch(AuthActions.register({
+        email,
+        password,
+        passwordConfirmation: password // W tym przypadku nie mamy osobnego pola na potwierdzenie hasła
+      }));
     }
   }
 }

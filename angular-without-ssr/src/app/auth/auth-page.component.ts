@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthFormComponent } from './auth-form.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import * as AuthActions from './store/auth.actions';
 
 @Component({
   selector: 'app-auth-page',
@@ -127,12 +130,14 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
     }
   `]
 })
-export class AuthPageComponent implements OnInit {
+export class AuthPageComponent implements OnInit, OnDestroy {
   isLoginMode = true;
+  private subscription = new Subscription();
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
@@ -141,10 +146,19 @@ export class AuthPageComponent implements OnInit {
     this.isLoginMode = currentPath.includes('/login');
 
     // Nasłuchuj zmian ścieżki
-    this.route.url.subscribe(segments => {
-      const path = segments.map(segment => segment.path).join('/');
-      this.isLoginMode = path === 'login';
-    });
+    this.subscription.add(
+      this.route.url.subscribe(segments => {
+        const path = segments.map(segment => segment.path).join('/');
+        this.isLoginMode = path === 'login';
+      })
+    );
+
+    // Sprawdź stan autentykacji przy ładowaniu komponentu
+    this.store.dispatch(AuthActions.checkAuthState());
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   setLoginMode(isLogin: boolean): void {

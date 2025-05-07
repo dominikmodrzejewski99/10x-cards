@@ -6,6 +6,11 @@ import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/
 import { routes } from './app.routes';
 import Aura from '@primeng/themes/aura';
 import { authInterceptor } from './services/auth.interceptor';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { authReducer } from './auth/store/auth.reducer';
+import { AuthEffects } from './auth/store/auth.effects';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -15,6 +20,9 @@ export const appConfig: ApplicationConfig = {
             withInterceptors([authInterceptor]),
             withFetch()
         ),
+        provideStore({ auth: authReducer }),
+        provideEffects([AuthEffects]),
+        provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
 
         providePrimeNG({
             theme: {

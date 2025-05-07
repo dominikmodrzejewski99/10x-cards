@@ -1,7 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
 import { UserDTO } from '../../../types';
+import { selectIsAuthenticated, selectUser } from '../store/auth.selectors';
+import * as AuthActions from '../store/auth.actions';
 
 @Component({
   selector: 'app-user-menu',
@@ -199,12 +203,12 @@ import { UserDTO } from '../../../types';
     }
   `]
 })
-export class UserMenuComponent {
-  @Input() isAuthenticated = false;
-  @Input() user: UserDTO | null = null;
-  @Output() logout = new EventEmitter<void>();
-
+export class UserMenuComponent implements OnInit, OnDestroy {
+  isAuthenticated = false;
+  user: UserDTO | null = null;
   isMenuOpen = false;
+
+  private subscriptions = new Subscription();
 
   getUserInitials(): string {
     if (!this.user?.email) return '?';
@@ -219,8 +223,29 @@ export class UserMenuComponent {
     this.isMenuOpen = false;
   }
 
+  constructor(private store: Store) {}
+
+  ngOnInit(): void {
+    // Subskrybuj stan autentykacji i dane użytkownika z NgRx store
+    this.subscriptions.add(
+      this.store.select(selectIsAuthenticated).subscribe(isAuthenticated => {
+        this.isAuthenticated = isAuthenticated;
+      })
+    );
+
+    this.subscriptions.add(
+      this.store.select(selectUser).subscribe(user => {
+        this.user = user;
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
   onLogout(): void {
     this.closeMenu();
-    this.logout.emit();
+    this.store.dispatch(AuthActions.logout());
   }
 }

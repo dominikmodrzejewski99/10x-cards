@@ -4,12 +4,43 @@ import { FlashcardListComponent } from './components/flashcards/flashcard-list.c
 import { AuthPageComponent } from './auth/auth-page.component';
 import { PasswordResetPageComponent } from './auth/pages/password-reset-page.component';
 import { SetNewPasswordPageComponent } from './auth/pages/set-new-password-page.component';
+import { authGuard } from './auth/guards/auth.guard';
+import { nonAuthGuard } from './auth/guards/non-auth.guard';
+import { partialAuthGuard } from './auth/guards/partial-auth.guard';
 export const routes: Routes = [
-  { path: 'generate', component: GenerateViewComponent },
-  { path: 'flashcards', component: FlashcardListComponent },
-  { path: 'login', component: AuthPageComponent },
-  { path: 'register', component: AuthPageComponent },
-  { path: 'reset-password', component: PasswordResetPageComponent },
-  { path: 'set-new-password', component: SetNewPasswordPageComponent },
-  { path: '', redirectTo: '/register', pathMatch: 'full' }, // Przekierowanie domyślne do widoku rejestracji
+  {
+    path: 'generate',
+    component: GenerateViewComponent,
+    canActivate: [partialAuthGuard]
+  },
+  {
+    path: 'flashcards',
+    component: FlashcardListComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'login',
+    component: AuthPageComponent,
+    canActivate: [nonAuthGuard]
+  },
+  {
+    path: 'register',
+    component: AuthPageComponent,
+    canActivate: [nonAuthGuard]
+  },
+  {
+    path: 'reset-password',
+    component: PasswordResetPageComponent,
+    canActivate: [nonAuthGuard]
+  },
+  {
+    path: 'set-new-password',
+    component: SetNewPasswordPageComponent,
+    canActivate: [nonAuthGuard]
+  },
+  {
+    path: '',
+    redirectTo: '/generate',
+    pathMatch: 'full'
+  },
 ];
