@@ -126,3 +126,40 @@ html .p-connected-overlay .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
   background-color: #FFFFFF !important;
   color: #64748b !important;
 }
+
+/* Globalne style dla textarea */
+body .p-inputtextarea,
+html .p-inputtextarea,
+body textarea.p-inputtextarea,
+html textarea.p-inputtextarea,
+body .p-fluid .p-inputtextarea,
+html .p-fluid .p-inputtextarea,
+body .p-textarea,
+html .p-textarea {
+  color: #1f2937 !important;
+  font-weight: 500 !important;
+  --p-textarea-color: #1f2937 !important;
+  --p-component-text-color: #1f2937 !important;
+}
+
+/* Globalne style dla przycisków primary */
+body .p-button.p-button-primary,
+html .p-button.p-button-primary,
+body .p-component.p-button.p-button-primary {
+  background-color: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+}
+
+body .p-button.p-button-primary:hover,
+html .p-button.p-button-primary:hover,
+body .p-component.p-button.p-button-primary:hover {
+  background-color: #2563eb !important;
+  border-color: #2563eb !important;
+}
+
+body .p-button.p-button-primary .p-button-label,
+html .p-button.p-button-primary .p-button-label,
+body .p-button.p-button-primary .p-button-icon,
+html .p-button.p-button-primary .p-button-icon {
+  color: white !important;
+}

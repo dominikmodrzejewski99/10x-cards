@@ -91,12 +91,41 @@ export class OpenRouterService {
 
       // Dodajemy format JSON jeśli potrzebny
       if (options?.useJsonFormat) {
+        console.log('Ustawianie formatu JSON dla zapytania');
         payload.response_format = {
           type: 'json_object'
         };
+
+        // Dodajemy dodatkowe instrukcje do wiadomości użytkownika, aby wymusić format JSON
+        payload.messages.push({
+          role: 'user',
+          content: 'ABSOLUTNIE KLUCZOWE: Odpowiedź MUSI być tablicą JSON z obiektami zawierającymi pola "front" i "back". NIE zwracaj pojedynczego obiektu JSON. Sprawdź, czy Twoja odpowiedź zaczyna się od "[" i kończy na "]". Upewnij się, że generujesz DOKŁADNIE 15 fiszek. Nie dodawaj żadnego tekstu przed ani po tablicy JSON.'
+        });
       }
 
+      console.log('Wysyłanie zapytania do OpenRouter:', payload);
+
       const response = await firstValueFrom(this.callApi(payload));
+      console.log('Otrzymano odpowiedź z OpenRouter API:', response);
+
+      // Dodatkowe logi dla lepszego debugowania
+      if (response && response.choices && response.choices.length > 0) {
+        console.log('Zawartość pierwszego choice:', response.choices[0]);
+        console.log('Zawartość wiadomości:', response.choices[0].message);
+        console.log('Zawartość content:', response.choices[0].message.content);
+
+        // Próba parsowania content jako JSON
+        try {
+          const contentJson = JSON.parse(response.choices[0].message.content);
+          console.log('Sparsowany content jako JSON:', contentJson);
+          console.log('Typ sparsowanego contentu:', Array.isArray(contentJson) ? 'tablica' : typeof contentJson);
+          if (Array.isArray(contentJson)) {
+            console.log('Długość tablicy:', contentJson.length);
+          }
+        } catch (error) {
+          console.error('Błąd parsowania contentu jako JSON:', error);
+        }
+      }
 
       // Dodajemy odpowiedź modelu do sesji
       if (response && response.choices && response.choices.length > 0) {
@@ -107,8 +136,10 @@ export class OpenRouterService {
         };
         this.sessionManager.addMessage(session.id, assistantMessage);
 
+        console.log('Treść odpowiedzi:', assistantMessage.content);
         return assistantMessage.content;
       } else {
+        console.error('Otrzymano pustą odpowiedź od modelu AI:', response);
         throw new Error('Otrzymano pustą odpowiedź od modelu AI');
       }
     } catch (error) {

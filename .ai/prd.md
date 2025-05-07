@@ -122,6 +122,32 @@ Kryteria akceptacji:
 - Tylko zalogowany użytkownik może wyświetlać, edytować i usuwać swoje fiszki.
 - Nie ma dostępu do fiszek innych użytkowników ani możliwości współdzielenia.
 
+## US-010: Kolekcje reguł
+
+- Tytuł: Kolekcje reguł
+- Opis: Jako użytkownik chcę móc zapisywać i edytować zestawy reguł, aby szybko wykorzystywać sprawdzone rozwiązania w różnych projektach.
+- Kryteria akceptacji:
+    - Użytkownik może zapisać aktualny zestaw fiszek
+    - Użytkownik może aktualizować fiszki.
+    - Użytkownik może usunąć fiszke.
+    - Użytkownik może przywrócić kolekcję do poprzedniej wersji (pending changes).
+    - Funkcjonalność listy fiszek nie jest dostępna bez logowania się do systemu (US-004).
+
+## US-0011: Bezpieczny dostęp i uwierzytelnianie
+
+- Tytuł: Bezpieczny dostęp
+- Opis: Jako użytkownik chcę mieć możliwość rejestracji i logowania się do systemu w sposób zapewniający bezpieczeństwo moich danych.
+- Kryteria akceptacji:
+    - Logowanie i rejestracja odbywają się na dedykowanych stronach.
+    - Logowanie wymaga podania adresu email i hasła.
+    - Rejestracja wymaga podania adresu email, hasła i potwierdzenia hasła.
+    - Użytkownik MOŻE korzystać z tworzenia fiszek i generowania przez AI "ad-hoc" bez logowania się do systemu
+    - Użytkownik NIE MOŻE korzystać z funkcji Listy fiszek bez logowania się do systemu
+    - Użytkownik może logować się do systemu poprzez przycisk w prawym górnym rogu.
+    - Użytkownik może się wylogować z systemu poprzez przycisk w prawym górnym rogu 
+    - Nie korzystamy z zewnętrznych serwisów logowania (np. Google, GitHub).
+    - Odzyskiwanie hasła powinno być możliwe.
+
 ## 6. Metryki sukcesu
 1. Efektywność generowania fiszek:
    - 75% wygenerowanych przez AI fiszek jest akceptowanych przez użytkownika.

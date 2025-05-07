@@ -123,6 +123,7 @@
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
+  padding: 1.5rem 1rem;
 }
 
 .app-footer {

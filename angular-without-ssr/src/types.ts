@@ -1,6 +1,6 @@
 /**
  * DTO and Command Model definitions for the 10x-cards API
- * 
+ *
  * These types are based on the underlying database models and the API plan.
  * They ensure consistency between the API layer and the database entities.
  *
@@ -52,7 +52,7 @@ export interface FlashcardDTO {
 export interface FlashcardProposalDTO {
   front: string;
   back: string;
-  source: Source;
+  source?: Source;
 }
 
 // Command model for creating a flashcard
@@ -73,14 +73,14 @@ export type UpdateFlashcardCommand = Partial<Omit<CreateFlashcardCommand, 'gener
 // Generation DTO represents a record from the generation table: metadata about AI-generated flashcards
 export interface GenerationDTO {
   id: number;
-  accepted_edited_count: number | null;
-  accepted_unedited_count: number | null;
-  created_at: string;
   generated_count: number;
   generation_duration: number;
   model: string;
   source_text_hash: string;
   source_text_length: number;
+  accepted_edited_count: number | null;
+  accepted_unedited_count: number | null;
+  created_at: string;
   updated_at: string;
   user_id: string;
 }
@@ -104,4 +104,14 @@ export interface GenerationErrorLogDTO {
   source_text_length: number;
   updated_at: string;
   user_id: string;
-} 
+}
+
+// Zdefiniuj OpenRouterResponse - używane tylko jako typ pomocniczy
+// Rzeczywista odpowiedź z OpenRouter jest parsowana z JSON string
+export interface OpenRouterResponse {
+  choices: {
+    message: {
+      content: string;
+    };
+  }[];
+}

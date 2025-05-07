@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, from, map, catchError } from 'rxjs';
-import { GenerateFlashcardsCommand, GenerationDTO, FlashcardProposalDTO } from '../../types';
+import { GenerateFlashcardsCommand, GenerationDTO, FlashcardProposalDTO, OpenRouterResponse } from '../../types';
 import { OpenRouterService } from './openrouter.service';
 
 @Injectable({
@@ -41,58 +41,85 @@ export class GenerationApiService {
 
     // Przygotowanie promptu dla modelu
     const prompt = `
-    Wygeneruj fiszki edukacyjne na podstawie poniższego tekstu.
-    Każda fiszka powinna mieć przód (pytanie lub pojęcie) i tył (odpowiedź lub definicję).
-    Wygeneruj od 5 do 10 fiszek, które najlepiej podsumowują kluczowe informacje z tekstu.
+    Twoim zadaniem jest wygenerowanie fiszek edukacyjnych na podstawie poniższego tekstu.
+    Każda fiszka musi mieć dwa pola: "front" (pytanie lub pojęcie) i "back" (odpowiedź lub definicja).
+
+    ABSOLUTNIE KLUCZOWE WYMAGANIA:
+    1. Wygeneruj DOKŁADNIE 15 fiszek - ani mniej, ani więcej.
+    2. Odpowiedź MUSI być w formacie tablicy JSON - musi zaczynać się od "[" i kończyć na "]".
+    3. Każdy element tablicy musi być obiektem z polami "front" i "back".
+    4. NIE dodawaj żadnych komentarzy, tekstu, cudzysłowów czy znaków markdown przed lub po tablicy JSON.
+    5. Fiszki powinny obejmować różne aspekty tekstu i być zróżnicowane.
+    6. Upewnij się, że generujesz różnorodne fiszki, które obejmują najważniejsze informacje z tekstu.
 
     Tekst źródłowy:
     ${command.text}
 
-    Zwróć odpowiedź TYLKO w formacie JSON jako tablicę obiektów z polami 'front' i 'back', bez żadnych dodatkowych komentarzy.
-    Przykład:
+    PRZYKŁAD POPRAWNEJ ODPOWIEDZI (zwróć uwagę na format - odpowiedź zaczyna się od "[" i kończy na "]"):
     [
-      {
-        "front": "Pytanie 1",
-        "back": "Odpowiedź 1"
-      },
-      {
-        "front": "Pojęcie 2",
-        "back": "Definicja 2"
-      }
+      {"front": "Pytanie 1", "back": "Odpowiedź 1"},
+      {"front": "Pytanie 2", "back": "Odpowiedź 2"},
+      {"front": "Pytanie 3", "back": "Odpowiedź 3"},
+      {"front": "Pytanie 4", "back": "Odpowiedź 4"},
+      {"front": "Pytanie 5", "back": "Odpowiedź 5"}
     ]
+
+    PRZED ZAKOŃCZENIEM SPRAWDŹ:
+    - Czy wygenerowałeś DOKŁADNIE 15 fiszek?
+    - Czy Twoja odpowiedź zaczyna się od "[" i kończy na "]"?
+    - Czy każda fiszka ma pola "front" i "back"?
+    - Czy nie dodałeś żadnego tekstu przed lub po tablicy JSON?
     `;
 
     // Wywołanie OpenRouter z odpowiednimi opcjami
     return from(this.openRouterService.sendMessage(prompt, undefined, {
-      systemMessage: 'Jesteś asystentem, który tworzy fiszki edukacyjne. Twoje odpowiedzi zawsze są w formacie JSON.',
+      systemMessage: 'Jesteś asystentem, który tworzy fiszki edukacyjne. Twoje odpowiedzi ZAWSZE muszą być w formacie JSON. Odpowiadaj wyłącznie TABLICĄ JSON obiektów z polami "front" i "back", bez żadnego dodatkowego tekstu. ZAWSZE generuj DOKŁADNIE 15 fiszek. Nigdy nie zwracaj pojedynczego obiektu, zawsze zwróć tablicę obiektów z DOKŁADNIE 15 elementami. Sprawdź dokładnie, czy wygenerowałeś 15 fiszek przed zwróceniem odpowiedzi. Twoja odpowiedź MUSI zaczynać się od "[" i kończyć na "]". Nie dodawaj żadnego tekstu przed ani po tablicy JSON.',
       temperature: 0.5,
-      max_tokens: 2000,
-      model: command.model || 'gpt-4o-mini',
+      max_tokens: 4000,
+      model: command.model || 'deepseek/deepseek-prover-v2:free',
       useJsonFormat: true
     })).pipe(
-      catchError((error: any) => {
-        console.error('Błąd podczas wywołania OpenRouter:', error);
-        // Przekazujemy błąd dalej zamiast zwracać mock
-        throw error;
-      }),
-      map(response => {
-        // Parsowanie odpowiedzi JSON
+      map((response: string) => {
+        // Parse the response string to JSON
+        let parsedResponse: any;
+        console.log('Odpowiedź z OpenRouter:', response);
+
         let flashcards: FlashcardProposalDTO[] = [];
         try {
-          // Próba parsowania odpowiedzi jako JSON
-          const parsedResponse = JSON.parse(response as string);
+          // Clean up the response string and parse it to JSON
+          try {
+            // Remove markdown code block markers and any other non-JSON text
+            let cleanedResponse = response;
 
-          // Sprawdzenie czy odpowiedź jest tablicą
+            // Remove markdown code block markers (```json and ```)
+            cleanedResponse = cleanedResponse.replace(/```json\n/g, '');
+            cleanedResponse = cleanedResponse.replace(/```/g, '');
+
+            // Trim whitespace
+            cleanedResponse = cleanedResponse.trim();
+
+            console.log('Cleaned response for parsing:', cleanedResponse);
+
+            parsedResponse = JSON.parse(cleanedResponse);
+          } catch (parseError) {
+            console.error('Błąd parsowania JSON:', parseError);
+            throw new Error('Nieprawidłowy format odpowiedzi JSON');
+          }
+
+          // Sprawdzamy, czy odpowiedź jest tablicą fiszek
           if (Array.isArray(parsedResponse)) {
-            // Mapowanie na FlashcardProposalDTO
-            flashcards = parsedResponse.map(item => ({
+            console.log('Zawartość zawiera tablicę fiszek o długości:', parsedResponse.length);
+            flashcards = parsedResponse.map((item: any) => ({
               front: item.front,
               back: item.back,
               source: 'ai-full'
             }));
+          } else {
+            console.error('Odpowiedź nie zawiera oczekiwanej tablicy fiszek.');
           }
         } catch (error) {
           console.error('Błąd parsowania odpowiedzi JSON:', error);
+          console.error('Treść odpowiedzi powodująca błąd:', response);
         }
 
         // Obliczenie czasu generacji
@@ -104,7 +131,7 @@ export class GenerationApiService {
           id: Date.now(), // Tymczasowe ID
           generated_count: flashcards.length,
           generation_duration: generationDuration,
-          model: command.model || 'gpt-4o-mini',
+          model: command.model || 'gemini-2.0',
           source_text_hash: this.hashString(command.text),
           source_text_length: command.text.length,
           accepted_edited_count: null,

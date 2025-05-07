@@ -1,115 +1,138 @@
 <div class="flashcard-proposals">
   <!-- Komunikat gdy brak propozycji -->
-  <div *ngIf="proposals.length === 0" class="text-center py-8 text-gray-500">
-    <p class="text-lg">Brak propozycji fiszek do wyświetlenia</p>
+  <div *ngIf="proposals.length === 0" class="text-center py-8 text-gray-500" role="status" aria-live="polite">
+    <p class="text-lg font-medium">Brak propozycji fiszek do wyświetlenia</p>
     <p class="text-sm mt-2">Wygeneruj fiszki, aby zobaczyć propozycje</p>
   </div>
 
   <!-- Grid z kartami propozycji fiszek -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" *ngIf="proposals.length > 0">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6" *ngIf="proposals.length > 0">
     <div *ngFor="let proposal of proposals; let i = index" class="col-span-1">
-      <p-card styleClass="h-full shadow-md hover:shadow-lg transition-shadow duration-200">
-        <ng-template pTemplate="header">
-          <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-3 text-white font-semibold">
-            Propozycja #{{ i + 1 }}
-          </div>
-        </ng-template>
+      <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 border border-gray-200 overflow-hidden h-full flex flex-col">
+        <!-- Nagłówek karty -->
+        <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-3 text-white font-semibold">
+          <h3 class="text-lg m-0">Propozycja #{{ i + 1 }}</h3>
+        </div>
 
-        <div class="p-2">
+        <!-- Zawartość karty -->
+        <div class="p-4 flex-grow">
           <div class="mb-4">
-            <h4 class="text-sm font-semibold text-gray-500 mb-1">Przód:</h4>
-            <p class="text-gray-800 p-2 bg-gray-50 rounded min-h-[60px]">{{ proposal.front }}</p>
+            <h4 class="text-sm font-semibold text-gray-600 mb-2">Przód:</h4>
+            <div class="text-gray-800 p-3 bg-gray-50 rounded-md min-h-[70px] border border-gray-100">
+              {{ proposal.front }}
+            </div>
           </div>
 
           <div>
-            <h4 class="text-sm font-semibold text-gray-500 mb-1">Tył:</h4>
-            <p class="text-gray-800 p-2 bg-gray-50 rounded min-h-[60px]">{{ proposal.back }}</p>
+            <h4 class="text-sm font-semibold text-gray-600 mb-2">Tył:</h4>
+            <div class="text-gray-800 p-3 bg-gray-50 rounded-md min-h-[70px] border border-gray-100">
+              {{ proposal.back }}
+            </div>
           </div>
         </div>
 
-        <ng-template pTemplate="footer">
-          <div class="flex justify-between">
-            <p-button
-              icon="pi pi-check"
-              styleClass="p-button-success p-button-sm"
-              (onClick)="onAccept(proposal)"
-              pTooltip="Akceptuj fiszkę"
-              tooltipPosition="top">
-            </p-button>
+        <!-- Przyciski akcji -->
+        <div class="p-4 bg-gray-50 border-t border-gray-200">
+          <div class="flex justify-between items-center gap-3">
+            <button
+              (click)="onAccept(proposal)"
+              class="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+              aria-label="Akceptuj fiszkę">
+              <i class="pi pi-check" aria-hidden="true"></i>
+              <span>Akceptuj</span>
+            </button>
 
-            <p-button
-              icon="pi pi-pencil"
-              styleClass="p-button-primary p-button-sm"
-              (onClick)="openEditDialog(proposal)"
-              pTooltip="Edytuj fiszkę"
-              tooltipPosition="top">
-            </p-button>
+            <button
+              (click)="openEditDialog(proposal)"
+              class="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              aria-label="Edytuj fiszkę">
+              <i class="pi pi-pencil" aria-hidden="true"></i>
+              <span>Edytuj</span>
+            </button>
 
-            <p-button
-              icon="pi pi-times"
-              styleClass="p-button-danger p-button-sm"
-              (onClick)="onReject(proposal)"
-              pTooltip="Odrzuć fiszkę"
-              tooltipPosition="top">
-            </p-button>
+            <button
+              (click)="onReject(proposal)"
+              class="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              aria-label="Odrzuć fiszkę">
+              <i class="pi pi-times" aria-hidden="true"></i>
+              <span>Odrzuć</span>
+            </button>
           </div>
-        </ng-template>
-      </p-card>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Licznik propozycji -->
-  <div class="mt-6 text-right text-sm text-gray-500" *ngIf="proposals.length > 0">
-    Liczba propozycji: <span class="font-semibold">{{ proposals.length }}</span>
+  <div class="mt-8 mb-2 flex justify-between items-center" *ngIf="proposals.length > 0">
+    <div class="text-gray-500 text-sm">
+      <span class="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-1 rounded-full">
+        <i class="pi pi-list" aria-hidden="true"></i>
+        <span>Liczba propozycji: <strong>{{ proposals.length }}</strong></span>
+      </span>
+    </div>
+    <div class="text-xs text-gray-400">
+      Wybierz akcję dla każdej fiszki: akceptuj, edytuj lub odrzuć
+    </div>
   </div>
 
   <!-- Dialog edycji fiszki -->
   <p-dialog
     [(visible)]="editDialogVisible"
-    [style]="{width: '500px'}"
+    [style]="{width: '600px'}"
     [modal]="true"
     [draggable]="false"
     [resizable]="false"
+    [closeOnEscape]="true"
+    [dismissableMask]="true"
+    [baseZIndex]="1000"
+    styleClass="edit-dialog-custom"
     header="Edytuj fiszkę">
 
-    <div class="p-fluid">
+    <div class="p-fluid bg-white p-4">
       <div class="field mb-4">
-        <label for="front" class="block mb-2 font-medium">Przód fiszki</label>
+        <label for="front" class="block mb-2 font-medium text-gray-700">Przód fiszki</label>
         <textarea
           id="front"
           pTextarea
           [(ngModel)]="editedProposal.front"
           [autoResize]="true"
-          rows="3"
-          class="w-full">
+          rows="4"
+          class="w-full bg-gray-50 border border-gray-300 rounded-md p-3 text-gray-800 font-medium"
+          placeholder="Wpisz pytanie lub pojęcie..."
+          style="color: #1f2937 !important; font-weight: 500 !important;">
         </textarea>
       </div>
 
       <div class="field">
-        <label for="back" class="block mb-2 font-medium">Tył fiszki</label>
+        <label for="back" class="block mb-2 font-medium text-gray-700">Tył fiszki</label>
         <textarea
           id="back"
           pTextarea
           [(ngModel)]="editedProposal.back"
           [autoResize]="true"
-          rows="3"
-          class="w-full">
+          rows="4"
+          class="w-full bg-gray-50 border border-gray-300 rounded-md p-3 text-gray-800 font-medium"
+          placeholder="Wpisz odpowiedź lub definicję..."
+          style="color: #1f2937 !important; font-weight: 500 !important;">
         </textarea>
       </div>
     </div>
 
     <ng-template pTemplate="footer">
-      <div class="flex justify-end gap-2">
+      <div class="flex justify-end gap-3 p-4 bg-gray-50 border-t border-gray-200">
         <p-button
           label="Anuluj"
           icon="pi pi-times"
-          styleClass="p-button-text"
+          styleClass="p-button-outlined p-button-danger"
           (onClick)="closeEditDialog()">
         </p-button>
         <p-button
           label="Zapisz"
           icon="pi pi-check"
-          (onClick)="saveEdit()">
+          styleClass="p-button-primary"
+          (onClick)="saveEdit()"
+          [style]="{'background-color': '#3b82f6', 'border-color': '#3b82f6', 'color': 'white'}">
         </p-button>
       </div>
     </ng-template>

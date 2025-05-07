@@ -1,103 +1,198 @@
-/* Większość stylów obsługiwana przez PrimeNG i Tailwind CSS */
-
-.flashcard-proposal {
-  transition: transform 0.3s ease;
+/* Styl dla kart fiszek */
+.flashcard-proposals {
+  margin-bottom: 2rem;
 }
 
-.flashcard-proposal:hover {
-  transform: translateY(-5px);
+/* Efekt uniesienia karty przy najechaniu */
+.col-span-1 > div {
+  transition: all 0.3s ease;
 }
 
-:host ::ng-deep .p-card {
-  border-radius: 0.5rem;
-  overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-  transition: box-shadow 0.3s ease;
-  height: 100%;
+.col-span-1 > div:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-:host ::ng-deep .p-card:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+/* Style dla zawartości fiszki */
+.text-gray-800 {
+  line-height: 1.6;
 }
 
-:host ::ng-deep .p-card-body,
-:host ::ng-deep .p-card-content {
-  padding: 0 !important;
-  height: 100%;
+/* Style dla przycisków */
+button {
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
-:host ::ng-deep .p-card .p-card-header {
-  background-color: #f1f5f9 !important;
-  border-top-left-radius: 0.5rem !important;
-  border-top-right-radius: 0.5rem !important;
-  border-bottom: 1px solid #e2e8f0 !important;
-  padding: 0 !important;
+button:focus {
+  outline: none;
 }
 
-:host ::ng-deep .p-card .p-card-header div {
-  font-size: 1.1rem !important;
-}
-
-:host ::ng-deep .p-card .p-card-content {
-  padding: 0 !important;
-  flex: 1;
-}
-
-:host ::ng-deep .p-card .p-card-content div {
-  font-size: 1rem !important;
-  line-height: 1.6 !important;
+button:active {
+  transform: scale(0.98);
 }
 
 /* Style dla dialogu edycji */
-:host ::ng-deep .p-dialog .p-dialog-header {
-  background-color: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
+:host ::ng-deep .edit-dialog-custom .p-dialog-header {
+  background-color: #1e40af; /* Ciemniejsze niebieskie tło */
+  border-bottom: 1px solid #1e3a8a;
+  padding: 1rem 1.5rem;
 }
 
-:host ::ng-deep .p-dialog .p-dialog-content {
-  padding: 1.5rem;
+:host ::ng-deep .edit-dialog-custom .p-dialog-title {
+  color: #ffffff; /* Biały tekst dla nagłówka */
+  font-weight: 600;
 }
 
-/* Style dla pól tekstowych */
-:host ::ng-deep .p-inputtextarea {
+:host ::ng-deep .edit-dialog-custom .p-dialog-header-icon {
+  color: #ffffff; /* Biały kolor dla ikony zamknięcia */
+}
+
+:host ::ng-deep .edit-dialog-custom .p-dialog-content {
+  padding: 0 !important;
+  background-color: #ffffff !important;
+}
+
+:host ::ng-deep .edit-dialog-custom .p-dialog-footer {
+  padding: 0 !important;
+  border-top: none;
+  background-color: #f9fafb !important;
+}
+
+/* Dodatkowe style dla przycisków w modalu */
+:host ::ng-deep .edit-dialog-custom .p-button.p-button-primary {
+  background-color: #3b82f6 !important; /* Jaśniejszy niebieski */
+  border-color: #3b82f6 !important;
+}
+
+:host ::ng-deep .edit-dialog-custom .p-button.p-button-primary:hover {
+  background-color: #2563eb !important; /* Ciemniejszy przy najechaniu, ale nadal jasny */
+  border-color: #2563eb !important;
+}
+
+:host ::ng-deep .edit-dialog-custom .p-button.p-button-primary .p-button-label,
+:host ::ng-deep .edit-dialog-custom .p-button.p-button-primary .p-button-icon {
+  color: white !important; /* Upewniamy się, że tekst jest biały */
+}
+
+:host ::ng-deep .edit-dialog-custom .p-button.p-button-outlined.p-button-danger {
+  color: #dc2626 !important;
+  border-color: #dc2626 !important;
+}
+
+:host ::ng-deep .edit-dialog-custom .p-button.p-button-outlined.p-button-danger:hover {
+  background-color: rgba(220, 38, 38, 0.04) !important;
+}
+
+:host ::ng-deep .edit-dialog-custom {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Style dla pól tekstowych w dialogu */
+:host ::ng-deep .p-inputtextarea,
+:host ::ng-deep textarea.p-inputtextarea,
+:host ::ng-deep .p-fluid .p-inputtextarea,
+:host ::ng-deep .edit-dialog-custom textarea,
+:host ::ng-deep .p-textarea,
+:host ::ng-deep textarea.p-textarea {
   width: 100%;
   border-radius: 0.375rem;
-  border-color: #e2e8f0;
-  transition: border-color 0.2s;
+  border-color: #cbd5e1;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  line-height: 1.5;
+  background-color: #f9fafb !important; /* Jasnoszare tło */
+  color: #1f2937 !important; /* Ciemny kolor tekstu */
+  font-weight: 500;
+  --p-textarea-color: #1f2937 !important;
+  --p-component-text-color: #1f2937 !important;
 }
 
 :host ::ng-deep .p-inputtextarea:focus {
   border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+  outline: none;
 }
 
-/* Style dla przycisków akcji */
-:host ::ng-deep .p-button.p-button-sm {
-  padding: 0.4rem 0.75rem;
+/* Style dla placeholder w polach textarea */
+:host ::ng-deep .p-inputtextarea::placeholder {
+  color: #6b7280 !important; /* Średnioszary kolor dla lepszego kontrastu */
+  opacity: 1;
 }
 
-/* Minimalna wysokość dla kart, aby były podobnej wielkości */
-:host ::ng-deep .p-card {
-  min-height: 280px;
-  display: flex;
-  flex-direction: column;
+/* Styl dla etykiet pól */
+label {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+  display: block;
+  font-size: 0.95rem;
 }
 
-:host ::ng-deep .p-card-body {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+/* Styl dla licznika propozycji */
+.mt-8 {
+  margin-top: 2rem;
 }
 
-:host ::ng-deep .p-card-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+/* Dostosowanie kontrastu dla lepszej dostępności WCAG */
+.text-gray-600 {
+  color: #4b5563; /* Ciemniejszy odcień szarego dla lepszego kontrastu */
+}
+
+.text-blue-700 {
+  color: #1d4ed8; /* Ciemniejszy odcień niebieskiego dla lepszego kontrastu */
 }
 
 /* Styl dla tła pól z tekstem fiszki */
 .bg-gray-50 {
   background-color: #f9fafb;
-  border: 1px solid #f1f5f9;
+  border: 1px solid #e5e7eb;
   border-radius: 0.375rem;
+}
+
+/* Poprawki dla dostępności focus */
+button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Animacja dla przycisków */
+button {
+  position: relative;
+  overflow: hidden;
+}
+
+button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+button:focus:not(:active)::after {
+  animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  20% {
+    transform: scale(25, 25);
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(40, 40);
+  }
 }

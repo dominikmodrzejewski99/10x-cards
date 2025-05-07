@@ -4,13 +4,14 @@ import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 import { SupabaseClientFactory } from './services/supabase-client.factory';
+import { AuthNavbarComponent } from './shared/components/auth-navbar.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [CommonModule, ButtonModule, RouterModule],
+  imports: [CommonModule, ButtonModule, RouterModule, AuthNavbarComponent],
 })
 export class AppComponent implements OnInit {
   title = 'angular';

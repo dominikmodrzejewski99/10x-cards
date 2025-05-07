@@ -134,10 +134,13 @@ export class GenerateViewComponent implements OnInit {
     this.isLoading = true;
     this.clearMessages();
 
+    // Wywołanie rzeczywistego API
     const flashcardsToSave: FlashcardProposalDTO[] = this.proposals;
 
     this.flashcardApi.createFlashcards(flashcardsToSave).subscribe({
       next: (savedFlashcards) => {
+        console.log('Zapisano fiszki:', savedFlashcards);
+
         this.messageService.add({
           severity: 'success',
           summary: 'Sukces',
@@ -150,7 +153,20 @@ export class GenerateViewComponent implements OnInit {
       },
       error: (error) => {
         console.error('Błąd zapisywania fiszek:', error);
-        this.handleApiError(error, 'zapisywania');
+
+        // Wyświetlamy szczegółowy komunikat o błędzie
+        let errorMessage = 'Wystąpił błąd podczas zapisu fiszek.';
+        if (error.message) {
+          errorMessage = `Błąd: ${error.message}`;
+        }
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Błąd',
+          detail: errorMessage,
+          life: 5000
+        });
+
         this.isSaving = false;
         this.isLoading = false;
       }
@@ -214,8 +230,11 @@ export class GenerateViewComponent implements OnInit {
     // Zapisujemy pojedynczą fiszkę
     this.isSaving = true;
 
+    // Wywołanie rzeczywistego API
     this.flashcardApi.createFlashcards([proposal]).subscribe({
       next: (savedFlashcards) => {
+        console.log('Zapisano fiszkę:', savedFlashcards);
+
         // Usuwamy zaakceptowaną propozycję z listy
         this.proposals = this.proposals.filter(p =>
           p.front !== proposal.front || p.back !== proposal.back
@@ -231,7 +250,20 @@ export class GenerateViewComponent implements OnInit {
       },
       error: (error) => {
         console.error('Błąd zapisywania fiszki:', error);
-        this.handleApiError(error, 'zapisywania');
+
+        // Wyświetlamy szczegółowy komunikat o błędzie
+        let errorMessage = 'Wystąpił błąd podczas zapisu fiszki.';
+        if (error.message) {
+          errorMessage = `Błąd: ${error.message}`;
+        }
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Błąd',
+          detail: errorMessage,
+          life: 5000
+        });
+
         this.isSaving = false;
       }
     });

@@ -1,16 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from './auth.service';
-import { LoginUserCommand, RegisterUserCommand } from '../../types';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-auth-form',
+  selector: 'app-password-reset-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   template: `
-    <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="resetForm" (ngSubmit)="onSubmit()">
       <div class="form-field">
         <label for="email">Email</label>
         <input
@@ -25,25 +23,11 @@ import { Router, RouterModule } from '@angular/router';
         </div>
       </div>
 
-      <div class="form-field">
-        <label for="password">Hasło</label>
-        <input
-          type="password"
-          id="password"
-          formControlName="password"
-          placeholder="Minimum 6 znaków"
-        />
-        <div *ngIf="submitted && f['password'].errors" class="error-message">
-          <span *ngIf="f['password'].errors['required']">Hasło jest wymagane</span>
-          <span *ngIf="f['password'].errors['minlength']">Hasło musi mieć co najmniej 6 znaków</span>
-        </div>
-      </div>
-
       <button
         type="submit"
         class="submit-button"
         [disabled]="loading">
-        {{ isLoginMode ? 'Zaloguj się' : 'Zarejestruj się' }}
+        Wyślij link resetujący
         <span *ngIf="loading">...</span>
       </button>
 
@@ -51,17 +35,16 @@ import { Router, RouterModule } from '@angular/router';
         {{ error }}
       </div>
 
+      <div *ngIf="success" class="success-message">
+        {{ success }}
+      </div>
+
       <div class="auth-footer">
         <p>
-          {{ isLoginMode ? 'Nie masz jeszcze konta?' : 'Masz już konto?' }}
-          <a
-            [routerLink]="isLoginMode ? '/register' : '/login'"
-            (click)="toggleAuthMode()">
-            {{ isLoginMode ? 'Zarejestruj się' : 'Zaloguj się' }}
+          Pamiętasz swoje hasło?
+          <a routerLink="/login">
+            Zaloguj się
           </a>
-        </p>
-        <p *ngIf="isLoginMode" class="forgot-password">
-          <a routerLink="/reset-password">Zapomniałeś hasła?</a>
         </p>
       </div>
     </form>
@@ -143,6 +126,17 @@ import { Router, RouterModule } from '@angular/router';
       border: 1px solid #fecaca;
     }
 
+    .success-message {
+      margin-top: 1rem;
+      text-align: center;
+      padding: 0.75rem;
+      background-color: #d1fae5;
+      border-radius: 0.375rem;
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+      font-weight: 500;
+    }
+
     .auth-footer {
       margin-top: 1.5rem;
       text-align: center;
@@ -162,94 +156,53 @@ import { Router, RouterModule } from '@angular/router';
       text-decoration: underline;
       color: #1d4ed8;
     }
-
-    .forgot-password {
-      margin-top: 0.75rem;
-      font-size: 0.8125rem;
-    }
-
-    .forgot-password a {
-      color: #6b7280;
-      margin-left: 0;
-    }
-
-    .forgot-password a:hover {
-      color: #4b5563;
-    }
   `]
 })
-export class AuthFormComponent implements OnInit {
-  @Input() isLoginMode = true;
-  @Output() modeChange = new EventEmitter<boolean>();
+export class PasswordResetFormComponent implements OnInit {
+  @Output() resetPassword = new EventEmitter<{email: string}>();
 
-  authForm!: FormGroup;
+  resetForm!: FormGroup;
   submitted = false;
   loading = false;
   error = '';
+  success = '';
 
   constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.authForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+    this.resetForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]]
     });
   }
 
   get f() {
-    return this.authForm.controls;
-  }
-
-  toggleAuthMode(): void {
-    this.isLoginMode = !this.isLoginMode;
-    this.modeChange.emit(this.isLoginMode);
-    this.submitted = false;
-    this.error = '';
-    this.authForm.reset();
-
-    // Zaktualizuj URL, aby odzwierciedlał aktualny tryb
-    const targetPath = this.isLoginMode ? '/login' : '/register';
-    this.router.navigate([targetPath]);
+    return this.resetForm.controls;
   }
 
   onSubmit(): void {
     this.submitted = true;
     this.error = '';
+    this.success = '';
 
-    if (this.authForm.invalid) {
+    if (this.resetForm.invalid) {
       return;
     }
 
     this.loading = true;
 
-    const { email, password } = this.authForm.value;
-
-    if (this.isLoginMode) {
-      const loginCommand: LoginUserCommand = { email, password };
-      this.authService.login(loginCommand).subscribe({
-        next: () => {
-          this.loading = false;
-        },
-        error: (err) => {
-          this.error = err.message || 'Wystąpił błąd podczas logowania';
-          this.loading = false;
-        }
-      });
-    } else {
-      const registerCommand: RegisterUserCommand = { email, password };
-      this.authService.register(registerCommand).subscribe({
-        next: () => {
-          this.loading = false;
-        },
-        error: (err) => {
-          this.error = err.message || 'Wystąpił błąd podczas rejestracji';
-          this.loading = false;
-        }
-      });
-    }
+    const { email } = this.resetForm.value;
+    
+    // Emitujemy zdarzenie, które zostanie obsłużone przez komponent nadrzędny
+    this.resetPassword.emit({ email });
+    
+    // Symulacja sukcesu - w rzeczywistej implementacji to będzie obsługiwane przez serwis
+    setTimeout(() => {
+      this.loading = false;
+      this.success = `Link do resetowania hasła został wysłany na adres ${email}`;
+      this.resetForm.reset();
+      this.submitted = false;
+    }, 1500);
   }
 }
