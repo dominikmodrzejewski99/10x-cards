@@ -41,15 +41,13 @@ export class AuthService {
         console.log('Rekord użytkownika nie istnieje. Tworzenie nowego rekordu...');
 
         // Jeśli rekord nie istnieje, tworzymy go
-        // Wykonujemy bezpośrednie zapytanie INSERT, aby utworzyć rekord użytkownika
+        // Używamy funkcji RPC zamiast bezpośredniego zapisu do tabeli
         return from(this.supabase
-          .from('users')
-          .insert({
-            id: user.id,
-            email: user.email || 'user@example.com',
-            encrypted_password: 'managed-by-supabase-auth',
-            created_at: user.created_at || new Date().toISOString(),
-            updated_at: user.updated_at || user.created_at || new Date().toISOString()
+          .rpc('create_user_record', {
+            user_id: user.id,
+            user_email: user.email || 'user@example.com',
+            user_created_at: user.created_at || new Date().toISOString(),
+            user_updated_at: user.updated_at || user.created_at || new Date().toISOString()
           })
           .select()
         ).pipe(
