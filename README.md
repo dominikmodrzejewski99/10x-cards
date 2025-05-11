@@ -89,6 +89,26 @@ In the project directory, you can run:
 - `npm run lint` - Runs the linter
 - `npm run serve:ssr:app` - Serves the server-side rendered application
 
+## Deployment
+
+The application is deployed on Cloudflare Pages. Deployment is automated via GitHub Actions.
+
+### Environment Variables
+
+The following environment variables need to be set in Cloudflare Pages:
+
+- `supabaseUrl` - URL to your Supabase instance
+- `supabaseKey` - API key for your Supabase instance
+- `openRouterKey` - API key for OpenRouter
+- `E2E_USERNAME` - Username for E2E tests
+- `E2E_PASSWORD` - Password for E2E tests
+- `E2E_USERNAME_ID` - User ID for E2E tests
+
+### Deployment Process
+1. Push changes to the main branch
+2. GitHub Actions will build and deploy the application
+3. The application will be available at [https://10xcards.pages.dev](https://10xcards.pages.dev)
+
 ## Project Scope
 
 ### Core Features

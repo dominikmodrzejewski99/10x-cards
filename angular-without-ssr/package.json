@@ -7,6 +7,7 @@
     "build": "ng build",
     "prebuild:prod": "cp src/environments/environments.default.ts src/environments/environments.ts",
     "build:prod": "ng build --configuration production",
+    "build-cloudflare": "node inject-env.js && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "eslint . --ext .ts,.html",
