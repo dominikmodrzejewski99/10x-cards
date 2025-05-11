@@ -28,6 +28,13 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
         run: npm ci
 
+      - name: Setup environment
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          # Kopiowanie environments.default.ts do environments.ts
+          cp src/environments/environments.default.ts src/environments/environments.ts
+          echo "Skopiowano environments.default.ts do environments.ts"
+
       # Krok 1: Weryfikacja lintingu
       - name: Lint check
         working-directory: ${{ env.WORKING_DIR }}

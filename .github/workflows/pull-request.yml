@@ -25,6 +25,13 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
         run: npm ci
 
+      - name: Setup environment
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          # Kopiowanie environments.default.ts do environments.ts
+          cp src/environments/environments.default.ts src/environments/environments.ts
+          echo "Skopiowano environments.default.ts do environments.ts"
+
       - name: Run ESLint
         working-directory: ${{ env.WORKING_DIR }}
         run: npm run lint || echo "Linting issues found but continuing"
@@ -52,6 +59,13 @@ jobs:
       - name: Install dependencies
         working-directory: ${{ env.WORKING_DIR }}
         run: npm ci
+
+      - name: Setup environment
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          # Kopiowanie environments.default.ts do environments.ts
+          cp src/environments/environments.default.ts src/environments/environments.ts
+          echo "Skopiowano environments.default.ts do environments.ts"
 
       - name: Run unit tests with coverage
         working-directory: ${{ env.WORKING_DIR }}
@@ -84,6 +98,13 @@ jobs:
       - name: Install dependencies
         working-directory: ${{ env.WORKING_DIR }}
         run: npm ci
+
+      - name: Setup environment
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          # Kopiowanie environments.default.ts do environments.ts
+          cp src/environments/environments.default.ts src/environments/environments.ts
+          echo "Skopiowano environments.default.ts do environments.ts"
 
       - name: Install Playwright browsers
         working-directory: ${{ env.WORKING_DIR }}
