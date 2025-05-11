@@ -1,5 +1,5 @@
 # Konfiguracja Cloudflare Pages
-build.command = "cd angular-without-ssr && npm ci && npm run build:prod"
+build.command = "./build-cloudflare.sh"
 build.output_directory = "angular-without-ssr/dist/angular-without-ssr/browser"
 build.environment.NODE_VERSION = "20.11.1"
 

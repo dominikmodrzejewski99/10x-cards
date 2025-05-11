@@ -1,18 +1,17 @@
 # Konfiguracja Cloudflare Pages
+name = "10xcards"
 
-# Wymagana właściwość dla Cloudflare Pages
-pages_build_output_dir = "angular-without-ssr/dist/angular-without-ssr/browser"
-
+# Konfiguracja budowania
 [build]
-command = "cd angular-without-ssr && npm ci && npm run build:prod"
-
-[build.environment]
-NODE_VERSION = "20.11.1"
+pages_build_output_dir = "angular-without-ssr/dist/angular-without-ssr/browser"
+command = "./build-cloudflare.sh"
 
 # Konfiguracja zmiennych środowiskowych produkcyjnych
 [env.production]
+NODE_VERSION = "20.11.1"
 NODE_ENV = "production"
 
 # Konfiguracja zmiennych środowiskowych dla środowiska preview
 [env.preview]
+NODE_VERSION = "20.11.1"
 NODE_ENV = "production"

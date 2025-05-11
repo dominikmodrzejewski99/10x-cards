@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "./build.sh",
+    "build": "bash ./build-cloudflare.sh",
     "start": "cd angular-without-ssr && npm start",
     "test": "cd angular-without-ssr && npm test",
     "lint": "cd angular-without-ssr && npm run lint"
