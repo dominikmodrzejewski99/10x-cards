@@ -18,6 +18,10 @@ echo "Files in angular-without-ssr: $(ls -la)"
 echo "Installing dependencies..."
 npm ci || exit 1
 
+# Instalacja Angular CLI globalnie
+echo "Installing Angular CLI globally..."
+npm install -g @angular/cli || echo "Failed to install Angular CLI globally, but continuing..."
+
 # Wyświetl dostępne zmienne środowiskowe (bez wartości)
 echo "Available environment variables:"
 env | grep -E 'supabase|openRouter|E2E' | cut -d= -f1
@@ -228,17 +232,44 @@ echo "Kopiowanie environments.default.ts do environments.ts..."
 cp src/environments/environments.default.ts src/environments/environments.ts || exit 1
 echo "Plik environments.ts utworzony pomyślnie"
 
-# Wracamy do katalogu głównego
-cd .. || exit 1
-echo "Powrót do katalogu głównego: $(pwd)"
-
-# Zbuduj aplikację używając skryptu z głównego package.json
+# Zbuduj aplikację używając różnych metod (próbujemy wszystkich dostępnych opcji)
 echo "Building application..."
-npm run build:prod || exit 1
 
-# Wracamy do katalogu angular-without-ssr
-cd angular-without-ssr || exit 1
-echo "Powrót do katalogu angular-without-ssr: $(pwd)"
+# Metoda 1: Użycie binarki Angular CLI z node_modules
+echo "Metoda 1: Sprawdzanie, czy binarka Angular CLI istnieje..."
+if [ -f "./node_modules/.bin/ng" ]; then
+  echo "Znaleziono binarkę Angular CLI. Uruchamianie: ./node_modules/.bin/ng build --configuration production"
+  ./node_modules/.bin/ng build --configuration production && BUILD_SUCCESS=true || echo "Metoda 1 nie powiodła się."
+else
+  echo "Nie znaleziono binarki Angular CLI w ./node_modules/.bin/ng"
+fi
+
+# Metoda 2: Użycie npx
+if [ "$BUILD_SUCCESS" != "true" ]; then
+  echo "Metoda 2: Próba użycia npx..."
+  echo "Uruchamianie: npx @angular/cli build --configuration production"
+  npx @angular/cli build --configuration production && BUILD_SUCCESS=true || echo "Metoda 2 nie powiodła się."
+fi
+
+# Metoda 3: Użycie globalnie zainstalowanego Angular CLI
+if [ "$BUILD_SUCCESS" != "true" ]; then
+  echo "Metoda 3: Próba użycia globalnie zainstalowanego Angular CLI..."
+  echo "Uruchamianie: ng build --configuration production"
+  ng build --configuration production && BUILD_SUCCESS=true || echo "Metoda 3 nie powiodła się."
+fi
+
+# Metoda 4: Użycie npm run
+if [ "$BUILD_SUCCESS" != "true" ]; then
+  echo "Metoda 4: Próba użycia npm run..."
+  echo "Uruchamianie: npm run build -- --configuration production"
+  npm run build -- --configuration production && BUILD_SUCCESS=true || echo "Metoda 4 nie powiodła się."
+fi
+
+# Sprawdź, czy któraś z metod się powiodła
+if [ "$BUILD_SUCCESS" != "true" ]; then
+  echo "Wszystkie metody budowania aplikacji nie powiodły się."
+  exit 1
+fi
 
 # Sprawdź, czy katalog dist istnieje
 echo "Checking build output..."
