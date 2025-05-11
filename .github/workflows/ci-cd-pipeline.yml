@@ -19,10 +19,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Use Node.js from .nvmrc
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: '${{ env.WORKING_DIR }}/.nvmrc'
+          node-version: '${{ env.NODE_VERSION }}'
           cache: 'npm'
           cache-dependency-path: ${{ env.WORKING_DIR }}/package-lock.json
 
