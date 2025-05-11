@@ -100,9 +100,13 @@ The following environment variables need to be set in Cloudflare Pages:
 - `supabaseUrl` - URL to your Supabase instance
 - `supabaseKey` - API key for your Supabase instance
 - `openRouterKey` - API key for OpenRouter
+
+Optional variables for E2E tests:
 - `E2E_USERNAME` - Username for E2E tests
 - `E2E_PASSWORD` - Password for E2E tests
 - `E2E_USERNAME_ID` - User ID for E2E tests
+
+**IMPORTANT**: These variables contain sensitive information and should never be committed to the repository. They should be set in the Cloudflare Pages dashboard under Settings > Environment variables.
 
 ### Deployment Process
 1. Push changes to the main branch
