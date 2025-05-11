@@ -1,0 +1,27 @@
+{
+  "build": {
+    "command": "cd angular-without-ssr && npm ci && npm run build:prod",
+    "output_directory": "angular-without-ssr/dist/angular-without-ssr/browser",
+    "root_directory": ".",
+    "environment": {
+      "NODE_VERSION": "20.11.1",
+      "NODE_ENV": "production"
+    }
+  },
+  "headers": {
+    "/*": {
+      "X-Frame-Options": "DENY",
+      "X-Content-Type-Options": "nosniff",
+      "Referrer-Policy": "no-referrer-when-downgrade",
+      "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+      "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.supabase.co https://api.openrouter.ai;"
+    }
+  },
+  "redirects": [
+    {
+      "source": "/*",
+      "destination": "/index.html",
+      "status_code": 200
+    }
+  ]
+}

@@ -1,11 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Import other styles */
 @import "tailwindcss";
 
 /* Import PrimeNG icons */
 @import "primeicons/primeicons.css";
-
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* Apply font family to body */
 body {
