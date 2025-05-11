@@ -108,6 +108,15 @@ Optional variables for E2E tests:
 
 **IMPORTANT**: These variables contain sensitive information and should never be committed to the repository. They should be set in the Cloudflare Pages dashboard under Settings > Environment variables.
 
+### Supabase Configuration
+
+The application is configured to work without email verification. To ensure this works correctly, you need to disable email confirmation in Supabase:
+
+1. Go to the Supabase dashboard
+2. Navigate to Authentication > Providers
+3. In the Email section, set "Confirm email" to "No"
+4. Save changes
+
 ### How Environment Variables Work
 
 The application uses a runtime configuration approach to access environment variables:

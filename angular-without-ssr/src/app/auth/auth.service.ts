@@ -80,9 +80,17 @@ export class AuthService {
    * Rejestruje nowego użytkownika przy użyciu Supabase Auth
    */
   register(command: RegisterUserCommand): Observable<UserDTO> {
+    // Prosta rejestracja bez potwierdzania email
     return from(this.supabase.auth.signUp({
       email: command.email,
-      password: command.password
+      password: command.password,
+      options: {
+        // Ustawiamy emailRedirectTo na pustą wartość, co wyłącza wysyłanie maili potwierdzających
+        emailRedirectTo: '',
+        data: {
+          name: command.email.split('@')[0] // Domyślna nazwa użytkownika z części lokalnej adresu email
+        }
+      }
     })).pipe(
       map(response => {
         if (response.error) {
@@ -91,9 +99,20 @@ export class AuthService {
         if (!response.data.user) {
           throw new Error('Nie udało się zarejestrować. Spróbuj ponownie.');
         }
+
+        console.log('Użytkownik zarejestrowany pomyślnie:', response.data.user);
+
         return this.mapUserToDTO(response.data.user);
       }),
       switchMap(user => this.createUserRecord(user)),
+      // Po utworzeniu rekordu użytkownika, automatycznie logujemy
+      switchMap(user => {
+        console.log('Automatyczne logowanie po rejestracji...');
+        return this.login({
+          email: command.email,
+          password: command.password
+        });
+      }),
       catchError(error => {
         console.error('Błąd rejestracji:', error);
         return throwError(() => this.handleAuthError(error));
@@ -228,23 +247,34 @@ export class AuthService {
       return new Error(error);
     }
 
+    console.log('Szczegóły błędu autentykacji:', error);
+
     if (error.message) {
-      // Mapowanie komunikatów błędów z Supabase na przyjazne dla użytkownika komunikaty
-      switch (error.message) {
-        case 'Invalid login credentials':
-          message = 'Nieprawidłowy email lub hasło.';
-          break;
-        case 'User already registered':
-          message = 'Użytkownik o podanym adresie email już istnieje.';
-          break;
-        case 'Email not confirmed':
-          message = 'Email nie został potwierdzony. Sprawdź swoją skrzynkę pocztową.';
-          break;
-        case 'Password should be at least 6 characters':
-          message = 'Hasło powinno mieć co najmniej 6 znaków.';
-          break;
-        default:
-          message = error.message;
+      // Ignorujemy błąd potwierdzenia email - użytkownik może się zalogować bez potwierdzania
+      if (error.message.includes('Email not confirmed') ||
+          error.message.includes('Email verification required')) {
+        console.log('Ignorowanie błędu potwierdzenia email');
+        return new Error('');
+      }
+
+      // Sprawdzamy, czy błąd dotyczy nieprawidłowego adresu email
+      if (error.message.includes('Email address') && error.message.includes('is invalid')) {
+        message = 'Podany adres email jest nieprawidłowy. Użyj poprawnego adresu email.';
+      } else {
+        // Mapowanie komunikatów błędów z Supabase na przyjazne dla użytkownika komunikaty
+        switch (error.message) {
+          case 'Invalid login credentials':
+            message = 'Nieprawidłowy email lub hasło.';
+            break;
+          case 'User already registered':
+            message = 'Użytkownik o podanym adresie email już istnieje. Spróbuj się zalogować.';
+            break;
+          case 'Password should be at least 6 characters':
+            message = 'Hasło powinno mieć co najmniej 6 znaków.';
+            break;
+          default:
+            message = error.message;
+        }
       }
     }
 

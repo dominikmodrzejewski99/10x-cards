@@ -207,10 +207,22 @@ export class OpenRouterService {
       // Błąd serwera
       switch (error.status) {
         case 401:
-          errorMessage = 'Brak autoryzacji. Sprawdź swój klucz API w pliku environments.ts. Upewnij się, że klucz jest aktywny i ma odpowiednie uprawnienia.';
+          // Bezpieczne logowanie - pokazujemy tylko pierwsze 10 znaków klucza
+          const maskedKey = environment.openRouterKey ? `${environment.openRouterKey.substring(0, 10)}...` : 'brak klucza';
           console.error('Szczegóły błędu autoryzacji:', error.error);
-          console.error('Klucz API:', environment.openRouterKey);
-          console.error('Nagłówek Authorization:', `Bearer ${environment.openRouterKey}`);
+          console.error('Klucz API (zamaskowany):', maskedKey);
+
+          // Sprawdź, czy klucz API jest ustawiony
+          if (!environment.openRouterKey) {
+            errorMessage = 'Brak klucza API OpenRouter. Sprawdź zmienne środowiskowe w Cloudflare Pages.';
+          }
+          // Sprawdź, czy klucz API ma poprawny format
+          else if (!environment.openRouterKey.startsWith('sk-or-')) {
+            errorMessage = 'Niepoprawny format klucza API OpenRouter. Klucz powinien zaczynać się od "sk-or-".';
+          }
+          else {
+            errorMessage = 'Brak autoryzacji. Sprawdź swój klucz API OpenRouter. Upewnij się, że klucz jest aktywny i ma odpowiednie uprawnienia.';
+          }
           break;
         case 403:
           errorMessage = 'Brak dostępu do wybranego modelu lub przekroczone limity.';

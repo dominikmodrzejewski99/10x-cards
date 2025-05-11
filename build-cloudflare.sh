@@ -28,10 +28,27 @@ echo "Creating environments.ts file..."
 # Pobierz wartości zmiennych środowiskowych
 SUPABASE_URL="${supabaseUrl}"
 SUPABASE_KEY="${supabaseKey}"
-OPENROUTER_KEY="${openRouterKey}"
+
+# Sprawdź różne możliwe nazwy zmiennej dla klucza OpenRouter
+if [ -n "${openRouterKey}" ]; then
+  OPENROUTER_KEY="${openRouterKey}"
+elif [ -n "${OPENROUTER_KEY}" ]; then
+  OPENROUTER_KEY="${OPENROUTER_KEY}"
+elif [ -n "${openRouter_KEY}" ]; then
+  OPENROUTER_KEY="${openRouter_KEY}"
+else
+  echo "UWAGA: Nie znaleziono zmiennej środowiskowej dla klucza OpenRouter!"
+  OPENROUTER_KEY=""
+fi
+
 E2E_USERNAME_ID="${E2E_USERNAME_ID}"
 E2E_USERNAME="${E2E_USERNAME}"
 E2E_PASSWORD="${E2E_PASSWORD}"
+
+# Wyświetl wartości zmiennych (bez pełnych kluczy dla bezpieczeństwa)
+echo "SUPABASE_URL: ${SUPABASE_URL}"
+echo "SUPABASE_KEY: ${SUPABASE_KEY:0:10}..."
+echo "OPENROUTER_KEY: ${OPENROUTER_KEY:0:10}..."
 
 # Sprawdź, czy wszystkie wymagane zmienne środowiskowe są ustawione
 if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_KEY" ] || [ -z "$OPENROUTER_KEY" ]; then
@@ -87,6 +104,11 @@ cat src/environments/environments.ts
 
 # Utwórz plik runtime-config.js z zmiennymi środowiskowymi
 echo "Creating runtime-config.js file..."
+
+# Sprawdź, czy katalog assets istnieje
+mkdir -p src/assets
+
+# Utwórz plik runtime-config.js
 cat > src/assets/runtime-config.js << EOL
 window.RUNTIME_CONFIG = {
   supabaseUrl: '${SUPABASE_URL}',
@@ -97,6 +119,12 @@ window.RUNTIME_CONFIG = {
   E2E_PASSWORD: '${E2E_PASSWORD}'
 };
 EOL
+
+# Wyświetl zawartość pliku runtime-config.js (z zamaskowanymi kluczami)
+echo "Runtime config file created with the following variables:"
+echo "- supabaseUrl: ${SUPABASE_URL}"
+echo "- supabaseKey: ${SUPABASE_KEY:0:10}..."
+echo "- openRouterKey: ${OPENROUTER_KEY:0:10}..."
 
 echo "Runtime config file created successfully"
 cat src/assets/runtime-config.js
