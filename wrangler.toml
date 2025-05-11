@@ -1,0 +1,18 @@
+# Konfiguracja Cloudflare Pages
+[build]
+command = "cd angular-without-ssr && npm ci && npm run build:prod"
+output_directory = "angular-without-ssr/dist/angular-without-ssr/browser"
+
+[build.environment]
+NODE_VERSION = "20.11.1"
+
+# Konfiguracja zmiennych środowiskowych produkcyjnych
+[env.production]
+NODE_ENV = "production"
+
+# Konfiguracja zmiennych środowiskowych dla środowiska preview
+[env.preview]
+NODE_ENV = "production"
+
+[site]
+bucket = "angular-without-ssr/dist/angular-without-ssr/browser"

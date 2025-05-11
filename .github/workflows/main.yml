@@ -1,0 +1,101 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '20.11.1'
+  WORKING_DIR: ./angular-without-ssr
+  CLOUDFLARE_PROJECT_NAME: 10xcards
+
+jobs:
+  lint:
+    name: Lint Code
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup environment
+        uses: ./.github/actions/setup
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Run ESLint
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npm run lint || echo "Linting issues found but continuing"
+
+      - name: Run Prettier check
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npx prettier --check "src/**/*.{ts,html,scss,json}" || echo "Formatting issues found but continuing"
+
+  unit-test:
+    name: Unit Tests
+    needs: lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup environment
+        uses: ./.github/actions/setup
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Run unit tests with coverage
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npm test -- --no-watch --code-coverage --browsers=ChromeHeadless
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-coverage
+          path: ${{ env.WORKING_DIR }}/coverage
+          retention-days: 7
+
+  build-and-deploy:
+    name: Build and Deploy
+    needs: unit-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup environment
+        uses: ./.github/actions/setup
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Build for production
+        working-directory: ${{ env.WORKING_DIR }}
+        env:
+          NODE_ENV: production
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
+        run: npm run build:prod
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: ${{ env.CLOUDFLARE_PROJECT_NAME }}
+          directory: ${{ env.WORKING_DIR }}/dist/angular-without-ssr/browser
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-build
+          path: ${{ env.WORKING_DIR }}/dist
+          retention-days: 7

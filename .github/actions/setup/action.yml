@@ -1,0 +1,33 @@
+name: 'Setup Environment'
+description: 'Sets up Node.js and installs dependencies'
+
+inputs:
+  node-version:
+    description: 'Node.js version'
+    required: false
+    default: '20.11.1'
+  working-directory:
+    description: 'Working directory'
+    required: true
+    default: './angular-without-ssr'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+    
+    - name: Install dependencies
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: npm ci
+    
+    - name: Setup environment files
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        # Kopiowanie environments.default.ts do environments.ts
+        cp src/environments/environments.default.ts src/environments/environments.ts
+        echo "Skopiowano environments.default.ts do environments.ts"
