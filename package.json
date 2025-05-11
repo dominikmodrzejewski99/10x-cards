@@ -1,6 +1,11 @@
 {
-  "dependencies": {
-    "@primeng/themes": "^19.0.10",
-    "primeng": "^19.0.10"
+  "name": "10xcards-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd angular-without-ssr && npm ci && npm run build:prod",
+    "start": "cd angular-without-ssr && npm start",
+    "test": "cd angular-without-ssr && npm test",
+    "lint": "cd angular-without-ssr && npm run lint"
   }
 }

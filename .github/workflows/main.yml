@@ -75,13 +75,12 @@ jobs:
           working-directory: ${{ env.WORKING_DIR }}
 
       - name: Build for production
-        working-directory: ${{ env.WORKING_DIR }}
         env:
           NODE_ENV: production
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
-        run: npm run build:prod
+        run: npm run build
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
