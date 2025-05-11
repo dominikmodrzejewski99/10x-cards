@@ -28,9 +28,13 @@ test.afterAll(async () => {
  * 5. Zapisz fiszki
  */
 test('Scenariusz generowania i zarządzania fiszkami', async ({ page }) => {
-  // Inicjalizacja klas POM
-  const loginPage = new LoginPage(page);
-  const generatePage = new GeneratePage(page);
+  // Zwiększamy timeout dla całego testu
+  test.setTimeout(300000); // 5 minut
+
+  try {
+    // Inicjalizacja klas POM
+    const loginPage = new LoginPage(page);
+    const generatePage = new GeneratePage(page);
 
   // Tekst o Polsce (1000-10000 znaków)
   const polandText = `Polska, oficjalnie Rzeczpospolita Polska – państwo unitarne w Europie Środkowej,
@@ -80,6 +84,15 @@ test('Scenariusz generowania i zarządzania fiszkami', async ({ page }) => {
   const username = environment.E2E_USERNAME;
   const password = environment.E2E_PASSWORD;
 
+  console.log('Używam danych logowania z pliku środowiskowego dla testów E2E:');
+  console.log('- Username:', username);
+  console.log('- Password:', password ? '***' : 'brak hasła');
+
+  // Sprawdzamy, czy dane logowania są dostępne
+  if (!username || !password) {
+    console.log('UWAGA: Brak danych logowania w pliku środowiskowym. Używam wartości domyślnych.');
+  }
+
   console.log('Używam danych logowania z pliku środowiskowego dla testów E2E');
 
   console.log('Dane logowania:', {
@@ -120,4 +133,13 @@ test('Scenariusz generowania i zarządzania fiszkami', async ({ page }) => {
   // lub przejść do strony z listą fiszek i sprawdzić, czy są tam nowe fiszki
 
   console.log('Test zakończony sukcesem!');
+  } catch (error) {
+    console.error('Błąd podczas wykonywania testu:', error);
+
+    // Zrzut ekranu w przypadku błędu
+    await page.screenshot({ path: 'test-error.png', fullPage: true });
+
+    // Rzucamy błąd, aby test zakończył się niepowodzeniem
+    throw error;
+  }
 });

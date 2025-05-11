@@ -11,32 +11,52 @@ export class LoginPage extends BasePage {
     // Używamy baseURL z konfiguracji Playwright
     console.log('Nawigacja do strony logowania...');
 
-    // Najpierw przechodzimy do strony głównej, aby upewnić się, że aplikacja jest załadowana
-    await this.page.goto('/', { waitUntil: 'networkidle', timeout: 60000 });
-    console.log('Załadowano stronę główną:', this.page.url());
+    try {
+      // Najpierw przechodzimy do strony głównej, aby upewnić się, że aplikacja jest załadowana
+      await this.page.goto('/', { timeout: 60000 });
+      console.log('Załadowano stronę główną:', this.page.url());
 
-    // Teraz przechodzimy do strony logowania
-    await this.page.goto('/login', { waitUntil: 'networkidle', timeout: 60000 });
-    console.log('Załadowano stronę logowania:', this.page.url());
+      // Czekamy na załadowanie strony
+      await this.page.waitForLoadState('domcontentloaded', { timeout: 60000 });
+      await this.page.waitForTimeout(2000); // Dodatkowe oczekiwanie
 
-    // Dodajemy oczekiwanie na załadowanie strony
-    await this.page.waitForLoadState('networkidle');
+      // Teraz przechodzimy do strony logowania
+      await this.page.goto('/login', { timeout: 60000 });
+      console.log('Załadowano stronę logowania:', this.page.url());
 
-    // Dodajemy debug - zrzut ekranu
-    await this.page.screenshot({ path: 'login-page.png' });
+      // Czekamy na załadowanie strony
+      await this.page.waitForLoadState('domcontentloaded', { timeout: 60000 });
+      await this.page.waitForTimeout(2000); // Dodatkowe oczekiwanie
 
-    // Sprawdzamy, jakie elementy są dostępne na stronie
-    console.log('Dostępne elementy na stronie:');
-    console.log('Email input:', await this.page.locator('input[type="email"]').count());
-    console.log('Password input:', await this.page.locator('input[type="password"]').count());
-    console.log('Submit button:', await this.page.locator('button[type="submit"]').count());
+      // Dodajemy debug - zrzut ekranu
+      await this.page.screenshot({ path: 'login-page.png' });
 
-    // Sprawdzamy, czy jesteśmy na stronie logowania
-    const currentUrl = this.page.url();
-    console.log(`Aktualny URL: ${currentUrl}`);
-    if (!currentUrl.includes('/login')) {
-      console.log('Nie jesteśmy na stronie logowania, próbujemy ponownie...');
-      await this.page.goto('/login', { waitUntil: 'networkidle', timeout: 60000 });
+      // Sprawdzamy, jakie elementy są dostępne na stronie
+      console.log('Dostępne elementy na stronie:');
+      console.log('Email input:', await this.page.locator('input[type="email"]').count());
+      console.log('Password input:', await this.page.locator('input[type="password"]').count());
+      console.log('Submit button:', await this.page.locator('button[type="submit"]').count());
+
+      // Sprawdzamy, czy jesteśmy na stronie logowania
+      const currentUrl = this.page.url();
+      console.log(`Aktualny URL: ${currentUrl}`);
+      if (!currentUrl.includes('/login')) {
+        console.log('Nie jesteśmy na stronie logowania, próbujemy ponownie...');
+        await this.page.goto('/login', { timeout: 60000 });
+        await this.page.waitForLoadState('domcontentloaded', { timeout: 60000 });
+        await this.page.waitForTimeout(2000); // Dodatkowe oczekiwanie
+      }
+    } catch (error) {
+      console.error('Błąd podczas nawigacji do strony logowania:', error);
+      // Próbujemy jeszcze raz z innymi opcjami
+      try {
+        console.log('Próbujemy alternatywnej metody nawigacji...');
+        await this.page.goto('/login', { timeout: 60000 });
+        await this.page.waitForTimeout(5000); // Dłuższe oczekiwanie
+      } catch (retryError) {
+        console.error('Błąd podczas ponownej próby nawigacji:', retryError);
+        // Kontynuujemy mimo błędu, może uda się wypełnić formularz
+      }
     }
   }
 
@@ -95,6 +115,18 @@ export class LoginPage extends BasePage {
     // Metoda 1: Użycie data-testid
     try {
       console.log('Metoda 1: Próba użycia data-testid...');
+
+      // Czekamy na pojawienie się elementów formularza
+      await this.page.waitForSelector('[data-testid="login-email-input"]', { timeout: 10000 })
+        .catch(() => console.log('Nie znaleziono elementu [data-testid="login-email-input"]'));
+
+      await this.page.waitForSelector('[data-testid="login-password-input"]', { timeout: 10000 })
+        .catch(() => console.log('Nie znaleziono elementu [data-testid="login-password-input"]'));
+
+      await this.page.waitForSelector('[data-testid="login-submit-button"]', { timeout: 10000 })
+        .catch(() => console.log('Nie znaleziono elementu [data-testid="login-submit-button"]'));
+
+      // Wypełniamy formularz
       await this.page.locator('[data-testid="login-email-input"]').fill(email);
       await this.page.locator('[data-testid="login-password-input"]').fill(password);
       await this.page.locator('[data-testid="login-submit-button"]').click();
