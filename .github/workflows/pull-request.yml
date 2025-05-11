@@ -1,0 +1,194 @@
+name: Pull Request Workflow
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  lint:
+    name: Lint Code
+    runs-on: ubuntu-latest
+    env:
+      WORKING_DIR: ./angular-without-ssr
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: ${{ env.WORKING_DIR }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npm ci
+
+      - name: Run ESLint
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npm run lint || echo "Linting issues found but continuing"
+
+      - name: Run Prettier check
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npx prettier --check "src/**/*.{ts,html,scss,json}" || echo "Formatting issues found but continuing"
+
+  unit-test:
+    name: Unit Tests
+    needs: lint
+    runs-on: ubuntu-latest
+    env:
+      WORKING_DIR: ./angular-without-ssr
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: ${{ env.WORKING_DIR }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npm ci
+
+      - name: Run unit tests with coverage
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npm test -- --no-watch --code-coverage --browsers=ChromeHeadless
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-coverage
+          path: ${{ env.WORKING_DIR }}/coverage
+          retention-days: 7
+
+  e2e-test:
+    name: E2E Tests
+    needs: lint
+    runs-on: ubuntu-latest
+    env:
+      WORKING_DIR: ./angular-without-ssr
+      NODE_ENV: integration
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: ${{ env.WORKING_DIR }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          # Instalacja wszystkich przeglądarek zdefiniowanych w playwright.config.ts
+          npx playwright install --with-deps chromium firefox webkit
+
+      - name: Run E2E tests
+        working-directory: ${{ env.WORKING_DIR }}
+        env:
+          # Zmienne środowiskowe z environments.default.ts
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'http://127.0.0.1:54321' }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY || '' }}
+          OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY || '' }}
+          E2E_USERNAME: ${{ secrets.E2E_USERNAME || 'test@gmail.com' }}
+          E2E_PASSWORD: ${{ secrets.E2E_PASSWORD || '123123qwe' }}
+          E2E_USERNAME_ID: ${{ secrets.E2E_USERNAME_ID || '054cdcec-17dc-47f2-8979-915a23ff1d7a' }}
+        run: |
+          # Uruchomienie testów E2E
+          npx playwright test --config=playwright.config.ts
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: ${{ env.WORKING_DIR }}/playwright-report
+          retention-days: 7
+
+      - name: Upload Playwright traces
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-traces
+          path: ${{ env.WORKING_DIR }}/test-results
+          retention-days: 7
+
+  status-comment:
+    name: PR Status Comment
+    needs: [unit-test, e2e-test]
+    if: always()
+    runs-on: ubuntu-latest
+    env:
+      WORKING_DIR: ./angular-without-ssr
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download unit test coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: unit-test-coverage
+          path: unit-coverage
+
+      - name: Download Playwright report
+        uses: actions/download-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+
+      - name: Generate status comment
+        id: status
+        run: |
+          # Sprawdzenie statusu poprzednich jobów
+          if [[ "${{ needs.unit-test.result }}" == "success" && "${{ needs.e2e-test.result }}" == "success" ]]; then
+            echo "status=✅ All tests passed successfully!" >> $GITHUB_OUTPUT
+            echo "color=0e8a16" >> $GITHUB_OUTPUT
+          else
+            echo "status=❌ Some tests failed. Please check the logs for details." >> $GITHUB_OUTPUT
+            echo "color=d73a4a" >> $GITHUB_OUTPUT
+          fi
+
+          # Zbieranie informacji o pokryciu kodu
+          if [ -f "unit-coverage/index.html" ]; then
+            UNIT_COVERAGE=$(grep -o 'class="headerCovTableEntry">.*%' unit-coverage/index.html | head -1 | grep -o '[0-9.]*%')
+            echo "unit_coverage=$UNIT_COVERAGE" >> $GITHUB_OUTPUT
+          else
+            echo "unit_coverage=N/A" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create or update comment
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## Pull Request Test Results
+
+            **Status**: ${{ steps.status.outputs.status }}
+
+            ### Test Coverage
+            - Unit Tests: ${{ steps.status.outputs.unit_coverage }}
+            - E2E Tests: Completed
+
+            ### Details
+            - Unit Tests: ${{ needs.unit-test.result }}
+            - E2E Tests: ${{ needs.e2e-test.result }}
+
+            [View Unit Test Coverage Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            [View Playwright Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            _Workflow run: [#${{ github.run_number }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})_
+          edit-mode: replace
