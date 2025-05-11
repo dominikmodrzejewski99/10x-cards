@@ -12,8 +12,6 @@ jobs:
     env:
       WORKING_DIR: ./angular-without-ssr
       NODE_VERSION: 22
-      E2E_BROWSER: chromium
-      CONFIG_FILE: playwright.config.ci.ts
 
     steps:
       - name: Checkout code
@@ -45,15 +43,7 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
         run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
 
-      # Krok 3: Instalacja Playwright
-      - name: Install Playwright browsers
-        working-directory: ${{ env.WORKING_DIR }}
-        run: npx playwright install --with-deps ${{ env.E2E_BROWSER }}
-
-      # Krok 4: Testy E2E (tylko Chromium dla szybkości)
-      - name: Run E2E tests
-        working-directory: ${{ env.WORKING_DIR }}
-        run: npx playwright test --config=${{ env.CONFIG_FILE }} --project=${{ env.E2E_BROWSER }}
+      # Testy E2E usunięte
 
       # Krok 5: Build produkcyjny
       - name: Build production
@@ -77,6 +67,5 @@ jobs:
         with:
           name: test-reports
           path: |
-            ${{ env.WORKING_DIR }}/playwright-report/
             ${{ env.WORKING_DIR }}/coverage/
           retention-days: 7

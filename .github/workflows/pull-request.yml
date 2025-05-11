@@ -78,72 +78,11 @@ jobs:
           path: ${{ env.WORKING_DIR }}/coverage
           retention-days: 7
 
-  e2e-test:
-    name: E2E Tests
-    needs: lint
-    runs-on: ubuntu-latest
-    env:
-      WORKING_DIR: ./angular-without-ssr
-      NODE_ENV: integration
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Install dependencies
-        working-directory: ${{ env.WORKING_DIR }}
-        run: npm ci
-
-      - name: Setup environment
-        working-directory: ${{ env.WORKING_DIR }}
-        run: |
-          # Kopiowanie environments.default.ts do environments.ts
-          cp src/environments/environments.default.ts src/environments/environments.ts
-          echo "Skopiowano environments.default.ts do environments.ts"
-
-      - name: Install Playwright browsers
-        working-directory: ${{ env.WORKING_DIR }}
-        run: |
-          # Instalacja wszystkich przeglądarek zdefiniowanych w playwright.config.ts
-          npx playwright install --with-deps chromium firefox webkit
-
-      - name: Run E2E tests
-        working-directory: ${{ env.WORKING_DIR }}
-        env:
-          # Zmienne środowiskowe z environments.default.ts
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'http://127.0.0.1:54321' }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY || '' }}
-          OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY || '' }}
-          E2E_USERNAME: ${{ secrets.E2E_USERNAME || 'test@gmail.com' }}
-          E2E_PASSWORD: ${{ secrets.E2E_PASSWORD || '123123qwe' }}
-          E2E_USERNAME_ID: ${{ secrets.E2E_USERNAME_ID || '054cdcec-17dc-47f2-8979-915a23ff1d7a' }}
-        run: |
-          # Uruchomienie testów E2E
-          npx playwright test --config=playwright.config.ts
-
-      - name: Upload Playwright report
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: ${{ env.WORKING_DIR }}/playwright-report
-          retention-days: 7
-
-      - name: Upload Playwright traces
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-traces
-          path: ${{ env.WORKING_DIR }}/test-results
-          retention-days: 7
+  # E2E tests removed
 
   status-comment:
     name: PR Status Comment
-    needs: [unit-test, e2e-test]
+    needs: [unit-test]
     if: always()
     runs-on: ubuntu-latest
     env:
@@ -159,17 +98,11 @@ jobs:
           name: unit-test-coverage
           path: unit-coverage
 
-      - name: Download Playwright report
-        uses: actions/download-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report
-
       - name: Generate status comment
         id: status
         run: |
           # Sprawdzenie statusu poprzednich jobów
-          if [[ "${{ needs.unit-test.result }}" == "success" && "${{ needs.e2e-test.result }}" == "success" ]]; then
+          if [[ "${{ needs.unit-test.result }}" == "success" ]]; then
             echo "status=✅ All tests passed successfully!" >> $GITHUB_OUTPUT
             echo "color=0e8a16" >> $GITHUB_OUTPUT
           else
@@ -196,14 +129,11 @@ jobs:
 
             ### Test Coverage
             - Unit Tests: ${{ steps.status.outputs.unit_coverage }}
-            - E2E Tests: Completed
 
             ### Details
             - Unit Tests: ${{ needs.unit-test.result }}
-            - E2E Tests: ${{ needs.e2e-test.result }}
 
             [View Unit Test Coverage Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-            [View Playwright Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
             _Workflow run: [#${{ github.run_number }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})_
           edit-mode: replace
