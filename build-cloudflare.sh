@@ -223,9 +223,22 @@ echo "- E2E_PASSWORD: ${E2E_PASSWORD:0:1}..."
 echo "Runtime config file created successfully"
 cat src/assets/runtime-config.js
 
-# Zbuduj aplikację
+# Kopiujemy environments.default.ts do environments.ts
+echo "Kopiowanie environments.default.ts do environments.ts..."
+cp src/environments/environments.default.ts src/environments/environments.ts || exit 1
+echo "Plik environments.ts utworzony pomyślnie"
+
+# Wracamy do katalogu głównego
+cd .. || exit 1
+echo "Powrót do katalogu głównego: $(pwd)"
+
+# Zbuduj aplikację używając skryptu z głównego package.json
 echo "Building application..."
 npm run build:prod || exit 1
+
+# Wracamy do katalogu angular-without-ssr
+cd angular-without-ssr || exit 1
+echo "Powrót do katalogu angular-without-ssr: $(pwd)"
 
 # Sprawdź, czy katalog dist istnieje
 echo "Checking build output..."
