@@ -1,5 +1,6 @@
 import { Page } from '@playwright/test';
 import { BasePage } from './base-page';
+import { environment } from '../../../src/environments/environments.test';
 
 export class LoginPage extends BasePage {
   constructor(page: Page) {
@@ -49,8 +50,21 @@ export class LoginPage extends BasePage {
       password: password ? '***' : 'brak hasła'
     });
 
+    // Jeśli dane logowania są puste, używamy danych z pliku środowiskowego
     if (!email || !password) {
-      throw new Error('Brak danych logowania. Email lub hasło jest puste.');
+      console.log('Brak danych logowania. Używam danych z pliku środowiskowego.');
+      email = environment.E2E_USERNAME;
+      password = environment.E2E_PASSWORD;
+
+      // Sprawdź, czy dane z pliku środowiskowego są dostępne
+      if (!email || !password) {
+        throw new Error('Brak danych logowania. Email lub hasło jest puste, a dane z pliku środowiskowego są niedostępne.');
+      }
+
+      console.log('Używam danych z pliku środowiskowego:', {
+        email: email,
+        password: password ? '***' : 'brak hasła'
+      });
     }
 
     // Czekamy na załadowanie strony

@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../page-objects/login-page';
 import { GeneratePage } from '../page-objects/generate-page';
-import { environment } from '../../../src/environments/environments';
+import { environment } from '../../../src/environments/environments.test';
 
 // Dodajemy dodatkowe logowanie dla lepszego debugowania
 test.beforeAll(async () => {
@@ -76,12 +76,11 @@ test('Scenariusz generowania i zarządzania fiszkami', async ({ page }) => {
   // Sprawdzamy, jakie zmienne środowiskowe są dostępne
   console.log('Dostępne zmienne środowiskowe:', Object.keys(environment));
 
-  // Używamy hardcodowanych danych logowania dla testów E2E
-  // Uwaga: W rzeczywistym projekcie powinny być one pobierane z zmiennych środowiskowych
-  const username = 'test@gmail.com';
-  const password = '123123qwe';
+  // Używamy danych logowania z pliku środowiskowego dla testów E2E
+  const username = environment.E2E_USERNAME;
+  const password = environment.E2E_PASSWORD;
 
-  console.log('Używam hardcodowanych danych logowania dla testów E2E');
+  console.log('Używam danych logowania z pliku środowiskowego dla testów E2E');
 
   console.log('Dane logowania:', {
     username: username,
