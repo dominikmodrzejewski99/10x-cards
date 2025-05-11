@@ -1,0 +1,39 @@
+name: Angular Unit Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:  # Umożliwia ręczne uruchomienie workflow
+
+jobs:
+  test:
+    name: 'Unit Tests'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: angular-without-ssr/package-lock.json
+      
+      - name: Install dependencies
+        working-directory: ./angular-without-ssr
+        run: npm ci
+      
+      - name: Run unit tests
+        working-directory: ./angular-without-ssr
+        run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
+      
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: karma-results
+          path: angular-without-ssr/karma-results/
+          retention-days: 30

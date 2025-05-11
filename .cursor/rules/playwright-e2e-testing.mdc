@@ -1,0 +1,222 @@
+---
+description: E2E testing with Playwright
+globs:
+alwaysApply: false
+---
+
+## TESTING
+
+### Guidelines for E2E
+
+#### PLAYWRIGHT
+
+- Initialize configuration only with Chromium/Desktop Chrome browser
+- Use browser contexts for isolating test environments
+- Implement the Page Object Model for maintainable tests in ./e2e/page-objects
+- Use `data-testid` attributes when introducing resilient test-oriented selectors
+- When following `data-testid` convention, locate elements by `await page.getByTestId('selectorName')`
+- Leverage API testing for backend validation
+- Implement visual comparison with expect(page).toHaveScreenshot()
+- Use the codegen tool for test recording
+- Leverage trace viewer for debugging test failures
+- Implement test hooks for setup and teardown
+- Use expect assertions with specific matchers
+- Leverage parallel execution for faster test runs
+- Follow 'Arrange', 'Act', 'Assert' approach to test structure for simplicity and readability.
+
+### Page Object Model (POM) dla 10xCards
+
+Poniżej znajdują się klasy POM dla kluczowych elementów aplikacji 10xCards, które będą używane w scenariuszu testowym:
+
+```typescript
+// e2e/page-objects/base-page.ts
+import { Page } from '@playwright/test';
+
+export class BasePage {
+  constructor(protected page: Page) {}
+
+  async navigateTo(path: string) {
+    await this.page.goto(`/${path}`);
+  }
+
+  async waitForLoadingToDisappear() {
+    await this.page.waitForSelector('[data-test-id="loading-indicator"]', { state: 'detached' });
+  }
+}
+```
+
+```typescript
+// e2e/page-objects/login-page.ts
+import { Page } from '@playwright/test';
+import { BasePage } from './base-page';
+
+export class LoginPage extends BasePage {
+  constructor(page: Page) {
+    super(page);
+  }
+
+  async navigateToLogin() {
+    await this.navigateTo('login');
+  }
+
+  async login(email: string, password: string) {
+    await this.page.getByTestId('login-email-input').fill(email);
+    await this.page.getByTestId('login-password-input').fill(password);
+    await this.page.getByTestId('login-submit-button').click();
+
+    // Czekamy na przekierowanie po zalogowaniu
+    await this.page.waitForURL('**/generate');
+  }
+}
+```
+
+```typescript
+// e2e/page-objects/generate-page.ts
+import { Page } from '@playwright/test';
+import { BasePage } from './base-page';
+
+export class GeneratePage extends BasePage {
+  constructor(page: Page) {
+    super(page);
+  }
+
+  async navigateToGenerate() {
+    await this.navigateTo('generate');
+  }
+
+  async pasteSourceText(text: string) {
+    await this.page.getByTestId('source-text-input').fill(text);
+  }
+
+  async clickGenerateButton() {
+    await this.page.getByTestId('generate-flashcards-button').click();
+  }
+
+  async waitForFlashcardsGeneration() {
+    // Czekamy na pojawienie się wskaźnika ładowania
+    await this.page.getByTestId('loading-indicator').waitFor({ state: 'visible' });
+
+    // Czekamy na zniknięcie wskaźnika ładowania
+    await this.waitForLoadingToDisappear();
+
+    // Czekamy na pojawienie się pierwszej fiszki
+    await this.page.getByTestId('flashcard-proposal-0').waitFor();
+  }
+
+  async getFlashcardCount() {
+    return await this.page.getByTestId(/^flashcard-proposal-\d+$/).count();
+  }
+
+  async acceptFlashcard(index: number) {
+    await this.page.getByTestId(`accept-flashcard-button-${index}`).click();
+  }
+
+  async rejectFlashcard(index: number) {
+    await this.page.getByTestId(`reject-flashcard-button-${index}`).click();
+  }
+
+  async acceptHalfRejectHalf() {
+    const count = await this.getFlashcardCount();
+    const halfCount = Math.floor(count / 2);
+
+    // Akceptujemy pierwszą połowę
+    for (let i = 0; i < halfCount; i++) {
+      await this.acceptFlashcard(i);
+    }
+
+    // Odrzucamy drugą połowę
+    for (let i = halfCount; i < count; i++) {
+      await this.rejectFlashcard(i);
+    }
+  }
+
+  async saveAllFlashcards() {
+    await this.page.getByTestId('save-all-flashcards-button').click();
+
+    // Czekamy na zakończenie zapisywania (można dodać dodatkową logikę oczekiwania na sukces)
+    await this.page.waitForTimeout(1000);
+  }
+}
+```
+
+```typescript
+// e2e/tests/flashcard-generation.spec.ts
+import { test, expect } from '@playwright/test';
+import { LoginPage } from '../page-objects/login-page';
+import { GeneratePage } from '../page-objects/generate-page';
+import { environment } from '../../src/environments/environments';
+
+test.describe('Generowanie i zarządzanie fiszkami', () => {
+  let loginPage: LoginPage;
+  let generatePage: GeneratePage;
+
+  // Przykładowy tekst o Polsce (1000-10000 znaków)
+  const polandText = `Polska, oficjalnie Rzeczpospolita Polska – państwo unitarne w Europie Środkowej,
+  położone między Morzem Bałtyckim na północy a Sudetami i Karpatami na południu,
+  w przeważającej części w dorzeczu Wisły i Odry. [...] (tutaj więcej tekstu)`;
+
+  test.beforeEach(async ({ page }) => {
+    loginPage = new LoginPage(page);
+    generatePage = new GeneratePage(page);
+  });
+
+  test('Scenariusz generowania i zarządzania fiszkami', async () => {
+    // 1. Logowanie
+    await loginPage.navigateToLogin();
+    await loginPage.login(environment.testUsername, environment.testPassword);
+
+    // 2. Wklejanie tekstu
+    await generatePage.pasteSourceText(polandText);
+
+    // 3. Generowanie fiszek
+    await generatePage.clickGenerateButton();
+    await generatePage.waitForFlashcardsGeneration();
+
+    // 4. Akceptacja/odrzucenie fiszek
+    await generatePage.acceptHalfRejectHalf();
+
+    // 5. Zapisywanie fiszek
+    await generatePage.saveAllFlashcards();
+
+    // Dodatkowa weryfikacja - można dodać sprawdzenie, czy fiszki zostały zapisane
+  });
+});
+```
+
+### Przykład użycia w scenariuszu testowym
+
+Poniższy przykład pokazuje, jak można wykorzystać powyższe klasy POM w scenariuszu testowym:
+
+```typescript
+// Przykład pełnego scenariusza testowego
+import { test } from '@playwright/test';
+import { LoginPage } from '../page-objects/login-page';
+import { GeneratePage } from '../page-objects/generate-page';
+import { environment } from '../../src/environments/environments';
+
+test('Pełny scenariusz generowania i zarządzania fiszkami', async ({ page }) => {
+  // Inicjalizacja klas POM
+  const loginPage = new LoginPage(page);
+  const generatePage = new GeneratePage(page);
+
+  // 1. Logowanie
+  await loginPage.navigateToLogin();
+  await loginPage.login(environment.testUsername, environment.testPassword);
+
+  // 2. Wklejanie tekstu o Polsce
+  const polandText = `Polska, oficjalnie Rzeczpospolita Polska – państwo unitarne w Europie Środkowej,
+  położone między Morzem Bałtyckim na północy a Sudetami i Karpatami na południu,
+  w przeważającej części w dorzeczu Wisły i Odry. [...] (tutaj więcej tekstu, minimum 1000 znaków)`;
+  await generatePage.pasteSourceText(polandText);
+
+  // 3. Generowanie fiszek
+  await generatePage.clickGenerateButton();
+  await generatePage.waitForFlashcardsGeneration();
+
+  // 4. Akceptacja/odrzucenie fiszek
+  await generatePage.acceptHalfRejectHalf();
+
+  // 5. Zapisywanie fiszek
+  await generatePage.saveAllFlashcards();
+});
+```

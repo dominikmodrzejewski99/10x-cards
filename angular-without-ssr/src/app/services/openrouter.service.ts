@@ -16,7 +16,7 @@ import { environment } from '../../environments/environments';
 export class OpenRouterService {
   private apiUrl: string;
   private sessionManager: SessionManager;
-  private defaultModel = 'openai/gpt-3.5-turbo';
+  private defaultModel = 'deepseek/deepseek-prover-v2:free';
 
   constructor(
     private http: HttpClient,

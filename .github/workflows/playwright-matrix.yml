@@ -1,0 +1,56 @@
+name: Playwright Tests (Matrix)
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  schedule:
+    - cron: '0 0 * * 0'  # Uruchamia testy co tydzień w niedzielę o północy
+  workflow_dispatch:  # Umożliwia ręczne uruchomienie workflow
+
+jobs:
+  test:
+    name: 'Playwright Tests on ${{ matrix.os }} - ${{ matrix.project }}'
+    timeout-minutes: 60
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false  # Nie przerywaj innych testów, jeśli jeden się nie powiedzie
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        project: [chromium, firefox, webkit]
+        exclude:
+          # Wyłącz webkit na Windows, jeśli powoduje problemy
+          - os: windows-latest
+            project: webkit
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: angular-without-ssr/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./angular-without-ssr
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: ./angular-without-ssr
+        run: npx playwright install --with-deps ${{ matrix.project }}
+
+      - name: Run Playwright tests
+        working-directory: ./angular-without-ssr
+        run: npx playwright test --config=playwright.config.ci.ts --project=${{ matrix.project }}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report-${{ matrix.os }}-${{ matrix.project }}
+          path: angular-without-ssr/playwright-report/
+          retention-days: 30

@@ -7,7 +7,7 @@
 
   <!-- Grid z kartami propozycji fiszek -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6" *ngIf="proposals.length > 0">
-    <div *ngFor="let proposal of proposals; let i = index" class="col-span-1">
+    <div *ngFor="let proposal of proposals; let i = index" class="col-span-1" [attr.data-test-id]="'flashcard-proposal-' + i">
       <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 border border-gray-200 overflow-hidden h-full flex flex-col">
         <!-- Nagłówek karty -->
         <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-3 text-white font-semibold">
@@ -37,7 +37,8 @@
             <button
               (click)="onAccept(proposal)"
               class="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
-              aria-label="Akceptuj fiszkę">
+              aria-label="Akceptuj fiszkę"
+              [attr.data-test-id]="'accept-flashcard-button-' + i">
               <i class="pi pi-check" aria-hidden="true"></i>
               <span>Akceptuj</span>
             </button>
@@ -53,7 +54,8 @@
             <button
               (click)="onReject(proposal)"
               class="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-              aria-label="Odrzuć fiszkę">
+              aria-label="Odrzuć fiszkę"
+              [attr.data-test-id]="'reject-flashcard-button-' + i">
               <i class="pi pi-times" aria-hidden="true"></i>
               <span>Odrzuć</span>
             </button>

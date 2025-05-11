@@ -1,4 +1,4 @@
-<div *ngIf="isLoading" class="flex flex-col items-center justify-center py-3">
+<div *ngIf="isLoading" class="flex flex-col items-center justify-center py-3" [attr.data-test-id]="'loading-indicator'">
   <div class="relative w-16 h-16">
     <div class="absolute top-0 left-0 w-full h-full">
       <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
@@ -9,4 +9,4 @@
   </div>
   <p class="mt-3 text-gray-600 font-medium">Generowanie fiszek...</p>
   <p class="text-sm text-gray-500">Proszę czekać, to może potrwać chwilę</p>
-</div> 
+</div>
