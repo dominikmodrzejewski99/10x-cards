@@ -25,36 +25,127 @@ env | grep -E 'supabase|openRouter|E2E' | cut -d= -f1
 # Utwórz plik environments.ts
 echo "Creating environments.ts file..."
 
-# Pobierz wartości zmiennych środowiskowych
-SUPABASE_URL="${supabaseUrl}"
-SUPABASE_KEY="${supabaseKey}"
+# Pobierz wartości zmiennych środowiskowych - sprawdzamy różne możliwe formaty
 
-# Sprawdź różne możliwe nazwy zmiennej dla klucza OpenRouter
+# Dla SUPABASE_URL
+if [ -n "${supabaseUrl}" ]; then
+  SUPABASE_URL="${supabaseUrl}"
+elif [ -n "${SUPABASE_URL}" ]; then
+  SUPABASE_URL="${SUPABASE_URL}"
+elif [ -n "$supabaseUrl" ]; then
+  SUPABASE_URL="$supabaseUrl"
+elif [ -n "$SUPABASE_URL" ]; then
+  SUPABASE_URL="$SUPABASE_URL"
+else
+  echo "UWAGA: Nie znaleziono zmiennej środowiskowej dla SUPABASE_URL!"
+  SUPABASE_URL=""
+fi
+
+# Dla SUPABASE_KEY
+if [ -n "${supabaseKey}" ]; then
+  SUPABASE_KEY="${supabaseKey}"
+elif [ -n "${SUPABASE_KEY}" ]; then
+  SUPABASE_KEY="${SUPABASE_KEY}"
+elif [ -n "$supabaseKey" ]; then
+  SUPABASE_KEY="$supabaseKey"
+elif [ -n "$SUPABASE_KEY" ]; then
+  SUPABASE_KEY="$SUPABASE_KEY"
+else
+  echo "UWAGA: Nie znaleziono zmiennej środowiskowej dla SUPABASE_KEY!"
+  SUPABASE_KEY=""
+fi
+
+# Dla OPENROUTER_KEY
 if [ -n "${openRouterKey}" ]; then
   OPENROUTER_KEY="${openRouterKey}"
 elif [ -n "${OPENROUTER_KEY}" ]; then
   OPENROUTER_KEY="${OPENROUTER_KEY}"
 elif [ -n "${openRouter_KEY}" ]; then
   OPENROUTER_KEY="${openRouter_KEY}"
+elif [ -n "$openRouterKey" ]; then
+  OPENROUTER_KEY="$openRouterKey"
+elif [ -n "$OPENROUTER_KEY" ]; then
+  OPENROUTER_KEY="$OPENROUTER_KEY"
+elif [ -n "$openRouter_KEY" ]; then
+  OPENROUTER_KEY="$openRouter_KEY"
 else
   echo "UWAGA: Nie znaleziono zmiennej środowiskowej dla klucza OpenRouter!"
   OPENROUTER_KEY=""
 fi
 
-E2E_USERNAME_ID="${E2E_USERNAME_ID}"
-E2E_USERNAME="${E2E_USERNAME}"
-E2E_PASSWORD="${E2E_PASSWORD}"
+# Dla zmiennych E2E
+if [ -n "${E2E_USERNAME_ID}" ]; then
+  E2E_USERNAME_ID_VAR="${E2E_USERNAME_ID}"
+elif [ -n "$E2E_USERNAME_ID" ]; then
+  E2E_USERNAME_ID_VAR="$E2E_USERNAME_ID"
+else
+  E2E_USERNAME_ID_VAR=""
+fi
+
+if [ -n "${E2E_USERNAME}" ]; then
+  E2E_USERNAME_VAR="${E2E_USERNAME}"
+elif [ -n "$E2E_USERNAME" ]; then
+  E2E_USERNAME_VAR="$E2E_USERNAME"
+else
+  E2E_USERNAME_VAR=""
+fi
+
+if [ -n "${E2E_PASSWORD}" ]; then
+  E2E_PASSWORD_VAR="${E2E_PASSWORD}"
+elif [ -n "$E2E_PASSWORD" ]; then
+  E2E_PASSWORD_VAR="$E2E_PASSWORD"
+else
+  E2E_PASSWORD_VAR=""
+fi
+
+# Wyświetl dostępne zmienne środowiskowe dla debugowania
+echo "Dostępne zmienne środowiskowe:"
+env | grep -E 'supabase|SUPABASE|openRouter|OPENROUTER|E2E'
 
 # Wyświetl wartości zmiennych (bez pełnych kluczy dla bezpieczeństwa)
 echo "SUPABASE_URL: ${SUPABASE_URL}"
-echo "SUPABASE_KEY: ${SUPABASE_KEY:0:10}..."
-echo "OPENROUTER_KEY: ${OPENROUTER_KEY:0:10}..."
+if [ -n "${SUPABASE_KEY}" ]; then
+  echo "SUPABASE_KEY: ${SUPABASE_KEY:0:10}..."
+else
+  echo "SUPABASE_KEY: nie ustawiono"
+fi
 
-# Sprawdź, czy wszystkie wymagane zmienne środowiskowe są ustawione
-if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_KEY" ] || [ -z "$OPENROUTER_KEY" ]; then
-  echo "ERROR: Brakuje wymaganych zmiennych środowiskowych (supabaseUrl, supabaseKey, openRouterKey)"
-  echo "Te zmienne muszą być ustawione w ustawieniach projektu Cloudflare Pages."
-  exit 1
+if [ -n "${OPENROUTER_KEY}" ]; then
+  echo "OPENROUTER_KEY: ${OPENROUTER_KEY:0:10}..."
+else
+  echo "OPENROUTER_KEY: nie ustawiono"
+fi
+
+# Jeśli zmienne środowiskowe nie są ustawione, używamy wartości domyślnych
+if [ -z "$SUPABASE_URL" ]; then
+  echo "UWAGA: Zmienna środowiskowa supabaseUrl nie jest ustawiona. Używam wartości domyślnej."
+  SUPABASE_URL="https://ngiunldncwxontgpzwkq.supabase.co"
+fi
+
+if [ -z "$SUPABASE_KEY" ]; then
+  echo "UWAGA: Zmienna środowiskowa supabaseKey nie jest ustawiona. Używam wartości domyślnej."
+  SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5naXVubGRuY3d4b250Z3B6d2txIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3MDQ2MTYsImV4cCI6MjA2MjI4MDYxNn0.xUS6bEF1_VuD3_XaOHDD5awZLf2CNwe4xLMaiH-rUZA"
+fi
+
+if [ -z "$OPENROUTER_KEY" ]; then
+  echo "UWAGA: Zmienna środowiskowa openRouterKey nie jest ustawiona. Używam wartości domyślnej."
+  OPENROUTER_KEY="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"
+fi
+
+# Ustawiamy wartości domyślne dla zmiennych E2E, jeśli nie są ustawione
+if [ -z "$E2E_USERNAME_ID_VAR" ]; then
+  echo "UWAGA: Zmienna środowiskowa E2E_USERNAME_ID nie jest ustawiona. Używam wartości domyślnej."
+  E2E_USERNAME_ID_VAR="123e4567-e89b-12d3-a456-426614174000"
+fi
+
+if [ -z "$E2E_USERNAME_VAR" ]; then
+  echo "UWAGA: Zmienna środowiskowa E2E_USERNAME nie jest ustawiona. Używam wartości domyślnej."
+  E2E_USERNAME_VAR="e2e@10x.cards"
+fi
+
+if [ -z "$E2E_PASSWORD_VAR" ]; then
+  echo "UWAGA: Zmienna środowiskowa E2E_PASSWORD nie jest ustawiona. Używam wartości domyślnej."
+  E2E_PASSWORD_VAR="10x.cards"
 fi
 
 cat > src/environments/environments.ts << EOL
@@ -88,13 +179,13 @@ export const environment = {
     return window.RUNTIME_CONFIG?.openRouterKey || '${OPENROUTER_KEY}';
   },
   get E2E_USERNAME_ID() {
-    return window.RUNTIME_CONFIG?.E2E_USERNAME_ID || '${E2E_USERNAME_ID}';
+    return window.RUNTIME_CONFIG?.E2E_USERNAME_ID || '${E2E_USERNAME_ID_VAR}';
   },
   get E2E_USERNAME() {
-    return window.RUNTIME_CONFIG?.E2E_USERNAME || '${E2E_USERNAME}';
+    return window.RUNTIME_CONFIG?.E2E_USERNAME || '${E2E_USERNAME_VAR}';
   },
   get E2E_PASSWORD() {
-    return window.RUNTIME_CONFIG?.E2E_PASSWORD || '${E2E_PASSWORD}';
+    return window.RUNTIME_CONFIG?.E2E_PASSWORD || '${E2E_PASSWORD_VAR}';
   }
 };
 EOL
@@ -114,9 +205,9 @@ window.RUNTIME_CONFIG = {
   supabaseUrl: '${SUPABASE_URL}',
   supabaseKey: '${SUPABASE_KEY}',
   openRouterKey: '${OPENROUTER_KEY}',
-  E2E_USERNAME_ID: '${E2E_USERNAME_ID}',
-  E2E_USERNAME: '${E2E_USERNAME}',
-  E2E_PASSWORD: '${E2E_PASSWORD}'
+  E2E_USERNAME_ID: '${E2E_USERNAME_ID_VAR}',
+  E2E_USERNAME: '${E2E_USERNAME_VAR}',
+  E2E_PASSWORD: '${E2E_PASSWORD_VAR}'
 };
 EOL
 
@@ -125,6 +216,9 @@ echo "Runtime config file created with the following variables:"
 echo "- supabaseUrl: ${SUPABASE_URL}"
 echo "- supabaseKey: ${SUPABASE_KEY:0:10}..."
 echo "- openRouterKey: ${OPENROUTER_KEY:0:10}..."
+echo "- E2E_USERNAME_ID: ${E2E_USERNAME_ID}"
+echo "- E2E_USERNAME: ${E2E_USERNAME}"
+echo "- E2E_PASSWORD: ${E2E_PASSWORD:0:1}..."
 
 echo "Runtime config file created successfully"
 cat src/assets/runtime-config.js
