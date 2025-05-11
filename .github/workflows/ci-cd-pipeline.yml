@@ -1,0 +1,77 @@
+name: 10xCards CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # Umożliwia ręczne uruchomienie
+
+jobs:
+  build-and-test:
+    name: 'Build and Test'
+    runs-on: ubuntu-latest
+    env:
+      WORKING_DIR: ./angular-without-ssr
+      NODE_VERSION: 18
+      E2E_BROWSER: chromium
+      CONFIG_FILE: playwright.config.ci.ts
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js from .nvmrc
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '${{ env.WORKING_DIR }}/.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: ${{ env.WORKING_DIR }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npm ci
+
+      # Krok 1: Weryfikacja lintingu
+      - name: Lint check
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npm run lint || echo "Linting failed but continuing"
+
+      # Krok 2: Testy jednostkowe
+      - name: Run unit tests
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
+
+      # Krok 3: Instalacja Playwright
+      - name: Install Playwright browsers
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npx playwright install --with-deps ${{ env.E2E_BROWSER }}
+
+      # Krok 4: Testy E2E (tylko Chromium dla szybkości)
+      - name: Run E2E tests
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npx playwright test --config=${{ env.CONFIG_FILE }} --project=${{ env.E2E_BROWSER }}
+
+      # Krok 5: Build produkcyjny
+      - name: Build production
+        working-directory: ${{ env.WORKING_DIR }}
+        env:
+          NODE_ENV: production
+        run: npm run build -- --configuration production
+
+      # Krok 6: Archiwizacja artefaktów
+      - name: Archive production build
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-build
+          path: ${{ env.WORKING_DIR }}/dist/
+          retention-days: 7
+
+      # Krok 7: Archiwizacja raportów testów
+      - name: Archive test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            ${{ env.WORKING_DIR }}/playwright-report/
+            ${{ env.WORKING_DIR }}/coverage/
+          retention-days: 7

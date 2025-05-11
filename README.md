@@ -1,8 +1,7 @@
 # 10xCards
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Playwright Tests](https://github.com/yourusername/10xcards/actions/workflows/playwright.yml/badge.svg)](https://github.com/yourusername/10xcards/actions/workflows/playwright.yml)
-[![Angular Unit Tests](https://github.com/yourusername/10xcards/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/yourusername/10xcards/actions/workflows/unit-tests.yml)
+[![CI/CD Pipeline](https://github.com/yourusername/10xcards/actions/workflows/ci-cd-pipeline.yml/badge.svg)](https://github.com/yourusername/10xcards/actions/workflows/ci-cd-pipeline.yml)
 
 A modern web application for creating and managing educational flashcards, leveraging AI to automatically generate high-quality learning materials.
 
