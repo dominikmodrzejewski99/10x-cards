@@ -21,7 +21,7 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
           id="email"
           formControlName="email"
           placeholder="Wprowadź swój adres email"
-          [attr.data-test-id]="'login-email-input'"
+          data-testid="login-email-input"
         />
         <div *ngIf="submitted && f['email'].errors" class="error-message">
           <span *ngIf="f['email'].errors['required']">Email jest wymagany</span>
@@ -36,7 +36,7 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
           id="password"
           formControlName="password"
           placeholder="Minimum 6 znaków"
-          [attr.data-test-id]="'login-password-input'"
+          data-testid="login-password-input"
         />
         <div *ngIf="submitted && f['password'].errors" class="error-message">
           <span *ngIf="f['password'].errors['required']">Hasło jest wymagane</span>
@@ -48,7 +48,7 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
         type="submit"
         class="submit-button"
         [disabled]="loading"
-        [attr.data-test-id]="'login-submit-button'">
+        data-testid="login-submit-button">
         {{ isLoginMode ? 'Zaloguj się' : 'Zarejestruj się' }}
         <span *ngIf="loading">...</span>
       </button>

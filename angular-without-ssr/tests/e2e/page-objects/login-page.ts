@@ -39,7 +39,10 @@ export class LoginPage extends BasePage {
     }
   }
 
-  async login(email: string, password: string) {
+  /**
+   * Wypełnia formularz logowania i klika przycisk zaloguj
+   */
+  async fillLoginForm(email: string, password: string) {
     // Sprawdzamy, czy dane logowania są poprawne
     console.log('Dane logowania:', {
       email: email || 'brak email',
@@ -75,12 +78,12 @@ export class LoginPage extends BasePage {
     // Próbujemy wypełnić formularz różnymi metodami
     let success = false;
 
-    // Metoda 1: Użycie data-test-id
+    // Metoda 1: Użycie data-testid
     try {
-      console.log('Metoda 1: Próba użycia data-test-id...');
-      await this.page.getByTestId('login-email-input').fill(email);
-      await this.page.getByTestId('login-password-input').fill(password);
-      await this.page.getByTestId('login-submit-button').click();
+      console.log('Metoda 1: Próba użycia data-testid...');
+      await this.page.locator('[data-testid="login-email-input"]').fill(email);
+      await this.page.locator('[data-testid="login-password-input"]').fill(password);
+      await this.page.locator('[data-testid="login-submit-button"]').click();
       success = true;
       console.log('Metoda 1 zakończona sukcesem');
     } catch (error) {
@@ -146,10 +149,22 @@ export class LoginPage extends BasePage {
 
     // Dodajemy debug - zrzut ekranu po wypełnieniu formularza
     await this.page.screenshot({ path: 'login-form-after.png' });
+  }
 
-    // Czekamy na przekierowanie po zalogowaniu
+  /**
+   * Czeka na przekierowanie po zalogowaniu
+   */
+  async waitForRedirectAfterLogin() {
     console.log('Oczekiwanie na przekierowanie do /generate...');
     await this.page.waitForURL('**/generate', { timeout: 60000 });
     console.log('Przekierowano do:', this.page.url());
+  }
+
+  /**
+   * Loguje się do aplikacji i czeka na przekierowanie
+   */
+  async login(email: string, password: string) {
+    await this.fillLoginForm(email, password);
+    await this.waitForRedirectAfterLogin();
   }
 }

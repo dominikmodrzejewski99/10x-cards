@@ -76,10 +76,12 @@ test('Scenariusz generowania i zarządzania fiszkami', async ({ page }) => {
   // Sprawdzamy, jakie zmienne środowiskowe są dostępne
   console.log('Dostępne zmienne środowiskowe:', Object.keys(environment));
 
-  // Sprawdzamy, czy mamy dane logowania
-  // Używamy hardcodowanych danych z pliku środowiskowego
+  // Używamy hardcodowanych danych logowania dla testów E2E
+  // Uwaga: W rzeczywistym projekcie powinny być one pobierane z zmiennych środowiskowych
   const username = 'test@gmail.com';
   const password = '123123qwe';
+
+  console.log('Używam hardcodowanych danych logowania dla testów E2E');
 
   console.log('Dane logowania:', {
     username: username,
