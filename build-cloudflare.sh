@@ -44,8 +44,51 @@ cat > src/environments/environments.ts << EOL
 // This file is auto-generated during the build process
 // DO NOT EDIT MANUALLY
 
+declare global {
+  interface Window {
+    RUNTIME_CONFIG: {
+      supabaseUrl: string;
+      supabaseKey: string;
+      openRouterKey: string;
+      E2E_USERNAME_ID: string;
+      E2E_USERNAME: string;
+      E2E_PASSWORD: string;
+    };
+  }
+}
+
+// W środowisku produkcyjnym używamy zmiennych z runtime-config.js
+// W środowisku deweloperskim używamy zmiennych z tego pliku
 export const environment = {
   production: true,
+  get supabaseUrl() {
+    return window.RUNTIME_CONFIG?.supabaseUrl || '${SUPABASE_URL}';
+  },
+  get supabaseKey() {
+    return window.RUNTIME_CONFIG?.supabaseKey || '${SUPABASE_KEY}';
+  },
+  get openRouterKey() {
+    return window.RUNTIME_CONFIG?.openRouterKey || '${OPENROUTER_KEY}';
+  },
+  get E2E_USERNAME_ID() {
+    return window.RUNTIME_CONFIG?.E2E_USERNAME_ID || '${E2E_USERNAME_ID}';
+  },
+  get E2E_USERNAME() {
+    return window.RUNTIME_CONFIG?.E2E_USERNAME || '${E2E_USERNAME}';
+  },
+  get E2E_PASSWORD() {
+    return window.RUNTIME_CONFIG?.E2E_PASSWORD || '${E2E_PASSWORD}';
+  }
+};
+EOL
+
+echo "Environment file created successfully"
+cat src/environments/environments.ts
+
+# Utwórz plik runtime-config.js z zmiennymi środowiskowymi
+echo "Creating runtime-config.js file..."
+cat > src/assets/runtime-config.js << EOL
+window.RUNTIME_CONFIG = {
   supabaseUrl: '${SUPABASE_URL}',
   supabaseKey: '${SUPABASE_KEY}',
   openRouterKey: '${OPENROUTER_KEY}',
@@ -55,8 +98,8 @@ export const environment = {
 };
 EOL
 
-echo "Environment file created successfully"
-cat src/environments/environments.ts
+echo "Runtime config file created successfully"
+cat src/assets/runtime-config.js
 
 # Zbuduj aplikację
 echo "Building application..."
