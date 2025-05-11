@@ -6,6 +6,7 @@
     "build": "bash ./build-cloudflare.sh",
     "start": "cd angular-without-ssr && npm start",
     "test": "cd angular-without-ssr && npm test",
-    "lint": "cd angular-without-ssr && npm run lint"
+    "lint": "cd angular-without-ssr && npm run lint",
+    "build:prod": "cd angular-without-ssr && npx ng build --configuration production"
   }
 }
