@@ -108,6 +108,16 @@ Optional variables for E2E tests:
 
 **IMPORTANT**: These variables contain sensitive information and should never be committed to the repository. They should be set in the Cloudflare Pages dashboard under Settings > Environment variables.
 
+### How Environment Variables Work
+
+The application uses a runtime configuration approach to access environment variables:
+
+1. During the build process, a `runtime-config.js` file is generated with the environment variables
+2. This file is included in the `index.html` and sets a global `window.RUNTIME_CONFIG` object
+3. The `environments.ts` file uses getters to access these variables at runtime
+
+This approach allows the application to access environment variables in the browser, which is not possible with traditional environment variables that are only available during the build process.
+
 ### Deployment Process
 1. Push changes to the main branch
 2. GitHub Actions will build and deploy the application
