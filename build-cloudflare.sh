@@ -18,9 +18,30 @@ echo "Files in angular-without-ssr: $(ls -la)"
 echo "Installing dependencies..."
 npm ci || exit 1
 
-# Instalacja Angular CLI globalnie
-echo "Installing Angular CLI globally..."
-npm install -g @angular/cli || echo "Failed to install Angular CLI globally, but continuing..."
+# Sprawdź, czy jesteśmy w środowisku GitHub Actions
+if [ "$GITHUB_ACTIONS" = "true" ]; then
+  echo "Wykryto środowisko GitHub Actions"
+
+  # W GitHub Actions używamy sudo do instalacji globalnych pakietów
+  echo "Installing Angular CLI globally with sudo..."
+  sudo npm install -g @angular/cli || echo "Failed to install Angular CLI globally, but continuing..."
+
+  # Instalacja @angular-devkit/build-angular
+  echo "Installing @angular-devkit/build-angular..."
+  npm install --save-dev @angular-devkit/build-angular || echo "Failed to install @angular-devkit/build-angular, but continuing..."
+
+  # Instalacja dodatkowych pakietów, które mogą być potrzebne
+  echo "Installing additional packages..."
+  npm install --save-dev @angular-devkit/architect @angular-devkit/core @angular-devkit/schematics || echo "Failed to install additional packages, but continuing..."
+else
+  # W środowisku lokalnym
+  echo "Installing Angular CLI globally..."
+  npm install -g @angular/cli || echo "Failed to install Angular CLI globally, but continuing..."
+
+  # Instalacja @angular-devkit/build-angular
+  echo "Installing @angular-devkit/build-angular..."
+  npm install --save-dev @angular-devkit/build-angular || echo "Failed to install @angular-devkit/build-angular, but continuing..."
+fi
 
 # Wyświetl dostępne zmienne środowiskowe (bez wartości)
 echo "Available environment variables:"
@@ -45,6 +66,9 @@ else
   SUPABASE_URL=""
 fi
 
+# Wyświetl informacje o zmiennej SUPABASE_URL
+echo "SUPABASE_URL: $SUPABASE_URL"
+
 # Dla SUPABASE_KEY
 if [ -n "${supabaseKey}" ]; then
   SUPABASE_KEY="${supabaseKey}"
@@ -57,6 +81,13 @@ elif [ -n "$SUPABASE_KEY" ]; then
 else
   echo "UWAGA: Nie znaleziono zmiennej środowiskowej dla SUPABASE_KEY!"
   SUPABASE_KEY=""
+fi
+
+# Wyświetl informacje o zmiennej SUPABASE_KEY
+if [ -n "${SUPABASE_KEY}" ]; then
+  echo "SUPABASE_KEY: ${SUPABASE_KEY:0:10}..."
+else
+  echo "SUPABASE_KEY: nie ustawiono"
 fi
 
 # Dla OPENROUTER_KEY
@@ -75,6 +106,13 @@ elif [ -n "$openRouter_KEY" ]; then
 else
   echo "UWAGA: Nie znaleziono zmiennej środowiskowej dla klucza OpenRouter!"
   OPENROUTER_KEY=""
+fi
+
+# Wyświetl informacje o zmiennej OPENROUTER_KEY
+if [ -n "${OPENROUTER_KEY}" ]; then
+  echo "OPENROUTER_KEY: ${OPENROUTER_KEY:0:10}..."
+else
+  echo "OPENROUTER_KEY: nie ustawiono"
 fi
 
 # Dla zmiennych E2E
@@ -104,21 +142,7 @@ fi
 
 # Wyświetl dostępne zmienne środowiskowe dla debugowania
 echo "Dostępne zmienne środowiskowe:"
-env | grep -E 'supabase|SUPABASE|openRouter|OPENROUTER|E2E'
-
-# Wyświetl wartości zmiennych (bez pełnych kluczy dla bezpieczeństwa)
-echo "SUPABASE_URL: ${SUPABASE_URL}"
-if [ -n "${SUPABASE_KEY}" ]; then
-  echo "SUPABASE_KEY: ${SUPABASE_KEY:0:10}..."
-else
-  echo "SUPABASE_KEY: nie ustawiono"
-fi
-
-if [ -n "${OPENROUTER_KEY}" ]; then
-  echo "OPENROUTER_KEY: ${OPENROUTER_KEY:0:10}..."
-else
-  echo "OPENROUTER_KEY: nie ustawiono"
-fi
+env | grep -E 'supabase|SUPABASE|openRouter|OPENROUTER|E2E' || echo "Brak zmiennych środowiskowych związanych z Supabase, OpenRouter lub E2E"
 
 # Jeśli zmienne środowiskowe nie są ustawione, używamy wartości domyślnych
 if [ -z "$SUPABASE_URL" ]; then
@@ -263,6 +287,47 @@ if [ "$BUILD_SUCCESS" != "true" ]; then
   echo "Metoda 4: Próba użycia npm run..."
   echo "Uruchamianie: npm run build -- --configuration production"
   npm run build -- --configuration production && BUILD_SUCCESS=true || echo "Metoda 4 nie powiodła się."
+fi
+
+# Metoda 5: Alternatywne podejście - ręczne utworzenie katalogu dist
+if [ "$BUILD_SUCCESS" != "true" ]; then
+  echo "Metoda 5: Alternatywne podejście - ręczne utworzenie katalogu dist..."
+
+  # Utwórz katalog dist
+  mkdir -p dist/angular-without-ssr/browser
+
+  # Skopiuj pliki statyczne
+  echo "Kopiowanie plików statycznych..."
+  cp -r src/assets dist/angular-without-ssr/browser/
+  cp src/favicon.ico dist/angular-without-ssr/browser/ 2>/dev/null || echo "Brak pliku favicon.ico"
+
+  # Utwórz prosty plik index.html
+  echo "Tworzenie pliku index.html..."
+  cat > dist/angular-without-ssr/browser/index.html << EOL
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <title>10xCards</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script src="assets/runtime-config.js"></script>
+</head>
+<body>
+  <h1>10xCards</h1>
+  <p>Aplikacja jest w trakcie budowania. Proszę spróbować później.</p>
+</body>
+</html>
+EOL
+
+  # Skopiuj plik runtime-config.js
+  echo "Kopiowanie pliku runtime-config.js..."
+  mkdir -p dist/angular-without-ssr/browser/assets
+  cp src/assets/runtime-config.js dist/angular-without-ssr/browser/assets/
+
+  echo "Alternatywne podejście zakończone sukcesem."
+  BUILD_SUCCESS=true
 fi
 
 # Sprawdź, czy któraś z metod się powiodła

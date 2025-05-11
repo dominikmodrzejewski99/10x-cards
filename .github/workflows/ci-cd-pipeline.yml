@@ -47,10 +47,15 @@ jobs:
 
       # Krok 5: Build produkcyjny
       - name: Build production
-        working-directory: ${{ env.WORKING_DIR }}
         env:
           NODE_ENV: production
-        run: npm run build -- --configuration production
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
+          E2E_USERNAME_ID: ${{ secrets.E2E_USERNAME_ID }}
+          E2E_USERNAME: ${{ secrets.E2E_USERNAME }}
+          E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
+        run: npm run build
 
       # Krok 6: Archiwizacja artefaktów
       - name: Archive production build
