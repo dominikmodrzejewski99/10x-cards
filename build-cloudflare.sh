@@ -109,4 +109,8 @@ npm run build:prod || exit 1
 echo "Checking build output..."
 ls -la dist/angular-without-ssr/browser || exit 1
 
+# Upewnij się, że plik _headers jest poprawnie skopiowany
+echo "Checking _headers file..."
+cat dist/angular-without-ssr/browser/_headers || echo "_headers file not found in output directory!"
+
 echo "Build completed successfully!"
