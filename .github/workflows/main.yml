@@ -1,4 +1,4 @@
-name: Deploy to Cloudflare Pages
+name: Tests and deploy to Cloudflare Pages
 
 on:
   push:
