@@ -74,21 +74,18 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           working-directory: ${{ env.WORKING_DIR }}
 
+      # Dependencies and environment setup are handled by the setup action
+
       - name: Build for production
         env:
           NODE_ENV: production
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
-          # Dodajemy zmienne w różnych formatach, aby skrypt build-cloudflare.sh mógł je znaleźć
           supabaseUrl: ${{ secrets.SUPABASE_URL }}
           supabaseKey: ${{ secrets.SUPABASE_KEY }}
           openRouterKey: ${{ secrets.OPENROUTER_KEY }}
-          # Zmienne dla testów E2E
-          E2E_USERNAME_ID: ${{ secrets.E2E_USERNAME_ID }}
-          E2E_USERNAME: ${{ secrets.E2E_USERNAME }}
-          E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
-        run: npm run build
+        run: npm run build:prod
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
