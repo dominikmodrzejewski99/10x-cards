@@ -88,14 +88,11 @@ jobs:
         run: npm run build:prod
 
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: ${{ env.CLOUDFLARE_PROJECT_NAME }}
-          directory: ${{ env.WORKING_DIR }}/dist/angular-without-ssr/browser
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+          command: pages deploy ${{ env.WORKING_DIR }}/dist/angular-without-ssr/browser --project-name=${{ env.CLOUDFLARE_PROJECT_NAME }} --branch=main
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
