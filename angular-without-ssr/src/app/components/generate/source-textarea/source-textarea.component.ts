@@ -32,14 +32,12 @@ export class SourceTextareaComponent implements OnInit {
 
   // Metoda wywoływana przy każdej zmianie tekstu
   onTextChange(value: string): void {
-    console.log('onTextChange:', value?.substring(0, 20) + (value?.length > 20 ? '...' : ''));
-
     // Zabezpieczenie przed undefined/null
     if (value === undefined || value === null) {
       value = '';
     }
 
-    this.text = value;
+    // Aktualizacja długości tekstu
     this.currentLength = value.length;
 
     // Emituj zdarzenia
@@ -48,18 +46,13 @@ export class SourceTextareaComponent implements OnInit {
     // Sprawdź walidację
     const isValid = value.length >= this.minLength && value.length <= this.maxLength && value.trim() !== '';
     this.validityChange.emit(isValid);
-
-    console.log('Emitowano textChange i validityChange:', value.length, isValid);
   }
 
   // Metoda do obsługi zdarzenia paste
   onPaste(event: ClipboardEvent): void {
     console.log('Zdarzenie paste');
-    const pastedText = event.clipboardData?.getData('text');
-    if (pastedText) {
-      this.text = pastedText;
-      this.onTextChange(pastedText);
-    }
+    // Nie zatrzymujemy domyślnego zachowania, pozwalamy na standardowe wklejanie
+    // Zdarzenie ngModelChange zostanie wywołane automatycznie po wklejeniu
   }
 
   // Pomocnicze metody do sprawdzania błędów

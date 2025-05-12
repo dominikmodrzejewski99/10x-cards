@@ -16,18 +16,18 @@
             class="search-input w-full bg-white text-gray-700 pl-4 py-2 rounded-md border border-gray-300"
           />
         </div>
-        <button 
-          pButton 
-          icon="pi pi-search" 
-          class="p-button p-button-raised p-button-primary" 
+        <button
+          pButton
+          icon="pi pi-search"
+          class="p-button p-button-raised p-button-primary"
           (click)="onSearch()"></button>
       </div>
-      
+
     </div>
-    
+
   </div>
 
-  
+
 
   <p-table
     [value]="flashcards"
@@ -93,8 +93,5 @@
     </ng-template>
 
   </p-table>
-
-  <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="120" [rowsPerPageOptions]="[10, 20, 30]" />
-
 
 </div>

@@ -100,6 +100,22 @@ export class AuthEffects {
     )
   );
 
+  authStateLoaded$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.authStateLoaded),
+        tap(({ user }) => {
+          console.log('authStateLoaded: Stan użytkownika zaladowany', !!user, 'URL:', this.router.url);
+          // Jeśli użytkownik jest zalogowany i jesteśmy na stronie głównej, logowania lub rejestracji, przekieruj do /generate
+          if (user && (this.router.url === '/' || this.router.url === '/login' || this.router.url === '/register')) {
+            console.log('authStateLoaded: Przekierowanie zalogowanego użytkownika do /generate');
+            this.router.navigate(['/generate']);
+          }
+        })
+      ),
+    { dispatch: false }
+  );
+
   private handleError(error: any): string {
     if (error.message) {
       return error.message;

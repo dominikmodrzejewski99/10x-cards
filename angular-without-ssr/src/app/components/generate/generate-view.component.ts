@@ -177,6 +177,9 @@ export class GenerateViewComponent implements OnInit, OnDestroy {
         this.generationResult = null;
         this.isSaving = false;
         this.isLoading = false;
+
+        // Przekierowanie do listy fiszek
+        this.router.navigate(['/flashcards']);
       },
       error: (error) => {
         console.error('Błąd zapisywania fiszek:', error);
@@ -305,6 +308,9 @@ export class GenerateViewComponent implements OnInit, OnDestroy {
         });
 
         this.isSaving = false;
+
+        // Przekierowanie do listy fiszek
+        this.router.navigate(['/flashcards']);
       },
       error: (error) => {
         console.error('Błąd zapisywania fiszki:', error);

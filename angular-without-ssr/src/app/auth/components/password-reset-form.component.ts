@@ -53,13 +53,13 @@ import { RouterModule } from '@angular/router';
     form {
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
+      gap: 1rem;
     }
 
     .form-field {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.375rem;
     }
 
     label {
@@ -69,17 +69,20 @@ import { RouterModule } from '@angular/router';
     }
 
     input {
-      padding: 0.75rem 1rem;
+      padding: 0.75rem 0.875rem;
       border: 1px solid #d1d5db;
       border-radius: 0.5rem;
-      font-size: 1rem;
+      font-size: 0.9375rem;
       color: #1f2937;
       transition: all 0.2s;
       background-color: #ffffff;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     input::placeholder {
       color: #9ca3af;
+      font-size: 0.875rem;
     }
 
     input:focus {
@@ -90,16 +93,17 @@ import { RouterModule } from '@angular/router';
 
     .submit-button {
       margin-top: 0.75rem;
-      padding: 0.875rem;
+      padding: 0.75rem;
       background-color: #2563eb;
       color: white;
       border: none;
       border-radius: 0.5rem;
       font-weight: 600;
-      font-size: 1rem;
+      font-size: 0.9375rem;
       cursor: pointer;
       transition: background-color 0.2s;
       box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      width: 100%;
     }
 
     .submit-button:hover {
@@ -113,7 +117,7 @@ import { RouterModule } from '@angular/router';
 
     .error-message {
       color: #dc2626;
-      font-size: 0.875rem;
+      font-size: 0.8125rem;
       font-weight: 500;
     }
 
@@ -124,6 +128,7 @@ import { RouterModule } from '@angular/router';
       background-color: #fee2e2;
       border-radius: 0.375rem;
       border: 1px solid #fecaca;
+      font-size: 0.875rem;
     }
 
     .success-message {
@@ -135,13 +140,14 @@ import { RouterModule } from '@angular/router';
       border: 1px solid #a7f3d0;
       color: #065f46;
       font-weight: 500;
+      font-size: 0.875rem;
     }
 
     .auth-footer {
-      margin-top: 1.5rem;
+      margin-top: 1.25rem;
       text-align: center;
       color: #4b5563;
-      font-size: 0.875rem;
+      font-size: 0.8125rem;
     }
 
     .auth-footer a {
@@ -155,6 +161,55 @@ import { RouterModule } from '@angular/router';
     .auth-footer a:hover {
       text-decoration: underline;
       color: #1d4ed8;
+    }
+
+    @media (min-width: 480px) {
+      form {
+        gap: 1.25rem;
+      }
+
+      .form-field {
+        gap: 0.5rem;
+      }
+
+      input {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+      }
+
+      input::placeholder {
+        font-size: 0.9375rem;
+      }
+
+      .submit-button {
+        padding: 0.875rem;
+        font-size: 1rem;
+      }
+
+      .error-message {
+        font-size: 0.875rem;
+      }
+
+      .auth-footer {
+        margin-top: 1.5rem;
+        font-size: 0.875rem;
+      }
+    }
+
+    @media (max-width: 359px) {
+      input {
+        padding: 0.625rem 0.75rem;
+        font-size: 0.875rem;
+      }
+
+      .submit-button {
+        padding: 0.625rem;
+        font-size: 0.875rem;
+      }
+
+      .auth-footer {
+        font-size: 0.75rem;
+      }
     }
   `]
 })
@@ -193,11 +248,9 @@ export class PasswordResetFormComponent implements OnInit {
     this.loading = true;
 
     const { email } = this.resetForm.value;
-    
-    // Emitujemy zdarzenie, które zostanie obsłużone przez komponent nadrzędny
+
     this.resetPassword.emit({ email });
-    
-    // Symulacja sukcesu - w rzeczywistej implementacji to będzie obsługiwane przez serwis
+
     setTimeout(() => {
       this.loading = false;
       this.success = `Link do resetowania hasła został wysłany na adres ${email}`;

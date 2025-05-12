@@ -148,6 +148,7 @@ import * as AuthActions from '../store/auth.actions';
       display: flex;
       align-items: center;
       gap: 0.75rem;
+      color: #000;
       padding: 1rem;
       background-color: #f9fafb;
     }
