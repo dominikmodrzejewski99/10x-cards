@@ -1,23 +1,27 @@
-<form [formGroup]="flashcardForm" (ngSubmit)="onSubmit()" class="p-fluid bg-white">
+<form [formGroup]="flashcardForm" (ngSubmit)="onSubmit()" class="p-fluid bg-white" data-test-id="flashcard-form">
   <div class="field mb-4">
     <label for="front" class="block mb-2 text-gray-700 font-medium">Przód fiszki <span class="text-red-500">*</span></label>
-    <input 
-      id="front" 
-      type="text" 
-      pInputText 
-      formControlName="front" 
-      [class.ng-invalid]="hasError('front', 'required') || hasError('front', 'maxlength')"
+    <input
+      id="front"
+      type="text"
+      pInputText
+      formControlName="front"
+      [class.ng-invalid]="hasError('front', 'required') || hasError('front', 'maxlength') || hasError('front', 'whitespace')"
       class="w-full p-inputtext bg-white text-gray-800 border border-gray-300 rounded-md"
       placeholder="Wpisz pytanie lub pojęcie (max. 200 znaków)"
+      data-test-id="front-input"
     />
-    
+
     <div class="mt-1 flex justify-between">
       <div>
-        <small *ngIf="hasError('front', 'required')" class="text-red-500 block">
+        <small *ngIf="hasError('front', 'required')" class="text-red-500 block" data-test-id="front-required-error">
           Przód fiszki jest wymagany.
         </small>
-        <small *ngIf="hasError('front', 'maxlength')" class="text-red-500 block">
+        <small *ngIf="hasError('front', 'maxlength')" class="text-red-500 block" data-test-id="front-maxlength-error">
           Przód fiszki nie może być dłuższy niż {{ FRONT_MAX_LENGTH }} znaków.
+        </small>
+        <small *ngIf="hasError('front', 'whitespace')" class="text-red-500 block" data-test-id="front-whitespace-error">
+          Przód fiszki nie może zawierać tylko białych znaków.
         </small>
       </div>
       <small class="text-gray-500 block">
@@ -25,26 +29,30 @@
       </small>
     </div>
   </div>
-  
+
   <div class="field mb-4">
     <label for="back" class="block mb-2 text-gray-700 font-medium">Tył fiszki <span class="text-red-500">*</span></label>
-    <textarea 
-      id="back" 
-      rows="4" 
-      pTextarea 
-      formControlName="back" 
-      [class.ng-invalid]="hasError('back', 'required') || hasError('back', 'maxlength')"
+    <textarea
+      id="back"
+      rows="4"
+      pTextarea
+      formControlName="back"
+      [class.ng-invalid]="hasError('back', 'required') || hasError('back', 'maxlength') || hasError('back', 'whitespace')"
       class="w-full p-inputtextarea bg-white text-gray-800 border border-gray-300 rounded-md"
       placeholder="Wpisz odpowiedź lub definicję (max. 500 znaków)"
+      data-test-id="back-input"
     ></textarea>
-    
+
     <div class="mt-1 flex justify-between">
       <div>
-        <small *ngIf="hasError('back', 'required')" class="text-red-500 block">
+        <small *ngIf="hasError('back', 'required')" class="text-red-500 block" data-test-id="back-required-error">
           Tył fiszki jest wymagany.
         </small>
-        <small *ngIf="hasError('back', 'maxlength')" class="text-red-500 block">
+        <small *ngIf="hasError('back', 'maxlength')" class="text-red-500 block" data-test-id="back-maxlength-error">
           Tył fiszki nie może być dłuższy niż {{ BACK_MAX_LENGTH }} znaków.
+        </small>
+        <small *ngIf="hasError('back', 'whitespace')" class="text-red-500 block" data-test-id="back-whitespace-error">
+          Tył fiszki nie może zawierać tylko białych znaków.
         </small>
       </div>
       <small class="text-gray-500 block">
@@ -52,24 +60,26 @@
       </small>
     </div>
   </div>
-  
+
   <div class="flex justify-end gap-2 mt-4">
     <button
       pButton
-      label="Anuluj" 
+      label="Anuluj"
       type="button"
-      class="p-button-outlined p-button-secondary" 
+      class="p-button-outlined p-button-secondary"
       (click)="onCancel()"
-      [disabled]="submitting">
+      [disabled]="submitting"
+      data-test-id="cancel-button">
     </button>
-    <button 
+    <button
       pButton
-      label="Zapisz" 
+      label="Zapisz"
       type="submit"
-      class="p-button-primary" 
+      class="p-button-primary"
       [loading]="submitting"
       [disabled]="flashcardForm.invalid || submitting"
-      icon="pi pi-save">
+      icon="pi pi-save"
+      data-test-id="save-button">
     </button>
   </div>
-</form> 
+</form>

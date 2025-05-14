@@ -4,16 +4,38 @@
   border-bottom: 1px solid #e2e8f0;
   color: #334155 !important;
   font-weight: 600;
+  padding: 1rem 1.25rem;
 }
 
 :host ::ng-deep .modern-dialog .p-dialog-content {
   background-color: white !important;
   color: #374151 !important;
+  padding: 1.25rem;
 }
 
 :host ::ng-deep .modern-dialog .p-dialog-footer {
   background-color: #f8fafc !important;
   border-top: 1px solid #e2e8f0;
+  padding: 1rem 1.25rem;
+}
+
+/* Responsywne style dla dialogu */
+@media (max-width: 640px) {
+  :host ::ng-deep .responsive-dialog .p-dialog-header {
+    padding: 0.75rem 1rem;
+  }
+
+  :host ::ng-deep .responsive-dialog .p-dialog-content {
+    padding: 1rem;
+  }
+
+  :host ::ng-deep .responsive-dialog .p-dialog-footer {
+    padding: 0.75rem 1rem;
+  }
+
+  :host ::ng-deep .p-dialog-header-icons {
+    padding: 0.25rem;
+  }
 }
 
 /* Style dla przycisku dodaj fiszkę */
@@ -25,6 +47,42 @@
 :host ::ng-deep .add-flashcard-btn:hover {
   background: linear-gradient(to right, #1d4ed8, #2563eb);
   transform: translateY(-1px);
+}
+
+/* Responsywne style dla kontenera */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  button {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Style dla bardzo małych ekranów */
+@media (max-width: 320px) {
+  .container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  h1 {
+    font-size: 1.25rem;
+  }
+
+  button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
 }
 
 /* Style dla tabeli z fiszkami */

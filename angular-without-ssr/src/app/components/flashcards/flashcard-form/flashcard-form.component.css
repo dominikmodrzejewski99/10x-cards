@@ -15,6 +15,26 @@ label {
   margin-bottom: 0.5rem;
 }
 
+/* Responsywne style dla formularza */
+@media (max-width: 640px) {
+  .field {
+    margin-bottom: 1.5rem;
+  }
+
+  label {
+    font-size: 0.95rem;
+  }
+
+  .p-inputtext, .p-inputtextarea {
+    font-size: 1rem;
+    padding: 0.5rem;
+  }
+
+  small {
+    font-size: 0.75rem;
+  }
+}
+
 /* Styl dla p-textarea */
 :host ::ng-deep .p-inputtextarea,
 :host ::ng-deep p-textarea textarea {
@@ -49,4 +69,4 @@ label {
 
 :host ::ng-deep .p-dropdown-item:hover {
   background-color: #f3f4f6 !important;
-} 
+}
