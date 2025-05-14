@@ -4,6 +4,8 @@
 
 A modern web application for creating and managing educational flashcards, leveraging AI to automatically generate high-quality learning materials.
 
+## 🔗 [Live Demo](https://10x-cards-70n.pages.dev/)
+
 ## Table of Contents
 - [Project Description](#project-description)
 - [Tech Stack](#tech-stack)
