@@ -27,7 +27,7 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
           </a>
 
           <div class="nav-links">
-            <a routerLink="/" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">Strona główna</a>
+            <a routerLink="/" routerLinkActive="active" class="nav-link hidden md:inline-block" [routerLinkActiveOptions]="{exact: true}">Jak to działa?</a>
             <a *ngIf="isAuthenticated" routerLink="/generate" routerLinkActive="active" class="nav-link">Generuj fiszki</a>
             <a *ngIf="isAuthenticated" routerLink="/flashcards" routerLinkActive="active" class="nav-link">Moje fiszki</a>
           </div>
@@ -118,7 +118,7 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
       align-items: center;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
       .container {
         padding: 0 0.5rem;
         flex-wrap: wrap;
@@ -157,9 +157,9 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
       }
 
       .navbar-right {
-        margin-left: 0.5rem;
         flex-shrink: 0;
         align-items: center;
+        margin-left: 0.25rem;
       }
     }
   `]

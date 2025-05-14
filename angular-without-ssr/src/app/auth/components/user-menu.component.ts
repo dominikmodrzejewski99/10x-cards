@@ -190,7 +190,7 @@ import * as AuthActions from '../store/auth.actions';
 
     .auth-buttons {
       display: flex;
-      gap: 0.75rem;
+      gap: 0.5rem;
     }
 
     .login-button, .register-button {
@@ -268,13 +268,17 @@ import * as AuthActions from '../store/auth.actions';
       }
 
       .auth-buttons {
-        gap: 0.5rem;
+        gap: 0.25rem;
       }
 
       .login-button, .register-button {
-        padding: 0.4rem 0.6rem;
+        padding: 0.4rem;
         font-size: 0.8rem;
-        gap: 0.4rem;
+        gap: 0.3rem;
+      }
+
+      .button-text {
+        display: none;
       }
 
       .login-button .icon, .register-button .icon {
@@ -286,13 +290,13 @@ import * as AuthActions from '../store/auth.actions';
     /* Style dla desktopu - mniejsza czcionka dla przycisku/emaila */
     @media (min-width: 1024px) {
       .user-menu-button .user-email {
-        font-size: 0.75rem; 
-        max-width: 200px; 
+        font-size: 0.75rem;
+        max-width: 200px;
       }
       /* ... inne komentarze ... */
 
       /* Zmniejszenie czcionki dla emaila w nagłówku dropdownu na desktopie */
-      .dropdown-menu .user-email { 
+      .dropdown-menu .user-email {
         font-size: 0.75rem; /* Taki sam rozmiar jak dla emaila w przycisku */
         /* max-width: 200px; Można dostosować, jeśli email w dropdownie też ma być szerszy */
       }
