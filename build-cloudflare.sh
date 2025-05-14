@@ -1,22 +1,53 @@
 #!/bin/bash
 
-# Włącz tryb debugowania
+# Włącz tryb debugowania i śledzenie błędów
 set -x
+set -e
 
-# Wyświetl informacje o środowisku
-echo "Node version: $(node -v)"
-echo "NPM version: $(npm -v)"
-echo "Current directory: $(pwd)"
-echo "Files in current directory: $(ls -la)"
+# Funkcja do wyświetlania komunikatów z wyróżnieniem
+log_info() {
+  echo "\033[1;34m[INFO]\033[0m $1"
+}
+
+log_warning() {
+  echo "\033[1;33m[WARNING]\033[0m $1"
+}
+
+log_error() {
+  echo "\033[1;31m[ERROR]\033[0m $1"
+}
+
+log_success() {
+  echo "\033[1;32m[SUCCESS]\033[0m $1"
+}
+
+# Wyświetl szczegółowe informacje o środowisku
+log_info "===== INFORMACJE O ŚRODOWISKU ====="
+log_info "Node version: $(node -v)"
+log_info "NPM version: $(npm -v)"
+log_info "Current directory: $(pwd)"
+log_info "Files in current directory: $(ls -la)"
+log_info "Memory available: $(free -h 2>/dev/null || echo 'Command not available')"
+log_info "Disk space: $(df -h . 2>/dev/null || echo 'Command not available')"
+log_info "CPU info: $(cat /proc/cpuinfo | grep 'model name' | head -1 2>/dev/null || echo 'Command not available')"
+log_info "Environment variables: $(env | grep -E 'NODE|PATH|HOME|USER' | sort)"
+log_info "==============================="
 
 # Przejdź do katalogu angular-without-ssr
-cd angular-without-ssr || exit 1
-echo "Changed directory to: $(pwd)"
-echo "Files in angular-without-ssr: $(ls -la)"
+log_info "Przechodzenie do katalogu angular-without-ssr..."
+cd angular-without-ssr || { log_error "Nie można przejść do katalogu angular-without-ssr!"; exit 1; }
+log_success "Zmieniono katalog na: $(pwd)"
+log_info "Pliki w katalogu angular-without-ssr:"
+ls -la
 
 # Zainstaluj zależności
-echo "Installing dependencies..."
-npm ci || exit 1
+log_info "Instalowanie zależności..."
+npm ci --verbose || { log_error "Instalacja zależności nie powiodła się!"; exit 1; }
+log_success "Zależności zainstalowane pomyślnie"
+
+# Sprawdź zainstalowane zależności
+log_info "Zainstalowane zależności Angular:"
+npm list @angular/core @angular/cli @angular-devkit/build-angular || log_warning "Nie można wyświetlić informacji o zależnościach Angular"
 
 # Sprawdź, czy jesteśmy w środowisku GitHub Actions
 if [ "$GITHUB_ACTIONS" = "true" ]; then
