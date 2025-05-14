@@ -41,7 +41,7 @@ jobs:
       # Krok 2: Testy jednostkowe
       - name: Run unit tests
         working-directory: ${{ env.WORKING_DIR }}
-        run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
+        run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless --code-coverage
 
       # Testy E2E usunięte
 
