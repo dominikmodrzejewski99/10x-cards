@@ -1,7 +1,6 @@
 # 10xCards
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![CI/CD Pipeline](https://github.com/yourusername/10xcards/actions/workflows/ci-cd-pipeline.yml/badge.svg)](https://github.com/yourusername/10xcards/actions/workflows/ci-cd-pipeline.yml)
 
 A modern web application for creating and managing educational flashcards, leveraging AI to automatically generate high-quality learning materials.
 
@@ -10,6 +9,7 @@ A modern web application for creating and managing educational flashcards, lever
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
 - [Available Scripts](#available-scripts)
+- [Deployment](#deployment)
 - [Project Scope](#project-scope)
 - [Project Status](#project-status)
 - [License](#license)
@@ -28,28 +28,27 @@ The project aims to solve the time-consuming process of creating high-quality st
 ## Tech Stack
 
 ### Frontend
-- **Angular 19** - Modern web framework for building interactive components
-- **TypeScript 5** - Adds static typing and improved developer experience
-- **Tailwind 4** - Utility-first CSS framework for styling
-- **Shadcn/ui** - High-quality UI component library
+- **Angular** - Modern web framework for building interactive components
+- **TypeScript** - Adds static typing and improved developer experience
+- **Tailwind CSS** - Utility-first CSS framework for styling
+- **PrimeNG** - High-quality UI component library
 
 ### Backend
 - **Supabase**
   - PostgreSQL database for data storage
-  - Built-in authentication system
+  - Built-in authentication system with row-level security
   - Backend-as-a-Service capabilities
-  - Self-hosting options available
+  - Edge functions for serverless backend logic
 
 ### AI Integration
-- **Openrouter.ai**
+- **OpenRouter API**
   - Access to multiple AI models (OpenAI, Anthropic, Google)
   - Built-in API cost control
-  - Flexible model selection
+  - Fallback options for model availability
 
 ### DevOps
-- **Github Actions** - CI/CD pipeline automation
-- **DigitalOcean** - Cloud hosting platform
-- **Docker** - Containerization for consistent deployment
+- **GitHub Actions** - CI/CD pipeline automation
+- **Cloudflare Pages** - Hosting and deployment platform
 
 ## Getting Started
 
@@ -130,7 +129,15 @@ This approach allows the application to access environment variables in the brow
 ### Deployment Process
 1. Push changes to the main branch
 2. GitHub Actions will build and deploy the application
-3. The application will be available at [https://10xcards.pages.dev](https://10xcards.pages.dev)
+3. The application will be available at the configured Cloudflare Pages URL
+
+### Environment Variables
+
+The following environment variables must be set in Cloudflare Pages settings:
+
+- `SUPABASE_URL` - Supabase project URL
+- `SUPABASE_KEY` - Supabase public API key
+- `OPENROUTER_KEY` - OpenRouter API key
 
 ## Project Scope
 
@@ -140,16 +147,17 @@ This approach allows the application to access environment variables in the brow
 - User authentication system
 - Spaced repetition learning algorithm integration
 - Flashcard generation statistics
+- Secure data storage compliant with GDPR
 
 ### Out of MVP Scope
 - Advanced custom repetition algorithms
 - Gamification features
 - Mobile applications
-- Multiple document format imports
+- Multiple document format imports (PDF, DOCX, etc.)
 - Public API
 - Flashcard sharing between users
 - Advanced notification system
-- Advanced keyword search
+- Advanced keyword search for flashcards
 
 ## Project Status
 
@@ -157,8 +165,9 @@ This approach allows the application to access environment variables in the brow
 
 The project is currently in active development. Key metrics for success:
 - 75% AI-generated flashcard acceptance rate target
-- 75% of new flashcards created using AI
+- 75% of new flashcards created using AI (compared to manually created flashcards)
 - Ongoing monitoring of generation quality and user engagement
+- User satisfaction with the learning experience
 
 ## License
 
