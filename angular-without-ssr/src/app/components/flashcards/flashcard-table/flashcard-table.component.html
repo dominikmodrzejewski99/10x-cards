@@ -1,4 +1,4 @@
-<div class="card bg-white shadow-sm rounded-lg overflow-hidden">
+<div class="card bg-white shadow-sm rounded-lg overflow-hidden w-full">
   <!-- Panel wyszukiwania i paginacji - zmiana z niebieskiego na jasny -->
   <div class="bg-gray-50 border-b border-gray-200 p-3 sm:p-4">
     <div class="flex flex-wrap gap-2 sm:gap-3 justify-between items-center">
@@ -34,38 +34,43 @@
   <p-table
     [value]="flashcards"
     [loading]="loading"
-    [paginator]="false"
-    [tableStyle]="{ 'min-width': '100%' }"
+    [paginator]="true"
+    [rows]="rows"
+    [totalRecords]="totalRecords"
+    [lazy]="true"
+    (onLazyLoad)="onLazyLoad($event)"
+    [tableStyle]="{ 'width': '100%' }"
     styleClass="p-datatable-sm p-datatable-striped custom-table responsive-table"
     [sortField]="sortField"
     [sortOrder]="sortOrder"
     (onSort)="onSort($event)"
-    [scrollable]="true"
+    responsiveLayout="stack"
+    dataKey="id"
     data-test-id="flashcards-table">
 
     <ng-template pTemplate="header">
       <tr>
-        <th class="w-2/5 sm:w-2/5" pSortableColumn="front">
+        <th class="w-5/12" pSortableColumn="front" [ngStyle]="{'font-size': '0.75rem !important'}">
           Przód <p-sortIcon field="front"></p-sortIcon>
         </th>
-        <th class="w-2/5 sm:w-2/5" pSortableColumn="back">
+        <th class="w-5/12" pSortableColumn="back" [ngStyle]="{'font-size': '0.75rem !important'}">
           Tył <p-sortIcon field="back"></p-sortIcon>
         </th>
-        <th class="w-1/5 sm:w-1/5 text-center">Akcje</th>
+        <th class="w-2/12 text-center" [ngStyle]="{'font-size': '0.75rem !important'}">Akcje</th>
       </tr>
     </ng-template>
 
     <ng-template pTemplate="body" let-flashcard>
       <tr>
-        <td class="truncate max-w-[150px] sm:max-w-none" [title]="flashcard.front">{{ flashcard.front }}</td>
-        <td class="truncate max-w-[150px] sm:max-w-none" [title]="flashcard.back">{{ flashcard.back }}</td>
-        <td class="text-center">
+        <td class="truncate" [title]="flashcard.front" [ngStyle]="{'font-size': '0.75rem !important'}">{{ flashcard.front }}</td>
+        <td class="truncate" [title]="flashcard.back" [ngStyle]="{'font-size': '0.75rem !important'}">{{ flashcard.back }}</td>
+        <td class="text-center" [ngStyle]="{'font-size': '0.75rem !important'}">
           <div class="flex justify-center gap-1 sm:gap-2">
             <p-button
               icon="pi pi-pencil"
               styleClass="p-button-outlined p-button-secondary"
               size="small"
-              (onClick)="onEdit(flashcard)"
+              (onClick)="editFlashcard.emit(flashcard)"
               [disabled]="loading"
               pTooltip="Edytuj fiszkę"
               data-test-id="edit-button">
@@ -74,7 +79,7 @@
               icon="pi pi-trash"
               styleClass="p-button-outlined p-button-danger"
               size="small"
-              (onClick)="onDelete(flashcard)"
+              (onClick)="deleteFlashcard.emit(flashcard)"
               [disabled]="loading"
               pTooltip="Usuń fiszkę"
               data-test-id="delete-button">

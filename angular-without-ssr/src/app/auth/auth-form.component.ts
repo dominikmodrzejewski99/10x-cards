@@ -103,6 +103,16 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
       box-sizing: border-box;
     }
 
+    /* Style dla autouzupełniania w przeglądarce */
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+      -webkit-text-fill-color: #1f2937 !important; /* Zachowaj kolor tekstu */
+      background-color: #ffffff !important; /* Ustaw białe tło */
+    }
+
     input::placeholder {
       color: #9ca3af;
       font-size: 0.875rem;
@@ -112,6 +122,7 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
       outline: none;
       border-color: #2563eb;
       box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+      color: #1f2937 !important;
     }
 
     .submit-button {
@@ -155,7 +166,7 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
     }
 
     .auth-footer {
-      margin-top: 1.25rem;
+      margin-top: 0.75rem;
       text-align: center;
       color: #4b5563;
       font-size: 0.8125rem;
@@ -175,7 +186,7 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
     }
 
     .forgot-password {
-      margin-top: 0.75rem;
+      margin-top: 0.5rem;
       font-size: 0.75rem;
     }
 
@@ -216,11 +227,12 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
       }
 
       .auth-footer {
-        margin-top: 1.5rem;
+        margin-top: 1rem;
         font-size: 0.875rem;
       }
 
       .forgot-password {
+        margin-top: 0.5rem;
         font-size: 0.8125rem;
       }
     }

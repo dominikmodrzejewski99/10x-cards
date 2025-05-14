@@ -1,5 +1,33 @@
 /* Style dla dialogu */
-:host ::ng-deep .modern-dialog .p-dialog-header {
+:host ::ng-deep .p-dialog.modern-dialog, .modern-dialog {
+  /* Nadpisanie zmiennych CSS dla p-dialog */
+  --p-dialog-background: #ffffff !important;
+  --p-dialog-border-color: #e9ecef !important;
+  --p-dialog-text-color: #495057 !important; /* Ogólny kolor tekstu dla dialogu */
+
+  /* Dodatkowe zmienne dla nagłówka, jeśli są używane przez motyw */
+  --p-dialog-header-background: #f8fafc !important;
+  --p-dialog-header-text-color: #334155 !important;
+  --p-dialog-header-border-color: #e2e8f0 !important;
+  --p-dialog-header-icon-color: #64748b !important;
+  --p-dialog-header-icon-hover-background: #e9ecef !important;
+  --p-dialog-header-icon-hover-color: #334155 !important;
+
+  /* Dodatkowe zmienne dla treści, jeśli są używane */
+  --p-dialog-content-background: #ffffff !important;
+  --p-dialog-content-text-color: #374151 !important;
+
+  /* Dodatkowe zmienne dla stopki, jeśli są używane */
+  --p-dialog-footer-background: #f8fafc !important;
+  --p-dialog-footer-border-color: #e2e8f0 !important;
+
+  /* Bezpośrednie nadpisanie dla pewności */
+  background-color: #ffffff !important;
+  color: #495057 !important;
+  border: 1px solid #e9ecef !important;
+}
+
+.modern-dialog .p-dialog-header {
   background-color: #f8fafc !important;
   border-bottom: 1px solid #e2e8f0;
   color: #334155 !important;
@@ -7,13 +35,13 @@
   padding: 1rem 1.25rem;
 }
 
-:host ::ng-deep .modern-dialog .p-dialog-content {
+.modern-dialog .p-dialog-content {
   background-color: white !important;
   color: #374151 !important;
   padding: 1.25rem;
 }
 
-:host ::ng-deep .modern-dialog .p-dialog-footer {
+.modern-dialog .p-dialog-footer {
   background-color: #f8fafc !important;
   border-top: 1px solid #e2e8f0;
   padding: 1rem 1.25rem;
@@ -21,39 +49,41 @@
 
 /* Responsywne style dla dialogu */
 @media (max-width: 640px) {
-  :host ::ng-deep .responsive-dialog .p-dialog-header {
+  .responsive-dialog .p-dialog-header {
     padding: 0.75rem 1rem;
   }
 
-  :host ::ng-deep .responsive-dialog .p-dialog-content {
+  .responsive-dialog .p-dialog-content {
     padding: 1rem;
   }
 
-  :host ::ng-deep .responsive-dialog .p-dialog-footer {
+  .responsive-dialog .p-dialog-footer {
     padding: 0.75rem 1rem;
   }
 
-  :host ::ng-deep .p-dialog-header-icons {
+  .p-dialog-header-icons {
     padding: 0.25rem;
   }
 }
 
 /* Style dla przycisku dodaj fiszkę */
-:host ::ng-deep .add-flashcard-btn {
+.add-flashcard-btn {
   background: linear-gradient(to right, #2563eb, #3b82f6);
   transition: all 0.3s ease;
 }
 
-:host ::ng-deep .add-flashcard-btn:hover {
+.add-flashcard-btn:hover {
   background: linear-gradient(to right, #1d4ed8, #2563eb);
   transform: translateY(-1px);
 }
 
 /* Responsywne style dla kontenera */
 @media (max-width: 640px) {
-  .container {
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
+  .container-fluid {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    width: 100%;
+    max-width: 100%;
   }
 
   h1 {
@@ -69,10 +99,12 @@
 }
 
 /* Style dla bardzo małych ekranów */
-@media (max-width: 320px) {
-  .container {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+@media (max-width: 20rem) {
+  .container-fluid {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    width: 100%;
+    max-width: 100%;
   }
 
   h1 {
@@ -86,7 +118,7 @@
 }
 
 /* Style dla tabeli z fiszkami */
-:host ::ng-deep .flashcard-table {
+.flashcard-table {
   border-radius: 0.5rem;
   overflow: hidden;
 }

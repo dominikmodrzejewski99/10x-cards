@@ -1,4 +1,4 @@
-<div class="container mx-auto px-4 py-6 md:py-8">
+<div class="container-fluid mx-auto px-2 sm:px-4 py-6 md:py-8 w-full max-w-full">
   <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 md:mb-6">
     <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-0" data-test-id="flashcards-title">Moje Fiszki</h1>
 
@@ -12,7 +12,7 @@
     </button>
   </div>
 
-  <div class="bg-white shadow-md rounded-lg overflow-hidden w-full max-w-full overflow-x-auto">
+  <div class="bg-white shadow-md rounded-lg overflow-hidden w-full max-w-full overflow-x-auto mx-auto">
     <app-flashcard-table
       [flashcards]="state().flashcards"
       [loading]="state().loading"
@@ -22,12 +22,9 @@
       [searchTerm]="state().searchTerm"
       [sortField]="state().sortField"
       [sortOrder]="state().sortOrder"
-      (edit)="openEditModal($event)"
-      (delete)="handleDelete($event)"
-      (pageChange)="onPageChange($event)"
-      (sort)="onSort($event)"
-      (search)="onSearch($event)"
-      (resetFilter)="resetFilters()">
+      (editFlashcard)="openEditModal($event)"
+      (deleteFlashcard)="handleDelete($event)"
+      (lazyLoad)="loadFlashcards($event)">
     </app-flashcard-table>
   </div>
 

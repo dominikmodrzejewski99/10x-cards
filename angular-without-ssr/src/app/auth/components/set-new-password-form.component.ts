@@ -94,6 +94,16 @@ import { RouterModule } from '@angular/router';
       box-sizing: border-box;
     }
 
+    /* Style dla autouzupełniania w przeglądarce */
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+      -webkit-text-fill-color: #1f2937 !important;
+      background-color: #ffffff !important;
+    }
+
     input::placeholder {
       color: #9ca3af;
       font-size: 0.875rem;
@@ -103,6 +113,7 @@ import { RouterModule } from '@angular/router';
       outline: none;
       border-color: #2563eb;
       box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+      color: #1f2937 !important;
     }
 
     .submit-button {

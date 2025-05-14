@@ -53,16 +53,14 @@ import * as AuthActions from './store/auth.actions';
     .auth-container {
       display: flex;
       justify-content: center;
-      align-items: center;
-      min-height: 100vh;
       background-color: #f9fafb;
-      padding: 1rem;
+      padding: 4rem 1rem 1rem 1rem;
     }
 
     .auth-card {
       width: 100%;
       max-width: 420px;
-      padding: 1.5rem;
+      padding: 1.5rem 1.5rem 1rem 1.5rem;
       border-radius: 0.75rem;
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
       background-color: white;
@@ -133,7 +131,7 @@ import * as AuthActions from './store/auth.actions';
 
     @media (min-width: 480px) {
       .auth-card {
-        padding: 2rem;
+        padding: 2rem 2rem 1.5rem 2rem;
       }
 
       .auth-title {

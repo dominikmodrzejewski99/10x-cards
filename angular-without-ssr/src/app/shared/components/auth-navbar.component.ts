@@ -71,6 +71,7 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
       color: white;
       font-weight: 700;
       font-size: 1.25rem;
+      flex-shrink: 0;
     }
 
     .logo-image {
@@ -114,6 +115,51 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
     .navbar-right {
       display: flex;
       align-items: center;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 0 0.5rem;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+
+      .navbar-left {
+        width: auto;
+        flex-shrink: 0;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1rem;
+        gap: 0.25rem;
+        flex-shrink: 0;
+      }
+
+      .logo-image {
+        height: 1.5rem;
+      }
+
+      .nav-links {
+        display: flex;
+        margin-left: 0.5rem;
+        gap: 0.5rem;
+        align-items: center;
+        flex-wrap: wrap;
+        flex-grow: 1;
+        justify-content: flex-end;
+      }
+
+      .nav-link {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.3rem;
+      }
+
+      .navbar-right {
+        margin-left: 0.5rem;
+        flex-shrink: 0;
+        align-items: center;
+      }
     }
   `]
 })

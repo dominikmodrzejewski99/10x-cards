@@ -33,13 +33,6 @@ import * as AuthActions from '../store/auth.actions';
               </div>
             </div>
             <div class="dropdown-divider"></div>
-            <a routerLink="/profile" class="dropdown-item" (click)="closeMenu()">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-              Profil
-            </a>
             <a routerLink="/flashcards" class="dropdown-item" (click)="closeMenu()">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
@@ -118,6 +111,7 @@ import * as AuthActions from '../store/auth.actions';
       border-radius: 50%;
       font-weight: 600;
       font-size: 0.875rem;
+      flex-shrink: 0;
     }
 
     .user-email {
@@ -130,6 +124,7 @@ import * as AuthActions from '../store/auth.actions';
     .icon {
       width: 1.25rem;
       height: 1.25rem;
+      flex-shrink: 0;
     }
 
     .dropdown-menu {
@@ -231,6 +226,76 @@ import * as AuthActions from '../store/auth.actions';
       stroke: white;
       width: 1rem;
       height: 1rem;
+    }
+
+    /* Responsywne style dla menu użytkownika */
+    @media (max-width: 600px) {
+      .user-menu-button {
+        padding: 0.3rem 0.5rem;
+        gap: 0.25rem;
+      }
+
+      .user-avatar {
+        width: 1.7rem;
+        height: 1.7rem;
+        font-size: 0.75rem;
+      }
+
+      .user-email {
+        max-width: 100px;
+        font-size: 0.8rem;
+      }
+
+      .icon {
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .dropdown-menu {
+        width: 200px;
+        right: 0;
+      }
+
+      .dropdown-header {
+        padding: 0.75rem;
+        gap: 0.5rem;
+      }
+
+      .dropdown-item {
+        padding: 0.5rem 0.75rem;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .auth-buttons {
+        gap: 0.5rem;
+      }
+
+      .login-button, .register-button {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.8rem;
+        gap: 0.4rem;
+      }
+
+      .login-button .icon, .register-button .icon {
+        width: 0.8rem;
+        height: 0.8rem;
+      }
+    }
+
+    /* Style dla desktopu - mniejsza czcionka dla przycisku/emaila */
+    @media (min-width: 1024px) {
+      .user-menu-button .user-email {
+        font-size: 0.75rem; 
+        max-width: 200px; 
+      }
+      /* ... inne komentarze ... */
+
+      /* Zmniejszenie czcionki dla emaila w nagłówku dropdownu na desktopie */
+      .dropdown-menu .user-email { 
+        font-size: 0.75rem; /* Taki sam rozmiar jak dla emaila w przycisku */
+        /* max-width: 200px; Można dostosować, jeśli email w dropdownie też ma być szerszy */
+      }
     }
   `]
 })

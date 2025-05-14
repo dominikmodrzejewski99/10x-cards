@@ -79,14 +79,11 @@ export class FlashcardListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('FlashcardListComponent initialized');
     this.loadFlashcards();
   }
 
   // Ładowanie fiszek z API
   loadFlashcards(event?: any): void {
-    console.log('Ładowanie fiszek z API');
-
     const first = event?.first ?? this.state().first;
     const rows = event?.rows ?? this.state().rows;
     const sortField = event?.sortField ?? this.state().sortField;
@@ -119,7 +116,6 @@ export class FlashcardListComponent implements OnInit {
         }));
       },
       error: (error) => {
-        console.error('Błąd podczas pobierania fiszek:', error);
         let errorMessage = 'Nie udało się pobrać fiszek. Spróbuj ponownie później.';
 
         // Sprawdzamy, czy błąd jest związany z autentykacją
@@ -146,8 +142,6 @@ export class FlashcardListComponent implements OnInit {
 
   // Otwarcie modala dodawania nowej fiszki
   openAddModal(): void {
-    console.log('Opening add modal');
-
     // Ustaw stan
     this.state.update(state => ({
       ...state,
@@ -187,76 +181,9 @@ export class FlashcardListComponent implements OnInit {
 
   // Obsługa zapisu (dodawanie lub edycja)
   onSave(formData: FlashcardFormData): void {
-    console.log('Tymczasowo wyłączono zapisywanie fiszek');
-    console.log('Dane formularza:', formData);
-
     const isEdit = !!formData.id;
 
     // Symulacja zapisywania
-    setTimeout(() => {
-      if (isEdit && formData.id) {
-        // Symulacja aktualizacji istniejącej fiszki
-        const updatedFlashcard = {
-          id: formData.id,
-          front: formData.front,
-          back: formData.back,
-          source: 'manual' as 'manual',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          user_id: '123e4567-e89b-12d3-a456-426614174000',
-          generation_id: null
-        };
-
-        // Aktualizacja listy fiszek
-        this.state.update(state => ({
-          ...state,
-          flashcards: state.flashcards.map(f =>
-            f.id === updatedFlashcard.id ? updatedFlashcard : f
-          ),
-          loading: false
-        }));
-
-        // Zamknij modal
-        this.onCloseFormModal();
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Sukces',
-          detail: 'Fiszka została zaktualizowana.'
-        });
-      } else {
-        // Symulacja dodawania nowej fiszki
-        const newId = Math.max(0, ...this.state().flashcards.map(f => f.id)) + 1;
-        const newFlashcard = {
-          id: newId,
-          front: formData.front,
-          back: formData.back,
-          source: 'manual' as 'manual',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          user_id: '123e4567-e89b-12d3-a456-426614174000',
-          generation_id: null
-        };
-
-        // Aktualizacja listy fiszek
-        this.state.update(state => ({
-          ...state,
-          flashcards: [...state.flashcards, newFlashcard],
-          totalRecords: state.totalRecords + 1,
-          loading: false
-        }));
-
-        // Zamknij modal
-        this.onCloseFormModal();
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Sukces',
-          detail: 'Nowa fiszka została dodana.'
-        });
-      }
-    }, 500); // Symulacja opóźnienia sieciowego
-
-    // Tymczasowo wyłączono żądanie HTTP
-    /*
     this.state.update(state => ({
       ...state,
       loading: true
@@ -306,7 +233,6 @@ export class FlashcardListComponent implements OnInit {
         error: (error) => this.handleApiError(error, 'dodawania')
       });
     }
-    */
   }
 
   // Obsługa usuwania fiszki
@@ -318,28 +244,6 @@ export class FlashcardListComponent implements OnInit {
       acceptLabel: 'Tak',
       rejectLabel: 'Nie',
       accept: () => {
-        console.log('Tymczasowo wyłączono usuwanie fiszek');
-        console.log('Usuwanie fiszki o ID:', flashcard.id);
-
-        // Symulacja usuwania
-        setTimeout(() => {
-          // Aktualizacja listy fiszek
-          this.state.update(state => ({
-            ...state,
-            flashcards: state.flashcards.filter(f => f.id !== flashcard.id),
-            totalRecords: state.totalRecords - 1,
-            loading: false
-          }));
-
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Sukces',
-            detail: 'Fiszka została usunięta.'
-          });
-        }, 500); // Symulacja opóźnienia sieciowego
-
-        // Tymczasowo wyłączono żądanie HTTP
-        /*
         this.state.update(state => ({
           ...state,
           loading: true
@@ -347,19 +251,16 @@ export class FlashcardListComponent implements OnInit {
 
         this.flashcardApiService.deleteFlashcard(flashcard.id).subscribe({
           next: () => {
-            // Aktualizacja listy fiszek
             this.state.update(state => ({
               ...state,
               flashcards: state.flashcards.filter(f => f.id !== flashcard.id),
               totalRecords: state.totalRecords - 1,
               loading: false
             }));
-            // Można dodać sprawdzenie czy usunięto ostatni element na stronie
             if (this.state().flashcards.length === 0 && this.state().first > 0) {
               this.loadFlashcards({ first: Math.max(0, this.state().first - this.state().rows) });
             } else {
-              // Odświeżenie bieżącej strony, jeśli to potrzebne lub po prostu aktualizacja stanu
-              this.loadFlashcards(); // Można to zoptymalizować, aby nie ładować ponownie
+              this.loadFlashcards();
             }
             this.messageService.add({
               severity: 'success',
@@ -369,16 +270,12 @@ export class FlashcardListComponent implements OnInit {
           },
           error: (error) => this.handleApiError(error, 'usuwania')
         });
-        */
       }
     });
   }
 
   // Obsługa zmiany strony (paginacja)
   onPageChange(event: any): void {
-    console.log('Tymczasowo wyłączono paginację');
-    console.log('Zmiana strony:', event);
-
     // Aktualizuj stan bez ładowania danych
     this.state.update(state => ({
       ...state,
@@ -386,15 +283,11 @@ export class FlashcardListComponent implements OnInit {
       rows: event.rows
     }));
 
-    // Tymczasowo wyłączono żądanie HTTP
-    // this.loadFlashcards(event);
+    this.loadFlashcards(event);
   }
 
   // Obsługa sortowania
   onSort(event: any): void {
-    console.log('Tymczasowo wyłączono sortowanie');
-    console.log('Sortowanie:', event);
-
     // Aktualizuj stan bez ładowania danych
     this.state.update(state => ({
       ...state,
@@ -402,76 +295,24 @@ export class FlashcardListComponent implements OnInit {
       sortOrder: event.sortOrder
     }));
 
-    // Tymczasowo wyłączono żądanie HTTP
-    // this.loadFlashcards(event);
+    this.loadFlashcards(event);
   }
 
   // Obsługa wyszukiwania
   onSearch(term: string): void {
-    console.log('Tymczasowo wyłączono wyszukiwanie fiszek');
-    console.log('Wyszukiwanie:', term);
-
+    // Aktualizuj stan searchTerm
     this.state.update(state => ({
       ...state,
       searchTerm: term,
-      first: 0 // Wróć do pierwszej strony przy wyszukiwaniu
+      // Resetuj paginację do pierwszej strony przy nowym wyszukiwaniu
+      first: 0
     }));
 
-    // Symulacja wyszukiwania
-    setTimeout(() => {
-      // Filtruj fiszki lokalnie
-      const filteredFlashcards = [
-        {
-          id: 1,
-          front: 'Przykładowa fiszka 1',
-          back: 'Odpowiedź 1',
-          source: 'manual' as 'manual',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          user_id: '123e4567-e89b-12d3-a456-426614174000',
-          generation_id: null
-        },
-        {
-          id: 2,
-          front: 'Przykładowa fiszka 2',
-          back: 'Odpowiedź 2',
-          source: 'manual' as 'manual',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          user_id: '123e4567-e89b-12d3-a456-426614174000',
-          generation_id: null
-        },
-        {
-          id: 3,
-          front: 'Przykładowa fiszka 3',
-          back: 'Odpowiedź 3',
-          source: 'manual' as 'manual',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          user_id: '123e4567-e89b-12d3-a456-426614174000',
-          generation_id: null
-        }
-      ].filter(f =>
-        f.front.toLowerCase().includes(term.toLowerCase()) ||
-        f.back.toLowerCase().includes(term.toLowerCase())
-      );
-
-      this.state.update(state => ({
-        ...state,
-        flashcards: filteredFlashcards,
-        totalRecords: filteredFlashcards.length,
-        loading: false
-      }));
-    }, 300);
-
-    // Tymczasowo wyłączono żądanie HTTP
-    // this.loadFlashcards();
+    this.loadFlashcards();
   }
 
   // Resetowanie filtrów
   resetFilters(): void {
-    console.log('Tymczasowo wyłączono resetowanie filtrów');
-
     this.state.update(state => ({
       ...state,
       searchTerm: '',
@@ -480,56 +321,11 @@ export class FlashcardListComponent implements OnInit {
       first: 0
     }));
 
-    // Symulacja resetowania filtrów
-    setTimeout(() => {
-      // Przywróć przykładowe dane
-      this.state.update(state => ({
-        ...state,
-        flashcards: [
-          {
-            id: 1,
-            front: 'Przykładowa fiszka 1',
-            back: 'Odpowiedź 1',
-            source: 'manual' as 'manual',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            user_id: '123e4567-e89b-12d3-a456-426614174000',
-            generation_id: null
-          },
-          {
-            id: 2,
-            front: 'Przykładowa fiszka 2',
-            back: 'Odpowiedź 2',
-            source: 'manual' as 'manual',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            user_id: '123e4567-e89b-12d3-a456-426614174000',
-            generation_id: null
-          },
-          {
-            id: 3,
-            front: 'Przykładowa fiszka 3',
-            back: 'Odpowiedź 3',
-            source: 'manual' as 'manual',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            user_id: '123e4567-e89b-12d3-a456-426614174000',
-            generation_id: null
-          }
-        ],
-        totalRecords: 3,
-        loading: false
-      }));
-    }, 300);
-
-    // Tymczasowo wyłączono żądanie HTTP
-    // this.loadFlashcards();
+    this.loadFlashcards();
   }
 
   // Pomocnicza metoda do obsługi błędów API
   private handleApiError(error: any, action: string): void {
-    console.error(`Błąd podczas ${action} fiszki:`, error);
-
     let errorMessage = `Nie udało się wykonać operacji ${action}. Spróbuj ponownie później.`;
     let summary = 'Błąd';
     let redirectToLogin = false;

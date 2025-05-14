@@ -1,12 +1,17 @@
 /* Style dla textarea */
-:host ::ng-deep textarea,
-:host ::ng-deep .p-inputtextarea,
-:host ::ng-deep .p-textarea,
-:host ::ng-deep p-inputtextarea textarea,
-:host ::ng-deep p-textarea textarea {
+textarea,
+.p-inputtextarea,
+.p-textarea,
+p-inputtextarea textarea,
+p-textarea textarea {
   background-color: white !important;
   background: white !important;
   color: #333 !important;
+  /* Ustawienie minimalnej wysokości dla desktopu */
+  min-height: 270px;
+  /* Wyłączenie resize i włączenie scrolla */
+  resize: none;
+  overflow: auto; /* Upewnij się, że scrollbar jest widoczny */
 }
 
 /* Style dla kontenera */
@@ -16,8 +21,10 @@
 }
 
 /* Dodatkowe style dla focus */
-:host ::ng-deep textarea:focus {
+textarea:focus {
   background-color: white !important;
   border-color: #3b82f6 !important;
   box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25) !important;
+  /* Upewnij się, że kolor tekstu jest ciemny na focus */
+  color: #1f2937 !important;
 }

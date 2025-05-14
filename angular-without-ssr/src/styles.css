@@ -13,6 +13,93 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
+/* Globalne style dla komponentów PrimeNG */
+/* Zmienne CSS zostały przeniesione do konfiguracji motywu w app.config.ts */
+
+/* Dodatkowe style dla dialogów - uzupełniające konfiguracje motywu */
+.p-dialog {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.p-dialog .p-dialog-header {
+  padding: 1rem 1.5rem !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.p-dialog .p-dialog-content {
+  padding: 1.5rem !important;
+}
+
+.p-dialog .p-dialog-footer {
+  padding: 1rem 1.5rem !important;
+  border-top: 1px solid #e2e8f0 !important;
+}
+
+/* Specyficzne style dla modern-dialog */
+.modern-dialog {
+  border-radius: 8px !important;
+}
+
+/* Dodatkowe style dla dialogów PrimeNG */
+.p-component-overlay {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+}
+
+.p-dialog-mask {
+  background-color: transparent !important;
+}
+
+.p-dialog-mask.p-component-overlay {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Style dla przycisków w dialogach */
+.p-dialog .p-dialog-header .p-dialog-header-icon {
+  color: #64748b !important;
+  background-color: transparent !important;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon:hover {
+  color: #334155 !important;
+  background-color: #f1f5f9 !important;
+}
+
+/* Style dla toastów - uzupełniające konfiguracje motywu */
+.p-toast {
+  opacity: 1 !important;
+}
+
+.p-toast .p-toast-message {
+  border-radius: 6px !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.p-toast .p-toast-message-content {
+  padding: 1rem 1.25rem !important;
+  border-width: 0 0 0 6px !important;
+}
+
+.p-toast .p-toast-message-text {
+  margin-left: 1rem !important;
+}
+
+.p-toast .p-toast-message-icon {
+  font-size: 1.5rem !important;
+}
+
+.p-toast .p-toast-summary {
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+}
+
+.p-toast .p-toast-detail {
+  margin-top: 0.25rem !important;
+  font-size: 0.875rem !important;
+}
+
 /* Jeszcze bardziej specyficzne style dla dropdown */
 body .p-dropdown,
 html .p-dropdown,
