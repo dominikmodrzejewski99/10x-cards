@@ -309,57 +309,25 @@ echo "Kopiowanie environments.default.ts do environments.ts..."
 cp src/environments/environments.default.ts src/environments/environments.ts || exit 1
 echo "Plik environments.ts utworzony pomyślnie"
 
-# Zbuduj aplikację używając różnych metod (próbujemy wszystkich dostępnych opcji)
+# Zbuduj aplikację używając prostego polecenia ng build
 log_info "===== BUDOWANIE APLIKACJI ====="
 
-# Metoda 1: Użycie binarki Angular CLI z node_modules
-log_info "Metoda 1: Sprawdzanie, czy binarka Angular CLI istnieje..."
-if [ -f "./node_modules/.bin/ng" ]; then
-  log_info "Znaleziono binarkę Angular CLI. Uruchamianie: ./node_modules/.bin/ng build --configuration production --budget=false"
-  ./node_modules/.bin/ng build --configuration production --budget=false --verbose && BUILD_SUCCESS=true || {
-    log_error "Metoda 1 nie powiodła się. Błąd budowania aplikacji."
-    log_info "Zawartość katalogu node_modules/.bin:"
-    ls -la ./node_modules/.bin | grep ng
-  }
-else
-  log_warning "Nie znaleziono binarki Angular CLI w ./node_modules/.bin/ng"
-fi
+log_info "Uruchamianie: ng build"
+ng build && BUILD_SUCCESS=true || {
+  log_error "Budowanie aplikacji nie powiodło się."
+  log_info "Wersja Angular CLI: $(ng version 2>/dev/null || echo 'Nie znaleziono Angular CLI')"
 
-# Metoda 2: Użycie npx
-if [ "$BUILD_SUCCESS" != "true" ]; then
-  log_info "Metoda 2: Próba użycia npx..."
-  log_info "Uruchamianie: npx @angular/cli build --configuration production --budget=false"
-  npx @angular/cli build --configuration production --budget=false --verbose && BUILD_SUCCESS=true || {
-    log_error "Metoda 2 nie powiodła się. Błąd budowania aplikacji."
-    log_info "Wersja npx: $(npx --version 2>/dev/null || echo 'Nie znaleziono npx')"
-  }
-fi
+  # Próba użycia lokalnej instalacji Angular CLI
+  if [ -f "./node_modules/.bin/ng" ]; then
+    log_info "Próba użycia lokalnej instalacji Angular CLI..."
+    ./node_modules/.bin/ng build && BUILD_SUCCESS=true || log_error "Lokalna instalacja Angular CLI również nie powiodła się."
+  fi
+}
 
-# Metoda 3: Użycie globalnie zainstalowanego Angular CLI
+# Alternatywne podejście - ręczne utworzenie katalogu dist
 if [ "$BUILD_SUCCESS" != "true" ]; then
-  log_info "Metoda 3: Próba użycia globalnie zainstalowanego Angular CLI..."
-  log_info "Uruchamianie: ng build --configuration production --budget=false"
-  ng build --configuration production --budget=false --verbose && BUILD_SUCCESS=true || {
-    log_error "Metoda 3 nie powiodła się. Błąd budowania aplikacji."
-    log_info "Wersja Angular CLI: $(ng version 2>/dev/null || echo 'Nie znaleziono Angular CLI')"
-  }
-fi
-
-# Metoda 4: Użycie npm run
-if [ "$BUILD_SUCCESS" != "true" ]; then
-  log_info "Metoda 4: Próba użycia npm run..."
-  log_info "Uruchamianie: npm run build -- --configuration production --budget=false"
-  npm run build -- --configuration production --budget=false --verbose && BUILD_SUCCESS=true || {
-    log_error "Metoda 4 nie powiodła się. Błąd budowania aplikacji."
-    log_info "Dostępne skrypty npm:"
-    grep -A 10 "\"scripts\"" package.json
-  }
-fi
-
-# Metoda 5: Alternatywne podejście - ręczne utworzenie katalogu dist
-if [ "$BUILD_SUCCESS" != "true" ]; then
-  log_warning "Wszystkie standardowe metody budowania nie powiodły się. Próbuję alternatywnego podejścia..."
-  log_info "Metoda 5: Alternatywne podejście - ręczne utworzenie katalogu dist..."
+  log_warning "Budowanie aplikacji nie powiodło się. Próbuję alternatywnego podejścia..."
+  log_info "Tworzenie prostej strony zastępczej..."
 
   # Utwórz katalog dist
   mkdir -p dist/angular-without-ssr/browser
