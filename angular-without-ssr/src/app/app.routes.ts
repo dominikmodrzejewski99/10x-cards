@@ -4,6 +4,7 @@ import { FlashcardListComponent } from './components/flashcards/flashcard-list.c
 import { AuthPageComponent } from './auth/auth-page.component';
 import { PasswordResetPageComponent } from './auth/pages/password-reset-page.component';
 import { SetNewPasswordPageComponent } from './auth/pages/set-new-password-page.component';
+import { LandingPageComponent } from './components/landing/landing-page.component';
 import { authGuard } from './auth/guards/auth.guard';
 import { nonAuthGuard } from './auth/guards/non-auth.guard';
 import { partialAuthGuard } from './auth/guards/partial-auth.guard';
@@ -40,7 +41,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/generate',
+    component: LandingPageComponent,
     pathMatch: 'full'
   },
 ];

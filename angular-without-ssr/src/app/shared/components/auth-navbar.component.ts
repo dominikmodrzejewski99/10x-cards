@@ -26,9 +26,10 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
             <span class="logo-text">10xCards</span>
           </a>
 
-          <div class="nav-links" *ngIf="isAuthenticated">
-            <a routerLink="/generate" routerLinkActive="active" class="nav-link">Generuj fiszki</a>
-            <a routerLink="/flashcards" routerLinkActive="active" class="nav-link">Moje fiszki</a>
+          <div class="nav-links">
+            <a routerLink="/" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">Strona główna</a>
+            <a *ngIf="isAuthenticated" routerLink="/generate" routerLinkActive="active" class="nav-link">Generuj fiszki</a>
+            <a *ngIf="isAuthenticated" routerLink="/flashcards" routerLinkActive="active" class="nav-link">Moje fiszki</a>
           </div>
         </div>
 
