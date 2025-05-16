@@ -102,10 +102,7 @@ export class SetNewPasswordPageComponent implements OnInit {
   }
 
   onSetNewPassword(data: {password: string, token: string}): void {
-    console.log('Set new password with token:', data.token);
-    // W rzeczywistej implementacji wywołalibyśmy tutaj serwis AuthService
 
-    // Symulacja przekierowania po pomyślnej zmianie hasła
     setTimeout(() => {
       this.router.navigate(['/login']);
     }, 2000);

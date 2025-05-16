@@ -21,7 +21,6 @@ export class SourceTextareaComponent implements OnInit {
   currentLength: number = 0;
 
   ngOnInit(): void {
-    console.log('Inicjalizacja SourceTextareaComponent - nowa wersja');
 
     // Emituj początkową wartość i stan walidacji
     setTimeout(() => {
@@ -48,14 +47,7 @@ export class SourceTextareaComponent implements OnInit {
     this.validityChange.emit(isValid);
   }
 
-  // Metoda do obsługi zdarzenia paste
-  onPaste(event: ClipboardEvent): void {
-    console.log('Zdarzenie paste');
-    // Nie zatrzymujemy domyślnego zachowania, pozwalamy na standardowe wklejanie
-    // Zdarzenie ngModelChange zostanie wywołane automatycznie po wklejeniu
-  }
-
-  // Pomocnicze metody do sprawdzania błędów
+// Pomocnicze metody do sprawdzania błędów
   isTextEmpty(): boolean {
     return this.text.trim() === '' && this.currentLength > 0;
   }

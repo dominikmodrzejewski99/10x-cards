@@ -82,7 +82,6 @@ export class GenerationApiService {
       map((response: string) => {
         // Parse the response string to JSON
         let parsedResponse: any;
-        console.log('Odpowiedź z OpenRouter:', response);
 
         let flashcards: FlashcardProposalDTO[] = [];
         try {
@@ -98,8 +97,6 @@ export class GenerationApiService {
             // Trim whitespace
             cleanedResponse = cleanedResponse.trim();
 
-            console.log('Cleaned response for parsing:', cleanedResponse);
-
             parsedResponse = JSON.parse(cleanedResponse);
           } catch (parseError) {
             console.error('Błąd parsowania JSON:', parseError);
@@ -108,7 +105,6 @@ export class GenerationApiService {
 
           // Sprawdzamy, czy odpowiedź jest tablicą fiszek
           if (Array.isArray(parsedResponse)) {
-            console.log('Zawartość zawiera tablicę fiszek o długości:', parsedResponse.length);
             flashcards = parsedResponse.map((item: any) => ({
               front: item.front,
               back: item.back,

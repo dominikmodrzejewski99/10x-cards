@@ -14,7 +14,6 @@ export class ErrorMessageComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['errorMessage'] && changes['errorMessage'].currentValue) {
-      console.log('Wyświetlenie błędu:', this.errorMessage);
     }
   }
 
@@ -22,4 +21,4 @@ export class ErrorMessageComponent implements OnChanges {
     this.errorMessage = null;
     this.dismiss.emit();
   }
-} 
+}

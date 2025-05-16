@@ -83,6 +83,5 @@ import { PasswordResetFormComponent } from '../components/password-reset-form.co
 })
 export class PasswordResetPageComponent {
   onResetPassword(data: {email: string}): void {
-    console.log('Reset password for email:', data.email);
   }
 }

@@ -29,12 +29,3 @@ export const environment = {
 
 // Zapisz plik
 fs.writeFileSync(envFilePath, envFileContent);
-
-console.log('Environment variables injected successfully!');
-console.log('Generated environments.ts with the following variables:');
-console.log(`- supabaseUrl: ${supabaseUrl ? '✓ Set' : '✗ Not set'}`);
-console.log(`- supabaseKey: ${supabaseKey ? '✓ Set' : '✗ Not set'}`);
-console.log(`- openRouterKey: ${openRouterKey ? '✓ Set' : '✗ Not set'}`);
-console.log(`- E2E_USERNAME: ${e2eUsername ? '✓ Set' : '✗ Not set'}`);
-console.log(`- E2E_PASSWORD: ${e2ePassword ? '✓ Set' : '✗ Not set'}`);
-console.log(`- E2E_USERNAME_ID: ${e2eUsernameId ? '✓ Set' : '✗ Not set'}`);

@@ -16,17 +16,14 @@ import { filter, take } from 'rxjs/operators';
   imports: [CommonModule, ButtonModule, RouterModule, AuthNavbarComponent],
 })
 export class AppComponent implements OnInit {
-  title = 'angular';
+  title = '10xCards - Twórz i zarządzaj fiszkami efektywnie';
   currentYear = new Date().getFullYear();
 
   constructor(private store: Store, private router: Router) {}
 
   ngOnInit() {
-    // Sprawdź stan autentykacji przy starcie aplikacji
-    console.log('AppComponent: Sprawdzanie stanu autentykacji przy starcie aplikacji');
     this.store.dispatch(AuthActions.checkAuthState());
 
-    // Przekieruj zalogowanych użytkowników do strony generowania fiszek, jeśli są na stronie głównej
     this.store.select(selectIsAuthenticated)
       .pipe(
         filter(isAuthenticated => isAuthenticated),

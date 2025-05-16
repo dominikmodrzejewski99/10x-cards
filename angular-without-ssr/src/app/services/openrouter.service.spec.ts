@@ -91,9 +91,6 @@ describe('OpenRouterService', () => {
       schemas: [NO_ERRORS_SCHEMA]
     });
 
-    // Upewnij się, że environment.openRouterKey jest zdefiniowany
-    console.log('Test environment OpenRouter key:', environment.openRouterKey);
-
     service = TestBed.inject(OpenRouterService);
     httpMock = TestBed.inject(HttpTestingController);
     sessionManagerSpy = TestBed.inject(SessionManager) as jasmine.SpyObj<SessionManager>;
@@ -131,7 +128,6 @@ describe('OpenRouterService', () => {
 
       // Sprawdzenie zapytania HTTP
       const req = httpMock.expectOne(request => {
-        console.log('Sprawdzanie zapytania:', request.method, request.url);
         return request.url === 'https://openrouter.ai/api/v1/chat/completions';
       });
 
@@ -152,7 +148,6 @@ describe('OpenRouterService', () => {
       // Weryfikacja, że mamy wiadomość użytkownika
       // Sprawdzamy, czy którakolwiek wiadomość użytkownika istnieje
       const userMessages = requestBody.messages.filter((m: any) => m.role === 'user');
-      console.log('Wiadomości użytkownika:', userMessages);
 
       // Sprawdzamy, czy istnieje przynajmniej jedna wiadomość użytkownika
       expect(userMessages.length).toBeGreaterThan(0);

@@ -25,8 +25,6 @@ export class OpenRouterService {
     this.apiUrl = 'https://openrouter.ai/api/v1/chat/completions';
     this.sessionManager = sessionManager;
 
-    // Sprawdzamy, czy klucz API jest dostępny
-    console.log('OpenRouter API key:', environment.openRouterKey);
   }
 
   /**
@@ -104,25 +102,12 @@ export class OpenRouterService {
         });
       }
 
-      console.log('Wysyłanie zapytania do OpenRouter:', payload);
-
       const response = await firstValueFrom(this.callApi(payload));
-      console.log('Otrzymano odpowiedź z OpenRouter API:', response);
 
       // Dodatkowe logi dla lepszego debugowania
       if (response && response.choices && response.choices.length > 0) {
-        console.log('Zawartość pierwszego choice:', response.choices[0]);
-        console.log('Zawartość wiadomości:', response.choices[0].message);
-        console.log('Zawartość content:', response.choices[0].message.content);
-
-        // Próba parsowania content jako JSON
         try {
           const contentJson = JSON.parse(response.choices[0].message.content);
-          console.log('Sparsowany content jako JSON:', contentJson);
-          console.log('Typ sparsowanego contentu:', Array.isArray(contentJson) ? 'tablica' : typeof contentJson);
-          if (Array.isArray(contentJson)) {
-            console.log('Długość tablicy:', contentJson.length);
-          }
         } catch (error) {
           console.error('Błąd parsowania contentu jako JSON:', error);
         }
@@ -137,7 +122,6 @@ export class OpenRouterService {
         };
         this.sessionManager.addMessage(session.id, assistantMessage);
 
-        console.log('Treść odpowiedzi:', assistantMessage.content);
         return assistantMessage.content;
       } else {
         console.error('Otrzymano pustą odpowiedź od modelu AI:', response);
@@ -172,8 +156,6 @@ export class OpenRouterService {
    * @returns Observable z odpowiedzią API
    */
   private callApi(payload: OpenRouterRequestPayload): Observable<OpenRouterResponse> {
-    // Logowanie dla debugowania
-    console.log('Calling OpenRouter API with payload:', payload);
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -181,9 +163,6 @@ export class OpenRouterService {
       'HTTP-Referer': window.location.origin,
       'X-Title': '10xCards'
     });
-
-    // Logowanie nagłówków
-    console.log('Headers:', headers.get('Authorization'));
 
     return this.http.post<OpenRouterResponse>(this.apiUrl, payload, { headers })
       .pipe(

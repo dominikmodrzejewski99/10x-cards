@@ -97,12 +97,10 @@ export class GenerateViewComponent implements OnInit, OnDestroy {
 
   // Metody obsługujące zdarzenia z komponentu SourceTextareaComponent
   onTextChange(value: string): void {
-    console.log('onTextChange:', value);
     this.sourceText = value;
   }
 
   onValidityChange(isValid: boolean): void {
-    console.log('onValidityChange:', isValid);
     this.isSourceValid = isValid;
   }
 
@@ -166,7 +164,6 @@ export class GenerateViewComponent implements OnInit, OnDestroy {
 
     this.flashcardApi.createFlashcards(flashcardsToSave).subscribe({
       next: (savedFlashcards) => {
-        console.log('Zapisano fiszki:', savedFlashcards);
 
         this.messageService.add({
           severity: 'success',
@@ -294,9 +291,7 @@ export class GenerateViewComponent implements OnInit, OnDestroy {
     // Wywołanie rzeczywistego API
     this.flashcardApi.createFlashcards([proposal]).subscribe({
       next: (savedFlashcards) => {
-        console.log('Zapisano fiszkę:', savedFlashcards);
 
-        // Usuwamy zaakceptowaną propozycję z listy
         this.proposals = this.proposals.filter(p =>
           p.front !== proposal.front || p.back !== proposal.back
         );

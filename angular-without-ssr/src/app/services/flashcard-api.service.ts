@@ -22,7 +22,6 @@ export class FlashcardApiService {
     private supabaseFactory: SupabaseClientFactory
   ) {
     this.supabase = this.supabaseFactory.getClient();
-    console.log('FlashcardApiService: Inicjalizacja klienta Supabase');
   }
 
   /**
@@ -37,7 +36,7 @@ export class FlashcardApiService {
           return null;
         }
         const userId = response.data.session?.user?.id || null;
-        console.log('Pobrano ID użytkownika z Supabase Auth:', userId);
+
         return userId;
       }),
       catchError(error => {
@@ -59,7 +58,7 @@ export class FlashcardApiService {
           return null;
         }
         const user = response.data.user;
-        console.log('Pobrano dane użytkownika z Supabase Auth:', user);
+
         return user;
       }),
       catchError(error => {
@@ -75,12 +74,10 @@ export class FlashcardApiService {
    * @returns Observable zawierający true, jeśli użytkownik jest zalogowany
    */
   private ensureUserExists(userId: string): Observable<boolean> {
-    console.log('Sprawdzanie, czy użytkownik jest zalogowany:', userId);
 
     // Pobieramy sesję użytkownika z Supabase Auth
     return from(this.supabase.auth.getSession()).pipe(
       map(response => {
-        console.log('Odpowiedź z Supabase Auth (getSession):', response);
 
         if (response.error) {
           console.error('Błąd podczas pobierania sesji:', response.error);
@@ -93,7 +90,6 @@ export class FlashcardApiService {
         }
 
         const sessionUserId = response.data.session.user.id;
-        console.log('ID użytkownika z sesji:', sessionUserId);
 
         // Sprawdzamy, czy ID użytkownika z sesji jest zgodne z przekazanym ID
         if (sessionUserId !== userId) {
@@ -101,7 +97,6 @@ export class FlashcardApiService {
           return false;
         }
 
-        console.log('Użytkownik jest zalogowany i ma ważny token');
         return true;
       }),
       catchError(error => {
@@ -117,7 +112,6 @@ export class FlashcardApiService {
    * @returns Observable zawierający zapisane fiszki
    */
   createFlashcards(flashcards: FlashcardProposalDTO[]): Observable<FlashcardDTO[]> {
-    console.log('Zapisywanie fiszek do Supabase:', flashcards);
 
     return this.getCurrentUserId().pipe(
       switchMap(userId => {
@@ -125,8 +119,6 @@ export class FlashcardApiService {
           console.error('Nie można zapisać fiszek: Użytkownik nie jest zalogowany');
           return throwError(() => new Error('Użytkownik nie jest zalogowany'));
         }
-
-        console.log('Zapisywanie fiszek dla użytkownika o ID:', userId);
 
         // Przygotowanie danych do zapisu
         const flashcardsToInsert = flashcards.map(proposal => ({
@@ -137,8 +129,6 @@ export class FlashcardApiService {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         }));
-
-        console.log('Dane do zapisu:', flashcardsToInsert);
 
         // Najpierw upewniamy się, że użytkownik jest zalogowany i ma ważny token
         return this.ensureUserExists(userId).pipe(
@@ -154,14 +144,12 @@ export class FlashcardApiService {
               flashcards: flashcardsToInsert
             })).pipe(
               switchMap(response => {
-                console.log('Odpowiedź z Supabase RPC (create_user_and_flashcards):', response);
 
                 if (response.error) {
                   console.error('Błąd podczas tworzenia użytkownika i fiszek:', response.error);
 
                   // Jeśli funkcja RPC nie istnieje, spróbujmy bezpośrednio zapisać fiszki
                   if (response.error.message.includes('function "create_user_and_flashcards" does not exist')) {
-                    console.log('Funkcja RPC nie istnieje. Próba bezpośredniego zapisu fiszek...');
 
                     return from(this.supabase
                       .from('flashcards')
@@ -189,7 +177,6 @@ export class FlashcardApiService {
               })
             ).pipe(
               map(response => {
-                console.log('Odpowiedź z Supabase:', response);
                 if (response.error) {
                   console.error('Błąd Supabase:', response.error);
                   throw new Error(`Błąd Supabase: ${response.error.message}`);
@@ -238,8 +225,6 @@ export class FlashcardApiService {
       httpParams = httpParams.set('sortOrder', params.sortOrder.toString());
     }
 
-    console.log('Pobieranie fiszek z Supabase z parametrami:', params);
-
     return this.getCurrentUserId().pipe(
       switchMap(userId => {
         if (!userId) {
@@ -274,7 +259,6 @@ export class FlashcardApiService {
 
             return from(query).pipe(
               map(response => {
-                console.log('Odpowiedź z Supabase (getFlashcards):', response);
                 if (response.error) {
                   throw new Error(`Błąd Supabase: ${response.error.message}`);
                 }
@@ -300,7 +284,6 @@ export class FlashcardApiService {
    * @returns Observable zawierający utworzoną fiszkę
    */
   createFlashcard(data: CreateFlashcardCommand): Observable<FlashcardDTO> {
-    console.log('Tworzenie fiszki w Supabase:', data);
 
     return this.getCurrentUserId().pipe(
       switchMap(userId => {
@@ -308,8 +291,6 @@ export class FlashcardApiService {
           console.error('Nie można utworzyć fiszki: Użytkownik nie jest zalogowany');
           return throwError(() => new Error('Użytkownik nie jest zalogowany'));
         }
-
-        console.log('Tworzenie fiszki dla użytkownika o ID:', userId);
 
         const flashcardToInsert = {
           front: data.front,
@@ -321,7 +302,6 @@ export class FlashcardApiService {
           generation_id: data.generation_id || null
         };
 
-        console.log('Dane fiszki do zapisu:', flashcardToInsert);
 
         // Najpierw upewniamy się, że użytkownik jest zalogowany i ma ważny token
         return this.ensureUserExists(userId).pipe(
@@ -337,14 +317,12 @@ export class FlashcardApiService {
               flashcard: flashcardToInsert
             })).pipe(
               switchMap(response => {
-                console.log('Odpowiedź z Supabase RPC (create_user_and_flashcard):', response);
 
                 if (response.error) {
                   console.error('Błąd podczas tworzenia użytkownika i fiszki:', response.error);
 
                   // Jeśli funkcja RPC nie istnieje, spróbujmy bezpośrednio zapisać fiszkę
                   if (response.error.message.includes('function "create_user_and_flashcard" does not exist')) {
-                    console.log('Funkcja RPC nie istnieje. Próba bezpośredniego zapisu fiszki...');
 
                     return from(this.supabase
                       .from('flashcards')
@@ -372,7 +350,6 @@ export class FlashcardApiService {
               })
             ).pipe(
               map(response => {
-                console.log('Odpowiedź z Supabase (createFlashcard):', response);
                 if (response.error) {
                   console.error('Błąd Supabase przy tworzeniu fiszki:', response.error);
                   throw new Error(`Błąd Supabase: ${response.error.message}`);
@@ -397,7 +374,6 @@ export class FlashcardApiService {
    * @returns Observable zawierający zaktualizowaną fiszkę
    */
   updateFlashcard(id: number, data: UpdateFlashcardCommand): Observable<FlashcardDTO> {
-    console.log(`Aktualizacja fiszki w Supabase o ID ${id}:`, data);
 
     return this.getCurrentUserId().pipe(
       switchMap(userId => {
@@ -426,7 +402,6 @@ export class FlashcardApiService {
               .select()
             ).pipe(
               map(response => {
-                console.log('Odpowiedź z Supabase (updateFlashcard):', response);
                 if (response.error) {
                   throw new Error(`Błąd Supabase: ${response.error.message}`);
                 }
@@ -452,8 +427,6 @@ export class FlashcardApiService {
    * @returns Observable bez zawartości
    */
   deleteFlashcard(id: number): Observable<void> {
-    console.log(`Usuwanie fiszki z Supabase o ID ${id}`);
-
     return this.getCurrentUserId().pipe(
       switchMap(userId => {
         if (!userId) {
@@ -475,7 +448,6 @@ export class FlashcardApiService {
               .eq('user_id', userId) // Upewniamy się, że użytkownik usuwa tylko swoje fiszki
             ).pipe(
               map(response => {
-                console.log('Odpowiedź z Supabase (deleteFlashcard):', response);
                 if (response.error) {
                   throw new Error(`Błąd Supabase: ${response.error.message}`);
                 }

@@ -20,9 +20,7 @@ export class AuthService {
    * @returns Observable zawierający utworzony rekord
    */
   private createUserRecord(user: UserDTO): Observable<UserDTO> {
-    console.log('Tworzenie rekordu użytkownika w tabeli users:', user);
 
-    // Najpierw sprawdźmy, czy rekord użytkownika już istnieje
     return from(this.supabase
       .from('users')
       .select('*')
@@ -30,15 +28,10 @@ export class AuthService {
       .single()
     ).pipe(
       switchMap(response => {
-        console.log('Odpowiedź z Supabase (sprawdzenie użytkownika):', response);
-
         // Jeśli rekord istnieje, zwracamy użytkownika
         if (!response.error && response.data) {
-          console.log('Rekord użytkownika już istnieje:', response.data);
           return of(user);
         }
-
-        console.log('Rekord użytkownika nie istnieje. Tworzenie nowego rekordu...');
 
         // Jeśli rekord nie istnieje, tworzymy go
         // Używamy funkcji RPC zamiast bezpośredniego zapisu do tabeli
@@ -52,12 +45,9 @@ export class AuthService {
           .select()
         ).pipe(
           map(response => {
-            console.log('Odpowiedź z Supabase (createUserRecord):', response);
             if (response.error) {
-              console.error('Błąd podczas tworzenia rekordu użytkownika:', response.error);
               throw response.error;
             }
-            console.log('Rekord użytkownika utworzony pomyślnie:', response.data);
             return user;
           }),
           catchError(error => {
@@ -100,14 +90,11 @@ export class AuthService {
           throw new Error('Nie udało się zarejestrować. Spróbuj ponownie.');
         }
 
-        console.log('Użytkownik zarejestrowany pomyślnie:', response.data.user);
-
         return this.mapUserToDTO(response.data.user);
       }),
       switchMap(user => this.createUserRecord(user)),
       // Po utworzeniu rekordu użytkownika, automatycznie logujemy
       switchMap(user => {
-        console.log('Automatyczne logowanie po rejestracji...');
         return this.login({
           email: command.email,
           password: command.password
@@ -247,13 +234,10 @@ export class AuthService {
       return new Error(error);
     }
 
-    console.log('Szczegóły błędu autentykacji:', error);
-
     if (error.message) {
       // Ignorujemy błąd potwierdzenia email - użytkownik może się zalogować bez potwierdzania
       if (error.message.includes('Email not confirmed') ||
           error.message.includes('Email verification required')) {
-        console.log('Ignorowanie błędu potwierdzenia email');
         return new Error('');
       }
 
