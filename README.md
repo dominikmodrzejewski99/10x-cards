@@ -147,9 +147,11 @@ The following environment variables must be set in Cloudflare Pages settings:
 - AI-powered flashcard generation
 - Manual flashcard creation and management
 - User authentication system
-- Spaced repetition learning algorithm integration
 - Flashcard generation statistics
 - Secure data storage compliant with GDPR
+
+### Planned Features (Coming Soon)
+- Spaced repetition learning algorithm integration
 
 ### Out of MVP Scope
 - Advanced custom repetition algorithms
