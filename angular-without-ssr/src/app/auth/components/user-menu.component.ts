@@ -287,18 +287,22 @@ import * as AuthActions from '../store/auth.actions';
       }
     }
 
+    @media (max-width: 475px) {
+      .user-menu-button {
+        margin-top: 0.6rem;
+      }
+    }
+
     /* Style dla desktopu - mniejsza czcionka dla przycisku/emaila */
     @media (min-width: 1024px) {
       .user-menu-button .user-email {
         font-size: 0.75rem;
         max-width: 200px;
       }
-      /* ... inne komentarze ... */
 
       /* Zmniejszenie czcionki dla emaila w nagłówku dropdownu na desktopie */
       .dropdown-menu .user-email {
         font-size: 0.75rem; /* Taki sam rozmiar jak dla emaila w przycisku */
-        /* max-width: 200px; Można dostosować, jeśli email w dropdownie też ma być szerszy */
       }
     }
   `]

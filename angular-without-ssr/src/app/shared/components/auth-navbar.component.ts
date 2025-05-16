@@ -122,7 +122,7 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
       .container {
         padding: 0 0.5rem;
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: space-evenly;
       }
 
       .navbar-left {
