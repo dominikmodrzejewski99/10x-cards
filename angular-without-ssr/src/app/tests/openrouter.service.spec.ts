@@ -92,7 +92,7 @@ describe('OpenRouterService', () => {
     });
 
     // Upewnij się, że environment.openRouterKey jest zdefiniowany
-    console.log('Test environment OpenRouter key:', environment.openRouterKey);
+    console.log('Test environment OpenRouter key is defined:', !!environment.openRouterKey);
 
     service = TestBed.inject(OpenRouterService);
     httpMock = TestBed.inject(HttpTestingController);

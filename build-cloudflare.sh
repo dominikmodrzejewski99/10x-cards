@@ -110,8 +110,8 @@ else
   SUPABASE_URL=""
 fi
 
-# Wyświetl informacje o zmiennej SUPABASE_URL
-echo "SUPABASE_URL: $SUPABASE_URL"
+# Wyświetl informacje o zmiennej SUPABASE_URL (bez ujawniania pełnej wartości)
+log_info "SUPABASE_URL: [WARTOŚĆ UKRYTA]"
 
 # Dla SUPABASE_KEY
 if [ -n "${supabaseKey}" ]; then
@@ -127,11 +127,11 @@ else
   SUPABASE_KEY=""
 fi
 
-# Wyświetl informacje o zmiennej SUPABASE_KEY
+# Wyświetl informacje o zmiennej SUPABASE_KEY (bez ujawniania pełnej wartości)
 if [ -n "${SUPABASE_KEY}" ]; then
-  echo "SUPABASE_KEY: ${SUPABASE_KEY:0:10}..."
+  log_info "SUPABASE_KEY: [WARTOŚĆ UKRYTA]"
 else
-  echo "SUPABASE_KEY: nie ustawiono"
+  log_error "SUPABASE_KEY: nie ustawiono"
 fi
 
 # Dla OPENROUTER_KEY
@@ -152,11 +152,11 @@ else
   OPENROUTER_KEY=""
 fi
 
-# Wyświetl informacje o zmiennej OPENROUTER_KEY
+# Wyświetl informacje o zmiennej OPENROUTER_KEY (bez ujawniania pełnej wartości)
 if [ -n "${OPENROUTER_KEY}" ]; then
-  echo "OPENROUTER_KEY: ${OPENROUTER_KEY:0:10}..."
+  log_info "OPENROUTER_KEY: [WARTOŚĆ UKRYTA]"
 else
-  echo "OPENROUTER_KEY: nie ustawiono"
+  log_error "OPENROUTER_KEY: nie ustawiono"
 fi
 
 # Dla zmiennych E2E
@@ -188,27 +188,30 @@ fi
 log_info "Dostępne zmienne środowiskowe (szczegółowo):"
 env | grep -E 'supabase|SUPABASE|openRouter|OPENROUTER|E2E' || log_warning "Brak zmiennych środowiskowych związanych z Supabase, OpenRouter lub E2E"
 
-# Jeśli zmienne środowiskowe nie są ustawione, używamy wartości domyślnych
+# Sprawdź, czy wymagane zmienne środowiskowe są ustawione
 if [ -z "$SUPABASE_URL" ]; then
-  log_warning "Zmienna środowiskowa supabaseUrl nie jest ustawiona. Używam wartości domyślnej."
-  SUPABASE_URL="https://ngiunldncwxontgpzwkq.supabase.co"
-  log_info "Ustawiono domyślną wartość SUPABASE_URL: $SUPABASE_URL"
+  log_error "Zmienna środowiskowa SUPABASE_URL nie jest ustawiona!"
+  log_error "Ta zmienna jest wymagana do poprawnego działania aplikacji."
+  log_error "Ustaw zmienną SUPABASE_URL w ustawieniach Cloudflare Pages lub w zmiennych środowiskowych GitHub Actions."
+  exit 1
 else
   log_success "Znaleziono zmienną środowiskową SUPABASE_URL"
 fi
 
 if [ -z "$SUPABASE_KEY" ]; then
-  log_warning "Zmienna środowiskowa supabaseKey nie jest ustawiona. Używam wartości domyślnej."
-  SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5naXVubGRuY3d4b250Z3B6d2txIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3MDQ2MTYsImV4cCI6MjA2MjI4MDYxNn0.xUS6bEF1_VuD3_XaOHDD5awZLf2CNwe4xLMaiH-rUZA"
-  log_info "Ustawiono domyślną wartość SUPABASE_KEY: ${SUPABASE_KEY:0:10}..."
+  log_error "Zmienna środowiskowa SUPABASE_KEY nie jest ustawiona!"
+  log_error "Ta zmienna jest wymagana do poprawnego działania aplikacji."
+  log_error "Ustaw zmienną SUPABASE_KEY w ustawieniach Cloudflare Pages lub w zmiennych środowiskowych GitHub Actions."
+  exit 1
 else
   log_success "Znaleziono zmienną środowiskową SUPABASE_KEY"
 fi
 
 if [ -z "$OPENROUTER_KEY" ]; then
-  log_warning "Zmienna środowiskowa openRouterKey nie jest ustawiona. Używam wartości domyślnej."
-  OPENROUTER_KEY="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"
-  log_info "Ustawiono domyślną wartość OPENROUTER_KEY: ${OPENROUTER_KEY:0:10}..."
+  log_error "Zmienna środowiskowa OPENROUTER_KEY nie jest ustawiona!"
+  log_error "Ta zmienna jest wymagana do poprawnego działania aplikacji."
+  log_error "Ustaw zmienną OPENROUTER_KEY w ustawieniach Cloudflare Pages lub w zmiennych środowiskowych GitHub Actions."
+  exit 1
 else
   log_success "Znaleziono zmienną środowiskową OPENROUTER_KEY"
 fi
@@ -271,8 +274,14 @@ export const environment = {
 };
 EOL
 
-echo "Environment file created successfully"
-cat src/environments/environments.ts
+log_success "Environment file created successfully"
+log_info "Environment file contains the following variables (values hidden):"
+log_info "- supabaseUrl: [HIDDEN]"
+log_info "- supabaseKey: [HIDDEN]"
+log_info "- openRouterKey: [HIDDEN]"
+log_info "- E2E_USERNAME_ID: [HIDDEN]"
+log_info "- E2E_USERNAME: [HIDDEN]"
+log_info "- E2E_PASSWORD: [HIDDEN]"
 
 # Utwórz plik runtime-config.js z zmiennymi środowiskowymi
 echo "Creating runtime-config.js file..."
@@ -292,17 +301,14 @@ window.RUNTIME_CONFIG = {
 };
 EOL
 
-# Wyświetl zawartość pliku runtime-config.js (z zamaskowanymi kluczami)
-echo "Runtime config file created with the following variables:"
-echo "- supabaseUrl: ${SUPABASE_URL}"
-echo "- supabaseKey: ${SUPABASE_KEY:0:10}..."
-echo "- openRouterKey: ${OPENROUTER_KEY:0:10}..."
-echo "- E2E_USERNAME_ID: ${E2E_USERNAME_ID}"
-echo "- E2E_USERNAME: ${E2E_USERNAME}"
-echo "- E2E_PASSWORD: ${E2E_PASSWORD:0:1}..."
-
-echo "Runtime config file created successfully"
-cat src/assets/runtime-config.js
+# Wyświetl informację o utworzeniu pliku (bez ujawniania wartości)
+log_success "Runtime config file created with the following variables (values hidden):"
+log_info "- supabaseUrl: [HIDDEN]"
+log_info "- supabaseKey: [HIDDEN]"
+log_info "- openRouterKey: [HIDDEN]"
+log_info "- E2E_USERNAME_ID: [HIDDEN]"
+log_info "- E2E_USERNAME: [HIDDEN]"
+log_info "- E2E_PASSWORD: [HIDDEN]"
 
 # Kopiujemy environments.default.ts do environments.ts
 echo "Kopiowanie environments.default.ts do environments.ts..."
