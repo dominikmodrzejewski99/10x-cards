@@ -6,6 +6,20 @@ A modern web application for creating and managing educational flashcards, lever
 
 ## 🔗 [Live Demo](https://10x-cards-70n.pages.dev/)
 
+**Demo credentials:** `test@gmail.com` / `123123qwe`
+
+## Screenshots
+
+### AI Flashcard Generator
+Paste any educational text and let AI generate flashcards for you automatically.
+
+![AI Flashcard Generator](docs/screenshots/ai-flashcard-generator.png)
+
+### My Flashcards
+Browse, search, edit and manage all your flashcards in one place.
+
+![My Flashcards](docs/screenshots/my-flashcards.png)
+
 ## Table of Contents
 - [Project Description](#project-description)
 - [Tech Stack](#tech-stack)

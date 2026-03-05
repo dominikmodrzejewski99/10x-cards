@@ -41,6 +41,7 @@ testem.log
 .DS_Store
 Thumbs.db
 environments.ts
+src/assets/runtime-config.js
 
 # Playwright
 node_modules/
