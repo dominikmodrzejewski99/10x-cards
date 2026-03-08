@@ -1,191 +1,131 @@
-<!-- Sekcja Hero -->
-<section class="hero-section">
-  <div class="container mx-auto">
-    <h1 class="hero-title">Ucz się szybciej z 10xCards</h1>
-    <p class="hero-subtitle">
-      Twórz fiszki błyskawicznie dzięki sztucznej inteligencji. Idealne dla studentów, osób uczących się języków i profesjonalistów, którzy chcą szybko opanować nowe pojęcia.
+<!-- Hero -->
+<section class="hero">
+  <div class="landing__inner">
+    <span class="hero__pill" data-animate="fade-up">
+      <i class="pi pi-sparkles"></i> Fiszki wspierane przez AI
+    </span>
+    <h1 class="hero__title" data-animate="fade-up">Zamień notatki w wiedzę.<br/><span class="hero__accent">Bez ślęczenia nad kartkami.</span></h1>
+    <p class="hero__desc" data-animate="fade-up">
+      Wrzuć tekst z wykładu, podręcznika albo artykułu.
+      Dostaniesz gotowe fiszki i plan powtórek dopasowany do Twojego tempa.
     </p>
-    <div class="hero-buttons">
-      <button
-        pButton
-        label="Zaloguj się"
-        icon="pi pi-sign-in"
-        class="p-button-primary p-button-rounded"
-        routerLink="/login">
-      </button>
-      <button
-        pButton
-        label="Zarejestruj się"
-        icon="pi pi-user-plus"
-        class="p-button-outlined p-button-primary p-button-rounded"
-        routerLink="/register">
-      </button>
+    <div class="hero__cta" data-animate="fade-up">
+      <a routerLink="/register" class="btn btn--primary">Zacznij za darmo</a>
+      <a routerLink="/login" class="btn btn--outline">Mam już konto</a>
     </div>
   </div>
 </section>
 
-<!-- Sekcja Przykładów -->
-<section class="section">
-  <div class="container mx-auto">
-    <h2 class="section-title">Przykładowe Fiszki</h2>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-      <div class="example-card">
-        <div class="example-question">Co to jest stolica Francji?</div>
-        <div class="example-answer">Paryż</div>
+<!-- Jak to działa -->
+<section class="section section--alt">
+  <div class="landing__inner">
+    <h2 class="section__title" data-animate="fade-up">Cztery kroki do lepszej nauki</h2>
+    <div class="steps">
+      <div class="step" data-animate="slide-left">
+        <div class="step__num">1</div>
+        <h3 class="step__title">Wrzuć materiał</h3>
+        <p class="step__desc">Skopiuj fragment notatek, artykuł naukowy albo rozdział z książki.</p>
       </div>
-
-      <div class="example-card">
-        <div class="example-question">Czym jest fotosynteza?</div>
-        <div class="example-answer">Proces wykorzystywany przez rośliny do przekształcania energii świetlnej w energię chemiczną.</div>
+      <div class="step" data-animate="slide-right">
+        <div class="step__num">2</div>
+        <h3 class="step__title">Odbierz fiszki</h3>
+        <p class="step__desc">AI wyciągnie kluczowe pojęcia i ułoży je w pytania i odpowiedzi.</p>
       </div>
-
-      <div class="example-card">
-        <div class="example-question">Jak działa uczenie maszynowe?</div>
-        <div class="example-answer">Proces, w którym algorytmy doskonalą się poprzez doświadczenie bez jawnego programowania.</div>
+      <div class="step" data-animate="slide-left">
+        <div class="step__num">3</div>
+        <h3 class="step__title">Dopasuj do siebie</h3>
+        <p class="step__desc">Przejrzyj propozycje, popraw co trzeba, wyrzuć zbędne.</p>
       </div>
-
-      <div class="example-card">
-        <div class="example-question">Co to jest mitochondrium?</div>
-        <div class="example-answer">Organellum komórkowe odpowiedzialne za wytwarzanie energii w komórce, często nazywane "elektrownią komórki".</div>
+      <div class="step" data-animate="slide-right">
+        <div class="step__num">4</div>
+        <h3 class="step__title">Powtarzaj z głową</h3>
+        <p class="step__desc">Algorytm sam ustali, kiedy warto wrócić do danego pytania.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Sekcja Funkcji -->
-<section class="section">
-  <div class="container mx-auto">
-    <h2 class="section-title">Dlaczego 10xCards?</h2>
+<!-- Tryb nauki demo -->
+<section class="section section--white">
+  <div class="landing__inner">
+    <h2 class="section__title" data-animate="fade-up">Prosta sesja, konkretne efekty</h2>
+    <p class="section__subtitle" data-animate="fade-up">Odwracasz kartę, oceniasz się, idziesz dalej. Resztą zajmuje się algorytm.</p>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-      <div class="feature-card">
-        <div class="feature-icon">
-          <i class="pi pi-bolt" style="font-size: 2rem;"></i>
+    <div class="demo" data-animate="fade-up">
+      <div class="demo__cards">
+        <div class="demo__card demo__card--q">
+          <span class="demo__label">Pytanie</span>
+          <p class="demo__text">Jaki protokół odpowiada za niezawodne dostarczanie pakietów w modelu TCP/IP?</p>
         </div>
-        <h3 class="feature-title">Błyskawiczne tworzenie</h3>
-        <p class="feature-description">
-          Generuj dziesiątki fiszek w kilka sekund dzięki zaawansowanej sztucznej inteligencji. Oszczędzaj czas na tworzeniu materiałów do nauki.
-        </p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">
-          <i class="pi pi-check-circle" style="font-size: 2rem;"></i>
+        <div class="demo__flip-hint">
+          <i class="pi pi-arrow-down"></i> odwróć kartę
         </div>
-        <h3 class="feature-title">Wysoka jakość</h3>
-        <p class="feature-description">
-          Nasze algorytmy AI tworzą precyzyjne i wartościowe fiszki, które koncentrują się na kluczowych pojęciach i informacjach.
-        </p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">
-          <i class="pi pi-sliders-h" style="font-size: 2rem;"></i>
-        </div>
-        <h3 class="feature-title">Pełna kontrola</h3>
-        <p class="feature-description">
-          Edytuj, akceptuj lub odrzucaj proponowane fiszki. Masz pełną kontrolę nad swoimi materiałami do nauki.
-        </p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">
-          <i class="pi pi-cloud" style="font-size: 2rem;"></i>
-        </div>
-        <h3 class="feature-title">Dostęp z każdego miejsca</h3>
-        <p class="feature-description">
-          Twoje fiszki są zapisywane w chmurze, dzięki czemu masz do nich dostęp z dowolnego urządzenia i miejsca.
-        </p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">
-          <i class="pi pi-book" style="font-size: 2rem;"></i>
-        </div>
-        <h3 class="feature-title">Różnorodne zastosowania</h3>
-        <p class="feature-description">
-          Idealne do nauki języków, przygotowania do egzaminów, zapamiętywania definicji i wielu innych zastosowań edukacyjnych.
-        </p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">
-          <i class="pi pi-lock" style="font-size: 2rem;"></i>
-        </div>
-        <h3 class="feature-title">Bezpieczeństwo danych</h3>
-        <p class="feature-description">
-          Twoje dane są bezpieczne i prywatne. Używamy najnowszych technologii zabezpieczeń, aby chronić Twoje informacje.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Sekcja Jak to działa -->
-<section class="section">
-  <div class="container mx-auto max-w-4xl">
-    <h2 class="section-title">Jak to działa?</h2>
-
-    <div class="how-it-works-steps">
-      <div class="how-it-works-step">
-        <div class="step-number">1</div>
-        <div class="step-content">
-          <h3 class="step-title">Wprowadź swój temat</h3>
-          <p class="step-description">
-            Po prostu podaj temat lub wklej tekst, którego chcesz się nauczyć. Może to być fragment książki, notatki z wykładu, artykuł naukowy lub dowolny inny materiał edukacyjny.
-          </p>
+        <div class="demo__card demo__card--a">
+          <span class="demo__label">Odpowiedź</span>
+          <p class="demo__text">TCP (Transmission Control Protocol) — zapewnia kontrolę przepływu, retransmisję i porządkowanie segmentów.</p>
         </div>
       </div>
 
-      <div class="how-it-works-step">
-        <div class="step-number">2</div>
-        <div class="step-content">
-          <h3 class="step-title">Generuj fiszki</h3>
-          <p class="step-description">
-            Nasza sztuczna inteligencja natychmiast tworzy zestaw fiszek z pytaniami i odpowiedziami, które obejmują najważniejsze pojęcia i informacje z Twojego materiału.
-          </p>
+      <div class="demo__actions">
+        <div class="demo__action demo__action--wrong" data-animate="slide-left">
+          <i class="pi pi-times"></i>
+          <strong>Nie wiem</strong>
+          <span>Wróci jutro</span>
         </div>
-      </div>
-
-      <div class="how-it-works-step">
-        <div class="step-number">3</div>
-        <div class="step-content">
-          <h3 class="step-title">Przeglądaj i edytuj</h3>
-          <p class="step-description">
-            Przejrzyj wygenerowane fiszki, edytuj je według potrzeb, akceptuj te, które Ci odpowiadają, i odrzucaj te, które nie są przydatne. Masz pełną kontrolę nad swoimi materiałami do nauki.
-          </p>
-        </div>
-      </div>
-
-      <div class="how-it-works-step">
-        <div class="step-number">4</div>
-        <div class="step-content">
-          <h3 class="step-title">Ucz się i powtarzaj</h3>
-          <p class="step-description">
-            Korzystaj ze swoich fiszek, aby efektywnie się uczyć. Wszystkie zaakceptowane fiszki są zapisywane w Twojej bibliotece, dzięki czemu możesz do nich wracać w dowolnym momencie.
-          </p>
+        <div class="demo__action demo__action--right" data-animate="slide-right">
+          <i class="pi pi-check"></i>
+          <strong>Wiem</strong>
+          <span>Następna za 4 dni</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Sekcja CTA -->
-<section class="cta-section">
-  <div class="container mx-auto">
-    <h2 class="cta-title">Gotowy, by usprawnić swoją naukę?</h2>
-    <p class="cta-description">
-      Dołącz do tysięcy studentów i profesjonalistów, którzy zrewolucjonizowali swój sposób nauki dzięki 10xCards.
-    </p>
-    <div class="hero-buttons">
-      <button
-        pButton
-        label="Rozpocznij za darmo"
-        icon="pi pi-user-plus"
-        class="p-button-primary p-button-rounded"
-        routerLink="/register">
-      </button>
+<!-- Funkcje -->
+<section class="section section--alt">
+  <div class="landing__inner">
+    <h2 class="section__title" data-animate="fade-up">Co dostajesz</h2>
+    <div class="features">
+      <div class="fcard" data-animate="slide-left">
+        <i class="pi pi-bolt fcard__icon fcard__icon--blue"></i>
+        <h3 class="fcard__title">Fiszki z tekstu w sekundy</h3>
+        <p class="fcard__desc">Wklejasz materiał, klikasz raz — AI robi resztę.</p>
+      </div>
+      <div class="fcard" data-animate="fade-up">
+        <i class="pi pi-replay fcard__icon fcard__icon--green"></i>
+        <h3 class="fcard__title">Inteligentne powtórki</h3>
+        <p class="fcard__desc">Algorytm SM-2 planuje, kiedy warto wrócić do pytania, żebyś nie zapomniał.</p>
+      </div>
+      <div class="fcard" data-animate="slide-right">
+        <i class="pi pi-pencil fcard__icon fcard__icon--violet"></i>
+        <h3 class="fcard__title">Twoje fiszki, Twoje zasady</h3>
+        <p class="fcard__desc">Edytuj propozycje AI, twórz własne od zera, usuwaj niepotrzebne.</p>
+      </div>
+      <div class="fcard" data-animate="slide-left">
+        <i class="pi pi-book fcard__icon fcard__icon--orange"></i>
+        <h3 class="fcard__title">Sesje nauki</h3>
+        <p class="fcard__desc">Odwracaj karty, oceniaj wiedzę — wyniki widać od razu.</p>
+      </div>
+      <div class="fcard" data-animate="fade-up">
+        <i class="pi pi-cloud fcard__icon fcard__icon--pink"></i>
+        <h3 class="fcard__title">Zawsze pod ręką</h3>
+        <p class="fcard__desc">Laptop, telefon, tablet — Twoje fiszki czekają w chmurze.</p>
+      </div>
+      <div class="fcard" data-animate="slide-right">
+        <i class="pi pi-shield fcard__icon fcard__icon--teal"></i>
+        <h3 class="fcard__title">Prywatność</h3>
+        <p class="fcard__desc">Twoje materiały i postępy nie są udostępniane nikomu.</p>
+      </div>
     </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" data-animate="fade-up">
+  <div class="landing__inner">
+    <h2 class="cta__title">Spróbuj — to nic nie kosztuje</h2>
+    <p class="cta__desc">Załóż konto, wrzuć pierwszy tekst i zobacz, jak to działa.</p>
+    <a routerLink="/register" class="btn btn--white">Załóż darmowe konto</a>
   </div>
 </section>

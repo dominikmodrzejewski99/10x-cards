@@ -92,13 +92,16 @@
     <ng-template pTemplate="emptymessage">
       <tr>
         <td colspan="3" class="text-center py-4">
-          <div *ngIf="loading" class="flex justify-center items-center p-4" data-test-id="loading-indicator">
+          @if (loading) {
+          <div class="flex justify-center items-center p-4" data-test-id="loading-indicator">
             <i class="pi pi-spin pi-spinner mr-2"></i>
             <span>Ładowanie fiszek...</span>
           </div>
-          <div *ngIf="!loading" class="p-4" data-test-id="empty-message">
+          } @else {
+          <div class="p-4" data-test-id="empty-message">
             Brak fiszek. Dodaj swoją pierwszą fiszkę!
           </div>
+          }
         </td>
       </tr>
     </ng-template>

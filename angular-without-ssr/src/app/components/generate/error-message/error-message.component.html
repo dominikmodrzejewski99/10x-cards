@@ -1,4 +1,5 @@
-<div *ngIf="errorMessage" class="bg-red-50 border-l-4 border-red-500 rounded-md p-4 my-3 animate__animated animate__fadeIn">
+@if (errorMessage) {
+<div class="bg-red-50 border-l-4 border-red-500 rounded-md p-4 my-3 animate__animated animate__fadeIn">
   <div class="flex items-start">
     <div class="flex-shrink-0">
       <i class="pi pi-exclamation-circle text-red-500 text-xl"></i>
@@ -18,4 +19,5 @@
       </div>
     </div>
   </div>
-</div> 
+</div>
+}

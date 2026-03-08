@@ -5,14 +5,14 @@
   tabindex="0"
   role="button"
   [attr.aria-label]="isFlippedSignal() ? 'Kliknij aby zobaczyć pytanie' : 'Kliknij aby zobaczyć odpowiedź'">
-  <div class="flip-card-inner">
-    <div class="flip-card-front">
-      <div class="card-label">Pytanie</div>
-      <div class="card-content">{{ frontSignal() }}</div>
+  <div class="flip-card__inner">
+    <div class="flip-card__face">
+      <div class="flip-card__label">Pytanie</div>
+      <div class="flip-card__content">{{ frontSignal() }}</div>
     </div>
-    <div class="flip-card-back">
-      <div class="card-label">Odpowiedź</div>
-      <div class="card-content">{{ backSignal() }}</div>
+    <div class="flip-card__face flip-card__face--back">
+      <div class="flip-card__label">Odpowiedź</div>
+      <div class="flip-card__content">{{ backSignal() }}</div>
     </div>
   </div>
 </div>

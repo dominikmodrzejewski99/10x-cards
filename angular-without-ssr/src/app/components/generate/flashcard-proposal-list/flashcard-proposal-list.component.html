@@ -1,67 +1,71 @@
 <div class="flashcard-proposals">
-  <!-- Komunikat gdy brak propozycji -->
-  <div *ngIf="proposals.length === 0" class="text-center py-8 text-gray-500" role="status" aria-live="polite">
+  @if (proposals.length === 0) {
+  <div class="text-center py-8" style="color: #586380;" role="status" aria-live="polite">
     <p class="text-lg font-medium">Brak propozycji fiszek do wyświetlenia</p>
     <p class="text-sm mt-2">Wygeneruj fiszki, aby zobaczyć propozycje</p>
   </div>
+  }
 
-  <!-- Grid z kartami propozycji fiszek -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6" *ngIf="proposals.length > 0">
-    <div *ngFor="let proposal of proposals; let i = index" class="col-span-1" [attr.data-test-id]="'flashcard-proposal-' + i">
+  @if (proposals.length > 0) {
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    @for (proposal of proposals; track $index) {
+    <div class="col-span-1" [attr.data-test-id]="'flashcard-proposal-' + $index">
       <div
-        class="rounded-lg shadow-md hover:shadow-lg transition-all duration-200 overflow-hidden h-full flex flex-col"
+        class="rounded-lg overflow-hidden h-full flex flex-col transition-all duration-150"
         [ngClass]="{
-          'border-2 border-emerald-500 ring-2 ring-emerald-200': proposal.accepted,
-          'border border-gray-300': !proposal.accepted
-        }">
-        <!-- Nagłówek karty -->
-        <div
-          class="p-3 font-semibold"
-          [ngClass]="{
-            'bg-gradient-to-r from-emerald-600 to-emerald-700 text-gray-900': proposal.accepted,
-            'bg-gradient-to-r from-blue-600 to-blue-700 text-white': !proposal.accepted
-          }">
-          <h3 class="text-lg m-0 flex items-center gap-2">
-            <span>Propozycja #{{ i + 1 }}</span>
-            <i *ngIf="proposal.accepted" class="pi pi-check-circle" aria-hidden="true"></i>
+          'border-2 ring-2': proposal.accepted,
+          'border': !proposal.accepted
+        }"
+        [style.border-color]="proposal.accepted ? '#23b26d' : '#d9dbe9'"
+        [style.--tw-ring-color]="proposal.accepted ? 'rgba(35, 178, 109, 0.2)' : 'transparent'">
+
+        <div class="p-3 font-semibold"
+          [style.background]="proposal.accepted ? '#23b26d' : '#4255ff'"
+          [style.color]="'#ffffff'">
+          <h3 class="text-lg m-0 flex items-center gap-2" style="color: #ffffff;">
+            <span>Propozycja #{{ $index + 1 }}</span>
+            @if (proposal.accepted) {
+            <i class="pi pi-check-circle" aria-hidden="true"></i>
+            }
           </h3>
         </div>
 
-        <!-- Zawartość karty -->
         <div class="p-4 flex-grow"
-          [ngClass]="proposal.accepted ? 'bg-emerald-50' : 'bg-slate-50'">
+          [style.background]="proposal.accepted ? '#e8f8f0' : '#ffffff'">
           <div class="mb-4">
             <h4 class="text-sm font-semibold mb-2"
-              [ngClass]="proposal.accepted ? 'text-emerald-700' : 'text-blue-700'">Przód:</h4>
+              [style.color]="proposal.accepted ? '#1e9c5e' : '#4255ff'">Przód:</h4>
             <div class="p-3 rounded-md min-h-[70px] border"
-              [ngClass]="proposal.accepted ? 'bg-emerald-100 border-emerald-300 text-emerald-900' : 'bg-white border-slate-200 text-gray-900'">
+              [style.background]="proposal.accepted ? '#d4f0e2' : '#f6f7fb'"
+              [style.border-color]="proposal.accepted ? '#a8e6c9' : '#d9dbe9'"
+              [style.color]="'#282e3e'">
               {{ proposal.front }}
             </div>
           </div>
 
           <div>
             <h4 class="text-sm font-semibold mb-2"
-              [ngClass]="proposal.accepted ? 'text-emerald-700' : 'text-blue-700'">Tył:</h4>
+              [style.color]="proposal.accepted ? '#1e9c5e' : '#4255ff'">Tył:</h4>
             <div class="p-3 rounded-md min-h-[70px] border"
-              [ngClass]="proposal.accepted ? 'bg-emerald-100 border-emerald-300 text-emerald-900' : 'bg-white border-slate-200 text-gray-900'">
+              [style.background]="proposal.accepted ? '#d4f0e2' : '#f6f7fb'"
+              [style.border-color]="proposal.accepted ? '#a8e6c9' : '#d9dbe9'"
+              [style.color]="'#282e3e'">
               {{ proposal.back }}
             </div>
           </div>
         </div>
 
-        <!-- Przyciski akcji -->
-        <div class="p-3 border-t border-gray-200"
-          [ngClass]="proposal.accepted ? 'bg-emerald-50' : 'bg-slate-100'">
+        <div class="p-3 border-t"
+          [style.background]="proposal.accepted ? '#e8f8f0' : '#f6f7fb'"
+          [style.border-color]="'#d9dbe9'">
           <div class="flex flex-col sm:flex-row gap-2">
             <button
               (click)="onAccept(proposal)"
-              class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-md text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 w-full sm:flex-1"
-              [ngClass]="{
-                'bg-emerald-600 text-white border-2 border-emerald-700 hover:bg-emerald-700 focus:ring-emerald-500': proposal.accepted,
-                'bg-emerald-600 hover:bg-emerald-700 text-white focus:ring-emerald-500': !proposal.accepted
-              }"
+              class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-md text-sm font-semibold transition-colors focus:outline-none w-full sm:flex-1"
+              [style.background]="proposal.accepted ? '#1e9c5e' : '#23b26d'"
+              [style.color]="'#ffffff'"
               [attr.aria-label]="proposal.accepted ? 'Cofnij akceptację fiszki' : 'Akceptuj fiszkę'"
-              [attr.data-test-id]="'accept-flashcard-button-' + i">
+              [attr.data-test-id]="'accept-flashcard-button-' + $index">
               <i class="pi" [ngClass]="proposal.accepted ? 'pi-check-circle' : 'pi-check'" aria-hidden="true"></i>
               <span>{{ proposal.accepted ? 'Zaakceptowano' : 'Akceptuj' }}</span>
             </button>
@@ -69,7 +73,8 @@
             <div class="flex gap-2 w-full sm:w-auto">
               <button
                 (click)="openEditDialog(proposal)"
-                class="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                class="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-md text-sm font-semibold transition-colors focus:outline-none"
+                style="background: #4255ff; color: #ffffff;"
                 aria-label="Edytuj fiszkę">
                 <i class="pi pi-pencil" aria-hidden="true"></i>
                 <span>Edytuj</span>
@@ -77,9 +82,10 @@
 
               <button
                 (click)="onReject(proposal)"
-                class="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                class="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-md text-sm font-semibold transition-colors focus:outline-none"
+                style="background: #ff6240; color: #ffffff;"
                 aria-label="Odrzuć fiszkę"
-                [attr.data-test-id]="'reject-flashcard-button-' + i">
+                [attr.data-test-id]="'reject-flashcard-button-' + $index">
                 <i class="pi pi-times" aria-hidden="true"></i>
                 <span>Odrzuć</span>
               </button>
@@ -88,26 +94,30 @@
         </div>
       </div>
     </div>
+    }
   </div>
+  }
 
-  <!-- Licznik propozycji -->
-  <div class="mt-8 mb-2 flex flex-wrap justify-between items-center gap-2" *ngIf="proposals.length > 0">
+  @if (proposals.length > 0) {
+  <div class="mt-6 mb-2 flex flex-wrap justify-between items-center gap-2">
     <div class="flex items-center gap-3 text-sm">
-      <span class="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-1 rounded-full">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full"
+        style="background: #edefff; color: #4255ff;">
         <i class="pi pi-list" aria-hidden="true"></i>
         <span>Propozycji: <strong>{{ proposals.length }}</strong></span>
       </span>
-      <span class="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full"
+        style="background: #e8f8f0; color: #23b26d;">
         <i class="pi pi-check-circle" aria-hidden="true"></i>
         <span>Zaakceptowanych: <strong>{{ acceptedCount }}</strong></span>
       </span>
     </div>
-    <div class="text-xs text-gray-400">
+    <div class="text-xs" style="color: #b0b5c4;">
       Zaakceptuj fiszki, które chcesz zapisać, a resztę odrzuć
     </div>
   </div>
+  }
 
-  <!-- Dialog edycji fiszki -->
   <p-dialog
     [(visible)]="editDialogVisible"
     [style]="{width: '600px'}"
@@ -120,38 +130,38 @@
     styleClass="edit-dialog-custom"
     header="Edytuj fiszkę">
 
-    <div class="p-fluid bg-white p-4">
+    <div class="p-fluid p-4" style="background: #ffffff;">
       <div class="field mb-4">
-        <label for="front" class="block mb-2 font-medium text-gray-700">Przód fiszki</label>
+        <label for="front" class="block mb-2 font-medium" style="color: #282e3e;">Przód fiszki</label>
         <textarea
           id="front"
           pTextarea
           [(ngModel)]="editedProposal.front"
           [autoResize]="true"
           rows="4"
-          class="w-full bg-gray-50 border border-gray-300 rounded-md p-3 text-gray-800 font-medium"
+          class="w-full rounded-md p-3"
           placeholder="Wpisz pytanie lub pojęcie..."
-          style="color: #1f2937 !important; font-weight: 500 !important;">
+          style="color: #282e3e !important; font-weight: 500 !important; background: #f6f7fb; border: 1.5px solid #d9dbe9;">
         </textarea>
       </div>
 
       <div class="field">
-        <label for="back" class="block mb-2 font-medium text-gray-700">Tył fiszki</label>
+        <label for="back" class="block mb-2 font-medium" style="color: #282e3e;">Tył fiszki</label>
         <textarea
           id="back"
           pTextarea
           [(ngModel)]="editedProposal.back"
           [autoResize]="true"
           rows="4"
-          class="w-full bg-gray-50 border border-gray-300 rounded-md p-3 text-gray-800 font-medium"
+          class="w-full rounded-md p-3"
           placeholder="Wpisz odpowiedź lub definicję..."
-          style="color: #1f2937 !important; font-weight: 500 !important;">
+          style="color: #282e3e !important; font-weight: 500 !important; background: #f6f7fb; border: 1.5px solid #d9dbe9;">
         </textarea>
       </div>
     </div>
 
     <ng-template pTemplate="footer">
-      <div class="flex justify-end gap-3 p-4 bg-gray-50 border-t border-gray-200">
+      <div class="flex justify-end gap-3 p-4" style="border-top: 1px solid #d9dbe9;">
         <p-button
           label="Anuluj"
           icon="pi pi-times"
@@ -163,7 +173,7 @@
           icon="pi pi-check"
           styleClass="p-button-primary"
           (onClick)="saveEdit()"
-          [style]="{'background-color': '#3b82f6', 'border-color': '#3b82f6', 'color': 'white'}">
+          [style]="{'background-color': '#4255ff', 'border-color': '#4255ff', 'color': 'white'}">
         </p-button>
       </div>
     </ng-template>

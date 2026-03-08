@@ -14,15 +14,21 @@
 
     <div class="mt-1 flex justify-between">
       <div>
-        <small *ngIf="hasError('front', 'required')" class="text-red-500 block" data-test-id="front-required-error">
+        @if (hasError('front', 'required')) {
+        <small class="text-red-500 block" data-test-id="front-required-error">
           Przód fiszki jest wymagany.
         </small>
-        <small *ngIf="hasError('front', 'maxlength')" class="text-red-500 block" data-test-id="front-maxlength-error">
+        }
+        @if (hasError('front', 'maxlength')) {
+        <small class="text-red-500 block" data-test-id="front-maxlength-error">
           Przód fiszki nie może być dłuższy niż {{ FRONT_MAX_LENGTH }} znaków.
         </small>
-        <small *ngIf="hasError('front', 'whitespace')" class="text-red-500 block" data-test-id="front-whitespace-error">
+        }
+        @if (hasError('front', 'whitespace')) {
+        <small class="text-red-500 block" data-test-id="front-whitespace-error">
           Przód fiszki nie może zawierać tylko białych znaków.
         </small>
+        }
       </div>
       <small class="text-gray-500 block">
         {{ frontControl?.value?.length || 0 }}/{{ FRONT_MAX_LENGTH }}
@@ -45,15 +51,21 @@
 
     <div class="mt-1 flex justify-between">
       <div>
-        <small *ngIf="hasError('back', 'required')" class="text-red-500 block" data-test-id="back-required-error">
+        @if (hasError('back', 'required')) {
+        <small class="text-red-500 block" data-test-id="back-required-error">
           Tył fiszki jest wymagany.
         </small>
-        <small *ngIf="hasError('back', 'maxlength')" class="text-red-500 block" data-test-id="back-maxlength-error">
+        }
+        @if (hasError('back', 'maxlength')) {
+        <small class="text-red-500 block" data-test-id="back-maxlength-error">
           Tył fiszki nie może być dłuższy niż {{ BACK_MAX_LENGTH }} znaków.
         </small>
-        <small *ngIf="hasError('back', 'whitespace')" class="text-red-500 block" data-test-id="back-whitespace-error">
+        }
+        @if (hasError('back', 'whitespace')) {
+        <small class="text-red-500 block" data-test-id="back-whitespace-error">
           Tył fiszki nie może zawierać tylko białych znaków.
         </small>
+        }
       </div>
       <small class="text-gray-500 block">
         {{ backControl?.value?.length || 0 }}/{{ BACK_MAX_LENGTH }}

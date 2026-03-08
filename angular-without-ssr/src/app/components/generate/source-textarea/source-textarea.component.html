@@ -15,18 +15,24 @@
 
   <div class="flex flex-col sm:flex-row justify-between mt-3">
     <div class="space-y-1 mb-2 sm:mb-0">
-      <div class="flex items-center" *ngIf="isTextEmpty()">
+      @if (isTextEmpty()) {
+      <div class="flex items-center">
         <i class="pi pi-exclamation-circle text-red-600 mr-1"></i>
         <small class="text-red-600 text-sm">Pole nie może być puste</small>
       </div>
-      <div class="flex items-center" *ngIf="isTooShort()">
+      }
+      @if (isTooShort()) {
+      <div class="flex items-center">
         <i class="pi pi-exclamation-circle text-red-600 mr-1"></i>
         <small class="text-red-600 text-sm">Tekst musi zawierać co najmniej {{ minLength }} znaków</small>
       </div>
-      <div class="flex items-center" *ngIf="isTooLong()">
+      }
+      @if (isTooLong()) {
+      <div class="flex items-center">
         <i class="pi pi-exclamation-circle text-red-600 mr-1"></i>
         <small class="text-red-600 text-sm">Tekst może zawierać maksymalnie {{ maxLength }} znaków</small>
       </div>
+      }
     </div>
 
     <div class="text-right flex items-center justify-end">

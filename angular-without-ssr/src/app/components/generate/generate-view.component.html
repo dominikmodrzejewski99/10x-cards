@@ -1,88 +1,83 @@
-<div class="min-h-screen p-4 md:p-6">
-  <div class="max-w-4xl mx-auto">
-    <!-- Komunikat o wymaganym logowaniu -->
-    <div *ngIf="!isAuthenticated" class="bg-white rounded-xl shadow-lg p-5 md:p-6 mb-6 transition-all duration-300 hover:shadow-xl animate__animated animate__fadeIn">
-      <h2 class="text-xl md:text-2xl font-semibold text-red-600 mb-4 pb-2 border-b border-gray-100">Wymagane logowanie</h2>
-      <p class="text-gray-700 mb-6">Aby korzystać z generowania fiszek, musisz być zalogowany.</p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <button pButton type="button" label="Zaloguj się" icon="pi pi-sign-in" class="p-button-primary" routerLink="/login"></button>
-        <button pButton type="button" label="Zarejestruj się" icon="pi pi-user-plus" class="p-button-outlined" routerLink="/register"></button>
+<div class="gen">
+  <div class="gen__inner">
+    @if (!isAuthenticated) {
+    <div class="gen__card">
+      <h2 class="gen__card-title" style="color: #ff6240;">Wymagane logowanie</h2>
+      <p class="gen__card-text">Aby generować fiszki, musisz być zalogowany.</p>
+      <div class="gen__card-actions">
+        <a routerLink="/login" class="gen__btn gen__btn--primary">Zaloguj się</a>
+        <a routerLink="/register" class="gen__btn gen__btn--outline">Zarejestruj się</a>
       </div>
     </div>
+    }
 
-    <ng-container *ngIf="isAuthenticated">
-    <!-- Nagłówek główny -->
-    <div class="text-center my-8 animate__animated animate__fadeIn">
-      <h1 class="text-3xl md:text-4xl font-bold text-blue-700 tracking-tight">Generator Fiszek AI</h1>
-      <p class="mt-4 text-md md:text-lg text-gray-700 max-w-2xl mx-auto">
-        Wklej poniżej fragment tekstu
-        <span class="text-sm block text-gray-500">(najlepiej 1000 – 10000 znaków)</span>
-        a my wygenerujemy dla Ciebie propozycje fiszek!
-      </p>
-      <div class="border-b-2 border-blue-200 w-24 mx-auto mt-4"></div>
-    </div>
-
-    <!-- Sekcja generowania -->
-    <div class="bg-white rounded-xl shadow-lg p-5 md:p-6 mb-6 transition-all duration-300 hover:shadow-xl">
-      <h2 class="text-xl md:text-2xl font-semibold text-blue-700 mb-4 pb-2 border-b border-gray-100">Generuj Fiszki</h2>
-
-      <!-- Pole tekstowe z przekazaniem eventów -->
-      <app-source-textarea
-        (textChange)="onTextChange($event)"
-        (validityChange)="onValidityChange($event)">
-      </app-source-textarea>
-
-      <!-- Przyciski akcji -->
-      <div class="flex justify-end mt-4">
-        <app-generate-button
-          [disabled]="!canGenerate()"
-          [loading]="isGenerating || isLoading"
-          (generateClick)="generate()">
-        </app-generate-button>
+    @if (isAuthenticated) {
+      <div class="gen__header">
+        <h1 class="gen__title">Generator fiszek</h1>
+        <p class="gen__subtitle">
+          Wklej fragment tekstu
+          <span class="gen__subtitle-hint">(1000–10000 znaków)</span>
+          — AI wygeneruje fiszki za Ciebie
+        </p>
       </div>
 
-      <!-- Wskaźnik ładowania -->
-      <div class="mt-4 flex justify-center" *ngIf="isLoading">
-        <app-loading-indicator [isLoading]="isLoading"></app-loading-indicator>
+      <div class="gen__card">
+        <app-source-textarea
+          (textChange)="onTextChange($event)"
+          (validityChange)="onValidityChange($event)">
+        </app-source-textarea>
+
+        <div class="gen__card-footer">
+          <app-generate-button
+            [disabled]="!canGenerate()"
+            [loading]="isGenerating || isLoading"
+            (generateClick)="generate()">
+          </app-generate-button>
+        </div>
+
+        @if (isLoading) {
+        <div class="gen__loading">
+          <app-loading-indicator [isLoading]="isLoading"></app-loading-indicator>
+        </div>
+        }
+
+        @if (errorMessage) {
+        <div class="gen__error">
+          <app-error-message [errorMessage]="errorMessage"></app-error-message>
+        </div>
+        }
       </div>
 
-      <!-- Komunikat błędu -->
-      <div class="mt-4" *ngIf="errorMessage">
-        <app-error-message [errorMessage]="errorMessage"></app-error-message>
+      @if (proposals.length > 0) {
+      <div class="gen__card">
+        <h2 class="gen__card-title" style="color: #23b26d;">Propozycje fiszek</h2>
+
+        <app-flashcard-proposal-list
+          [proposals]="proposals"
+          (accept)="acceptProposal($event)"
+          (reject)="rejectProposal($event)"
+          (edit)="editProposal($event)">
+        </app-flashcard-proposal-list>
+
+        <div class="gen__card-footer">
+          <app-bulk-save-button
+            [label]="'Zapisz zaakceptowane (' + acceptedCount + ')'"
+            [disabled]="!canSave()"
+            [loading]="isSaving"
+            (saveAllClick)="saveAllProposals()">
+          </app-bulk-save-button>
+        </div>
       </div>
-    </div>
+      }
 
-    <!-- Sekcja propozycji fiszek -->
-    <div *ngIf="proposals.length > 0" class="bg-white rounded-xl shadow-lg p-5 md:p-6 transition-all duration-300 hover:shadow-xl animate__animated animate__fadeIn">
-      <h2 class="text-xl md:text-2xl font-semibold text-green-700 mb-4 pb-2 border-b border-gray-100">Lista Propozycji Fiszek</h2>
-
-      <!-- Lista propozycji -->
-      <app-flashcard-proposal-list
-        [proposals]="proposals"
-        (accept)="acceptProposal($event)"
-        (reject)="rejectProposal($event)"
-        (edit)="editProposal($event)">
-      </app-flashcard-proposal-list>
-
-      <!-- Przyciski akcji dla propozycji -->
-      <div class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-3">
-        <app-bulk-save-button
-          [label]="'Zapisz zaakceptowane (' + acceptedCount + ')'"
-          [disabled]="!canSave()"
-          [loading]="isSaving"
-          (saveAllClick)="saveAllProposals()">
-        </app-bulk-save-button>
+      @if (!isLoading && !proposals.length && sourceText.length > 0 && isSourceValid) {
+      <div class="gen__empty">
+        <i class="pi pi-arrow-up"></i>
+        <p>Kliknij „Generuj" aby stworzyć propozycje fiszek</p>
       </div>
-    </div>
-
-    <!-- Informacja gdy nie ma żadnych fiszek -->
-    <div *ngIf="!isLoading && !proposals.length && sourceText.length > 0 && isSourceValid" class="text-center my-10 text-gray-500 animate__animated animate__fadeIn">
-      <i class="pi pi-arrow-up text-3xl mb-2 block"></i>
-      <p>Kliknij "Generuj Fiszki" aby stworzyć propozycje fiszek</p>
-    </div>
-    </ng-container>
+      }
+    }
   </div>
 </div>
 
-<!-- Toast do wyświetlania komunikatów -->
 <p-toast position="bottom-right"></p-toast>

@@ -1,29 +1,12 @@
-<div class="app-container">
+<div class="app">
   <app-auth-navbar></app-auth-navbar>
 
-  <main class="app-content">
-
+  <main class="app__main">
     <router-outlet></router-outlet>
   </main>
 
-  <footer class="app-footer">
-    <div class="footer-content">
-      <div class="footer-logo">
-        <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="40" height="40" rx="10" fill="#2563EB" />
-          <path d="M10 12H14L16.5 20L19 12H23L18 26H14L10 12Z" fill="white" />
-          <path d="M24 12H28V16H24V12Z" fill="white" />
-          <path d="M24 18H28V26H24V18Z" fill="white" />
-          <path d="M32 12L35 16L32 20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M8 28L5 24L8 20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-        <h2 class="footer-title">10xCards</h2>
-      </div>
-      <p class="copyright">&copy; {{ currentYear }} 10xCards - Aplikacja do tworzenia i zarządzania fiszkami</p>
-      <nav class="footer-nav" aria-label="Menu stopki">
-        <ul>
-        </ul>
-      </nav>
-    </div>
+  <footer class="app__footer">
+    <span class="app__footer-brand">10xCards</span>
+    <span class="app__footer-copy">&copy; {{ currentYear }}</span>
   </footer>
 </div>
