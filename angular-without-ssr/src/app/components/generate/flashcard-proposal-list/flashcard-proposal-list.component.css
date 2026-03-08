@@ -49,39 +49,39 @@ button:active {
 }
 
 :host ::ng-deep .edit-dialog-custom .p-dialog-content {
-  padding: 0 !important;
-  background-color: #ffffff !important;
+  padding: 0;
+  background-color: #ffffff;
 }
 
 :host ::ng-deep .edit-dialog-custom .p-dialog-footer {
-  padding: 0 !important;
+  padding: 0;
   border-top: none;
-  background-color: #f9fafb !important;
+  background-color: #f9fafb;
 }
 
 /* Dodatkowe style dla przycisków w modalu */
 :host ::ng-deep .edit-dialog-custom .p-button.p-button-primary {
-  background-color: #3b82f6 !important; /* Jaśniejszy niebieski */
-  border-color: #3b82f6 !important;
+  background-color: #3b82f6; /* Jaśniejszy niebieski */
+  border-color: #3b82f6;
 }
 
 :host ::ng-deep .edit-dialog-custom .p-button.p-button-primary:hover {
-  background-color: #2563eb !important; /* Ciemniejszy przy najechaniu, ale nadal jasny */
-  border-color: #2563eb !important;
+  background-color: #2563eb; /* Ciemniejszy przy najechaniu, ale nadal jasny */
+  border-color: #2563eb;
 }
 
 :host ::ng-deep .edit-dialog-custom .p-button.p-button-primary .p-button-label,
 :host ::ng-deep .edit-dialog-custom .p-button.p-button-primary .p-button-icon {
-  color: white !important; /* Upewniamy się, że tekst jest biały */
+  color: white; /* Upewniamy się, że tekst jest biały */
 }
 
 :host ::ng-deep .edit-dialog-custom .p-button.p-button-outlined.p-button-danger {
-  color: #dc2626 !important;
-  border-color: #dc2626 !important;
+  color: #dc2626;
+  border-color: #dc2626;
 }
 
 :host ::ng-deep .edit-dialog-custom .p-button.p-button-outlined.p-button-danger:hover {
-  background-color: rgba(220, 38, 38, 0.04) !important;
+  background-color: rgba(220, 38, 38, 0.04);
 }
 
 :host ::ng-deep .edit-dialog-custom {
@@ -103,11 +103,11 @@ button:active {
   transition: all 0.2s ease;
   font-size: 1rem;
   line-height: 1.5;
-  background-color: #f9fafb !important; /* Jasnoszare tło */
-  color: #1f2937 !important; /* Ciemny kolor tekstu */
+  background-color: #f9fafb; /* Jasnoszare tło */
+  color: #1f2937; /* Ciemny kolor tekstu */
   font-weight: 500;
-  --p-textarea-color: #1f2937 !important;
-  --p-component-text-color: #1f2937 !important;
+  --p-textarea-color: #1f2937;
+  --p-component-text-color: #1f2937;
 }
 
 :host ::ng-deep .p-inputtextarea:focus {
@@ -118,7 +118,7 @@ button:active {
 
 /* Style dla placeholder w polach textarea */
 :host ::ng-deep .p-inputtextarea::placeholder {
-  color: #6b7280 !important; /* Średnioszary kolor dla lepszego kontrastu */
+  color: #6b7280; /* Średnioszary kolor dla lepszego kontrastu */
   opacity: 1;
 }
 

@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
@@ -10,10 +9,10 @@ import * as AuthActions from '../store/auth.actions';
 @Component({
   selector: 'app-user-menu',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   template: `
     <div class="user-menu-container">
-      <ng-container *ngIf="isAuthenticated; else loginButton">
+      @if (isAuthenticated) {
         <div class="user-menu-dropdown">
           <button class="user-menu-button" (click)="toggleMenu()">
             <div class="user-avatar">
@@ -25,36 +24,36 @@ import * as AuthActions from '../store/auth.actions';
             </svg>
           </button>
 
-          <div class="dropdown-menu" *ngIf="isMenuOpen">
-            <div class="dropdown-header">
-              <div class="user-avatar">{{ getUserInitials() }}</div>
-              <div class="user-info">
-                <span class="user-email">{{ user?.email }}</span>
+          @if (isMenuOpen) {
+            <div class="dropdown-menu">
+              <div class="dropdown-header">
+                <div class="user-avatar">{{ getUserInitials() }}</div>
+                <div class="user-info">
+                  <span class="user-email">{{ user?.email }}</span>
+                </div>
               </div>
+              <div class="dropdown-divider"></div>
+              <a routerLink="/flashcards" class="dropdown-item" (click)="closeMenu()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                  <line x1="8" y1="21" x2="16" y2="21"></line>
+                  <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+                Moje fiszki
+              </a>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item logout-button" (click)="onLogout()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                Wyloguj się
+              </button>
             </div>
-            <div class="dropdown-divider"></div>
-            <a routerLink="/flashcards" class="dropdown-item" (click)="closeMenu()">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                <line x1="8" y1="21" x2="16" y2="21"></line>
-                <line x1="12" y1="17" x2="12" y2="21"></line>
-              </svg>
-              Moje fiszki
-            </a>
-            <div class="dropdown-divider"></div>
-            <button class="dropdown-item logout-button" (click)="onLogout()">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                <polyline points="16 17 21 12 16 7"></polyline>
-                <line x1="21" y1="12" x2="9" y2="12"></line>
-              </svg>
-              Wyloguj się
-            </button>
-          </div>
+          }
         </div>
-      </ng-container>
-
-      <ng-template #loginButton>
+      } @else {
         <div class="auth-buttons">
           <a routerLink="/login" class="login-button">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -74,7 +73,7 @@ import * as AuthActions from '../store/auth.actions';
             Rejestracja
           </a>
         </div>
-      </ng-template>
+      }
     </div>
   `,
   styles: [`
@@ -87,17 +86,18 @@ import * as AuthActions from '../store/auth.actions';
       align-items: center;
       gap: 0.5rem;
       padding: 0.5rem 0.75rem;
-      background-color: rgba(255, 255, 255, 0.1);
-      border: none;
+      background-color: #f6f7fb;
+      border: 1.5px solid #d9dbe9;
       border-radius: 9999px;
       cursor: pointer;
       transition: all 0.2s;
-      color: white;
+      color: #282e3e;
       font-weight: 500;
     }
 
     .user-menu-button:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: #edefff;
+      border-color: #4255ff;
     }
 
     .user-avatar {
@@ -106,8 +106,8 @@ import * as AuthActions from '../store/auth.actions';
       justify-content: center;
       width: 2rem;
       height: 2rem;
-      background-color: #2563eb;
-      color: white;
+      background-color: #4255ff;
+      color: #ffffff;
       border-radius: 50%;
       font-weight: 600;
       font-size: 0.875rem;
@@ -119,12 +119,15 @@ import * as AuthActions from '../store/auth.actions';
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      color: #282e3e;
+      font-size: 0.8rem;
     }
 
     .icon {
       width: 1.25rem;
       height: 1.25rem;
       flex-shrink: 0;
+      stroke: #586380;
     }
 
     .dropdown-menu {
@@ -132,9 +135,10 @@ import * as AuthActions from '../store/auth.actions';
       top: calc(100% + 0.5rem);
       right: 0;
       width: 250px;
-      background-color: white;
-      border-radius: 0.5rem;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      background-color: #ffffff;
+      border-radius: 0.75rem;
+      border: 1px solid #d9dbe9;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
       z-index: 50;
       overflow: hidden;
     }
@@ -143,9 +147,13 @@ import * as AuthActions from '../store/auth.actions';
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      color: #000;
+      color: #282e3e;
       padding: 1rem;
-      background-color: #f9fafb;
+      background-color: #f6f7fb;
+    }
+
+    .dropdown-header .user-email {
+      color: #282e3e;
     }
 
     .user-info {
@@ -155,7 +163,7 @@ import * as AuthActions from '../store/auth.actions';
 
     .dropdown-divider {
       height: 1px;
-      background-color: #e5e7eb;
+      background-color: #d9dbe9;
       margin: 0.25rem 0;
     }
 
@@ -164,28 +172,41 @@ import * as AuthActions from '../store/auth.actions';
       align-items: center;
       gap: 0.75rem;
       padding: 0.75rem 1rem;
-      color: #4b5563;
+      color: #282e3e;
       text-decoration: none;
-      transition: all 0.2s;
+      transition: all 0.15s;
       cursor: pointer;
     }
 
+    .dropdown-item .icon {
+      stroke: #586380;
+    }
+
     .dropdown-item:hover {
-      background-color: #f3f4f6;
-      color: #1f2937;
+      background-color: #edefff;
+      color: #4255ff;
+    }
+
+    .dropdown-item:hover .icon {
+      stroke: #4255ff;
     }
 
     .logout-button {
-      color: #dc2626;
+      color: #ff6240;
       border: none;
       background: none;
       width: 100%;
       text-align: left;
-      font-size: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .logout-button .icon {
+      stroke: #ff6240;
     }
 
     .logout-button:hover {
-      background-color: #fef2f2;
+      background-color: #fff0ed;
+      color: #ff6240;
     }
 
     .auth-buttons {
@@ -198,32 +219,43 @@ import * as AuthActions from '../store/auth.actions';
       align-items: center;
       gap: 0.5rem;
       padding: 0.5rem 0.75rem;
-      color: white;
-      border-radius: 9999px;
+      border-radius: 0.5rem;
       text-decoration: none;
-      font-weight: 500;
-      transition: all 0.2s;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.15s;
     }
 
     .login-button {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: transparent;
+      color: #586380;
+      border: 1.5px solid #d9dbe9;
     }
 
     .register-button {
-      background-color: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background-color: #4255ff;
+      color: #ffffff;
+      border: 1.5px solid #4255ff;
     }
 
     .login-button:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+      border-color: #4255ff;
+      color: #4255ff;
+      background-color: #edefff;
     }
 
     .register-button:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: #3b4ce3;
     }
 
-    .login-button .icon, .register-button .icon {
-      stroke: white;
+    .login-button .icon {
+      stroke: currentColor;
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .register-button .icon {
+      stroke: #ffffff;
       width: 1rem;
       height: 1rem;
     }

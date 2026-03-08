@@ -53,7 +53,7 @@ import * as AuthActions from './store/auth.actions';
     .auth-container {
       display: flex;
       justify-content: center;
-      background-color: #f9fafb;
+      background-color: #f6f7fb;
       padding: 4rem 1rem 1rem 1rem;
     }
 
@@ -62,8 +62,9 @@ import * as AuthActions from './store/auth.actions';
       max-width: 420px;
       padding: 1.5rem 1.5rem 1rem 1.5rem;
       border-radius: 0.75rem;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      background-color: white;
+      border: 1px solid #d9dbe9;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      background-color: #ffffff;
     }
 
     .auth-header {
@@ -72,15 +73,15 @@ import * as AuthActions from './store/auth.actions';
 
     .auth-title {
       text-align: center;
-      color: #1f2937;
+      color: #282e3e;
       font-size: 1.5rem;
-      font-weight: 700;
+      font-weight: 800;
       margin-bottom: 1.25rem;
     }
 
     .auth-tabs {
       display: flex;
-      border-bottom: 1px solid #e5e7eb;
+      border-bottom: 1px solid #d9dbe9;
       margin-bottom: 1.5rem;
       justify-content: center;
       gap: 1rem;
@@ -90,10 +91,10 @@ import * as AuthActions from './store/auth.actions';
       padding: 0.5rem 0.75rem;
       background: none;
       border: none;
-      color: #6b7280;
+      color: #586380;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s;
       text-decoration: none;
       position: relative;
       display: flex;
@@ -110,11 +111,11 @@ import * as AuthActions from './store/auth.actions';
     }
 
     .auth-tabs a:hover {
-      color: #2563eb;
+      color: #4255ff;
     }
 
     .auth-tabs a.active {
-      color: #2563eb;
+      color: #4255ff;
       font-weight: 600;
     }
 
@@ -125,7 +126,7 @@ import * as AuthActions from './store/auth.actions';
       left: 0;
       width: 100%;
       height: 2px;
-      background-color: #2563eb;
+      background-color: #4255ff;
       transition: all 0.2s;
     }
 

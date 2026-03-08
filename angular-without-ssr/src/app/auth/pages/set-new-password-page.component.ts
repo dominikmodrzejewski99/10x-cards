@@ -29,7 +29,7 @@ import { SetNewPasswordFormComponent } from '../components/set-new-password-form
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      background-color: #f9fafb;
+      background-color: #f6f7fb;
       padding: 1rem;
     }
 
@@ -39,7 +39,7 @@ import { SetNewPasswordFormComponent } from '../components/set-new-password-form
       padding: 1.5rem;
       border-radius: 0.75rem;
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      background-color: white;
+      background-color: #ffffff;
     }
 
     .auth-header {
@@ -48,7 +48,7 @@ import { SetNewPasswordFormComponent } from '../components/set-new-password-form
 
     .auth-title {
       text-align: center;
-      color: #1f2937;
+      color: #282e3e;
       font-size: 1.5rem;
       font-weight: 700;
       margin-bottom: 0.75rem;
@@ -56,7 +56,7 @@ import { SetNewPasswordFormComponent } from '../components/set-new-password-form
 
     .auth-subtitle {
       text-align: center;
-      color: #6b7280;
+      color: #586380;
       font-size: 0.8125rem;
       line-height: 1.5;
     }

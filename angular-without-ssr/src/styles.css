@@ -1,253 +1,243 @@
-/* You can add global styles to this file, and also import other style files */
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-/* Import other styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
-
-/* Import PrimeNG icons */
 @import "primeicons/primeicons.css";
 
-/* Apply font family to body */
+:root {
+  --app-primary: #4255ff;
+  --app-primary-hover: #3b4ce3;
+  --app-primary-light: #edefff;
+  --app-bg: #f6f7fb;
+  --app-white: #ffffff;
+  --app-text: #282e3e;
+  --app-text-secondary: #586380;
+  --app-border: #d9dbe9;
+  --app-success: #23b26d;
+  --app-error: #ff6240;
+  --app-yellow: #ffcd1f;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #282e3e;
+  background-color: #f6f7fb;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Globalne style dla komponentów PrimeNG */
-/* Zmienne CSS zostały przeniesione do konfiguracji motywu w app.config.ts */
+a { color: inherit; text-decoration: none; }
 
-/* Dodatkowe style dla dialogów - uzupełniające konfiguracje motywu */
-.p-dialog {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
-  border-radius: 8px !important;
-  overflow: hidden !important;
+h1, h2, h3, h4, h5, h6, p, span, label, div {
+  color: inherit;
 }
 
-.p-dialog .p-dialog-header {
-  padding: 1rem 1.5rem !important;
-  border-bottom: 1px solid #e2e8f0 !important;
+/* === PrimeNG global text/background fixes === */
+body .p-component {
+  color: #282e3e;
 }
 
-.p-dialog .p-dialog-content {
-  padding: 1.5rem !important;
+/* Table */
+body .p-datatable .p-datatable-thead > tr > th {
+  color: #282e3e;
+  background: #f6f7fb;
+  border-color: #d9dbe9;
+  font-weight: 600;
 }
 
-.p-dialog .p-dialog-footer {
-  padding: 1rem 1.5rem !important;
-  border-top: 1px solid #e2e8f0 !important;
+body .p-datatable .p-datatable-tbody > tr {
+  color: #282e3e;
+  background: #ffffff;
 }
 
-/* Specyficzne style dla modern-dialog */
-.modern-dialog {
-  border-radius: 8px !important;
+body .p-datatable .p-datatable-tbody > tr > td {
+  color: #282e3e;
+  border-color: #edeff5;
 }
 
-/* Dodatkowe style dla dialogów PrimeNG */
-.p-component-overlay {
-  background-color: rgba(0, 0, 0, 0.4) !important;
+body .p-datatable .p-datatable-tbody > tr:hover {
+  background: #f6f7fb;
 }
 
-.p-dialog-mask {
-  background-color: transparent !important;
+body .p-datatable .p-datatable-tbody > tr.p-highlight {
+  background: #edefff;
+  color: #4255ff;
 }
 
-.p-dialog-mask.p-component-overlay {
-  background-color: rgba(0, 0, 0, 0.4) !important;
+/* Paginator */
+body .p-paginator {
+  background: #ffffff;
+  color: #586380;
+  border-color: #d9dbe9;
 }
 
-/* Style dla przycisków w dialogach */
-.p-dialog .p-dialog-header .p-dialog-header-icon {
-  color: #64748b !important;
-  background-color: transparent !important;
+body .p-paginator .p-paginator-pages .p-paginator-page {
+  color: #586380;
 }
 
-.p-dialog .p-dialog-header .p-dialog-header-icon:hover {
-  color: #334155 !important;
-  background-color: #f1f5f9 !important;
+body .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: #4255ff;
+  color: #ffffff;
+  border-color: #4255ff;
 }
 
-/* Style dla toastów - uzupełniające konfiguracje motywu */
-.p-toast {
-  opacity: 1 !important;
+body .p-paginator .p-paginator-first,
+body .p-paginator .p-paginator-prev,
+body .p-paginator .p-paginator-next,
+body .p-paginator .p-paginator-last {
+  color: #586380;
 }
 
-.p-toast .p-toast-message {
-  border-radius: 6px !important;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
-  margin-bottom: 0.5rem !important;
-}
-
-.p-toast .p-toast-message-content {
-  padding: 1rem 1.25rem !important;
-  border-width: 0 0 0 6px !important;
-}
-
-.p-toast .p-toast-message-text {
-  margin-left: 1rem !important;
-}
-
-.p-toast .p-toast-message-icon {
-  font-size: 1.5rem !important;
-}
-
-.p-toast .p-toast-summary {
-  font-weight: 600 !important;
-  font-size: 1rem !important;
-}
-
-.p-toast .p-toast-detail {
-  margin-top: 0.25rem !important;
-  font-size: 0.875rem !important;
-}
-
-/* Jeszcze bardziej specyficzne style dla dropdown */
-body .p-dropdown,
-html .p-dropdown,
-body .p-component.p-dropdown {
-  background-color: #FFFFFF !important;
-  color: #64748b !important;
-  border-color: #e2e8f0 !important;
-}
-
-body .p-dropdown-label,
-html .p-dropdown-label,
-body .p-component.p-dropdown .p-dropdown-label {
-  color: #64748b !important;
-  background-color: #FFFFFF !important;
-}
-
-body .p-dropdown-trigger,
-html .p-dropdown-trigger,
-body .p-component.p-dropdown .p-dropdown-trigger {
-  background-color: #FFFFFF !important;
-}
-
-body .p-dropdown-trigger-icon,
-html .p-dropdown-trigger-icon,
-body .p-component.p-dropdown .p-dropdown-trigger-icon {
-  color: #64748b !important;
-}
-
-/* Globalne style dla wszystkich dropdown komponentów PrimeNG */
-.p-dropdown {
-  background-color: #FFFFFF !important;
-  color: #64748b !important;
-  border-color: #e2e8f0 !important;
-}
-
-.p-dropdown-label {
-  color: #64748b !important;
-  background-color: #FFFFFF !important;
-}
-
-.p-dropdown-trigger {
-  background-color: #FFFFFF !important;
-}
-
-.p-dropdown-trigger-icon {
-  color: #64748b !important;
-}
-
-/* Style dla p-dropdown-panel i wszystkich jego elementów */
-.p-dropdown-panel {
-  background-color: #FFFFFF !important;
-  color: #64748b !important;
-  border-color: #e2e8f0 !important;
-}
-
-.p-dropdown-panel .p-dropdown-header,
-.p-dropdown-panel .p-dropdown-footer {
-  background-color: #FFFFFF !important;
-  color: #64748b !important;
-  border-color: #e2e8f0 !important;
-}
-
-.p-dropdown-panel .p-dropdown-items {
-  background-color: #FFFFFF !important;
-}
-
-.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
-  background-color: #FFFFFF !important;
-  color: #64748b !important;
-}
-
-.p-dropdown-panel .p-dropdown-items .p-dropdown-item:hover {
-  background-color: #f8fafc !important;
-  color: #1e293b !important;
-}
-
-.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
-  background-color: #f1f5f9 !important;
-  color: #0f172a !important;
-}
-
-/* Style dla paginatora i jego elementów dropdown */
-.p-paginator .p-dropdown,
-.p-paginator .p-dropdown-label,
-.p-paginator .p-dropdown-trigger,
-.p-paginator .p-dropdown-trigger-icon {
-  background-color: #FFFFFF !important;
-  color: #64748b !important;
-}
-
-/* Style dla portalu - miejsce gdzie PrimeNG renderuje dropdown */
-.p-component-overlay,
-.p-connected-overlay {
-  background-color: #FFFFFF !important;
-}
-
-/* Pełna kontrola nad stylami w portalu */
-body .p-connected-overlay .p-dropdown-panel,
-html .p-connected-overlay .p-dropdown-panel {
-  background-color: #FFFFFF !important;
-  border-color: #e2e8f0 !important;
-  color: #64748b !important;
-}
-
-body .p-connected-overlay .p-dropdown-panel .p-dropdown-items,
-html .p-connected-overlay .p-dropdown-panel .p-dropdown-items {
-  background-color: #FFFFFF !important;
-}
-
-body .p-connected-overlay .p-dropdown-panel .p-dropdown-items .p-dropdown-item,
-html .p-connected-overlay .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
-  background-color: #FFFFFF !important;
-  color: #64748b !important;
-}
-
-/* Globalne style dla textarea */
-body .p-inputtextarea,
-html .p-inputtextarea,
-body textarea.p-inputtextarea,
-html textarea.p-inputtextarea,
-body .p-fluid .p-inputtextarea,
-html .p-fluid .p-inputtextarea,
+/* Inputs */
+body .p-inputtext,
 body .p-textarea,
-html .p-textarea {
-  color: #1f2937 !important;
-  font-weight: 500 !important;
-  --p-textarea-color: #1f2937 !important;
-  --p-component-text-color: #1f2937 !important;
+body .p-inputtextarea,
+body textarea.p-inputtextarea {
+  color: #282e3e;
+  background: #ffffff;
+  border-color: #d9dbe9;
 }
 
-/* Globalne style dla przycisków primary */
-body .p-button.p-button-primary,
-html .p-button.p-button-primary,
-body .p-component.p-button.p-button-primary {
-  background-color: #3b82f6 !important;
-  border-color: #3b82f6 !important;
+body .p-inputtext:focus,
+body .p-textarea:focus,
+body .p-inputtextarea:focus {
+  border-color: #4255ff;
+  box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.12);
 }
 
-body .p-button.p-button-primary:hover,
-html .p-button.p-button-primary:hover,
-body .p-component.p-button.p-button-primary:hover {
-  background-color: #2563eb !important;
-  border-color: #2563eb !important;
+/* Dropdown */
+body .p-dropdown {
+  background: #ffffff;
+  color: #282e3e;
+  border-color: #d9dbe9;
 }
 
-body .p-button.p-button-primary .p-button-label,
-html .p-button.p-button-primary .p-button-label,
-body .p-button.p-button-primary .p-button-icon,
-html .p-button.p-button-primary .p-button-icon {
-  color: white !important;
+body .p-dropdown .p-dropdown-label {
+  color: #282e3e;
+  background: #ffffff;
+}
+
+body .p-dropdown .p-dropdown-trigger {
+  color: #586380;
+  background: #ffffff;
+}
+
+body .p-dropdown-panel {
+  background: #ffffff;
+  border-color: #d9dbe9;
+}
+
+body .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  color: #282e3e;
+  background: #ffffff;
+}
+
+body .p-dropdown-panel .p-dropdown-items .p-dropdown-item:hover {
+  background: #f6f7fb;
+}
+
+body .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  background: #edefff;
+  color: #4255ff;
+}
+
+/* Dialogs */
+body .p-dialog {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  border-radius: 0.75rem;
+  border: 1px solid #d9dbe9;
+  overflow: hidden;
+}
+
+body .p-dialog .p-dialog-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #d9dbe9;
+  background: #ffffff;
+  color: #282e3e;
+}
+
+body .p-dialog .p-dialog-header .p-dialog-title {
+  color: #282e3e;
+  font-weight: 700;
+}
+
+body .p-dialog .p-dialog-content {
+  padding: 1.5rem;
+  background: #ffffff;
+  color: #282e3e;
+}
+
+body .p-dialog .p-dialog-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #d9dbe9;
+  background: #ffffff;
+}
+
+body .p-dialog .p-dialog-header .p-dialog-header-icon {
+  color: #586380;
+}
+body .p-dialog .p-dialog-header .p-dialog-header-icon:hover {
+  color: #282e3e;
+  background: #f6f7fb;
+}
+
+/* Overlay */
+body .p-component-overlay { background-color: rgba(40, 46, 62, 0.5); }
+body .p-dialog-mask { background-color: transparent; }
+body .p-dialog-mask.p-component-overlay { background-color: rgba(40, 46, 62, 0.5); }
+
+/* Toast */
+body .p-toast { opacity: 1; }
+body .p-toast .p-toast-message {
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+body .p-toast .p-toast-message-content {
+  padding: 1rem 1.25rem;
+  border-width: 0 0 0 4px;
+}
+body .p-toast .p-toast-summary { font-weight: 600; color: #282e3e; }
+body .p-toast .p-toast-detail { margin-top: 0.25rem; font-size: 0.875rem; color: #586380; }
+
+/* Buttons */
+html body .p-button.p-button-primary {
+  background-color: #4255ff;
+  border-color: #4255ff;
+  color: #ffffff;
+}
+html body .p-button.p-button-primary:hover {
+  background-color: #3b4ce3;
+  border-color: #3b4ce3;
+}
+html body .p-button.p-button-primary .p-button-label,
+html body .p-button.p-button-primary .p-button-icon {
+  color: #ffffff;
+}
+
+html body .p-button {
+  color: #282e3e;
+}
+
+html body .p-button.p-button-outlined {
+  color: #4255ff;
+  border-color: #d9dbe9;
+  background: transparent;
+}
+
+html body .p-button.p-button-text {
+  color: #4255ff;
+}
+
+/* Confirm dialog */
+body .p-confirm-dialog .p-confirm-dialog-message {
+  color: #282e3e;
+}
+
+/* Connected overlay portal */
+body .p-connected-overlay {
+  background: transparent;
+}
+
+body .p-connected-overlay .p-dropdown-panel {
+  background: #ffffff;
 }

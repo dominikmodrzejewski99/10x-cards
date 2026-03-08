@@ -4,9 +4,9 @@ textarea,
 .p-textarea,
 p-inputtextarea textarea,
 p-textarea textarea {
-  background-color: white !important;
-  background: white !important;
-  color: #333 !important;
+  background-color: white;
+  background: white;
+  color: #333;
   /* Ustawienie minimalnej wysokości dla desktopu */
   min-height: 270px;
   /* Wyłączenie resize i włączenie scrolla */
@@ -22,9 +22,9 @@ p-textarea textarea {
 
 /* Dodatkowe style dla focus */
 textarea:focus {
-  background-color: white !important;
-  border-color: #3b82f6 !important;
-  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25) !important;
+  background-color: white;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
   /* Upewnij się, że kolor tekstu jest ciemny na focus */
-  color: #1f2937 !important;
+  color: #1f2937;
 }

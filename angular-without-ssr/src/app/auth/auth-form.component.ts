@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, OnDestroy, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -11,7 +10,7 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
 @Component({
   selector: 'app-auth-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [ReactiveFormsModule, RouterModule],
   template: `
     <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
       <div class="form-field">
@@ -23,10 +22,16 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
           placeholder="Wprowadź swój adres email"
           data-testid="login-email-input"
         />
-        <div *ngIf="submitted && f['email'].errors" class="error-message">
-          <span *ngIf="f['email'].errors['required']">Email jest wymagany</span>
-          <span *ngIf="f['email'].errors['email']">Niepoprawny format email</span>
-        </div>
+        @if (submitted && f['email'].errors) {
+          <div class="error-message">
+            @if (f['email'].errors['required']) {
+              <span>Email jest wymagany</span>
+            }
+            @if (f['email'].errors['email']) {
+              <span>Niepoprawny format email</span>
+            }
+          </div>
+        }
       </div>
 
       <div class="form-field">
@@ -38,10 +43,16 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
           placeholder="Minimum 6 znaków"
           data-testid="login-password-input"
         />
-        <div *ngIf="submitted && f['password'].errors" class="error-message">
-          <span *ngIf="f['password'].errors['required']">Hasło jest wymagane</span>
-          <span *ngIf="f['password'].errors['minlength']">Hasło musi mieć co najmniej 6 znaków</span>
-        </div>
+        @if (submitted && f['password'].errors) {
+          <div class="error-message">
+            @if (f['password'].errors['required']) {
+              <span>Hasło jest wymagane</span>
+            }
+            @if (f['password'].errors['minlength']) {
+              <span>Hasło musi mieć co najmniej 6 znaków</span>
+            }
+          </div>
+        }
       </div>
 
       <button
@@ -50,12 +61,14 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
         [disabled]="loading"
         data-testid="login-submit-button">
         {{ isLoginMode ? 'Zaloguj się' : 'Zarejestruj się' }}
-        <span *ngIf="loading">...</span>
+        @if (loading) { <span>...</span> }
       </button>
 
-      <div *ngIf="error" class="error-message global-error">
-        {{ error }}
-      </div>
+      @if (error) {
+        <div class="error-message global-error">
+          {{ error }}
+        </div>
+      }
 
       <div class="auth-footer">
         <p>
@@ -66,9 +79,11 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
             {{ isLoginMode ? 'Zarejestruj się' : 'Zaloguj się' }}
           </a>
         </p>
-        <p *ngIf="isLoginMode" class="forgot-password">
-          <a routerLink="/reset-password">Zapomniałeś hasła?</a>
-        </p>
+        @if (isLoginMode) {
+          <p class="forgot-password">
+            <a routerLink="/reset-password">Zapomniałeś hasła?</a>
+          </p>
+        }
       </div>
     </form>
   `,
@@ -87,70 +102,68 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
 
     label {
       font-size: 0.875rem;
-      font-weight: 500;
-      color: #374151;
+      font-weight: 600;
+      color: #282e3e;
     }
 
     input {
       padding: 0.75rem 0.875rem;
-      border: 1px solid #d1d5db;
+      border: 1.5px solid #d9dbe9;
       border-radius: 0.5rem;
       font-size: 0.9375rem;
-      color: #1f2937;
-      transition: all 0.2s;
+      color: #282e3e;
+      transition: all 0.15s;
       background-color: #ffffff;
       width: 100%;
       box-sizing: border-box;
     }
 
-    /* Style dla autouzupełniania w przeglądarce */
     input:-webkit-autofill,
     input:-webkit-autofill:hover,
     input:-webkit-autofill:focus,
     input:-webkit-autofill:active {
       -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
-      -webkit-text-fill-color: #1f2937 !important; /* Zachowaj kolor tekstu */
-      background-color: #ffffff !important; /* Ustaw białe tło */
+      -webkit-text-fill-color: #282e3e !important;
+      background-color: #ffffff !important;
     }
 
     input::placeholder {
-      color: #9ca3af;
+      color: #b0b5c4;
       font-size: 0.875rem;
     }
 
     input:focus {
       outline: none;
-      border-color: #2563eb;
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
-      color: #1f2937 !important;
+      border-color: #4255ff;
+      box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.12);
+      color: #282e3e !important;
     }
 
     .submit-button {
       margin-top: 0.75rem;
       padding: 0.75rem;
-      background-color: #2563eb;
-      color: white;
+      background-color: #4255ff;
+      color: #ffffff;
       border: none;
       border-radius: 0.5rem;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 0.9375rem;
       cursor: pointer;
-      transition: background-color 0.2s;
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      transition: background-color 0.15s;
       width: 100%;
     }
 
     .submit-button:hover {
-      background-color: #1d4ed8;
+      background-color: #3b4ce3;
     }
 
     .submit-button:disabled {
-      background-color: #93c5fd;
+      opacity: 0.5;
       cursor: not-allowed;
     }
 
     .error-message {
-      color: #dc2626;
+      color: #ff6240;
       font-size: 0.8125rem;
       font-weight: 500;
     }
@@ -159,30 +172,31 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
       margin-top: 1rem;
       text-align: center;
       padding: 0.75rem;
-      background-color: #fee2e2;
-      border-radius: 0.375rem;
-      border: 1px solid #fecaca;
+      background-color: #fff0ed;
+      border-radius: 0.5rem;
+      border: 1px solid #ffcfc5;
       font-size: 0.875rem;
+      color: #ff6240;
     }
 
     .auth-footer {
       margin-top: 0.75rem;
       text-align: center;
-      color: #4b5563;
+      color: #586380;
       font-size: 0.8125rem;
     }
 
     .auth-footer a {
-      color: #2563eb;
-      font-weight: 500;
+      color: #4255ff;
+      font-weight: 600;
       text-decoration: none;
       margin-left: 0.25rem;
-      transition: all 0.2s;
+      transition: all 0.15s;
     }
 
     .auth-footer a:hover {
       text-decoration: underline;
-      color: #1d4ed8;
+      color: #3b4ce3;
     }
 
     .forgot-password {
@@ -191,12 +205,12 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
     }
 
     .forgot-password a {
-      color: #6b7280;
+      color: #586380;
       margin-left: 0;
     }
 
     .forgot-password a:hover {
-      color: #4b5563;
+      color: #4255ff;
     }
 
     @media (min-width: 480px) {

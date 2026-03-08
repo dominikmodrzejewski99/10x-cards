@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -9,32 +8,30 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
 @Component({
   selector: 'app-auth-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule, UserMenuComponent],
+  imports: [RouterModule, UserMenuComponent],
   template: `
     <nav class="navbar">
-      <div class="container">
-        <div class="navbar-left">
-          <a routerLink="/" class="logo">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-image">
-              <rect width="40" height="40" rx="10" fill="#2563EB" />
-              <path d="M10 12H14L16.5 20L19 12H23L18 26H14L10 12Z" fill="white" />
-              <path d="M24 12H28V16H24V12Z" fill="white" />
-              <path d="M24 18H28V26H24V18Z" fill="white" />
-              <path d="M32 12L35 16L32 20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M8 28L5 24L8 20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            <span class="logo-text">10xCards</span>
-          </a>
+      <div class="navbar__inner">
+        <a routerLink="/" class="navbar__logo">
+          <span class="navbar__logo-icon">10x</span>
+          <span class="navbar__logo-text">Cards</span>
+        </a>
 
-          <div class="nav-links">
-            <a routerLink="/" routerLinkActive="active" class="nav-link hidden md:inline-block" [routerLinkActiveOptions]="{exact: true}">Jak to działa?</a>
-            <a *ngIf="isAuthenticated" routerLink="/generate" routerLinkActive="active" class="nav-link">Generuj fiszki</a>
-            <a *ngIf="isAuthenticated" routerLink="/flashcards" routerLinkActive="active" class="nav-link">Moje fiszki</a>
-            <a *ngIf="isAuthenticated" routerLink="/study" routerLinkActive="active" class="nav-link">Nauka</a>
-          </div>
+        <div class="navbar__links">
+          @if (isAuthenticated) {
+            <a routerLink="/generate" routerLinkActive="navbar__link--active" class="navbar__link">
+              <i class="pi pi-sparkles"></i> Generuj
+            </a>
+            <a routerLink="/flashcards" routerLinkActive="navbar__link--active" class="navbar__link">
+              <i class="pi pi-list"></i> Fiszki
+            </a>
+            <a routerLink="/study" routerLinkActive="navbar__link--active" class="navbar__link">
+              <i class="pi pi-book"></i> Nauka
+            </a>
+          }
         </div>
 
-        <div class="navbar-right">
+        <div class="navbar__right">
           <app-user-menu></app-user-menu>
         </div>
       </div>
@@ -42,126 +39,103 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
   `,
   styles: [`
     .navbar {
-      background: linear-gradient(to right, #2563EB, #1E40AF);
-      color: white;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      padding: 0.75rem 0;
+      background: #ffffff;
+      border-bottom: 2px solid #d9dbe9;
       position: sticky;
       top: 0;
       z-index: 40;
     }
 
-    .container {
-      max-width: 1280px;
+    .navbar__inner {
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 0 1rem;
+      padding: 0 1.25rem;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      height: 3.5rem;
+      gap: 2rem;
     }
 
-    .navbar-left {
+    .navbar__logo {
       display: flex;
       align-items: center;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      gap: 0.15rem;
       text-decoration: none;
-      color: white;
-      font-weight: 700;
-      font-size: 1.25rem;
+      font-weight: 800;
+      font-size: 1.35rem;
       flex-shrink: 0;
+      letter-spacing: -0.02em;
     }
 
-    .logo-image {
-      height: 2rem;
-      width: auto;
+    .navbar__logo-icon {
+      color: #4255ff;
     }
 
-    .nav-links {
+    .navbar__logo-text {
+      color: #282e3e;
+    }
+
+    .navbar__links {
       display: flex;
-      margin-left: 2rem;
-      gap: 1.5rem;
+      gap: 0.25rem;
+      align-items: center;
     }
 
-    .nav-link {
-      color: white;
+    .navbar__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 0.5rem;
       text-decoration: none;
-      font-weight: 500;
-      padding: 0.5rem 0;
-      position: relative;
-      transition: all 0.2s;
-    }
-
-    .nav-link:hover {
-      opacity: 0.9;
-    }
-
-    .nav-link.active {
+      color: #586380;
       font-weight: 600;
+      font-size: 0.875rem;
+      transition: all 0.15s;
     }
 
-    .nav-link.active::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background-color: white;
+    .navbar__link:hover {
+      background: #f6f7fb;
+      color: #282e3e;
     }
 
-    .navbar-right {
+    .navbar__link--active {
+      background: #edefff;
+      color: #4255ff;
+    }
+
+    .navbar__link i {
+      font-size: 0.85rem;
+    }
+
+    .navbar__right {
+      margin-left: auto;
       display: flex;
       align-items: center;
     }
 
-    @media (max-width: 768px) {
-      .container {
-        padding: 0 0.5rem;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-      }
-
-      .navbar-left {
-        width: auto;
-        flex-shrink: 0;
-        align-items: center;
-      }
-
-      .logo {
-        font-size: 1rem;
-        gap: 0.25rem;
-        flex-shrink: 0;
-      }
-
-      .logo-image {
-        height: 1.5rem;
-      }
-
-      .nav-links {
-        display: flex;
-        margin-left: 0.5rem;
+    @media (max-width: 640px) {
+      .navbar__inner {
+        padding: 0 0.75rem;
         gap: 0.5rem;
-        align-items: center;
-        flex-wrap: wrap;
-        flex-grow: 1;
-        justify-content: flex-end;
+        height: 3rem;
       }
 
-      .nav-link {
-        font-size: 0.8rem;
-        padding: 0.2rem 0.3rem;
+      .navbar__logo {
+        font-size: 1.1rem;
       }
 
-      .navbar-right {
-        flex-shrink: 0;
-        align-items: center;
-        margin-left: 0.25rem;
+      .navbar__links {
+        gap: 0.125rem;
       }
+
+      .navbar__link {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.5rem;
+        gap: 0.25rem;
+      }
+
+      .navbar__link i { display: none; }
     }
   `]
 })
