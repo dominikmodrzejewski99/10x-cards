@@ -31,7 +31,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.loginSuccess),
         tap(() => {
-          this.authRedirectService.redirectToSavedUrlOrDefault('/flashcards');
+          this.authRedirectService.redirectToSavedUrlOrDefault('/sets');
         })
       ),
     { dispatch: false }
@@ -58,7 +58,30 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.registerSuccess),
         tap(() => {
-          this.authRedirectService.redirectToSavedUrlOrDefault('/flashcards');
+          this.authRedirectService.redirectToSavedUrlOrDefault('/sets');
+        })
+      ),
+    { dispatch: false }
+  );
+
+  loginAnonymously$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.loginAnonymously),
+      switchMap(() =>
+        this.authService.signInAnonymously().pipe(
+          map((user) => AuthActions.loginAnonymouslySuccess({ user })),
+          catchError((error) => of(AuthActions.loginAnonymouslyFailure({ error: this.handleError(error) })))
+        )
+      )
+    )
+  );
+
+  loginAnonymouslySuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.loginAnonymouslySuccess),
+        tap(() => {
+          this.authRedirectService.redirectToSavedUrlOrDefault('/sets');
         })
       ),
     { dispatch: false }
@@ -103,7 +126,7 @@ export class AuthEffects {
         ofType(AuthActions.authStateLoaded),
         tap(({ user }) => {
           if (user && (this.router.url === '/login' || this.router.url === '/register')) {
-            this.router.navigate(['/flashcards']);
+            this.router.navigate(['/sets']);
           }
         })
       ),

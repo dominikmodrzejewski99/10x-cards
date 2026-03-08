@@ -38,7 +38,7 @@ export class AuthRedirectService {
    * Przekierowuje użytkownika do zapisanego URL-a lub do domyślnego URL-a
    * @param defaultUrl Domyślny URL, do którego użytkownik zostanie przekierowany, jeśli nie ma zapisanego URL-a
    */
-  redirectToSavedUrlOrDefault(defaultUrl: string = '/flashcards'): void {
+  redirectToSavedUrlOrDefault(defaultUrl: string = '/sets'): void {
     const redirectUrl = this.getRedirectUrl();
     this.router.navigateByUrl(redirectUrl || defaultUrl);
   }

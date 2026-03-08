@@ -33,6 +33,19 @@ export const registerFailure = createAction(
   props<{ error: string }>()
 );
 
+// Anonymous login actions
+export const loginAnonymously = createAction('[Auth] Login Anonymously');
+
+export const loginAnonymouslySuccess = createAction(
+  '[Auth] Login Anonymously Success',
+  props<{ user: UserDTO }>()
+);
+
+export const loginAnonymouslyFailure = createAction(
+  '[Auth] Login Anonymously Failure',
+  props<{ error: string }>()
+);
+
 // Logout action
 export const logout = createAction('[Auth] Logout');
 export const logoutSuccess = createAction('[Auth] Logout Success');

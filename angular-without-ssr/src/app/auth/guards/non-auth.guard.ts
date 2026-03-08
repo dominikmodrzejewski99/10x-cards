@@ -15,7 +15,7 @@ export const nonAuthGuard: CanActivateFn = (route, state) => {
         return true;
       }
 
-      return router.createUrlTree(['/flashcards']);
+      return router.createUrlTree(['/sets']);
     })
   );
 };

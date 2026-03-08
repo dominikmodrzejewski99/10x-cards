@@ -108,6 +108,28 @@ export class AuthService {
   }
 
   /**
+   * Loguje anonimowo — tworzy tymczasowe konto bez podawania danych
+   */
+  signInAnonymously(): Observable<UserDTO> {
+    return from(this.supabase.auth.signInAnonymously()).pipe(
+      map(response => {
+        if (response.error) {
+          throw response.error;
+        }
+        if (!response.data.user) {
+          throw new Error('Nie udało się utworzyć konta testowego.');
+        }
+        return this.mapUserToDTO(response.data.user);
+      }),
+      switchMap(user => this.createUserRecord(user)),
+      catchError(error => {
+        console.error('Błąd anonimowego logowania:', error);
+        return throwError(() => this.handleAuthError(error));
+      })
+    );
+  }
+
+  /**
    * Loguje użytkownika przy użyciu Supabase Auth
    */
   login(command: LoginUserCommand): Observable<UserDTO> {

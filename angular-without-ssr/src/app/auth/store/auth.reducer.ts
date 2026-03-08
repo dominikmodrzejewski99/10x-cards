@@ -45,6 +45,26 @@ export const authReducer = createReducer(
     error
   })),
   
+  // Anonymous login actions
+  on(AuthActions.loginAnonymously, (state) => ({
+    ...state,
+    loading: true,
+    error: null
+  })),
+
+  on(AuthActions.loginAnonymouslySuccess, (state, { user }) => ({
+    ...state,
+    user,
+    loading: false,
+    error: null
+  })),
+
+  on(AuthActions.loginAnonymouslyFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error
+  })),
+
   // Logout actions
   on(AuthActions.logout, (state) => ({
     ...state,
