@@ -47,6 +47,7 @@ export interface FlashcardDTO {
   updated_at: string;
   user_id: string;
   generation_id: number | null;
+  set_id: number;
 }
 
 export interface FlashcardProposalDTO {
@@ -57,9 +58,9 @@ export interface FlashcardProposalDTO {
 
 // Command model for creating a flashcard
 // Uses Omit to exclude fields that are set by the system
-export type CreateFlashcardCommand = Omit<FlashcardDTO, 'id' | 'created_at' | 'updated_at' | 'user_id' | 'generation_id'> & {
-  // Optionally, generation_id can be provided for AI-generated flashcards
+export type CreateFlashcardCommand = Omit<FlashcardDTO, 'id' | 'created_at' | 'updated_at' | 'user_id' | 'generation_id' | 'set_id'> & {
   generation_id?: number | null;
+  set_id: number;
 };
 
 // Command model for updating a flashcard
@@ -67,6 +68,24 @@ export type CreateFlashcardCommand = Omit<FlashcardDTO, 'id' | 'created_at' | 'u
 export type UpdateFlashcardCommand = Partial<Omit<CreateFlashcardCommand, 'generation_id'>> & {
   generation_id?: number | null;
 };
+
+/** ---------- Flashcard Sets ---------- */
+
+export interface FlashcardSetDTO {
+  id: number;
+  user_id: string;
+  name: string;
+  description: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateFlashcardSetCommand {
+  name: string;
+  description?: string | null;
+}
+
+export type UpdateFlashcardSetCommand = Partial<CreateFlashcardSetCommand>;
 
 /** ---------- Generations ---------- */
 

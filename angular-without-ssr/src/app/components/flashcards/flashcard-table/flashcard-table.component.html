@@ -1,111 +1,115 @@
-<div class="card bg-white shadow-sm rounded-lg overflow-hidden w-full">
-  <!-- Panel wyszukiwania i paginacji - zmiana z niebieskiego na jasny -->
-  <div class="bg-gray-50 border-b border-gray-200 p-3 sm:p-4">
-    <div class="flex flex-wrap gap-2 sm:gap-3 justify-between items-center">
-      <!-- Pole wyszukiwania z lupą obok -->
-      <div class="flex gap-2 items-center w-full">
-        <div class="flex-1 relative">
-          <input
-            type="text"
-            pInputText
-            [(ngModel)]="searchTerm"
-            placeholder="Wyszukaj fiszki..."
-            (keyup.enter)="onSearch()"
-            (keyup.escape)="onResetFilter()"
-            (ngModelChange)="onSearchTermChange()"
-            class="search-input w-full bg-white text-gray-700 pl-4 py-2 rounded-md border border-gray-300"
-            data-test-id="search-input"
-          />
-        </div>
-        <button
-          pButton
-          icon="pi pi-search"
-          class="p-button p-button-raised p-button-primary"
-          (click)="onSearch()"
-          data-test-id="search-button"></button>
-      </div>
-
+<div class="ftable">
+  <div class="ftable__toolbar">
+    <div class="ftable__search-wrap">
+      <i class="pi pi-search ftable__search-icon"></i>
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Szukaj wśród fiszek..."
+        (keyup.enter)="onSearch()"
+        (keyup.escape)="onResetFilter()"
+        (ngModelChange)="onSearchTermChange()"
+        class="ftable__search-input"
+        data-test-id="search-input" />
+      @if (searchTerm) {
+        <button class="ftable__search-clear" (click)="onResetFilter()" title="Wyczyść">
+          <i class="pi pi-times"></i>
+        </button>
+      }
     </div>
-
+    <span class="ftable__count">{{ totalRecordsSignal() }} {{ totalRecordsSignal() === 1 ? 'fiszka' : (totalRecordsSignal() < 5 ? 'fiszki' : 'fiszek') }}</span>
   </div>
 
+  @if (hasSelectionSignal()) {
+    <div class="ftable__bulk-bar">
+      <label class="ftable__checkbox-label">
+        <input type="checkbox" [checked]="allSelectedSignal()" (change)="toggleSelectAll()" class="ftable__checkbox" />
+        <span>Zaznacz wszystkie</span>
+      </label>
+      <span class="ftable__bulk-count">{{ selectedCountSignal() }} zaznaczonych</span>
+      <button class="ftable__bulk-btn ftable__bulk-btn--delete" (click)="onBulkDelete()">
+        <i class="pi pi-trash"></i> Usuń zaznaczone
+      </button>
+      <button class="ftable__bulk-btn ftable__bulk-btn--clear" (click)="clearSelection()">
+        <i class="pi pi-times"></i> Odznacz
+      </button>
+    </div>
+  }
 
+  @if (loadingSignal() && flashcardsSignal().length === 0) {
+    <div class="ftable__loading" data-test-id="loading-indicator">
+      <i class="pi pi-spin pi-spinner"></i>
+      <span>Ładowanie fiszek...</span>
+    </div>
+  }
 
-  <p-table
-    [value]="flashcards"
-    [loading]="loading"
-    [paginator]="true"
-    [rows]="rows"
-    [totalRecords]="totalRecords"
-    [lazy]="true"
-    (onLazyLoad)="onLazyLoad($event)"
-    [tableStyle]="{ 'width': '100%' }"
-    styleClass="p-datatable-sm p-datatable-striped custom-table responsive-table"
-    [sortField]="sortField"
-    [sortOrder]="sortOrder"
-    (onSort)="onSort($event)"
-    responsiveLayout="stack"
-    dataKey="id"
-    data-test-id="flashcards-table">
+  @if (!loadingSignal() && flashcardsSignal().length === 0) {
+    <div class="ftable__empty" data-test-id="empty-message">
+      <i class="pi pi-inbox"></i>
+      <p>Brak fiszek w tym zestawie.</p>
+      <span>Dodaj pierwszą fiszkę przyciskiem powyżej.</span>
+    </div>
+  }
 
-    <ng-template pTemplate="header">
-      <tr>
-        <th class="w-5/12" pSortableColumn="front" [ngStyle]="{'font-size': '0.75rem !important'}">
-          Przód <p-sortIcon field="front"></p-sortIcon>
-        </th>
-        <th class="w-5/12" pSortableColumn="back" [ngStyle]="{'font-size': '0.75rem !important'}">
-          Tył <p-sortIcon field="back"></p-sortIcon>
-        </th>
-        <th class="w-2/12 text-center" [ngStyle]="{'font-size': '0.75rem !important'}">Akcje</th>
-      </tr>
-    </ng-template>
-
-    <ng-template pTemplate="body" let-flashcard>
-      <tr>
-        <td class="truncate" [title]="flashcard.front" [ngStyle]="{'font-size': '0.75rem !important'}">{{ flashcard.front }}</td>
-        <td class="truncate" [title]="flashcard.back" [ngStyle]="{'font-size': '0.75rem !important'}">{{ flashcard.back }}</td>
-        <td class="text-center" [ngStyle]="{'font-size': '0.75rem !important'}">
-          <div class="flex justify-center gap-1 sm:gap-2">
-            <p-button
-              icon="pi pi-pencil"
-              styleClass="p-button-outlined p-button-secondary"
-              size="small"
-              (onClick)="editFlashcard.emit(flashcard)"
-              [disabled]="loading"
-              pTooltip="Edytuj fiszkę"
+  @if (flashcardsSignal().length > 0) {
+    <div class="ftable__list">
+      @for (flashcard of flashcardsSignal(); track flashcard.id; let i = $index) {
+        <div class="ftable__card" [class.ftable__card--loading]="loadingSignal()" [class.ftable__card--selected]="isSelected(flashcard.id)">
+          <label class="ftable__card-check">
+            <input type="checkbox" [checked]="isSelected(flashcard.id)" (change)="toggleSelect(flashcard.id)" class="ftable__checkbox" />
+          </label>
+          <div class="ftable__card-num">{{ firstSignal() + i + 1 }}</div>
+          <div class="ftable__card-body">
+            <div class="ftable__card-side">
+              <span class="ftable__card-label">Przód</span>
+              <p class="ftable__card-text">{{ flashcard.front }}</p>
+            </div>
+            <div class="ftable__card-divider"></div>
+            <div class="ftable__card-side">
+              <span class="ftable__card-label">Tył</span>
+              <p class="ftable__card-text">{{ flashcard.back }}</p>
+            </div>
+          </div>
+          <div class="ftable__card-actions">
+            <button
+              class="ftable__action ftable__action--edit"
+              (click)="editFlashcard.emit(flashcard)"
+              [disabled]="loadingSignal()"
+              title="Edytuj"
               data-test-id="edit-button">
-            </p-button>
-            <p-button
-              icon="pi pi-trash"
-              styleClass="p-button-outlined p-button-danger"
-              size="small"
-              (onClick)="deleteFlashcard.emit(flashcard)"
-              [disabled]="loading"
-              pTooltip="Usuń fiszkę"
+              <i class="pi pi-pencil"></i>
+            </button>
+            <button
+              class="ftable__action ftable__action--delete"
+              (click)="deleteFlashcard.emit(flashcard)"
+              [disabled]="loadingSignal()"
+              title="Usuń"
               data-test-id="delete-button">
-            </p-button>
+              <i class="pi pi-trash"></i>
+            </button>
           </div>
-        </td>
-      </tr>
-    </ng-template>
+        </div>
+      }
+    </div>
 
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="3" class="text-center py-4">
-          @if (loading) {
-          <div class="flex justify-center items-center p-4" data-test-id="loading-indicator">
-            <i class="pi pi-spin pi-spinner mr-2"></i>
-            <span>Ładowanie fiszek...</span>
-          </div>
-          } @else {
-          <div class="p-4" data-test-id="empty-message">
-            Brak fiszek. Dodaj swoją pierwszą fiszkę!
-          </div>
-          }
-        </td>
-      </tr>
-    </ng-template>
-
-  </p-table>
-
+    @if (totalRecordsSignal() > rowsSignal()) {
+      <div class="ftable__pagination">
+        <button
+          class="ftable__page-btn"
+          [disabled]="firstSignal() === 0 || loadingSignal()"
+          (click)="goToPage(firstSignal() - rowsSignal())">
+          <i class="pi pi-chevron-left"></i>
+        </button>
+        <span class="ftable__page-info">
+          {{ currentPageSignal() }} / {{ totalPagesSignal() }}
+        </span>
+        <button
+          class="ftable__page-btn"
+          [disabled]="firstSignal() + rowsSignal() >= totalRecordsSignal() || loadingSignal()"
+          (click)="goToPage(firstSignal() + rowsSignal())">
+          <i class="pi pi-chevron-right"></i>
+        </button>
+      </div>
+    }
+  }
 </div>

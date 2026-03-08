@@ -14,6 +14,32 @@
   gap: 0.75rem;
 }
 
+.flist__title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.flist__back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  border: 1.5px solid #d9dbe9;
+  background: transparent;
+  color: #586380;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.15s;
+}
+.flist__back:hover {
+  background: #f6f7fb;
+  color: #4255ff;
+  border-color: #4255ff;
+}
+
 .flist__title {
   font-size: 1.5rem;
   font-weight: 800;

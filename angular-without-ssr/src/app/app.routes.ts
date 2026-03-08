@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { GenerateViewComponent } from './components/generate/generate-view.component';
 import { FlashcardListComponent } from './components/flashcards/flashcard-list.component';
+import { SetListComponent } from './components/sets/set-list.component';
 import { AuthPageComponent } from './auth/auth-page.component';
 import { PasswordResetPageComponent } from './auth/pages/password-reset-page.component';
 import { SetNewPasswordPageComponent } from './auth/pages/set-new-password-page.component';
@@ -16,9 +17,19 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
-    path: 'flashcards',
+    path: 'sets',
+    component: SetListComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'sets/:id',
     component: FlashcardListComponent,
     canActivate: [authGuard]
+  },
+  {
+    path: 'flashcards',
+    redirectTo: '/sets',
+    pathMatch: 'full'
   },
   {
     path: 'study',

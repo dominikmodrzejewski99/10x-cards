@@ -7,11 +7,12 @@
     <h1 class="hero__title" data-animate="fade-up">Zamień notatki w wiedzę.<br/><span class="hero__accent">Bez ślęczenia nad kartkami.</span></h1>
     <p class="hero__desc" data-animate="fade-up">
       Wrzuć tekst z wykładu, podręcznika albo artykułu.
-      Dostaniesz gotowe fiszki i plan powtórek dopasowany do Twojego tempa.
+      Dostaniesz gotowe fiszki, pogrupowane w zestawy, z planem powtórek dopasowanym do Twojego tempa.
     </p>
     <div class="hero__cta" data-animate="fade-up">
       <a routerLink="/register" class="btn btn--primary">Zacznij za darmo</a>
-      <a routerLink="/login" class="btn btn--outline">Mam już konto</a>
+      <button class="btn btn--outline" (click)="tryAnonymously()">Wypróbuj bez rejestracji</button>
+      <a routerLink="/login" class="btn btn--ghost">Mam już konto</a>
     </div>
   </div>
 </section>
@@ -33,8 +34,8 @@
       </div>
       <div class="step" data-animate="slide-left">
         <div class="step__num">3</div>
-        <h3 class="step__title">Dopasuj do siebie</h3>
-        <p class="step__desc">Przejrzyj propozycje, popraw co trzeba, wyrzuć zbędne.</p>
+        <h3 class="step__title">Utwórz zestaw</h3>
+        <p class="step__desc">Grupuj fiszki tematycznie — osobny zestaw na każdy przedmiot czy rozdział.</p>
       </div>
       <div class="step" data-animate="slide-right">
         <div class="step__num">4</div>
@@ -103,19 +104,19 @@
         <p class="fcard__desc">Edytuj propozycje AI, twórz własne od zera, usuwaj niepotrzebne.</p>
       </div>
       <div class="fcard" data-animate="slide-left">
-        <i class="pi pi-book fcard__icon fcard__icon--orange"></i>
+        <i class="pi pi-folder fcard__icon fcard__icon--orange"></i>
+        <h3 class="fcard__title">Zestawy tematyczne</h3>
+        <p class="fcard__desc">Organizuj materiał z różnych przedmiotów i rozdziałów — każdy zestaw to oddzielna paczka wiedzy.</p>
+      </div>
+      <div class="fcard" data-animate="fade-up">
+        <i class="pi pi-book fcard__icon fcard__icon--teal"></i>
         <h3 class="fcard__title">Sesje nauki</h3>
         <p class="fcard__desc">Odwracaj karty, oceniaj wiedzę — wyniki widać od razu.</p>
       </div>
-      <div class="fcard" data-animate="fade-up">
-        <i class="pi pi-cloud fcard__icon fcard__icon--pink"></i>
+      <div class="fcard" data-animate="slide-left">
+        <i class="pi pi-cloud fcard__icon fcard__icon--blue"></i>
         <h3 class="fcard__title">Zawsze pod ręką</h3>
         <p class="fcard__desc">Laptop, telefon, tablet — Twoje fiszki czekają w chmurze.</p>
-      </div>
-      <div class="fcard" data-animate="slide-right">
-        <i class="pi pi-shield fcard__icon fcard__icon--teal"></i>
-        <h3 class="fcard__title">Prywatność</h3>
-        <p class="fcard__desc">Twoje materiały i postępy nie są udostępniane nikomu.</p>
       </div>
     </div>
   </div>
@@ -125,7 +126,10 @@
 <section class="cta" data-animate="fade-up">
   <div class="landing__inner">
     <h2 class="cta__title">Spróbuj — to nic nie kosztuje</h2>
-    <p class="cta__desc">Załóż konto, wrzuć pierwszy tekst i zobacz, jak to działa.</p>
-    <a routerLink="/register" class="btn btn--white">Załóż darmowe konto</a>
+    <p class="cta__desc">Załóż konto albo przetestuj od razu bez rejestracji.</p>
+    <div class="cta__buttons">
+      <a routerLink="/register" class="btn btn--white">Załóż darmowe konto</a>
+      <button class="btn btn--white-outline" (click)="tryAnonymously()">Wypróbuj bez konta</button>
+    </div>
   </div>
 </section>

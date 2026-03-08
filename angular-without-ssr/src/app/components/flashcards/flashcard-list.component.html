@@ -1,8 +1,13 @@
 <div class="flist">
   <div class="flist__header">
-    <h1 class="flist__title" data-test-id="flashcards-title">Moje fiszki</h1>
+    <div class="flist__title-row">
+      <button class="flist__back" (click)="goBackToSets()" title="Wróć do zestawów">
+        <i class="pi pi-arrow-left"></i>
+      </button>
+      <h1 class="flist__title" data-test-id="flashcards-title">{{ state().setName || 'Fiszki' }}</h1>
+    </div>
     <div class="flist__actions">
-      <a routerLink="/study" class="flist__btn flist__btn--study" data-test-id="start-study-button">
+      <a [routerLink]="['/study']" [queryParams]="{setId: state().setId}" class="flist__btn flist__btn--study" data-test-id="start-study-button">
         <i class="pi pi-book"></i> Rozpocznij naukę
       </a>
       <button (click)="openAddModal()" class="flist__btn flist__btn--add" data-test-id="add-flashcard-button">
@@ -18,12 +23,13 @@
       [totalRecords]="state().totalRecords"
       [rows]="state().rows"
       [first]="state().first"
-      [searchTerm]="state().searchTerm"
       [sortField]="state().sortField"
       [sortOrder]="state().sortOrder"
       (editFlashcard)="openEditModal($event)"
       (deleteFlashcard)="handleDelete($event)"
-      (lazyLoad)="loadFlashcards($event)">
+      (lazyLoad)="loadFlashcards($event)"
+      (search)="onSearch($event)"
+      (bulkDelete)="handleBulkDelete($event)">
     </app-flashcard-table>
   </div>
 

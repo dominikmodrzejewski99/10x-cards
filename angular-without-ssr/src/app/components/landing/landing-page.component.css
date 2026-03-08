@@ -144,6 +144,37 @@
   transform: translateY(-1px);
 }
 
+.btn--ghost {
+  background: transparent;
+  color: #586380;
+  border: none;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+}
+
+.btn--ghost:hover {
+  color: #4255ff;
+}
+
+.btn--white-outline {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  font-weight: 700;
+}
+
+.btn--white-outline:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #fff;
+}
+
+.cta__buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 /* ===== Sections ===== */
 .section {
   padding: 5rem 0;

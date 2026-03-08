@@ -6,6 +6,41 @@
   padding: 2rem 1.25rem;
 }
 
+.study__set-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 640px;
+}
+
+.study__set-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #586380;
+  white-space: nowrap;
+}
+
+.study__set-select {
+  padding: 0.45rem 0.65rem;
+  border: 1.5px solid #d9dbe9;
+  border-radius: 0.5rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: #282e3e;
+  background: #f6f7fb;
+  cursor: pointer;
+  min-width: 180px;
+  flex: 1;
+  max-width: 300px;
+
+  &:focus {
+    outline: none;
+    border-color: #4255ff;
+  }
+}
+
 .study__state {
   display: flex;
   flex-direction: column;

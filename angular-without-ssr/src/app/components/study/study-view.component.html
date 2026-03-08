@@ -1,5 +1,21 @@
 <div class="study">
 
+  @if (setsSignal().length > 0) {
+    <div class="study__set-filter">
+      <label class="study__set-label" for="studySet">Ucz się z zestawu:</label>
+      <select
+        id="studySet"
+        class="study__set-select"
+        [ngModel]="selectedSetIdSignal()"
+        (ngModelChange)="onSetChange($event)">
+        <option [ngValue]="null">Wszystkie fiszki</option>
+        @for (set of setsSignal(); track set.id) {
+          <option [ngValue]="set.id">{{ set.name }}</option>
+        }
+      </select>
+    </div>
+  }
+
   @if (loadingSignal()) {
     <div class="study__state">
       <i class="pi pi-spin pi-spinner study__state-icon" style="color: #4255ff;"></i>

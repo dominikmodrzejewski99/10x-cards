@@ -21,6 +21,41 @@
         </p>
       </div>
 
+      <div class="gen__set-bar">
+        <div class="gen__set-picker">
+          <label class="gen__set-label" for="targetSet">Docelowy zestaw:</label>
+          <select
+            id="targetSet"
+            class="gen__set-select"
+            [(ngModel)]="selectedSetId">
+            <option [ngValue]="null" disabled>— Wybierz zestaw —</option>
+            @for (set of sets; track set.id) {
+              <option [ngValue]="set.id">{{ set.name }}</option>
+            }
+          </select>
+        </div>
+        <div class="gen__set-create">
+          <input
+            type="text"
+            class="gen__set-input"
+            [(ngModel)]="newSetName"
+            placeholder="Nazwa nowego zestawu..."
+            maxlength="100"
+            (keydown.enter)="createNewSet()" />
+          <button
+            class="gen__btn gen__btn--small"
+            [disabled]="!newSetName.trim() || isCreatingSet"
+            (click)="createNewSet()">
+            @if (isCreatingSet) {
+              <i class="pi pi-spin pi-spinner"></i>
+            } @else {
+              <i class="pi pi-plus"></i>
+            }
+            Utwórz
+          </button>
+        </div>
+      </div>
+
       <div class="gen__card">
         <app-source-textarea
           (textChange)="onTextChange($event)"
@@ -59,7 +94,12 @@
           (edit)="editProposal($event)">
         </app-flashcard-proposal-list>
 
-        <div class="gen__card-footer">
+        <div class="gen__card-footer gen__card-footer--save">
+          @if (!selectedSetId) {
+            <span class="gen__set-warn">
+              <i class="pi pi-exclamation-circle"></i> Wybierz zestaw, aby zapisać fiszki
+            </span>
+          }
           <app-bulk-save-button
             [label]="'Zapisz zaakceptowane (' + acceptedCount + ')'"
             [disabled]="!canSave()"
