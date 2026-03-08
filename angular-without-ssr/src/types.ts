@@ -91,6 +91,39 @@ export interface GenerateFlashcardsCommand {
   model?: string;
 }
 
+/** ---------- Flashcard Reviews (Spaced Repetition SM-2) ---------- */
+
+export interface FlashcardReviewDTO {
+  id: number;
+  flashcard_id: number;
+  user_id: string;
+  ease_factor: number;
+  interval: number;
+  repetitions: number;
+  next_review_date: string;
+  last_reviewed_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface StudyCardDTO {
+  flashcard: FlashcardDTO;
+  review: FlashcardReviewDTO | null;
+}
+
+export type ReviewQuality = 1 | 4;
+
+export interface ReviewAnswerCommand {
+  flashcard_id: number;
+  quality: ReviewQuality;
+}
+
+export interface SessionResultDTO {
+  known: number;
+  unknown: number;
+  total: number;
+}
+
 /** ---------- Generation Error Logs ---------- */
 
 // DTO for generation error logs representing records from the generation_error_logs table

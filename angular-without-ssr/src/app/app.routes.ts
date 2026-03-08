@@ -5,6 +5,7 @@ import { AuthPageComponent } from './auth/auth-page.component';
 import { PasswordResetPageComponent } from './auth/pages/password-reset-page.component';
 import { SetNewPasswordPageComponent } from './auth/pages/set-new-password-page.component';
 import { LandingPageComponent } from './components/landing/landing-page.component';
+import { StudyViewComponent } from './components/study/study-view.component';
 import { authGuard } from './auth/guards/auth.guard';
 import { nonAuthGuard } from './auth/guards/non-auth.guard';
 import { partialAuthGuard } from './auth/guards/partial-auth.guard';
@@ -17,6 +18,11 @@ export const routes: Routes = [
   {
     path: 'flashcards',
     component: FlashcardListComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'study',
+    component: StudyViewComponent,
     canActivate: [authGuard]
   },
   {

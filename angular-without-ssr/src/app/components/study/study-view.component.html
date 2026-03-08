@@ -1,0 +1,164 @@
+<div class="study-container">
+
+  <!-- Loading -->
+  @if (loadingSignal()) {
+    <div class="state-message">
+      <i class="pi pi-spin pi-spinner text-4xl text-blue-600"></i>
+      <p class="text-gray-500 text-lg">Ładowanie fiszek do powtórki...</p>
+    </div>
+  }
+
+  <!-- Error -->
+  @if (errorSignal()) {
+    <div class="state-message text-center">
+      <i class="pi pi-exclamation-triangle text-4xl text-red-500"></i>
+      <p class="text-gray-700 text-lg">{{ errorSignal() }}</p>
+      <button
+        (click)="loadDueCards()"
+        class="mt-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors">
+        Spróbuj ponownie
+      </button>
+    </div>
+  }
+
+  <!-- Empty state: no due cards -->
+  @if (!loadingSignal() && !errorSignal() && dueCardsSignal().length === 0 && !isSessionCompleteSignal()) {
+    <div class="state-message text-center max-w-md">
+      <i class="pi pi-check-circle text-5xl text-emerald-400"></i>
+      <h2 class="text-2xl font-bold text-gray-700">Wszystkie fiszki powtórzone!</h2>
+      @if (nextReviewDateSignal()) {
+        <p class="text-gray-500">Następna powtórka: <strong>{{ formatDate(nextReviewDateSignal()!) }}</strong></p>
+      } @else {
+        <p class="text-gray-500">Nie masz jeszcze żadnych fiszek. Wygeneruj je lub dodaj ręcznie.</p>
+      }
+      <div class="flex gap-3 mt-4">
+        <a routerLink="/generate"
+          class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors no-underline">
+          Generuj fiszki
+        </a>
+        <a routerLink="/flashcards"
+          class="px-6 py-2.5 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-lg font-semibold transition-colors no-underline">
+          Moje fiszki
+        </a>
+      </div>
+    </div>
+  }
+
+  <!-- Session complete: summary -->
+  @if (isSessionCompleteSignal()) {
+    <div class="state-message text-center max-w-md">
+      <i class="pi pi-trophy text-5xl text-yellow-500"></i>
+      <h2 class="text-2xl font-bold text-gray-800">Sesja zakończona!</h2>
+
+      <div class="session-stats">
+        <div class="stat stat--total">
+          <span class="stat__value">{{ sessionResultsSignal().total }}</span>
+          <span class="stat__label">Łącznie</span>
+        </div>
+        <div class="stat stat--known">
+          <span class="stat__value">{{ sessionResultsSignal().known }}</span>
+          <span class="stat__label">Wiem</span>
+        </div>
+        <div class="stat stat--unknown">
+          <span class="stat__value">{{ sessionResultsSignal().unknown }}</span>
+          <span class="stat__label">Nie wiem</span>
+        </div>
+      </div>
+
+      <div class="flex gap-3 mt-6">
+        <button
+          (click)="restartSession()"
+          class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors">
+          Powtórz jeszcze raz
+        </button>
+        <a routerLink="/flashcards"
+          class="px-6 py-2.5 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-lg font-semibold transition-colors no-underline">
+          Moje fiszki
+        </a>
+      </div>
+    </div>
+  }
+
+  <!-- Study mode -->
+  @if (!loadingSignal() && !errorSignal() && dueCardsSignal().length > 0 && !isSessionCompleteSignal()) {
+    <div class="study-content">
+
+      <div class="study-header">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-1">Nauka fiszek</h1>
+        <p class="text-sm text-gray-400">
+          @if (!isFlippedSignal()) {
+            Kliknij kartę lub naciśnij spację, aby ją odwrócić
+          } @else {
+            Oceń swoją odpowiedź
+          }
+        </p>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="progress-section">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-semibold text-gray-600">
+            Fiszka {{ currentIndexSignal() + 1 }} z {{ dueCardsSignal().length }}
+          </span>
+          <span class="text-sm text-gray-400">
+            {{ progressPercentSignal() }}%
+          </span>
+        </div>
+        <div class="progress-bar-track">
+          <div
+            class="progress-bar-fill"
+            [style.width.%]="progressPercentSignal()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Flip card -->
+      <div class="card-section">
+        @if (currentCardSignal(); as card) {
+          <app-flashcard-flip
+            [front]="card.flashcard.front"
+            [back]="card.flashcard.back"
+            [isFlipped]="isFlippedSignal()"
+            (flipToggle)="flip()">
+          </app-flashcard-flip>
+        }
+      </div>
+
+      <!-- Action buttons -->
+      <div class="action-buttons">
+        @if (!isFlippedSignal()) {
+          <button
+            (click)="flip()"
+            class="action-button action-button--flip">
+            <i class="pi pi-sync"></i>
+            <span>Odwróć kartę</span>
+          </button>
+        } @else {
+          <button
+            (click)="answer(1)"
+            [disabled]="savingSignal()"
+            class="action-button action-button--unknown">
+            <i class="pi pi-times-circle"></i>
+            <span>Nie wiem</span>
+          </button>
+          <button
+            (click)="answer(4)"
+            [disabled]="savingSignal()"
+            class="action-button action-button--known">
+            <i class="pi pi-check-circle"></i>
+            <span>Wiem</span>
+          </button>
+        }
+      </div>
+
+      <!-- Keyboard hints -->
+      <p class="keyboard-hint">
+        @if (!isFlippedSignal()) {
+          spacja = odwróć kartę
+        } @else {
+          1 = Nie wiem &nbsp;|&nbsp; 2 = Wiem
+        }
+      </p>
+    </div>
+  }
+</div>

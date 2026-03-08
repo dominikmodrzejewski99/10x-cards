@@ -6,7 +6,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 import { FlashcardApiService } from '../../services/flashcard-api.service';
 import { FlashcardTableComponent } from './flashcard-table/flashcard-table.component';
@@ -42,7 +42,8 @@ interface FlashcardListState {
     ToastModule,
     ConfirmDialogModule,
     FlashcardTableComponent,
-    FlashcardFormComponent
+    FlashcardFormComponent,
+    RouterModule
   ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './flashcard-list.component.html',

@@ -30,6 +30,7 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
             <a routerLink="/" routerLinkActive="active" class="nav-link hidden md:inline-block" [routerLinkActiveOptions]="{exact: true}">Jak to działa?</a>
             <a *ngIf="isAuthenticated" routerLink="/generate" routerLinkActive="active" class="nav-link">Generuj fiszki</a>
             <a *ngIf="isAuthenticated" routerLink="/flashcards" routerLinkActive="active" class="nav-link">Moje fiszki</a>
+            <a *ngIf="isAuthenticated" routerLink="/study" routerLinkActive="active" class="nav-link">Nauka</a>
           </div>
         </div>
 
