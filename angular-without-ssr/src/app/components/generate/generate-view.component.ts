@@ -1,15 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { GenerationApiService } from '../../services/generation-api.service';
 import { FlashcardApiService } from '../../services/flashcard-api.service';
+import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { GenerateFlashcardsCommand, GenerationDTO, FlashcardProposalDTO } from '../../../types';
+import { GenerateFlashcardsCommand, GenerationDTO, FlashcardProposalDTO, FlashcardSetDTO } from '../../../types';
 import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
 
 // Import komponentów potomnych
@@ -52,7 +53,13 @@ interface Flashcard {
   styleUrls: ['./generate-view.component.css']
 })
 export class GenerateViewComponent implements OnInit, OnDestroy {
-  // Standardowe zmienne zamiast sygnałów
+  private generationApi = inject(GenerationApiService);
+  private flashcardApi = inject(FlashcardApiService);
+  private flashcardSetApi = inject(FlashcardSetApiService);
+  private messageService = inject(MessageService);
+  private store = inject(Store);
+  private router = inject(Router);
+
   proposals: FlashcardProposalViewModel[] = [];
   generationResult: GenerationDTO | null = null;
   errorMessage: string | null = null;
@@ -60,36 +67,34 @@ export class GenerateViewComponent implements OnInit, OnDestroy {
   isGenerating = false;
   isSaving = false;
 
-  // Zmienne dla tekstu źródłowego
   minTextLength = 1000;
   maxTextLength = 10000;
   sourceText = '';
   isSourceValid = false;
 
-  // Zmienne dla autentykacji
+  sets: FlashcardSetDTO[] = [];
+  selectedSetId: number | null = null;
+
   isAuthenticated = false;
   private subscription = new Subscription();
 
-  constructor(
-    private generationApi: GenerationApiService,
-    private flashcardApi: FlashcardApiService,
-    private messageService: MessageService,
-    private store: Store,
-    private router: Router
-  ) {}
-
   ngOnInit() {
-    // Sprawdź, czy użytkownik jest zalogowany
     this.subscription.add(
       this.store.select(selectIsAuthenticated).subscribe(isAuthenticated => {
         this.isAuthenticated = isAuthenticated;
-
         if (!isAuthenticated) {
-          // Jeśli użytkownik nie jest zalogowany, przekieruj go do strony logowania
           this.router.navigate(['/login']);
+        } else {
+          this.loadSets();
         }
       })
     );
+  }
+
+  private loadSets(): void {
+    this.flashcardSetApi.getSets().subscribe({
+      next: (sets) => { this.sets = sets; }
+    });
   }
 
   ngOnDestroy() {
@@ -127,7 +132,31 @@ export class GenerateViewComponent implements OnInit, OnDestroy {
   }
 
   canSave(): boolean {
-    return this.acceptedCount > 0 && !this.isGenerating && !this.isSaving;
+    return this.acceptedCount > 0 && !this.isGenerating && !this.isSaving && this.selectedSetId !== null;
+  }
+
+  newSetName = '';
+  isCreatingSet = false;
+
+  createNewSet(): void {
+    if (!this.newSetName.trim()) return;
+    this.isCreatingSet = true;
+    this.flashcardSetApi.createSet({ name: this.newSetName.trim() }).subscribe({
+      next: (created) => {
+        this.sets = [created, ...this.sets];
+        this.selectedSetId = created.id;
+        this.newSetName = '';
+        this.isCreatingSet = false;
+      },
+      error: () => {
+        this.isCreatingSet = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Błąd',
+          detail: 'Nie udało się utworzyć zestawu.'
+        });
+      }
+    });
   }
 
   generate(): void {
@@ -168,7 +197,7 @@ export class GenerateViewComponent implements OnInit, OnDestroy {
       .filter(p => p.accepted)
       .map(({ accepted, ...dto }) => dto);
 
-    this.flashcardApi.createFlashcards(flashcardsToSave).subscribe({
+    this.flashcardApi.createFlashcards(flashcardsToSave, this.selectedSetId!).subscribe({
       next: (savedFlashcards) => {
         this.messageService.add({
           severity: 'success',
@@ -180,7 +209,7 @@ export class GenerateViewComponent implements OnInit, OnDestroy {
         this.isSaving = false;
         this.isLoading = false;
 
-        this.router.navigate(['/flashcards']);
+        this.router.navigate(['/sets', this.selectedSetId]);
       },
       error: (error) => {
         console.error('Błąd zapisywania fiszek:', error);

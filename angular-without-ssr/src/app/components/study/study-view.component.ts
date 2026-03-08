@@ -10,16 +10,18 @@ import {
   WritableSignal,
   Signal
 } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { ReviewApiService } from '../../services/review-api.service';
+import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { SpacedRepetitionService, Sm2Result } from '../../services/spaced-repetition.service';
-import { StudyCardDTO, ReviewQuality, SessionResultDTO } from '../../../types';
+import { StudyCardDTO, ReviewQuality, SessionResultDTO, FlashcardSetDTO } from '../../../types';
 import { FlashcardFlipComponent } from './flashcard-flip/flashcard-flip.component';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-study-view',
-  imports: [RouterModule, FlashcardFlipComponent],
+  imports: [RouterModule, FormsModule, FlashcardFlipComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './study-view.component.html',
   styleUrls: ['./study-view.component.scss'],
@@ -29,10 +31,13 @@ import { Subscription } from 'rxjs';
 })
 export class StudyViewComponent implements OnInit, OnDestroy {
   private reviewApi: ReviewApiService = inject(ReviewApiService);
+  private setApi: FlashcardSetApiService = inject(FlashcardSetApiService);
   private sm2: SpacedRepetitionService = inject(SpacedRepetitionService);
   private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  private route: ActivatedRoute = inject(ActivatedRoute);
   private loadSubscription: Subscription | null = null;
   private answerSubscription: Subscription | null = null;
+  private routeSub: Subscription | null = null;
 
   public dueCardsSignal: WritableSignal<StudyCardDTO[]> = signal<StudyCardDTO[]>([]);
   private originalCardsSignal: WritableSignal<StudyCardDTO[]> = signal<StudyCardDTO[]>([]);
@@ -49,6 +54,15 @@ export class StudyViewComponent implements OnInit, OnDestroy {
     total: 0
   });
 
+  public setsSignal: WritableSignal<FlashcardSetDTO[]> = signal<FlashcardSetDTO[]>([]);
+  public selectedSetIdSignal: WritableSignal<number | null> = signal<number | null>(null);
+  public currentSetNameSignal: Signal<string | null> = computed(() => {
+    const setId = this.selectedSetIdSignal();
+    if (!setId) return null;
+    const found = this.setsSignal().find(s => s.id === setId);
+    return found?.name ?? null;
+  });
+
   public currentCardSignal: Signal<StudyCardDTO | null> = computed<StudyCardDTO | null>(() => {
     const cards: StudyCardDTO[] = this.dueCardsSignal();
     const idx: number = this.currentIndexSignal();
@@ -62,12 +76,32 @@ export class StudyViewComponent implements OnInit, OnDestroy {
   });
 
   public ngOnInit(): void {
-    this.loadDueCards();
+    this.loadSets();
+    this.routeSub = this.route.queryParams.subscribe(params => {
+      const setId = params['setId'] ? Number(params['setId']) : null;
+      this.selectedSetIdSignal.set(setId);
+      this.loadDueCards();
+    });
   }
 
   public ngOnDestroy(): void {
     this.loadSubscription?.unsubscribe();
     this.answerSubscription?.unsubscribe();
+    this.routeSub?.unsubscribe();
+  }
+
+  private loadSets(): void {
+    this.setApi.getSets().subscribe({
+      next: (sets) => {
+        this.setsSignal.set(sets);
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  public onSetChange(setId: number | null): void {
+    this.selectedSetIdSignal.set(setId);
+    this.loadDueCards();
   }
 
   public handleKeyboard(event: KeyboardEvent): void {
@@ -103,7 +137,7 @@ export class StudyViewComponent implements OnInit, OnDestroy {
     this.isSessionCompleteSignal.set(false);
     this.sessionResultsSignal.set({ known: 0, unknown: 0, total: 0 });
 
-    this.loadSubscription = this.reviewApi.getDueCards().subscribe({
+    this.loadSubscription = this.reviewApi.getDueCards(this.selectedSetIdSignal()).subscribe({
       next: (cards: StudyCardDTO[]) => {
         this.dueCardsSignal.set(cards);
         this.originalCardsSignal.set([...cards]);

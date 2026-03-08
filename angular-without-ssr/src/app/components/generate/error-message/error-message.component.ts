@@ -1,24 +1,18 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-error-message',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './error-message.component.html',
   styleUrls: ['./error-message.component.css']
 })
-export class ErrorMessageComponent implements OnChanges {
-  @Input() errorMessage: string | null = null;
-  @Output() dismiss = new EventEmitter<void>();
+export class ErrorMessageComponent {
+  public errorMessageSignal: InputSignal<string | null> = input<string | null>(null, { alias: 'errorMessage' });
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['errorMessage'] && changes['errorMessage'].currentValue) {
-    }
-  }
+  public dismiss: OutputEmitterRef<void> = output<void>();
 
   dismissError(): void {
-    this.errorMessage = null;
     this.dismiss.emit();
   }
 }

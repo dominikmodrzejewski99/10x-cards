@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OpenRouterService } from '../../services/openrouter.service';
@@ -12,7 +12,6 @@ import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-demo',
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -24,27 +23,21 @@ import { MessageService } from 'primeng/api';
   ],
   providers: [MessageService],
   templateUrl: './demo.component.html',
-  styleUrl: './demo.component.css'
+  styleUrl: './demo.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DemoComponent implements OnInit {
-  // Formularz wiadomości
-  messageForm: FormGroup;
+  private fb: FormBuilder = inject(FormBuilder);
+  private openRouterService: OpenRouterService = inject(OpenRouterService);
+  private messageService: MessageService = inject(MessageService);
 
-  // Sygnały do zarządzania stanem
-  currentSession = signal<Session | null>(null);
-  isLoading = signal<boolean>(false);
-  error = signal<string | null>(null);
+  public messageForm: FormGroup = this.fb.group({
+    message: ['', [Validators.required, Validators.minLength(2)]]
+  });
 
-  constructor(
-    private fb: FormBuilder,
-    private openRouterService: OpenRouterService,
-    private messageService: MessageService
-  ) {
-    // Inicjalizacja formularza
-    this.messageForm = this.fb.group({
-      message: ['', [Validators.required, Validators.minLength(2)]]
-    });
-  }
+  public currentSession = signal<Session | null>(null);
+  public isLoading = signal<boolean>(false);
+  public error = signal<string | null>(null);
 
   ngOnInit(): void {
     // Inicjujemy nową sesję przy starcie komponentu

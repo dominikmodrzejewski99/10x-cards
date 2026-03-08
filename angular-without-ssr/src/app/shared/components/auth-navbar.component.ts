@@ -22,8 +22,8 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
             <a routerLink="/generate" routerLinkActive="navbar__link--active" class="navbar__link">
               <i class="pi pi-sparkles"></i> Generuj
             </a>
-            <a routerLink="/flashcards" routerLinkActive="navbar__link--active" class="navbar__link">
-              <i class="pi pi-list"></i> Fiszki
+            <a routerLink="/sets" routerLinkActive="navbar__link--active" class="navbar__link">
+              <i class="pi pi-folder"></i> Zestawy
             </a>
             <a routerLink="/study" routerLinkActive="navbar__link--active" class="navbar__link">
               <i class="pi pi-book"></i> Nauka

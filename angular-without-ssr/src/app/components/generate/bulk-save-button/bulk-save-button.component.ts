@@ -1,23 +1,23 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-bulk-save-button',
-  standalone: true,
   imports: [CommonModule, ButtonModule],
   templateUrl: './bulk-save-button.component.html',
   styleUrls: ['./bulk-save-button.component.css']
 })
 export class BulkSaveButtonComponent {
-  @Input() label: string = 'Zapisz wszystkie propozycje';
-  @Input() disabled: boolean = false;
-  @Input() loading: boolean = false;
-  @Output() saveAllClick = new EventEmitter<void>();
-  
+  public labelSignal: InputSignal<string> = input<string>('Zapisz wszystkie propozycje', { alias: 'label' });
+  public disabledSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'disabled' });
+  public loadingSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'loading' });
+
+  public saveAllClick: OutputEmitterRef<void> = output<void>();
+
   onClick(): void {
-    if (!this.disabled && !this.loading) {
+    if (!this.disabledSignal() && !this.loadingSignal()) {
       this.saveAllClick.emit();
     }
   }
-} 
+}

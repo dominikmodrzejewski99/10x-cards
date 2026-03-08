@@ -1,11 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, output, OutputEmitterRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-password-reset-form',
-  standalone: true,
   imports: [ReactiveFormsModule, RouterModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <form [formGroup]="resetForm" (ngSubmit)="onSubmit()">
       <div class="form-field">
@@ -96,9 +96,9 @@ import { RouterModule } from '@angular/router';
     input:-webkit-autofill:hover,
     input:-webkit-autofill:focus,
     input:-webkit-autofill:active {
-      -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
-      -webkit-text-fill-color: #282e3e !important;
-      background-color: #ffffff !important;
+      -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
+      -webkit-text-fill-color: #282e3e;
+      background-color: #ffffff;
     }
 
     input::placeholder {
@@ -110,7 +110,7 @@ import { RouterModule } from '@angular/router';
       outline: none;
       border-color: #4255ff;
       box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.12);
-      color: #282e3e !important;
+      color: #282e3e;
     }
 
     .submit-button {
@@ -236,29 +236,27 @@ import { RouterModule } from '@angular/router';
   `]
 })
 export class PasswordResetFormComponent implements OnInit {
-  @Output() resetPassword = new EventEmitter<{email: string}>();
+  public resetPassword: OutputEmitterRef<{email: string}> = output<{email: string}>();
 
-  resetForm!: FormGroup;
-  submitted = false;
-  loading = false;
-  error = '';
-  success = '';
+  private readonly fb: FormBuilder = inject(FormBuilder);
 
-  constructor(
-    private fb: FormBuilder
-  ) {}
+  public resetForm!: FormGroup;
+  public submitted: boolean = false;
+  public loading: boolean = false;
+  public error: string = '';
+  public success: string = '';
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.resetForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
     });
   }
 
-  get f() {
+  public get f() {
     return this.resetForm.controls;
   }
 
-  onSubmit(): void {
+  public onSubmit(): void {
     this.submitted = true;
     this.error = '';
     this.success = '';

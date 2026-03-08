@@ -1,297 +1,122 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, from, map, catchError, throwError, switchMap, of } from 'rxjs';
-import { environment } from '../../environments/environments';
 import { FlashcardProposalDTO, FlashcardDTO, CreateFlashcardCommand, UpdateFlashcardCommand } from '../../types';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { Store } from '@ngrx/store';
-import { selectUser } from '../auth/store/auth.selectors';
 import { SupabaseClientFactory } from './supabase-client.factory';
+
+const FLASHCARD_COLUMNS = 'id, front, back, source, set_id, generation_id, user_id, created_at, updated_at';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FlashcardApiService {
-  private apiUrl = environment.supabaseUrl + '/functions/v1'; // Ścieżka API Supabase
   private supabase: SupabaseClient;
-  private useMockData = false; // Tryb deweloperski wyłączony
 
-  constructor(
-    private http: HttpClient,
-    private store: Store,
-    private supabaseFactory: SupabaseClientFactory
-  ) {
+  constructor(private supabaseFactory: SupabaseClientFactory) {
     this.supabase = this.supabaseFactory.getClient();
   }
 
   /**
-   * Pobiera ID zalogowanego użytkownika bezpośrednio z Supabase Auth
-   * @returns Observable zawierający ID użytkownika lub null, jeśli użytkownik nie jest zalogowany
+   * Pobiera user ID z lokalnej sesji (synchroniczny odczyt z pamięci, nie HTTP).
+   * Zwraca null gdy brak sesji.
    */
-  private getCurrentUserId(): Observable<string | null> {
+  private getAuthenticatedUserId(): Observable<string> {
     return from(this.supabase.auth.getSession()).pipe(
       map(response => {
-        if (response.error) {
-          console.error('Błąd podczas pobierania sesji:', response.error);
-          return null;
+        if (response.error || !response.data.session) {
+          throw new Error('Użytkownik nie jest zalogowany');
         }
-        const userId = response.data.session?.user?.id || null;
-
-        return userId;
+        return response.data.session.user.id;
       }),
-      catchError(error => {
-        console.error('Błąd podczas pobierania ID użytkownika:', error);
-        return of(null);
-      })
+      catchError(() => throwError(() => new Error('Sesja wygasła. Zaloguj się ponownie.')))
     );
   }
 
-  /**
-   * Pobiera dane zalogowanego użytkownika bezpośrednio z Supabase Auth
-   * @returns Observable zawierający dane użytkownika lub null, jeśli użytkownik nie jest zalogowany
-   */
-  private getCurrentUser(): Observable<any | null> {
-    return from(this.supabase.auth.getUser()).pipe(
-      map(response => {
-        if (response.error) {
-          console.error('Błąd podczas pobierania danych użytkownika:', response.error);
-          return null;
-        }
-        const user = response.data.user;
-
-        return user;
-      }),
-      catchError(error => {
-        console.error('Błąd podczas pobierania danych użytkownika:', error);
-        return of(null);
-      })
-    );
-  }
-
-  /**
-   * Sprawdza, czy użytkownik jest zalogowany i ma ważny token
-   * @param userId ID użytkownika
-   * @returns Observable zawierający true, jeśli użytkownik jest zalogowany
-   */
-  private ensureUserExists(userId: string): Observable<boolean> {
-
-    // Pobieramy sesję użytkownika z Supabase Auth
-    return from(this.supabase.auth.getSession()).pipe(
-      map(response => {
-
-        if (response.error) {
-          console.error('Błąd podczas pobierania sesji:', response.error);
-          return false;
-        }
-
-        if (!response.data.session) {
-          console.error('Brak sesji użytkownika');
-          return false;
-        }
-
-        const sessionUserId = response.data.session.user.id;
-
-        // Sprawdzamy, czy ID użytkownika z sesji jest zgodne z przekazanym ID
-        if (sessionUserId !== userId) {
-          console.error('ID użytkownika z sesji nie zgadza się z przekazanym ID');
-          return false;
-        }
-
-        return true;
-      }),
-      catchError(error => {
-        console.error('Błąd podczas sprawdzania sesji użytkownika:', error);
-        return of(false);
-      })
-    );
-  }
-
-  /**
-   * Tworzy nowe fiszki na podstawie dostarczonych propozycji (używane w widoku generowania)
-   * @param flashcards Tablica propozycji fiszek do zapisania
-   * @returns Observable zawierający zapisane fiszki
-   */
-  createFlashcards(flashcards: FlashcardProposalDTO[]): Observable<FlashcardDTO[]> {
-
-    return this.getCurrentUserId().pipe(
+  createFlashcards(flashcards: FlashcardProposalDTO[], setId: number): Observable<FlashcardDTO[]> {
+    return this.getAuthenticatedUserId().pipe(
       switchMap(userId => {
-        if (!userId) {
-          console.error('Nie można zapisać fiszek: Użytkownik nie jest zalogowany');
-          return throwError(() => new Error('Użytkownik nie jest zalogowany'));
-        }
-
-        // Przygotowanie danych do zapisu
         const flashcardsToInsert = flashcards.map(proposal => ({
           front: proposal.front,
           back: proposal.back,
           source: proposal.source,
           user_id: userId,
           created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
+          set_id: setId
         }));
 
-        // Najpierw upewniamy się, że użytkownik jest zalogowany i ma ważny token
-        return this.ensureUserExists(userId).pipe(
-          switchMap(userExists => {
-            if (!userExists) {
-              console.error('Nie można zapisać fiszek: Użytkownik nie jest zalogowany, token jest nieważny lub nie udało się utworzyć rekordu użytkownika');
-              return throwError(() => new Error('Sesja wygasła lub wystąpił problem z kontem. Zaloguj się ponownie.'));
+        return from(this.supabase.rpc('create_user_and_flashcards', {
+          user_id: userId,
+          flashcards: flashcardsToInsert
+        })).pipe(
+          switchMap(response => {
+            if (response.error) {
+              if (response.error.message.includes('does not exist')) {
+                return from(this.supabase.from('flashcards').insert(flashcardsToInsert).select(FLASHCARD_COLUMNS));
+              }
+              throw response.error;
             }
-
-            // Najpierw tworzymy rekord użytkownika w tabeli users, jeśli nie istnieje
-            return from(this.supabase.rpc('create_user_and_flashcards', {
-              user_id: userId,
-              flashcards: flashcardsToInsert
-            })).pipe(
-              switchMap(response => {
-
-                if (response.error) {
-                  console.error('Błąd podczas tworzenia użytkownika i fiszek:', response.error);
-
-                  // Jeśli funkcja RPC nie istnieje, spróbujmy bezpośrednio zapisać fiszki
-                  if (response.error.message.includes('function "create_user_and_flashcards" does not exist')) {
-
-                    return from(this.supabase
-                      .from('flashcards')
-                      .insert(flashcardsToInsert)
-                      .select()
-                    );
-                  }
-
-                  throw response.error;
-                }
-
-                // Jeśli funkcja RPC zwróciła dane, zwracamy je
-                if (response.data) {
-                  return of(response);
-                }
-
-                // Jeśli funkcja RPC nie zwróciła danych, pobieramy fiszki
-                return from(this.supabase
-                  .from('flashcards')
-                  .select('*')
-                  .eq('user_id', userId)
-                  .order('created_at', { ascending: false })
-                  .limit(flashcardsToInsert.length)
-                );
-              })
-            ).pipe(
-              map(response => {
-                if (response.error) {
-                  console.error('Błąd Supabase:', response.error);
-                  throw new Error(`Błąd Supabase: ${response.error.message}`);
-                }
-                return response.data as FlashcardDTO[];
-              }),
-              catchError(error => {
-                console.error('Błąd podczas zapisywania fiszek:', error);
-                return throwError(() => error);
-              })
-            );
-          })
+            if (response.data) {
+              return of(response);
+            }
+            return from(this.supabase.from('flashcards').select(FLASHCARD_COLUMNS)
+              .eq('user_id', userId).order('created_at', { ascending: false }).limit(flashcardsToInsert.length));
+          }),
+          map(response => {
+            if (response.error) throw new Error(`Błąd Supabase: ${response.error.message}`);
+            return response.data as FlashcardDTO[];
+          }),
+          catchError(error => throwError(() => error))
         );
       })
     );
   }
 
-  /**
-   * Pobiera listę fiszek z paginacją
-   * @param params Parametry paginacji (limit, offset) oraz opcjonalne parametry wyszukiwania i sortowania
-   * @returns Observable zawierający fiszki i całkowitą liczbę rekordów
-   */
   getFlashcards(params: {
-    limit: number,
-    offset: number,
-    search?: string,
-    sortField?: string,
-    sortOrder?: number
-  }): Observable<{ flashcards: FlashcardDTO[], totalRecords: number }> {
-
-    let httpParams = new HttpParams()
-      .set('limit', params.limit.toString())
-      .set('offset', params.offset.toString());
-
-    // Dodaj parametr wyszukiwania, jeśli został przekazany
-    if (params.search) {
-      httpParams = httpParams.set('search', params.search);
-    }
-
-    // Dodaj parametry sortowania, jeśli zostały przekazane
-    if (params.sortField) {
-      httpParams = httpParams.set('sortField', params.sortField);
-    }
-
-    if (params.sortOrder !== undefined) {
-      httpParams = httpParams.set('sortOrder', params.sortOrder.toString());
-    }
-
-    return this.getCurrentUserId().pipe(
+    limit: number;
+    offset: number;
+    search?: string;
+    sortField?: string;
+    sortOrder?: number;
+    setId?: number | null;
+  }): Observable<{ flashcards: FlashcardDTO[]; totalRecords: number }> {
+    return this.getAuthenticatedUserId().pipe(
       switchMap(userId => {
-        if (!userId) {
-          return throwError(() => new Error('Użytkownik nie jest zalogowany'));
+        let query = this.supabase
+          .from('flashcards')
+          .select(FLASHCARD_COLUMNS, { count: 'exact' })
+          .eq('user_id', userId)
+          .range(params.offset, params.offset + params.limit - 1);
+
+        if (params.setId != null) {
+          query = query.eq('set_id', params.setId);
         }
 
-        // Najpierw upewniamy się, że użytkownik jest zalogowany i ma ważny token
-        return this.ensureUserExists(userId).pipe(
-          switchMap(userExists => {
-            if (!userExists) {
-              console.error('Nie można pobrać fiszek: Użytkownik nie jest zalogowany, token jest nieważny lub nie udało się utworzyć rekordu użytkownika');
-              return throwError(() => new Error('Sesja wygasła lub wystąpił problem z kontem. Zaloguj się ponownie.'));
-            }
+        if (params.search) {
+          query = query.or(`front.ilike.%${params.search}%,back.ilike.%${params.search}%`);
+        }
 
-            // Przygotowanie zapytania do Supabase
-            let query = this.supabase
-              .from('flashcards')
-              .select('*', { count: 'exact' })
-              .eq('user_id', userId) // Filtrowanie po ID użytkownika
-              .range(params.offset, params.offset + params.limit - 1);
+        if (params.sortField) {
+          query = query.order(params.sortField, { ascending: params.sortOrder !== -1 });
+        }
 
-            // Dodanie wyszukiwania, jeśli zostało przekazane
-            if (params.search) {
-              query = query.or(`front.ilike.%${params.search}%,back.ilike.%${params.search}%`);
-            }
-
-            // Dodanie sortowania, jeśli zostało przekazane
-            if (params.sortField) {
-              const order = params.sortOrder === -1 ? 'desc' : 'asc';
-              query = query.order(params.sortField, { ascending: order === 'asc' });
-            }
-
-            return from(query).pipe(
-              map(response => {
-                if (response.error) {
-                  throw new Error(`Błąd Supabase: ${response.error.message}`);
-                }
-                return {
-                  flashcards: response.data as FlashcardDTO[],
-                  totalRecords: response.count || 0
-                };
-              }),
-              catchError(error => {
-                console.error('Błąd podczas pobierania fiszek:', error);
-                return throwError(() => error);
-              })
-            );
-          })
+        return from(query).pipe(
+          map(response => {
+            if (response.error) throw new Error(`Błąd Supabase: ${response.error.message}`);
+            return {
+              flashcards: response.data as FlashcardDTO[],
+              totalRecords: response.count || 0
+            };
+          }),
+          catchError(error => throwError(() => error))
         );
       })
     );
   }
 
-  /**
-   * Tworzy nową fiszkę
-   * @param data Dane nowej fiszki (front, back, source)
-   * @returns Observable zawierający utworzoną fiszkę
-   */
   createFlashcard(data: CreateFlashcardCommand): Observable<FlashcardDTO> {
-
-    return this.getCurrentUserId().pipe(
+    return this.getAuthenticatedUserId().pipe(
       switchMap(userId => {
-        if (!userId) {
-          console.error('Nie można utworzyć fiszki: Użytkownik nie jest zalogowany');
-          return throwError(() => new Error('Użytkownik nie jest zalogowany'));
-        }
-
         const flashcardToInsert = {
           front: data.front,
           back: data.back,
@@ -299,171 +124,76 @@ export class FlashcardApiService {
           user_id: userId,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
-          generation_id: data.generation_id || null
+          generation_id: data.generation_id || null,
+          set_id: data.set_id
         };
 
-
-        // Najpierw upewniamy się, że użytkownik jest zalogowany i ma ważny token
-        return this.ensureUserExists(userId).pipe(
-          switchMap(userExists => {
-            if (!userExists) {
-              console.error('Nie można utworzyć fiszki: Użytkownik nie jest zalogowany, token jest nieważny lub nie udało się utworzyć rekordu użytkownika');
-              return throwError(() => new Error('Sesja wygasła lub wystąpił problem z kontem. Zaloguj się ponownie.'));
+        return from(this.supabase.rpc('create_user_and_flashcard', {
+          user_id: userId,
+          flashcard: flashcardToInsert
+        })).pipe(
+          switchMap(response => {
+            if (response.error) {
+              if (response.error.message.includes('does not exist')) {
+                return from(this.supabase.from('flashcards').insert(flashcardToInsert).select(FLASHCARD_COLUMNS));
+              }
+              throw response.error;
             }
-
-            // Najpierw tworzymy rekord użytkownika w tabeli users, jeśli nie istnieje
-            return from(this.supabase.rpc('create_user_and_flashcard', {
-              user_id: userId,
-              flashcard: flashcardToInsert
-            })).pipe(
-              switchMap(response => {
-
-                if (response.error) {
-                  console.error('Błąd podczas tworzenia użytkownika i fiszki:', response.error);
-
-                  // Jeśli funkcja RPC nie istnieje, spróbujmy bezpośrednio zapisać fiszkę
-                  if (response.error.message.includes('function "create_user_and_flashcard" does not exist')) {
-
-                    return from(this.supabase
-                      .from('flashcards')
-                      .insert(flashcardToInsert)
-                      .select()
-                    );
-                  }
-
-                  throw response.error;
-                }
-
-                // Jeśli funkcja RPC zwróciła dane, zwracamy je
-                if (response.data) {
-                  return of(response);
-                }
-
-                // Jeśli funkcja RPC nie zwróciła danych, pobieramy fiszkę
-                return from(this.supabase
-                  .from('flashcards')
-                  .select('*')
-                  .eq('user_id', userId)
-                  .order('created_at', { ascending: false })
-                  .limit(1)
-                );
-              })
-            ).pipe(
-              map(response => {
-                if (response.error) {
-                  console.error('Błąd Supabase przy tworzeniu fiszki:', response.error);
-                  throw new Error(`Błąd Supabase: ${response.error.message}`);
-                }
-                return response.data[0] as FlashcardDTO;
-              }),
-              catchError(error => {
-                console.error('Błąd podczas tworzenia fiszki:', error);
-                return throwError(() => error);
-              })
-            );
-          })
+            if (response.data) {
+              return of(response);
+            }
+            return from(this.supabase.from('flashcards').select(FLASHCARD_COLUMNS)
+              .eq('user_id', userId).order('created_at', { ascending: false }).limit(1));
+          }),
+          map(response => {
+            if (response.error) throw new Error(`Błąd Supabase: ${response.error.message}`);
+            return response.data[0] as FlashcardDTO;
+          }),
+          catchError(error => throwError(() => error))
         );
       })
     );
   }
 
-  /**
-   * Aktualizuje istniejącą fiszkę
-   * @param id ID fiszki do aktualizacji
-   * @param data Dane do aktualizacji (front, back)
-   * @returns Observable zawierający zaktualizowaną fiszkę
-   */
   updateFlashcard(id: number, data: UpdateFlashcardCommand): Observable<FlashcardDTO> {
-
-    return this.getCurrentUserId().pipe(
+    return this.getAuthenticatedUserId().pipe(
       switchMap(userId => {
-        if (!userId) {
-          return throwError(() => new Error('Użytkownik nie jest zalogowany'));
-        }
+        const updates = { ...data, updated_at: new Date().toISOString() };
 
-        // Najpierw upewniamy się, że użytkownik jest zalogowany i ma ważny token
-        return this.ensureUserExists(userId).pipe(
-          switchMap(userExists => {
-            if (!userExists) {
-              console.error('Nie można zaktualizować fiszki: Użytkownik nie jest zalogowany, token jest nieważny lub nie udało się utworzyć rekordu użytkownika');
-              return throwError(() => new Error('Sesja wygasła lub wystąpił problem z kontem. Zaloguj się ponownie.'));
-            }
-
-            const updates = {
-              ...data,
-              updated_at: new Date().toISOString()
-            };
-
-            return from(this.supabase
-              .from('flashcards')
-              .update(updates)
-              .eq('id', id)
-              .eq('user_id', userId) // Upewniamy się, że użytkownik aktualizuje tylko swoje fiszki
-              .select()
-            ).pipe(
-              map(response => {
-                if (response.error) {
-                  throw new Error(`Błąd Supabase: ${response.error.message}`);
-                }
-                if (response.data.length === 0) {
-                  throw new Error('Nie znaleziono fiszki lub nie masz uprawnień do jej edycji');
-                }
-                return response.data[0] as FlashcardDTO;
-              }),
-              catchError(error => {
-                console.error('Błąd podczas aktualizacji fiszki:', error);
-                return throwError(() => error);
-              })
-            );
-          })
+        return from(this.supabase
+          .from('flashcards')
+          .update(updates)
+          .eq('id', id)
+          .eq('user_id', userId)
+          .select(FLASHCARD_COLUMNS)
+        ).pipe(
+          map(response => {
+            if (response.error) throw new Error(`Błąd Supabase: ${response.error.message}`);
+            if (response.data.length === 0) throw new Error('Nie znaleziono fiszki lub brak uprawnień do edycji');
+            return response.data[0] as FlashcardDTO;
+          }),
+          catchError(error => throwError(() => error))
         );
       })
     );
   }
 
-  /**
-   * Usuwa fiszkę
-   * @param id ID fiszki do usunięcia
-   * @returns Observable bez zawartości
-   */
   deleteFlashcard(id: number): Observable<void> {
-    return this.getCurrentUserId().pipe(
-      switchMap(userId => {
-        if (!userId) {
-          return throwError(() => new Error('Użytkownik nie jest zalogowany'));
-        }
-
-        // Najpierw upewniamy się, że użytkownik jest zalogowany i ma ważny token
-        return this.ensureUserExists(userId).pipe(
-          switchMap(userExists => {
-            if (!userExists) {
-              console.error('Nie można usunąć fiszki: Użytkownik nie jest zalogowany, token jest nieważny lub nie udało się utworzyć rekordu użytkownika');
-              return throwError(() => new Error('Sesja wygasła lub wystąpił problem z kontem. Zaloguj się ponownie.'));
-            }
-
-            return from(this.supabase
-              .from('flashcards')
-              .delete()
-              .eq('id', id)
-              .eq('user_id', userId) // Upewniamy się, że użytkownik usuwa tylko swoje fiszki
-            ).pipe(
-              map(response => {
-                if (response.error) {
-                  throw new Error(`Błąd Supabase: ${response.error.message}`);
-                }
-                if (response.count === 0) {
-                  throw new Error('Nie znaleziono fiszki lub nie masz uprawnień do jej usunięcia');
-                }
-                return undefined;
-              }),
-              catchError(error => {
-                console.error('Błąd podczas usuwania fiszki:', error);
-                return throwError(() => error);
-              })
-            );
-          })
-        );
-      })
+    return this.getAuthenticatedUserId().pipe(
+      switchMap(userId =>
+        from(this.supabase
+          .from('flashcards')
+          .delete()
+          .eq('id', id)
+          .eq('user_id', userId)
+        ).pipe(
+          map(response => {
+            if (response.error) throw new Error(`Błąd Supabase: ${response.error.message}`);
+            return undefined;
+          }),
+          catchError(error => throwError(() => error))
+        )
+      )
     );
   }
 }

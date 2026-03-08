@@ -1,34 +1,32 @@
-import { Component, OnInit, signal, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { FlashcardApiService } from '../../services/flashcard-api.service';
+import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { FlashcardTableComponent } from './flashcard-table/flashcard-table.component';
 import { FlashcardFormComponent, FlashcardFormData } from './flashcard-form/flashcard-form.component';
 import { FlashcardDTO } from '../../../types';
-import {InputText} from 'primeng/inputtext';
-import {WindowMaximizeIcon} from 'primeng/icons';
-import {Ripple} from 'primeng/ripple';
 
-// Interfejs dla stanu widoku listy fiszek
 interface FlashcardListState {
-  flashcards: FlashcardDTO[];      // Lista fiszek na bieżącej stronie
-  totalRecords: number;            // Całkowita liczba fiszek
-  loading: boolean;                // Stan ładowania danych/operacji
-  error: string | null;            // Komunikat ostatniego błędu
-  rows: number;                    // Liczba wierszy na stronę (limit)
-  first: number;                   // Indeks pierwszego rekordu (offset)
-  isFormModalVisible: boolean;     // Widoczność modala formularza
-  flashcardBeingEdited: FlashcardDTO | null; // Dane do edycji lub null dla dodawania
-  searchTerm: string;              // Termin wyszukiwania
-  sortField: string;               // Pole do sortowania
-  sortOrder: number;               // Kierunek sortowania (1: rosnąco, -1: malejąco)
+  flashcards: FlashcardDTO[];
+  totalRecords: number;
+  loading: boolean;
+  error: string | null;
+  rows: number;
+  first: number;
+  isFormModalVisible: boolean;
+  flashcardBeingEdited: FlashcardDTO | null;
+  searchTerm: string;
+  sortField: string;
+  sortOrder: number;
+  setId: number;
+  setName: string;
 }
 
 @Component({
@@ -36,8 +34,6 @@ interface FlashcardListState {
   standalone: true,
   imports: [
     CommonModule,
-    ButtonModule,
-    TableModule,
     DialogModule,
     ToastModule,
     ConfirmDialogModule,
@@ -49,9 +45,15 @@ interface FlashcardListState {
   templateUrl: './flashcard-list.component.html',
   styleUrls: ['./flashcard-list.component.css']
 })
-export class FlashcardListComponent implements OnInit {
-  // Stan początkowy
-  private initialState: FlashcardListState = {
+export class FlashcardListComponent implements OnInit, OnDestroy {
+  private flashcardApiService = inject(FlashcardApiService);
+  private flashcardSetApiService = inject(FlashcardSetApiService);
+  private messageService = inject(MessageService);
+  private confirmationService = inject(ConfirmationService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+  state = signal<FlashcardListState>({
     flashcards: [],
     totalRecords: 0,
     loading: false,
@@ -62,25 +64,44 @@ export class FlashcardListComponent implements OnInit {
     flashcardBeingEdited: null,
     searchTerm: '',
     sortField: 'id',
-    sortOrder: -1 // Domyślnie najnowsze pierwsze
-  };
+    sortOrder: -1,
+    setId: 0,
+    setName: ''
+  });
 
-  // Sygnał stanu
-  state = signal<FlashcardListState>({ ...this.initialState });
-
-  // Zmienna do bezpośredniego kontrolowania widoczności dialogu
   dialogVisible: boolean = false;
-
-  constructor(
-    private flashcardApiService: FlashcardApiService,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private cdr: ChangeDetectorRef,
-    private router: Router
-  ) {}
+  private routeSub: Subscription | null = null;
 
   ngOnInit(): void {
-    this.loadFlashcards();
+    this.routeSub = this.route.params.subscribe(params => {
+      const setId = Number(params['id']);
+      if (!setId) {
+        this.router.navigate(['/sets']);
+        return;
+      }
+      this.state.update(s => ({ ...s, setId, first: 0 }));
+      this.loadSetName(setId);
+      this.loadFlashcards();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.routeSub?.unsubscribe();
+  }
+
+  private loadSetName(setId: number): void {
+    this.flashcardSetApiService.getSet(setId).subscribe({
+      next: (set) => {
+        this.state.update(s => ({ ...s, setName: set.name }));
+      },
+      error: () => {
+        this.router.navigate(['/sets']);
+      }
+    });
+  }
+
+  goBackToSets(): void {
+    this.router.navigate(['/sets']);
   }
 
   // Ładowanie fiszek z API
@@ -105,7 +126,8 @@ export class FlashcardListComponent implements OnInit {
       offset: first,
       search: this.state().searchTerm,
       sortField: this.state().sortField,
-      sortOrder: this.state().sortOrder
+      sortOrder: this.state().sortOrder,
+      setId: this.state().setId
     }).subscribe({
       next: (response) => {
         this.state.update(state => ({
@@ -216,7 +238,8 @@ export class FlashcardListComponent implements OnInit {
       this.flashcardApiService.createFlashcard({
         front: formData.front,
         back: formData.back,
-        source: 'manual'
+        source: 'manual',
+        set_id: this.state().setId
       }).subscribe({
         next: (newFlashcard) => {
           this.loadFlashcards();
@@ -275,7 +298,34 @@ export class FlashcardListComponent implements OnInit {
     });
   }
 
-  // Obsługa zmiany strony (paginacja)
+  handleBulkDelete(ids: number[]): void {
+    this.confirmationService.confirm({
+      message: `Czy na pewno chcesz usunąć ${ids.length} ${ids.length === 1 ? 'fiszkę' : (ids.length < 5 ? 'fiszki' : 'fiszek')}?`,
+      header: 'Potwierdzenie usunięcia',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Tak',
+      rejectLabel: 'Nie',
+      accept: () => {
+        this.state.update(state => ({ ...state, loading: true }));
+
+        const deleteObservables = ids.map(id => this.flashcardApiService.deleteFlashcard(id));
+        import('rxjs').then(({ forkJoin }) => {
+          forkJoin(deleteObservables).subscribe({
+            next: () => {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Sukces',
+                detail: `Usunięto ${ids.length} ${ids.length === 1 ? 'fiszkę' : (ids.length < 5 ? 'fiszki' : 'fiszek')}.`
+              });
+              this.loadFlashcards();
+            },
+            error: (error) => this.handleApiError(error, 'usuwania')
+          });
+        });
+      }
+    });
+  }
+
   onPageChange(event: any): void {
     // Aktualizuj stan bez ładowania danych
     this.state.update(state => ({

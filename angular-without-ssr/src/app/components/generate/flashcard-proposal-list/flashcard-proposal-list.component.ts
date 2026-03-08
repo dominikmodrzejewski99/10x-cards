@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, computed, input, output, InputSignal, OutputEmitterRef, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
@@ -11,7 +11,6 @@ import { FlashcardProposalDTO } from '../../../../types';
 
 @Component({
   selector: 'app-flashcard-proposal-list',
-  standalone: true,
   imports: [
     CommonModule,
     CardModule,
@@ -26,19 +25,21 @@ import { FlashcardProposalDTO } from '../../../../types';
   styleUrls: ['./flashcard-proposal-list.component.css']
 })
 export class FlashcardProposalListComponent {
-  @Input() proposals: (FlashcardProposalDTO & { accepted?: boolean })[] = [];
+  public proposalsSignal: InputSignal<(FlashcardProposalDTO & { accepted?: boolean })[]> =
+    input<(FlashcardProposalDTO & { accepted?: boolean })[]>([], { alias: 'proposals' });
 
-  @Output() accept = new EventEmitter<FlashcardProposalDTO>();
-  @Output() reject = new EventEmitter<FlashcardProposalDTO>();
-  @Output() edit = new EventEmitter<{original: FlashcardProposalDTO, edited: FlashcardProposalDTO}>();
+  public accept: OutputEmitterRef<FlashcardProposalDTO> = output<FlashcardProposalDTO>();
+  public reject: OutputEmitterRef<FlashcardProposalDTO> = output<FlashcardProposalDTO>();
+  public edit: OutputEmitterRef<{original: FlashcardProposalDTO, edited: FlashcardProposalDTO}> =
+    output<{original: FlashcardProposalDTO, edited: FlashcardProposalDTO}>();
 
   editDialogVisible = false;
   currentEditingProposal: FlashcardProposalDTO | null = null;
   editedProposal: {front: string, back: string} = {front: '', back: ''};
 
-  get acceptedCount(): number {
-    return this.proposals.filter(p => p.accepted).length;
-  }
+  public acceptedCountSignal: Signal<number> = computed<number>(() =>
+    this.proposalsSignal().filter(p => p.accepted).length
+  );
 
   onAccept(proposal: FlashcardProposalDTO): void {
     this.accept.emit(proposal);
@@ -48,7 +49,6 @@ export class FlashcardProposalListComponent {
     this.reject.emit(proposal);
   }
 
-  // Metoda do otwarcia dialogu edycji
   openEditDialog(proposal: FlashcardProposalDTO): void {
     this.currentEditingProposal = {...proposal};
     this.editedProposal = {
@@ -58,7 +58,6 @@ export class FlashcardProposalListComponent {
     this.editDialogVisible = true;
   }
 
-  // Metoda do zapisania edytowanej fiszki
   saveEdit(): void {
     if (!this.currentEditingProposal) return;
 
@@ -66,7 +65,7 @@ export class FlashcardProposalListComponent {
       ...this.currentEditingProposal,
       front: this.editedProposal.front,
       back: this.editedProposal.back,
-      source: 'ai-edited' // Zmiana źródła na ai-edited, ponieważ fiszka została zmodyfikowana
+      source: 'ai-edited'
     };
 
     this.edit.emit({
@@ -77,7 +76,6 @@ export class FlashcardProposalListComponent {
     this.closeEditDialog();
   }
 
-  // Metoda do zamknięcia dialogu edycji
   closeEditDialog(): void {
     this.editDialogVisible = false;
     this.currentEditingProposal = null;

@@ -70,6 +70,20 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
         </div>
       }
 
+      <div class="auth-divider">
+        <span>lub</span>
+      </div>
+
+      <button
+        type="button"
+        class="anon-button"
+        [disabled]="loading"
+        (click)="onAnonymousLogin()"
+        data-testid="anonymous-login-button">
+        <i class="pi pi-user"></i>
+        Wypróbuj bez rejestracji
+      </button>
+
       <div class="auth-footer">
         <p>
           {{ isLoginMode ? 'Nie masz jeszcze konta?' : 'Masz już konto?' }}
@@ -213,6 +227,62 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
       color: #4255ff;
     }
 
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0.25rem 0;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #d9dbe9;
+    }
+
+    .auth-divider span {
+      font-size: 0.75rem;
+      color: #b0b5c4;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .anon-button {
+      width: 100%;
+      padding: 0.75rem;
+      background: #ffffff;
+      color: #586380;
+      border: 1.5px solid #d9dbe9;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-family: inherit;
+    }
+
+    .anon-button:hover {
+      background: #f6f7fb;
+      border-color: #4255ff;
+      color: #4255ff;
+    }
+
+    .anon-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .anon-button i {
+      font-size: 0.875rem;
+    }
+
     @media (min-width: 480px) {
       form {
         gap: 1.25rem;
@@ -342,5 +412,10 @@ export class AuthFormComponent implements OnInit, OnDestroy {
         passwordConfirmation: password
       }));
     }
+  }
+
+  onAnonymousLogin(): void {
+    this.store.dispatch(AuthActions.clearAuthError());
+    this.store.dispatch(AuthActions.loginAnonymously());
   }
 }

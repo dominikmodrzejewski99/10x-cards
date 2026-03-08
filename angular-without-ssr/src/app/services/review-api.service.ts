@@ -11,34 +11,38 @@ import { Sm2Result } from './spaced-repetition.service';
 export class ReviewApiService {
   private supabase: SupabaseClient = inject(SupabaseClientFactory).getClient();
 
-  public getDueCards(): Observable<StudyCardDTO[]> {
+  public getDueCards(setId?: number | null): Observable<StudyCardDTO[]> {
     return this.getCurrentUserId().pipe(
       switchMap((userId: string | null) => {
         if (!userId) {
           return throwError(() => new Error('Użytkownik nie jest zalogowany'));
         }
 
-        return from(
-          this.supabase
-            .from('flashcards')
-            .select(`
-              *,
-              flashcard_reviews!left(
-                id,
-                ease_factor,
-                interval,
-                repetitions,
-                next_review_date,
-                last_reviewed_at,
-                created_at,
-                updated_at,
-                user_id,
-                flashcard_id
-              )
-            `)
-            .eq('user_id', userId)
-            .order('created_at', { ascending: true })
-        ).pipe(
+        let query = this.supabase
+          .from('flashcards')
+          .select(`
+            *,
+            flashcard_reviews!left(
+              id,
+              ease_factor,
+              interval,
+              repetitions,
+              next_review_date,
+              last_reviewed_at,
+              created_at,
+              updated_at,
+              user_id,
+              flashcard_id
+            )
+          `)
+          .eq('user_id', userId)
+          .order('created_at', { ascending: true });
+
+        if (setId) {
+          query = query.eq('set_id', setId);
+        }
+
+        return from(query).pipe(
           map((response: { data: unknown; error: unknown }) => {
             if (response.error) {
               throw new Error(`Błąd Supabase: ${(response.error as { message: string }).message}`);

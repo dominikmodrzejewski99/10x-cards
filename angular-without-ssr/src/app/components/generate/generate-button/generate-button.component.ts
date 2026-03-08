@@ -1,22 +1,22 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-generate-button',
-  standalone: true,
   imports: [CommonModule, ButtonModule],
   templateUrl: './generate-button.component.html',
   styleUrls: ['./generate-button.component.css']
 })
 export class GenerateButtonComponent {
-  @Input() label: string = 'Generuj Fiszki';
-  @Input() disabled: boolean = false;
-  @Input() loading: boolean = false;
-  @Output() generateClick = new EventEmitter<void>();
+  public labelSignal: InputSignal<string> = input<string>('Generuj Fiszki', { alias: 'label' });
+  public disabledSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'disabled' });
+  public loadingSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'loading' });
+
+  public generateClick: OutputEmitterRef<void> = output<void>();
 
   onClick(): void {
-    if (!this.disabled && !this.loading) {
+    if (!this.disabledSignal() && !this.loadingSignal()) {
       this.generateClick.emit();
     }
   }

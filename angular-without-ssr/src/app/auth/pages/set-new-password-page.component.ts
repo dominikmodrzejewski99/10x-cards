@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SetNewPasswordFormComponent } from '../components/set-new-password-form.component';
 
 @Component({
   selector: 'app-set-new-password-page',
-  standalone: true,
-  imports: [CommonModule, RouterModule, SetNewPasswordFormComponent],
+  imports: [RouterModule, SetNewPasswordFormComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="auth-container">
       <div class="auth-card">
@@ -82,15 +81,12 @@ import { SetNewPasswordFormComponent } from '../components/set-new-password-form
   `]
 })
 export class SetNewPasswordPageComponent implements OnInit {
-  token: string | null = null;
+  private readonly route: ActivatedRoute = inject(ActivatedRoute);
+  private readonly router: Router = inject(Router);
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
+  public token: string | null = null;
 
-  ngOnInit(): void {
-    // W rzeczywistej implementacji pobieralibyśmy token z parametrów URL
+  public ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.token = params['token'] || null;
 
@@ -101,7 +97,7 @@ export class SetNewPasswordPageComponent implements OnInit {
     });
   }
 
-  onSetNewPassword(data: {password: string, token: string}): void {
+  public onSetNewPassword(data: {password: string; token: string}): void {
 
     setTimeout(() => {
       this.router.navigate(['/login']);

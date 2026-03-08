@@ -1,90 +1,125 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, computed, input, output, signal, InputSignal, OutputEmitterRef, Signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { TableModule } from 'primeng/table';
-import { TooltipModule } from 'primeng/tooltip';
 
 import { FlashcardDTO } from '../../../../types';
 
+export interface TableLazyLoadEvent {
+  first: number;
+  rows: number;
+  sortField: string;
+  sortOrder: number;
+}
+
 @Component({
   selector: 'app-flashcard-table',
-  standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
-    ButtonModule,
-    InputTextModule,
-    TableModule,
-    TooltipModule
+    FormsModule
   ],
   templateUrl: './flashcard-table.component.html',
   styleUrls: ['./flashcard-table.component.css']
 })
-export class FlashcardTableComponent implements OnInit {
-  @Input() flashcards: FlashcardDTO[] = [];
-  @Input() loading: boolean = false;
-  @Input() totalRecords: number = 0;
-  @Input() rows: number = 10;
-  @Input() first: number = 0;
-  @Input() sortField: string = 'id';
-  @Input() sortOrder: number = -1;
-  @Input() searchTerm: string = '';
+export class FlashcardTableComponent {
+  public flashcardsSignal: InputSignal<FlashcardDTO[]> = input<FlashcardDTO[]>([], { alias: 'flashcards' });
+  public loadingSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'loading' });
+  public totalRecordsSignal: InputSignal<number> = input<number>(0, { alias: 'totalRecords' });
+  public rowsSignal: InputSignal<number> = input<number>(10, { alias: 'rows' });
+  public firstSignal: InputSignal<number> = input<number>(0, { alias: 'first' });
+  public sortFieldSignal: InputSignal<string> = input<string>('id', { alias: 'sortField' });
+  public sortOrderSignal: InputSignal<number> = input<number>(-1, { alias: 'sortOrder' });
 
-  @Output() editFlashcard = new EventEmitter<FlashcardDTO>();
-  @Output() deleteFlashcard = new EventEmitter<FlashcardDTO>();
-  @Output() lazyLoad = new EventEmitter<any>();
-  @Output() sort = new EventEmitter<any>();
-  @Output() search = new EventEmitter<string>();
-  @Output() resetFilter = new EventEmitter<void>();
+  public editFlashcard: OutputEmitterRef<FlashcardDTO> = output<FlashcardDTO>();
+  public deleteFlashcard: OutputEmitterRef<FlashcardDTO> = output<FlashcardDTO>();
+  public lazyLoad: OutputEmitterRef<TableLazyLoadEvent> = output<TableLazyLoadEvent>();
+  public search: OutputEmitterRef<string> = output<string>();
+  public bulkDelete: OutputEmitterRef<number[]> = output<number[]>();
 
-  // Zmienna do śledzenia poprzedniej wartości searchTerm
-  private previousSearchTerm: string = '';
+  public searchTerm: string = '';
+  private selectedIds: WritableSignal<Set<number>> = signal<Set<number>>(new Set());
+  private searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
-  // Zmienna do przechowywania identyfikatora timeout dla wyszukiwania
-  private searchTimeout: any = null;
+  public currentPageSignal: Signal<number> = computed<number>(() =>
+    Math.floor(this.firstSignal() / this.rowsSignal()) + 1
+  );
 
-  constructor() {}
+  public totalPagesSignal: Signal<number> = computed<number>(() =>
+    Math.max(1, Math.ceil(this.totalRecordsSignal() / this.rowsSignal()))
+  );
 
-  ngOnInit(): void {
-    // Inicjalizacja komponentu
+  public selectedCountSignal: Signal<number> = computed<number>(() =>
+    this.selectedIds().size
+  );
+
+  public hasSelectionSignal: Signal<boolean> = computed<boolean>(() =>
+    this.selectedIds().size > 0
+  );
+
+  public allSelectedSignal: Signal<boolean> = computed<boolean>(() => {
+    const cards: FlashcardDTO[] = this.flashcardsSignal();
+    const ids: Set<number> = this.selectedIds();
+    return cards.length > 0 && cards.every((c: FlashcardDTO) => ids.has(c.id));
+  });
+
+  public isSelected(id: number): boolean {
+    return this.selectedIds().has(id);
   }
 
-  // Obsługa lazy loading dla tabeli
-  onLazyLoad(event: any): void {
-    this.lazyLoad.emit(event);
-  }
-
-  // Obsługa sortowania
-  onSort(event: any): void {
-    this.sort.emit(event);
-  }
-
-  // Obsługa wyszukiwania
-  onSearch(): void {
-    // Jeśli pole wyszukiwania jest puste, a wcześniej było wypełnione, wywołaj resetFilter
-    if (!this.searchTerm && this.searchTerm !== this.previousSearchTerm) {
-      this.onResetFilter();
-      return;
+  public toggleSelect(id: number): void {
+    const current: Set<number> = new Set(this.selectedIds());
+    if (current.has(id)) {
+      current.delete(id);
+    } else {
+      current.add(id);
     }
+    this.selectedIds.set(current);
+  }
 
-    this.previousSearchTerm = this.searchTerm;
+  public toggleSelectAll(): void {
+    if (this.allSelectedSignal()) {
+      this.selectedIds.set(new Set());
+    } else {
+      const allIds: Set<number> = new Set(this.flashcardsSignal().map((c: FlashcardDTO) => c.id));
+      this.selectedIds.set(allIds);
+    }
+  }
+
+  public clearSelection(): void {
+    this.selectedIds.set(new Set());
+  }
+
+  public onBulkDelete(): void {
+    const ids: number[] = Array.from(this.selectedIds());
+    if (ids.length > 0) {
+      this.bulkDelete.emit(ids);
+      this.selectedIds.set(new Set());
+    }
+  }
+
+  public goToPage(newFirst: number): void {
+    this.lazyLoad.emit({
+      first: newFirst,
+      rows: this.rowsSignal(),
+      sortField: this.sortFieldSignal(),
+      sortOrder: this.sortOrderSignal()
+    });
+  }
+
+  public onSearch(): void {
     this.search.emit(this.searchTerm);
   }
 
-  // Czyszczenie filtru wyszukiwania
-  onResetFilter(): void {
+  public onResetFilter(): void {
     this.searchTerm = '';
-    this.resetFilter.emit();
+    this.search.emit('');
   }
 
-  // Obsługa zmiany wartości pola wyszukiwania
-  onSearchTermChange(): void {
-    // Dodajemy opóźnienie, aby nie wywoływać wyszukiwania przy każdym naciśnięciu klawisza
-    clearTimeout(this.searchTimeout);
+  public onSearchTermChange(): void {
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
     this.searchTimeout = setTimeout(() => {
       this.onSearch();
-    }, 300); // 300ms opóźnienia
+    }, 300);
   }
 }
