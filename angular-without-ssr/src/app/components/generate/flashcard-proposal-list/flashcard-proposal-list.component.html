@@ -8,57 +8,82 @@
   <!-- Grid z kartami propozycji fiszek -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6" *ngIf="proposals.length > 0">
     <div *ngFor="let proposal of proposals; let i = index" class="col-span-1" [attr.data-test-id]="'flashcard-proposal-' + i">
-      <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 border border-gray-200 overflow-hidden h-full flex flex-col">
+      <div
+        class="rounded-lg shadow-md hover:shadow-lg transition-all duration-200 overflow-hidden h-full flex flex-col"
+        [ngClass]="{
+          'border-2 border-emerald-500 ring-2 ring-emerald-200': proposal.accepted,
+          'border border-gray-300': !proposal.accepted
+        }">
         <!-- Nagłówek karty -->
-        <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-3 text-white font-semibold">
-          <h3 class="text-lg m-0">Propozycja #{{ i + 1 }}</h3>
+        <div
+          class="p-3 font-semibold"
+          [ngClass]="{
+            'bg-gradient-to-r from-emerald-600 to-emerald-700 text-gray-900': proposal.accepted,
+            'bg-gradient-to-r from-blue-600 to-blue-700 text-white': !proposal.accepted
+          }">
+          <h3 class="text-lg m-0 flex items-center gap-2">
+            <span>Propozycja #{{ i + 1 }}</span>
+            <i *ngIf="proposal.accepted" class="pi pi-check-circle" aria-hidden="true"></i>
+          </h3>
         </div>
 
         <!-- Zawartość karty -->
-        <div class="p-4 flex-grow">
+        <div class="p-4 flex-grow"
+          [ngClass]="proposal.accepted ? 'bg-emerald-50' : 'bg-slate-50'">
           <div class="mb-4">
-            <h4 class="text-sm font-semibold text-gray-600 mb-2">Przód:</h4>
-            <div class="text-gray-800 p-3 bg-gray-50 rounded-md min-h-[70px] border border-gray-100">
+            <h4 class="text-sm font-semibold mb-2"
+              [ngClass]="proposal.accepted ? 'text-emerald-700' : 'text-blue-700'">Przód:</h4>
+            <div class="p-3 rounded-md min-h-[70px] border"
+              [ngClass]="proposal.accepted ? 'bg-emerald-100 border-emerald-300 text-emerald-900' : 'bg-white border-slate-200 text-gray-900'">
               {{ proposal.front }}
             </div>
           </div>
 
           <div>
-            <h4 class="text-sm font-semibold text-gray-600 mb-2">Tył:</h4>
-            <div class="text-gray-800 p-3 bg-gray-50 rounded-md min-h-[70px] border border-gray-100">
+            <h4 class="text-sm font-semibold mb-2"
+              [ngClass]="proposal.accepted ? 'text-emerald-700' : 'text-blue-700'">Tył:</h4>
+            <div class="p-3 rounded-md min-h-[70px] border"
+              [ngClass]="proposal.accepted ? 'bg-emerald-100 border-emerald-300 text-emerald-900' : 'bg-white border-slate-200 text-gray-900'">
               {{ proposal.back }}
             </div>
           </div>
         </div>
 
         <!-- Przyciski akcji -->
-        <div class="p-4 bg-gray-50 border-t border-gray-200">
-          <div class="flex justify-between items-center gap-3">
+        <div class="p-3 border-t border-gray-200"
+          [ngClass]="proposal.accepted ? 'bg-emerald-50' : 'bg-slate-100'">
+          <div class="flex flex-col sm:flex-row gap-2">
             <button
               (click)="onAccept(proposal)"
-              class="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
-              aria-label="Akceptuj fiszkę"
+              class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-md text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 w-full sm:flex-1"
+              [ngClass]="{
+                'bg-emerald-600 text-white border-2 border-emerald-700 hover:bg-emerald-700 focus:ring-emerald-500': proposal.accepted,
+                'bg-emerald-600 hover:bg-emerald-700 text-white focus:ring-emerald-500': !proposal.accepted
+              }"
+              [attr.aria-label]="proposal.accepted ? 'Cofnij akceptację fiszki' : 'Akceptuj fiszkę'"
               [attr.data-test-id]="'accept-flashcard-button-' + i">
-              <i class="pi pi-check" aria-hidden="true"></i>
-              <span>Akceptuj</span>
+              <i class="pi" [ngClass]="proposal.accepted ? 'pi-check-circle' : 'pi-check'" aria-hidden="true"></i>
+              <span>{{ proposal.accepted ? 'Zaakceptowano' : 'Akceptuj' }}</span>
             </button>
 
-            <button
-              (click)="openEditDialog(proposal)"
-              class="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-              aria-label="Edytuj fiszkę">
-              <i class="pi pi-pencil" aria-hidden="true"></i>
-              <span>Edytuj</span>
-            </button>
+            <div class="flex gap-2 w-full sm:w-auto">
+              <button
+                (click)="openEditDialog(proposal)"
+                class="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                aria-label="Edytuj fiszkę">
+                <i class="pi pi-pencil" aria-hidden="true"></i>
+                <span>Edytuj</span>
+              </button>
 
-            <button
-              (click)="onReject(proposal)"
-              class="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-              aria-label="Odrzuć fiszkę"
-              [attr.data-test-id]="'reject-flashcard-button-' + i">
-              <i class="pi pi-times" aria-hidden="true"></i>
-              <span>Odrzuć</span>
-            </button>
+              <button
+                (click)="onReject(proposal)"
+                class="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                aria-label="Odrzuć fiszkę"
+                [attr.data-test-id]="'reject-flashcard-button-' + i">
+                <i class="pi pi-times" aria-hidden="true"></i>
+                <span>Odrzuć</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -66,15 +91,19 @@
   </div>
 
   <!-- Licznik propozycji -->
-  <div class="mt-8 mb-2 flex justify-between items-center" *ngIf="proposals.length > 0">
-    <div class="text-gray-500 text-sm">
+  <div class="mt-8 mb-2 flex flex-wrap justify-between items-center gap-2" *ngIf="proposals.length > 0">
+    <div class="flex items-center gap-3 text-sm">
       <span class="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-1 rounded-full">
         <i class="pi pi-list" aria-hidden="true"></i>
-        <span>Liczba propozycji: <strong>{{ proposals.length }}</strong></span>
+        <span>Propozycji: <strong>{{ proposals.length }}</strong></span>
+      </span>
+      <span class="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full">
+        <i class="pi pi-check-circle" aria-hidden="true"></i>
+        <span>Zaakceptowanych: <strong>{{ acceptedCount }}</strong></span>
       </span>
     </div>
     <div class="text-xs text-gray-400">
-      Wybierz akcję dla każdej fiszki: akceptuj, edytuj lub odrzuć
+      Zaakceptuj fiszki, które chcesz zapisać, a resztę odrzuć
     </div>
   </div>
 

@@ -20,8 +20,9 @@ import { BulkSaveButtonComponent } from './bulk-save-button/bulk-save-button.com
 import { GenerateButtonComponent } from './generate-button/generate-button.component';
 import { SourceTextareaComponent } from './source-textarea/source-textarea.component';
 
-// Zdefiniowanie typu dla widoku
-interface FlashcardProposalViewModel extends FlashcardProposalDTO {}
+interface FlashcardProposalViewModel extends FlashcardProposalDTO {
+  accepted?: boolean;
+}
 
 // Interfejs dla przetworzonych fiszek
 interface Flashcard {
@@ -121,8 +122,12 @@ export class GenerateViewComponent implements OnInit, OnDestroy {
     return this.isSourceValid && !this.isGenerating && !this.isSaving;
   }
 
+  get acceptedCount(): number {
+    return this.proposals.filter(p => p.accepted).length;
+  }
+
   canSave(): boolean {
-    return this.proposals.length > 0 && !this.isGenerating && !this.isSaving;
+    return this.acceptedCount > 0 && !this.isGenerating && !this.isSaving;
   }
 
   generate(): void {
@@ -159,12 +164,12 @@ export class GenerateViewComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.clearMessages();
 
-    // Wywołanie rzeczywistego API
-    const flashcardsToSave: FlashcardProposalDTO[] = this.proposals;
+    const flashcardsToSave: FlashcardProposalDTO[] = this.proposals
+      .filter(p => p.accepted)
+      .map(({ accepted, ...dto }) => dto);
 
     this.flashcardApi.createFlashcards(flashcardsToSave).subscribe({
       next: (savedFlashcards) => {
-
         this.messageService.add({
           severity: 'success',
           summary: 'Sukces',
@@ -175,38 +180,11 @@ export class GenerateViewComponent implements OnInit, OnDestroy {
         this.isSaving = false;
         this.isLoading = false;
 
-        // Przekierowanie do listy fiszek
         this.router.navigate(['/flashcards']);
       },
       error: (error) => {
         console.error('Błąd zapisywania fiszek:', error);
-
-        // Wyświetlamy szczegółowy komunikat o błędzie
-        let errorMessage = 'Wystąpił błąd podczas zapisu fiszek.';
-        let summary = 'Błąd';
-
-        if (error.message) {
-          errorMessage = `${error.message}`;
-
-          // Sprawdzamy, czy błąd jest związany z autentykacją
-          if (error.message.includes('nie jest zalogowany')) {
-            summary = 'Błąd autoryzacji';
-            errorMessage = 'Musisz być zalogowany, aby zapisać fiszki.';
-
-            // Przekierowanie do strony logowania
-            setTimeout(() => {
-              this.router.navigate(['/login']);
-            }, 2000);
-          }
-        }
-
-        this.messageService.add({
-          severity: 'error',
-          summary: summary,
-          detail: errorMessage,
-          life: 5000
-        });
-
+        this.handleApiError(error, 'zapisywania');
         this.isSaving = false;
         this.isLoading = false;
       }
@@ -280,65 +258,13 @@ export class GenerateViewComponent implements OnInit, OnDestroy {
 
   // Metody obsługi zdarzeń z listy propozycji
 
-  /**
-   * Obsługuje akceptację propozycji fiszki
-   * @param proposal Zaakceptowana propozycja fiszki
-   */
-  acceptProposal(proposal: FlashcardProposalDTO): void {
-    // Zapisujemy pojedynczą fiszkę
-    this.isSaving = true;
-
-    // Wywołanie rzeczywistego API
-    this.flashcardApi.createFlashcards([proposal]).subscribe({
-      next: (savedFlashcards) => {
-
-        this.proposals = this.proposals.filter(p =>
-          p.front !== proposal.front || p.back !== proposal.back
-        );
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Sukces',
-          detail: 'Fiszka została zapisana.'
-        });
-
-        this.isSaving = false;
-
-        // Przekierowanie do listy fiszek
-        this.router.navigate(['/flashcards']);
-      },
-      error: (error) => {
-        console.error('Błąd zapisywania fiszki:', error);
-
-        // Wyświetlamy szczegółowy komunikat o błędzie
-        let errorMessage = 'Wystąpił błąd podczas zapisu fiszki.';
-        let summary = 'Błąd';
-
-        if (error.message) {
-          errorMessage = `${error.message}`;
-
-          // Sprawdzamy, czy błąd jest związany z autentykacją
-          if (error.message.includes('nie jest zalogowany')) {
-            summary = 'Błąd autoryzacji';
-            errorMessage = 'Musisz być zalogowany, aby zapisać fiszkę.';
-
-            // Przekierowanie do strony logowania
-            setTimeout(() => {
-              this.router.navigate(['/login']);
-            }, 2000);
-          }
-        }
-
-        this.messageService.add({
-          severity: 'error',
-          summary: summary,
-          detail: errorMessage,
-          life: 5000
-        });
-
-        this.isSaving = false;
-      }
-    });
+  acceptProposal(proposal: FlashcardProposalViewModel): void {
+    const match = this.proposals.find(p =>
+      p.front === proposal.front && p.back === proposal.back
+    );
+    if (match) {
+      match.accepted = !match.accepted;
+    }
   }
 
   /**
@@ -369,8 +295,7 @@ export class GenerateViewComponent implements OnInit, OnDestroy {
     );
 
     if (index !== -1) {
-      // Zastępujemy oryginalną propozycję zedytowaną
-      this.proposals[index] = event.edited;
+      this.proposals[index] = { ...event.edited, accepted: this.proposals[index].accepted };
 
       this.messageService.add({
         severity: 'success',

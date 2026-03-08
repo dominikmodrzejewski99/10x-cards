@@ -7,7 +7,7 @@ import {
   OpenRouterRequestPayload,
   OpenRouterResponse
 } from '../interfaces/openrouter.interface';
-import { Observable, catchError, firstValueFrom, retry, throwError } from 'rxjs';
+import { Observable, catchError, firstValueFrom, retry, throwError, timer } from 'rxjs';
 import { environment } from '../../environments/environments';
 
 @Injectable({
@@ -16,7 +16,7 @@ import { environment } from '../../environments/environments';
 export class OpenRouterService {
   private apiUrl: string;
   private sessionManager: SessionManager;
-  private defaultModel = 'deepseek/deepseek-prover-v2:free';
+  private defaultModel = 'stepfun/step-3.5-flash:free';
 
   constructor(
     private http: HttpClient,
@@ -88,18 +88,10 @@ export class OpenRouterService {
         max_tokens: options?.max_tokens || 1000
       };
 
-      // Dodajemy format JSON jeśli potrzebny
       if (options?.useJsonFormat) {
-        console.log('Ustawianie formatu JSON dla zapytania');
         payload.response_format = {
           type: 'json_object'
         };
-
-        // Dodajemy dodatkowe instrukcje do wiadomości użytkownika, aby wymusić format JSON
-        payload.messages.push({
-          role: 'user',
-          content: 'ABSOLUTNIE KLUCZOWE: Odpowiedź MUSI być tablicą JSON z obiektami zawierającymi pola "front" i "back". NIE zwracaj pojedynczego obiektu JSON. Sprawdź, czy Twoja odpowiedź zaczyna się od "[" i kończy na "]". Upewnij się, że generujesz DOKŁADNIE 15 fiszek. Nie dodawaj żadnego tekstu przed ani po tablicy JSON.'
-        });
       }
 
       const response = await firstValueFrom(this.callApi(payload));
@@ -166,7 +158,13 @@ export class OpenRouterService {
 
     return this.http.post<OpenRouterResponse>(this.apiUrl, payload, { headers })
       .pipe(
-        retry(2), // Ponów próbę 2 razy w przypadku błędów sieciowych
+        retry({ count: 1, delay: (error) => {
+          const status = error?.status;
+          if (status === 401 || status === 403 || status === 404) {
+            return throwError(() => error);
+          }
+          return timer(status === 429 ? 5000 : 1000);
+        }}),
         catchError(this.handleHttpError)
       );
   }

@@ -39,44 +39,27 @@ export class GenerationApiService {
   }> {
     const startTime = new Date();
 
-    // Przygotowanie promptu dla modelu
     const prompt = `
-    Twoim zadaniem jest wygenerowanie fiszek edukacyjnych na podstawie poniższego tekstu.
-    Każda fiszka musi mieć dwa pola: "front" (pytanie lub pojęcie) i "back" (odpowiedź lub definicja).
+Wygeneruj fiszki edukacyjne na podstawie poniższego tekstu.
 
-    ABSOLUTNIE KLUCZOWE WYMAGANIA:
-    1. Wygeneruj DOKŁADNIE 15 fiszek - ani mniej, ani więcej.
-    2. Odpowiedź MUSI być w formacie tablicy JSON - musi zaczynać się od "[" i kończyć na "]".
-    3. Każdy element tablicy musi być obiektem z polami "front" i "back".
-    4. NIE dodawaj żadnych komentarzy, tekstu, cudzysłowów czy znaków markdown przed lub po tablicy JSON.
-    5. Fiszki powinny obejmować różne aspekty tekstu i być zróżnicowane.
-    6. Upewnij się, że generujesz różnorodne fiszki, które obejmują najważniejsze informacje z tekstu.
+WYMAGANIA:
+1. Wygeneruj DOKŁADNIE 15 fiszek.
+2. Odpowiedź MUSI być obiektem JSON z kluczem "flashcards" zawierającym tablicę fiszek.
+3. Każda fiszka to obiekt z polami "front" (pytanie) i "back" (odpowiedź).
+4. Fiszki powinny być zróżnicowane i obejmować najważniejsze informacje z tekstu.
 
-    Tekst źródłowy:
-    ${command.text}
+Tekst źródłowy:
+${command.text}
 
-    PRZYKŁAD POPRAWNEJ ODPOWIEDZI (zwróć uwagę na format - odpowiedź zaczyna się od "[" i kończy na "]"):
-    [
-      {"front": "Pytanie 1", "back": "Odpowiedź 1"},
-      {"front": "Pytanie 2", "back": "Odpowiedź 2"},
-      {"front": "Pytanie 3", "back": "Odpowiedź 3"},
-      {"front": "Pytanie 4", "back": "Odpowiedź 4"},
-      {"front": "Pytanie 5", "back": "Odpowiedź 5"}
-    ]
+PRZYKŁAD POPRAWNEJ ODPOWIEDZI:
+{"flashcards": [{"front": "Pytanie 1", "back": "Odpowiedź 1"}, {"front": "Pytanie 2", "back": "Odpowiedź 2"}]}
+`;
 
-    PRZED ZAKOŃCZENIEM SPRAWDŹ:
-    - Czy wygenerowałeś DOKŁADNIE 15 fiszek?
-    - Czy Twoja odpowiedź zaczyna się od "[" i kończy na "]"?
-    - Czy każda fiszka ma pola "front" i "back"?
-    - Czy nie dodałeś żadnego tekstu przed lub po tablicy JSON?
-    `;
-
-    // Wywołanie OpenRouter z odpowiednimi opcjami
     return from(this.openRouterService.sendMessage(prompt, undefined, {
-      systemMessage: 'Jesteś asystentem, który tworzy fiszki edukacyjne. Twoje odpowiedzi ZAWSZE muszą być w formacie JSON. Odpowiadaj wyłącznie TABLICĄ JSON obiektów z polami "front" i "back", bez żadnego dodatkowego tekstu. ZAWSZE generuj DOKŁADNIE 15 fiszek. Nigdy nie zwracaj pojedynczego obiektu, zawsze zwróć tablicę obiektów z DOKŁADNIE 15 elementami. Sprawdź dokładnie, czy wygenerowałeś 15 fiszek przed zwróceniem odpowiedzi. Twoja odpowiedź MUSI zaczynać się od "[" i kończyć na "]". Nie dodawaj żadnego tekstu przed ani po tablicy JSON.',
+      systemMessage: 'Jesteś asystentem tworzącym fiszki edukacyjne. Zawsze odpowiadaj WYŁĄCZNIE obiektem JSON w formacie: {"flashcards": [{"front": "pytanie", "back": "odpowiedź"}, ...]}. Wygeneruj dokładnie 15 fiszek. Nie dodawaj żadnego tekstu poza JSON.',
       temperature: 0.5,
       max_tokens: 4000,
-      model: command.model || 'deepseek/deepseek-prover-v2:free',
+      model: command.model || 'stepfun/step-3.5-flash:free',
       useJsonFormat: true
     })).pipe(
       map((response: string) => {
@@ -87,31 +70,72 @@ export class GenerationApiService {
         try {
           // Clean up the response string and parse it to JSON
           try {
-            // Remove markdown code block markers and any other non-JSON text
             let cleanedResponse = response;
 
-            // Remove markdown code block markers (```json and ```)
-            cleanedResponse = cleanedResponse.replace(/```json\n/g, '');
+            cleanedResponse = cleanedResponse.replace(/```json\n?/g, '');
             cleanedResponse = cleanedResponse.replace(/```/g, '');
-
-            // Trim whitespace
             cleanedResponse = cleanedResponse.trim();
 
-            parsedResponse = JSON.parse(cleanedResponse);
+            // Truncate at last complete object if response was cut off
+            if (!cleanedResponse.endsWith(']') && !cleanedResponse.endsWith('}')) {
+              const lastCloseBrace = cleanedResponse.lastIndexOf('}');
+              if (lastCloseBrace > 0) {
+                cleanedResponse = cleanedResponse.substring(0, lastCloseBrace + 1);
+              }
+            }
+
+            // Try parsing as-is first
+            try {
+              parsedResponse = JSON.parse(cleanedResponse);
+            } catch {
+              // If it fails, try wrapping in array brackets
+              if (!cleanedResponse.startsWith('[')) {
+                cleanedResponse = '[' + cleanedResponse;
+              }
+              if (!cleanedResponse.endsWith(']')) {
+                // Remove trailing comma before adding bracket
+                cleanedResponse = cleanedResponse.replace(/,\s*$/, '') + ']';
+              }
+              parsedResponse = JSON.parse(cleanedResponse);
+            }
           } catch (parseError) {
             console.error('Błąd parsowania JSON:', parseError);
             throw new Error('Nieprawidłowy format odpowiedzi JSON');
           }
 
           // Sprawdzamy, czy odpowiedź jest tablicą fiszek
+          let flashcardArray: any[] | null = null;
+
           if (Array.isArray(parsedResponse)) {
-            flashcards = parsedResponse.map((item: any) => ({
-              front: item.front,
-              back: item.back,
-              source: 'ai-full'
-            }));
+            flashcardArray = parsedResponse;
+          } else if (typeof parsedResponse === 'object' && parsedResponse !== null) {
+            // Model mógł zwrócić obiekt z kluczem zawierającym tablicę
+            const possibleArrayKey = Object.keys(parsedResponse).find(
+              key => Array.isArray(parsedResponse[key])
+            );
+            if (possibleArrayKey) {
+              flashcardArray = parsedResponse[possibleArrayKey];
+            }
+          }
+
+          if (flashcardArray && flashcardArray.length > 0) {
+            const seen = new Set<string>();
+            flashcards = flashcardArray
+              .filter((item: any) => {
+                if (!item.front || !item.back) return false;
+                const key = item.front.trim();
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+              })
+              .slice(0, 15)
+              .map((item: any) => ({
+                front: item.front,
+                back: item.back,
+                source: 'ai-full' as const
+              }));
           } else {
-            console.error('Odpowiedź nie zawiera oczekiwanej tablicy fiszek.');
+            console.error('Odpowiedź nie zawiera oczekiwanej tablicy fiszek. Otrzymano:', parsedResponse);
           }
         } catch (error) {
           console.error('Błąd parsowania odpowiedzi JSON:', error);
@@ -127,7 +151,7 @@ export class GenerationApiService {
           id: Date.now(), // Tymczasowe ID
           generated_count: flashcards.length,
           generation_duration: generationDuration,
-          model: command.model || 'gemini-2.0',
+          model: command.model || 'stepfun/step-3.5-flash:free',
           source_text_hash: this.hashString(command.text),
           source_text_length: command.text.length,
           accepted_edited_count: null,

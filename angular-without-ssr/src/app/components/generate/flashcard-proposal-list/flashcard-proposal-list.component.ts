@@ -26,24 +26,24 @@ import { FlashcardProposalDTO } from '../../../../types';
   styleUrls: ['./flashcard-proposal-list.component.css']
 })
 export class FlashcardProposalListComponent {
-  @Input() proposals: FlashcardProposalDTO[] = [];
+  @Input() proposals: (FlashcardProposalDTO & { accepted?: boolean })[] = [];
 
-  // Emittery dla akcji na fiszkach
   @Output() accept = new EventEmitter<FlashcardProposalDTO>();
   @Output() reject = new EventEmitter<FlashcardProposalDTO>();
   @Output() edit = new EventEmitter<{original: FlashcardProposalDTO, edited: FlashcardProposalDTO}>();
 
-  // Zmienne dla dialogu edycji
   editDialogVisible = false;
   currentEditingProposal: FlashcardProposalDTO | null = null;
   editedProposal: {front: string, back: string} = {front: '', back: ''};
 
-  // Metoda do akceptacji fiszki
+  get acceptedCount(): number {
+    return this.proposals.filter(p => p.accepted).length;
+  }
+
   onAccept(proposal: FlashcardProposalDTO): void {
     this.accept.emit(proposal);
   }
 
-  // Metoda do odrzucenia fiszki
   onReject(proposal: FlashcardProposalDTO): void {
     this.reject.emit(proposal);
   }
