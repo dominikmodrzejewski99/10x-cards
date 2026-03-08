@@ -31,8 +31,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.loginSuccess),
         tap(() => {
-          // Przekieruj do zapisanego URL-a lub do strony generowania fiszek
-          this.authRedirectService.redirectToSavedUrlOrDefault('/generate');
+          this.authRedirectService.redirectToSavedUrlOrDefault('/flashcards');
         })
       ),
     { dispatch: false }
@@ -42,7 +41,6 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.register),
       switchMap(({ email, password, passwordConfirmation }) => {
-        // Sprawdzamy, czy hasła są zgodne
         if (password !== passwordConfirmation) {
           return of(AuthActions.registerFailure({ error: 'Hasła nie są zgodne' }));
         }
@@ -60,8 +58,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.registerSuccess),
         tap(() => {
-          // Przekieruj do zapisanego URL-a lub do strony generowania fiszek
-          this.authRedirectService.redirectToSavedUrlOrDefault('/generate');
+          this.authRedirectService.redirectToSavedUrlOrDefault('/flashcards');
         })
       ),
     { dispatch: false }
@@ -105,8 +102,8 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.authStateLoaded),
         tap(({ user }) => {
-          if (user && (this.router.url === '/' || this.router.url === '/login' || this.router.url === '/register')) {
-            this.router.navigate(['/generate']);
+          if (user && (this.router.url === '/login' || this.router.url === '/register')) {
+            this.router.navigate(['/flashcards']);
           }
         })
       ),

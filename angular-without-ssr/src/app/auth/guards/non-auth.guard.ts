@@ -15,8 +15,7 @@ export const nonAuthGuard: CanActivateFn = (route, state) => {
         return true;
       }
 
-      // Przekierowanie do strony generowania fiszek
-      return router.createUrlTree(['/generate']);
+      return router.createUrlTree(['/flashcards']);
     })
   );
 };
