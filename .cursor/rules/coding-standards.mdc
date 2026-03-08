@@ -1,0 +1,123 @@
+---
+description: Comprehensive Angular/TypeScript coding standards for the project
+globs: 
+alwaysApply: true
+---
+
+# Coding Standards
+
+## TypeScript
+
+- Explicit type annotations on **every** property, variable, parameter, and return type (`@typescript-eslint/typedef`)
+  - `public name: string = 'default';`
+  - `const count: number = 0;`
+  - `(event: MouseEvent) => ...`
+  - `public getData(): Observable<User[]> { ... }`
+  - `private readonly router: Router = inject(Router);`
+  - `public user: InputSignal<UserData> = input.required<UserData>();`
+  - `public selected: OutputEmitterRef<UserData> = output<UserData>();`
+  - `public loadingSignal: WritableSignal<boolean> = signal<boolean>(false);`
+  - `public readonly fullNameSignal: Signal<string> = computed<string>(() => ...);`
+  - `public valueSignal: ModelSignal<string> = model<string>('');`
+- Access modifiers (`public`, `private`) on every member - `protected` is NOT allowed
+- No `any` - use proper interfaces or `unknown`
+- Use utility types (`Partial`, `Pick`, `Omit`, `Record`) in interfaces
+
+## Angular Patterns
+
+- Standalone components only - no NgModules
+- Do NOT set `standalone: true` in decorators (default since v19+)
+- `ChangeDetectionStrategy.OnPush` in every `@Component`
+- Use `host` object instead of `@HostBinding` / `@HostListener`
+- Use `class` / `style` bindings instead of `ngClass` / `ngStyle`
+- Use `NgOptimizedImage` with `ngSrc` for static images (not inline base64)
+- Prefer zoneless change detection (zone.js removed in v21)
+- Lazy loading via `loadComponent()` for feature routes
+- Use `resource()` or `httpResource()` for reactive async data fetching (experimental)
+
+## Signals & State
+
+- `input()`, `output()`, `model()` signal functions instead of decorators
+- `computed()` for derived state
+- `linkedSignal()` for dependent reactive state
+- No `mutate` on signals - use `update` or `set`
+- No NgRx - will be removed from the project
+- Business logic in shared services, not components
+
+### Signal Naming Convention
+
+- Private signals: no `Signal` postfix
+- Public signals: must have `Signal` postfix, e.g. `public readonly itemsSignal: WritableSignal<PageHeaderAction[]> = signal([]);`
+
+## Templates
+
+- Native control flow (`@if`, `@for`, `@switch`) - no `*ngIf` / `*ngFor` / `*ngSwitch`
+- `@let` for template-local variables
+- No arrow functions in templates
+- `async` pipe for observables
+- Keep template logic simple
+
+## Services
+
+- `inject()` instead of constructor injection
+- `providedIn: 'root'` for singletons
+- Single responsibility - business logic in services
+
+## RxJS
+
+- No nested subscriptions - use `switchMap` and similar operators
+- Always handle unsubscription - prefer `takeUntilDestroyed()`
+- `BehaviorSubject` / `ReplaySubject` preferred over `Subject` when current value is needed
+
+## Forms
+
+- Prefer Signal Forms (`form()` + `[formField]`) (experimental v21)
+- Custom validators in a shared file
+- Validation messages near fields
+
+## API Communication
+
+- `httpResource()` for reactive data fetching where applicable (experimental)
+- `catchError` with user-friendly messages
+- Interceptors for authorization, errors, and default limit (`9999`)
+
+## Security
+
+- No `[innerHTML]` without `DomSanitizer`
+- Frontend validation present
+- Guards for role-based permissions
+
+## Styles
+
+- BEM methodology
+- No `!important` or `::ng-deep`
+- Use `@use`, `@mixin`, `@include`
+- Colors in `colors.scss`; shared typography styles
+- Scoped styles only
+
+## Translation
+
+- Always use `translate` pipe or `translate.instant()` with translation keys
+- Check existing shared groups before adding new keys
+
+## Accessibility
+
+- Must pass all AXE checks
+- WCAG AA compliance: focus management, color contrast, ARIA attributes
+- Consider Angular Aria for accessible headless components
+
+## Class Member Ordering
+
+1. **Signal I/O**: `input()`, `output()`, `model()`
+2. **Injected deps**: `inject()` calls
+3. **Properties**: public then private (`readonly` and `signal()` grouped within access modifier)
+4. **Lifecycle**: `constructor()` -> `ngOnInit()` (with `effect()`) -> other hooks -> `ngOnDestroy()`
+5. **Methods**: getters/setters -> public -> template-accessible -> private helpers
+
+### Import Ordering
+
+1. Angular libraries (`@angular/core`, `@angular/common`, etc.)
+2. Third-party libraries (RxJS, Angular Material, etc.)
+3. Project modules/services/components (relative paths)
+4. Other items
+5. Local enums and types

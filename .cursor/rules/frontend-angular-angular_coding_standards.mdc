@@ -1,22 +1,20 @@
 ---
-description: 
-globs: 
+description: Angular coding standards quick reference (see coding-standards.mdc for full details)
+globs: **/*.ts
 alwaysApply: false
 ---
-## FRONTEND
+## Angular Coding Standards
 
-### Guidelines for ANGULAR
+Full coding standards are defined in `coding-standards.mdc` (always applied).
 
-#### ANGULAR_CODING_STANDARDS
+This rule serves as a quick reference when working in `.ts` files:
 
-- Use standalone components, directives, and pipes instead of NgModules
-- Implement signals for state management instead of traditional RxJS-based approaches
-- Use the new inject function instead of constructor injection
-- Implement control flow with @if, @for, and @switch instead of *ngIf, *ngFor, etc.
-- Leverage functional guards and resolvers instead of class-based ones
-- Use the new deferrable views for improved loading states
-- Implement OnPush change detection strategy for improved performance
-- Use TypeScript decorators with explicit visibility modifiers (public, private)
-- Leverage Angular CLI for schematics and code generation
-- Implement proper lazy loading with loadComponent and loadChildren
-
+- Standalone components only - no NgModules, no `standalone: true` in decorators
+- `ChangeDetectionStrategy.OnPush` in every component
+- `input()`, `output()`, `model()` signal functions - no decorators
+- `inject()` instead of constructor injection
+- `computed()` for derived state, `linkedSignal()` for dependent state
+- Native control flow (`@if`, `@for`, `@switch`)
+- Explicit type annotations everywhere - no `any`
+- Access modifiers (`public`, `private`) on every member - no `protected`
+- Public signals: `Signal` postfix; private signals: no postfix
