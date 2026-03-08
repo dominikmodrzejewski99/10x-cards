@@ -1,0 +1,126 @@
+<div class="sets">
+  <div class="sets__header">
+    <h1 class="sets__title">Moje zestawy</h1>
+    <button (click)="openCreateDialog()" class="sets__btn sets__btn--create">
+      <i class="pi pi-plus"></i> Nowy zestaw
+    </button>
+  </div>
+
+  @if (state().loading && state().sets.length === 0) {
+    <div class="sets__loading">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: #4255ff;"></i>
+      <p>Ładowanie zestawów...</p>
+    </div>
+  }
+
+  @if (state().error && state().sets.length === 0) {
+    <div class="sets__error">
+      <i class="pi pi-exclamation-circle"></i>
+      <p>{{ state().error }}</p>
+      <button (click)="loadSets()" class="sets__btn sets__btn--outline">Spróbuj ponownie</button>
+    </div>
+  }
+
+  @if (!state().loading && state().sets.length === 0 && !state().error) {
+    <div class="sets__empty">
+      <i class="pi pi-folder-open" style="font-size: 3rem; color: #d9dbe9;"></i>
+      <h2>Brak zestawów</h2>
+      <p>Utwórz swój pierwszy zestaw, aby organizować fiszki.</p>
+      <button (click)="openCreateDialog()" class="sets__btn sets__btn--create">
+        <i class="pi pi-plus"></i> Utwórz zestaw
+      </button>
+    </div>
+  }
+
+  @if (state().sets.length > 0) {
+    <div class="sets__grid">
+      @for (set of state().sets; track set.id) {
+        <div class="set-card" (click)="navigateToSet(set)">
+          <div class="set-card__header">
+            <h2 class="set-card__name">{{ set.name }}</h2>
+            <div class="set-card__actions" (click)="$event.stopPropagation()">
+              <button class="set-card__action" title="Nauka" (click)="studySet(set)">
+                <i class="pi pi-book"></i>
+              </button>
+              <button class="set-card__action" title="Edytuj" (click)="openEditDialog(set)">
+                <i class="pi pi-pencil"></i>
+              </button>
+              <button class="set-card__action set-card__action--danger" title="Usuń" (click)="deleteSet(set)">
+                <i class="pi pi-trash"></i>
+              </button>
+            </div>
+          </div>
+          @if (set.description) {
+            <p class="set-card__desc">{{ set.description }}</p>
+          }
+          <div class="set-card__footer">
+            <span class="set-card__date">
+              <i class="pi pi-calendar"></i> {{ formatDate(set.created_at) }}
+            </span>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <p-dialog
+    [header]="state().editingSet ? 'Edytuj zestaw' : 'Nowy zestaw'"
+    [(visible)]="dialogVisible"
+    [modal]="true"
+    [closeOnEscape]="true"
+    [dismissableMask]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{width: '95vw', maxWidth: '480px'}"
+    styleClass="modern-dialog"
+    (onHide)="closeDialog()">
+    <div class="set-form">
+      <div class="set-form__field">
+        <label class="set-form__label" for="setName">Nazwa zestawu</label>
+        <input
+          id="setName"
+          type="text"
+          class="set-form__input"
+          [ngModel]="state().formName"
+          (ngModelChange)="onFormNameChange($event)"
+          placeholder="np. Biologia – rozdział 5"
+          maxlength="100"
+          autofocus />
+      </div>
+      <div class="set-form__field">
+        <label class="set-form__label" for="setDesc">Opis (opcjonalnie)</label>
+        <textarea
+          id="setDesc"
+          class="set-form__textarea"
+          [ngModel]="state().formDescription"
+          (ngModelChange)="onFormDescriptionChange($event)"
+          placeholder="Krótki opis zestawu..."
+          maxlength="500"
+          rows="3"></textarea>
+      </div>
+      <div class="set-form__actions">
+        <button
+          class="sets__btn sets__btn--outline"
+          (click)="closeDialog()">
+          Anuluj
+        </button>
+        <button
+          class="sets__btn sets__btn--create"
+          [disabled]="!state().formName.trim() || state().formSaving"
+          (click)="saveSet()">
+          @if (state().formSaving) {
+            <i class="pi pi-spin pi-spinner"></i>
+          }
+          {{ state().editingSet ? 'Zapisz' : 'Utwórz' }}
+        </button>
+      </div>
+    </div>
+  </p-dialog>
+
+  <p-toast position="top-right"></p-toast>
+  <p-confirmDialog
+    styleClass="modern-dialog"
+    [style]="{width: '95vw', maxWidth: '420px'}"
+    icon="pi pi-exclamation-triangle">
+  </p-confirmDialog>
+</div>
