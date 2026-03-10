@@ -1,0 +1,221 @@
+.import__hint {
+  color: #586380;
+  font-size: 0.9rem;
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
+}
+
+.import__textarea {
+  width: 100%;
+  min-height: 200px;
+  padding: 0.75rem;
+  border: 1.5px solid #d9dbe9;
+  border-radius: 0.5rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+.import__textarea:focus {
+  border-color: #4255ff;
+}
+
+.import__actions,
+.import__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.import__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.import__btn--primary {
+  background: #4255ff;
+  color: #fff;
+}
+.import__btn--primary:hover:not(:disabled) { background: #3b4ce3; }
+.import__btn--primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.import__btn--small {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.8rem;
+}
+
+.import__btn--ghost {
+  background: transparent;
+  color: #586380;
+  border: 1.5px solid #d9dbe9;
+}
+.import__btn--ghost:hover { background: #f6f7fb; }
+
+.import__btn-link {
+  background: none;
+  border: none;
+  color: #4255ff;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.import__btn-link:hover { text-decoration: underline; }
+
+.import__stats {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.import__stat {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.import__stat--total { color: #586380; }
+.import__stat--accepted { color: #23b26d; }
+
+.import__errors {
+  background: #fff8f0;
+  border: 1px solid #ffcca7;
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.import__errors-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #c9590a;
+  margin: 0 0 0.35rem;
+}
+.import__error-item {
+  font-size: 0.75rem;
+  color: #7a5230;
+  margin-bottom: 0.2rem;
+}
+.import__error-content {
+  font-family: 'Courier New', monospace;
+  background: #ffeedd;
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.2rem;
+}
+
+.import__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.import__card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.65rem;
+  border: 1.5px solid #d9dbe9;
+  border-radius: 0.5rem;
+  background: #fff;
+  transition: all 0.15s;
+}
+.import__card--rejected {
+  opacity: 0.45;
+  background: #f6f7fb;
+}
+
+.import__card-content {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
+  min-width: 0;
+  font-size: 0.85rem;
+}
+.import__card-front {
+  font-weight: 600;
+  color: #282e3e;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.import__card-sep {
+  color: #b0b5c9;
+  flex-shrink: 0;
+}
+.import__card-back {
+  color: #586380;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.import__card-actions {
+  display: flex;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.import__icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.35rem;
+  border: none;
+  background: transparent;
+  color: #586380;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.15s;
+}
+.import__icon-btn:hover { background: #f6f7fb; color: #4255ff; }
+.import__icon-btn--danger:hover { color: #e53e3e; }
+
+.import__edit {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  flex: 1;
+}
+.import__edit-input {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  border: 1.5px solid #d9dbe9;
+  border-radius: 0.35rem;
+  font-size: 0.85rem;
+  font-family: inherit;
+  outline: none;
+}
+.import__edit-input:focus { border-color: #4255ff; }
+.import__edit-actions {
+  display: flex;
+  gap: 0.2rem;
+}
+
+@media (max-width: 640px) {
+  .import__card-content { flex-direction: column; align-items: flex-start; }
+  .import__card-sep { display: none; }
+  .import__edit { flex-direction: column; }
+}

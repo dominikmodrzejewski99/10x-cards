@@ -1,0 +1,127 @@
+<p-dialog
+  header="Importuj fiszki"
+  [visible]="isVisible()"
+  (visibleChange)="onClose()"
+  [modal]="true"
+  [closeOnEscape]="true"
+  [dismissableMask]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{width: '95vw', maxWidth: '700px'}"
+  styleClass="modern-dialog"
+  (onHide)="onClose()">
+
+  @if (!isParsed()) {
+    <div class="import__input">
+      <p class="import__hint">
+        Wklej tekst z fiszkami. Jedna fiszka na linię.<br>
+        Separator: <strong>TAB</strong> lub <strong>przecinek</strong>
+      </p>
+      <textarea
+        class="import__textarea"
+        [ngModel]="rawText()"
+        (ngModelChange)="rawText.set($event)"
+        placeholder="przód&#9;tył&#10;apple,jabłko&#10;dog,pies"
+        rows="10">
+      </textarea>
+      <div class="import__actions">
+        <button
+          class="import__btn import__btn--primary"
+          [disabled]="!hasContent()"
+          (click)="onParse()">
+          <i class="pi pi-list"></i> Parsuj
+        </button>
+      </div>
+    </div>
+  } @else {
+    <div class="import__preview">
+      <div class="import__stats">
+        <span class="import__stat import__stat--total">
+          {{ totalCount() }} fiszek
+        </span>
+        <span class="import__stat import__stat--accepted">
+          <i class="pi pi-check"></i> {{ acceptedCount() }} zaakceptowanych
+        </span>
+        <button class="import__btn-link" (click)="resetToInput()">
+          <i class="pi pi-arrow-left"></i> Wróć do edycji tekstu
+        </button>
+      </div>
+
+      @if (parseErrors().length > 0) {
+        <div class="import__errors">
+          <p class="import__errors-title">
+            <i class="pi pi-exclamation-triangle"></i>
+            Pominięte linie ({{ parseErrors().length }}):
+          </p>
+          @for (err of parseErrors(); track err.line) {
+            <div class="import__error-item">
+              Linia {{ err.line }}: <span class="import__error-content">{{ err.content }}</span>
+              — {{ err.reason }}
+            </div>
+          }
+        </div>
+      }
+
+      <div class="import__list">
+        @for (proposal of proposals(); track proposal._id) {
+          <div class="import__card" [class.import__card--rejected]="!proposal.accepted">
+            @if (editingId() === proposal._id) {
+              <div class="import__edit">
+                <input
+                  class="import__edit-input"
+                  #frontInput
+                  [value]="proposal.front"
+                  placeholder="Przód" />
+                <input
+                  class="import__edit-input"
+                  #backInput
+                  [value]="proposal.back"
+                  placeholder="Tył" />
+                <div class="import__edit-actions">
+                  <button class="import__btn import__btn--small import__btn--primary"
+                    (click)="saveEdit(proposal._id, frontInput.value, backInput.value)">
+                    <i class="pi pi-check"></i>
+                  </button>
+                  <button class="import__btn import__btn--small import__btn--ghost"
+                    (click)="cancelEdit()">
+                    <i class="pi pi-times"></i>
+                  </button>
+                </div>
+              </div>
+            } @else {
+              <div class="import__card-content">
+                <div class="import__card-front">{{ proposal.front }}</div>
+                <div class="import__card-sep">→</div>
+                <div class="import__card-back">{{ proposal.back }}</div>
+              </div>
+              <div class="import__card-actions">
+                <button class="import__icon-btn" title="Edytuj" (click)="startEdit(proposal._id)">
+                  <i class="pi pi-pencil"></i>
+                </button>
+                <button class="import__icon-btn" title="Akceptuj/Odrzuć" (click)="toggleAccept(proposal._id)">
+                  <i [class]="proposal.accepted ? 'pi pi-check-circle' : 'pi pi-circle'"></i>
+                </button>
+                <button class="import__icon-btn import__icon-btn--danger" title="Usuń" (click)="removeProposal(proposal._id)">
+                  <i class="pi pi-trash"></i>
+                </button>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="import__footer">
+        <button
+          class="import__btn import__btn--primary"
+          [disabled]="!canSave()"
+          (click)="onSave()">
+          @if (isSaving()) {
+            <i class="pi pi-spin pi-spinner"></i> Zapisywanie...
+          } @else {
+            <i class="pi pi-save"></i> Zapisz ({{ acceptedCount() }})
+          }
+        </button>
+      </div>
+    </div>
+  }
+</p-dialog>
