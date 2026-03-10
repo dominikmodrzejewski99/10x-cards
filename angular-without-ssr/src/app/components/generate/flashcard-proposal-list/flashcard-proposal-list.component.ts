@@ -1,25 +1,17 @@
 import { Component, computed, input, output, InputSignal, OutputEmitterRef, Signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
-import { TooltipModule } from 'primeng/tooltip';
 import { FlashcardProposalDTO } from '../../../../types';
 
 @Component({
   selector: 'app-flashcard-proposal-list',
   imports: [
-    CommonModule,
-    CardModule,
     ButtonModule,
     DialogModule,
     FormsModule,
-    InputTextModule,
-    TextareaModule,
-    TooltipModule
+    TextareaModule
   ],
   templateUrl: './flashcard-proposal-list.component.html',
   styleUrls: ['./flashcard-proposal-list.component.css']

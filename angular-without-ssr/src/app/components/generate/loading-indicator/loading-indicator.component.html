@@ -1,14 +1,72 @@
 @if (isLoadingSignal()) {
-<div class="flex flex-col items-center justify-center py-3" [attr.data-test-id]="'loading-indicator'">
-  <div class="relative w-16 h-16">
-    <div class="absolute top-0 left-0 w-full h-full">
-      <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+<div class="overlay" [attr.data-test-id]="'loading-indicator'">
+  <div class="dialog">
+    <div class="dialog__progress">
+      <div class="dialog__bar">
+        <div class="dialog__bar-fill"></div>
+      </div>
+      <p class="dialog__status">
+        <i class="pi pi-sparkles"></i>
+        {{ statusText() }}
+      </p>
     </div>
-    <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-      <i class="pi pi-cog text-blue-600 animate-pulse"></i>
+
+    <div class="dialog__content">
+      <h3 class="dialog__title">Czy wiesz, że...</h3>
+
+      <div class="dialog__chart">
+        <svg viewBox="0 0 360 180" class="chart" aria-label="Krzywa zapominania Ebbinghausa">
+          <!-- Grid -->
+          <line x1="40" y1="10" x2="40" y2="155" stroke="#d9dbe9" stroke-width="1"/>
+          <line x1="40" y1="155" x2="350" y2="155" stroke="#d9dbe9" stroke-width="1"/>
+          <text x="4" y="18" class="chart__label">100%</text>
+          <text x="12" y="85" class="chart__label">50%</text>
+          <text x="16" y="155" class="chart__label">0%</text>
+          <text x="45" y="170" class="chart__label">1d</text>
+          <text x="115" y="170" class="chart__label">3d</text>
+          <text x="195" y="170" class="chart__label">7d</text>
+          <text x="270" y="170" class="chart__label">14d</text>
+          <text x="335" y="170" class="chart__label">30d</text>
+
+          <!-- Krzywa BEZ powtórek (czerwona, strome zapominanie) -->
+          <path
+            d="M40,15 C70,40 100,100 140,130 S240,150 350,153"
+            fill="none" stroke="#ff6240" stroke-width="2.5" stroke-dasharray="6 3" class="chart__line--no-review"/>
+          <text x="200" y="148" class="chart__legend chart__legend--red">bez powtórek</text>
+
+          <!-- Krzywa Z powtórkami (zielona, schody) -->
+          <path
+            d="M40,15 C55,30 65,55 80,65
+               L80,22 C95,35 105,55 120,62
+               L120,18 C140,28 155,42 175,48
+               L175,16 C200,24 225,35 260,40
+               L260,15 C290,20 320,26 350,30"
+            fill="none" stroke="#23b26d" stroke-width="2.5" class="chart__line--review"/>
+          <text x="270" y="46" class="chart__legend chart__legend--green">z powtórkami</text>
+        </svg>
+      </div>
+
+      <div class="dialog__facts">
+        <div class="dialog__fact">
+          <span class="dialog__fact-icon">
+            <i class="pi pi-chart-line"></i>
+          </span>
+          <p>Bez powtórek <strong>zapominamy 70% materiału</strong> w ciągu 24 godzin — to odkrycie Hermanna Ebbinghausa z 1885 roku.</p>
+        </div>
+        <div class="dialog__fact">
+          <span class="dialog__fact-icon">
+            <i class="pi pi-replay"></i>
+          </span>
+          <p>Powtórki w rosnących odstępach czasu <strong>(spaced repetition)</strong> pozwalają zapamiętać materiał nawet na lata.</p>
+        </div>
+        <div class="dialog__fact">
+          <span class="dialog__fact-icon">
+            <i class="pi pi-bolt"></i>
+          </span>
+          <p>Już <strong>4–5 powtórek</strong> w odpowiednich momentach wystarczy, by przenieść wiedzę do pamięci długotrwałej.</p>
+        </div>
+      </div>
     </div>
   </div>
-  <p class="mt-3 text-gray-600 font-medium">Generowanie fiszek...</p>
-  <p class="text-sm text-gray-500">Proszę czekać, to może potrwać chwilę</p>
 </div>
 }

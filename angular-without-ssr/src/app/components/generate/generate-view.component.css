@@ -39,61 +39,113 @@
   margin-bottom: 1.25rem;
 }
 
-.gen__card-title {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #282e3e;
-  margin: 0 0 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid #edeff5;
-}
-
-.gen__card-text {
-  color: #586380;
-  margin: 0 0 1.25rem;
-}
-
-.gen__card-actions {
-  display: flex;
-  gap: 0.75rem;
-  justify-content: center;
-}
-
 .gen__card-footer {
   display: flex;
   justify-content: flex-end;
   margin-top: 1rem;
 }
 
-.gen__card-footer--save {
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
+.gen__error {
+  margin-top: 1rem;
 }
 
-.gen__set-bar {
-  background: #f6f7fb;
-  border: 1.5px solid #d9dbe9;
-  border-radius: 0.75rem;
-  padding: 1rem 1.25rem;
-  margin-bottom: 1.25rem;
+/* Proposals header */
+.gen__proposals-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #edeff5;
   flex-wrap: wrap;
-}
-
-.gen__set-picker {
-  display: flex;
-  align-items: center;
   gap: 0.5rem;
 }
 
-.gen__set-label {
-  font-size: 0.8rem;
+.gen__proposals-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #282e3e;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.gen__proposals-title i {
+  color: #4255ff;
+  font-size: 1rem;
+}
+
+.gen__proposals-stats {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.gen__stat {
+  font-size: 0.75rem;
   font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.gen__stat--total {
+  background: #f6f7fb;
   color: #586380;
-  white-space: nowrap;
+}
+
+.gen__stat--accepted {
+  background: #e8f8f0;
+  color: #23b26d;
+}
+
+/* Save section */
+.gen__save-section {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 2px solid #edeff5;
+}
+
+.gen__save-set {
+  margin-bottom: 1rem;
+}
+
+.gen__save-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #282e3e;
+  margin-bottom: 0.6rem;
+}
+
+.gen__save-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.gen__save-or {
+  font-size: 0.75rem;
+  color: #b0b5c4;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.gen__save-new {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.gen__save-action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
 }
 
 .gen__set-select {
@@ -107,16 +159,10 @@
   cursor: pointer;
   min-width: 180px;
 }
+
 .gen__set-select:focus {
   outline: none;
   border-color: #4255ff;
-}
-
-.gen__set-create {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-left: auto;
 }
 
 .gen__set-input {
@@ -127,8 +173,9 @@
   font-size: 0.85rem;
   color: #282e3e;
   background: #fff;
-  min-width: 160px;
+  min-width: 140px;
 }
+
 .gen__set-input:focus {
   outline: none;
   border-color: #4255ff;
@@ -155,12 +202,6 @@
   transition: all 0.15s;
 }
 
-.gen__btn--primary {
-  background: #4255ff;
-  color: #fff;
-}
-.gen__btn--primary:hover { background: #3b4ce3; }
-
 .gen__btn--small {
   padding: 0.4rem 0.75rem;
   font-size: 0.8rem;
@@ -172,25 +213,9 @@
   font-family: inherit;
   font-weight: 600;
 }
+
 .gen__btn--small:hover { background: #3b4ce3; }
 .gen__btn--small:disabled { opacity: 0.5; cursor: not-allowed; }
-
-.gen__btn--outline {
-  background: transparent;
-  color: #4255ff;
-  border: 1.5px solid #d9dbe9;
-}
-.gen__btn--outline:hover { border-color: #4255ff; }
-
-.gen__loading {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-}
-
-.gen__error {
-  margin-top: 1rem;
-}
 
 .gen__empty {
   text-align: center;
@@ -215,4 +240,34 @@ textarea:focus {
   border-color: #4255ff;
   box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.12);
   outline: none;
+}
+
+@media (max-width: 600px) {
+  .gen__save-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .gen__save-or {
+    text-align: center;
+  }
+
+  .gen__save-new {
+    width: 100%;
+  }
+
+  .gen__set-select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .gen__set-input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .gen__save-action {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }

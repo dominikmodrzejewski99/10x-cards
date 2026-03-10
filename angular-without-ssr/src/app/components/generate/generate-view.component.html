@@ -1,123 +1,123 @@
 <div class="gen">
   <div class="gen__inner">
-    @if (!isAuthenticated) {
-    <div class="gen__card">
-      <h2 class="gen__card-title" style="color: #ff6240;">Wymagane logowanie</h2>
-      <p class="gen__card-text">Aby generować fiszki, musisz być zalogowany.</p>
-      <div class="gen__card-actions">
-        <a routerLink="/login" class="gen__btn gen__btn--primary">Zaloguj się</a>
-        <a routerLink="/register" class="gen__btn gen__btn--outline">Zarejestruj się</a>
-      </div>
+    <div class="gen__header">
+      <h1 class="gen__title">Generator fiszek</h1>
+      <p class="gen__subtitle">
+        Wklej fragment tekstu
+        <span class="gen__subtitle-hint">(1000–10000 znaków)</span>
+        — AI wygeneruje fiszki za Ciebie
+      </p>
     </div>
-    }
 
-    @if (isAuthenticated) {
-      <div class="gen__header">
-        <h1 class="gen__title">Generator fiszek</h1>
-        <p class="gen__subtitle">
-          Wklej fragment tekstu
-          <span class="gen__subtitle-hint">(1000–10000 znaków)</span>
-          — AI wygeneruje fiszki za Ciebie
-        </p>
+    <div class="gen__card">
+      <app-source-textarea
+        (textChange)="onTextChange($event)"
+        (validityChange)="onValidityChange($event)">
+      </app-source-textarea>
+
+      <div class="gen__card-footer">
+        <app-generate-button
+          [disabled]="!canGenerate()"
+          [loading]="isButtonLoading()"
+          (generateClick)="generate()">
+        </app-generate-button>
       </div>
 
-      <div class="gen__set-bar">
-        <div class="gen__set-picker">
-          <label class="gen__set-label" for="targetSet">Docelowy zestaw:</label>
-          <select
-            id="targetSet"
-            class="gen__set-select"
-            [(ngModel)]="selectedSetId">
-            <option [ngValue]="null" disabled>— Wybierz zestaw —</option>
-            @for (set of sets; track set.id) {
-              <option [ngValue]="set.id">{{ set.name }}</option>
-            }
-          </select>
-        </div>
-        <div class="gen__set-create">
-          <input
-            type="text"
-            class="gen__set-input"
-            [(ngModel)]="newSetName"
-            placeholder="Nazwa nowego zestawu..."
-            maxlength="100"
-            (keydown.enter)="createNewSet()" />
-          <button
-            class="gen__btn gen__btn--small"
-            [disabled]="!newSetName.trim() || isCreatingSet"
-            (click)="createNewSet()">
-            @if (isCreatingSet) {
-              <i class="pi pi-spin pi-spinner"></i>
-            } @else {
-              <i class="pi pi-plus"></i>
-            }
-            Utwórz
-          </button>
+      @if (errorMessage()) {
+      <div class="gen__error">
+        <app-error-message [errorMessage]="errorMessage()"></app-error-message>
+      </div>
+      }
+    </div>
+
+    @if (proposals().length > 0) {
+    <div class="gen__card">
+      <div class="gen__proposals-header">
+        <h2 class="gen__proposals-title">
+          <i class="pi pi-sparkles"></i>
+          Wygenerowane fiszki
+        </h2>
+        <div class="gen__proposals-stats">
+          <span class="gen__stat gen__stat--total">
+            {{ proposals().length }} propozycji
+          </span>
+          <span class="gen__stat gen__stat--accepted">
+            <i class="pi pi-check"></i>
+            {{ acceptedCount() }} zaakceptowanych
+          </span>
         </div>
       </div>
 
-      <div class="gen__card">
-        <app-source-textarea
-          (textChange)="onTextChange($event)"
-          (validityChange)="onValidityChange($event)">
-        </app-source-textarea>
+      <app-flashcard-proposal-list
+        [proposals]="proposals()"
+        (accept)="acceptProposal($any($event))"
+        (reject)="rejectProposal($any($event))"
+        (edit)="editProposal($event)">
+      </app-flashcard-proposal-list>
 
-        <div class="gen__card-footer">
-          <app-generate-button
-            [disabled]="!canGenerate()"
-            [loading]="isGenerating || isLoading"
-            (generateClick)="generate()">
-          </app-generate-button>
+      <div class="gen__save-section">
+        <div class="gen__save-set">
+          <label class="gen__save-label">Zapisz do zestawu:</label>
+          <div class="gen__save-controls">
+            <select
+              class="gen__set-select"
+              [ngModel]="selectedSetId()"
+              (ngModelChange)="selectedSetId.set($event)">
+              <option [ngValue]="null" disabled>— Wybierz zestaw —</option>
+              @for (set of sets(); track set.id) {
+                <option [ngValue]="set.id">{{ set.name }}</option>
+              }
+            </select>
+            <span class="gen__save-or">lub</span>
+            <div class="gen__save-new">
+              <input
+                type="text"
+                class="gen__set-input"
+                [ngModel]="newSetName()"
+                (ngModelChange)="newSetName.set($event)"
+                placeholder="Nowy zestaw..."
+                maxlength="100"
+                (keydown.enter)="createNewSet()" />
+              <button
+                class="gen__btn gen__btn--small"
+                [disabled]="!newSetName().trim() || isCreatingSet()"
+                (click)="createNewSet()">
+                @if (isCreatingSet()) {
+                  <i class="pi pi-spin pi-spinner"></i>
+                } @else {
+                  <i class="pi pi-plus"></i>
+                }
+                Utwórz
+              </button>
+            </div>
+          </div>
         </div>
 
-        @if (isLoading) {
-        <div class="gen__loading">
-          <app-loading-indicator [isLoading]="isLoading"></app-loading-indicator>
-        </div>
-        }
-
-        @if (errorMessage) {
-        <div class="gen__error">
-          <app-error-message [errorMessage]="errorMessage"></app-error-message>
-        </div>
-        }
-      </div>
-
-      @if (proposals.length > 0) {
-      <div class="gen__card">
-        <h2 class="gen__card-title" style="color: #23b26d;">Propozycje fiszek</h2>
-
-        <app-flashcard-proposal-list
-          [proposals]="proposals"
-          (accept)="acceptProposal($event)"
-          (reject)="rejectProposal($event)"
-          (edit)="editProposal($event)">
-        </app-flashcard-proposal-list>
-
-        <div class="gen__card-footer gen__card-footer--save">
-          @if (!selectedSetId) {
+        <div class="gen__save-action">
+          @if (!selectedSetId() && acceptedCount() > 0) {
             <span class="gen__set-warn">
-              <i class="pi pi-exclamation-circle"></i> Wybierz zestaw, aby zapisać fiszki
+              <i class="pi pi-info-circle"></i> Wybierz lub utwórz zestaw
             </span>
           }
           <app-bulk-save-button
-            [label]="'Zapisz zaakceptowane (' + acceptedCount + ')'"
+            [label]="'Zapisz (' + acceptedCount() + ')'"
             [disabled]="!canSave()"
-            [loading]="isSaving"
+            [loading]="isSaving()"
             (saveAllClick)="saveAllProposals()">
           </app-bulk-save-button>
         </div>
       </div>
-      }
+    </div>
+    }
 
-      @if (!isLoading && !proposals.length && sourceText.length > 0 && isSourceValid) {
-      <div class="gen__empty">
-        <i class="pi pi-arrow-up"></i>
-        <p>Kliknij „Generuj" aby stworzyć propozycje fiszek</p>
-      </div>
-      }
+    @if (!isGenerating() && !proposals().length && sourceText().length > 0 && isSourceValid()) {
+    <div class="gen__empty">
+      <i class="pi pi-arrow-up"></i>
+      <p>Kliknij „Generuj" aby stworzyć propozycje fiszek</p>
+    </div>
     }
   </div>
 </div>
 
-<p-toast position="bottom-right"></p-toast>
+<app-loading-indicator [isLoading]="isGenerating()"></app-loading-indicator>
+<p-toast position="top-right"></p-toast>

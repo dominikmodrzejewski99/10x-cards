@@ -1,2 +1,179 @@
-/* Style specyficzne dla LoadingIndicatorComponent */
-/* Większość stylów jest obsługiwana przez PrimeNG i Tailwind CSS */ 
+/* Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(40, 46, 62, 0.45);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Dialog */
+.dialog {
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+  width: 92%;
+  max-width: 520px;
+  overflow: hidden;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Progress bar */
+.dialog__progress {
+  padding: 1.25rem 1.5rem 1rem;
+  border-bottom: 1px solid #edeff5;
+}
+
+.dialog__bar {
+  height: 6px;
+  background: #edeff5;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.dialog__bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4255ff, #6c7aff);
+  border-radius: 3px;
+  animation: progress 30s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes progress {
+  0% { width: 0%; }
+  5% { width: 8%; }
+  15% { width: 18%; }
+  30% { width: 32%; }
+  50% { width: 50%; }
+  70% { width: 65%; }
+  85% { width: 78%; }
+  95% { width: 88%; }
+  100% { width: 93%; }
+}
+
+.dialog__status {
+  margin: 0.65rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4255ff;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dialog__status i {
+  font-size: 0.9rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Content */
+.dialog__content {
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.dialog__title {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #282e3e;
+}
+
+/* Chart */
+.dialog__chart {
+  background: #f6f7fb;
+  border-radius: 0.625rem;
+  padding: 0.75rem 0.5rem 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.chart__label {
+  font-size: 9px;
+  fill: #9ca3b8;
+  font-family: 'Inter', sans-serif;
+}
+
+.chart__legend {
+  font-size: 9px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+}
+
+.chart__legend--red { fill: #ff6240; }
+.chart__legend--green { fill: #23b26d; }
+
+.chart__line--no-review {
+  stroke-dashoffset: 400;
+  animation: drawLine 2s ease-out forwards 0.5s;
+}
+
+.chart__line--review {
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  animation: drawLine 2.5s ease-out forwards 0.8s;
+}
+
+@keyframes drawLine {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Facts */
+.dialog__facts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.dialog__fact {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.dialog__fact-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background: #edefff;
+  color: #4255ff;
+  font-size: 0.85rem;
+}
+
+.dialog__fact p {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #586380;
+}
+
+.dialog__fact p strong {
+  color: #282e3e;
+  font-weight: 600;
+}
