@@ -66,8 +66,12 @@ export class ImportModalComponent {
   }
 
   saveEdit(id: string, front: string, back: string): void {
+    const trimmedFront = front.trim();
+    const trimmedBack = back.trim();
+    if (!trimmedFront || !trimmedBack) return;
+
     this.proposals.update(list =>
-      list.map(p => p._id === id ? { ...p, front: front.trim(), back: back.trim() } : p)
+      list.map(p => p._id === id ? { ...p, front: trimmedFront, back: trimmedBack } : p)
     );
     this.editingId.set(null);
   }

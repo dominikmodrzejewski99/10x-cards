@@ -22,7 +22,8 @@
         [ngModel]="rawText()"
         (ngModelChange)="rawText.set($event)"
         placeholder="przód&#9;tył&#10;apple,jabłko&#10;dog,pies"
-        rows="10">
+        rows="10"
+        maxlength="50000">
       </textarea>
       <div class="import__actions">
         <button
