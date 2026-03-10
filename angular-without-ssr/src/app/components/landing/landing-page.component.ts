@@ -35,7 +35,7 @@ export class LandingPageComponent implements AfterViewInit, OnDestroy {
           }
         });
       },
-      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
     );
 
     const animatedEls: NodeListOf<Element> = this.el.nativeElement.querySelectorAll('[data-animate]');
