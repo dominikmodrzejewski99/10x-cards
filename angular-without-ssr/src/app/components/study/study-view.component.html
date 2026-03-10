@@ -48,9 +48,12 @@
   }
 
   @if (isSessionCompleteSignal()) {
-    <div class="study__state">
-      <i class="pi pi-trophy study__state-icon" style="color: #ffcd1f;"></i>
-      <h2 class="study__state-title">Sesja zakończona!</h2>
+    <div class="study__state study__state--complete">
+      <div class="study__trophy-wrap">
+        <i class="pi pi-trophy study__trophy-icon"></i>
+      </div>
+      <h2 class="study__state-title">Świetna robota!</h2>
+      <p class="study__state-text">Sesja zakończona</p>
 
       <div class="study__stats">
         <div class="study__stat study__stat--total">
@@ -69,7 +72,7 @@
 
       <div class="study__links">
         <button (click)="restartSession()" class="study__link study__link--primary">Powtórz jeszcze raz</button>
-        <a routerLink="/flashcards" class="study__link study__link--ghost">Moje fiszki</a>
+        <a routerLink="/dashboard" class="study__link study__link--ghost">Dashboard</a>
       </div>
     </div>
   }
@@ -118,6 +121,9 @@
           <button (click)="answer(1)" [disabled]="savingSignal()" class="study__btn study__btn--wrong">
             <i class="pi pi-times"></i> Nie wiem
           </button>
+          <button (click)="answer(3)" [disabled]="savingSignal()" class="study__btn study__btn--hard">
+            <i class="pi pi-minus"></i> Trudne
+          </button>
           <button (click)="answer(4)" [disabled]="savingSignal()" class="study__btn study__btn--right">
             <i class="pi pi-check"></i> Wiem
           </button>
@@ -128,7 +134,7 @@
         @if (!isFlippedSignal()) {
           spacja = odwróć
         } @else {
-          1 = Nie wiem &nbsp;|&nbsp; 2 = Wiem
+          1 = Nie wiem &nbsp;|&nbsp; 2 = Trudne &nbsp;|&nbsp; 3 = Wiem
         }
       </p>
     </div>

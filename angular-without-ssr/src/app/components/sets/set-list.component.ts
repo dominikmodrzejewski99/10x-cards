@@ -1,5 +1,4 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
@@ -24,9 +23,7 @@ interface SetListState {
 
 @Component({
   selector: 'app-set-list',
-  standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     RouterModule,
     DialogModule,
@@ -36,7 +33,8 @@ interface SetListState {
   ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './set-list.component.html',
-  styleUrls: ['./set-list.component.css']
+  styleUrls: ['./set-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SetListComponent implements OnInit {
   private setApi = inject(FlashcardSetApiService);
@@ -54,8 +52,6 @@ export class SetListComponent implements OnInit {
     formDescription: '',
     formSaving: false
   });
-
-  dialogVisible = false;
 
   ngOnInit(): void {
     this.loadSets();
@@ -92,7 +88,6 @@ export class SetListComponent implements OnInit {
       formDescription: '',
       dialogVisible: true
     }));
-    this.dialogVisible = true;
   }
 
   openEditDialog(set: FlashcardSetDTO): void {
@@ -103,11 +98,9 @@ export class SetListComponent implements OnInit {
       formDescription: set.description ?? '',
       dialogVisible: true
     }));
-    this.dialogVisible = true;
   }
 
   closeDialog(): void {
-    this.dialogVisible = false;
     this.state.update(s => ({
       ...s,
       dialogVisible: false,

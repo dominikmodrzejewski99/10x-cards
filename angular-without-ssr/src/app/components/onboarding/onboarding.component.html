@@ -1,0 +1,69 @@
+<p-dialog
+  [visible]="visible()"
+  (visibleChange)="skip()"
+  [modal]="true"
+  [closeOnEscape]="true"
+  [dismissableMask]="false"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{width: '95vw', maxWidth: '560px'}"
+  [showHeader]="false"
+  styleClass="onboarding-dialog">
+
+  <div class="ob">
+    <!-- Progress dots -->
+    <div class="ob__dots">
+      @for (s of steps; track $index) {
+        <span
+          class="ob__dot"
+          [class.ob__dot--active]="$index === currentStep()"
+          [class.ob__dot--done]="$index < currentStep()">
+        </span>
+      }
+    </div>
+
+    <!-- Icon -->
+    <div class="ob__icon-wrap" [style.background]="step.iconColor + '14'">
+      <i [class]="'pi ob__icon ' + step.icon" [style.color]="step.iconColor"></i>
+    </div>
+
+    <!-- Content -->
+    <h2 class="ob__title">{{ step.title }}</h2>
+    <p class="ob__desc">{{ step.description }}</p>
+
+    <ul class="ob__details">
+      @for (detail of step.details; track $index) {
+        <li class="ob__detail">
+          <i class="pi pi-check-circle ob__detail-icon" [style.color]="step.iconColor"></i>
+          <span>{{ detail }}</span>
+        </li>
+      }
+    </ul>
+
+    <!-- Step counter -->
+    <p class="ob__counter">{{ currentStep() + 1 }} / {{ steps.length }}</p>
+
+    <!-- Actions -->
+    <div class="ob__actions">
+      @if (isFirst) {
+        <button class="ob__btn ob__btn--ghost" (click)="skip()">
+          Pomiń
+        </button>
+      } @else {
+        <button class="ob__btn ob__btn--ghost" (click)="prev()">
+          <i class="pi pi-arrow-left"></i> Wstecz
+        </button>
+      }
+
+      @if (isLast) {
+        <button class="ob__btn ob__btn--primary" (click)="finish()">
+          Zacznij naukę <i class="pi pi-arrow-right"></i>
+        </button>
+      } @else {
+        <button class="ob__btn ob__btn--primary" (click)="next()">
+          Dalej <i class="pi pi-arrow-right"></i>
+        </button>
+      }
+    </div>
+  </div>
+</p-dialog>

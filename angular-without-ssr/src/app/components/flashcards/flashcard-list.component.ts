@@ -1,11 +1,10 @@
-import { Component, OnInit, OnDestroy, signal, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin } from 'rxjs';
 
 import { FlashcardApiService } from '../../services/flashcard-api.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
@@ -31,9 +30,7 @@ interface FlashcardListState {
 
 @Component({
   selector: 'app-flashcard-list',
-  standalone: true,
   imports: [
-    CommonModule,
     DialogModule,
     ToastModule,
     ConfirmDialogModule,
@@ -43,7 +40,8 @@ interface FlashcardListState {
   ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './flashcard-list.component.html',
-  styleUrls: ['./flashcard-list.component.css']
+  styleUrls: ['./flashcard-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FlashcardListComponent implements OnInit, OnDestroy {
   private flashcardApiService = inject(FlashcardApiService);
@@ -69,7 +67,6 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
     setName: ''
   });
 
-  dialogVisible: boolean = false;
   private routeSub: Subscription | null = null;
 
   ngOnInit(): void {
@@ -105,7 +102,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
   }
 
   // Ładowanie fiszek z API
-  loadFlashcards(event?: any): void {
+  loadFlashcards(event?: { first?: number; rows?: number; sortField?: string; sortOrder?: number }): void {
     const first = event?.first ?? this.state().first;
     const rows = event?.rows ?? this.state().rows;
     const sortField = event?.sortField ?? this.state().sortField;
@@ -171,30 +168,17 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
       flashcardBeingEdited: null,
       isFormModalVisible: true
     }));
-
-    // Otwórz dialog
-    this.dialogVisible = true;
   }
 
-  // Otwarcie modala edycji fiszki
   openEditModal(flashcard: FlashcardDTO): void {
-    // Ustaw stan
     this.state.update(state => ({
       ...state,
       flashcardBeingEdited: flashcard,
       isFormModalVisible: true
     }));
-
-    // Otwórz dialog
-    this.dialogVisible = true;
   }
 
-  // Zamknięcie modala formularza
   onCloseFormModal(): void {
-    // Zamknij dialog
-    this.dialogVisible = false;
-
-    // Zaktualizuj stan
     this.state.update(state => ({
       ...state,
       isFormModalVisible: false,
@@ -309,24 +293,22 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
         this.state.update(state => ({ ...state, loading: true }));
 
         const deleteObservables = ids.map(id => this.flashcardApiService.deleteFlashcard(id));
-        import('rxjs').then(({ forkJoin }) => {
-          forkJoin(deleteObservables).subscribe({
-            next: () => {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Sukces',
-                detail: `Usunięto ${ids.length} ${ids.length === 1 ? 'fiszkę' : (ids.length < 5 ? 'fiszki' : 'fiszek')}.`
-              });
-              this.loadFlashcards();
-            },
-            error: (error) => this.handleApiError(error, 'usuwania')
-          });
+        forkJoin(deleteObservables).subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sukces',
+              detail: `Usunięto ${ids.length} ${ids.length === 1 ? 'fiszkę' : (ids.length < 5 ? 'fiszki' : 'fiszek')}.`
+            });
+            this.loadFlashcards();
+          },
+          error: (error: unknown) => this.handleApiError(error, 'usuwania')
         });
       }
     });
   }
 
-  onPageChange(event: any): void {
+  onPageChange(event: { first: number; rows: number }): void {
     // Aktualizuj stan bez ładowania danych
     this.state.update(state => ({
       ...state,
@@ -338,7 +320,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
   }
 
   // Obsługa sortowania
-  onSort(event: any): void {
+  onSort(event: { sortField: string; sortOrder: number }): void {
     // Aktualizuj stan bez ładowania danych
     this.state.update(state => ({
       ...state,
@@ -376,26 +358,26 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
   }
 
   // Pomocnicza metoda do obsługi błędów API
-  private handleApiError(error: any, action: string): void {
+  private handleApiError(error: unknown, action: string): void {
     let errorMessage = `Nie udało się wykonać operacji ${action}. Spróbuj ponownie później.`;
     let summary = 'Błąd';
     let redirectToLogin = false;
 
-    if (error.status === 401) {
+    const err = error as { status?: number; message?: string };
+
+    if (err.status === 401) {
       errorMessage = 'Błąd autoryzacji. Zaloguj się ponownie.';
       summary = 'Błąd autoryzacji';
       redirectToLogin = true;
-    } else if (error.status === 403) {
+    } else if (err.status === 403) {
       errorMessage = 'Brak uprawnień do wykonania tej operacji.';
       summary = 'Błąd uprawnień';
-    } else if (error.status === 404) {
+    } else if (err.status === 404) {
       errorMessage = 'Nie znaleziono fiszki. Może została już usunięta.';
-      // Odświeżenie listy w przypadku próby edycji/usunięcia nieistniejącej fiszki
       this.loadFlashcards();
     }
 
-    // Sprawdzamy, czy błąd jest związany z autentykacją
-    if (error.message && (error.message.includes('nie jest zalogowany') || error.message.includes('Sesja wygasła') || error.message.includes('problem z kontem'))) {
+    if (err.message && (err.message.includes('nie jest zalogowany') || err.message.includes('Sesja wygasła'))) {
       errorMessage = 'Musisz być zalogowany, aby zarządzać fiszkami.';
       summary = 'Błąd autoryzacji';
       redirectToLogin = true;

@@ -8,5 +8,8 @@
     "test": "cd angular-without-ssr && npm test",
     "lint": "cd angular-without-ssr && npm run lint",
     "build:prod": "cd angular-without-ssr && npx ng build --configuration production"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-code": "^2.1.71"
   }
 }

@@ -2,8 +2,9 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f6f7fb;
+  background-color: var(--app-bg, #f6f7fb);
   overflow-x: hidden;
+  transition: background-color 0.3s;
 }
 
 .app__main {
@@ -18,9 +19,10 @@
   gap: 0.5rem;
   padding: 1.25rem;
   font-size: 0.8rem;
-  color: #586380;
-  border-top: 1px solid #d9dbe9;
-  background: #ffffff;
+  color: var(--app-text-secondary, #586380);
+  border-top: 1px solid var(--app-border, #d9dbe9);
+  background: var(--app-white, #ffffff);
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
 }
 
 .app__footer-brand {

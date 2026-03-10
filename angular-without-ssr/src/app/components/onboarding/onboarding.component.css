@@ -1,0 +1,177 @@
+.ob {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem 0.5rem 0.5rem;
+}
+
+/* Progress dots */
+.ob__dots {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.ob__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #d9dbe9;
+  transition: all 0.25s ease;
+}
+
+.ob__dot--active {
+  width: 1.5rem;
+  border-radius: 0.25rem;
+  background: #4255ff;
+}
+
+.ob__dot--done {
+  background: #4255ff;
+}
+
+/* Icon */
+.ob__icon-wrap {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.ob__icon {
+  font-size: 2rem;
+}
+
+/* Content */
+.ob__title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--app-text, #282e3e);
+  margin: 0 0 0.5rem;
+}
+
+.ob__desc {
+  font-size: 0.95rem;
+  color: var(--app-text-secondary, #586380);
+  margin: 0 0 1.25rem;
+  max-width: 400px;
+  line-height: 1.5;
+}
+
+.ob__details {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.25rem;
+  text-align: left;
+  width: 100%;
+  max-width: 420px;
+}
+
+.ob__detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.4rem 0;
+  font-size: 0.88rem;
+  color: #3c4257;
+  line-height: 1.45;
+}
+
+.ob__detail-icon {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  font-size: 0.85rem;
+}
+
+.ob__counter {
+  font-size: 0.75rem;
+  color: #b0b5c4;
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+
+/* Actions */
+.ob__actions {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.ob__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.ob__btn--primary {
+  background: #4255ff;
+  color: #ffffff;
+}
+
+.ob__btn--primary:hover {
+  background: #3b4ce3;
+}
+
+.ob__btn--ghost {
+  background: transparent;
+  color: #586380;
+  border: 1.5px solid #d9dbe9;
+}
+
+.ob__btn--ghost:hover {
+  border-color: #4255ff;
+  color: #4255ff;
+}
+
+/* Dialog override */
+:host ::ng-deep .onboarding-dialog .p-dialog-content {
+  padding: 0 1.5rem 1.5rem;
+  border-radius: 1rem;
+}
+
+:host ::ng-deep .onboarding-dialog .p-dialog {
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 24px 48px rgba(66, 85, 255, 0.15), 0 0 0 1px rgba(66, 85, 255, 0.08);
+}
+
+@media (max-width: 480px) {
+  .ob {
+    padding: 1rem 0 0.25rem;
+  }
+
+  .ob__icon-wrap {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  .ob__icon {
+    font-size: 1.5rem;
+  }
+
+  .ob__title {
+    font-size: 1.15rem;
+  }
+
+  .ob__actions {
+    flex-direction: column;
+  }
+
+  .ob__btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

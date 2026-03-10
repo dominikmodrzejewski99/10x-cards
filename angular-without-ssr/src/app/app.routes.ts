@@ -1,29 +1,26 @@
 import { Routes } from '@angular/router';
-import { GenerateViewComponent } from './components/generate/generate-view.component';
-import { FlashcardListComponent } from './components/flashcards/flashcard-list.component';
-import { SetListComponent } from './components/sets/set-list.component';
-import { AuthPageComponent } from './auth/auth-page.component';
-import { PasswordResetPageComponent } from './auth/pages/password-reset-page.component';
-import { SetNewPasswordPageComponent } from './auth/pages/set-new-password-page.component';
-import { LandingPageComponent } from './components/landing/landing-page.component';
-import { StudyViewComponent } from './components/study/study-view.component';
 import { authGuard } from './auth/guards/auth.guard';
 import { nonAuthGuard } from './auth/guards/non-auth.guard';
-import { partialAuthGuard } from './auth/guards/partial-auth.guard';
+
 export const routes: Routes = [
   {
+    path: 'dashboard',
+    loadComponent: () => import('./components/dashboard/dashboard.component').then(m => m.DashboardComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'generate',
-    component: GenerateViewComponent,
+    loadComponent: () => import('./components/generate/generate-view.component').then(m => m.GenerateViewComponent),
     canActivate: [authGuard]
   },
   {
     path: 'sets',
-    component: SetListComponent,
+    loadComponent: () => import('./components/sets/set-list.component').then(m => m.SetListComponent),
     canActivate: [authGuard]
   },
   {
     path: 'sets/:id',
-    component: FlashcardListComponent,
+    loadComponent: () => import('./components/flashcards/flashcard-list.component').then(m => m.FlashcardListComponent),
     canActivate: [authGuard]
   },
   {
@@ -33,32 +30,32 @@ export const routes: Routes = [
   },
   {
     path: 'study',
-    component: StudyViewComponent,
+    loadComponent: () => import('./components/study/study-view.component').then(m => m.StudyViewComponent),
     canActivate: [authGuard]
   },
   {
     path: 'login',
-    component: AuthPageComponent,
+    loadComponent: () => import('./auth/auth-page.component').then(m => m.AuthPageComponent),
     canActivate: [nonAuthGuard]
   },
   {
     path: 'register',
-    component: AuthPageComponent,
+    loadComponent: () => import('./auth/auth-page.component').then(m => m.AuthPageComponent),
     canActivate: [nonAuthGuard]
   },
   {
     path: 'reset-password',
-    component: PasswordResetPageComponent,
+    loadComponent: () => import('./auth/pages/password-reset-page.component').then(m => m.PasswordResetPageComponent),
     canActivate: [nonAuthGuard]
   },
   {
     path: 'set-new-password',
-    component: SetNewPasswordPageComponent,
+    loadComponent: () => import('./auth/pages/set-new-password-page.component').then(m => m.SetNewPasswordPageComponent),
     canActivate: [nonAuthGuard]
   },
   {
     path: '',
-    component: LandingPageComponent,
+    loadComponent: () => import('./components/landing/landing-page.component').then(m => m.LandingPageComponent),
     pathMatch: 'full'
   },
 ];

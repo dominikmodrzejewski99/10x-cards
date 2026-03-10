@@ -35,7 +35,8 @@
 
   <p-dialog
     [header]="state().flashcardBeingEdited ? 'Edytuj fiszkę' : 'Dodaj nową fiszkę'"
-    [(visible)]="dialogVisible"
+    [visible]="state().isFormModalVisible"
+    (visibleChange)="onCloseFormModal()"
     [modal]="true"
     [closeOnEscape]="true"
     [dismissableMask]="true"
@@ -46,7 +47,7 @@
     (onHide)="onCloseFormModal()"
     data-test-id="flashcard-dialog">
     <app-flashcard-form
-      [isVisible]="dialogVisible"
+      [isVisible]="state().isFormModalVisible"
       [flashcardToEdit]="state().flashcardBeingEdited"
       (save)="onSave($event)"
       (close)="onCloseFormModal()">

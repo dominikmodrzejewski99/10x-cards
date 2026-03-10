@@ -144,7 +144,7 @@ export const appConfig: ApplicationConfig = {
                 overlay: 1000,      // dropdown, overlaypanel
                 menu: 1000,         // overlay menus
                 tooltip: 1100       // tooltip
-            }
+            },
         })
     ]
 };

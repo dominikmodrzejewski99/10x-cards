@@ -65,7 +65,8 @@
 
   <p-dialog
     [header]="state().editingSet ? 'Edytuj zestaw' : 'Nowy zestaw'"
-    [(visible)]="dialogVisible"
+    [visible]="state().dialogVisible"
+    (visibleChange)="closeDialog()"
     [modal]="true"
     [closeOnEscape]="true"
     [dismissableMask]="true"

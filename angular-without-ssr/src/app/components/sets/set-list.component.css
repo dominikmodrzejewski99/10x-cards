@@ -17,7 +17,7 @@
 .sets__title {
   font-size: 1.5rem;
   font-weight: 800;
-  color: #282e3e;
+  color: var(--app-text, #282e3e);
   margin: 0;
 }
 
@@ -48,12 +48,12 @@
 
 .sets__btn--outline {
   background: transparent;
-  color: #586380;
-  border: 1.5px solid #d9dbe9;
+  color: var(--app-text-secondary, #586380);
+  border: 1.5px solid var(--app-border, #d9dbe9);
 }
 .sets__btn--outline:hover {
-  background: #f6f7fb;
-  color: #282e3e;
+  background: var(--app-bg, #f6f7fb);
+  color: var(--app-text, #282e3e);
 }
 
 .sets__loading,
@@ -81,12 +81,12 @@
 }
 
 .set-card {
-  background: #fff;
-  border: 1.5px solid #d9dbe9;
+  background: var(--app-white, #ffffff);
+  border: 1.5px solid var(--app-border, #d9dbe9);
   border-radius: 0.75rem;
   padding: 1.25rem;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -94,7 +94,8 @@
 
 .set-card:hover {
   border-color: #4255ff;
-  box-shadow: 0 2px 12px rgba(66, 85, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(66, 85, 255, 0.12);
+  transform: translateY(-2px);
 }
 
 .set-card__header {
@@ -107,7 +108,7 @@
 .set-card__name {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #282e3e;
+  color: var(--app-text, #282e3e);
   margin: 0;
   line-height: 1.3;
 }
@@ -124,12 +125,12 @@
   cursor: pointer;
   padding: 0.35rem;
   border-radius: 0.35rem;
-  color: #586380;
+  color: var(--app-text-secondary, #586380);
   font-size: 0.85rem;
   transition: all 0.15s;
 }
 .set-card__action:hover {
-  background: #f6f7fb;
+  background: var(--app-bg, #f6f7fb);
   color: #4255ff;
 }
 .set-card__action--danger:hover {
@@ -139,7 +140,7 @@
 
 .set-card__desc {
   font-size: 0.85rem;
-  color: #586380;
+  color: var(--app-text-secondary, #586380);
   margin: 0;
   line-height: 1.4;
   display: -webkit-box;
@@ -180,19 +181,19 @@
 .set-form__label {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #586380;
+  color: var(--app-text-secondary, #586380);
 }
 
 .set-form__input,
 .set-form__textarea {
   width: 100%;
   padding: 0.6rem 0.75rem;
-  border: 1.5px solid #d9dbe9;
+  border: 1.5px solid var(--app-border, #d9dbe9);
   border-radius: 0.5rem;
   font-family: inherit;
   font-size: 0.9rem;
-  color: #282e3e;
-  background: #f6f7fb;
+  color: var(--app-text, #282e3e);
+  background: var(--app-bg, #f6f7fb);
   transition: border-color 0.15s;
   box-sizing: border-box;
 }
@@ -201,7 +202,7 @@
 .set-form__textarea:focus {
   outline: none;
   border-color: #4255ff;
-  background: #fff;
+  background: var(--app-white, #fff);
 }
 
 .set-form__textarea {

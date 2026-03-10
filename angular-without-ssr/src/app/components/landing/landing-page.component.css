@@ -1,7 +1,8 @@
 /* ===== Host ===== */
 :host {
   display: block;
-  background: #ffffff;
+  background: var(--app-white, #ffffff);
+  transition: background 0.3s;
 }
 
 /* ===== Scroll animations ===== */

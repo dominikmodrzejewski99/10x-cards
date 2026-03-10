@@ -15,8 +15,10 @@ import { FormsModule } from '@angular/forms';
 import { ReviewApiService } from '../../services/review-api.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { SpacedRepetitionService, Sm2Result } from '../../services/spaced-repetition.service';
+import { StreakService } from '../../shared/services/streak.service';
 import { StudyCardDTO, ReviewQuality, SessionResultDTO, FlashcardSetDTO } from '../../../types';
 import { FlashcardFlipComponent } from './flashcard-flip/flashcard-flip.component';
+import { launchConfetti } from '../../shared/utils/confetti';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -33,6 +35,7 @@ export class StudyViewComponent implements OnInit, OnDestroy {
   private reviewApi: ReviewApiService = inject(ReviewApiService);
   private setApi: FlashcardSetApiService = inject(FlashcardSetApiService);
   private sm2: SpacedRepetitionService = inject(SpacedRepetitionService);
+  private streakService: StreakService = inject(StreakService);
   private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   private route: ActivatedRoute = inject(ActivatedRoute);
   private loadSubscription: Subscription | null = null;
@@ -123,6 +126,11 @@ export class StudyViewComponent implements OnInit, OnDestroy {
         }
         break;
       case '2':
+        if (this.isFlippedSignal()) {
+          this.answer(3);
+        }
+        break;
+      case '3':
         if (this.isFlippedSignal()) {
           this.answer(4);
         }
@@ -216,6 +224,8 @@ export class StudyViewComponent implements OnInit, OnDestroy {
     const nextIdx: number = this.currentIndexSignal() + 1;
     if (nextIdx >= this.dueCardsSignal().length) {
       this.isSessionCompleteSignal.set(true);
+      this.streakService.recordSession(this.sessionResultsSignal().total);
+      launchConfetti();
     } else {
       this.currentIndexSignal.set(nextIdx);
       this.isFlippedSignal.set(false);

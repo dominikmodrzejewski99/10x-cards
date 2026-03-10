@@ -37,9 +37,14 @@
   align-items: center;
   justify-content: center;
   padding: 2.5rem 2rem;
-  background: #ffffff;
-  border: 2px solid #d9dbe9;
+  background: var(--app-white, #ffffff);
+  border: 2px solid var(--app-border, #d9dbe9);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.flip-card:hover .flip-card__face {
+  box-shadow: 0 8px 32px rgba(66, 85, 255, 0.1);
 }
 
 .flip-card__face--back {
@@ -69,7 +74,7 @@
   line-height: 1.6;
   text-align: center;
   word-break: break-word;
-  color: #282e3e;
+  color: var(--app-text, #282e3e);
 }
 
 @media (min-width: 768px) {
