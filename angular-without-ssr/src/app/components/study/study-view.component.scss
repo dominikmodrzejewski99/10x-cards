@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem 1.25rem;
+  padding: 2rem 1rem;
 }
 
 .study__set-filter {
@@ -13,6 +13,7 @@
   margin-bottom: 1.5rem;
   width: 100%;
   max-width: 640px;
+  flex-wrap: wrap;
 }
 
 .study__set-label {
@@ -31,9 +32,10 @@
   color: var(--app-text, #282e3e);
   background: #f6f7fb;
   cursor: pointer;
-  min-width: 180px;
   flex: 1;
+  min-width: 0;
   max-width: 300px;
+  width: 100%;
 
   &:focus {
     outline: none;
@@ -334,25 +336,79 @@
 }
 
 @media (max-width: 480px) {
+  .study {
+    padding: 1.25rem 0.75rem;
+  }
+
+  .study__set-filter {
+    gap: 0.35rem;
+  }
+
+  .study__set-label {
+    font-size: 0.75rem;
+  }
+
+  .study__set-select {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .study__title {
+    font-size: 1.25rem;
+  }
+
+  .study__hint {
+    font-size: 0.8rem;
+  }
+
+  .study__body {
+    gap: 1rem;
+  }
+
   .study__actions {
-    flex-wrap: wrap;
+    gap: 0.5rem;
     max-width: 100%;
   }
 
   .study__btn {
-    flex: 1 1 100%;
-    padding: 0.9rem 1rem;
-    font-size: 0.9rem;
+    padding: 0.75rem 0.5rem;
+    font-size: 0.85rem;
+    gap: 0.3rem;
+  }
+
+  .study__btn i {
+    font-size: 0.8rem;
   }
 
   .study__stats {
-    flex-wrap: wrap;
-    justify-content: center;
+    gap: 0.5rem;
   }
 
   .study__stat {
     flex: 1;
-    min-width: 80px;
+    min-width: 0;
+    padding: 0.6rem 0.75rem;
+  }
+
+  .study__stat-value {
+    font-size: 1.4rem;
+  }
+
+  .study__state {
+    padding: 2.5rem 0;
+  }
+
+  .study__state-title {
+    font-size: 1.25rem;
+  }
+
+  .study__state-text {
+    font-size: 0.85rem;
+  }
+
+  .study__link {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
   }
 }
 

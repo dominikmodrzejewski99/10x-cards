@@ -1,5 +1,7 @@
 <div class="app">
-  <app-auth-navbar></app-auth-navbar>
+  @if (isAuthenticated) {
+    <app-auth-navbar></app-auth-navbar>
+  }
 
   <main class="app__main">
     <router-outlet></router-outlet>

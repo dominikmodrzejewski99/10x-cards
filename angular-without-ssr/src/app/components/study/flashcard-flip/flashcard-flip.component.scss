@@ -77,6 +77,26 @@
   color: var(--app-text, #282e3e);
 }
 
+@media (max-width: 480px) {
+  .flip-card,
+  .flip-card__inner {
+    min-height: 220px;
+  }
+
+  .flip-card__face {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .flip-card__content {
+    font-size: 1rem;
+  }
+
+  .flip-card__label {
+    font-size: 0.65rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
 @media (min-width: 768px) {
   .flip-card,
   .flip-card__inner {

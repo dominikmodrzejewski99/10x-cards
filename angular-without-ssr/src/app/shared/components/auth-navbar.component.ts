@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, HostListener, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -17,7 +17,8 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
           <span class="navbar__logo-text">Cards</span>
         </a>
 
-        <div class="navbar__links">
+        <!-- Desktop links -->
+        <div class="navbar__links navbar__links--desktop">
           @if (isAuthenticated) {
             <a routerLink="/dashboard" routerLinkActive="navbar__link--active" class="navbar__link">
               <i class="pi pi-home"></i> Start
@@ -36,8 +37,34 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
 
         <div class="navbar__right">
           <app-user-menu></app-user-menu>
+
+          @if (isAuthenticated) {
+            <button class="navbar__burger" (click)="toggleMobile()" [attr.aria-expanded]="mobileOpen()">
+              <span class="navbar__burger-line"></span>
+              <span class="navbar__burger-line"></span>
+              <span class="navbar__burger-line"></span>
+            </button>
+          }
         </div>
       </div>
+
+      <!-- Mobile drawer -->
+      @if (isAuthenticated && mobileOpen()) {
+        <div class="navbar__drawer">
+          <a routerLink="/dashboard" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
+            <i class="pi pi-home"></i> Start
+          </a>
+          <a routerLink="/generate" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
+            <i class="pi pi-sparkles"></i> Generuj
+          </a>
+          <a routerLink="/sets" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
+            <i class="pi pi-folder"></i> Zestawy
+          </a>
+          <a routerLink="/study" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
+            <i class="pi pi-book"></i> Nauka
+          </a>
+        </div>
+      }
     </nav>
   `,
   styles: [`
@@ -78,7 +105,8 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
       color: var(--app-text, #282e3e);
     }
 
-    .navbar__links {
+    /* Desktop links */
+    .navbar__links--desktop {
       display: flex;
       gap: 0.25rem;
       align-items: center;
@@ -118,6 +146,69 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
       gap: 0.5rem;
     }
 
+    /* Burger button — hidden on desktop */
+    .navbar__burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      width: 2rem;
+      height: 2rem;
+      padding: 0.25rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 0.375rem;
+      transition: background 0.15s;
+    }
+
+    .navbar__burger:hover {
+      background: #f6f7fb;
+    }
+
+    .navbar__burger-line {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: #586380;
+      border-radius: 1px;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    .navbar__burger[aria-expanded="true"] .navbar__burger-line:nth-child(1) {
+      transform: translateY(6px) rotate(45deg);
+    }
+    .navbar__burger[aria-expanded="true"] .navbar__burger-line:nth-child(2) {
+      opacity: 0;
+    }
+    .navbar__burger[aria-expanded="true"] .navbar__burger-line:nth-child(3) {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+
+    /* Mobile drawer */
+    .navbar__drawer {
+      display: none;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding: 0.75rem 1rem 1rem;
+      background: #ffffff;
+      border-top: 1px solid #edeff5;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      animation: drawer-slide 0.2s ease-out;
+    }
+
+    .navbar__drawer .navbar__link {
+      padding: 0.65rem 0.85rem;
+      font-size: 0.95rem;
+      width: 100%;
+    }
+
+    @keyframes drawer-slide {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Mobile breakpoint ===== */
     @media (max-width: 640px) {
       .navbar__inner {
         padding: 0 0.75rem;
@@ -129,25 +220,38 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
         font-size: 1.1rem;
       }
 
-      .navbar__links {
-        gap: 0.125rem;
+      .navbar__links--desktop {
+        display: none;
       }
 
-      .navbar__link {
-        font-size: 0.75rem;
-        padding: 0.35rem 0.5rem;
-        gap: 0.25rem;
+      .navbar__burger {
+        display: flex;
       }
 
-      .navbar__link i { display: none; }
-
+      .navbar__drawer {
+        display: flex;
+      }
     }
   `]
 })
 export class AuthNavbarComponent implements OnInit, OnDestroy {
   isAuthenticated = false;
+  mobileOpen = signal(false);
   private store = inject(Store);
   private subscription = new Subscription();
+
+  toggleMobile(): void {
+    this.mobileOpen.update(v => !v);
+  }
+
+  closeMobile(): void {
+    this.mobileOpen.set(false);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.closeMobile();
+  }
 
   ngOnInit(): void {
     this.subscription.add(
@@ -160,5 +264,4 @@ export class AuthNavbarComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
 }

@@ -215,30 +215,37 @@ import * as AuthActions from '../store/auth.actions';
       color: #ff6240;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 640px) {
       .user-menu-button {
-        padding: 0.3rem 0.5rem;
-        gap: 0.25rem;
+        padding: 0.2rem;
+        border: none;
+        background: none;
+        border-radius: 50%;
+      }
+
+      .user-menu-button:hover {
+        background: #f6f7fb;
+        border-color: transparent;
+      }
+
+      .user-menu-button .user-email,
+      .user-menu-button .icon {
+        display: none;
       }
 
       .user-avatar {
-        width: 1.7rem;
-        height: 1.7rem;
-        font-size: 0.75rem;
-      }
-
-      .user-email {
-        max-width: 100px;
+        width: 2rem;
+        height: 2rem;
         font-size: 0.8rem;
       }
 
-      .icon {
-        width: 1rem;
-        height: 1rem;
+      .logout-btn {
+        padding: 0.35rem 0.65rem;
+        font-size: 0.8rem;
       }
 
       .dropdown-menu {
-        width: 200px;
+        width: 220px;
         right: 0;
       }
 
@@ -248,16 +255,9 @@ import * as AuthActions from '../store/auth.actions';
       }
 
       .dropdown-item {
-        padding: 0.5rem 0.75rem;
+        padding: 0.6rem 0.85rem;
         gap: 0.5rem;
         font-size: 0.9rem;
-      }
-
-    }
-
-    @media (max-width: 475px) {
-      .user-menu-button {
-        margin-top: 0.6rem;
       }
     }
 

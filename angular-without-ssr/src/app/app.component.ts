@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AuthNavbarComponent } from './shared/components/auth-navbar.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
+import { selectIsAuthenticated } from './auth/store/auth.selectors';
 import * as AuthActions from './auth/store/auth.actions';
 
 @Component({
@@ -17,6 +18,7 @@ import * as AuthActions from './auth/store/auth.actions';
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   title = '10xCards - Twórz i zarządzaj fiszkami efektywnie';
   currentYear = new Date().getFullYear();
+  isAuthenticated = false;
 
   @ViewChild(OnboardingComponent) onboarding!: OnboardingComponent;
 
@@ -28,6 +30,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.store.dispatch(AuthActions.checkAuthState());
+
+    this.subscription.add(
+      this.store.select(selectIsAuthenticated).subscribe(v => this.isAuthenticated = v)
+    );
 
     this.subscription.add(
       this.actionsSubject.pipe(
