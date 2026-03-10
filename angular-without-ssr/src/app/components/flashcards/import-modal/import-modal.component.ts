@@ -38,6 +38,17 @@ export class ImportModalComponent {
   canSave = computed(() => this.acceptedCount() > 0 && !this.isSaving());
   hasContent = computed(() => this.rawText().trim().length > 0);
 
+  onTabKey(event: Event): void {
+    event.preventDefault();
+    const textarea = event.target as HTMLTextAreaElement;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const value = textarea.value;
+    textarea.value = value.substring(0, start) + '\t' + value.substring(end);
+    textarea.selectionStart = textarea.selectionEnd = start + 1;
+    this.rawText.set(textarea.value);
+  }
+
   onParse(): void {
     const result = this.textParser.parseKeyValue(this.rawText());
     this.proposals.set(
