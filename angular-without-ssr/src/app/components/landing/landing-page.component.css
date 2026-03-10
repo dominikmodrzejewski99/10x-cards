@@ -11,6 +11,8 @@
   transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 [data-animate="fade-up"] {
@@ -470,8 +472,16 @@
   .btn { width: 100%; max-width: 280px; }
   .steps { grid-template-columns: 1fr; }
   .features { grid-template-columns: 1fr; }
-  [data-animate="slide-left"] { transform: translate3d(-16px, 0, 0); }
-  [data-animate="slide-right"] { transform: translate3d(16px, 0, 0); }
+  [data-animate="slide-left"] { transform: translate3d(-12px, 0, 0); }
+  [data-animate="slide-right"] { transform: translate3d(12px, 0, 0); }
+  [data-animate="fade-up"] { transform: translate3d(0, 16px, 0); }
+  [data-animate] {
+    transition-duration: 0.4s;
+  }
+  .steps .step:nth-child(n)[data-animate].in-view,
+  .features .fcard:nth-child(n)[data-animate].in-view {
+    transition-delay: 0s;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

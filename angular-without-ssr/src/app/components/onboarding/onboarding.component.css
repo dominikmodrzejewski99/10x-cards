@@ -150,28 +150,62 @@
 
 @media (max-width: 480px) {
   .ob {
-    padding: 1rem 0 0.25rem;
+    padding: 0.75rem 0 0.25rem;
+  }
+
+  .ob__dots {
+    margin-bottom: 1rem;
   }
 
   .ob__icon-wrap {
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 0.75rem;
   }
 
   .ob__icon {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 
   .ob__title {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .ob__desc {
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .ob__details {
+    margin-bottom: 0.75rem;
+    max-height: 35vh;
+    overflow-y: auto;
+  }
+
+  .ob__detail {
+    padding: 0.25rem 0;
+    font-size: 0.8rem;
+  }
+
+  .ob__counter {
+    margin-bottom: 0.6rem;
   }
 
   .ob__actions {
     flex-direction: column;
+    gap: 0.5rem;
   }
 
   .ob__btn {
     width: 100%;
     justify-content: center;
+    padding: 0.55rem 1rem;
+    font-size: 0.85rem;
   }
+}
+
+:host ::ng-deep .onboarding-dialog .p-dialog-content {
+  max-height: 85vh;
+  max-height: 85dvh;
 }
