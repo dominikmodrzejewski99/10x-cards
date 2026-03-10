@@ -25,7 +25,7 @@ export class TextParserService {
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       if (line === '') continue;
-      if (line.trim() === '' && !line.includes('\t') && !line.includes(',')) continue;
+      if (line.trim() === '' && !line.includes('\t') && !line.includes(';') && !line.includes(',')) continue;
 
       let front: string;
       let back: string;
@@ -34,12 +34,16 @@ export class TextParserService {
         const tabIndex = line.indexOf('\t');
         front = line.substring(0, tabIndex).trim();
         back = line.substring(tabIndex + 1).trim();
+      } else if (line.includes(';')) {
+        const semiIndex = line.indexOf(';');
+        front = line.substring(0, semiIndex).trim();
+        back = line.substring(semiIndex + 1).trim();
       } else if (line.includes(',')) {
         const commaIndex = line.indexOf(',');
         front = line.substring(0, commaIndex).trim();
         back = line.substring(commaIndex + 1).trim();
       } else {
-        errors.push({ line: i + 1, content: line, reason: 'Brak separatora (TAB lub przecinek)' });
+        errors.push({ line: i + 1, content: line, reason: 'Brak separatora (TAB, średnik lub przecinek)' });
         continue;
       }
 

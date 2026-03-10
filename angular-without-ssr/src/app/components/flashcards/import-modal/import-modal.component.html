@@ -15,13 +15,13 @@
     <div class="import__input">
       <p class="import__hint">
         Wklej tekst z fiszkami. Jedna fiszka na linię.<br>
-        Separator: <strong>TAB</strong> lub <strong>przecinek</strong>
+        Separator: <strong>TAB</strong>, <strong>średnik (;)</strong> lub <strong>przecinek</strong>
       </p>
       <textarea
         class="import__textarea"
         [ngModel]="rawText()"
         (ngModelChange)="rawText.set($event)"
-        placeholder="przód&#9;tył&#10;apple,jabłko&#10;dog,pies"
+        placeholder="apple;jabłko&#10;dog;pies&#10;cat,kot"
         rows="10"
         maxlength="50000">
       </textarea>

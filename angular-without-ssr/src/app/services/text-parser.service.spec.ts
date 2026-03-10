@@ -99,4 +99,33 @@ describe('TextParserService', () => {
     const result = service.parseKeyValue(input);
     expect(result.proposals.length).toBe(1);
   });
+
+  it('should parse semicolon-separated lines', () => {
+    const input = 'apple;jabłko\ndog;pies';
+    const result = service.parseKeyValue(input);
+    expect(result.proposals.length).toBe(2);
+    expect(result.proposals[0]).toEqual({ front: 'apple', back: 'jabłko', source: 'manual' });
+    expect(result.proposals[1]).toEqual({ front: 'dog', back: 'pies', source: 'manual' });
+  });
+
+  it('should split on first semicolon only (back can contain semicolons)', () => {
+    const input = 'word;definition with; extra semicolons';
+    const result = service.parseKeyValue(input);
+    expect(result.proposals[0].front).toBe('word');
+    expect(result.proposals[0].back).toBe('definition with; extra semicolons');
+  });
+
+  it('should prefer tab over semicolon', () => {
+    const input = 'front;part\tback;part';
+    const result = service.parseKeyValue(input);
+    expect(result.proposals[0].front).toBe('front;part');
+    expect(result.proposals[0].back).toBe('back;part');
+  });
+
+  it('should prefer semicolon over comma', () => {
+    const input = 'front,part;back,part';
+    const result = service.parseKeyValue(input);
+    expect(result.proposals[0].front).toBe('front,part');
+    expect(result.proposals[0].back).toBe('back,part');
+  });
 });
