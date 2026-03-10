@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, from, map, switchMap, throwError, catchError, of, tap, shareReplay } from 'rxjs';
+import { Observable, from, map, switchMap, throwError, catchError, of, shareReplay } from 'rxjs';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from './supabase-client.factory';
 import { UserPreferencesDTO } from '../../types';
@@ -24,25 +24,16 @@ export class UserPreferencesService {
 
     this.cache$ = this.getCurrentUserId().pipe(
       switchMap(userId =>
-        from(this.supabase.rpc('get_or_create_preferences', { p_user_id: userId })).pipe(
+        from(
+          this.supabase
+            .from('user_preferences')
+            .select('*')
+            .eq('user_id', userId)
+            .maybeSingle()
+        ).pipe(
           switchMap(response => {
-            if (response.error) {
-              // Fallback: try direct query if RPC not deployed yet
-              return from(
-                this.supabase
-                  .from('user_preferences')
-                  .select('*')
-                  .eq('user_id', userId)
-                  .maybeSingle()
-              ).pipe(
-                switchMap(fallback => {
-                  if (fallback.error || !fallback.data) {
-                    // Table might not exist yet, return defaults
-                    return of(this.defaultPrefs(userId));
-                  }
-                  return of(fallback.data as UserPreferencesDTO);
-                })
-              );
+            if (response.error || !response.data) {
+              return of(this.defaultPrefs(userId));
             }
             return of(response.data as UserPreferencesDTO);
           })

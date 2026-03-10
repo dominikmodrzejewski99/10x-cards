@@ -24,6 +24,7 @@ export class SupabaseClientFactory {
             autoRefreshToken: true,
             detectSessionInUrl: false,
             storageKey: 'sb-auth-token',
+            lock: async <R>(_name: string, _acquireTimeout: number, fn: () => Promise<R>): Promise<R> => fn(),
             storage: {
               getItem: (key) => {
                 try {
