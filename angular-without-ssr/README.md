@@ -1,59 +1,99 @@
-# AngularWithoutSsr
+# 10xCards
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.7.
+Aplikacja do tworzenia i zarządzania fiszkami edukacyjnymi wspierana przez AI. Wklej tekst z wykładu, podręcznika lub artykułu — sztuczna inteligencja wygeneruje gotowe fiszki, a algorytm SM-2 zaplanuje powtórki dopasowane do Twojego tempa nauki.
 
-## Development server
+## Screenshoty
 
-To start a local development server, run:
+### Landing page
+![Landing page](src/assets/screenshots/landing-page.png)
+
+### Logowanie
+![Logowanie](src/assets/screenshots/login.png)
+
+### Dashboard
+![Dashboard](src/assets/screenshots/dashboard.png)
+
+### Generator fiszek (AI)
+![Generator fiszek](src/assets/screenshots/generate.png)
+
+### Sesja nauki
+![Sesja nauki](src/assets/screenshots/study.png)
+
+## Funkcje
+
+- **Generowanie fiszek z AI** — wklej tekst (1000–10000 znaków), a model LLM (stepfun/step-3.5-flash) wygeneruje do 15 fiszek
+- **Tryb bez rejestracji** — kliknij „Wypróbuj bez rejestracji" na stronie logowania lub landing page, aby korzystać z aplikacji anonimowo, bez podawania emaila i hasła
+- **Zestawy tematyczne** — grupuj fiszki w zestawy (np. osobny na każdy przedmiot)
+- **Inteligentne powtórki** — algorytm SM-2 z oceną 1 (nie wiem) / 3 (trudne) / 4 (wiem) planuje, kiedy powtórzyć pytanie
+- **Edycja propozycji** — akceptuj, odrzucaj i edytuj fiszki zaproponowane przez AI
+- **Dashboard** — statystyki: seria nauki, fiszki do powtórki, liczba sesji
+
+## Stack technologiczny
+
+| Warstwa | Technologia |
+|---------|-------------|
+| Frontend | Angular 19 (standalone, OnPush, signals) |
+| State management | NgRx (auth store) |
+| UI | PrimeNG 19, Tailwind CSS 4 |
+| Backend / Auth | Supabase (PostgreSQL, Auth, RLS) |
+| AI | OpenRouter API (stepfun/step-3.5-flash:free) |
+| Hosting | Cloudflare Pages |
+
+## Uruchomienie
+
+### Wymagania
+- Node.js 18+
+- Konto Supabase (projekt + klucze)
+- Klucz API OpenRouter
+
+### Instalacja
 
 ```bash
-ng serve
+cd angular-without-ssr
+npm install
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Zmienne środowiskowe
 
-## Code scaffolding
+Utwórz plik `src/environments/environments.ts`:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+```typescript
+export const environment = {
+  production: false,
+  supabaseUrl: 'https://YOUR_PROJECT.supabase.co',
+  supabaseKey: 'YOUR_ANON_KEY',
+  openRouterKey: 'YOUR_OPENROUTER_KEY'
+};
+```
+
+### Development server
 
 ```bash
-ng generate component component-name
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Aplikacja będzie dostępna pod `http://localhost:4200/`.
+
+### Build produkcyjny
 
 ```bash
-ng generate --help
+npm run build:prod
 ```
 
-## Building
+## Struktura projektu
 
-To build the project run:
-
-```bash
-ng build
 ```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+angular-without-ssr/src/app/
+├── auth/               # Autentykacja (NgRx store, guards, serwis)
+├── components/
+│   ├── dashboard/      # Panel główny ze statystykami
+│   ├── generate/       # Generator fiszek AI
+│   ├── flashcards/     # Lista fiszek w zestawie
+│   ├── sets/           # Zarządzanie zestawami
+│   ├── study/          # Sesja nauki (SM-2)
+│   ├── landing/        # Strona główna
+│   └── onboarding/     # Onboarding po rejestracji
+├── services/           # Serwisy API (flashcard, generation, review, openrouter)
+├── shared/             # Współdzielone komponenty i serwisy
+└── interfaces/         # Interfejsy TypeScript
 ```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
