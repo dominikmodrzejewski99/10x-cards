@@ -5,6 +5,7 @@ import { OpenRouterService } from './openrouter.service';
 
 const DEFAULT_AI_MODEL = 'stepfun/step-3.5-flash:free';
 const MAX_FLASHCARDS = 15;
+const MAX_TOKENS = 8000;
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,7 @@ PRZYKŁAD POPRAWNEJ ODPOWIEDZI:
     return from(this.openRouterService.sendMessage(prompt, undefined, {
       systemMessage: `Jesteś asystentem tworzącym fiszki edukacyjne. Zawsze odpowiadaj WYŁĄCZNIE obiektem JSON w formacie: {"flashcards": [{"front": "pytanie", "back": "odpowiedź"}, ...]}. Wygeneruj dokładnie ${MAX_FLASHCARDS} fiszek. Nie dodawaj żadnego tekstu poza JSON.`,
       temperature: 0.5,
-      max_tokens: 4000,
+      max_tokens: MAX_TOKENS,
       model: command.model || DEFAULT_AI_MODEL,
       useJsonFormat: true
     })).pipe(
@@ -56,24 +57,12 @@ PRZYKŁAD POPRAWNEJ ODPOWIEDZI:
           cleanedResponse = cleanedResponse.replace(/```/g, '');
           cleanedResponse = cleanedResponse.trim();
 
-          if (!cleanedResponse.endsWith(']') && !cleanedResponse.endsWith('}')) {
-            const lastCloseBrace = cleanedResponse.lastIndexOf('}');
-            if (lastCloseBrace > 0) {
-              cleanedResponse = cleanedResponse.substring(0, lastCloseBrace + 1);
-            }
-          }
-
           let parsedResponse: unknown;
           try {
             parsedResponse = JSON.parse(cleanedResponse);
           } catch {
-            if (!cleanedResponse.startsWith('[')) {
-              cleanedResponse = '[' + cleanedResponse;
-            }
-            if (!cleanedResponse.endsWith(']')) {
-              cleanedResponse = cleanedResponse.replace(/,\s*$/, '') + ']';
-            }
-            parsedResponse = JSON.parse(cleanedResponse);
+            // Truncated JSON — try to salvage by closing open structures
+            parsedResponse = this.repairTruncatedJson(cleanedResponse);
           }
 
           let flashcardArray: Array<{ front?: string; back?: string }> | null = null;
@@ -131,6 +120,48 @@ PRZYKŁAD POPRAWNEJ ODPOWIEDZI:
         return { generation, flashcards };
       })
     );
+  }
+
+  private repairTruncatedJson(text: string): unknown {
+    // Find the last complete object in the array by locating last complete "back":"..."}
+    const lastCompleteObj = text.lastIndexOf('}');
+    if (lastCompleteObj < 0) return null;
+
+    let truncated = text.substring(0, lastCompleteObj + 1);
+
+    // Count open brackets/braces to close them
+    let openBrackets = 0;
+    let openBraces = 0;
+    let inString = false;
+    let escape = false;
+
+    for (const ch of truncated) {
+      if (escape) { escape = false; continue; }
+      if (ch === '\\') { escape = true; continue; }
+      if (ch === '"') { inString = !inString; continue; }
+      if (inString) continue;
+      if (ch === '[') openBrackets++;
+      if (ch === ']') openBrackets--;
+      if (ch === '{') openBraces++;
+      if (ch === '}') openBraces--;
+    }
+
+    // Close any unclosed structures
+    for (let i = 0; i < openBrackets; i++) truncated += ']';
+    for (let i = 0; i < openBraces; i++) truncated += '}';
+
+    try {
+      return JSON.parse(truncated);
+    } catch {
+      // Last resort: try to extract individual flashcard objects via regex
+      const items: Array<{ front: string; back: string }> = [];
+      const regex = /"front"\s*:\s*"((?:[^"\\]|\\.)*)"\s*,\s*"back"\s*:\s*"((?:[^"\\]|\\.)*)"/g;
+      let match;
+      while ((match = regex.exec(text)) !== null) {
+        items.push({ front: match[1], back: match[2] });
+      }
+      return items.length > 0 ? { flashcards: items } : null;
+    }
   }
 
   private hashString(text: string): string {

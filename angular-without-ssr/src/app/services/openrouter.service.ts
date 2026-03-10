@@ -94,10 +94,16 @@ export class OpenRouterService {
         };
       }
 
-      const response = await firstValueFrom(this.callApi(payload));
+      let response = await firstValueFrom(this.callApi(payload));
+
+      // Retry once on empty content
+      let content = response?.choices?.[0]?.message?.content;
+      if (!content) {
+        response = await firstValueFrom(this.callApi(payload));
+        content = response?.choices?.[0]?.message?.content;
+      }
 
       // Dodajemy odpowiedź modelu do sesji
-      const content = response?.choices?.[0]?.message?.content;
       if (content) {
         const assistantMessage: Message = {
           role: 'assistant',

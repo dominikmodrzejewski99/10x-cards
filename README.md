@@ -1,194 +1,97 @@
 # 10xCards
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+Aplikacja do tworzenia i zarządzania fiszkami edukacyjnymi wspierana przez AI. Wklej tekst z wykładu, podręcznika lub artykułu — sztuczna inteligencja wygeneruje gotowe fiszki, a algorytm SM-2 zaplanuje powtórki dopasowane do Twojego tempa nauki.
 
-A modern web application for creating and managing educational flashcards, leveraging AI to automatically generate high-quality learning materials.
+## [Live Demo](https://10x-cards-70n.pages.dev/)
 
-## 🔗 [Live Demo](https://10x-cards-70n.pages.dev/)
+**Dane logowania:** `test@gmail.com` / `123123qwe`
+Można też kliknąć „Wypróbuj bez rejestracji" aby korzystać anonimowo.
 
-**Demo credentials:** `test@gmail.com` / `123123qwe`
+### Strona logowania
+![Strona logowania](angular-without-ssr/src/assets/screenshots/login-page.png)
 
-## Screenshots
+### Dashboard
+![Dashboard](angular-without-ssr/src/assets/screenshots/dashboard.png)
 
-### AI Flashcard Generator
-Paste any educational text and let AI generate flashcards for you automatically.
+### Generator fiszek (AI)
+![Generator fiszek](angular-without-ssr/src/assets/screenshots/fiszki_generacji.png)
 
-![AI Flashcard Generator](docs/screenshots/ai-flashcard-generator.png)
+## Funkcje
 
-### My Flashcards
-Browse, search, edit and manage all your flashcards in one place.
+- **Generowanie fiszek z AI** — wklej tekst (1000–10000 znaków), a model LLM (stepfun/step-3.5-flash) wygeneruje do 15 fiszek
+- **Tryb bez rejestracji** — kliknij „Wypróbuj bez rejestracji" na stronie logowania lub landing page, aby korzystać z aplikacji anonimowo, bez podawania emaila i hasła
+- **Zestawy tematyczne** — grupuj fiszki w zestawy (np. osobny na każdy przedmiot)
+- **Inteligentne powtórki** — algorytm SM-2 z oceną 1 (nie wiem) / 3 (trudne) / 4 (wiem) planuje, kiedy powtórzyć pytanie
+- **Edycja propozycji** — akceptuj, odrzucaj i edytuj fiszki zaproponowane przez AI
+- **Dashboard** — statystyki: seria nauki, fiszki do powtórki, liczba sesji
 
-![My Flashcards](docs/screenshots/my-flashcards.png)
+## Stack technologiczny
 
-## Table of Contents
-- [Project Description](#project-description)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [Available Scripts](#available-scripts)
-- [Deployment](#deployment)
-- [Project Scope](#project-scope)
-- [Project Status](#project-status)
-- [License](#license)
+| Warstwa | Technologia |
+|---------|-------------|
+| Frontend | Angular 19 (standalone, OnPush, signals) |
+| State management | NgRx (auth store) |
+| UI | PrimeNG 19, Tailwind CSS 4 |
+| Backend / Auth | Supabase (PostgreSQL, Auth, RLS) |
+| AI | OpenRouter API (stepfun/step-3.5-flash:free) |
+| Hosting | Cloudflare Pages |
 
-## Project Description
+## Uruchomienie
 
-10xCards is an innovative educational tool that combines the power of AI with proven learning methodologies. The application enables users to:
-
-- Automatically generate flashcards from any educational text using AI
-- Manually create and manage custom flashcards
-- Study effectively using spaced repetition algorithms
-- Track learning progress and flashcard generation statistics
-
-The project aims to solve the time-consuming process of creating high-quality study materials by leveraging AI to generate relevant questions and answers while maintaining user control over the final content.
-
-## Tech Stack
-
-### Frontend
-- **Angular** - Modern web framework for building interactive components
-- **TypeScript** - Adds static typing and improved developer experience
-- **Tailwind CSS** - Utility-first CSS framework for styling
-- **PrimeNG** - High-quality UI component library
-
-### Backend
-- **Supabase**
-  - PostgreSQL database for data storage
-  - Built-in authentication system with row-level security
-  - Backend-as-a-Service capabilities
-  - Edge functions for serverless backend logic
-
-### AI Integration
-- **OpenRouter API**
-  - Access to multiple AI models (OpenAI, Anthropic, Google)
-  - Built-in API cost control
-  - Fallback options for model availability
-
-### DevOps
-- **GitHub Actions** - CI/CD pipeline automation
-- **Cloudflare Pages** - Hosting and deployment platform
-
-## Getting Started
-
-### Prerequisites
+### Wymagania
 - Node.js 18+
-- npm 9+
-- Docker (optional, for containerized deployment)
+- Konto Supabase (projekt + klucze)
+- Klucz API OpenRouter
 
-### Local Development Setup
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/10xcards.git
-   cd 10xcards
-   ```
+### Instalacja
 
-2. Install dependencies:
-   ```bash
-   cd app
-   npm install
-   ```
+```bash
+cd angular-without-ssr
+npm install
+```
 
-3. Start the development server:
-   ```bash
-   npm start
-   ```
+### Zmienne środowiskowe
 
-The application will be available at `http://localhost:4200`.
+Utwórz plik `angular-without-ssr/src/environments/environments.ts`:
 
-## Available Scripts
+```typescript
+export const environment = {
+  production: false,
+  supabaseUrl: 'https://YOUR_PROJECT.supabase.co',
+  supabaseKey: 'YOUR_ANON_KEY',
+  openRouterKey: 'YOUR_OPENROUTER_KEY'
+};
+```
 
-In the project directory, you can run:
+### Development server
 
-- `npm start` - Starts the development server
-- `npm run build` - Builds the app for production
-- `npm run watch` - Builds the app in watch mode for development
-- `npm test` - Runs the test suite
-- `npm run lint` - Runs the linter
-- `npm run serve:ssr:app` - Serves the server-side rendered application
+```bash
+cd angular-without-ssr
+npm start
+```
 
-## Deployment
+Aplikacja będzie dostępna pod `http://localhost:4200/`.
 
-The application is deployed on Cloudflare Pages. Deployment is automated via GitHub Actions.
+### Build produkcyjny
 
-### Environment Variables
+```bash
+npm run build:prod
+```
 
-The following environment variables need to be set in Cloudflare Pages:
+## Struktura projektu
 
-- `supabaseUrl` - URL to your Supabase instance
-- `supabaseKey` - API key for your Supabase instance
-- `openRouterKey` - API key for OpenRouter
-
-Optional variables for E2E tests:
-- `E2E_USERNAME` - Username for E2E tests
-- `E2E_PASSWORD` - Password for E2E tests
-- `E2E_USERNAME_ID` - User ID for E2E tests
-
-**IMPORTANT**: These variables contain sensitive information and should never be committed to the repository. They should be set in the Cloudflare Pages dashboard under Settings > Environment variables.
-
-### Supabase Configuration
-
-The application is configured to work without email verification. To ensure this works correctly, you need to disable email confirmation in Supabase:
-
-1. Go to the Supabase dashboard
-2. Navigate to Authentication > Providers
-3. In the Email section, set "Confirm email" to "No"
-4. Save changes
-
-### How Environment Variables Work
-
-The application uses a runtime configuration approach to access environment variables:
-
-1. During the build process, a `runtime-config.js` file is generated with the environment variables
-2. This file is included in the `index.html` and sets a global `window.RUNTIME_CONFIG` object
-3. The `environments.ts` file uses getters to access these variables at runtime
-
-This approach allows the application to access environment variables in the browser, which is not possible with traditional environment variables that are only available during the build process.
-
-### Deployment Process
-1. Push changes to the main branch
-2. GitHub Actions will build and deploy the application
-3. The application will be available at the configured Cloudflare Pages URL
-
-### Environment Variables
-
-The following environment variables must be set in Cloudflare Pages settings:
-
-- `SUPABASE_URL` - Supabase project URL
-- `SUPABASE_KEY` - Supabase public API key
-- `OPENROUTER_KEY` - OpenRouter API key
-
-## Project Scope
-
-### Core Features
-- AI-powered flashcard generation
-- Manual flashcard creation and management
-- User authentication system
-- Flashcard generation statistics
-- Secure data storage compliant with GDPR
-
-### Planned Features (Coming Soon)
-- Spaced repetition learning algorithm integration
-
-### Out of MVP Scope
-- Advanced custom repetition algorithms
-- Gamification features
-- Mobile applications
-- Multiple document format imports (PDF, DOCX, etc.)
-- Public API
-- Flashcard sharing between users
-- Advanced notification system
-- Advanced keyword search for flashcards
-
-## Project Status
-
-🚧 **Under Development** 🚧
-
-The project is currently in active development. Key metrics for success:
-- 75% AI-generated flashcard acceptance rate target
-- 75% of new flashcards created using AI (compared to manually created flashcards)
-- Ongoing monitoring of generation quality and user engagement
-- User satisfaction with the learning experience
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
+```
+angular-without-ssr/src/app/
+├── auth/               # Autentykacja (NgRx store, guards, serwis)
+├── components/
+│   ├── dashboard/      # Panel główny ze statystykami
+│   ├── generate/       # Generator fiszek AI
+│   ├── flashcards/     # Lista fiszek w zestawie
+│   ├── sets/           # Zarządzanie zestawami
+│   ├── study/          # Sesja nauki (SM-2)
+│   ├── landing/        # Strona główna
+│   └── onboarding/     # Onboarding po rejestracji
+├── services/           # Serwisy API (flashcard, generation, review, openrouter)
+├── shared/             # Współdzielone komponenty i serwisy
+└── interfaces/         # Interfejsy TypeScript
+```
