@@ -96,25 +96,17 @@ export class OpenRouterService {
 
       const response = await firstValueFrom(this.callApi(payload));
 
-      // Dodatkowe logi dla lepszego debugowania
-      if (response && response.choices && response.choices.length > 0) {
-        try {
-          const contentJson = JSON.parse(response.choices[0].message.content);
-        } catch (error) {
-          console.error('Błąd parsowania contentu jako JSON:', error);
-        }
-      }
-
       // Dodajemy odpowiedź modelu do sesji
-      if (response && response.choices && response.choices.length > 0) {
+      const content = response?.choices?.[0]?.message?.content;
+      if (content) {
         const assistantMessage: Message = {
           role: 'assistant',
-          content: response.choices[0].message.content,
+          content,
           timestamp: new Date()
         };
         this.sessionManager.addMessage(session.id, assistantMessage);
 
-        return assistantMessage.content;
+        return content;
       } else {
         console.error('Otrzymano pustą odpowiedź od modelu AI:', response);
         throw new Error('Otrzymano pustą odpowiedź od modelu AI');
@@ -184,21 +176,10 @@ export class OpenRouterService {
       // Błąd serwera
       switch (error.status) {
         case 401:
-          // Bezpieczne logowanie - pokazujemy tylko pierwsze 10 znaków klucza
-          const maskedKey = environment.openRouterKey ? `${environment.openRouterKey.substring(0, 10)}...` : 'brak klucza';
-          console.error('Szczegóły błędu autoryzacji:', error.error);
-          console.error('Klucz API (zamaskowany):', maskedKey);
-
-          // Sprawdź, czy klucz API jest ustawiony
           if (!environment.openRouterKey) {
-            errorMessage = 'Brak klucza API OpenRouter. Sprawdź zmienne środowiskowe w Cloudflare Pages.';
-          }
-          // Sprawdź, czy klucz API ma poprawny format
-          else if (!environment.openRouterKey.startsWith('sk-or-')) {
-            errorMessage = 'Niepoprawny format klucza API OpenRouter. Klucz powinien zaczynać się od "sk-or-".';
-          }
-          else {
-            errorMessage = 'Brak autoryzacji. Sprawdź swój klucz API OpenRouter. Upewnij się, że klucz jest aktywny i ma odpowiednie uprawnienia.';
+            errorMessage = 'Brak klucza API OpenRouter. Sprawdź zmienne środowiskowe.';
+          } else {
+            errorMessage = 'Brak autoryzacji. Sprawdź swój klucz API OpenRouter.';
           }
           break;
         case 403:

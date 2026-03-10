@@ -116,6 +116,52 @@ export class ReviewApiService {
     );
   }
 
+  /**
+   * Returns all user cards with their review data (unfiltered).
+   * Used by dashboard to compute real card status breakdown.
+   */
+  public getAllCardsWithReviews(): Observable<StudyCardDTO[]> {
+    return this.getCurrentUserId().pipe(
+      switchMap((userId: string | null) => {
+        if (!userId) {
+          return throwError(() => new Error('Użytkownik nie jest zalogowany'));
+        }
+
+        return from(
+          this.supabase
+            .from('flashcards')
+            .select(`
+              *,
+              flashcard_reviews!left(
+                id, ease_factor, interval, repetitions,
+                next_review_date, last_reviewed_at,
+                created_at, updated_at, user_id, flashcard_id
+              )
+            `)
+            .eq('user_id', userId)
+        ).pipe(
+          map((response: { data: unknown; error: unknown }) => {
+            if (response.error) {
+              throw new Error(`Błąd Supabase: ${(response.error as { message: string }).message}`);
+            }
+
+            const rows = (response.data ?? []) as Array<FlashcardDTO & { flashcard_reviews: FlashcardReviewDTO[] }>;
+
+            return rows.map((row): StudyCardDTO => {
+              const { flashcard_reviews, ...flashcard } = row;
+              const review = flashcard_reviews?.length > 0 ? flashcard_reviews[0] : null;
+              return { flashcard, review };
+            });
+          }),
+          catchError((error: unknown) => {
+            console.error('Błąd podczas pobierania kart:', error);
+            return throwError(() => error);
+          })
+        );
+      })
+    );
+  }
+
   public getNextReviewDate(): Observable<string | null> {
     return this.getCurrentUserId().pipe(
       switchMap((userId: string | null) => {

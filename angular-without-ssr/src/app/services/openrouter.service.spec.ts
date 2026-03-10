@@ -38,7 +38,7 @@ describe('OpenRouterService', () => {
 
   const mockApiResponse: OpenRouterResponse = {
     id: 'test-response-id',
-    model: 'deepseek/deepseek-prover-v2:free',
+    model: 'arcee-ai/trinity-large-preview:free',
     choices: [
       {
         index: 0,
@@ -139,7 +139,7 @@ describe('OpenRouterService', () => {
 
       // Sprawdzenie body zapytania
       const requestBody = req.request.body;
-      expect(requestBody.model).toBe('deepseek/deepseek-prover-v2:free'); // Model domyślny
+      expect(requestBody.model).toBe('arcee-ai/trinity-large-preview:free'); // Model domyślny
 
       // Weryfikacja, że mamy wiadomość systemową
       const systemMessage = requestBody.messages.find((m: any) => m.role === 'system');
@@ -218,7 +218,7 @@ describe('OpenRouterService', () => {
         systemMessage: 'Niestandardowa wiadomość systemowa',
         temperature: 0.3,
         max_tokens: 2000,
-        model: 'deepseek/deepseek-prover-v2:free'
+        model: 'arcee-ai/trinity-large-preview:free'
       };
 
       sessionManagerSpy.createSession.and.returnValue(mockSession);

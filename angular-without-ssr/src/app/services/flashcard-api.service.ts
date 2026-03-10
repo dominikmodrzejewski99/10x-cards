@@ -5,6 +5,11 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from './supabase-client.factory';
 
 const FLASHCARD_COLUMNS = 'id, front, back, source, set_id, generation_id, user_id, created_at, updated_at';
+const ALLOWED_SORT_FIELDS = ['front', 'back', 'created_at', 'updated_at', 'source', 'id'];
+
+function sanitizeSearchParam(search: string): string {
+  return search.replace(/[,()\\]/g, '');
+}
 
 @Injectable({
   providedIn: 'root'
@@ -93,10 +98,11 @@ export class FlashcardApiService {
         }
 
         if (params.search) {
-          query = query.or(`front.ilike.%${params.search}%,back.ilike.%${params.search}%`);
+          const safeSearch = sanitizeSearchParam(params.search);
+          query = query.or(`front.ilike.%${safeSearch}%,back.ilike.%${safeSearch}%`);
         }
 
-        if (params.sortField) {
+        if (params.sortField && ALLOWED_SORT_FIELDS.includes(params.sortField)) {
           query = query.order(params.sortField, { ascending: params.sortOrder !== -1 });
         }
 
