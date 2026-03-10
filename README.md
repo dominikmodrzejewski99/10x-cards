@@ -8,13 +8,13 @@ Aplikacja do tworzenia i zarządzania fiszkami edukacyjnymi wspierana przez AI. 
 Można też kliknąć „Wypróbuj bez rejestracji" aby korzystać anonimowo.
 
 ### Strona logowania
-![Strona logowania](angular-without-ssr/src/assets/screenshots/login-page.png)
+![Strona logowania](docs/screenshots/login-page.png)
 
 ### Dashboard
-![Dashboard](angular-without-ssr/src/assets/screenshots/dashboard.png)
+![Dashboard](docs/screenshots/dashboard.png)
 
 ### Generator fiszek (AI)
-![Generator fiszek](angular-without-ssr/src/assets/screenshots/fiszki_generacji.png)
+![Generator fiszek](docs/screenshots/generation.png)
 
 ## Funkcje
 
