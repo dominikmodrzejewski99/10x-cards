@@ -22,10 +22,36 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg width='512' height='512' viewBox='0 0 512 512' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='512' height='512' rx='128' fill='%232563EB'/%3E%3Cpath d='M128 154H179L210 256L243 154H294L230 333H179L128 154Z' fill='white' /%3E%3Cpath d='M307 154H358V205H307V154Z' fill='white' /%3E%3Cpath d='M307 230H358V333H307V230Z' fill='white' /%3E%3Cpath d='M410 154L448 205L410 256' stroke='white' stroke-width='25' stroke-linecap='round' stroke-linejoin='round' /%3E%3Cpath d='M102 358L64 307L102 256' stroke='white' stroke-width='25' stroke-linecap='round' stroke-linejoin='round' /%3E%3C/svg%3E" />
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <!-- Preconnect to critical origins -->
+    <link rel="preconnect" href="https://zlfntdnltdnuvrnraqak.supabase.co" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Google Fonts (non-blocking) -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" /></noscript>
     <!-- Runtime configuration -->
-    <script src="assets/runtime-config.js"></script>
+    <script src="assets/runtime-config.js" defer></script>
   </head>
   <body>
-    <app-root></app-root>
+    <app-root>
+      <!-- Critical inline content for instant FCP (replaced by Angular on bootstrap) -->
+      <style>
+        .shell{display:block;background:#fff}
+        .shell__inner{max-width:1100px;margin:0 auto;padding:5rem 1.5rem 4.5rem;text-align:center}
+        .shell__pill{display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;font-weight:600;color:#4255ff;background:#edefff;padding:.35rem .9rem;border-radius:999px;margin-bottom:1.5rem}
+        .shell__title{font-size:3.25rem;font-weight:800;line-height:1.08;color:#282e3e;letter-spacing:-.03em;margin:0 0 1.25rem}
+        .shell__accent{color:#4255ff}
+        .shell__desc{font-size:1.15rem;color:#586380;max-width:520px;margin:0 auto;line-height:1.7}
+        @media(max-width:768px){.shell__inner{padding:3.5rem 1.25rem 3rem}.shell__title{font-size:2.25rem}}
+        @media(max-width:480px){.shell__title{font-size:1.85rem}.shell__desc{font-size:.95rem}}
+      </style>
+      <div class="shell">
+        <div class="shell__inner">
+          <span class="shell__pill">Fiszki wspierane przez AI</span>
+          <h1 class="shell__title">Zamień notatki w wiedzę.<br/><span class="shell__accent">Bez ślęczenia nad kartkami.</span></h1>
+          <p class="shell__desc">Wrzuć tekst z wykładu, podręcznika albo artykułu. Dostaniesz gotowe fiszki, pogrupowane w zestawy, z planem powtórek dopasowanym do Twojego tempa.</p>
+        </div>
+      </div>
+    </app-root>
   </body>
 </html>

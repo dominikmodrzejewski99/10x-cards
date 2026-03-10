@@ -33,6 +33,7 @@
               "src/_redirects",
               "src/_headers",
               "src/favicon.ico",
+              "src/robots.txt",
               "src/assets"
             ],
             "styles": [
