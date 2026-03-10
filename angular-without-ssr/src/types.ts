@@ -29,6 +29,7 @@ export interface LoginUserCommand {
 export interface UserDTO {
   id: string;
   email: string;
+  is_anonymous: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -130,7 +131,7 @@ export interface StudyCardDTO {
   review: FlashcardReviewDTO | null;
 }
 
-export type ReviewQuality = 1 | 4;
+export type ReviewQuality = 0 | 1 | 2 | 3 | 4 | 5;
 
 export interface ReviewAnswerCommand {
   flashcard_id: number;
@@ -141,6 +142,22 @@ export interface SessionResultDTO {
   known: number;
   unknown: number;
   total: number;
+}
+
+/** ---------- User Preferences ---------- */
+
+export interface UserPreferencesDTO {
+  id: number;
+  user_id: string;
+  theme: 'light' | 'dark';
+  onboarding_completed: boolean;
+  current_streak: number;
+  longest_streak: number;
+  last_study_date: string | null;
+  total_sessions: number;
+  total_cards_reviewed: number;
+  created_at: string;
+  updated_at: string;
 }
 
 /** ---------- Generation Error Logs ---------- */

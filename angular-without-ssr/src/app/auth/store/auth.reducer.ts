@@ -94,7 +94,8 @@ export const authReducer = createReducer(
   on(AuthActions.authStateLoaded, (state, { user }) => ({
     ...state,
     user,
-    loading: false
+    loading: false,
+    authChecked: true
   })),
   
   // Clear error

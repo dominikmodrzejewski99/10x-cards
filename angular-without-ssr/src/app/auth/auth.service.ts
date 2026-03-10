@@ -241,6 +241,7 @@ export class AuthService {
     return {
       id: user.id,
       email: user.email,
+      is_anonymous: !!user.is_anonymous,
       created_at: user.created_at,
       updated_at: user.updated_at || user.created_at
     };

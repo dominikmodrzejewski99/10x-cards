@@ -12,7 +12,12 @@ import * as AuthActions from '../store/auth.actions';
   imports: [RouterModule],
   template: `
     <div class="user-menu-container">
-      @if (isAuthenticated) {
+      @if (isAuthenticated && user?.is_anonymous) {
+        <button class="logout-btn" (click)="onLogout()">
+          <i class="pi pi-sign-out"></i>
+          Wyloguj
+        </button>
+      } @else if (isAuthenticated) {
         <div class="user-menu-dropdown">
           <button class="user-menu-button" (click)="toggleMenu()">
             <div class="user-avatar">
@@ -53,32 +58,33 @@ import * as AuthActions from '../store/auth.actions';
             </div>
           }
         </div>
-      } @else {
-        <div class="auth-buttons">
-          <a routerLink="/login" class="login-button">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-              <polyline points="10 17 15 12 10 7"></polyline>
-              <line x1="15" y1="12" x2="3" y2="12"></line>
-            </svg>
-            Zaloguj
-          </a>
-          <a routerLink="/register" class="register-button">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-              <circle cx="8.5" cy="7" r="4"></circle>
-              <line x1="20" y1="8" x2="20" y2="14"></line>
-              <line x1="23" y1="11" x2="17" y2="11"></line>
-            </svg>
-            Rejestracja
-          </a>
-        </div>
       }
     </div>
   `,
   styles: [`
     .user-menu-container {
       position: relative;
+    }
+
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 0.5rem;
+      border: 1.5px solid #d9dbe9;
+      background: transparent;
+      color: #586380;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .logout-btn:hover {
+      border-color: #ff6240;
+      color: #ff6240;
+      background: #fff0ed;
     }
 
     .user-menu-button {
@@ -209,58 +215,6 @@ import * as AuthActions from '../store/auth.actions';
       color: #ff6240;
     }
 
-    .auth-buttons {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .login-button, .register-button {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 0.75rem;
-      border-radius: 0.5rem;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.85rem;
-      transition: all 0.15s;
-    }
-
-    .login-button {
-      background-color: transparent;
-      color: #586380;
-      border: 1.5px solid #d9dbe9;
-    }
-
-    .register-button {
-      background-color: #4255ff;
-      color: #ffffff;
-      border: 1.5px solid #4255ff;
-    }
-
-    .login-button:hover {
-      border-color: #4255ff;
-      color: #4255ff;
-      background-color: #edefff;
-    }
-
-    .register-button:hover {
-      background-color: #3b4ce3;
-    }
-
-    .login-button .icon {
-      stroke: currentColor;
-      width: 1rem;
-      height: 1rem;
-    }
-
-    .register-button .icon {
-      stroke: #ffffff;
-      width: 1rem;
-      height: 1rem;
-    }
-
-    /* Responsywne style dla menu użytkownika */
     @media (max-width: 600px) {
       .user-menu-button {
         padding: 0.3rem 0.5rem;
@@ -299,24 +253,6 @@ import * as AuthActions from '../store/auth.actions';
         font-size: 0.9rem;
       }
 
-      .auth-buttons {
-        gap: 0.25rem;
-      }
-
-      .login-button, .register-button {
-        padding: 0.4rem;
-        font-size: 0.8rem;
-        gap: 0.3rem;
-      }
-
-      .button-text {
-        display: none;
-      }
-
-      .login-button .icon, .register-button .icon {
-        width: 0.8rem;
-        height: 0.8rem;
-      }
     }
 
     @media (max-width: 475px) {

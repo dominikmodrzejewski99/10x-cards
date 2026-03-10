@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import * as AuthActions from './auth.actions';
 import { AuthService } from '../auth.service';
 import { AuthRedirectService } from '../services/auth-redirect.service';
+import { UserPreferencesService } from '../../services/user-preferences.service';
+import { StreakService } from '../../shared/services/streak.service';
 
 @Injectable()
 export class AuthEffects {
@@ -13,6 +15,8 @@ export class AuthEffects {
   private authService = inject(AuthService);
   private router = inject(Router);
   private authRedirectService = inject(AuthRedirectService);
+  private userPreferencesService = inject(UserPreferencesService);
+  private streakService = inject(StreakService);
 
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -31,7 +35,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.loginSuccess),
         tap(() => {
-          this.authRedirectService.redirectToSavedUrlOrDefault('/sets');
+          this.authRedirectService.redirectToSavedUrlOrDefault('/dashboard');
         })
       ),
     { dispatch: false }
@@ -58,7 +62,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.registerSuccess),
         tap(() => {
-          this.authRedirectService.redirectToSavedUrlOrDefault('/sets');
+          this.authRedirectService.redirectToSavedUrlOrDefault('/dashboard');
         })
       ),
     { dispatch: false }
@@ -81,7 +85,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.loginAnonymouslySuccess),
         tap(() => {
-          this.authRedirectService.redirectToSavedUrlOrDefault('/sets');
+          this.authRedirectService.redirectToSavedUrlOrDefault('/dashboard');
         })
       ),
     { dispatch: false }
@@ -103,7 +107,11 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.logoutSuccess),
-        tap(() => this.router.navigate(['/login']))
+        tap(() => {
+          this.userPreferencesService.clearCache();
+          this.streakService.reset();
+          this.router.navigate(['/login']);
+        })
       ),
     { dispatch: false }
   );
@@ -126,7 +134,7 @@ export class AuthEffects {
         ofType(AuthActions.authStateLoaded),
         tap(({ user }) => {
           if (user && (this.router.url === '/login' || this.router.url === '/register')) {
-            this.router.navigate(['/sets']);
+            this.router.navigate(['/dashboard']);
           }
         })
       ),
