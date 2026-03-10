@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -19,6 +19,9 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
 
         <div class="navbar__links">
           @if (isAuthenticated) {
+            <a routerLink="/dashboard" routerLinkActive="navbar__link--active" class="navbar__link">
+              <i class="pi pi-home"></i> Start
+            </a>
             <a routerLink="/generate" routerLinkActive="navbar__link--active" class="navbar__link">
               <i class="pi pi-sparkles"></i> Generuj
             </a>
@@ -39,8 +42,8 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
   `,
   styles: [`
     .navbar {
-      background: #ffffff;
-      border-bottom: 2px solid #d9dbe9;
+      background: var(--app-white, #ffffff);
+      border-bottom: 2px solid var(--app-border, #d9dbe9);
       position: sticky;
       top: 0;
       z-index: 40;
@@ -72,7 +75,7 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
     }
 
     .navbar__logo-text {
-      color: #282e3e;
+      color: var(--app-text, #282e3e);
     }
 
     .navbar__links {
@@ -88,19 +91,19 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
       padding: 0.45rem 0.85rem;
       border-radius: 0.5rem;
       text-decoration: none;
-      color: #586380;
+      color: var(--app-text-secondary, #586380);
       font-weight: 600;
       font-size: 0.875rem;
       transition: all 0.15s;
     }
 
     .navbar__link:hover {
-      background: #f6f7fb;
-      color: #282e3e;
+      background: var(--app-bg, #f6f7fb);
+      color: var(--app-text, #282e3e);
     }
 
     .navbar__link--active {
-      background: #edefff;
+      background: var(--app-primary-light, #edefff);
       color: #4255ff;
     }
 
@@ -112,6 +115,7 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
       margin-left: auto;
       display: flex;
       align-items: center;
+      gap: 0.5rem;
     }
 
     @media (max-width: 640px) {
@@ -136,14 +140,14 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
       }
 
       .navbar__link i { display: none; }
+
     }
   `]
 })
 export class AuthNavbarComponent implements OnInit, OnDestroy {
   isAuthenticated = false;
+  private store = inject(Store);
   private subscription = new Subscription();
-
-  constructor(private store: Store) {}
 
   ngOnInit(): void {
     this.subscription.add(
@@ -156,4 +160,5 @@ export class AuthNavbarComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
+
 }

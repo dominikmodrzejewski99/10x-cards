@@ -14,14 +14,15 @@
   --app-success: #23b26d;
   --app-error: #ff6240;
   --app-yellow: #ffcd1f;
+  --app-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  color: #282e3e;
-  background-color: #f6f7fb;
+  color: var(--app-text, #282e3e);
+  background-color: var(--app-bg, #f6f7fb);
   margin: 0;
   -webkit-font-smoothing: antialiased;
 }
