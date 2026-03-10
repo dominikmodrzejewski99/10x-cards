@@ -176,7 +176,7 @@
   display: flex;
   gap: 0.75rem;
   width: 100%;
-  max-width: 24rem;
+  max-width: 36rem;
 }
 
 .study__btn {
@@ -331,6 +331,29 @@
   color: #b0b5c4;
   margin-top: 0.5rem;
   display: none;
+}
+
+@media (max-width: 480px) {
+  .study__actions {
+    flex-wrap: wrap;
+    max-width: 100%;
+  }
+
+  .study__btn {
+    flex: 1 1 100%;
+    padding: 0.9rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .study__stats {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .study__stat {
+    flex: 1;
+    min-width: 80px;
+  }
 }
 
 @media (min-width: 768px) {
