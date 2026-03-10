@@ -101,6 +101,12 @@
   border: 1px solid #d9dbe9;
 }
 
+.flist__btn--import {
+  background: #7c3aed;
+  color: #fff;
+}
+.flist__btn--import:hover { background: #6d28d9; }
+
 @media (max-width: 640px) {
   .flist { padding: 1rem 0.75rem; }
   .flist__header { flex-direction: column; align-items: flex-start; }

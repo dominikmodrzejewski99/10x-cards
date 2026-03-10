@@ -13,6 +13,9 @@
       <button (click)="openAddModal()" class="flist__btn flist__btn--add" data-test-id="add-flashcard-button">
         <i class="pi pi-plus"></i> Dodaj fiszkę
       </button>
+      <button (click)="openImportModal()" class="flist__btn flist__btn--import" data-test-id="import-flashcards-button">
+        <i class="pi pi-upload"></i> Importuj
+      </button>
     </div>
   </div>
 
@@ -61,4 +64,13 @@
     icon="pi pi-exclamation-triangle"
     data-test-id="confirm-dialog">
   </p-confirmDialog>
+
+  <app-import-modal
+    [isVisible]="state().isImportModalVisible"
+    [setId]="state().setId"
+    [isSaving]="state().loading"
+    (close)="onCloseImportModal()"
+    (saved)="onImportSaved($event)"
+    data-test-id="import-modal">
+  </app-import-modal>
 </div>

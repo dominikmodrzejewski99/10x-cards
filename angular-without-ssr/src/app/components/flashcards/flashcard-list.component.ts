@@ -10,7 +10,8 @@ import { FlashcardApiService } from '../../services/flashcard-api.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { FlashcardTableComponent } from './flashcard-table/flashcard-table.component';
 import { FlashcardFormComponent, FlashcardFormData } from './flashcard-form/flashcard-form.component';
-import { FlashcardDTO } from '../../../types';
+import { ImportModalComponent } from './import-modal/import-modal.component';
+import { FlashcardDTO, FlashcardProposalDTO } from '../../../types';
 
 interface FlashcardListState {
   flashcards: FlashcardDTO[];
@@ -20,6 +21,7 @@ interface FlashcardListState {
   rows: number;
   first: number;
   isFormModalVisible: boolean;
+  isImportModalVisible: boolean;
   flashcardBeingEdited: FlashcardDTO | null;
   searchTerm: string;
   sortField: string;
@@ -36,6 +38,7 @@ interface FlashcardListState {
     ConfirmDialogModule,
     FlashcardTableComponent,
     FlashcardFormComponent,
+    ImportModalComponent,
     RouterModule
   ],
   providers: [MessageService, ConfirmationService],
@@ -59,6 +62,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
     rows: 10,
     first: 0,
     isFormModalVisible: false,
+    isImportModalVisible: false,
     flashcardBeingEdited: null,
     searchTerm: '',
     sortField: 'id',
@@ -355,6 +359,31 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
     }));
 
     this.loadFlashcards();
+  }
+
+  openImportModal(): void {
+    this.state.update(s => ({ ...s, isImportModalVisible: true }));
+  }
+
+  onCloseImportModal(): void {
+    this.state.update(s => ({ ...s, isImportModalVisible: false }));
+  }
+
+  onImportSaved(proposals: FlashcardProposalDTO[]): void {
+    this.state.update(s => ({ ...s, loading: true }));
+
+    this.flashcardApiService.createFlashcards(proposals, this.state().setId).subscribe({
+      next: (savedFlashcards) => {
+        this.state.update(s => ({ ...s, isImportModalVisible: false, loading: false }));
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sukces',
+          detail: `Zaimportowano ${savedFlashcards.length} fiszek.`
+        });
+        this.loadFlashcards();
+      },
+      error: (error) => this.handleApiError(error, 'importowania')
+    });
   }
 
   // Pomocnicza metoda do obsługi błędów API
