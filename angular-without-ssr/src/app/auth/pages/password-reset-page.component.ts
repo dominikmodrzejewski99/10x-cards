@@ -16,10 +16,6 @@ import { PasswordResetFormComponent } from '../components/password-reset-form.co
             Wprowadź adres email powiązany z Twoim kontem, a my wyślemy Ci link do resetowania hasła.
           </p>
         </div>
-
-        <app-password-reset-form
-          (resetPassword)="onResetPassword($event)">
-        </app-password-reset-form>
       </div>
     </div>
   `,
