@@ -1,5 +1,5 @@
 import { Component, computed, input, output, signal, InputSignal, OutputEmitterRef, Signal, WritableSignal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 import { FlashcardDTO } from '../../../../types';
@@ -14,9 +14,8 @@ export interface TableLazyLoadEvent {
 @Component({
   selector: 'app-flashcard-table',
   imports: [
-    CommonModule,
     FormsModule
-  ],
+],
   templateUrl: './flashcard-table.component.html',
   styleUrls: ['./flashcard-table.component.css']
 })

@@ -1,5 +1,5 @@
 import { Component, OnInit, effect, inject, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -22,12 +22,11 @@ export interface FlashcardFormData {
 @Component({
   selector: 'app-flashcard-form',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     ButtonModule,
     InputTextModule,
     TextareaModule
-  ],
+],
   templateUrl: './flashcard-form.component.html',
   styleUrls: ['./flashcard-form.component.css']
 })
@@ -48,8 +47,8 @@ export class FlashcardFormComponent implements OnInit {
 
   constructor() {
     effect(() => {
-      const _flashcard = this.flashcardToEditSignal();
-      const _visible = this.isVisibleSignal();
+      this.flashcardToEditSignal();
+      this.isVisibleSignal();
       if (this.flashcardForm) {
         this.updateFormWithFlashcard();
       }

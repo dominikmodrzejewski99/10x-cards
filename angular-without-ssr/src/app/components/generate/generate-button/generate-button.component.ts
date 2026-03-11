@@ -1,10 +1,10 @@
 import { Component, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-generate-button',
-  imports: [CommonModule, ButtonModule],
+  imports: [ButtonModule],
   templateUrl: './generate-button.component.html',
   styleUrls: ['./generate-button.component.css']
 })

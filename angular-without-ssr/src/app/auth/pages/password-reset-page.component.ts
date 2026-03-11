@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterModule } from '@angular/router';
 import { PasswordResetFormComponent } from '../components/password-reset-form.component';
 
 @Component({
   selector: 'app-password-reset-page',
   standalone: true,
-  imports: [CommonModule, RouterModule, PasswordResetFormComponent],
+  imports: [RouterModule, PasswordResetFormComponent],
   template: `
     <div class="auth-container">
       <div class="auth-card">
@@ -82,6 +82,5 @@ import { PasswordResetFormComponent } from '../components/password-reset-form.co
   `]
 })
 export class PasswordResetPageComponent {
-  onResetPassword(data: {email: string}): void {
-  }
+
 }
