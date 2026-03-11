@@ -20,34 +20,14 @@ const LightThemePreset = definePreset(Aura, {
             colorScheme: {
                 light: {
                     root: {
-                        background: '#ffffff'
-                    },
-                    header: {
-                        background: '#f8fafc',
-                        color: '#334155'
-                    },
-                    content: {
                         background: '#ffffff',
                         color: '#374151'
-                    },
-                    footer: {
-                        background: '#f8fafc'
                     }
                 },
                 dark: {
                     root: {
-                        background: '#ffffff'
-                    },
-                    header: {
-                        background: '#f8fafc',
-                        color: '#334155'
-                    },
-                    content: {
                         background: '#ffffff',
                         color: '#374151'
-                    },
-                    footer: {
-                        background: '#f8fafc'
                     }
                 }
             }
@@ -55,13 +35,6 @@ const LightThemePreset = definePreset(Aura, {
         toast: {
             colorScheme: {
                 light: {
-                    root: {
-                        background: '#ffffff'
-                    },
-                    message: {
-                        background: '#ffffff',
-                        color: '#374151'
-                    },
                     success: {
                         background: '#f0f8f0',
                         color: '#2c5f2d',
@@ -84,13 +57,6 @@ const LightThemePreset = definePreset(Aura, {
                     }
                 },
                 dark: {
-                    root: {
-                        background: '#ffffff'
-                    },
-                    message: {
-                        background: '#ffffff',
-                        color: '#374151'
-                    },
                     success: {
                         background: '#f0f8f0',
                         color: '#2c5f2d',
