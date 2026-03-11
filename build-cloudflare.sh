@@ -42,7 +42,7 @@ ls -la
 
 # Zainstaluj zależności
 log_info "Instalowanie zależności..."
-npm ci --verbose || { log_error "Instalacja zależności nie powiodła się!"; exit 1; }
+npm install --verbose || { log_error "Instalacja zależności nie powiodła się!"; exit 1; }
 log_success "Zależności zainstalowane pomyślnie"
 
 # Sprawdź zainstalowane zależności
