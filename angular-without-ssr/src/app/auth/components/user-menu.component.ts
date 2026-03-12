@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { UserDTO } from '../../../types';
 import { selectIsAuthenticated, selectUser } from '../store/auth.selectors';
 import * as AuthActions from '../store/auth.actions';
@@ -18,42 +18,44 @@ import * as AuthActions from '../store/auth.actions';
         </button>
       } @else if (isAuthenticated) {
         <div class="user-menu-dropdown">
-          <button class="user-menu-button" (click)="toggleMenu()">
+          <button class="user-menu-button" [class.is-open]="isMenuOpen" (click)="toggleMenu()">
             <div class="user-avatar">
               {{ getUserInitials() }}
             </div>
             <span class="user-email">{{ user?.email }}</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+            <i class="pi pi-chevron-down chevron" [class.chevron--open]="isMenuOpen"></i>
           </button>
 
           @if (isMenuOpen) {
+            <div class="dropdown-backdrop" (click)="closeMenu()"></div>
             <div class="dropdown-menu">
               <div class="dropdown-header">
-                <div class="user-avatar">{{ getUserInitials() }}</div>
+                <div class="user-avatar user-avatar--lg">{{ getUserInitials() }}</div>
                 <div class="user-info">
-                  <span class="user-email">{{ user?.email }}</span>
+                  <span class="user-name">Moje konto</span>
+                  <span class="user-email-small">{{ user?.email }}</span>
                 </div>
               </div>
-              <div class="dropdown-divider"></div>
-              <a routerLink="/flashcards" class="dropdown-item" (click)="closeMenu()">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                  <line x1="8" y1="21" x2="16" y2="21"></line>
-                  <line x1="12" y1="17" x2="12" y2="21"></line>
-                </svg>
-                Moje fiszki
-              </a>
-              <div class="dropdown-divider"></div>
-              <button class="dropdown-item logout-button" (click)="onLogout()">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                  <polyline points="16 17 21 12 16 7"></polyline>
-                  <line x1="21" y1="12" x2="9" y2="12"></line>
-                </svg>
-                Wyloguj się
-              </button>
+              <nav class="dropdown-nav">
+                <a routerLink="/sets" class="dropdown-item" (click)="closeMenu()">
+                  <i class="pi pi-folder"></i>
+                  Moje zestawy
+                </a>
+                <a routerLink="/study" class="dropdown-item" (click)="closeMenu()">
+                  <i class="pi pi-book"></i>
+                  Nauka
+                </a>
+                <a routerLink="/generate" class="dropdown-item" (click)="closeMenu()">
+                  <i class="pi pi-sparkles"></i>
+                  Generuj fiszki
+                </a>
+              </nav>
+              <div class="dropdown-footer">
+                <button class="dropdown-item dropdown-item--logout" (click)="onLogout()">
+                  <i class="pi pi-sign-out"></i>
+                  Wyloguj się
+                </button>
+              </div>
             </div>
           }
         </div>
@@ -86,37 +88,47 @@ import * as AuthActions from '../store/auth.actions';
       background: #fff0ed;
     }
 
+    /* ---- Trigger button ---- */
     .user-menu-button {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.5rem 0.75rem;
-      background-color: #f6f7fb;
+      padding: 0.35rem 0.75rem 0.35rem 0.35rem;
+      background: #ffffff;
       border: 1.5px solid #d9dbe9;
       border-radius: 9999px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
       color: #282e3e;
       font-weight: 500;
     }
 
-    .user-menu-button:hover {
-      background-color: #edefff;
+    .user-menu-button:hover,
+    .user-menu-button.is-open {
+      background: #edefff;
       border-color: #4255ff;
+      box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.08);
     }
 
     .user-avatar {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 2rem;
-      height: 2rem;
-      background-color: #4255ff;
+      width: 1.85rem;
+      height: 1.85rem;
+      background: linear-gradient(135deg, #4255ff 0%, #6c63ff 100%);
       color: #ffffff;
       border-radius: 50%;
-      font-weight: 600;
-      font-size: 0.875rem;
+      font-weight: 700;
+      font-size: 0.8rem;
       flex-shrink: 0;
+      letter-spacing: 0.02em;
+    }
+
+    .user-avatar--lg {
+      width: 2.5rem;
+      height: 2.5rem;
+      font-size: 1rem;
     }
 
     .user-email {
@@ -128,107 +140,165 @@ import * as AuthActions from '../store/auth.actions';
       font-size: 0.8rem;
     }
 
-    .icon {
-      width: 1.25rem;
-      height: 1.25rem;
-      flex-shrink: 0;
-      stroke: #586380;
+    .chevron {
+      font-size: 0.65rem;
+      color: #586380;
+      transition: transform 0.25s ease;
+      margin-left: -0.1rem;
     }
 
+    .chevron--open {
+      transform: rotate(180deg);
+    }
+
+    /* ---- Backdrop (mobile-friendly close target) ---- */
+    .dropdown-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 49;
+    }
+
+    /* ---- Dropdown panel ---- */
     .dropdown-menu {
       position: absolute;
       top: calc(100% + 0.5rem);
       right: 0;
-      width: 250px;
-      background-color: #ffffff;
-      border-radius: 0.75rem;
-      border: 1px solid #d9dbe9;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      width: 260px;
+      background: #ffffff;
+      border-radius: 0.875rem;
+      border: 1px solid #e5e7eb;
+      box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 10px 24px -4px rgba(0, 0, 0, 0.1);
       z-index: 50;
       overflow: hidden;
+      animation: dropdown-enter 0.18s ease-out;
     }
 
+    @keyframes dropdown-enter {
+      from {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* ---- Header ---- */
     .dropdown-header {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      color: #282e3e;
-      padding: 1rem;
-      background-color: #f6f7fb;
-    }
-
-    .dropdown-header .user-email {
-      color: #282e3e;
+      padding: 1rem 1rem 0.85rem;
+      background: linear-gradient(180deg, #f8f9fc 0%, #ffffff 100%);
+      border-bottom: 1px solid #f0f1f5;
     }
 
     .user-info {
       display: flex;
       flex-direction: column;
+      min-width: 0;
     }
 
-    .dropdown-divider {
-      height: 1px;
-      background-color: #d9dbe9;
-      margin: 0.25rem 0;
+    .user-name {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #282e3e;
+      line-height: 1.3;
+    }
+
+    .user-email-small {
+      font-size: 0.75rem;
+      color: #586380;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* ---- Nav section ---- */
+    .dropdown-nav {
+      padding: 0.375rem 0;
     }
 
     .dropdown-item {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      padding: 0.75rem 1rem;
-      color: #282e3e;
+      gap: 0.65rem;
+      padding: 0.6rem 1rem;
+      color: #3b4252;
       text-decoration: none;
-      transition: all 0.15s;
+      transition: all 0.12s ease;
       cursor: pointer;
-    }
-
-    .dropdown-item .icon {
-      stroke: #586380;
-    }
-
-    .dropdown-item:hover {
-      background-color: #edefff;
-      color: #4255ff;
-    }
-
-    .dropdown-item:hover .icon {
-      stroke: #4255ff;
-    }
-
-    .logout-button {
-      color: #ff6240;
+      font-size: 0.85rem;
+      font-weight: 500;
       border: none;
       background: none;
       width: 100%;
       text-align: left;
-      font-size: 0.9rem;
+      font-family: inherit;
     }
 
-    .logout-button .icon {
-      stroke: #ff6240;
+    .dropdown-item i {
+      font-size: 0.95rem;
+      color: #8b92a5;
+      width: 1.25rem;
+      text-align: center;
+      transition: color 0.12s ease;
     }
 
-    .logout-button:hover {
-      background-color: #fff0ed;
-      color: #ff6240;
+    .dropdown-item:hover {
+      background: #f4f5ff;
+      color: #4255ff;
     }
 
+    .dropdown-item:hover i {
+      color: #4255ff;
+    }
+
+    /* ---- Footer / Logout ---- */
+    .dropdown-footer {
+      border-top: 1px solid #f0f1f5;
+      padding: 0.375rem 0;
+    }
+
+    .dropdown-item--logout {
+      color: #dc3545;
+    }
+
+    .dropdown-item--logout i {
+      color: #dc3545;
+    }
+
+    .dropdown-item--logout:hover {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    .dropdown-item--logout:hover i {
+      color: #b91c1c;
+    }
+
+    /* ---- Mobile ---- */
     @media (max-width: 640px) {
       .user-menu-button {
         padding: 0.2rem;
         border: none;
         background: none;
         border-radius: 50%;
+        box-shadow: none;
       }
 
-      .user-menu-button:hover {
+      .user-menu-button:hover,
+      .user-menu-button.is-open {
         background: #f6f7fb;
         border-color: transparent;
+        box-shadow: none;
       }
 
       .user-menu-button .user-email,
-      .user-menu-button .icon {
+      .user-menu-button .chevron {
         display: none;
       }
 
@@ -244,32 +314,8 @@ import * as AuthActions from '../store/auth.actions';
       }
 
       .dropdown-menu {
-        width: 220px;
-        right: 0;
-      }
-
-      .dropdown-header {
-        padding: 0.75rem;
-        gap: 0.5rem;
-      }
-
-      .dropdown-item {
-        padding: 0.6rem 0.85rem;
-        gap: 0.5rem;
-        font-size: 0.9rem;
-      }
-    }
-
-    /* Style dla desktopu - mniejsza czcionka dla przycisku/emaila */
-    @media (min-width: 1024px) {
-      .user-menu-button .user-email {
-        font-size: 0.75rem;
-        max-width: 200px;
-      }
-
-      /* Zmniejszenie czcionki dla emaila w nagłówku dropdownu na desktopie */
-      .dropdown-menu .user-email {
-        font-size: 0.75rem; /* Taki sam rozmiar jak dla emaila w przycisku */
+        width: 240px;
+        right: -0.5rem;
       }
     }
   `]
@@ -280,6 +326,7 @@ export class UserMenuComponent implements OnInit, OnDestroy {
   isMenuOpen = false;
 
   private subscriptions = new Subscription();
+  private elementRef = inject(ElementRef);
 
   getUserInitials(): string {
     if (!this.user?.email) return '?';
@@ -294,10 +341,14 @@ export class UserMenuComponent implements OnInit, OnDestroy {
     this.isMenuOpen = false;
   }
 
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.isMenuOpen) this.closeMenu();
+  }
+
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    // Subskrybuj stan autentykacji i dane użytkownika z NgRx store
     this.subscriptions.add(
       this.store.select(selectIsAuthenticated).subscribe(isAuthenticated => {
         this.isAuthenticated = isAuthenticated;
