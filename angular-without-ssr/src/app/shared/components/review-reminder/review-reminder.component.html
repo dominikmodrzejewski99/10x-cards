@@ -1,9 +1,10 @@
 <p-dialog
   header="Czas na powtórkę!"
-  [visible]="visible()"
-  (visibleChange)="onVisibleChange($event)"
+  [visible]="dialogVisible()"
+  (visibleChange)="onHide()"
   [modal]="true"
-  [closable]="true"
+  [closeOnEscape]="true"
+  [dismissableMask]="false"
   [draggable]="false"
   [resizable]="false"
   [style]="{ width: '26rem' }"

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, input, output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, output, signal, effect } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 
 @Component({
@@ -15,17 +15,26 @@ export class ReviewReminderComponent {
   study = output<void>();
   dismiss = output<void>();
 
-  onVisibleChange(value: boolean): void {
-    if (!value) {
-      this.dismiss.emit();
-    }
+  dialogVisible = signal(false);
+
+  constructor() {
+    effect(() => {
+      this.dialogVisible.set(this.visible());
+    });
+  }
+
+  onHide(): void {
+    this.dialogVisible.set(false);
+    this.dismiss.emit();
   }
 
   onStudy(): void {
+    this.dialogVisible.set(false);
     this.study.emit();
   }
 
   onDismiss(): void {
+    this.dialogVisible.set(false);
     this.dismiss.emit();
   }
 }
