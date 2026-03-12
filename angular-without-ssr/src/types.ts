@@ -140,6 +140,7 @@ export interface ReviewAnswerCommand {
 
 export interface SessionResultDTO {
   known: number;
+  hard: number;
   unknown: number;
   total: number;
 }

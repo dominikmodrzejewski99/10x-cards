@@ -263,6 +263,54 @@
   }
 }
 
+/* Track progress toggle */
+.study__toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.study__toggle-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: $color-text-secondary;
+  white-space: nowrap;
+}
+
+.study__toggle-switch {
+  position: relative;
+  width: 2.25rem;
+  height: 1.25rem;
+  background: $color-border;
+  border-radius: $radius-pill;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.study__toggle-switch--on {
+  background: $color-primary;
+}
+
+.study__toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 1rem;
+  height: 1rem;
+  background: $color-white;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.study__toggle-switch--on .study__toggle-knob {
+  transform: translateX(1rem);
+}
+
 /* Tooltip */
 .study__tooltip-wrap {
   position: relative;
@@ -341,16 +389,16 @@
   color: var(--app-text-secondary, #586380);
 }
 
-.study__stat--total .study__stat-value {
-  color: #4255ff;
+.study__stat--right .study__stat-value {
+  color: $color-success;
 }
 
-.study__stat--right .study__stat-value {
-  color: #23b26d;
+.study__stat--hard .study__stat-value {
+  color: $color-warning;
 }
 
 .study__stat--wrong .study__stat-value {
-  color: #ff6240;
+  color: $color-danger;
 }
 
 /* Links */
@@ -467,6 +515,24 @@
 
   .study__tooltip {
     display: none;
+  }
+
+  .study__toggle-label {
+    display: none;
+  }
+
+  .study__toggle-switch {
+    width: 1.85rem;
+    height: 1rem;
+  }
+
+  .study__toggle-knob {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  .study__toggle-switch--on .study__toggle-knob {
+    transform: translateX(0.85rem);
   }
 
   .study__stats {

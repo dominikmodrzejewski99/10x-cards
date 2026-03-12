@@ -45,6 +45,8 @@ export class StudyViewComponent implements OnInit, OnDestroy {
   public dueCardsSignal: WritableSignal<StudyCardDTO[]> = signal<StudyCardDTO[]>([]);
   private originalCardsSignal: WritableSignal<StudyCardDTO[]> = signal<StudyCardDTO[]>([]);
   public isShuffledSignal: WritableSignal<boolean> = signal<boolean>(false);
+  public trackProgressSignal: WritableSignal<boolean> = signal<boolean>(true);
+  public failedCardsSignal: WritableSignal<StudyCardDTO[]> = signal<StudyCardDTO[]>([]);
   public currentIndexSignal: WritableSignal<number> = signal<number>(0);
   public isFlippedSignal: WritableSignal<boolean> = signal<boolean>(false);
   public loadingSignal: WritableSignal<boolean> = signal<boolean>(true);
@@ -54,6 +56,7 @@ export class StudyViewComponent implements OnInit, OnDestroy {
   public nextReviewDateSignal: WritableSignal<string | null> = signal<string | null>(null);
   public sessionResultsSignal: WritableSignal<SessionResultDTO> = signal<SessionResultDTO>({
     known: 0,
+    hard: 0,
     unknown: 0,
     total: 0
   });
@@ -72,6 +75,8 @@ export class StudyViewComponent implements OnInit, OnDestroy {
     const idx: number = this.currentIndexSignal();
     return cards.length > 0 && idx < cards.length ? cards[idx] : null;
   });
+
+  public failedCountSignal: Signal<number> = computed<number>(() => this.failedCardsSignal().length);
 
   public progressPercentSignal: Signal<number> = computed<number>(() => {
     const total: number = this.dueCardsSignal().length;
@@ -144,7 +149,8 @@ export class StudyViewComponent implements OnInit, OnDestroy {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.isSessionCompleteSignal.set(false);
-    this.sessionResultsSignal.set({ known: 0, unknown: 0, total: 0 });
+    this.failedCardsSignal.set([]);
+    this.sessionResultsSignal.set({ known: 0, hard: 0, unknown: 0, total: 0 });
 
     this.loadSubscription = this.reviewApi.getDueCards(this.selectedSetIdSignal()).subscribe({
       next: (cards: StudyCardDTO[]) => {
@@ -185,10 +191,15 @@ export class StudyViewComponent implements OnInit, OnDestroy {
     this.answerSubscription = this.reviewApi.saveReview(card.flashcard.id, reviewData).subscribe({
       next: () => {
         this.sessionResultsSignal.update((r: SessionResultDTO) => ({
-          known: quality >= 3 ? r.known + 1 : r.known,
+          known: quality >= 4 ? r.known + 1 : r.known,
+          hard: quality === 3 ? r.hard + 1 : r.hard,
           unknown: quality < 3 ? r.unknown + 1 : r.unknown,
           total: r.total + 1
         }));
+
+        if (this.trackProgressSignal() && quality < 4) {
+          this.failedCardsSignal.update((cards: StudyCardDTO[]) => [...cards, card]);
+        }
 
         this.savingSignal.set(false);
         this.moveToNextCard();
@@ -221,14 +232,35 @@ export class StudyViewComponent implements OnInit, OnDestroy {
     this.isShuffledSignal.set(false);
   }
 
+  public toggleTrackProgress(): void {
+    this.trackProgressSignal.update((v: boolean) => !v);
+    if (!this.trackProgressSignal()) {
+      this.failedCardsSignal.set([]);
+    }
+  }
+
+  public restartWithFailedCards(): void {
+    const failed: StudyCardDTO[] = [...this.failedCardsSignal()];
+    this.dueCardsSignal.set(failed);
+    this.originalCardsSignal.set(failed);
+    this.failedCardsSignal.set([]);
+    this.currentIndexSignal.set(0);
+    this.isFlippedSignal.set(false);
+    this.isSessionCompleteSignal.set(false);
+    this.isShuffledSignal.set(false);
+    this.errorSignal.set(null);
+    this.sessionResultsSignal.set({ known: 0, hard: 0, unknown: 0, total: 0 });
+  }
+
   public restartSession(): void {
     this.dueCardsSignal.set([...this.originalCardsSignal()]);
     this.currentIndexSignal.set(0);
     this.isFlippedSignal.set(false);
     this.isSessionCompleteSignal.set(false);
     this.isShuffledSignal.set(false);
+    this.failedCardsSignal.set([]);
     this.errorSignal.set(null);
-    this.sessionResultsSignal.set({ known: 0, unknown: 0, total: 0 });
+    this.sessionResultsSignal.set({ known: 0, hard: 0, unknown: 0, total: 0 });
   }
 
   public formatDate(isoDate: string): string {
