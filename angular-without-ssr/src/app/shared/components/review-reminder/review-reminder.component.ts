@@ -5,7 +5,7 @@ import { DialogModule } from 'primeng/dialog';
   selector: 'app-review-reminder',
   imports: [DialogModule],
   templateUrl: './review-reminder.component.html',
-  styleUrls: ['./review-reminder.component.css'],
+  styleUrls: ['./review-reminder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReviewReminderComponent {

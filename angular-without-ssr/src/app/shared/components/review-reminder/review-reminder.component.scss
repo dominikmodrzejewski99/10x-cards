@@ -1,0 +1,53 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+@use '../../../styles/buttons';
+
+.reminder {
+  @include flex-column-center;
+  text-align: center;
+  padding: 0.5rem 0;
+  gap: 1rem;
+}
+
+.reminder__icon {
+  @include icon-circle(3.5rem, linear-gradient(135deg, #fff0ed, #ffe4dd), $app-error, 1.5rem);
+}
+
+.reminder__message {
+  font-size: 0.95rem;
+  color: $app-text;
+  line-height: 1.6;
+  margin: 0;
+
+  strong {
+    color: $app-primary;
+    font-weight: 700;
+  }
+}
+
+.reminder__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.reminder__btn--primary {
+  @extend %btn-primary;
+}
+
+.reminder__btn--secondary {
+  @extend %btn-secondary;
+}
+
+@include mobile {
+  .reminder__actions {
+    flex-direction: column-reverse;
+  }
+
+  .reminder__btn--primary,
+  .reminder__btn--secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}
