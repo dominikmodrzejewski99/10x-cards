@@ -45,7 +45,9 @@
       @if (currentStreak() > 0 || studiedToday()) {
         <!-- Active streak -->
         <div class="dash__streak dash__streak--active" role="region" aria-label="Seria nauki">
-          <span class="dash__fire">🔥</span>
+          <div class="dash__streak-icon">
+            <i class="pi pi-bolt"></i>
+          </div>
           <div class="dash__streak-main">
             <div class="dash__streak-count">{{ currentStreak() }}</div>
             <div class="dash__streak-label">{{ currentStreak() === 1 ? 'dzień z rzędu' : 'dni z rzędu' }}</div>
