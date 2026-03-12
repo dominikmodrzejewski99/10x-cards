@@ -23,6 +23,11 @@ export const selectAuthError = createSelector(
   (state: AuthState) => state.error
 );
 
+export const selectIsAnonymous = createSelector(
+  selectUser,
+  (user) => !!user?.is_anonymous
+);
+
 export const selectAuthChecked = createSelector(
   selectAuthState,
   (state: AuthState) => state.authChecked

@@ -19,7 +19,7 @@
 }
 
 .flip-card__inner {
-  position: relative;
+  display: grid;
   width: 100%;
   min-height: 280px;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -27,8 +27,7 @@
 }
 
 .flip-card__face {
-  position: absolute;
-  inset: 0;
+  grid-area: 1 / 1;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   border-radius: 1rem;

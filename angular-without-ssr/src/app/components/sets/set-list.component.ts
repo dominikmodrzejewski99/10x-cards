@@ -33,7 +33,7 @@ interface SetListState {
   ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './set-list.component.html',
-  styleUrls: ['./set-list.component.css'],
+  styleUrls: ['./set-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SetListComponent implements OnInit {

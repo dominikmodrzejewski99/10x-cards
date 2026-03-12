@@ -33,17 +33,31 @@
 
   @if (!loadingSignal() && !errorSignal() && dueCardsSignal().length === 0 && !isSessionCompleteSignal()) {
     <div class="study__state">
-      <i class="pi pi-check-circle study__state-icon" style="color: #23b26d;"></i>
-      <h2 class="study__state-title">Wszystko powtórzone!</h2>
       @if (nextReviewDateSignal()) {
+        <i class="pi pi-check-circle study__state-icon" style="color: #23b26d;"></i>
+        <h2 class="study__state-title">Wszystko powtórzone!</h2>
         <p class="study__state-text">Następna powtórka: <strong>{{ formatDate(nextReviewDateSignal()!) }}</strong></p>
+        <div class="study__links">
+          <a routerLink="/dashboard" class="study__link study__link--primary">Dashboard</a>
+          <a routerLink="/sets" class="study__link study__link--ghost">Moje zestawy</a>
+        </div>
+      } @else if (setsSignal().length === 0) {
+        <i class="pi pi-folder-open study__state-icon" style="color: #4255ff;"></i>
+        <h2 class="study__state-title">Nie masz jeszcze zestawów</h2>
+        <p class="study__state-text">Utwórz swój pierwszy zestaw fiszek, aby rozpocząć naukę.</p>
+        <div class="study__links">
+          <a routerLink="/sets" class="study__link study__link--primary"><i class="pi pi-plus"></i> Utwórz zestaw</a>
+          <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-sparkles"></i> Generuj z AI</a>
+        </div>
       } @else {
-        <p class="study__state-text">Nie masz jeszcze fiszek. Wygeneruj je lub dodaj ręcznie.</p>
+        <i class="pi pi-inbox study__state-icon" style="color: #4255ff;"></i>
+        <h2 class="study__state-title">Brak fiszek do nauki</h2>
+        <p class="study__state-text">Dodaj fiszki do swoich zestawów, aby rozpocząć naukę.</p>
+        <div class="study__links">
+          <a routerLink="/sets" class="study__link study__link--primary">Moje zestawy</a>
+          <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-sparkles"></i> Generuj z AI</a>
+        </div>
       }
-      <div class="study__links">
-        <a routerLink="/generate" class="study__link study__link--primary">Generuj fiszki</a>
-        <a routerLink="/flashcards" class="study__link study__link--ghost">Moje fiszki</a>
-      </div>
     </div>
   }
 
@@ -56,13 +70,13 @@
       <p class="study__state-text">Sesja zakończona</p>
 
       <div class="study__stats">
-        <div class="study__stat study__stat--total">
-          <span class="study__stat-value">{{ sessionResultsSignal().total }}</span>
-          <span class="study__stat-label">Łącznie</span>
-        </div>
         <div class="study__stat study__stat--right">
           <span class="study__stat-value">{{ sessionResultsSignal().known }}</span>
           <span class="study__stat-label">Wiem</span>
+        </div>
+        <div class="study__stat study__stat--hard">
+          <span class="study__stat-value">{{ sessionResultsSignal().hard }}</span>
+          <span class="study__stat-label">Trudne</span>
         </div>
         <div class="study__stat study__stat--wrong">
           <span class="study__stat-value">{{ sessionResultsSignal().unknown }}</span>
@@ -71,7 +85,12 @@
       </div>
 
       <div class="study__links">
-        <button (click)="restartSession()" class="study__link study__link--primary">Powtórz jeszcze raz</button>
+        @if (trackProgressSignal() && failedCountSignal() > 0) {
+          <button (click)="restartWithFailedCards()" class="study__link study__link--primary">
+            Powtórz trudne ({{ failedCountSignal() }})
+          </button>
+        }
+        <button (click)="restartSession()" class="study__link" [class.study__link--primary]="failedCountSignal() === 0" [class.study__link--ghost]="failedCountSignal() > 0">Powtórz wszystkie</button>
         <a routerLink="/dashboard" class="study__link study__link--ghost">Dashboard</a>
       </div>
     </div>
@@ -91,16 +110,6 @@
         </p>
       </div>
 
-      <div class="study__progress">
-        <div class="study__progress-info">
-          <span>{{ currentIndexSignal() + 1 }} / {{ dueCardsSignal().length }}</span>
-          <span>{{ progressPercentSignal() }}%</span>
-        </div>
-        <div class="study__progress-bar">
-          <div class="study__progress-fill" [style.width.%]="progressPercentSignal()"></div>
-        </div>
-      </div>
-
       <div class="study__card">
         @if (currentCardSignal(); as card) {
           <app-flashcard-flip
@@ -112,22 +121,104 @@
         }
       </div>
 
-      <div class="study__actions">
+      <div class="study__controls">
         @if (!isFlippedSignal()) {
-          <button (click)="flip()" class="study__btn study__btn--flip">
-            <i class="pi pi-sync"></i> Odwróć kartę
-          </button>
+          <div class="study__controls-side">
+            <label class="study__toggle">
+              <span class="study__toggle-label">Śledź postępy</span>
+              <button
+                class="study__toggle-switch"
+                [class.study__toggle-switch--on]="trackProgressSignal()"
+                (click)="toggleTrackProgress()"
+                role="switch"
+                [attr.aria-checked]="trackProgressSignal()">
+                <span class="study__toggle-knob"></span>
+              </button>
+            </label>
+          </div>
+
+          <div class="study__controls-center">
+            <div class="study__tooltip-wrap">
+              <button (click)="flip()" class="study__ctrl study__ctrl--flip">
+                <i class="pi pi-sync"></i>
+              </button>
+              <span class="study__tooltip">Odwróć kartę</span>
+            </div>
+            <span class="study__counter">{{ currentIndexSignal() + 1 }} / {{ dueCardsSignal().length }}</span>
+          </div>
+
+          <div class="study__controls-side study__controls-side--end">
+            <div class="study__tooltip-wrap">
+              @if (isShuffledSignal()) {
+                <button class="study__ctrl study__ctrl--active" (click)="restoreOrder()">
+                  <i class="pi pi-sort-alt"></i>
+                </button>
+                <span class="study__tooltip">Wyłącz tasowanie</span>
+              } @else {
+                <button class="study__ctrl" (click)="shuffleCards()">
+                  <i class="pi pi-sort-alt-slash"></i>
+                </button>
+                <span class="study__tooltip">Tasowanie</span>
+              }
+            </div>
+          </div>
         } @else {
-          <button (click)="answer(1)" [disabled]="savingSignal()" class="study__btn study__btn--wrong">
-            <i class="pi pi-times"></i> Nie wiem
-          </button>
-          <button (click)="answer(3)" [disabled]="savingSignal()" class="study__btn study__btn--hard">
-            <i class="pi pi-minus"></i> Trudne
-          </button>
-          <button (click)="answer(4)" [disabled]="savingSignal()" class="study__btn study__btn--right">
-            <i class="pi pi-check"></i> Wiem
-          </button>
+          <div class="study__controls-side">
+            <label class="study__toggle">
+              <span class="study__toggle-label">Śledź postępy</span>
+              <button
+                class="study__toggle-switch"
+                [class.study__toggle-switch--on]="trackProgressSignal()"
+                (click)="toggleTrackProgress()"
+                role="switch"
+                [attr.aria-checked]="trackProgressSignal()">
+                <span class="study__toggle-knob"></span>
+              </button>
+            </label>
+          </div>
+
+          <div class="study__controls-center">
+            <div class="study__tooltip-wrap">
+              <button (click)="answer(1)" [disabled]="savingSignal()" class="study__ctrl study__ctrl--wrong">
+                <i class="pi pi-times"></i>
+              </button>
+              <span class="study__tooltip">Nie wiem</span>
+            </div>
+            <div class="study__tooltip-wrap">
+              <button (click)="answer(3)" [disabled]="savingSignal()" class="study__ctrl study__ctrl--hard">
+                <i class="pi pi-minus"></i>
+              </button>
+              <span class="study__tooltip">Trudne</span>
+            </div>
+            <span class="study__counter">{{ currentIndexSignal() + 1 }} / {{ dueCardsSignal().length }}</span>
+            <div class="study__tooltip-wrap">
+              <button (click)="answer(4)" [disabled]="savingSignal()" class="study__ctrl study__ctrl--right">
+                <i class="pi pi-check"></i>
+              </button>
+              <span class="study__tooltip">Wiem</span>
+            </div>
+          </div>
+
+          <div class="study__controls-side study__controls-side--end">
+            <div class="study__tooltip-wrap">
+              @if (isShuffledSignal()) {
+                <button class="study__ctrl study__ctrl--active" (click)="restoreOrder()">
+                  <i class="pi pi-sort-alt"></i>
+                </button>
+                <span class="study__tooltip">Wyłącz tasowanie</span>
+              } @else {
+                <button class="study__ctrl" (click)="shuffleCards()">
+                  <i class="pi pi-sort-alt-slash"></i>
+                </button>
+                <span class="study__tooltip">Tasowanie</span>
+              }
+            </div>
+          </div>
         }
+      </div>
+
+      <div class="study__progress-bar">
+        <div class="study__progress-fill" [style.width.%]="progressPercentSignal()"></div>
       </div>
 
       <p class="study__kbd">

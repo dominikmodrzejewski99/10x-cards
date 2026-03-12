@@ -133,7 +133,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.authStateLoaded),
         tap(({ user }) => {
-          if (user && (this.router.url === '/login' || this.router.url === '/register')) {
+          if (user && !user.is_anonymous && (this.router.url === '/login' || this.router.url === '/register')) {
             this.router.navigate(['/dashboard']);
           }
         })

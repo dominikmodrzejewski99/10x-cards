@@ -47,7 +47,7 @@
 
 .dialog__bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #4255ff, #6c7aff);
+  background: #4255ff;
   border-radius: 3px;
   animation: progress 30s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
 }

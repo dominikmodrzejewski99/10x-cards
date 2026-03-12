@@ -9,7 +9,6 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
 
 @Component({
   selector: 'app-auth-form',
-  standalone: true,
   imports: [ReactiveFormsModule, RouterModule],
   template: `
     <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
@@ -93,11 +92,6 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
             {{ isLoginMode ? 'Zarejestruj się' : 'Zaloguj się' }}
           </a>
         </p>
-        @if (isLoginMode) {
-          <p class="forgot-password">
-            <a routerLink="/reset-password">Zapomniałeś hasła?</a>
-          </p>
-        }
       </div>
     </form>
   `,
@@ -213,20 +207,6 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
       color: #3b4ce3;
     }
 
-    .forgot-password {
-      margin-top: 0.5rem;
-      font-size: 0.75rem;
-    }
-
-    .forgot-password a {
-      color: #586380;
-      margin-left: 0;
-    }
-
-    .forgot-password a:hover {
-      color: #4255ff;
-    }
-
     .auth-divider {
       display: flex;
       align-items: center;
@@ -315,10 +295,6 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
         font-size: 0.875rem;
       }
 
-      .forgot-password {
-        margin-top: 0.5rem;
-        font-size: 0.8125rem;
-      }
     }
 
     @media (max-width: 359px) {

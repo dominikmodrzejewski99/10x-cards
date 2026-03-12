@@ -8,7 +8,6 @@ import * as AuthActions from './store/auth.actions';
 
 @Component({
   selector: 'app-auth-page',
-  standalone: true,
   imports: [CommonModule, RouterModule, AuthFormComponent],
   template: `
     <div class="auth-container">

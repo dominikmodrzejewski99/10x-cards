@@ -183,9 +183,9 @@ body .p-dialog .p-dialog-header .p-dialog-header-icon:hover {
 }
 
 /* Overlay */
-body .p-component-overlay { background-color: rgba(40, 46, 62, 0.5); }
+body .p-overlay-mask { background-color: rgba(40, 46, 62, 0.5); }
 body .p-dialog-mask { background-color: transparent; }
-body .p-dialog-mask.p-component-overlay { background-color: rgba(40, 46, 62, 0.5); }
+body .p-dialog-mask.p-overlay-mask { background-color: rgba(40, 46, 62, 0.5); }
 
 /* Toast */
 body .p-toast { opacity: 1; }
@@ -249,4 +249,18 @@ body .p-connected-overlay {
 
 body .p-connected-overlay .p-dropdown-panel {
   background: #ffffff;
+}
+
+/* Modern dialog overrides */
+body .modern-dialog {
+  --p-dialog-background: #ffffff;
+  --p-dialog-border-color: #d9dbe9;
+  --p-dialog-text-color: #282e3e;
+  --p-dialog-header-background: #ffffff;
+  --p-dialog-header-text-color: #282e3e;
+  --p-dialog-content-background: #ffffff;
+  --p-dialog-content-text-color: #282e3e;
+  background-color: #ffffff;
+  color: #282e3e;
+  border: 1px solid #d9dbe9;
 }

@@ -18,8 +18,7 @@ export class AuthRedirectService {
    */
   setRedirectUrl(url: string): void {
     // Zapisujemy tylko URL-e, które nie są związane z autentykacją
-    if (!url.includes('/login') && !url.includes('/register') && 
-        !url.includes('/reset-password') && !url.includes('/set-new-password')) {
+    if (!url.includes('/login') && !url.includes('/register')) {
       this.redirectUrl = url;
     }
   }

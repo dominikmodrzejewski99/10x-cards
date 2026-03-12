@@ -38,7 +38,7 @@ export class AuthService {
         return from(this.supabase
           .rpc('create_user_record', {
             user_id: user.id,
-            user_email: user.email || 'user@example.com',
+            user_email: user.email || `anonymous+${user.id}@noreply.local`,
             user_created_at: user.created_at || new Date().toISOString(),
             user_updated_at: user.updated_at || user.created_at || new Date().toISOString()
           })
@@ -189,47 +189,6 @@ export class AuthService {
       catchError(error => {
         console.error('Błąd pobierania sesji:', error);
         return of(null);
-      })
-    );
-  }
-
-  /**
-   * Resetuje hasło użytkownika
-   */
-  resetPassword(email: string): Observable<void> {
-    return from(this.supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/set-new-password`
-    })).pipe(
-      map(response => {
-        if (response.error) {
-          throw response.error;
-        }
-        return;
-      }),
-      catchError(error => {
-        console.error('Błąd resetowania hasła:', error);
-        return throwError(() => this.handleAuthError(error));
-      })
-    );
-  }
-
-  /**
-   * Ustawia nowe hasło użytkownika
-   */
-  setNewPassword(password: string): Observable<UserDTO> {
-    return from(this.supabase.auth.updateUser({ password })).pipe(
-      map(response => {
-        if (response.error) {
-          throw response.error;
-        }
-        if (!response.data.user) {
-          throw new Error('Nie udało się zmienić hasła. Spróbuj ponownie.');
-        }
-        return this.mapUserToDTO(response.data.user);
-      }),
-      catchError(error => {
-        console.error('Błąd zmiany hasła:', error);
-        return throwError(() => this.handleAuthError(error));
       })
     );
   }

@@ -66,6 +66,9 @@ export class UserPreferencesService {
           }),
           catchError(error => {
             console.error('Failed to update preferences:', error);
+            if (error.message?.includes('foreign key constraint')) {
+              return of(this.defaultPrefs(userId));
+            }
             return throwError(() => error);
           })
         )

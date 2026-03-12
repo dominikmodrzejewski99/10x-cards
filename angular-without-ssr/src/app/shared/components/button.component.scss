@@ -1,0 +1,97 @@
+@use 'buttons' as *;
+@use 'variables' as *;
+
+.btn {
+  @include btn-base;
+}
+
+// ── Sizes ──
+.btn--sm { @include btn-sm; }
+.btn--md { @include btn-md; }
+.btn--lg { @include btn-lg; }
+
+// ── Variants ──
+.btn--primary {
+  background: $color-primary;
+  color: $color-white;
+
+  &:hover:not(:disabled) {
+    background: $color-primary-hover;
+    transform: translateY(-1px);
+    box-shadow: $shadow-primary-hover;
+  }
+}
+
+.btn--success {
+  background: $color-success;
+  color: $color-white;
+
+  &:hover:not(:disabled) {
+    background: $color-success-hover;
+    transform: translateY(-1px);
+  }
+}
+
+.btn--danger {
+  background: $color-danger;
+  color: $color-white;
+
+  &:hover:not(:disabled) {
+    background: $color-danger-hover;
+    transform: translateY(-1px);
+  }
+}
+
+.btn--warning {
+  background: $color-warning;
+  color: $color-white;
+
+  &:hover:not(:disabled) {
+    background: $color-warning-hover;
+    transform: translateY(-1px);
+  }
+}
+
+.btn--purple {
+  background: $color-purple;
+  color: $color-white;
+
+  &:hover:not(:disabled) {
+    background: $color-purple-hover;
+    transform: translateY(-1px);
+  }
+}
+
+.btn--ghost {
+  background: transparent;
+  color: $color-text-secondary;
+  border: 1.5px solid $color-border;
+
+  &:hover:not(:disabled) {
+    border-color: $color-primary;
+    color: $color-primary;
+    background: $color-primary-light;
+  }
+}
+
+.btn--outline {
+  background: transparent;
+  color: $color-primary;
+  border: 1.5px solid $color-border;
+
+  &:hover:not(:disabled) {
+    border-color: $color-primary;
+    background: $color-primary-light;
+  }
+}
+
+.btn--text {
+  background: transparent;
+  color: $color-primary;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+
+  &:hover:not(:disabled) {
+    background: $color-primary-light;
+  }
+}

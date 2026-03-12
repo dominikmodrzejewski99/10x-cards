@@ -1,0 +1,169 @@
+@use 'variables' as *;
+
+// ── Base button mixin ──
+@mixin btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: none;
+  border-radius: $radius-md;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: $transition-fast;
+  white-space: nowrap;
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
+
+// ── Sizes ──
+@mixin btn-sm {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.78rem;
+  gap: 0.3rem;
+  border-radius: $radius-sm;
+}
+
+@mixin btn-md {
+  padding: 0.55rem 1rem;
+  font-size: 0.85rem;
+}
+
+@mixin btn-lg {
+  padding: 0.8rem 1.75rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+// ── Variant: Primary ──
+@mixin btn-primary {
+  @include btn-base;
+  background: $color-primary;
+  color: $color-white;
+
+  &:hover:not(:disabled) {
+    background: $color-primary-hover;
+    transform: translateY(-1px);
+    box-shadow: $shadow-primary-hover;
+  }
+}
+
+// ── Variant: Success ──
+@mixin btn-success {
+  @include btn-base;
+  background: $color-success;
+  color: $color-white;
+
+  &:hover:not(:disabled) {
+    background: $color-success-hover;
+    transform: translateY(-1px);
+  }
+}
+
+// ── Variant: Danger ──
+@mixin btn-danger {
+  @include btn-base;
+  background: $color-danger;
+  color: $color-white;
+
+  &:hover:not(:disabled) {
+    background: $color-danger-hover;
+    transform: translateY(-1px);
+  }
+}
+
+// ── Variant: Warning ──
+@mixin btn-warning {
+  @include btn-base;
+  background: $color-warning;
+  color: $color-white;
+
+  &:hover:not(:disabled) {
+    background: $color-warning-hover;
+    transform: translateY(-1px);
+  }
+}
+
+// ── Variant: Purple ──
+@mixin btn-purple {
+  @include btn-base;
+  background: $color-purple;
+  color: $color-white;
+
+  &:hover:not(:disabled) {
+    background: $color-purple-hover;
+    transform: translateY(-1px);
+  }
+}
+
+// ── Variant: Ghost (transparent + border) ──
+@mixin btn-ghost {
+  @include btn-base;
+  background: transparent;
+  color: $color-text-secondary;
+  border: 1.5px solid $color-border;
+
+  &:hover:not(:disabled) {
+    border-color: $color-primary;
+    color: $color-primary;
+    background: $color-primary-light;
+  }
+}
+
+// ── Variant: Outline (primary colored border) ──
+@mixin btn-outline {
+  @include btn-base;
+  background: transparent;
+  color: $color-primary;
+  border: 1.5px solid $color-border;
+
+  &:hover:not(:disabled) {
+    border-color: $color-primary;
+    background: $color-primary-light;
+  }
+}
+
+// ── Variant: Text (no border, no background) ──
+@mixin btn-text {
+  @include btn-base;
+  background: transparent;
+  color: $color-primary;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+
+  &:hover:not(:disabled) {
+    background: $color-primary-light;
+  }
+}
+
+// ── Icon button ──
+@mixin btn-icon($size: 2rem) {
+  @include btn-base;
+  width: $size;
+  height: $size;
+  padding: 0;
+  background: transparent;
+  color: $color-text-secondary;
+  border-radius: $radius-sm;
+
+  &:hover:not(:disabled) {
+    background: $color-primary-light;
+    color: $color-primary;
+  }
+}
+
+@mixin btn-icon-danger($size: 2rem) {
+  @include btn-icon($size);
+
+  &:hover:not(:disabled) {
+    background: $color-danger-light;
+    color: $color-danger;
+  }
+}
