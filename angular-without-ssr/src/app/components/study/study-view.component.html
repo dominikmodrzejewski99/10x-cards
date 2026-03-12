@@ -105,16 +105,6 @@
         </p>
       </div>
 
-      <div class="study__progress">
-        <div class="study__progress-info">
-          <span>{{ currentIndexSignal() + 1 }} / {{ dueCardsSignal().length }}</span>
-          <span>{{ progressPercentSignal() }}%</span>
-        </div>
-        <div class="study__progress-bar">
-          <div class="study__progress-fill" [style.width.%]="progressPercentSignal()"></div>
-        </div>
-      </div>
-
       <div class="study__card">
         @if (currentCardSignal(); as card) {
           <app-flashcard-flip
@@ -126,22 +116,80 @@
         }
       </div>
 
-      <div class="study__actions">
+      <div class="study__controls">
         @if (!isFlippedSignal()) {
-          <button (click)="flip()" class="study__btn study__btn--flip">
-            <i class="pi pi-sync"></i> Odwróć kartę
-          </button>
+          <div class="study__controls-side"></div>
+
+          <div class="study__controls-center">
+            <div class="study__tooltip-wrap">
+              <button (click)="flip()" class="study__ctrl study__ctrl--flip">
+                <i class="pi pi-sync"></i>
+              </button>
+              <span class="study__tooltip">Odwróć kartę</span>
+            </div>
+            <span class="study__counter">{{ currentIndexSignal() + 1 }} / {{ dueCardsSignal().length }}</span>
+          </div>
+
+          <div class="study__controls-side study__controls-side--end">
+            <div class="study__tooltip-wrap">
+              @if (isShuffledSignal()) {
+                <button class="study__ctrl study__ctrl--active" (click)="restoreOrder()">
+                  <i class="pi pi-sort-alt"></i>
+                </button>
+                <span class="study__tooltip">Wyłącz tasowanie</span>
+              } @else {
+                <button class="study__ctrl" (click)="shuffleCards()">
+                  <i class="pi pi-sort-alt-slash"></i>
+                </button>
+                <span class="study__tooltip">Tasowanie</span>
+              }
+            </div>
+          </div>
         } @else {
-          <button (click)="answer(1)" [disabled]="savingSignal()" class="study__btn study__btn--wrong">
-            <i class="pi pi-times"></i> Nie wiem
-          </button>
-          <button (click)="answer(3)" [disabled]="savingSignal()" class="study__btn study__btn--hard">
-            <i class="pi pi-minus"></i> Trudne
-          </button>
-          <button (click)="answer(4)" [disabled]="savingSignal()" class="study__btn study__btn--right">
-            <i class="pi pi-check"></i> Wiem
-          </button>
+          <div class="study__controls-side"></div>
+
+          <div class="study__controls-center">
+            <div class="study__tooltip-wrap">
+              <button (click)="answer(1)" [disabled]="savingSignal()" class="study__ctrl study__ctrl--wrong">
+                <i class="pi pi-times"></i>
+              </button>
+              <span class="study__tooltip">Nie wiem</span>
+            </div>
+            <div class="study__tooltip-wrap">
+              <button (click)="answer(3)" [disabled]="savingSignal()" class="study__ctrl study__ctrl--hard">
+                <i class="pi pi-minus"></i>
+              </button>
+              <span class="study__tooltip">Trudne</span>
+            </div>
+            <span class="study__counter">{{ currentIndexSignal() + 1 }} / {{ dueCardsSignal().length }}</span>
+            <div class="study__tooltip-wrap">
+              <button (click)="answer(4)" [disabled]="savingSignal()" class="study__ctrl study__ctrl--right">
+                <i class="pi pi-check"></i>
+              </button>
+              <span class="study__tooltip">Wiem</span>
+            </div>
+          </div>
+
+          <div class="study__controls-side study__controls-side--end">
+            <div class="study__tooltip-wrap">
+              @if (isShuffledSignal()) {
+                <button class="study__ctrl study__ctrl--active" (click)="restoreOrder()">
+                  <i class="pi pi-sort-alt"></i>
+                </button>
+                <span class="study__tooltip">Wyłącz tasowanie</span>
+              } @else {
+                <button class="study__ctrl" (click)="shuffleCards()">
+                  <i class="pi pi-sort-alt-slash"></i>
+                </button>
+                <span class="study__tooltip">Tasowanie</span>
+              }
+            </div>
+          </div>
         }
+      </div>
+
+      <div class="study__progress-bar">
+        <div class="study__progress-fill" [style.width.%]="progressPercentSignal()"></div>
       </div>
 
       <p class="study__kbd">

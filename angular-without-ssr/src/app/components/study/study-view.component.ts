@@ -44,6 +44,7 @@ export class StudyViewComponent implements OnInit, OnDestroy {
 
   public dueCardsSignal: WritableSignal<StudyCardDTO[]> = signal<StudyCardDTO[]>([]);
   private originalCardsSignal: WritableSignal<StudyCardDTO[]> = signal<StudyCardDTO[]>([]);
+  public isShuffledSignal: WritableSignal<boolean> = signal<boolean>(false);
   public currentIndexSignal: WritableSignal<number> = signal<number>(0);
   public isFlippedSignal: WritableSignal<boolean> = signal<boolean>(false);
   public loadingSignal: WritableSignal<boolean> = signal<boolean>(true);
@@ -201,11 +202,31 @@ export class StudyViewComponent implements OnInit, OnDestroy {
     });
   }
 
+  public shuffleCards(): void {
+    const cards: StudyCardDTO[] = [...this.dueCardsSignal()];
+    for (let i: number = cards.length - 1; i > 0; i--) {
+      const j: number = Math.floor(Math.random() * (i + 1));
+      [cards[i], cards[j]] = [cards[j], cards[i]];
+    }
+    this.dueCardsSignal.set(cards);
+    this.currentIndexSignal.set(0);
+    this.isFlippedSignal.set(false);
+    this.isShuffledSignal.set(true);
+  }
+
+  public restoreOrder(): void {
+    this.dueCardsSignal.set([...this.originalCardsSignal()]);
+    this.currentIndexSignal.set(0);
+    this.isFlippedSignal.set(false);
+    this.isShuffledSignal.set(false);
+  }
+
   public restartSession(): void {
     this.dueCardsSignal.set([...this.originalCardsSignal()]);
     this.currentIndexSignal.set(0);
     this.isFlippedSignal.set(false);
     this.isSessionCompleteSignal.set(false);
+    this.isShuffledSignal.set(false);
     this.errorSignal.set(null);
     this.sessionResultsSignal.set({ known: 0, unknown: 0, total: 0 });
   }
