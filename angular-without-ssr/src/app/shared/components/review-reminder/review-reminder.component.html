@@ -1,12 +1,12 @@
 <p-dialog
   header="Czas na powtórkę!"
   [visible]="visible()"
+  (visibleChange)="onDismiss()"
   [modal]="true"
   [closable]="true"
   [draggable]="false"
   [resizable]="false"
   [style]="{ width: '26rem' }"
-  (onHide)="onDismiss()"
 >
   <div class="reminder">
     <div class="reminder__icon">
