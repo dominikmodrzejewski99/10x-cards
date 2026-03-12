@@ -44,16 +44,6 @@ export const routes: Routes = [
     canActivate: [nonAuthGuard]
   },
   {
-    path: 'reset-password',
-    loadComponent: () => import('./auth/pages/password-reset-page.component').then(m => m.PasswordResetPageComponent),
-    canActivate: [nonAuthGuard]
-  },
-  {
-    path: 'set-new-password',
-    loadComponent: () => import('./auth/pages/set-new-password-page.component').then(m => m.SetNewPasswordPageComponent),
-    canActivate: [nonAuthGuard]
-  },
-  {
     path: '',
     loadComponent: () => import('./components/landing/landing-page.component').then(m => m.LandingPageComponent),
     pathMatch: 'full'

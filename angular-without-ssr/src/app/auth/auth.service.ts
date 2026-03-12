@@ -194,47 +194,6 @@ export class AuthService {
   }
 
   /**
-   * Resetuje hasło użytkownika
-   */
-  resetPassword(email: string): Observable<void> {
-    return from(this.supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/set-new-password`
-    })).pipe(
-      map(response => {
-        if (response.error) {
-          throw response.error;
-        }
-        return;
-      }),
-      catchError(error => {
-        console.error('Błąd resetowania hasła:', error);
-        return throwError(() => this.handleAuthError(error));
-      })
-    );
-  }
-
-  /**
-   * Ustawia nowe hasło użytkownika
-   */
-  setNewPassword(password: string): Observable<UserDTO> {
-    return from(this.supabase.auth.updateUser({ password })).pipe(
-      map(response => {
-        if (response.error) {
-          throw response.error;
-        }
-        if (!response.data.user) {
-          throw new Error('Nie udało się zmienić hasła. Spróbuj ponownie.');
-        }
-        return this.mapUserToDTO(response.data.user);
-      }),
-      catchError(error => {
-        console.error('Błąd zmiany hasła:', error);
-        return throwError(() => this.handleAuthError(error));
-      })
-    );
-  }
-
-  /**
    * Mapuje obiekt User z Supabase na UserDTO
    */
   private mapUserToDTO(user: any): UserDTO {
