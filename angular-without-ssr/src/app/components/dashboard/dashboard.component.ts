@@ -7,8 +7,10 @@ import {
   computed,
   ChangeDetectorRef
 } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { StreakService } from '../../shared/services/streak.service';
+import { ReviewReminderService } from '../../shared/services/review-reminder.service';
+import { ReviewReminderComponent } from '../../shared/components/review-reminder/review-reminder.component';
 import { ReviewApiService } from '../../services/review-api.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { forkJoin } from 'rxjs';
@@ -25,7 +27,7 @@ interface CardBreakdown {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterModule],
+  imports: [RouterModule, ReviewReminderComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
@@ -35,8 +37,12 @@ export class DashboardComponent implements OnInit {
   private reviewApi = inject(ReviewApiService);
   private setApi = inject(FlashcardSetApiService);
   private cdr = inject(ChangeDetectorRef);
+  private reminderService = inject(ReviewReminderService);
+  private router = inject(Router);
 
   loading = signal(true);
+  reminderVisible = signal(false);
+  reminderDueCount = signal(0);
   currentStreak = this.streak.currentStreak;
   longestStreak = this.streak.longestStreak;
   totalSessions = this.streak.totalSessions;
@@ -84,6 +90,7 @@ export class DashboardComponent implements OnInit {
         this.nextReviewDate.set(nextReview);
         this.loading.set(false);
         this.cdr.markForCheck();
+        this.checkReminder();
       },
       error: () => {
         this.loading.set(false);
@@ -145,5 +152,27 @@ export class DashboardComponent implements OnInit {
 
   formatFullDate(isoDate: string): string {
     return new Date(isoDate).toLocaleDateString('pl-PL', { day: 'numeric', month: 'long' });
+  }
+
+  private checkReminder(): void {
+    this.reminderService.checkDueCards().subscribe({
+      next: (count) => {
+        if (count > 0) {
+          this.reminderDueCount.set(count);
+          this.reminderVisible.set(true);
+          this.reminderService.markAsShown();
+          this.cdr.markForCheck();
+        }
+      }
+    });
+  }
+
+  onReminderStudy(): void {
+    this.reminderVisible.set(false);
+    this.router.navigate(['/study']);
+  }
+
+  onReminderDismiss(): void {
+    this.reminderVisible.set(false);
   }
 }
