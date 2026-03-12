@@ -33,17 +33,31 @@
 
   @if (!loadingSignal() && !errorSignal() && dueCardsSignal().length === 0 && !isSessionCompleteSignal()) {
     <div class="study__state">
-      <i class="pi pi-check-circle study__state-icon" style="color: #23b26d;"></i>
-      <h2 class="study__state-title">Wszystko powtórzone!</h2>
       @if (nextReviewDateSignal()) {
+        <i class="pi pi-check-circle study__state-icon" style="color: #23b26d;"></i>
+        <h2 class="study__state-title">Wszystko powtórzone!</h2>
         <p class="study__state-text">Następna powtórka: <strong>{{ formatDate(nextReviewDateSignal()!) }}</strong></p>
+        <div class="study__links">
+          <a routerLink="/dashboard" class="study__link study__link--primary">Dashboard</a>
+          <a routerLink="/sets" class="study__link study__link--ghost">Moje zestawy</a>
+        </div>
+      } @else if (setsSignal().length === 0) {
+        <i class="pi pi-folder-open study__state-icon" style="color: #4255ff;"></i>
+        <h2 class="study__state-title">Nie masz jeszcze zestawów</h2>
+        <p class="study__state-text">Utwórz swój pierwszy zestaw fiszek, aby rozpocząć naukę.</p>
+        <div class="study__links">
+          <a routerLink="/sets" class="study__link study__link--primary"><i class="pi pi-plus"></i> Utwórz zestaw</a>
+          <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-sparkles"></i> Generuj z AI</a>
+        </div>
       } @else {
-        <p class="study__state-text">Nie masz jeszcze fiszek. Wygeneruj je lub dodaj ręcznie.</p>
+        <i class="pi pi-inbox study__state-icon" style="color: #4255ff;"></i>
+        <h2 class="study__state-title">Brak fiszek do nauki</h2>
+        <p class="study__state-text">Dodaj fiszki do swoich zestawów, aby rozpocząć naukę.</p>
+        <div class="study__links">
+          <a routerLink="/sets" class="study__link study__link--primary">Moje zestawy</a>
+          <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-sparkles"></i> Generuj z AI</a>
+        </div>
       }
-      <div class="study__links">
-        <a routerLink="/generate" class="study__link study__link--primary">Generuj fiszki</a>
-        <a routerLink="/flashcards" class="study__link study__link--ghost">Moje fiszki</a>
-      </div>
     </div>
   }
 

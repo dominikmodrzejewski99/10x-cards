@@ -38,7 +38,7 @@ export class AuthService {
         return from(this.supabase
           .rpc('create_user_record', {
             user_id: user.id,
-            user_email: user.email || 'user@example.com',
+            user_email: user.email || `anonymous+${user.id}@noreply.local`,
             user_created_at: user.created_at || new Date().toISOString(),
             user_updated_at: user.updated_at || user.created_at || new Date().toISOString()
           })

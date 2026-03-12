@@ -40,76 +40,78 @@
       </a>
     }
 
-    <!-- Streak -->
-    @if (currentStreak() > 0 || studiedToday()) {
-      <!-- Active streak -->
-      <div class="dash__streak dash__streak--active" role="region" aria-label="Seria nauki">
-        <span class="dash__fire">🔥</span>
-        <div class="dash__streak-main">
-          <div class="dash__streak-count">{{ currentStreak() }}</div>
-          <div class="dash__streak-label">{{ currentStreak() === 1 ? 'dzień z rzędu' : 'dni z rzędu' }}</div>
-        </div>
-        @if (studiedToday()) {
-          <span class="dash__streak-badge dash__streak-badge--done">
-            <i class="pi pi-check"></i> Dziś zaliczone!
-          </span>
-        } @else {
-          <span class="dash__streak-badge dash__streak-badge--warn">
-            Ucz się dziś, żeby nie stracić serii!
-          </span>
-        }
-        @if (longestStreak() > currentStreak()) {
-          <div class="dash__streak-best">
-            <span class="dash__streak-best-label">Rekord</span>
-            <span class="dash__streak-best-value">{{ longestStreak() }}<small> dni</small></span>
+    @if (totalCards() > 0) {
+      <!-- Streak -->
+      @if (currentStreak() > 0 || studiedToday()) {
+        <!-- Active streak -->
+        <div class="dash__streak dash__streak--active" role="region" aria-label="Seria nauki">
+          <span class="dash__fire">🔥</span>
+          <div class="dash__streak-main">
+            <div class="dash__streak-count">{{ currentStreak() }}</div>
+            <div class="dash__streak-label">{{ currentStreak() === 1 ? 'dzień z rzędu' : 'dni z rzędu' }}</div>
           </div>
-        }
-      </div>
-    } @else {
-      <!-- No streak — motivational prompt -->
-      <a routerLink="/study" class="dash__streak-start" role="region" aria-label="Rozpocznij serię">
-        <div class="dash__streak-start-icon">
-          <i class="pi pi-bolt"></i>
+          @if (studiedToday()) {
+            <span class="dash__streak-badge dash__streak-badge--done">
+              <i class="pi pi-check"></i> Dziś zaliczone!
+            </span>
+          } @else {
+            <span class="dash__streak-badge dash__streak-badge--warn">
+              Ucz się dziś, żeby nie stracić serii!
+            </span>
+          }
+          @if (longestStreak() > currentStreak()) {
+            <div class="dash__streak-best">
+              <span class="dash__streak-best-label">Rekord</span>
+              <span class="dash__streak-best-value">{{ longestStreak() }}<small> dni</small></span>
+            </div>
+          }
         </div>
-        <div class="dash__streak-start-body">
-          <div class="dash__streak-start-title">Rozpocznij swoją serię nauki</div>
-          <div class="dash__streak-start-desc">Ucz się codziennie i obserwuj, jak rośnie Twoja seria</div>
-        </div>
-        <i class="pi pi-arrow-right dash__streak-start-arrow"></i>
-      </a>
-    }
+      } @else {
+        <!-- No streak — motivational prompt -->
+        <a routerLink="/study" class="dash__streak-start" role="region" aria-label="Rozpocznij serię">
+          <div class="dash__streak-start-icon">
+            <i class="pi pi-bolt"></i>
+          </div>
+          <div class="dash__streak-start-body">
+            <div class="dash__streak-start-title">Rozpocznij swoją serię nauki</div>
+            <div class="dash__streak-start-desc">Ucz się codziennie i obserwuj, jak rośnie Twoja seria</div>
+          </div>
+          <i class="pi pi-arrow-right dash__streak-start-arrow"></i>
+        </a>
+      }
 
-    <!-- Stats row -->
-    <div class="dash__stats">
-      <div class="dash__stat">
-        <div class="dash__stat-icon dash__stat-icon--blue"><i class="pi pi-calendar-clock"></i></div>
-        <div class="dash__stat-body">
-          <div class="dash__stat-value">{{ dueCount() }}</div>
-          <div class="dash__stat-label">Do powtórki</div>
+      <!-- Stats row -->
+      <div class="dash__stats">
+        <div class="dash__stat">
+          <div class="dash__stat-icon dash__stat-icon--blue"><i class="pi pi-calendar-clock"></i></div>
+          <div class="dash__stat-body">
+            <div class="dash__stat-value">{{ dueCount() }}</div>
+            <div class="dash__stat-label">Do powtórki</div>
+          </div>
+        </div>
+        <div class="dash__stat">
+          <div class="dash__stat-icon dash__stat-icon--purple"><i class="pi pi-clone"></i></div>
+          <div class="dash__stat-body">
+            <div class="dash__stat-value">{{ totalCards() }}</div>
+            <div class="dash__stat-label">Fiszek</div>
+          </div>
+        </div>
+        <div class="dash__stat">
+          <div class="dash__stat-icon dash__stat-icon--green"><i class="pi pi-check-circle"></i></div>
+          <div class="dash__stat-body">
+            <div class="dash__stat-value">{{ totalSessions() }}</div>
+            <div class="dash__stat-label">Sesji</div>
+          </div>
+        </div>
+        <div class="dash__stat">
+          <div class="dash__stat-icon dash__stat-icon--orange"><i class="pi pi-star"></i></div>
+          <div class="dash__stat-body">
+            <div class="dash__stat-value">{{ totalCardsReviewed() }}</div>
+            <div class="dash__stat-label">Powtórzeń</div>
+          </div>
         </div>
       </div>
-      <div class="dash__stat">
-        <div class="dash__stat-icon dash__stat-icon--purple"><i class="pi pi-clone"></i></div>
-        <div class="dash__stat-body">
-          <div class="dash__stat-value">{{ totalCards() }}</div>
-          <div class="dash__stat-label">Fiszek</div>
-        </div>
-      </div>
-      <div class="dash__stat">
-        <div class="dash__stat-icon dash__stat-icon--green"><i class="pi pi-check-circle"></i></div>
-        <div class="dash__stat-body">
-          <div class="dash__stat-value">{{ totalSessions() }}</div>
-          <div class="dash__stat-label">Sesji</div>
-        </div>
-      </div>
-      <div class="dash__stat">
-        <div class="dash__stat-icon dash__stat-icon--orange"><i class="pi pi-star"></i></div>
-        <div class="dash__stat-body">
-          <div class="dash__stat-value">{{ totalCardsReviewed() }}</div>
-          <div class="dash__stat-label">Powtórzeń</div>
-        </div>
-      </div>
-    </div>
+    }
 
     <!-- Card Status Breakdown -->
     @if (totalCards() > 0) {
@@ -176,41 +178,41 @@
       </section>
     }
 
-    <!-- Quick Actions -->
-    <section class="dash__actions">
-      <h2 class="dash__section-title">Szybkie akcje</h2>
-      <div class="dash__action-grid">
-        <a routerLink="/generate" class="dash__action">
-          <div class="dash__action-icon dash__action-icon--purple"><i class="pi pi-sparkles"></i></div>
-          <div class="dash__action-body">
-            <div class="dash__action-title">Generuj z AI</div>
-            <div class="dash__action-desc">Tekst → fiszki w sekundę</div>
-          </div>
-          <i class="pi pi-arrow-right dash__action-arrow"></i>
-        </a>
-        <a routerLink="/sets" class="dash__action">
-          <div class="dash__action-icon dash__action-icon--blue"><i class="pi pi-folder"></i></div>
-          <div class="dash__action-body">
-            <div class="dash__action-title">Moje zestawy</div>
-            <div class="dash__action-desc">{{ totalSets() }} {{ totalSets() === 1 ? 'zestaw' : 'zestawów' }}</div>
-          </div>
-          <i class="pi pi-arrow-right dash__action-arrow"></i>
-        </a>
-        @if (dueCount() === 0 && nextReviewDate()) {
-          <a routerLink="/study" class="dash__action">
-            <div class="dash__action-icon dash__action-icon--green"><i class="pi pi-graduation-cap"></i></div>
+    <!-- Sets -->
+    @if (sets().length > 0) {
+      <!-- Quick Actions -->
+      <section class="dash__actions">
+        <h2 class="dash__section-title">Szybkie akcje</h2>
+        <div class="dash__action-grid">
+          <a routerLink="/generate" class="dash__action">
+            <div class="dash__action-icon dash__action-icon--purple"><i class="pi pi-sparkles"></i></div>
             <div class="dash__action-body">
-              <div class="dash__action-title">Nauka</div>
-              <div class="dash__action-desc">Następna powtórka: {{ formatDate(nextReviewDate()!) }}</div>
+              <div class="dash__action-title">Generuj z AI</div>
+              <div class="dash__action-desc">Tekst → fiszki w sekundę</div>
             </div>
             <i class="pi pi-arrow-right dash__action-arrow"></i>
           </a>
-        }
-      </div>
-    </section>
+          <a routerLink="/sets" class="dash__action">
+            <div class="dash__action-icon dash__action-icon--blue"><i class="pi pi-folder"></i></div>
+            <div class="dash__action-body">
+              <div class="dash__action-title">Moje zestawy</div>
+              <div class="dash__action-desc">{{ totalSets() }} {{ totalSets() === 1 ? 'zestaw' : 'zestawów' }}</div>
+            </div>
+            <i class="pi pi-arrow-right dash__action-arrow"></i>
+          </a>
+          @if (dueCount() === 0 && nextReviewDate()) {
+            <a routerLink="/study" class="dash__action">
+              <div class="dash__action-icon dash__action-icon--green"><i class="pi pi-graduation-cap"></i></div>
+              <div class="dash__action-body">
+                <div class="dash__action-title">Nauka</div>
+                <div class="dash__action-desc">Następna powtórka: {{ formatDate(nextReviewDate()!) }}</div>
+              </div>
+              <i class="pi pi-arrow-right dash__action-arrow"></i>
+            </a>
+          }
+        </div>
+      </section>
 
-    <!-- Sets -->
-    @if (sets().length > 0) {
       <section class="dash__sets">
         <div class="dash__sets-header">
           <h2 class="dash__section-title">Twoje zestawy</h2>
@@ -235,10 +237,15 @@
       <section class="dash__empty">
         <div class="dash__empty-icon"><i class="pi pi-inbox"></i></div>
         <h3 class="dash__empty-title">Nie masz jeszcze zestawów</h3>
-        <p class="dash__empty-desc">Wklej tekst, a AI stworzy fiszki za Ciebie</p>
-        <a routerLink="/generate" class="dash__empty-cta">
-          <i class="pi pi-sparkles"></i> Generuj fiszki z AI
-        </a>
+        <p class="dash__empty-desc">Utwórz swój pierwszy zestaw lub wygeneruj fiszki z AI</p>
+        <div class="dash__empty-actions">
+          <a routerLink="/sets" class="dash__empty-cta">
+            <i class="pi pi-plus"></i> Utwórz zestaw
+          </a>
+          <a routerLink="/generate" class="dash__empty-cta dash__empty-cta--secondary">
+            <i class="pi pi-sparkles"></i> Generuj z AI
+          </a>
+        </div>
       </section>
     }
   }
