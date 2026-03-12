@@ -11,7 +11,6 @@ interface ImportProposal extends FlashcardProposalDTO {
 
 @Component({
   selector: 'app-import-modal',
-  standalone: true,
   imports: [FormsModule, DialogModule],
   templateUrl: './import-modal.component.html',
   styleUrls: ['./import-modal.component.css'],

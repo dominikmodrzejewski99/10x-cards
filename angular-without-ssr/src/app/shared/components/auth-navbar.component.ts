@@ -7,7 +7,6 @@ import { selectIsAuthenticated } from '../../auth/store/auth.selectors';
 
 @Component({
   selector: 'app-auth-navbar',
-  standalone: true,
   imports: [RouterModule, UserMenuComponent],
   template: `
     <nav class="navbar">

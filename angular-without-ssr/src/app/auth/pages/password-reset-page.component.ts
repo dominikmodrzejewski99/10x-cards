@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-password-reset-page',
-  standalone: true,
   imports: [RouterModule],
   template: `
     <div class="auth-container">

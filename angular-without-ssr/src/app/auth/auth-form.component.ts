@@ -9,7 +9,6 @@ import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
 
 @Component({
   selector: 'app-auth-form',
-  standalone: true,
   imports: [ReactiveFormsModule, RouterModule],
   template: `
     <form [formGroup]="authForm" (ngSubmit)="onSubmit()">

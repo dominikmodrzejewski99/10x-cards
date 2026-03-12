@@ -8,7 +8,6 @@ import * as AuthActions from '../store/auth.actions';
 
 @Component({
   selector: 'app-user-menu',
-  standalone: true,
   imports: [RouterModule],
   template: `
     <div class="user-menu-container">
