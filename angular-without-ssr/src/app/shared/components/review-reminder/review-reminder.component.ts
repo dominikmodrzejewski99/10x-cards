@@ -15,6 +15,12 @@ export class ReviewReminderComponent {
   study = output<void>();
   dismiss = output<void>();
 
+  onVisibleChange(value: boolean): void {
+    if (!value) {
+      this.dismiss.emit();
+    }
+  }
+
   onStudy(): void {
     this.study.emit();
   }
