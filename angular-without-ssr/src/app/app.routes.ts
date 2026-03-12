@@ -46,6 +46,7 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('./components/landing/landing-page.component').then(m => m.LandingPageComponent),
-    pathMatch: 'full'
+    pathMatch: 'full',
+    canActivate: [nonAuthGuard]
   },
 ];
