@@ -250,3 +250,17 @@ body .p-connected-overlay {
 body .p-connected-overlay .p-dropdown-panel {
   background: #ffffff;
 }
+
+/* Modern dialog overrides */
+body .modern-dialog {
+  --p-dialog-background: #ffffff;
+  --p-dialog-border-color: #d9dbe9;
+  --p-dialog-text-color: #282e3e;
+  --p-dialog-header-background: #ffffff;
+  --p-dialog-header-text-color: #282e3e;
+  --p-dialog-content-background: #ffffff;
+  --p-dialog-content-text-color: #282e3e;
+  background-color: #ffffff;
+  color: #282e3e;
+  border: 1px solid #d9dbe9;
+}

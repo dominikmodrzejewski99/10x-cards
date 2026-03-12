@@ -1,3 +1,6 @@
+@use 'buttons' as *;
+@use 'variables' as *;
+
 .ftable {
   width: 100%;
 }
@@ -8,15 +11,15 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  background: #f6f7fb;
+  background: $color-bg;
   border-bottom: 1px solid #edeff5;
 }
 
 .ftable__search-wrap {
   flex: 1;
   position: relative;
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .ftable__search-icon {
@@ -30,18 +33,18 @@
 .ftable__search-input {
   width: 100%;
   padding: 0.5rem 2rem 0.5rem 2.25rem;
-  border: 1.5px solid #d9dbe9;
-  border-radius: 0.5rem;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-md;
   font-family: inherit;
   font-size: 0.85rem;
-  color: #282e3e;
-  background: #fff;
+  color: $color-text;
+  background: $color-white;
   transition: border-color 0.15s;
 }
 
 .ftable__search-input:focus {
   outline: none;
-  border-color: #4255ff;
+  border-color: $color-primary;
   box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.10);
 }
 
@@ -62,17 +65,17 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  transition: all 0.15s;
+  transition: $transition-fast;
 }
 
 .ftable__search-clear:hover {
-  color: #586380;
+  color: $color-text-secondary;
   background: #edeff5;
 }
 
 .ftable__count {
   font-size: 0.8rem;
-  color: #586380;
+  color: $color-text-secondary;
   white-space: nowrap;
   font-weight: 600;
 }
@@ -83,7 +86,7 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.5rem 1rem;
-  background: #edefff;
+  background: $color-primary-light;
   border-bottom: 1px solid #d0d4ff;
   flex-wrap: wrap;
 }
@@ -94,54 +97,36 @@
   gap: 0.4rem;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #282e3e;
+  color: $color-text;
   cursor: pointer;
 }
 
 .ftable__checkbox {
   width: 1rem;
   height: 1rem;
-  accent-color: #4255ff;
+  accent-color: $color-primary;
   cursor: pointer;
 }
 
 .ftable__bulk-count {
   font-size: 0.8rem;
-  color: #4255ff;
+  color: $color-primary;
   font-weight: 600;
 }
 
 .ftable__bulk-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.3rem 0.65rem;
-  border-radius: 0.4rem;
-  border: none;
-  font-family: inherit;
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.15s;
+  @include btn-base;
+  @include btn-sm;
 }
 
 .ftable__bulk-btn--delete {
-  background: #ff6240;
-  color: #fff;
-}
-
-.ftable__bulk-btn--delete:hover {
-  background: #e5573a;
+  @include btn-danger;
+  @include btn-sm;
 }
 
 .ftable__bulk-btn--clear {
-  background: transparent;
-  color: #586380;
-  border: 1px solid #d9dbe9;
-}
-
-.ftable__bulk-btn--clear:hover {
-  background: #f6f7fb;
+  @include btn-ghost;
+  @include btn-sm;
 }
 
 /* Card checkbox */
@@ -169,25 +154,25 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 3rem 1rem;
-  color: #586380;
+  color: $color-text-secondary;
   font-size: 0.9rem;
 }
 
 .ftable__loading i {
   font-size: 1.5rem;
-  color: #4255ff;
+  color: $color-primary;
 }
 
 /* Empty */
 .ftable__empty {
   text-align: center;
   padding: 3rem 1rem;
-  color: #586380;
+  color: $color-text-secondary;
 }
 
 .ftable__empty i {
   font-size: 2.5rem;
-  color: #d9dbe9;
+  color: $color-border;
   display: block;
   margin-bottom: 0.75rem;
 }
@@ -196,7 +181,7 @@
   margin: 0 0 0.25rem;
   font-weight: 600;
   font-size: 1rem;
-  color: #282e3e;
+  color: $color-text;
 }
 
 .ftable__empty span {
@@ -221,7 +206,7 @@
 }
 
 .ftable__card:hover {
-  background: #f6f7fb;
+  background: $color-bg;
 }
 
 .ftable__card--loading {
@@ -267,7 +252,7 @@
 .ftable__card-text {
   margin: 0;
   font-size: 0.85rem;
-  color: #282e3e;
+  color: $color-text;
   line-height: 1.4;
   word-break: break-word;
 }
@@ -289,33 +274,13 @@
 }
 
 .ftable__action {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 0.4rem;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  color: #586380;
+  @include btn-icon;
   font-size: 0.85rem;
-  transition: all 0.15s;
 }
 
-.ftable__action:hover {
-  background: #edefff;
-  color: #4255ff;
-}
-
-.ftable__action--delete:hover {
-  background: #fff0ed;
-  color: #ff6240;
-}
-
-.ftable__action:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+.ftable__action--delete {
+  @include btn-icon-danger;
+  font-size: 0.85rem;
 }
 
 /* Pagination */
@@ -326,39 +291,20 @@
   gap: 1rem;
   padding: 0.75rem 1rem;
   border-top: 1px solid #edeff5;
-  background: #f6f7fb;
+  background: $color-bg;
 }
 
 .ftable__page-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include btn-ghost;
   width: 2.25rem;
   height: 2.25rem;
-  border-radius: 0.5rem;
-  border: 1.5px solid #d9dbe9;
-  background: #fff;
-  color: #586380;
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: all 0.15s;
-}
-
-.ftable__page-btn:hover:not(:disabled) {
-  border-color: #4255ff;
-  color: #4255ff;
-  background: #edefff;
-}
-
-.ftable__page-btn:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
+  padding: 0;
 }
 
 .ftable__page-info {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #282e3e;
+  color: $color-text;
 }
 
 /* Responsive */

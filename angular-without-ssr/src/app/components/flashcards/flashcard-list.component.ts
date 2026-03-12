@@ -43,7 +43,7 @@ interface FlashcardListState {
   ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './flashcard-list.component.html',
-  styleUrls: ['./flashcard-list.component.css'],
+  styleUrls: ['./flashcard-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FlashcardListComponent implements OnInit, OnDestroy {

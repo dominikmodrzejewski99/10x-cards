@@ -17,7 +17,7 @@ export interface TableLazyLoadEvent {
     FormsModule
 ],
   templateUrl: './flashcard-table.component.html',
-  styleUrls: ['./flashcard-table.component.css']
+  styleUrls: ['./flashcard-table.component.scss']
 })
 export class FlashcardTableComponent {
   public flashcardsSignal: InputSignal<FlashcardDTO[]> = input<FlashcardDTO[]>([], { alias: 'flashcards' });

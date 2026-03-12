@@ -13,7 +13,7 @@ interface ImportProposal extends FlashcardProposalDTO {
   selector: 'app-import-modal',
   imports: [FormsModule, DialogModule],
   templateUrl: './import-modal.component.html',
-  styleUrls: ['./import-modal.component.css'],
+  styleUrls: ['./import-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImportModalComponent {

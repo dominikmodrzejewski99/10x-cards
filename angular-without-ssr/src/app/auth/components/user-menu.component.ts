@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener, ElementRef, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -8,7 +8,11 @@ import * as AuthActions from '../store/auth.actions';
 
 @Component({
   selector: 'app-user-menu',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterModule],
+  host: {
+    '(document:keydown.escape)': 'onEscape()'
+  },
   template: `
     <div class="user-menu-container">
       @if (isAuthenticated && user?.is_anonymous) {
@@ -321,52 +325,49 @@ import * as AuthActions from '../store/auth.actions';
   `]
 })
 export class UserMenuComponent implements OnInit, OnDestroy {
-  isAuthenticated = false;
-  user: UserDTO | null = null;
-  isMenuOpen = false;
+  public isAuthenticated: boolean = false;
+  public user: UserDTO | null = null;
+  public isMenuOpen: boolean = false;
 
-  private subscriptions = new Subscription();
-  private elementRef = inject(ElementRef);
+  private store: Store = inject(Store);
+  private subscriptions: Subscription = new Subscription();
 
-  getUserInitials(): string {
+  public getUserInitials(): string {
     if (!this.user?.email) return '?';
     return this.user.email.charAt(0).toUpperCase();
   }
 
-  toggleMenu(): void {
+  public toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
-  closeMenu(): void {
+  public closeMenu(): void {
     this.isMenuOpen = false;
   }
 
-  @HostListener('document:keydown.escape')
-  onEscape(): void {
+  public onEscape(): void {
     if (this.isMenuOpen) this.closeMenu();
   }
 
-  constructor(private store: Store) {}
-
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.subscriptions.add(
-      this.store.select(selectIsAuthenticated).subscribe(isAuthenticated => {
+      this.store.select(selectIsAuthenticated).subscribe((isAuthenticated: boolean) => {
         this.isAuthenticated = isAuthenticated;
       })
     );
 
     this.subscriptions.add(
-      this.store.select(selectUser).subscribe(user => {
+      this.store.select(selectUser).subscribe((user: UserDTO | null) => {
         this.user = user;
       })
     );
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
-  onLogout(): void {
+  public onLogout(): void {
     this.closeMenu();
     this.store.dispatch(AuthActions.logout());
   }

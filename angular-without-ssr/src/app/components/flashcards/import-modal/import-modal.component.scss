@@ -1,5 +1,8 @@
+@use 'buttons' as *;
+@use 'variables' as *;
+
 .import__hint {
-  color: #586380;
+  color: $color-text-secondary;
   font-size: 0.9rem;
   margin: 0 0 0.75rem;
   line-height: 1.5;
@@ -9,8 +12,8 @@
   width: 100%;
   min-height: 200px;
   padding: 0.75rem;
-  border: 1.5px solid #d9dbe9;
-  border-radius: 0.5rem;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-md;
   font-family: 'Courier New', monospace;
   font-size: 0.85rem;
   resize: vertical;
@@ -19,7 +22,7 @@
   box-sizing: border-box;
 }
 .import__textarea:focus {
-  border-color: #4255ff;
+  border-color: $color-primary;
 }
 
 .import__actions,
@@ -31,50 +34,30 @@
 }
 
 .import__btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.55rem 1rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: pointer;
-  border: none;
-  font-family: inherit;
-  transition: all 0.15s;
+  @include btn-base;
+  @include btn-md;
 }
 
 .import__btn--primary {
-  background: #4255ff;
-  color: #fff;
+  @include btn-primary;
+  @include btn-md;
 }
-.import__btn--primary:hover:not(:disabled) { background: #3b4ce3; }
-.import__btn--primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .import__btn--small {
-  padding: 0.35rem 0.6rem;
-  font-size: 0.8rem;
+  @include btn-sm;
 }
 
 .import__btn--ghost {
-  background: transparent;
-  color: #586380;
-  border: 1.5px solid #d9dbe9;
+  @include btn-ghost;
+  @include btn-md;
 }
-.import__btn--ghost:hover { background: #f6f7fb; }
 
 .import__btn-link {
-  background: none;
-  border: none;
-  color: #4255ff;
+  @include btn-text;
   font-size: 0.8rem;
-  cursor: pointer;
-  font-family: inherit;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
+
+  &:hover { text-decoration: underline; }
 }
-.import__btn-link:hover { text-decoration: underline; }
 
 .import__stats {
   display: flex;
@@ -88,13 +71,13 @@
   font-size: 0.85rem;
   font-weight: 600;
 }
-.import__stat--total { color: #586380; }
-.import__stat--accepted { color: #23b26d; }
+.import__stat--total { color: $color-text-secondary; }
+.import__stat--accepted { color: $color-success; }
 
 .import__errors {
   background: #fff8f0;
   border: 1px solid #ffcca7;
-  border-radius: 0.5rem;
+  border-radius: $radius-md;
   padding: 0.6rem 0.75rem;
   margin-bottom: 0.75rem;
 }
@@ -130,14 +113,14 @@
   justify-content: space-between;
   gap: 0.5rem;
   padding: 0.5rem 0.65rem;
-  border: 1.5px solid #d9dbe9;
-  border-radius: 0.5rem;
-  background: #fff;
-  transition: all 0.15s;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-md;
+  background: $color-white;
+  transition: $transition-fast;
 }
 .import__card--rejected {
   opacity: 0.45;
-  background: #f6f7fb;
+  background: $color-bg;
 }
 
 .import__card-content {
@@ -150,7 +133,7 @@
 }
 .import__card-front {
   font-weight: 600;
-  color: #282e3e;
+  color: $color-text;
   flex: 1;
   min-width: 0;
   overflow: hidden;
@@ -162,7 +145,7 @@
   flex-shrink: 0;
 }
 .import__card-back {
-  color: #586380;
+  color: $color-text-secondary;
   flex: 1;
   min-width: 0;
   overflow: hidden;
@@ -177,21 +160,14 @@
 }
 
 .import__icon-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 0.35rem;
-  border: none;
-  background: transparent;
-  color: #586380;
-  cursor: pointer;
+  @include btn-icon(1.75rem);
   font-size: 0.8rem;
-  transition: all 0.15s;
 }
-.import__icon-btn:hover { background: #f6f7fb; color: #4255ff; }
-.import__icon-btn--danger:hover { color: #e53e3e; }
+
+.import__icon-btn--danger {
+  @include btn-icon-danger(1.75rem);
+  font-size: 0.8rem;
+}
 
 .import__edit {
   display: flex;
@@ -202,13 +178,13 @@
 .import__edit-input {
   flex: 1;
   padding: 0.4rem 0.6rem;
-  border: 1.5px solid #d9dbe9;
-  border-radius: 0.35rem;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-sm;
   font-size: 0.85rem;
   font-family: inherit;
   outline: none;
 }
-.import__edit-input:focus { border-color: #4255ff; }
+.import__edit-input:focus { border-color: $color-primary; }
 .import__edit-actions {
   display: flex;
   gap: 0.2rem;
