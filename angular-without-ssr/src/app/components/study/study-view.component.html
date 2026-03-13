@@ -118,6 +118,7 @@
           <app-flashcard-flip
             [front]="card.flashcard.front"
             [back]="card.flashcard.back"
+            [frontImageUrl]="card.flashcard.front_image_url"
             [isFlipped]="isFlippedSignal()"
             (flipToggle)="flip()">
           </app-flashcard-flip>

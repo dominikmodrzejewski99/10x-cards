@@ -43,6 +43,7 @@ export interface FlashcardDTO {
   id: number;
   front: string;
   back: string;
+  front_image_url: string | null;
   source: Source;
   created_at: string;
   updated_at: string;
@@ -59,7 +60,8 @@ export interface FlashcardProposalDTO {
 
 // Command model for creating a flashcard
 // Uses Omit to exclude fields that are set by the system
-export type CreateFlashcardCommand = Omit<FlashcardDTO, 'id' | 'created_at' | 'updated_at' | 'user_id' | 'generation_id' | 'set_id'> & {
+export type CreateFlashcardCommand = Omit<FlashcardDTO, 'id' | 'created_at' | 'updated_at' | 'user_id' | 'generation_id' | 'set_id' | 'front_image_url'> & {
+  front_image_url?: string | null;
   generation_id?: number | null;
   set_id: number;
 };

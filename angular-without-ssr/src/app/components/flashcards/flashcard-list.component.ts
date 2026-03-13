@@ -203,7 +203,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
     if (isEdit && formData.id) {
       this.flashcardApiService.updateFlashcard(
         formData.id,
-        { front: formData.front, back: formData.back }
+        { front: formData.front, back: formData.back, front_image_url: formData.front_image_url }
       ).subscribe({
         next: (updatedFlashcard) => {
           this.state.update(state => ({
@@ -226,6 +226,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
       this.flashcardApiService.createFlashcard({
         front: formData.front,
         back: formData.back,
+        front_image_url: formData.front_image_url,
         source: 'manual',
         set_id: this.state().setId
       }).subscribe({
