@@ -1,0 +1,33 @@
+<p-dialog
+  header="Czas na powtórkę!"
+  [visible]="dialogVisible()"
+  (visibleChange)="onHide()"
+  [modal]="true"
+  [closeOnEscape]="true"
+  [dismissableMask]="false"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '26rem' }"
+>
+  <div class="reminder">
+    <div class="reminder__icon">
+      <i class="pi pi-clock"></i>
+    </div>
+    <p class="reminder__message">
+      Masz <strong>{{ dueCount() }}</strong>
+      {{ dueCount() === 1 ? 'przeterminowaną fiszkę' : 'przeterminowanych fiszek' }}
+      do powtórki. Nie odkładaj nauki na później!
+    </p>
+  </div>
+  <ng-template #footer>
+    <div class="reminder__actions">
+      <button class="reminder__btn--secondary" (click)="onDismiss()">
+        Nie teraz
+      </button>
+      <button class="reminder__btn--primary" (click)="onStudy()">
+        <i class="pi pi-play-circle"></i>
+        Przejdź do nauki
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>

@@ -1,0 +1,34 @@
+// ===== Color variables (mirrors :root CSS custom properties) =====
+$app-primary: var(--app-primary, #4255ff);
+$app-primary-hover: var(--app-primary-hover, #3b4ce3);
+$app-primary-light: var(--app-primary-light, #edefff);
+$app-bg: var(--app-bg, #f6f7fb);
+$app-white: var(--app-white, #ffffff);
+$app-text: var(--app-text, #282e3e);
+$app-text-secondary: var(--app-text-secondary, #586380);
+$app-border: var(--app-border, #d9dbe9);
+$app-success: var(--app-success, #23b26d);
+$app-error: var(--app-error, #ff6240);
+$app-yellow: var(--app-yellow, #ffcd1f);
+$app-card-shadow: var(--app-card-shadow, 0 1px 3px rgba(0, 0, 0, 0.04));
+
+// ===== Shadows =====
+$shadow-sm: 0 4px 12px rgba(66, 85, 255, 0.25);
+$shadow-md: 0 6px 16px rgba(66, 85, 255, 0.35);
+
+// ===== Border radius =====
+$radius-sm: 0.5rem;
+$radius-md: 0.65rem;
+$radius-lg: 0.75rem;
+$radius-xl: 1rem;
+$radius-2xl: 1.25rem;
+$radius-full: 50%;
+
+// ===== Transitions =====
+$transition-fast: 0.15s ease;
+$transition-base: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+// ===== Breakpoints =====
+$bp-mobile: 480px;
+$bp-tablet: 768px;

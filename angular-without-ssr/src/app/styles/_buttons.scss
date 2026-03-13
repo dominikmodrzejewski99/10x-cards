@@ -1,0 +1,56 @@
+@use 'variables' as *;
+
+// ===== Base button =====
+%btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: $radius-md;
+  font-weight: 700;
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  transition: all $transition-base;
+}
+
+// ===== Primary button =====
+%btn-primary {
+  @extend %btn-base;
+  background: $app-primary;
+  color: #ffffff;
+  box-shadow: $shadow-sm;
+
+  &:hover {
+    background: $app-primary-hover;
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+// ===== Secondary (outlined) button =====
+%btn-secondary {
+  @extend %btn-base;
+  background: transparent;
+  color: $app-text-secondary;
+  border: 1.5px solid $app-border;
+
+  &:hover {
+    background: $app-bg;
+    border-color: $app-text-secondary;
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}

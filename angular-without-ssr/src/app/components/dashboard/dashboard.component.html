@@ -251,4 +251,11 @@
       </section>
     }
   }
+
+  <app-review-reminder
+    [visible]="reminderVisible()"
+    [dueCount]="reminderDueCount()"
+    (study)="onReminderStudy()"
+    (dismiss)="onReminderDismiss()"
+  />
 </div>
