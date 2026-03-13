@@ -2,9 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthFormComponent } from './auth-form.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import * as AuthActions from './store/auth.actions';
 
 @Component({
   selector: 'app-auth-page',
@@ -161,8 +159,7 @@ export class AuthPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
-    private store: Store
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -175,8 +172,6 @@ export class AuthPageComponent implements OnInit, OnDestroy {
         this.isLoginMode = path === 'login';
       })
     );
-
-    this.store.dispatch(AuthActions.checkAuthState());
   }
 
   ngOnDestroy(): void {

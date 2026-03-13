@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, inject, signal, WritableSignal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, WritableSignal } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
 import { UserMenuComponent } from '../../auth/components/user-menu.component';
 import { selectIsAuthenticated, selectIsAnonymous } from '../../auth/store/auth.selectors';
 
@@ -22,7 +22,7 @@ import { selectIsAuthenticated, selectIsAnonymous } from '../../auth/store/auth.
 
         <!-- Desktop links (authenticated) -->
         <div class="navbar__links navbar__links--desktop">
-          @if (isAuthenticated) {
+          @if (isAuthenticated()) {
             <a routerLink="/dashboard" routerLinkActive="navbar__link--active" class="navbar__link">
               <i class="pi pi-home"></i> Start
             </a>
@@ -39,14 +39,14 @@ import { selectIsAuthenticated, selectIsAnonymous } from '../../auth/store/auth.
         </div>
 
         <div class="navbar__right">
-          @if (isAuthenticated && !isAnonymous) {
+          @if (isAuthenticated() && !isAnonymous()) {
             <app-user-menu></app-user-menu>
           } @else {
             <a routerLink="/login" class="navbar__auth-btn navbar__auth-btn--login">Zaloguj się</a>
             <a routerLink="/register" class="navbar__auth-btn navbar__auth-btn--register">Zarejestruj się</a>
           }
 
-          @if (isAuthenticated) {
+          @if (isAuthenticated()) {
             <button class="navbar__burger" (click)="toggleMobile()" [attr.aria-expanded]="mobileOpenSignal()">
               <span class="navbar__burger-line"></span>
               <span class="navbar__burger-line"></span>
@@ -57,7 +57,7 @@ import { selectIsAuthenticated, selectIsAnonymous } from '../../auth/store/auth.
       </div>
 
       <!-- Mobile drawer -->
-      @if (isAuthenticated && mobileOpenSignal()) {
+      @if (isAuthenticated() && mobileOpenSignal()) {
         <div class="navbar__drawer">
           <a routerLink="/dashboard" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
             <i class="pi pi-home"></i> Start
@@ -77,13 +77,12 @@ import { selectIsAuthenticated, selectIsAnonymous } from '../../auth/store/auth.
   `,
   styleUrl: './auth-navbar.component.scss'
 })
-export class AuthNavbarComponent implements OnInit, OnDestroy {
-  public isAuthenticated: boolean = false;
-  public isAnonymous: boolean = false;
-  public mobileOpenSignal: WritableSignal<boolean> = signal<boolean>(false);
-
+export class AuthNavbarComponent {
   private store: Store = inject(Store);
-  private subscription: Subscription = new Subscription();
+
+  public isAuthenticated = toSignal(this.store.select(selectIsAuthenticated), { initialValue: false });
+  public isAnonymous = toSignal(this.store.select(selectIsAnonymous), { initialValue: false });
+  public mobileOpenSignal: WritableSignal<boolean> = signal<boolean>(false);
 
   public toggleMobile(): void {
     this.mobileOpenSignal.update((v: boolean) => !v);
@@ -95,23 +94,5 @@ export class AuthNavbarComponent implements OnInit, OnDestroy {
 
   public onEscape(): void {
     this.closeMobile();
-  }
-
-  public ngOnInit(): void {
-    this.subscription.add(
-      this.store.select(selectIsAuthenticated).subscribe((isAuthenticated: boolean) => {
-        this.isAuthenticated = isAuthenticated;
-      })
-    );
-
-    this.subscription.add(
-      this.store.select(selectIsAnonymous).subscribe((isAnonymous: boolean) => {
-        this.isAnonymous = isAnonymous;
-      })
-    );
-  }
-
-  public ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 }

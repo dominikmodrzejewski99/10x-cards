@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { of, TimeoutError } from 'rxjs';
+import { catchError, exhaustMap, map, switchMap, tap, timeout } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import * as AuthActions from './auth.actions';
 import { AuthService } from '../auth.service';
@@ -23,8 +23,13 @@ export class AuthEffects {
       ofType(AuthActions.login),
       switchMap(({ email, password }) =>
         this.authService.login({ email, password }).pipe(
+          timeout(15000),
           map((user) => AuthActions.loginSuccess({ user })),
-          catchError((error) => of(AuthActions.loginFailure({ error: this.handleError(error) })))
+          catchError((error) => of(AuthActions.loginFailure({
+            error: error instanceof TimeoutError
+              ? 'Serwer nie odpowiada. Spróbuj ponownie później.'
+              : this.handleError(error)
+          })))
         )
       )
     )
@@ -119,26 +124,14 @@ export class AuthEffects {
   checkAuthState$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.checkAuthState),
-      switchMap(() =>
+      exhaustMap(() =>
         this.authService.getCurrentUser().pipe(
+          timeout(10000),
           map((user) => AuthActions.authStateLoaded({ user })),
           catchError(() => of(AuthActions.authStateLoaded({ user: null })))
         )
       )
     )
-  );
-
-  authStateLoaded$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.authStateLoaded),
-        tap(({ user }) => {
-          if (user && !user.is_anonymous && (this.router.url === '/login' || this.router.url === '/register')) {
-            this.router.navigate(['/dashboard']);
-          }
-        })
-      ),
-    { dispatch: false }
   );
 
   private handleError(error: any): string {
