@@ -50,7 +50,7 @@ export class FlashcardFormComponent implements OnInit {
   public submitting: boolean = false;
 
   public readonly FRONT_MAX_LENGTH: number = 200;
-  public readonly BACK_MAX_LENGTH: number = 500;
+  public readonly BACK_MAX_LENGTH: number = 1000;
 
   private pendingImageUrl: string | null = null;
 
