@@ -6,7 +6,6 @@ import {
   signal,
   computed,
   inject,
-
   WritableSignal,
   Signal
 } from '@angular/core';
@@ -36,7 +35,6 @@ export class StudyViewComponent implements OnInit, OnDestroy {
   private setApi: FlashcardSetApiService = inject(FlashcardSetApiService);
   private sm2: SpacedRepetitionService = inject(SpacedRepetitionService);
   private streakService: StreakService = inject(StreakService);
-
   private route: ActivatedRoute = inject(ActivatedRoute);
   private loadSubscription: Subscription | null = null;
   private answerSubscription: Subscription | null = null;
@@ -311,10 +309,7 @@ export class StudyViewComponent implements OnInit, OnDestroy {
       this.skipTransitionSignal.set(true);
       this.isFlippedSignal.set(false);
       this.currentIndexSignal.set(nextIdx);
-      requestAnimationFrame(() => {
-        this.skipTransitionSignal.set(false);
-        this.cdr.markForCheck();
-      });
+      setTimeout(() => this.skipTransitionSignal.set(false));
     }
   }
 
