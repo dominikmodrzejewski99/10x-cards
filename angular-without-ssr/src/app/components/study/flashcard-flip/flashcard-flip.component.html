@@ -1,6 +1,7 @@
 <div
   class="flip-card"
   [class.flipped]="isFlippedSignal()"
+  [class.flip-card--no-transition]="skipTransitionSignal()"
   (click)="onFlip()"
   tabindex="0"
   role="button"

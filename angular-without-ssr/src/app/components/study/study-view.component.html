@@ -116,6 +116,7 @@
             [front]="card.flashcard.front"
             [back]="card.flashcard.back"
             [isFlipped]="isFlippedSignal()"
+            [skipTransition]="skipTransitionSignal()"
             (flipToggle)="flip()">
           </app-flashcard-flip>
         }
