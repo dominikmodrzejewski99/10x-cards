@@ -249,6 +249,14 @@
   margin-bottom: 0.2rem;
 }
 
+.ftable__card-thumb {
+  max-width: 60px;
+  max-height: 40px;
+  object-fit: cover;
+  border-radius: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
 .ftable__card-text {
   margin: 0;
   font-size: 0.85rem;

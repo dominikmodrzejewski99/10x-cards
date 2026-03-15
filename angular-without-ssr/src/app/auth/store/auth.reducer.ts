@@ -87,14 +87,12 @@ export const authReducer = createReducer(
   
   // Auth state actions
   on(AuthActions.checkAuthState, (state) => ({
-    ...state,
-    loading: true
+    ...state
   })),
-  
+
   on(AuthActions.authStateLoaded, (state, { user }) => ({
     ...state,
     user,
-    loading: false,
     authChecked: true
   })),
   

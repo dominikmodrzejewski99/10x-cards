@@ -38,7 +38,10 @@
         <h2 class="study__state-title">Wszystko powtórzone!</h2>
         <p class="study__state-text">Następna powtórka: <strong>{{ formatDate(nextReviewDateSignal()!) }}</strong></p>
         <div class="study__links">
-          <a routerLink="/dashboard" class="study__link study__link--primary">Dashboard</a>
+          <button (click)="loadExtraPractice()" class="study__link study__link--primary">
+            <i class="pi pi-refresh"></i> Dodatkowa powtórka
+          </button>
+          <a routerLink="/dashboard" class="study__link study__link--ghost">Dashboard</a>
           <a routerLink="/sets" class="study__link study__link--ghost">Moje zestawy</a>
         </div>
       } @else if (setsSignal().length === 0) {
@@ -115,6 +118,7 @@
           <app-flashcard-flip
             [front]="card.flashcard.front"
             [back]="card.flashcard.back"
+            [frontImageUrl]="card.flashcard.front_image_url"
             [isFlipped]="isFlippedSignal()"
             [skipTransition]="skipTransitionSignal()"
             (flipToggle)="flip()">

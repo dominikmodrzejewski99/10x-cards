@@ -6,7 +6,7 @@ import {
   signal,
   computed,
   inject,
-  ChangeDetectorRef,
+
   WritableSignal,
   Signal
 } from '@angular/core';
@@ -36,7 +36,7 @@ export class StudyViewComponent implements OnInit, OnDestroy {
   private setApi: FlashcardSetApiService = inject(FlashcardSetApiService);
   private sm2: SpacedRepetitionService = inject(SpacedRepetitionService);
   private streakService: StreakService = inject(StreakService);
-  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+
   private route: ActivatedRoute = inject(ActivatedRoute);
   private loadSubscription: Subscription | null = null;
   private answerSubscription: Subscription | null = null;
@@ -104,7 +104,7 @@ export class StudyViewComponent implements OnInit, OnDestroy {
     this.setApi.getSets().subscribe({
       next: (sets) => {
         this.setsSignal.set(sets);
-        this.cdr.markForCheck();
+
       }
     });
   }
@@ -165,12 +165,12 @@ export class StudyViewComponent implements OnInit, OnDestroy {
           this.loadNextReviewDate();
         }
 
-        this.cdr.markForCheck();
+
       },
       error: () => {
         this.errorSignal.set('Nie udało się załadować fiszek. Spróbuj ponownie.');
         this.loadingSignal.set(false);
-        this.cdr.markForCheck();
+
       }
     });
   }
@@ -204,12 +204,12 @@ export class StudyViewComponent implements OnInit, OnDestroy {
 
         this.savingSignal.set(false);
         this.moveToNextCard();
-        this.cdr.markForCheck();
+
       },
       error: () => {
         this.savingSignal.set(false);
         this.errorSignal.set('Nie udało się zapisać odpowiedzi. Spróbuj ponownie.');
-        this.cdr.markForCheck();
+
       }
     });
   }
@@ -264,6 +264,33 @@ export class StudyViewComponent implements OnInit, OnDestroy {
     this.sessionResultsSignal.set({ known: 0, hard: 0, unknown: 0, total: 0 });
   }
 
+  public loadExtraPractice(): void {
+    this.loadSubscription?.unsubscribe();
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.isSessionCompleteSignal.set(false);
+    this.failedCardsSignal.set([]);
+    this.sessionResultsSignal.set({ known: 0, hard: 0, unknown: 0, total: 0 });
+
+    this.loadSubscription = this.reviewApi.getAllCardsWithReviews().subscribe({
+      next: (cards: StudyCardDTO[]) => {
+        const setId: number | null = this.selectedSetIdSignal();
+        const filtered: StudyCardDTO[] = setId ? cards.filter((c: StudyCardDTO) => c.flashcard.set_id === setId) : cards;
+        this.dueCardsSignal.set(filtered);
+        this.originalCardsSignal.set([...filtered]);
+        this.currentIndexSignal.set(0);
+        this.isFlippedSignal.set(false);
+        this.loadingSignal.set(false);
+
+      },
+      error: () => {
+        this.errorSignal.set('Nie udało się załadować fiszek. Spróbuj ponownie.');
+        this.loadingSignal.set(false);
+
+      }
+    });
+  }
+
   public formatDate(isoDate: string): string {
     const date: Date = new Date(isoDate);
     return date.toLocaleDateString('pl-PL', {
@@ -295,7 +322,7 @@ export class StudyViewComponent implements OnInit, OnDestroy {
     this.loadSubscription = this.reviewApi.getNextReviewDate().subscribe({
       next: (date: string | null) => {
         this.nextReviewDateSignal.set(date);
-        this.cdr.markForCheck();
+
       }
     });
   }

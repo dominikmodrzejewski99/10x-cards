@@ -37,6 +37,52 @@
   </div>
 
   <div class="field mb-4">
+    <label class="block mb-2 text-gray-700 font-medium">Obrazek (opcjonalnie)</label>
+
+    @if (imagePreviewSignal()) {
+      <div class="image-preview">
+        <img [src]="imagePreviewSignal()" alt="Podgląd obrazka" class="image-preview__img" />
+        <button
+          type="button"
+          pButton
+          label="Usuń obrazek"
+          icon="pi pi-trash"
+          class="p-button-outlined p-button-danger p-button-sm image-preview__remove"
+          (click)="removeImage()"
+          [disabled]="uploadingSignal()">
+        </button>
+      </div>
+    }
+
+    @if (!imagePreviewSignal() && !uploadingSignal()) {
+      <label class="image-upload" data-test-id="image-upload">
+        <i class="pi pi-image image-upload__icon"></i>
+        <span class="image-upload__text">Kliknij aby dodać obrazek</span>
+        <small class="image-upload__hint">JPEG, PNG, WebP, GIF — max. 2MB</small>
+        <input
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/gif"
+          (change)="onFileSelected($event)"
+          class="image-upload__input"
+        />
+      </label>
+    }
+
+    @if (uploadingSignal()) {
+      <div class="image-uploading">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Przesyłanie obrazka...</span>
+      </div>
+    }
+
+    @if (imageErrorSignal()) {
+      <small class="text-red-500 block mt-1" data-test-id="image-error">
+        {{ imageErrorSignal() }}
+      </small>
+    }
+  </div>
+
+  <div class="field mb-4">
     <label for="back" class="block mb-2 text-gray-700 font-medium">Tył fiszki <span class="text-red-500">*</span></label>
     <textarea
       id="back"
@@ -45,7 +91,7 @@
       formControlName="back"
       [class.ng-invalid]="hasError('back', 'required') || hasError('back', 'maxlength') || hasError('back', 'whitespace')"
       class="w-full p-inputtextarea bg-white text-gray-800 border border-gray-300 rounded-md"
-      placeholder="Wpisz odpowiedź lub definicję (max. 500 znaków)"
+      placeholder="Wpisz odpowiedź lub definicję (max. 1000 znaków)"
       data-test-id="back-input"
     ></textarea>
 
@@ -80,7 +126,7 @@
       type="button"
       class="p-button-outlined p-button-secondary"
       (click)="onCancel()"
-      [disabled]="submitting"
+      [disabled]="submitting || uploadingSignal()"
       data-test-id="cancel-button">
     </button>
     <button
@@ -89,7 +135,7 @@
       type="submit"
       class="p-button-primary"
       [loading]="submitting"
-      [disabled]="flashcardForm.invalid || submitting"
+      [disabled]="flashcardForm.invalid || submitting || uploadingSignal()"
       icon="pi pi-save"
       data-test-id="save-button">
     </button>

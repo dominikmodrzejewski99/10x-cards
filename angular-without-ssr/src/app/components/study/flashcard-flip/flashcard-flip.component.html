@@ -9,6 +9,9 @@
   <div class="flip-card__inner">
     <div class="flip-card__face">
       <div class="flip-card__label">Pytanie</div>
+      @if (frontImageUrlSignal()) {
+        <img [src]="frontImageUrlSignal()" alt="" class="flip-card__image" />
+      }
       <div class="flip-card__content">{{ frontSignal() }}</div>
     </div>
     <div class="flip-card__face flip-card__face--back">
