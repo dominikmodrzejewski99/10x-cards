@@ -35,6 +35,9 @@ import { selectIsAuthenticated, selectIsAnonymous } from '../../auth/store/auth.
             <a routerLink="/study" routerLinkActive="navbar__link--active" class="navbar__link">
               <i class="pi pi-book"></i> Nauka
             </a>
+            <a routerLink="/learning-guide" routerLinkActive="navbar__link--active" class="navbar__link">
+              <i class="pi pi-lightbulb"></i> Poradnik
+            </a>
           }
         </div>
 
@@ -70,6 +73,9 @@ import { selectIsAuthenticated, selectIsAnonymous } from '../../auth/store/auth.
           </a>
           <a routerLink="/study" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
             <i class="pi pi-book"></i> Nauka
+          </a>
+          <a routerLink="/learning-guide" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
+            <i class="pi pi-lightbulb"></i> Poradnik
           </a>
         </div>
       }

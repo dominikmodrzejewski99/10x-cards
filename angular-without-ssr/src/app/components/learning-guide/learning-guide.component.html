@@ -1,0 +1,415 @@
+<div class="guide">
+  <!-- Header -->
+  <header class="guide__header">
+    <div class="guide__header-icon">
+      <i class="pi pi-lightbulb"></i>
+    </div>
+    <h1 class="guide__title">Poradnik uczenia się</h1>
+    <p class="guide__subtitle">
+      Poznaj sprawdzone, naukowo potwierdzone techniki skutecznej nauki.
+      Wykorzystaj je razem z fiszkami, żeby uczyć się szybciej i zapamiętywać na dłużej.
+    </p>
+  </header>
+
+  <!-- Actions -->
+  <div class="guide__actions">
+    @if (expandedCountSignal() < articles.length) {
+      <button class="guide__action-btn" (click)="expandAll()">
+        <i class="pi pi-angle-double-down"></i> Rozwiń wszystkie
+      </button>
+    }
+    @if (expandedCountSignal() > 0) {
+      <button class="guide__action-btn" (click)="collapseAll()">
+        <i class="pi pi-angle-double-up"></i> Zwiń wszystkie
+      </button>
+    }
+  </div>
+
+  <!-- Articles Grid -->
+  <div class="guide__grid">
+    @for (article of articles; track article.id) {
+      <article
+        class="guide__card"
+        [class.guide__card--expanded]="isExpanded(article.id)"
+        [attr.data-color]="article.color"
+      >
+        <button
+          class="guide__card-header"
+          (click)="toggleArticle(article.id)"
+          [attr.aria-expanded]="isExpanded(article.id)"
+          [attr.aria-controls]="'article-' + article.id"
+        >
+          <div class="guide__card-icon" [attr.data-color]="article.color">
+            <i [class]="article.icon"></i>
+          </div>
+          <div class="guide__card-intro">
+            <h2 class="guide__card-title">{{ article.title }}</h2>
+            <p class="guide__card-desc">{{ article.shortDescription }}</p>
+          </div>
+          <div class="guide__card-chevron">
+            <i class="pi" [class.pi-chevron-down]="!isExpanded(article.id)" [class.pi-chevron-up]="isExpanded(article.id)"></i>
+          </div>
+        </button>
+
+        @if (isExpanded(article.id)) {
+          <div class="guide__card-body" [id]="'article-' + article.id" role="region">
+            @for (paragraph of article.paragraphs; track $index) {
+              <p class="guide__card-paragraph">{{ paragraph }}</p>
+            }
+
+            <!-- ============ CHART: Spaced Repetition Timeline ============ -->
+            @if (article.id === 'spaced-repetition') {
+              <div class="chart chart--timeline" aria-label="Rosnące odstępy między powtórkami">
+                <div class="chart__label">Jak rosną odstępy między powtórkami:</div>
+                <div class="chart__tl">
+                  <div class="chart__tl-point chart__tl-point--start">
+                    <div class="chart__tl-dot"></div>
+                    <div class="chart__tl-text">Nauka</div>
+                  </div>
+                  <div class="chart__tl-gap" style="flex:1">
+                    <span class="chart__tl-gap-label">1 dzień</span>
+                  </div>
+                  <div class="chart__tl-point">
+                    <div class="chart__tl-dot"></div>
+                    <div class="chart__tl-text">P1</div>
+                  </div>
+                  <div class="chart__tl-gap" style="flex:2">
+                    <span class="chart__tl-gap-label">3 dni</span>
+                  </div>
+                  <div class="chart__tl-point">
+                    <div class="chart__tl-dot"></div>
+                    <div class="chart__tl-text">P2</div>
+                  </div>
+                  <div class="chart__tl-gap" style="flex:4">
+                    <span class="chart__tl-gap-label">7 dni</span>
+                  </div>
+                  <div class="chart__tl-point">
+                    <div class="chart__tl-dot"></div>
+                    <div class="chart__tl-text">P3</div>
+                  </div>
+                  <div class="chart__tl-gap" style="flex:7">
+                    <span class="chart__tl-gap-label">14 dni</span>
+                  </div>
+                  <div class="chart__tl-point">
+                    <div class="chart__tl-dot"></div>
+                    <div class="chart__tl-text">P4</div>
+                  </div>
+                  <div class="chart__tl-gap" style="flex:14">
+                    <span class="chart__tl-gap-label">30 dni</span>
+                  </div>
+                  <div class="chart__tl-point chart__tl-point--end">
+                    <div class="chart__tl-dot"></div>
+                    <div class="chart__tl-text">P5</div>
+                  </div>
+                </div>
+                <div class="chart__tl-caption">P = powtórka &middot; Odstępy rosną, bo pamięć się wzmacnia z każdą sesją</div>
+              </div>
+            }
+
+            <!-- ============ CHART: Active Recall Comparison Bars ============ -->
+            @if (article.id === 'active-recall') {
+              <div class="chart chart--bars" aria-label="Porównanie skuteczności metod nauki">
+                <div class="chart__label">Skuteczność metod nauki (% zapamiętanego materiału po tygodniu):</div>
+                <div class="chart__bars">
+                  <div class="chart__bar-row">
+                    <div class="chart__bar-name">Ponowne czytanie</div>
+                    <div class="chart__bar-track">
+                      <div class="chart__bar-fill chart__bar-fill--gray" style="--bar-target:25%"></div>
+                    </div>
+                    <div class="chart__bar-val">25%</div>
+                  </div>
+                  <div class="chart__bar-row">
+                    <div class="chart__bar-name">Podkreślanie</div>
+                    <div class="chart__bar-track">
+                      <div class="chart__bar-fill chart__bar-fill--orange" style="--bar-target:35%"></div>
+                    </div>
+                    <div class="chart__bar-val">35%</div>
+                  </div>
+                  <div class="chart__bar-row">
+                    <div class="chart__bar-name">Aktywne przywoływanie</div>
+                    <div class="chart__bar-track">
+                      <div class="chart__bar-fill chart__bar-fill--purple" style="--bar-target:68%"></div>
+                    </div>
+                    <div class="chart__bar-val">68%</div>
+                  </div>
+                  <div class="chart__bar-row">
+                    <div class="chart__bar-name">Przywoływanie + powtórki</div>
+                    <div class="chart__bar-track">
+                      <div class="chart__bar-fill chart__bar-fill--green" style="--bar-target:92%"></div>
+                    </div>
+                    <div class="chart__bar-val">92%</div>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <!-- ============ CHART: Forgetting Curve SVG ============ -->
+            @if (article.id === 'forgetting-curve') {
+              <div class="chart chart--forgetting" aria-label="Krzywa zapominania Ebbinghausa">
+                <div class="chart__toggle-row">
+                  <div class="chart__label">Retencja pamięci w czasie:</div>
+                  <button
+                    class="chart__toggle-btn"
+                    [class.chart__toggle-btn--active]="showRepetitionsSignal()"
+                    (click)="toggleRepetitions()"
+                  >
+                    <i class="pi" [class.pi-eye]="!showRepetitionsSignal()" [class.pi-eye-slash]="showRepetitionsSignal()"></i>
+                    {{ showRepetitionsSignal() ? 'Ukryj powtórki' : 'Pokaż z powtórkami' }}
+                  </button>
+                </div>
+                <svg viewBox="0 0 520 290" class="chart__svg" role="img" aria-label="Wykres krzywej zapominania">
+                  <!-- Grid -->
+                  <line x1="60" y1="30" x2="60" y2="245" stroke="#e5e7eb" stroke-width="1"/>
+                  <line x1="60" y1="245" x2="500" y2="245" stroke="#e5e7eb" stroke-width="1"/>
+                  <line x1="60" y1="30" x2="500" y2="30" stroke="#f3f4f6" stroke-width="1" stroke-dasharray="4"/>
+                  <line x1="60" y1="84" x2="500" y2="84" stroke="#f3f4f6" stroke-width="1" stroke-dasharray="4"/>
+                  <line x1="60" y1="137" x2="500" y2="137" stroke="#f3f4f6" stroke-width="1" stroke-dasharray="4"/>
+                  <line x1="60" y1="191" x2="500" y2="191" stroke="#f3f4f6" stroke-width="1" stroke-dasharray="4"/>
+
+                  <!-- Y axis labels -->
+                  <text x="52" y="35" text-anchor="end" class="chart__axis-text">100%</text>
+                  <text x="52" y="88" text-anchor="end" class="chart__axis-text">75%</text>
+                  <text x="52" y="142" text-anchor="end" class="chart__axis-text">50%</text>
+                  <text x="52" y="195" text-anchor="end" class="chart__axis-text">25%</text>
+                  <text x="52" y="249" text-anchor="end" class="chart__axis-text">0%</text>
+
+                  <!-- X axis labels (days) -->
+                  <text x="60" y="265" text-anchor="middle" class="chart__axis-text">0</text>
+                  <text x="133" y="265" text-anchor="middle" class="chart__axis-text">5</text>
+                  <text x="207" y="265" text-anchor="middle" class="chart__axis-text">10</text>
+                  <text x="280" y="265" text-anchor="middle" class="chart__axis-text">15</text>
+                  <text x="353" y="265" text-anchor="middle" class="chart__axis-text">20</text>
+                  <text x="427" y="265" text-anchor="middle" class="chart__axis-text">25</text>
+                  <text x="500" y="265" text-anchor="middle" class="chart__axis-text">30</text>
+                  <text x="280" y="284" text-anchor="middle" class="chart__axis-label">Dni</text>
+
+                  <!-- Without review curve -->
+                  <path
+                    d="M 60,30 C 68,110 80,160 100,185 C 120,208 160,222 207,230 C 260,236 380,241 500,243"
+                    fill="none"
+                    stroke="#ff6240"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    class="chart__path chart__path--decay"
+                  />
+
+                  <!-- Area under decay curve -->
+                  <path
+                    d="M 60,30 C 68,110 80,160 100,185 C 120,208 160,222 207,230 C 260,236 380,241 500,243 L 500,245 L 60,245 Z"
+                    fill="url(#decay-gradient)"
+                    opacity="0.15"
+                  />
+
+                  <!-- With review curve (conditional) -->
+                  @if (showRepetitionsSignal()) {
+                    <path
+                      d="M 60,30
+                         C 65,70 69,110 75,137
+                         L 75,55
+                         C 82,68 94,96 105,115
+                         L 105,42
+                         C 118,52 148,72 170,88
+                         L 170,38
+                         C 195,45 250,60 310,72
+                         L 310,34
+                         C 350,37 430,42 500,48"
+                      fill="none"
+                      stroke="#23b26d"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      class="chart__path chart__path--review"
+                    />
+
+                    <!-- Area under review curve -->
+                    <path
+                      d="M 60,30
+                         C 65,70 69,110 75,137
+                         L 75,55
+                         C 82,68 94,96 105,115
+                         L 105,42
+                         C 118,52 148,72 170,88
+                         L 170,38
+                         C 195,45 250,60 310,72
+                         L 310,34
+                         C 350,37 430,42 500,48
+                         L 500,245 L 60,245 Z"
+                      fill="url(#review-gradient)"
+                      opacity="0.1"
+                    />
+
+                    <!-- Review point markers -->
+                    <circle cx="75" cy="55" r="4" fill="#23b26d" class="chart__review-dot"/>
+                    <circle cx="105" cy="42" r="4" fill="#23b26d" class="chart__review-dot"/>
+                    <circle cx="170" cy="38" r="4" fill="#23b26d" class="chart__review-dot"/>
+                    <circle cx="310" cy="34" r="4" fill="#23b26d" class="chart__review-dot"/>
+                  }
+
+                  <!-- Gradients -->
+                  <defs>
+                    <linearGradient id="decay-gradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#ff6240"/>
+                      <stop offset="100%" stop-color="#ff6240" stop-opacity="0"/>
+                    </linearGradient>
+                    <linearGradient id="review-gradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#23b26d"/>
+                      <stop offset="100%" stop-color="#23b26d" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div class="chart__legend">
+                  <span class="chart__legend-item">
+                    <span class="chart__legend-dot chart__legend-dot--red"></span> Bez powtórek
+                  </span>
+                  @if (showRepetitionsSignal()) {
+                    <span class="chart__legend-item">
+                      <span class="chart__legend-dot chart__legend-dot--green"></span> Z powtórkami
+                      <span class="chart__legend-dot chart__legend-dot--green-circle"></span> Moment powtórki
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+
+            <!-- ============ CHART: Dunning-Kruger Curve ============ -->
+            @if (article.id === 'dunning-kruger') {
+              <div class="chart chart--dk" aria-label="Wykres efektu Dunninga-Krugera">
+                <div class="chart__label">Pewność siebie vs. kompetencja:</div>
+                <svg viewBox="0 0 520 310" class="chart__svg" role="img" aria-label="Krzywa Dunninga-Krugera">
+                  <!-- Axes -->
+                  <line x1="50" y1="20" x2="50" y2="250" stroke="#e5e7eb" stroke-width="1"/>
+                  <line x1="50" y1="250" x2="500" y2="250" stroke="#e5e7eb" stroke-width="1"/>
+                  <text x="25" y="140" text-anchor="middle" class="chart__axis-label" transform="rotate(-90,25,140)">Pewność siebie</text>
+                  <text x="280" y="278" text-anchor="middle" class="chart__axis-label">Doświadczenie / Wiedza</text>
+
+                  <!-- Area under curve -->
+                  <path
+                    d="M 50,210 C 75,150 95,45 140,35 C 185,25 210,190 260,220 C 300,242 370,130 420,95 C 450,78 480,72 500,70 L 500,250 L 50,250 Z"
+                    fill="url(#dk-gradient)"
+                    opacity="0.08"
+                  />
+
+                  <!-- Main curve -->
+                  <path
+                    d="M 50,210 C 75,150 95,45 140,35 C 185,25 210,190 260,220 C 300,242 370,130 420,95 C 450,78 480,72 500,70"
+                    fill="none"
+                    stroke="#ff6240"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    class="chart__path chart__path--dk"
+                  />
+
+                  <!-- Stage markers (clickable) -->
+                  <!-- 1: Start -->
+                  <circle cx="65" cy="195" r="6" class="chart__dk-dot" [class.chart__dk-dot--active]="dkActiveStageSignal() === 0" (mouseenter)="setDkStage(0)" (mouseleave)="setDkStage(null)" (click)="setDkStage(dkActiveStageSignal() === 0 ? null : 0)"/>
+                  <!-- 2: Peak -->
+                  <circle cx="140" cy="35" r="6" class="chart__dk-dot" [class.chart__dk-dot--active]="dkActiveStageSignal() === 1" (mouseenter)="setDkStage(1)" (mouseleave)="setDkStage(null)" (click)="setDkStage(dkActiveStageSignal() === 1 ? null : 1)"/>
+                  <!-- 3: Valley -->
+                  <circle cx="260" cy="220" r="6" class="chart__dk-dot" [class.chart__dk-dot--active]="dkActiveStageSignal() === 2" (mouseenter)="setDkStage(2)" (mouseleave)="setDkStage(null)" (click)="setDkStage(dkActiveStageSignal() === 2 ? null : 2)"/>
+                  <!-- 4: Slope -->
+                  <circle cx="380" cy="115" r="6" class="chart__dk-dot" [class.chart__dk-dot--active]="dkActiveStageSignal() === 3" (mouseenter)="setDkStage(3)" (mouseleave)="setDkStage(null)" (click)="setDkStage(dkActiveStageSignal() === 3 ? null : 3)"/>
+                  <!-- 5: Plateau -->
+                  <circle cx="490" cy="70" r="6" class="chart__dk-dot" [class.chart__dk-dot--active]="dkActiveStageSignal() === 4" (mouseenter)="setDkStage(4)" (mouseleave)="setDkStage(null)" (click)="setDkStage(dkActiveStageSignal() === 4 ? null : 4)"/>
+
+                  <!-- Stage labels on curve -->
+                  <text x="140" y="22" text-anchor="middle" class="chart__dk-label">"Szczyt pewności"</text>
+                  <text x="260" y="240" text-anchor="middle" class="chart__dk-label">Dolina rozpaczy</text>
+                  <text x="490" y="60" text-anchor="middle" class="chart__dk-label">Ekspert</text>
+
+                  <defs>
+                    <linearGradient id="dk-gradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#ff6240"/>
+                      <stop offset="100%" stop-color="#ff6240" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <!-- Stage description tooltip -->
+                <div class="chart__dk-stages">
+                  @for (stage of dkStages; track $index) {
+                    <button
+                      class="chart__dk-stage"
+                      [class.chart__dk-stage--active]="dkActiveStageSignal() === $index"
+                      (mouseenter)="setDkStage($index)"
+                      (mouseleave)="setDkStage(null)"
+                      (click)="setDkStage(dkActiveStageSignal() === $index ? null : $index)"
+                    >
+                      <span class="chart__dk-stage-num">{{ $index + 1 }}</span>
+                      <span class="chart__dk-stage-label">{{ stage.label }}</span>
+                    </button>
+                  }
+                </div>
+                @if (dkActiveStageSignal() !== null) {
+                  <div class="chart__dk-tooltip">
+                    {{ dkStages[dkActiveStageSignal()!].description }}
+                  </div>
+                }
+              </div>
+            }
+
+            <!-- ============ CHART: Pomodoro Blocks ============ -->
+            @if (article.id === 'pomodoro') {
+              <div class="chart chart--pomo" aria-label="Cykl Pomodoro">
+                <div class="chart__label">Jeden cykl Pomodoro (ok. 2,5 godziny):</div>
+                <div class="chart__pomo-cycle">
+                  @for (block of [1,2,3,4]; track block) {
+                    <div class="chart__pomo-group">
+                      <div class="chart__pomo-block chart__pomo-block--work">
+                        <span class="chart__pomo-time">25 min</span>
+                        <span class="chart__pomo-type">Nauka</span>
+                      </div>
+                      @if (block < 4) {
+                        <div class="chart__pomo-block chart__pomo-block--break">
+                          <span class="chart__pomo-time">5 min</span>
+                        </div>
+                      }
+                    </div>
+                  }
+                  <div class="chart__pomo-block chart__pomo-block--long">
+                    <span class="chart__pomo-time">15-30 min</span>
+                    <span class="chart__pomo-type">Długa przerwa</span>
+                  </div>
+                </div>
+                <div class="chart__pomo-summary">
+                  <div class="chart__pomo-stat">
+                    <span class="chart__pomo-stat-value">100 min</span>
+                    <span class="chart__pomo-stat-label">Skupionej nauki</span>
+                  </div>
+                  <div class="chart__pomo-stat">
+                    <span class="chart__pomo-stat-value">4</span>
+                    <span class="chart__pomo-stat-label">Sesje</span>
+                  </div>
+                  <div class="chart__pomo-stat">
+                    <span class="chart__pomo-stat-value">30-45 min</span>
+                    <span class="chart__pomo-stat-label">Przerw</span>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <div class="guide__card-takeaway">
+              <div class="guide__card-takeaway-icon">
+                <i class="pi pi-star-fill"></i>
+              </div>
+              <div class="guide__card-takeaway-content">
+                <div class="guide__card-takeaway-label">Kluczowy wniosek</div>
+                <p class="guide__card-takeaway-text">{{ article.keyTakeaway }}</p>
+              </div>
+            </div>
+          </div>
+        }
+      </article>
+    }
+  </div>
+
+  <!-- Footer CTA -->
+  <div class="guide__footer">
+    <p class="guide__footer-text">Gotowy, żeby wykorzystać te techniki w praktyce?</p>
+    <div class="guide__footer-actions">
+      <a routerLink="/study" class="guide__footer-cta">
+        <i class="pi pi-play-circle"></i> Rozpocznij naukę
+      </a>
+      <a routerLink="/generate" class="guide__footer-cta guide__footer-cta--secondary">
+        <i class="pi pi-sparkles"></i> Generuj fiszki z AI
+      </a>
+    </div>
+  </div>
+</div>
