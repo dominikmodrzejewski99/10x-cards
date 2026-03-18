@@ -120,6 +120,7 @@
             [back]="card.flashcard.back"
             [frontImageUrl]="card.flashcard.front_image_url"
             [isFlipped]="isFlippedSignal()"
+            [skipTransition]="skipTransitionSignal()"
             (flipToggle)="flip()">
           </app-flashcard-flip>
         }

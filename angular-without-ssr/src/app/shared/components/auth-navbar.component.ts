@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { UserMenuComponent } from '../../auth/components/user-menu.component';
-import { selectIsAuthenticated, selectIsAnonymous } from '../../auth/store/auth.selectors';
+import { selectIsAuthenticated, selectIsAnonymous, selectAuthChecked } from '../../auth/store/auth.selectors';
 
 @Component({
   selector: 'app-auth-navbar',
@@ -22,7 +22,7 @@ import { selectIsAuthenticated, selectIsAnonymous } from '../../auth/store/auth.
 
         <!-- Desktop links (authenticated) -->
         <div class="navbar__links navbar__links--desktop">
-          @if (isAuthenticated()) {
+          @if (authChecked() && isAuthenticated()) {
             <a routerLink="/dashboard" routerLinkActive="navbar__link--active" class="navbar__link">
               <i class="pi pi-home"></i> Start
             </a>
@@ -42,14 +42,16 @@ import { selectIsAuthenticated, selectIsAnonymous } from '../../auth/store/auth.
         </div>
 
         <div class="navbar__right">
-          @if (isAuthenticated() && !isAnonymous()) {
+          @if (!authChecked()) {
+            <!-- Wait for auth check -->
+          } @else if (isAuthenticated() && !isAnonymous()) {
             <app-user-menu></app-user-menu>
-          } @else {
+          } @else if (!isAuthenticated()) {
             <a routerLink="/login" class="navbar__auth-btn navbar__auth-btn--login">Zaloguj się</a>
             <a routerLink="/register" class="navbar__auth-btn navbar__auth-btn--register">Zarejestruj się</a>
           }
 
-          @if (isAuthenticated()) {
+          @if (authChecked() && isAuthenticated()) {
             <button class="navbar__burger" (click)="toggleMobile()" [attr.aria-expanded]="mobileOpenSignal()">
               <span class="navbar__burger-line"></span>
               <span class="navbar__burger-line"></span>
@@ -60,7 +62,7 @@ import { selectIsAuthenticated, selectIsAnonymous } from '../../auth/store/auth.
       </div>
 
       <!-- Mobile drawer -->
-      @if (isAuthenticated() && mobileOpenSignal()) {
+      @if (authChecked() && isAuthenticated() && mobileOpenSignal()) {
         <div class="navbar__drawer">
           <a routerLink="/dashboard" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
             <i class="pi pi-home"></i> Start
@@ -86,6 +88,7 @@ import { selectIsAuthenticated, selectIsAnonymous } from '../../auth/store/auth.
 export class AuthNavbarComponent {
   private store: Store = inject(Store);
 
+  public authChecked = toSignal(this.store.select(selectAuthChecked), { initialValue: false });
   public isAuthenticated = toSignal(this.store.select(selectIsAuthenticated), { initialValue: false });
   public isAnonymous = toSignal(this.store.select(selectIsAnonymous), { initialValue: false });
   public mobileOpenSignal: WritableSignal<boolean> = signal<boolean>(false);

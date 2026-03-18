@@ -12,6 +12,7 @@ export class FlashcardFlipComponent {
   public backSignal: InputSignal<string> = input.required<string>({ alias: 'back' });
   public frontImageUrlSignal: InputSignal<string | null> = input<string | null>(null, { alias: 'frontImageUrl' });
   public isFlippedSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'isFlipped' });
+  public skipTransitionSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'skipTransition' });
 
   public flipToggle: OutputEmitterRef<void> = output<void>();
 

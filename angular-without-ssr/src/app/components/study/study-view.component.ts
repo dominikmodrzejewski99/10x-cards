@@ -6,7 +6,6 @@ import {
   signal,
   computed,
   inject,
-
   WritableSignal,
   Signal
 } from '@angular/core';
@@ -36,7 +35,6 @@ export class StudyViewComponent implements OnInit, OnDestroy {
   private setApi: FlashcardSetApiService = inject(FlashcardSetApiService);
   private sm2: SpacedRepetitionService = inject(SpacedRepetitionService);
   private streakService: StreakService = inject(StreakService);
-
   private route: ActivatedRoute = inject(ActivatedRoute);
   private loadSubscription: Subscription | null = null;
   private answerSubscription: Subscription | null = null;
@@ -49,6 +47,7 @@ export class StudyViewComponent implements OnInit, OnDestroy {
   public failedCardsSignal: WritableSignal<StudyCardDTO[]> = signal<StudyCardDTO[]>([]);
   public currentIndexSignal: WritableSignal<number> = signal<number>(0);
   public isFlippedSignal: WritableSignal<boolean> = signal<boolean>(false);
+  public skipTransitionSignal: WritableSignal<boolean> = signal<boolean>(false);
   public loadingSignal: WritableSignal<boolean> = signal<boolean>(true);
   public savingSignal: WritableSignal<boolean> = signal<boolean>(false);
   public errorSignal: WritableSignal<string | null> = signal<string | null>(null);
@@ -307,8 +306,10 @@ export class StudyViewComponent implements OnInit, OnDestroy {
       this.streakService.recordSession(this.sessionResultsSignal().total);
       launchConfetti();
     } else {
-      this.currentIndexSignal.set(nextIdx);
+      this.skipTransitionSignal.set(true);
       this.isFlippedSignal.set(false);
+      this.currentIndexSignal.set(nextIdx);
+      setTimeout(() => this.skipTransitionSignal.set(false));
     }
   }
 
