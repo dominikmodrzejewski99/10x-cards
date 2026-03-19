@@ -1,0 +1,318 @@
+{
+  "level": "c1-cae",
+  "title": "C1 Advanced (CAE) — Use of English",
+  "description": "Test sprawdzający znajomość angielskiego na poziomie C1",
+  "passingScore": 60,
+  "questions": [
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-001",
+      "text": "Not only ___ late, but he also forgot to bring the documents.",
+      "options": ["he arrived", "did he arrive", "he did arrive", "arrived he"],
+      "correctIndex": 1,
+      "category": "grammar",
+      "subcategory": "inversions",
+      "explanation": "After negative adverbials like 'not only', subject-auxiliary inversion is required: 'did he arrive'."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-002",
+      "text": "It was the manager ___ eventually resolved the dispute.",
+      "options": ["who", "which", "that", "he"],
+      "correctIndex": 0,
+      "category": "grammar",
+      "subcategory": "cleft-sentences",
+      "explanation": "In 'It was + noun + who/that' cleft structures, 'who' is preferred when referring to a person."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-003",
+      "text": "Had she known about the risks, she ___ a different approach.",
+      "options": ["would take", "will have taken", "would have taken", "had taken"],
+      "correctIndex": 2,
+      "category": "grammar",
+      "subcategory": "conditionals",
+      "explanation": "Inverted third conditional: 'Had + subject + past participle' replaces 'If + past perfect'. Result uses 'would have + past participle'."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-004",
+      "text": "The proposal met with ___ opposition from local residents.",
+      "options": ["strong", "heavy", "fierce", "tough"],
+      "correctIndex": 2,
+      "category": "vocabulary",
+      "subcategory": "collocations",
+      "explanation": "'Fierce opposition' is the standard collocation. 'Fierce' collocates with opposition, competition, debate."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-005",
+      "text": "The government insisted that every citizen ___ the right to appeal.",
+      "options": ["has", "have", "had", "having"],
+      "correctIndex": 1,
+      "category": "grammar",
+      "subcategory": "subjunctive",
+      "explanation": "After verbs like 'insist, demand, recommend', the subjunctive (base form) is used: 'that every citizen have'."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-006",
+      "text": "Seldom ___ such a compelling performance on stage.",
+      "options": ["I have witnessed", "have I witnessed", "I witnessed", "did I witness"],
+      "correctIndex": 1,
+      "category": "grammar",
+      "subcategory": "inversions",
+      "explanation": "After negative frequency adverbs like 'seldom', subject-auxiliary inversion is required."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-007",
+      "text": "The results were mixed, ___ which the team had to reconsider their strategy.",
+      "options": ["in", "at", "by", "on"],
+      "correctIndex": 0,
+      "category": "vocabulary",
+      "subcategory": "academic-vocabulary",
+      "explanation": "'In which' introduces a relative clause referring to circumstances: 'results, in which case/light...'."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-008",
+      "text": "She found the assignment ___ tedious — it took her the whole evening.",
+      "options": ["insufferably", "enormously", "deeply", "bitterly"],
+      "correctIndex": 0,
+      "category": "vocabulary",
+      "subcategory": "adverb-adjective-collocations",
+      "explanation": "'Insufferably tedious' is a strong collocation. 'Insufferably' intensifies unpleasant qualities."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-009",
+      "text": "The architect's vision, ___ as it was, proved impossible to execute within budget.",
+      "options": ["inspired", "inspiring", "inspirational", "inspiration"],
+      "correctIndex": 0,
+      "category": "vocabulary",
+      "subcategory": "academic-vocabulary",
+      "explanation": "'Inspired' (adjective) describes a vision that has inspired quality: 'as inspired as it was' — concessive construction."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-010",
+      "text": "Under no circumstances ___ personal data be shared with third parties.",
+      "options": ["should", "must", "shall", "will"],
+      "correctIndex": 0,
+      "category": "grammar",
+      "subcategory": "inversions",
+      "explanation": "After 'under no circumstances', subject-auxiliary inversion is required. 'Should' expresses obligation/prohibition here."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-011",
+      "text": "The senator's remarks were widely ___ as an attempt to mislead voters.",
+      "options": ["regarded", "interpreted", "seen", "considered"],
+      "correctIndex": 1,
+      "category": "vocabulary",
+      "subcategory": "academic-vocabulary",
+      "explanation": "'Interpreted as' specifically denotes attributing meaning or intent to someone's words or actions."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-012",
+      "text": "No sooner ___ the announcement than protests broke out.",
+      "options": ["was made", "had been made", "was making", "has been made"],
+      "correctIndex": 1,
+      "category": "grammar",
+      "subcategory": "inversions",
+      "explanation": "'No sooner + past perfect' in inverted structure: 'No sooner had X been done than Y happened'."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-013",
+      "text": "What ___ her most was the complete lack of transparency from management.",
+      "options": ["concerned", "troubled", "bothered", "struck"],
+      "correctIndex": 3,
+      "category": "vocabulary",
+      "subcategory": "advanced-vocabulary",
+      "explanation": "'Strike' (what struck her most) means to make a strong impression or to occur forcefully to someone."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-014",
+      "text": "The treaty was signed ___ the backdrop of ongoing military tensions.",
+      "options": ["on", "against", "with", "under"],
+      "correctIndex": 1,
+      "category": "vocabulary",
+      "subcategory": "collocations",
+      "explanation": "'Against the backdrop of' is a fixed prepositional phrase meaning 'in the context of'."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-015",
+      "text": "They attributed the failure ___ poor communication between departments.",
+      "options": ["for", "by", "to", "with"],
+      "correctIndex": 2,
+      "category": "vocabulary",
+      "subcategory": "collocations",
+      "explanation": "'Attribute something to something' is the correct prepositional pattern."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-016",
+      "text": "The data ___ that further research is needed before drawing conclusions.",
+      "options": ["shows", "suggests", "indicates", "implies"],
+      "correctIndex": 2,
+      "category": "vocabulary",
+      "subcategory": "academic-vocabulary",
+      "explanation": "'Indicate' is preferred in academic writing for data pointing toward conclusions without being definitive."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-017",
+      "text": "The critic ___ the author's latest novel as a masterpiece of modern fiction.",
+      "options": ["referred", "described", "hailed", "mentioned"],
+      "correctIndex": 2,
+      "category": "vocabulary",
+      "subcategory": "advanced-vocabulary",
+      "explanation": "'Hail something as' means to praise something enthusiastically and publicly as outstanding."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-018",
+      "text": "Little ___ that her discovery would change the course of medical history.",
+      "options": ["she knew", "knew she", "did she know", "she did know"],
+      "correctIndex": 2,
+      "category": "grammar",
+      "subcategory": "inversions",
+      "explanation": "After 'little' used as a negative adverbial, subject-auxiliary inversion is required: 'did she know'."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-019",
+      "text": "The policy has come ___ considerable scrutiny from independent watchdogs.",
+      "options": ["within", "under", "to", "upon"],
+      "correctIndex": 1,
+      "category": "vocabulary",
+      "subcategory": "collocations",
+      "explanation": "'Come under scrutiny/criticism/pressure' is a fixed collocation meaning to be subjected to examination."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "c1-mc-020",
+      "text": "It goes without ___ that confidentiality must be maintained at all times.",
+      "options": ["mentioning", "doubt", "saying", "question"],
+      "correctIndex": 2,
+      "category": "vocabulary",
+      "subcategory": "fixed-expressions",
+      "explanation": "'It goes without saying' is a fixed idiom meaning something is so obvious it need not be stated."
+    },
+    {
+      "type": "word-formation",
+      "id": "c1-wf-001",
+      "text": "Her ___ handling of the crisis won praise from all sides.",
+      "baseWord": "MASTER",
+      "correctAnswer": "masterly",
+      "acceptedAnswers": ["masterly"],
+      "category": "word-building",
+      "subcategory": "adjective-formation",
+      "explanation": "MASTER (noun) → masterly (adjective): add -ly to form an adjective meaning 'performed with great skill'."
+    },
+    {
+      "type": "word-formation",
+      "id": "c1-wf-002",
+      "text": "The report highlighted the ___ of the current healthcare system.",
+      "baseWord": "SHORT",
+      "correctAnswer": "shortcomings",
+      "acceptedAnswers": ["shortcomings"],
+      "category": "word-building",
+      "subcategory": "compound-noun",
+      "explanation": "SHORT + COME → shortcoming (compound noun, plural 'shortcomings') meaning a fault or deficiency."
+    },
+    {
+      "type": "word-formation",
+      "id": "c1-wf-003",
+      "text": "He remained ___ committed to his principles throughout the scandal.",
+      "baseWord": "WAVER",
+      "correctAnswer": "unwaveringly",
+      "acceptedAnswers": ["unwaveringly"],
+      "category": "word-building",
+      "subcategory": "adverb-formation",
+      "explanation": "WAVER → wavering (adjective) → unwavering (prefix un-) → unwaveringly (adverb with -ly)."
+    },
+    {
+      "type": "word-formation",
+      "id": "c1-wf-004",
+      "text": "The politician's ___ remarks caused widespread outrage.",
+      "baseWord": "FLAME",
+      "correctAnswer": "inflammatory",
+      "acceptedAnswers": ["inflammatory"],
+      "category": "word-building",
+      "subcategory": "adjective-formation",
+      "explanation": "FLAME → inflammation (noun) → inflammatory (adjective): describes something that provokes strong reactions."
+    },
+    {
+      "type": "word-formation",
+      "id": "c1-wf-005",
+      "text": "Her ___ approach to negotiations earned her a reputation as a tough bargainer.",
+      "baseWord": "COMPROMISE",
+      "correctAnswer": "uncompromising",
+      "acceptedAnswers": ["uncompromising"],
+      "category": "word-building",
+      "subcategory": "adjective-formation",
+      "explanation": "COMPROMISE → compromising (adjective) → uncompromising (prefix un-): unwilling to make concessions."
+    },
+    {
+      "type": "word-formation",
+      "id": "c1-wf-006",
+      "text": "The author's prose style is renowned for its ___ simplicity.",
+      "baseWord": "DECEIVE",
+      "correctAnswer": "deceptive",
+      "acceptedAnswers": ["deceptive"],
+      "category": "word-building",
+      "subcategory": "adjective-formation",
+      "explanation": "DECEIVE (verb) → deceptive (adjective): drop -ive and add suffix -ive, meaning 'giving a false impression'."
+    },
+    {
+      "type": "word-formation",
+      "id": "c1-wf-007",
+      "text": "There is a growing ___ that traditional values are being eroded.",
+      "baseWord": "PERCEIVE",
+      "correctAnswer": "perception",
+      "acceptedAnswers": ["perception"],
+      "category": "word-building",
+      "subcategory": "noun-formation",
+      "explanation": "PERCEIVE (verb) → perception (noun): drop -ive and add -ption to form an abstract noun."
+    },
+    {
+      "type": "word-formation",
+      "id": "c1-wf-008",
+      "text": "The new regulations have made the entire process ___ bureaucratic.",
+      "baseWord": "BURDEN",
+      "correctAnswer": "onerously",
+      "acceptedAnswers": ["onerously"],
+      "category": "word-building",
+      "subcategory": "adverb-formation",
+      "explanation": "BURDEN → burdensome, but the expected derivation here is ONEROUS (synonym) → onerously (adverb): involving heavy obligation."
+    },
+    {
+      "type": "word-formation",
+      "id": "c1-wf-009",
+      "text": "He was praised for his ___ in finding a solution under pressure.",
+      "baseWord": "INVENT",
+      "correctAnswer": "inventiveness",
+      "acceptedAnswers": ["inventiveness", "ingenuity"],
+      "category": "word-building",
+      "subcategory": "noun-formation",
+      "explanation": "INVENT → inventive (adjective) → inventiveness (abstract noun with -ness): the quality of being creative."
+    },
+    {
+      "type": "word-formation",
+      "id": "c1-wf-010",
+      "text": "The ___ of the contract meant that both parties were bound by its terms.",
+      "baseWord": "BIND",
+      "correctAnswer": "binding",
+      "acceptedAnswers": ["binding"],
+      "category": "word-building",
+      "subcategory": "adjective-noun-formation",
+      "explanation": "BIND (verb) → binding (adjective/noun): the -ing participle can function as an adjective meaning 'legally obligatory'."
+    }
+  ]
+}

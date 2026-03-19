@@ -1,0 +1,318 @@
+{
+  "level": "b2-fce",
+  "title": "B2 First (FCE) — Use of English",
+  "description": "Test sprawdzający znajomość angielskiego na poziomie B2",
+  "passingScore": 60,
+  "questions": [
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-001",
+      "text": "She ___ to the party if she had known about it.",
+      "options": ["would go", "would have gone", "will go", "had gone"],
+      "correctIndex": 1,
+      "category": "grammar",
+      "subcategory": "conditionals",
+      "explanation": "Third conditional: 'would have + past participle' for unreal past situations."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-002",
+      "text": "The new bridge ___ by the end of next year.",
+      "options": ["will complete", "will be completed", "is completing", "completes"],
+      "correctIndex": 1,
+      "category": "grammar",
+      "subcategory": "passive-voice",
+      "explanation": "Future passive: 'will be + past participle'. The bridge is the receiver of the action."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-003",
+      "text": "He told me that he ___ studying for his exam the following day.",
+      "options": ["would be", "will be", "is", "was being"],
+      "correctIndex": 0,
+      "category": "grammar",
+      "subcategory": "reported-speech",
+      "explanation": "In reported speech, 'will be' shifts to 'would be' (future continuous → conditional continuous)."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-004",
+      "text": "The woman ___ bag was stolen reported it to the police.",
+      "options": ["who", "which", "whose", "whom"],
+      "correctIndex": 2,
+      "category": "grammar",
+      "subcategory": "relative-clauses",
+      "explanation": "'Whose' is the possessive relative pronoun used for people and things."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-005",
+      "text": "She ___ a lot of progress in her English lately.",
+      "options": ["made", "has made", "makes", "is making"],
+      "correctIndex": 1,
+      "category": "vocabulary",
+      "subcategory": "collocations",
+      "explanation": "'Make progress' is a fixed collocation. Present perfect is used with 'lately'."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-006",
+      "text": "The meeting has been put ___ until next Friday.",
+      "options": ["off", "back", "away", "over"],
+      "correctIndex": 1,
+      "category": "vocabulary",
+      "subcategory": "phrasal-verbs",
+      "explanation": "'Put back' means to postpone something to a later time."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-007",
+      "text": "I'd rather you ___ smoke in here, if you don't mind.",
+      "options": ["don't", "didn't", "wouldn't", "not"],
+      "correctIndex": 1,
+      "category": "grammar",
+      "subcategory": "subjunctive",
+      "explanation": "'I'd rather + subject + past simple' expresses a preference about someone else's action."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-008",
+      "text": "Despite ___ hard, she didn't pass the exam.",
+      "options": ["study", "studied", "studying", "to study"],
+      "correctIndex": 2,
+      "category": "grammar",
+      "subcategory": "gerunds",
+      "explanation": "After 'despite', a gerund (-ing form) is required, not an infinitive or finite verb."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-009",
+      "text": "He ___ have forgotten — he wrote it in his diary.",
+      "options": ["can't", "mustn't", "shouldn't", "needn't"],
+      "correctIndex": 0,
+      "category": "grammar",
+      "subcategory": "modals",
+      "explanation": "'Can't have + past participle' expresses logical impossibility about a past action."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-010",
+      "text": "The director is known for ___ attention to detail.",
+      "options": ["their", "his/her", "paying", "great"],
+      "correctIndex": 2,
+      "category": "grammar",
+      "subcategory": "gerunds",
+      "explanation": "After a preposition ('for'), a gerund (-ing form) is required."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-011",
+      "text": "She congratulated him ___ passing his driving test.",
+      "options": ["for", "on", "with", "about"],
+      "correctIndex": 1,
+      "category": "vocabulary",
+      "subcategory": "collocations",
+      "explanation": "'Congratulate someone on something' is the correct prepositional pattern."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-012",
+      "text": "By the time we arrived, the film ___ for twenty minutes.",
+      "options": ["has been running", "was running", "had been running", "ran"],
+      "correctIndex": 2,
+      "category": "grammar",
+      "subcategory": "past-perfect-continuous",
+      "explanation": "Past perfect continuous describes an action in progress before a specific past moment."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-013",
+      "text": "It's time we ___ a decision about the project.",
+      "options": ["make", "made", "making", "have made"],
+      "correctIndex": 1,
+      "category": "grammar",
+      "subcategory": "subjunctive",
+      "explanation": "'It's time + subject + past simple' (subjunctive) expresses that something should happen now."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-014",
+      "text": "The suspect denied ___ in the area at the time.",
+      "options": ["be", "been", "to be", "being"],
+      "correctIndex": 3,
+      "category": "grammar",
+      "subcategory": "gerunds",
+      "explanation": "'Deny' is followed by a gerund (-ing form), not an infinitive."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-015",
+      "text": "Could you ___ me a favour and post this letter?",
+      "options": ["make", "give", "do", "take"],
+      "correctIndex": 2,
+      "category": "vocabulary",
+      "subcategory": "collocations",
+      "explanation": "'Do someone a favour' is the correct collocation — not 'make' a favour."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-016",
+      "text": "The company decided to lay ___ 50 workers due to budget cuts.",
+      "options": ["away", "out", "off", "down"],
+      "correctIndex": 2,
+      "category": "vocabulary",
+      "subcategory": "phrasal-verbs",
+      "explanation": "'Lay off' means to dismiss employees, especially temporarily, due to financial reasons."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-017",
+      "text": "I wish I ___ harder when I was at school.",
+      "options": ["study", "studied", "had studied", "would study"],
+      "correctIndex": 2,
+      "category": "grammar",
+      "subcategory": "conditionals",
+      "explanation": "'Wish + past perfect' expresses regret about a past situation."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-018",
+      "text": "The results were ___ better than anyone had expected.",
+      "options": ["far", "very", "such", "so"],
+      "correctIndex": 0,
+      "category": "vocabulary",
+      "subcategory": "intensifiers",
+      "explanation": "'Far' is used with comparatives to intensify the comparison (far better, far more)."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-019",
+      "text": "The police are looking ___ the cause of the accident.",
+      "options": ["after", "into", "for", "up"],
+      "correctIndex": 1,
+      "category": "vocabulary",
+      "subcategory": "phrasal-verbs",
+      "explanation": "'Look into' means to investigate or examine a situation."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b2-mc-020",
+      "text": "She was made ___ wait for three hours before the interview.",
+      "options": ["to", "for", "—", "into"],
+      "correctIndex": 0,
+      "category": "grammar",
+      "subcategory": "passive-voice",
+      "explanation": "In the passive, 'make' takes 'to + infinitive': 'was made to wait'."
+    },
+    {
+      "type": "word-formation",
+      "id": "b2-wf-001",
+      "text": "His ___ of the situation was completely wrong.",
+      "baseWord": "ASSESS",
+      "correctAnswer": "assessment",
+      "acceptedAnswers": ["assessment"],
+      "category": "word-building",
+      "subcategory": "noun-formation",
+      "explanation": "ASSESS (verb) → assessment (noun): add the suffix -ment to form a noun."
+    },
+    {
+      "type": "word-formation",
+      "id": "b2-wf-002",
+      "text": "The critics said the film was ___ long and slow.",
+      "baseWord": "NECESSARY",
+      "correctAnswer": "unnecessarily",
+      "acceptedAnswers": ["unnecessarily"],
+      "category": "word-building",
+      "subcategory": "adverb-formation",
+      "explanation": "NECESSARY → unnecessary (prefix un-) → unnecessarily (suffix -ly for adverb)."
+    },
+    {
+      "type": "word-formation",
+      "id": "b2-wf-003",
+      "text": "There has been a significant ___ in house prices this year.",
+      "baseWord": "REDUCE",
+      "correctAnswer": "reduction",
+      "acceptedAnswers": ["reduction"],
+      "category": "word-building",
+      "subcategory": "noun-formation",
+      "explanation": "REDUCE (verb) → reduction (noun): drop -e and add -tion."
+    },
+    {
+      "type": "word-formation",
+      "id": "b2-wf-004",
+      "text": "He was ___ to take on the extra work without more pay.",
+      "baseWord": "WILLING",
+      "correctAnswer": "unwilling",
+      "acceptedAnswers": ["unwilling"],
+      "category": "word-building",
+      "subcategory": "prefix-negative",
+      "explanation": "WILLING (adjective) → unwilling (adjective): add prefix un- to form the opposite."
+    },
+    {
+      "type": "word-formation",
+      "id": "b2-wf-005",
+      "text": "She made a ___ donation to the hospital charity.",
+      "baseWord": "GENEROSITY",
+      "correctAnswer": "generous",
+      "acceptedAnswers": ["generous"],
+      "category": "word-building",
+      "subcategory": "adjective-formation",
+      "explanation": "GENEROSITY (noun) → generous (adjective): the -ity ending is replaced by -ous."
+    },
+    {
+      "type": "word-formation",
+      "id": "b2-wf-006",
+      "text": "The new policy caused a lot of ___ among the staff.",
+      "baseWord": "CERTAIN",
+      "correctAnswer": "uncertainty",
+      "acceptedAnswers": ["uncertainty"],
+      "category": "word-building",
+      "subcategory": "noun-formation",
+      "explanation": "CERTAIN → uncertainty: add prefix un- and suffix -ty to form an abstract noun."
+    },
+    {
+      "type": "word-formation",
+      "id": "b2-wf-007",
+      "text": "The evidence against him was completely ___.",
+      "baseWord": "REFUTE",
+      "correctAnswer": "irrefutable",
+      "acceptedAnswers": ["irrefutable"],
+      "category": "word-building",
+      "subcategory": "adjective-formation",
+      "explanation": "REFUTE → refutable (adjective with -able) → irrefutable (prefix ir- for negation before 'r')."
+    },
+    {
+      "type": "word-formation",
+      "id": "b2-wf-008",
+      "text": "His ___ of grammar rules made him a strong writer.",
+      "baseWord": "KNOW",
+      "correctAnswer": "knowledge",
+      "acceptedAnswers": ["knowledge"],
+      "category": "word-building",
+      "subcategory": "noun-formation",
+      "explanation": "KNOW (verb) → knowledge (noun): irregular formation involving the suffix -ledge."
+    },
+    {
+      "type": "word-formation",
+      "id": "b2-wf-009",
+      "text": "The ___ of the product was delayed by several months.",
+      "baseWord": "INTRODUCE",
+      "correctAnswer": "introduction",
+      "acceptedAnswers": ["introduction"],
+      "category": "word-building",
+      "subcategory": "noun-formation",
+      "explanation": "INTRODUCE (verb) → introduction (noun): drop -e and add -tion."
+    },
+    {
+      "type": "word-formation",
+      "id": "b2-wf-010",
+      "text": "She gave a very ___ speech at the conference.",
+      "baseWord": "PERSUADE",
+      "correctAnswer": "persuasive",
+      "acceptedAnswers": ["persuasive"],
+      "category": "word-building",
+      "subcategory": "adjective-formation",
+      "explanation": "PERSUADE (verb) → persuasive (adjective): drop -de and add -sive."
+    }
+  ]
+}

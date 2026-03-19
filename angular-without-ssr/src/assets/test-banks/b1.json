@@ -1,0 +1,318 @@
+{
+  "level": "b1",
+  "title": "B1 Preliminary — Use of English",
+  "description": "Test sprawdzający znajomość angielskiego na poziomie B1",
+  "passingScore": 60,
+  "questions": [
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-001",
+      "text": "She ___ to school every day by bus.",
+      "options": ["go", "goes", "going", "gone"],
+      "correctIndex": 1,
+      "category": "grammar",
+      "subcategory": "present-simple",
+      "explanation": "Third person singular (she/he/it) in present simple takes the -s/-es ending."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-002",
+      "text": "When I arrived at the party, most people ___ already left.",
+      "options": ["have", "had", "has", "having"],
+      "correctIndex": 1,
+      "category": "grammar",
+      "subcategory": "past-perfect",
+      "explanation": "Past perfect (had + past participle) is used for an action completed before another past action."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-003",
+      "text": "This book is ___ than the one I read last week.",
+      "options": ["more interesting", "most interesting", "interestinger", "as interesting"],
+      "correctIndex": 0,
+      "category": "grammar",
+      "subcategory": "comparatives",
+      "explanation": "For adjectives with 3+ syllables, use 'more + adjective' for the comparative form."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-004",
+      "text": "You ___ wear a seatbelt in a car — it's the law.",
+      "options": ["should", "must", "might", "could"],
+      "correctIndex": 1,
+      "category": "grammar",
+      "subcategory": "modals",
+      "explanation": "'Must' expresses strong obligation or necessity, especially from an external rule or law."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-005",
+      "text": "She is really good ___ playing the piano.",
+      "options": ["in", "on", "at", "for"],
+      "correctIndex": 2,
+      "category": "grammar",
+      "subcategory": "prepositions",
+      "explanation": "The fixed expression is 'good at (doing) something'."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-006",
+      "text": "I couldn't find ___ information about the event online.",
+      "options": ["some", "any", "every", "no"],
+      "correctIndex": 1,
+      "category": "grammar",
+      "subcategory": "determiners",
+      "explanation": "'Any' is used in negative sentences and questions with uncountable nouns like 'information'."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-007",
+      "text": "He ___ up late every night this week.",
+      "options": ["stay", "stays", "has been staying", "stayed"],
+      "correctIndex": 2,
+      "category": "grammar",
+      "subcategory": "present-perfect-continuous",
+      "explanation": "Present perfect continuous (has/have been + -ing) describes an ongoing action over a recent period."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-008",
+      "text": "Please turn ___ the lights before you leave.",
+      "options": ["off", "on", "out", "up"],
+      "correctIndex": 0,
+      "category": "vocabulary",
+      "subcategory": "phrasal-verbs",
+      "explanation": "'Turn off' means to stop an electrical device from working."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-009",
+      "text": "___ Eiffel Tower is in Paris.",
+      "options": ["A", "An", "The", "—"],
+      "correctIndex": 2,
+      "category": "grammar",
+      "subcategory": "articles",
+      "explanation": "The definite article 'the' is used with unique landmarks and famous structures."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-010",
+      "text": "She asked me ___ I had finished my homework.",
+      "options": ["that", "if", "what", "when"],
+      "correctIndex": 1,
+      "category": "grammar",
+      "subcategory": "reported-speech",
+      "explanation": "'If' is used in reported questions when the direct question is a yes/no question."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-011",
+      "text": "We arrived ___ the airport two hours before the flight.",
+      "options": ["in", "to", "at", "on"],
+      "correctIndex": 2,
+      "category": "grammar",
+      "subcategory": "prepositions",
+      "explanation": "'At' is used with specific locations like airports, stations, and stops."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-012",
+      "text": "If it ___ tomorrow, we will cancel the picnic.",
+      "options": ["rain", "rains", "will rain", "rained"],
+      "correctIndex": 1,
+      "category": "grammar",
+      "subcategory": "conditionals",
+      "explanation": "In first conditional sentences, the if-clause uses present simple (not will)."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-013",
+      "text": "He likes football ___ he doesn't like basketball.",
+      "options": ["and", "but", "so", "because"],
+      "correctIndex": 1,
+      "category": "grammar",
+      "subcategory": "conjunctions",
+      "explanation": "'But' is used to express contrast between two ideas."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-014",
+      "text": "She ___ for this company since 2019.",
+      "options": ["works", "is working", "has worked", "worked"],
+      "correctIndex": 2,
+      "category": "grammar",
+      "subcategory": "present-perfect",
+      "explanation": "Present perfect (has/have + past participle) is used with 'since' to describe an action continuing from the past to now."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-015",
+      "text": "My sister is ___ than me — she always gets top marks.",
+      "options": ["more clever", "most clever", "cleverer", "cleverest"],
+      "correctIndex": 2,
+      "category": "grammar",
+      "subcategory": "comparatives",
+      "explanation": "Short adjectives (one or two syllables) form the comparative by adding -er."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-016",
+      "text": "Can you look ___ my dog while I'm away?",
+      "options": ["after", "for", "up", "into"],
+      "correctIndex": 0,
+      "category": "vocabulary",
+      "subcategory": "phrasal-verbs",
+      "explanation": "'Look after' means to take care of someone or something."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-017",
+      "text": "I have never ___ sushi before.",
+      "options": ["eating", "ate", "eat", "eaten"],
+      "correctIndex": 3,
+      "category": "grammar",
+      "subcategory": "present-perfect",
+      "explanation": "Present perfect uses 'have/has + past participle'. The past participle of 'eat' is 'eaten'."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-018",
+      "text": "The train ___ at 7:30 every morning.",
+      "options": ["leave", "leaves", "is leaving", "left"],
+      "correctIndex": 1,
+      "category": "grammar",
+      "subcategory": "present-simple",
+      "explanation": "Present simple is used for timetabled or scheduled events. Third person singular takes -s/-es."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-019",
+      "text": "He decided to give ___ smoking for health reasons.",
+      "options": ["away", "off", "up", "out"],
+      "correctIndex": 2,
+      "category": "vocabulary",
+      "subcategory": "phrasal-verbs",
+      "explanation": "'Give up' means to stop doing something, especially a habit."
+    },
+    {
+      "type": "multiple-choice-cloze",
+      "id": "b1-mc-020",
+      "text": "I was born ___ the 5th of March.",
+      "options": ["in", "on", "at", "by"],
+      "correctIndex": 1,
+      "category": "grammar",
+      "subcategory": "prepositions",
+      "explanation": "'On' is used with specific dates."
+    },
+    {
+      "type": "word-formation",
+      "id": "b1-wf-001",
+      "text": "The new shopping centre is very ___ for people who live nearby.",
+      "baseWord": "CONVENIENCE",
+      "correctAnswer": "convenient",
+      "acceptedAnswers": ["convenient"],
+      "category": "word-building",
+      "subcategory": "adjective-formation",
+      "explanation": "CONVENIENCE (noun) → convenient (adjective): the -ce ending is replaced by -t to form the adjective."
+    },
+    {
+      "type": "word-formation",
+      "id": "b1-wf-002",
+      "text": "She showed great ___ when she helped the injured man.",
+      "baseWord": "KIND",
+      "correctAnswer": "kindness",
+      "acceptedAnswers": ["kindness"],
+      "category": "word-building",
+      "subcategory": "noun-formation",
+      "explanation": "KIND (adjective) → kindness (noun): add the suffix -ness to form an abstract noun."
+    },
+    {
+      "type": "word-formation",
+      "id": "b1-wf-003",
+      "text": "He was ___ about passing the exam.",
+      "baseWord": "HOPE",
+      "correctAnswer": "hopeful",
+      "acceptedAnswers": ["hopeful"],
+      "category": "word-building",
+      "subcategory": "adjective-formation",
+      "explanation": "HOPE (noun/verb) → hopeful (adjective): add -ful to form an adjective meaning 'full of hope'."
+    },
+    {
+      "type": "word-formation",
+      "id": "b1-wf-004",
+      "text": "The teacher spoke very ___ to the nervous student.",
+      "baseWord": "GENTLE",
+      "correctAnswer": "gently",
+      "acceptedAnswers": ["gently"],
+      "category": "word-building",
+      "subcategory": "adverb-formation",
+      "explanation": "GENTLE (adjective) → gently (adverb): drop the final -e and add -ly."
+    },
+    {
+      "type": "word-formation",
+      "id": "b1-wf-005",
+      "text": "The film was so ___ that I fell asleep.",
+      "baseWord": "BORE",
+      "correctAnswer": "boring",
+      "acceptedAnswers": ["boring"],
+      "category": "word-building",
+      "subcategory": "adjective-formation",
+      "explanation": "BORE (verb) → boring (adjective): add -ing to describe something that causes boredom."
+    },
+    {
+      "type": "word-formation",
+      "id": "b1-wf-006",
+      "text": "The instructions were very ___ and easy to follow.",
+      "baseWord": "CLEAR",
+      "correctAnswer": "clearly",
+      "acceptedAnswers": ["clearly"],
+      "category": "word-building",
+      "subcategory": "adverb-formation",
+      "explanation": "CLEAR (adjective) → clearly (adverb): add -ly to form an adverb describing how something is done."
+    },
+    {
+      "type": "word-formation",
+      "id": "b1-wf-007",
+      "text": "Their ___ of the project took three months.",
+      "baseWord": "COMPLETE",
+      "correctAnswer": "completion",
+      "acceptedAnswers": ["completion"],
+      "category": "word-building",
+      "subcategory": "noun-formation",
+      "explanation": "COMPLETE (verb) → completion (noun): drop -e and add -ion to form a noun."
+    },
+    {
+      "type": "word-formation",
+      "id": "b1-wf-008",
+      "text": "She was very ___ when she heard the bad news.",
+      "baseWord": "HAPPY",
+      "correctAnswer": "unhappy",
+      "acceptedAnswers": ["unhappy"],
+      "category": "word-building",
+      "subcategory": "prefix-negative",
+      "explanation": "HAPPY (adjective) → unhappy (adjective): add prefix un- to create the opposite meaning."
+    },
+    {
+      "type": "word-formation",
+      "id": "b1-wf-009",
+      "text": "The weather was ___ and we had a great time outdoors.",
+      "baseWord": "SUN",
+      "correctAnswer": "sunny",
+      "acceptedAnswers": ["sunny"],
+      "category": "word-building",
+      "subcategory": "adjective-formation",
+      "explanation": "SUN (noun) → sunny (adjective): double the final consonant and add -y."
+    },
+    {
+      "type": "word-formation",
+      "id": "b1-wf-010",
+      "text": "There was a lot of ___ at the concert.",
+      "baseWord": "EXCITE",
+      "correctAnswer": "excitement",
+      "acceptedAnswers": ["excitement"],
+      "category": "word-building",
+      "subcategory": "noun-formation",
+      "explanation": "EXCITE (verb) → excitement (noun): drop -e and add -ment to form a noun."
+    }
+  ]
+}
