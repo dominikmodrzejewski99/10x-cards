@@ -8,7 +8,7 @@ import { LanguageTestResultDTO } from '../../../types';
   standalone: true,
   imports: [RouterModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.Emulated,
   template: `
     @if (!loading()) {
       <div class="dash__card dash__card--test-widget">
@@ -27,19 +27,182 @@ import { LanguageTestResultDTO } from '../../../types';
             </div>
           </div>
         } @else {
-          <div class="dash__test-cta">
-            <i class="pi pi-check-square"></i>
-            <div>
-              <strong>Nie znasz jeszcze swojego poziomu?</strong>
-              <p>Sprawdź znajomość angielskiego na poziomie B1, B2 lub C1</p>
+          <a routerLink="/language-test" class="dash__test-cta">
+            <div class="dash__test-cta-icon">
+              <i class="pi pi-check-square"></i>
             </div>
-            <a routerLink="/language-test" class="dash__test-btn">Sprawdź poziom →</a>
-          </div>
+            <div class="dash__test-cta-body">
+              <div class="dash__test-cta-title">Nie znasz jeszcze swojego poziomu?</div>
+              <div class="dash__test-cta-desc">Sprawdź znajomość angielskiego na poziomie B1, B2 lub C1</div>
+            </div>
+            <i class="pi pi-arrow-right dash__test-cta-arrow"></i>
+          </a>
         }
       </div>
     }
   `,
-  styles: []
+  styles: [`
+    /* Language Test Widget */
+    .dash__card--test-widget {
+      padding: 1.25rem 1.5rem;
+      background: var(--app-white, #ffffff);
+      border: 1.5px solid var(--app-border, #d9dbe9);
+      border-radius: 1.25rem;
+      margin-bottom: 2rem;
+      transition: border-color 0.2s;
+    }
+
+    .dash__card--test-widget:hover {
+      border-color: var(--app-primary, #8b5cf6);
+    }
+
+    .dash__test-result {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .dash__test-score {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      border: 3px solid;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .dash__test-score--pass {
+      border-color: #10b981;
+      color: #10b981;
+    }
+
+    .dash__test-score--fail {
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+
+    .dash__test-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .dash__test-date {
+      font-size: 0.75rem;
+      color: var(--app-text-secondary, #586380);
+    }
+
+    .dash__test-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .dash__test-btn {
+      display: inline-block;
+      padding: 0.35rem 0.8rem;
+      border: 1.5px solid var(--app-primary, #8b5cf6);
+      color: var(--app-primary, #8b5cf6);
+      border-radius: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    .dash__test-btn:hover {
+      background: var(--app-primary, #8b5cf6);
+      color: #fff;
+    }
+
+    .dash__test-btn--secondary {
+      border-color: var(--app-border, #d9dbe9);
+      color: var(--app-text-secondary, #586380);
+    }
+
+    .dash__test-btn--secondary:hover {
+      background: var(--app-bg, #f6f7fb);
+      color: var(--app-text, #1a1c2e);
+    }
+
+    .dash__test-cta {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .dash__test-cta-icon {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 0.85rem;
+      background: linear-gradient(135deg, #f3f0ff, #ede5ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: var(--app-primary, #8b5cf6);
+      flex-shrink: 0;
+    }
+
+    .dash__test-cta-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .dash__test-cta-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--app-text, #1a1c2e);
+    }
+
+    .dash__test-cta-desc {
+      font-size: 0.78rem;
+      color: var(--app-text-secondary, #586380);
+      margin-top: 0.15rem;
+    }
+
+    .dash__test-cta-arrow {
+      font-size: 1rem;
+      color: var(--app-primary, #8b5cf6);
+      opacity: 0.5;
+      transition: all 0.3s;
+    }
+
+    .dash__card--test-widget:hover .dash__test-cta-arrow {
+      opacity: 0.9;
+      transform: translateX(4px);
+    }
+
+    @media (max-width: 600px) {
+      .dash__test-result {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .dash__test-actions {
+        flex-direction: row;
+        width: 100%;
+      }
+
+      .dash__test-btn {
+        flex: 1;
+      }
+
+      .dash__test-cta-arrow {
+        display: none;
+      }
+    }
+  `]
 })
 export class LanguageTestWidgetComponent implements OnInit {
   private resultsService = inject(LanguageTestResultsService);
