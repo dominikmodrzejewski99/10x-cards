@@ -14,18 +14,21 @@ Dodatkowa funkcjonalność pozwalająca użytkownikom sprawdzić znajomość ję
 | Format testu | Jeden długi test (30 pytań) | Pełny wynik diagnostyczny, pass/fail wobec progu zdawalności |
 | Wyniki | Szczegółowa analiza + generowanie fiszek | Integracja z rdzeniem aplikacji (SM-2 spaced repetition) |
 | Dostęp | Nawigacja + widget na dashboardzie | Stały dostęp + discoverability dla nowych użytkowników |
+| Powtarzalność testu | V1: stały zestaw 30 pytań per poziom, zawsze w tej samej kolejności | Prostota; rozszerzenie o losowanie z większego banku w V2 |
 
 ## Architektura
 
 ### Routing
 
+Trzy niezależne top-level routes (zgodnie z istniejącym wzorcem w `app.routes.ts`):
+
 ```
-/language-test          → LanguageTestListComponent (wybór poziomu)
-/language-test/:level   → LanguageTestViewComponent (rozwiązywanie testu)
-/language-test/:level/results → LanguageTestResultsComponent (wyniki)
+/language-test                  → LanguageTestListComponent (wybór poziomu)
+/language-test/:level           → LanguageTestViewComponent (rozwiązywanie testu)
+/language-test/:level/results   → LanguageTestResultsComponent (wyniki)
 ```
 
-Wszystkie lazy loaded, chronione `authGuard`.
+Wszystkie lazy loaded z `loadComponent`, chronione `authGuard`.
 
 ### Komponenty
 
@@ -84,13 +87,15 @@ interface WordFormationQuestion {
 type QuestionCategory = 'grammar' | 'vocabulary' | 'collocations' | 'phrasal-verbs' | 'word-building';
 
 type TestQuestion = MultipleChoiceQuestion | WordFormationQuestion;
+
+type TestLevel = 'b1' | 'b2-fce' | 'c1-cae';
 ```
 
 ### Struktura testu (JSON)
 
 ```typescript
 interface TestDefinition {
-  level: string;                 // 'b1' | 'b2-fce' | 'c1-cae'
+  level: TestLevel;
   title: string;
   description: string;
   passingScore: number;          // procent (np. 60)
@@ -98,9 +103,16 @@ interface TestDefinition {
 }
 ```
 
+### Walidacja odpowiedzi Word Formation
+
+- Case-insensitive (np. "Assessment" === "assessment")
+- Trim whitespace z obu stron
+- Sprawdzenie wobec `acceptedAnswers[]` (warianty pisowni)
+
 ### Tabela wyników (Supabase)
 
 ```sql
+-- Migration: create language_test_results table
 CREATE TABLE language_test_results (
   id BIGSERIAL PRIMARY KEY,
   user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
@@ -114,22 +126,57 @@ CREATE TABLE language_test_results (
   -- [{questionId, userAnswer, correctAnswer, front, back}]
   generated_set_id BIGINT REFERENCES flashcard_sets(id) ON DELETE SET NULL,
   completed_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+-- RLS policies
 ALTER TABLE language_test_results ENABLE ROW LEVEL SECURITY;
--- RLS: user can only see/insert own results
+
+CREATE POLICY "Users can view own test results"
+  ON language_test_results FOR SELECT
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own test results"
+  ON language_test_results FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own test results"
+  ON language_test_results FOR UPDATE
+  USING (auth.uid() = user_id);
+
+-- Index
+CREATE INDEX idx_language_test_results_user_id ON language_test_results(user_id);
+
+-- Updated_at trigger (reuse existing function)
+CREATE TRIGGER handle_updated_at
+  BEFORE UPDATE ON language_test_results
+  FOR EACH ROW
+  EXECUTE FUNCTION moddatetime(updated_at);
 ```
 
 ### Rozszerzenie source w flashcards
 
-```typescript
-source: 'ai-full' | 'ai-edited' | 'manual' | 'test'
+```sql
+-- Migration: extend source CHECK constraint
+ALTER TABLE flashcards DROP CONSTRAINT flashcards_source_check;
+ALTER TABLE flashcards ADD CONSTRAINT flashcards_source_check
+  CHECK (source IN ('ai-full', 'ai-edited', 'manual', 'test'));
 ```
 
-Fiszki z błędów w teście mają `source: 'test'`.
+Aktualizacja w `src/types.ts`:
 
-Wymaga migracji Supabase — ALTER CHECK constraint na kolumnie `source`.
+```typescript
+export type Source = 'ai-full' | 'ai-edited' | 'manual' | 'test';
+```
+
+### Rozszerzenie front varchar
+
+Obecne `front varchar(200)` może być za krótkie dla zdań z testów (zwłaszcza Word Formation z prefixem). Migracja:
+
+```sql
+ALTER TABLE flashcards ALTER COLUMN front TYPE varchar(500);
+```
 
 ## Flow użytkownika
 
@@ -142,7 +189,20 @@ Wymaga migracji Supabase — ALTER CHECK constraint na kolumnie `source`.
    - Progress bar (np. 5/30) + typ sekcji (Multiple Choice / Word Formation)
    - MC: zdanie z luką + 4 opcje (klik aby wybrać) + "Następne"
    - WF: zdanie z luką + słowo bazowe + pole tekstowe + "Następne"
-5. Po 30 pytaniach → redirect do `/language-test/b2-fce/results`
+5. Po 30 pytaniach → wynik zapisywany do Supabase → redirect do `/language-test/b2-fce/results`
+
+### Persystencja wyników i nawigacja
+
+- Wynik zapisywany do `language_test_results` natychmiast po ukończeniu testu (przed redirectem)
+- Strona wyników (`/language-test/:level/results`) ładuje ostatni wynik z Supabase dla danego poziomu
+- Refresh strony wyników działa poprawnie — dane z bazy
+- Wejście na `/language-test/:level/results` bez ukończonego testu → redirect do `/language-test`
+
+### Porzucenie testu w trakcie
+
+- Stan testu trzymany w pamięci komponentu (signals)
+- Nawigacja poza test = utrata postępu (brak auto-save)
+- Opcjonalnie: `canDeactivate` guard z pytaniem "Czy na pewno chcesz opuścić test?"
 
 ### Wyniki
 
@@ -156,7 +216,15 @@ Wymaga migracji Supabase — ALTER CHECK constraint na kolumnie `source`.
      - WF: front = "Utwórz formę słowa BASE_WORD: zdanie z luką", back = correctAnswer + explanation
    - source = 'test'
    - Fiszki trafiają do SM-2 — pojawiają się w sesji nauki
-5. Przycisk "Powtórz test" — ponowne rozwiązanie tego samego poziomu
+   - Po utworzeniu: UPDATE `language_test_results` SET `generated_set_id` = nowy set
+   - Jeśli `generated_set_id` już istnieje — przycisk zablokowany ("Fiszki już utworzone"), z linkiem do zestawu
+5. Przycisk "Powtórz test" — ponowne rozwiązanie tego samego poziomu (te same pytania, ta sama kolejność)
+
+### Obsługa błędów
+
+- Błąd ładowania JSON (404, sieć) → komunikat "Nie udało się załadować testu. Spróbuj ponownie."
+- Błąd zapisu wyniku do Supabase → wynik wyświetlany z pamięci, komunikat "Nie udało się zapisać wyniku"
+- Błąd tworzenia fiszek → toast z błędem, przycisk pozostaje aktywny do ponownej próby
 
 ### Widget na dashboardzie
 
@@ -172,7 +240,7 @@ Nowy element w `auth-navbar`: "Testy językowe" (ikona: `pi pi-check-square`) ob
 
 - Standalone components z `ChangeDetectionStrategy.OnPush`
 - Signals API do stanu komponentu (currentQuestion, answers, score)
-- Lazy loading route
+- Lazy loading route z `loadComponent`
 - BEM CSS — wykorzystanie istniejących zmiennych CSS (`--app-text`, `--app-primary`, `--app-bg`, `--app-border`)
 - PrimeNG komponenty gdzie możliwe (Button, Card, ProgressBar, RadioButton, InputText)
 - HttpClient do ładowania JSON z assets
@@ -186,3 +254,4 @@ Nowy element w `auth-navbar`: "Testy językowe" (ikona: `pi pi-check-square`) ob
 - Test adaptacyjny (zmiana poziomu w trakcie)
 - Timery na pytanie
 - Ranking / porównanie z innymi użytkownikami
+- Losowanie pytań z większego banku (V1: stały zestaw 30 pytań)
