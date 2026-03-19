@@ -1,0 +1,33 @@
+<div class="test-list">
+  <header class="test-list__header">
+    <div class="test-list__header-icon">
+      <i class="pi pi-check-square"></i>
+    </div>
+    <h1 class="test-list__title">Sprawdź swój poziom</h1>
+    <p class="test-list__subtitle">
+      Wybierz egzamin i sprawdź swoją znajomość angielskiego. Test Use of English obejmuje
+      Multiple Choice Cloze i Word Formation.
+    </p>
+  </header>
+
+  <div class="test-list__grid">
+    @for (item of levels; track item.level) {
+      <a [routerLink]="['/language-test', item.level]" class="test-list__card">
+        <div class="test-list__card-badge" [attr.data-level]="item.level">
+          {{ item.level === 'b1' ? 'B1' : item.level === 'b2-fce' ? 'B2' : 'C1' }}
+        </div>
+        <div class="test-list__card-body">
+          <h2 class="test-list__card-title">{{ item.title }}</h2>
+          <p class="test-list__card-desc">{{ item.description }}</p>
+          <div class="test-list__card-meta">
+            <span><i class="pi pi-question-circle"></i> {{ item.questionCount }} pytań</span>
+            <span><i class="pi pi-clock"></i> ~{{ item.estimatedMinutes }} min</span>
+          </div>
+        </div>
+        <div class="test-list__card-arrow">
+          <i class="pi pi-arrow-right"></i>
+        </div>
+      </a>
+    }
+  </div>
+</div>
