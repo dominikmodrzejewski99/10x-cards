@@ -1,0 +1,71 @@
+<div class="test-results">
+  @if (loading()) {
+    <div class="test-results__loading">
+      <i class="pi pi-spin pi-spinner"></i> Ładowanie wyników...
+    </div>
+  } @else if (result(); as r) {
+    <!-- Score -->
+    <div class="test-results__score">
+      <div class="test-results__score-circle" [class.test-results__score-circle--pass]="r.percentage >= 60" [class.test-results__score-circle--fail]="r.percentage < 60">
+        {{ r.percentage }}%
+      </div>
+      <div class="test-results__score-label" [class.test-results__score-label--pass]="r.percentage >= 60" [class.test-results__score-label--fail]="r.percentage < 60">
+        {{ r.percentage >= 60 ? 'Zdane!' : 'Nie zdane' }}
+      </div>
+      <div class="test-results__score-detail">
+        {{ r.total_score }}/{{ r.max_score }} poprawnych · {{ getLevelLabel() }} · Próg: 60%
+      </div>
+    </div>
+
+    <!-- Category Breakdown -->
+    <div class="test-results__breakdown">
+      <h3 class="test-results__breakdown-title">Analiza kategorii</h3>
+      @for (cat of categories(); track cat.name) {
+        <div class="test-results__category">
+          <span class="test-results__category-name">{{ cat.name }}</span>
+          <div class="test-results__category-bar">
+            <div
+              class="test-results__category-fill"
+              [class.test-results__category-fill--green]="cat.percentage >= 70"
+              [class.test-results__category-fill--amber]="cat.percentage >= 50 && cat.percentage < 70"
+              [class.test-results__category-fill--red]="cat.percentage < 50"
+              [style.width.%]="cat.percentage"
+            ></div>
+          </div>
+          <span class="test-results__category-pct">{{ cat.percentage }}%</span>
+        </div>
+      }
+    </div>
+
+    <!-- Actions -->
+    <div class="test-results__actions">
+      @if (r.wrong_answers.length > 0) {
+        <button
+          class="test-results__btn test-results__btn--primary"
+          [disabled]="flashcardsGenerated() || generatingFlashcards()"
+          (click)="generateFlashcards()"
+        >
+          @if (generatingFlashcards()) {
+            <i class="pi pi-spin pi-spinner"></i> Tworzenie fiszek...
+          } @else if (flashcardsGenerated()) {
+            <i class="pi pi-check"></i> Fiszki utworzone
+          } @else {
+            <i class="pi pi-clone"></i> Utwórz fiszki z błędów ({{ r.wrong_answers.length }})
+          }
+        </button>
+      }
+      <a [routerLink]="['/language-test', r.level]" class="test-results__btn test-results__btn--secondary">
+        <i class="pi pi-replay"></i> Powtórz test
+      </a>
+      <a routerLink="/language-test" class="test-results__btn test-results__btn--secondary">
+        <i class="pi pi-list"></i> Inny test
+      </a>
+    </div>
+
+    @if (error()) {
+      <div class="test-results__error">
+        <i class="pi pi-exclamation-triangle"></i> {{ error() }}
+      </div>
+    }
+  }
+</div>

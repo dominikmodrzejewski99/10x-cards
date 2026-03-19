@@ -1,0 +1,79 @@
+<div class="test-view">
+  @if (loading()) {
+    <div class="test-view__loading">
+      <i class="pi pi-spin pi-spinner"></i> Ładowanie testu...
+    </div>
+  } @else if (error()) {
+    <div class="test-view__error">
+      <i class="pi pi-exclamation-triangle"></i>
+      <p>{{ error() }}</p>
+      <a routerLink="/language-test" class="test-view__back">← Wróć do wyboru testu</a>
+    </div>
+  } @else if (currentQuestion(); as q) {
+    <!-- Progress -->
+    <div class="test-view__progress">
+      <span class="test-view__progress-text">{{ currentIndex() + 1 }}/{{ testDefinition()!.questions.length }}</span>
+      <div class="test-view__progress-bar">
+        <div class="test-view__progress-fill" [style.width.%]="progress()"></div>
+      </div>
+      <span class="test-view__progress-type">
+        {{ q.type === 'multiple-choice-cloze' ? 'Multiple Choice' : 'Word Formation' }}
+      </span>
+    </div>
+
+    <!-- Multiple Choice Cloze -->
+    @if (q.type === 'multiple-choice-cloze') {
+      <div class="test-view__question">
+        <p class="test-view__sentence" [innerHTML]="q.text.replace('___', '<span class=\'test-view__gap\'>______</span>')"></p>
+      </div>
+      <div class="test-view__options">
+        @for (option of q.options; track $index) {
+          <button
+            class="test-view__option"
+            [class.test-view__option--selected]="selectedOption() === $index"
+            (click)="selectOption($index)"
+          >
+            <span class="test-view__option-letter">{{ ['A','B','C','D'][$index] }}</span>
+            {{ option }}
+          </button>
+        }
+      </div>
+    }
+
+    <!-- Word Formation -->
+    @if (q.type === 'word-formation') {
+      <div class="test-view__question">
+        <p class="test-view__sentence" [innerHTML]="q.text.replace('___', '<span class=\'test-view__gap test-view__gap--dashed\'>______</span>')"></p>
+      </div>
+      <div class="test-view__base-word">
+        <span class="test-view__base-word-label">Słowo bazowe:</span>
+        <span class="test-view__base-word-value">{{ q.baseWord }}</span>
+      </div>
+      <input
+        type="text"
+        class="test-view__input"
+        [ngModel]="wordFormationInput()"
+        (ngModelChange)="wordFormationInput.set($event)"
+        placeholder="Wpisz odpowiedź..."
+        (keydown.enter)="canProceed() && next()"
+      />
+    }
+
+    <!-- Next button -->
+    <div class="test-view__actions">
+      <button
+        class="test-view__next"
+        [disabled]="!canProceed() || submitting()"
+        (click)="next()"
+      >
+        @if (submitting()) {
+          <i class="pi pi-spin pi-spinner"></i> Zapisywanie...
+        } @else if (isLastQuestion()) {
+          Zakończ test
+        } @else {
+          Następne →
+        }
+      </button>
+    </div>
+  }
+</div>

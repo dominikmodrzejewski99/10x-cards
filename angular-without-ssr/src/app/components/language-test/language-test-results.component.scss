@@ -1,0 +1,217 @@
+:host {
+  display: block;
+}
+
+.test-results {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+
+  // ── Loading ──────────────────────────────────────────────────────────
+  &__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 4rem 0;
+    color: var(--text-color-secondary, #6b7280);
+    font-size: 1rem;
+  }
+
+  // ── Score ─────────────────────────────────────────────────────────────
+  &__score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  &__score-circle {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    border: 4px solid var(--surface-border, #e5e7eb);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-color-secondary, #6b7280);
+    transition: border-color 0.3s, color 0.3s;
+
+    &--pass {
+      border-color: #10b981;
+      color: #10b981;
+    }
+
+    &--fail {
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+  }
+
+  &__score-label {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-color-secondary, #6b7280);
+
+    &--pass {
+      color: #10b981;
+    }
+
+    &--fail {
+      color: #ef4444;
+    }
+  }
+
+  &__score-detail {
+    font-size: 0.875rem;
+    color: var(--text-color-secondary, #6b7280);
+    text-align: center;
+  }
+
+  // ── Breakdown ─────────────────────────────────────────────────────────
+  &__breakdown {
+    margin-bottom: 2rem;
+  }
+
+  &__breakdown-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color, #111827);
+    margin: 0 0 1rem;
+  }
+
+  &__category {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.625rem;
+  }
+
+  &__category-name {
+    width: 160px;
+    flex-shrink: 0;
+    font-size: 0.875rem;
+    color: var(--text-color, #111827);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__category-bar {
+    flex: 1;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--surface-200, #e5e7eb);
+    overflow: hidden;
+  }
+
+  &__category-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: var(--surface-400, #9ca3af);
+    transition: width 0.4s ease;
+
+    &--green {
+      background: #10b981;
+    }
+
+    &--amber {
+      background: #f59e0b;
+    }
+
+    &--red {
+      background: #ef4444;
+    }
+  }
+
+  &__category-pct {
+    width: 3rem;
+    flex-shrink: 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-color-secondary, #6b7280);
+    text-align: right;
+  }
+
+  // ── Actions ───────────────────────────────────────────────────────────
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    transition: opacity 0.2s, background 0.2s, color 0.2s;
+
+    &--primary {
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: #fff;
+
+      &:hover:not(:disabled) {
+        opacity: 0.9;
+      }
+
+      &:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+    }
+
+    &--secondary {
+      background: transparent;
+      border: 1px solid var(--surface-border, #d1d5db);
+      color: var(--text-color-secondary, #374151);
+
+      &:hover {
+        background: var(--surface-100, #f3f4f6);
+        color: var(--text-color, #111827);
+      }
+    }
+  }
+
+  // ── Error ─────────────────────────────────────────────────────────────
+  &__error {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background: #fef2f2;
+    color: #dc2626;
+    font-size: 0.875rem;
+    border: 1px solid #fecaca;
+  }
+
+  // ── Responsive ────────────────────────────────────────────────────────
+  @media (max-width: 480px) {
+    padding: 1rem 0.75rem;
+
+    &__category-name {
+      width: 110px;
+      font-size: 0.8125rem;
+    }
+
+    &__score-circle {
+      width: 5rem;
+      height: 5rem;
+      font-size: 1.25rem;
+    }
+  }
+}
