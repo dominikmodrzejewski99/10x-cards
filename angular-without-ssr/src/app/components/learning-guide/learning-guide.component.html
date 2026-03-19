@@ -61,48 +61,14 @@
             @if (article.id === 'spaced-repetition') {
               <div class="chart chart--timeline" aria-label="Rosnące odstępy między powtórkami">
                 <div class="chart__label">Jak rosną odstępy między powtórkami:</div>
-                <div class="chart__tl">
-                  <div class="chart__tl-point chart__tl-point--start">
-                    <div class="chart__tl-dot"></div>
-                    <div class="chart__tl-text">Nauka</div>
-                  </div>
-                  <div class="chart__tl-gap" style="flex:1">
-                    <span class="chart__tl-gap-label">1 dzień</span>
-                  </div>
-                  <div class="chart__tl-point">
-                    <div class="chart__tl-dot"></div>
-                    <div class="chart__tl-text">P1</div>
-                  </div>
-                  <div class="chart__tl-gap" style="flex:2">
-                    <span class="chart__tl-gap-label">3 dni</span>
-                  </div>
-                  <div class="chart__tl-point">
-                    <div class="chart__tl-dot"></div>
-                    <div class="chart__tl-text">P2</div>
-                  </div>
-                  <div class="chart__tl-gap" style="flex:4">
-                    <span class="chart__tl-gap-label">7 dni</span>
-                  </div>
-                  <div class="chart__tl-point">
-                    <div class="chart__tl-dot"></div>
-                    <div class="chart__tl-text">P3</div>
-                  </div>
-                  <div class="chart__tl-gap" style="flex:7">
-                    <span class="chart__tl-gap-label">14 dni</span>
-                  </div>
-                  <div class="chart__tl-point">
-                    <div class="chart__tl-dot"></div>
-                    <div class="chart__tl-text">P4</div>
-                  </div>
-                  <div class="chart__tl-gap" style="flex:14">
-                    <span class="chart__tl-gap-label">30 dni</span>
-                  </div>
-                  <div class="chart__tl-point chart__tl-point--end">
-                    <div class="chart__tl-dot"></div>
-                    <div class="chart__tl-text">P5</div>
-                  </div>
+                <div class="chart__repetition-img">
+                  <img
+                    src="assets/images/spaced-repetition-chart.jpg"
+                    alt="Wykres pokazujący jak powtórki pomagają utrzymać zapamiętane informacje na wysokim poziomie"
+                    class="chart__repetition-img-el"
+                    loading="lazy"
+                  />
                 </div>
-                <div class="chart__tl-caption">P = powtórka &middot; Odstępy rosną, bo pamięć się wzmacnia z każdą sesją</div>
               </div>
             }
 
@@ -270,6 +236,52 @@
               </div>
             }
 
+            <!-- ============ CHART: Feynman Technique Steps ============ -->
+            @if (article.id === 'feynman-technique') {
+              <div class="chart chart--feynman" aria-label="4 kroki techniki Feynmana">
+                <div class="chart__label">4 kroki techniki Feynmana:</div>
+                <div class="chart__feynman-steps">
+                  <div class="chart__feynman-step">
+                    <div class="chart__feynman-num">1</div>
+                    <div class="chart__feynman-content">
+                      <div class="chart__feynman-title">Wybierz temat</div>
+                      <div class="chart__feynman-desc">Zapisz wszystko, co wiesz</div>
+                    </div>
+                  </div>
+                  <div class="chart__feynman-arrow">
+                    <i class="pi pi-arrow-down"></i>
+                  </div>
+                  <div class="chart__feynman-step">
+                    <div class="chart__feynman-num">2</div>
+                    <div class="chart__feynman-content">
+                      <div class="chart__feynman-title">Wyjaśnij prosto</div>
+                      <div class="chart__feynman-desc">Jakbyś tłumaczył to dziecku</div>
+                    </div>
+                  </div>
+                  <div class="chart__feynman-arrow">
+                    <i class="pi pi-arrow-down"></i>
+                  </div>
+                  <div class="chart__feynman-step">
+                    <div class="chart__feynman-num">3</div>
+                    <div class="chart__feynman-content">
+                      <div class="chart__feynman-title">Znajdź luki</div>
+                      <div class="chart__feynman-desc">Wróć do źródeł i uzupełnij braki</div>
+                    </div>
+                  </div>
+                  <div class="chart__feynman-arrow chart__feynman-arrow--loop">
+                    <i class="pi pi-replay"></i>
+                  </div>
+                  <div class="chart__feynman-step">
+                    <div class="chart__feynman-num">4</div>
+                    <div class="chart__feynman-content">
+                      <div class="chart__feynman-title">Uprość</div>
+                      <div class="chart__feynman-desc">Udoskonal wyjaśnienie i powtórz</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+
             <!-- ============ CHART: Dunning-Kruger Curve ============ -->
             @if (article.id === 'dunning-kruger') {
               <div class="chart chart--dk" aria-label="Wykres efektu Dunninga-Krugera">
@@ -300,13 +312,13 @@
 
                   <!-- Stage markers (clickable) -->
                   <!-- 1: Start -->
-                  <circle cx="65" cy="195" r="6" class="chart__dk-dot" [class.chart__dk-dot--active]="dkActiveStageSignal() === 0" (mouseenter)="setDkStage(0)" (mouseleave)="setDkStage(null)" (click)="setDkStage(dkActiveStageSignal() === 0 ? null : 0)"/>
+                  <circle cx="65" cy="170" r="6" class="chart__dk-dot" [class.chart__dk-dot--active]="dkActiveStageSignal() === 0" (mouseenter)="setDkStage(0)" (mouseleave)="setDkStage(null)" (click)="setDkStage(dkActiveStageSignal() === 0 ? null : 0)"/>
                   <!-- 2: Peak -->
                   <circle cx="140" cy="35" r="6" class="chart__dk-dot" [class.chart__dk-dot--active]="dkActiveStageSignal() === 1" (mouseenter)="setDkStage(1)" (mouseleave)="setDkStage(null)" (click)="setDkStage(dkActiveStageSignal() === 1 ? null : 1)"/>
                   <!-- 3: Valley -->
                   <circle cx="260" cy="220" r="6" class="chart__dk-dot" [class.chart__dk-dot--active]="dkActiveStageSignal() === 2" (mouseenter)="setDkStage(2)" (mouseleave)="setDkStage(null)" (click)="setDkStage(dkActiveStageSignal() === 2 ? null : 2)"/>
                   <!-- 4: Slope -->
-                  <circle cx="380" cy="115" r="6" class="chart__dk-dot" [class.chart__dk-dot--active]="dkActiveStageSignal() === 3" (mouseenter)="setDkStage(3)" (mouseleave)="setDkStage(null)" (click)="setDkStage(dkActiveStageSignal() === 3 ? null : 3)"/>
+                  <circle cx="380" cy="132" r="6" class="chart__dk-dot" [class.chart__dk-dot--active]="dkActiveStageSignal() === 3" (mouseenter)="setDkStage(3)" (mouseleave)="setDkStage(null)" (click)="setDkStage(dkActiveStageSignal() === 3 ? null : 3)"/>
                   <!-- 5: Plateau -->
                   <circle cx="490" cy="70" r="6" class="chart__dk-dot" [class.chart__dk-dot--active]="dkActiveStageSignal() === 4" (mouseenter)="setDkStage(4)" (mouseleave)="setDkStage(null)" (click)="setDkStage(dkActiveStageSignal() === 4 ? null : 4)"/>
 
@@ -380,6 +392,81 @@
                   <div class="chart__pomo-stat">
                     <span class="chart__pomo-stat-value">30-45 min</span>
                     <span class="chart__pomo-stat-label">Przerw</span>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <!-- ============ CHART: Interleaving Comparison ============ -->
+            @if (article.id === 'interleaving') {
+              <div class="chart chart--interleaving" aria-label="Porównanie blokowania i przeplatania">
+                <div class="chart__label">Blokowanie vs. przeplatanie tematów:</div>
+                <div class="chart__interleaving-compare">
+                  <div class="chart__interleaving-col">
+                    <div class="chart__interleaving-heading chart__interleaving-heading--block">
+                      <i class="pi pi-minus"></i> Blokowanie
+                    </div>
+                    <div class="chart__interleaving-blocks">
+                      <div class="chart__interleaving-block" style="--il-color: #3b82f6">A</div>
+                      <div class="chart__interleaving-block" style="--il-color: #3b82f6">A</div>
+                      <div class="chart__interleaving-block" style="--il-color: #3b82f6">A</div>
+                      <div class="chart__interleaving-block" style="--il-color: #8b5cf6">B</div>
+                      <div class="chart__interleaving-block" style="--il-color: #8b5cf6">B</div>
+                      <div class="chart__interleaving-block" style="--il-color: #8b5cf6">B</div>
+                      <div class="chart__interleaving-block" style="--il-color: #f59e0b">C</div>
+                      <div class="chart__interleaving-block" style="--il-color: #f59e0b">C</div>
+                      <div class="chart__interleaving-block" style="--il-color: #f59e0b">C</div>
+                    </div>
+                    <div class="chart__interleaving-verdict chart__interleaving-verdict--weak">Łatwiejsze, ale słabsze zapamiętywanie</div>
+                  </div>
+                  <div class="chart__interleaving-vs">vs</div>
+                  <div class="chart__interleaving-col">
+                    <div class="chart__interleaving-heading chart__interleaving-heading--inter">
+                      <i class="pi pi-arrows-h"></i> Przeplatanie
+                    </div>
+                    <div class="chart__interleaving-blocks">
+                      <div class="chart__interleaving-block" style="--il-color: #3b82f6">A</div>
+                      <div class="chart__interleaving-block" style="--il-color: #8b5cf6">B</div>
+                      <div class="chart__interleaving-block" style="--il-color: #f59e0b">C</div>
+                      <div class="chart__interleaving-block" style="--il-color: #3b82f6">A</div>
+                      <div class="chart__interleaving-block" style="--il-color: #f59e0b">C</div>
+                      <div class="chart__interleaving-block" style="--il-color: #8b5cf6">B</div>
+                      <div class="chart__interleaving-block" style="--il-color: #f59e0b">C</div>
+                      <div class="chart__interleaving-block" style="--il-color: #3b82f6">A</div>
+                      <div class="chart__interleaving-block" style="--il-color: #8b5cf6">B</div>
+                    </div>
+                    <div class="chart__interleaving-verdict chart__interleaving-verdict--strong">Trudniejsze, ale trwalsze efekty</div>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <!-- ============ CHART: Growth Mindset ============ -->
+            @if (article.id === 'growth-mindset') {
+              <div class="chart chart--mindset" aria-label="Nastawienie stałe vs. na rozwój">
+                <div class="chart__label">Dwa typy nastawienia:</div>
+                <div class="chart__mindset-compare">
+                  <div class="chart__mindset-col chart__mindset-col--fixed">
+                    <div class="chart__mindset-heading">
+                      <i class="pi pi-lock"></i> Stałe nastawienie
+                    </div>
+                    <ul class="chart__mindset-list">
+                      <li><i class="pi pi-times"></i> „Nie jestem w stanie tego zrozumieć"</li>
+                      <li><i class="pi pi-times"></i> Błąd = porażka</li>
+                      <li><i class="pi pi-times"></i> Unikam wyzwań</li>
+                      <li><i class="pi pi-times"></i> Wysiłek jest bezcelowy</li>
+                    </ul>
+                  </div>
+                  <div class="chart__mindset-col chart__mindset-col--growth">
+                    <div class="chart__mindset-heading">
+                      <i class="pi pi-expand"></i> Nastawienie na rozwój
+                    </div>
+                    <ul class="chart__mindset-list">
+                      <li><i class="pi pi-check"></i> „Jeszcze się tego nie nauczyłem"</li>
+                      <li><i class="pi pi-check"></i> Błąd = lekcja</li>
+                      <li><i class="pi pi-check"></i> Szukam wyzwań</li>
+                      <li><i class="pi pi-check"></i> Wysiłek wzmacnia mózg</li>
+                    </ul>
                   </div>
                 </div>
               </div>

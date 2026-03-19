@@ -303,6 +303,18 @@
   margin-bottom: 0.85rem;
 }
 
+.chart__repetition-img {
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.chart__repetition-img-el {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .chart__svg {
   width: 100%;
   height: auto;
@@ -319,6 +331,78 @@
   font-size: 11px;
   fill: #6b7280;
   font-weight: 600;
+}
+
+/* ========================================
+   CHART: Feynman Technique
+   ======================================== */
+.chart__feynman-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-items: center;
+}
+
+.chart__feynman-step {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 340px;
+  padding: 0.85rem 1rem;
+  background: var(--app-surface, #fff);
+  border: 1px solid var(--app-border, #d9dbe9);
+  border-radius: 0.75rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    border-color: #14b8a6;
+    box-shadow: 0 2px 8px rgba(20, 184, 166, 0.1);
+  }
+}
+
+.chart__feynman-num {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #14b8a6, #0d9488);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.chart__feynman-content {
+  min-width: 0;
+}
+
+.chart__feynman-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--app-text, #1a1c2e);
+}
+
+.chart__feynman-desc {
+  font-size: 0.72rem;
+  color: var(--app-text-secondary, #586380);
+  margin-top: 0.15rem;
+}
+
+.chart__feynman-arrow {
+  display: flex;
+  justify-content: center;
+  padding: 0.3rem 0;
+  color: #14b8a6;
+  font-size: 0.9rem;
+  opacity: 0.6;
+
+  &--loop {
+    color: #f59e0b;
+    opacity: 0.8;
+  }
 }
 
 /* ========================================
@@ -763,6 +847,127 @@
   color: var(--app-text-secondary, #586380);
   text-transform: uppercase;
   letter-spacing: 0.04em;
+}
+
+/* ========================================
+   CHART: Interleaving
+   ======================================== */
+.chart__interleaving-compare {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.chart__interleaving-col {
+  flex: 1;
+  min-width: 0;
+}
+
+.chart__interleaving-heading {
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  &--block { color: #6b7280; }
+  &--inter { color: #3b82f6; }
+}
+
+.chart__interleaving-blocks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.chart__interleaving-block {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.4rem;
+  background: var(--il-color);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.chart__interleaving-vs {
+  flex-shrink: 0;
+  align-self: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--app-text-secondary, #586380);
+  padding-top: 1.5rem;
+}
+
+.chart__interleaving-verdict {
+  font-size: 0.68rem;
+  margin-top: 0.5rem;
+  font-weight: 600;
+
+  &--weak { color: #9ca3af; }
+  &--strong { color: #3b82f6; }
+}
+
+/* ========================================
+   CHART: Growth Mindset
+   ======================================== */
+.chart__mindset-compare {
+  display: flex;
+  gap: 1rem;
+}
+
+.chart__mindset-col {
+  flex: 1;
+  min-width: 0;
+  padding: 0.85rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--app-border, #d9dbe9);
+
+  &--fixed {
+    background: rgba(239, 68, 68, 0.04);
+    border-color: rgba(239, 68, 68, 0.2);
+  }
+
+  &--growth {
+    background: rgba(16, 185, 129, 0.04);
+    border-color: rgba(16, 185, 129, 0.2);
+  }
+}
+
+.chart__mindset-heading {
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  .chart__mindset-col--fixed & { color: #ef4444; }
+  .chart__mindset-col--growth & { color: #10b981; }
+}
+
+.chart__mindset-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+
+  li {
+    font-size: 0.72rem;
+    color: var(--app-text, #1a1c2e);
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+
+    .pi-times { color: #ef4444; font-size: 0.65rem; }
+    .pi-check { color: #10b981; font-size: 0.65rem; }
+  }
 }
 
 /* ===== Footer CTA ===== */
