@@ -38,6 +38,9 @@ import { selectIsAuthenticated, selectIsAnonymous, selectAuthChecked } from '../
             <a routerLink="/learning-guide" routerLinkActive="navbar__link--active" class="navbar__link">
               <i class="pi pi-lightbulb"></i> Poradnik
             </a>
+            <a routerLink="/language-test" routerLinkActive="navbar__link--active" class="navbar__link">
+              <i class="pi pi-check-square"></i> Testy
+            </a>
           }
         </div>
 
@@ -78,6 +81,9 @@ import { selectIsAuthenticated, selectIsAnonymous, selectAuthChecked } from '../
           </a>
           <a routerLink="/learning-guide" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
             <i class="pi pi-lightbulb"></i> Poradnik
+          </a>
+          <a routerLink="/language-test" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
+            <i class="pi pi-check-square"></i> Testy
           </a>
         </div>
       }

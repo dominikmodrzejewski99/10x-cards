@@ -39,6 +39,21 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'language-test',
+    loadComponent: () => import('./components/language-test/language-test-list.component').then(m => m.LanguageTestListComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'language-test/:level',
+    loadComponent: () => import('./components/language-test/language-test-view.component').then(m => m.LanguageTestViewComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'language-test/:level/results',
+    loadComponent: () => import('./components/language-test/language-test-results.component').then(m => m.LanguageTestResultsComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'login',
     loadComponent: () => import('./auth/auth-page.component').then(m => m.AuthPageComponent),
     canActivate: [nonAuthGuard]

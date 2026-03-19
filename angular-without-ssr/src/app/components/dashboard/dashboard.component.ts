@@ -13,6 +13,7 @@ import { ReviewReminderService } from '../../shared/services/review-reminder.ser
 import { ReviewReminderComponent } from '../../shared/components/review-reminder/review-reminder.component';
 import { ReviewApiService } from '../../services/review-api.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
+import { LanguageTestWidgetComponent } from '../language-test/language-test-widget.component';
 import { forkJoin } from 'rxjs';
 import { FlashcardSetDTO, StudyCardDTO } from '../../../types';
 
@@ -27,7 +28,7 @@ interface CardBreakdown {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterModule, ReviewReminderComponent],
+  imports: [RouterModule, ReviewReminderComponent, LanguageTestWidgetComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
