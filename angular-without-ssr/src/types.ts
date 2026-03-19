@@ -34,7 +34,7 @@ export interface UserDTO {
   updated_at: string;
 }
 
-export type Source = 'ai-full' | 'ai-edited' | 'manual';
+export type Source = 'ai-full' | 'ai-edited' | 'manual' | 'test';
 
 /** ---------- Flashcards ---------- */
 
@@ -186,4 +186,70 @@ export interface OpenRouterResponse {
       content: string;
     };
   }[];
+}
+
+// ============ Language Tests ============
+
+export type TestLevel = 'b1' | 'b2-fce' | 'c1-cae';
+
+export type QuestionCategory = 'grammar' | 'vocabulary' | 'collocations' | 'phrasal-verbs' | 'word-building';
+
+export interface MultipleChoiceQuestion {
+  type: 'multiple-choice-cloze';
+  id: string;
+  text: string;
+  options: string[];
+  correctIndex: number;
+  category: QuestionCategory;
+  subcategory: string;
+  explanation: string;
+}
+
+export interface WordFormationQuestion {
+  type: 'word-formation';
+  id: string;
+  text: string;
+  baseWord: string;
+  correctAnswer: string;
+  acceptedAnswers: string[];
+  category: QuestionCategory;
+  subcategory: string;
+  explanation: string;
+}
+
+export type TestQuestion = MultipleChoiceQuestion | WordFormationQuestion;
+
+export interface TestDefinition {
+  level: TestLevel;
+  title: string;
+  description: string;
+  passingScore: number;
+  questions: TestQuestion[];
+}
+
+export interface CategoryBreakdown {
+  [category: string]: { correct: number; total: number };
+}
+
+export interface WrongAnswer {
+  questionId: string;
+  userAnswer: string;
+  correctAnswer: string;
+  front: string;
+  back: string;
+}
+
+export interface LanguageTestResultDTO {
+  id: number;
+  user_id: string;
+  level: TestLevel;
+  total_score: number;
+  max_score: number;
+  percentage: number;
+  category_breakdown: CategoryBreakdown;
+  wrong_answers: WrongAnswer[];
+  generated_set_id: number | null;
+  completed_at: string;
+  created_at: string;
+  updated_at: string;
 }
