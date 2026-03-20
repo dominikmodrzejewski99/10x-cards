@@ -1,6 +1,7 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnDestroy, AfterViewInit, ViewChild, inject, Signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -13,27 +14,25 @@ import * as AuthActions from './auth/store/auth.actions';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ButtonModule, RouterModule, AuthNavbarComponent, OnboardingComponent],
 })
-export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
-  title = '10xCards - Twórz i zarządzaj fiszkami efektywnie';
-  currentYear = new Date().getFullYear();
-  isAuthenticated = false;
+export class AppComponent implements AfterViewInit, OnDestroy {
+  private store: Store = inject(Store);
+  private actionsSubject: ActionsSubject = inject(ActionsSubject);
 
-  @ViewChild(OnboardingComponent) onboarding!: OnboardingComponent;
+  public isAuthenticatedSignal: Signal<boolean> = toSignal(this.store.select(selectIsAuthenticated), { initialValue: false });
+  public title: string = '10xCards - Twórz i zarządzaj fiszkami efektywnie';
+  public currentYear: number = new Date().getFullYear();
 
-  private store = inject(Store);
-  private actionsSubject = inject(ActionsSubject);
-  private subscription = new Subscription();
-  private pendingOnboarding = false;
-  private viewReady = false;
+  @ViewChild(OnboardingComponent) private onboarding!: OnboardingComponent;
 
-  ngOnInit(): void {
+  private pendingOnboarding: boolean = false;
+  private viewReady: boolean = false;
+  private subscription: Subscription = new Subscription();
+
+  constructor() {
     this.store.dispatch(AuthActions.checkAuthState());
-
-    this.subscription.add(
-      this.store.select(selectIsAuthenticated).subscribe(v => this.isAuthenticated = v)
-    );
 
     this.subscription.add(
       this.actionsSubject.pipe(
@@ -47,7 +46,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.viewReady = true;
     if (this.pendingOnboarding) {
       this.pendingOnboarding = false;
@@ -55,7 +54,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 

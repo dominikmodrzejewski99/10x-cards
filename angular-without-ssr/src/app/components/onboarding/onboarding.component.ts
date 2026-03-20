@@ -1,4 +1,4 @@
-import { Component, inject, signal, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { UserPreferencesService } from '../../services/user-preferences.service';
@@ -82,7 +82,6 @@ const STEPS: OnboardingStep[] = [
 })
 export class OnboardingComponent {
   private router = inject(Router);
-  private cdr = inject(ChangeDetectorRef);
   private preferencesService = inject(UserPreferencesService);
 
   steps = STEPS;
@@ -119,7 +118,6 @@ export class OnboardingComponent {
   show(): void {
     this.currentStep.set(0);
     this.visible.set(true);
-    this.cdr.markForCheck();
   }
 
   next(): void {

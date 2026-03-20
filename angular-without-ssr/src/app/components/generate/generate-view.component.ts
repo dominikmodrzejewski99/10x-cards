@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, ChangeDetectionStrategy, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { GenerationApiService } from '../../services/generation-api.service';
@@ -7,7 +7,6 @@ import { FlashcardSetApiService } from '../../services/flashcard-set-api.service
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
-import { Subscription } from 'rxjs';
 import { GenerateFlashcardsCommand, GenerationDTO, FlashcardProposalDTO, FlashcardSetDTO } from '../../../types';
 
 import { LoadingIndicatorComponent } from './loading-indicator/loading-indicator.component';
@@ -41,7 +40,7 @@ interface FlashcardProposalViewModel extends FlashcardProposalDTO {
   styleUrls: ['./generate-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GenerateViewComponent implements OnInit, OnDestroy {
+export class GenerateViewComponent implements OnInit {
   private generationApi = inject(GenerationApiService);
   private flashcardApi = inject(FlashcardApiService);
   private flashcardSetApi = inject(FlashcardSetApiService);
@@ -75,23 +74,15 @@ export class GenerateViewComponent implements OnInit, OnDestroy {
 
   isButtonLoading = computed(() => this.isGenerating() || this.isSaving());
 
-  private subscription = new Subscription();
-
   ngOnInit() {
     this.loadSets();
   }
 
   private loadSets(): void {
-    this.subscription.add(
-      this.flashcardSetApi.getSets().subscribe({
-        next: (sets) => this.sets.set(sets),
-        error: (err) => console.error('Błąd ładowania zestawów:', err)
-      })
-    );
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.flashcardSetApi.getSets().subscribe({
+      next: (sets) => this.sets.set(sets),
+      error: (err) => console.error('Błąd ładowania zestawów:', err)
+    });
   }
 
   onTextChange(value: string): void {

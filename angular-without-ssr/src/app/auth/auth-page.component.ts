@@ -1,21 +1,23 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy, inject, signal, effect, WritableSignal, Signal } from '@angular/core';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs/operators';
 import { AuthFormComponent } from './auth-form.component';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-auth-page',
-  imports: [CommonModule, RouterModule, AuthFormComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterModule, AuthFormComponent],
   template: `
     <div class="auth-container">
       <div class="auth-card">
         <div class="auth-header">
-          <h1 class="auth-title">{{ isLoginMode ? 'Logowanie' : 'Rejestracja' }}</h1>
+          <h1 class="auth-title">{{ isLoginModeSignal() ? 'Logowanie' : 'Rejestracja' }}</h1>
           <div class="auth-tabs">
             <a
               routerLink="/login"
-              [ngClass]="{'active': isLoginMode}"
+              class="auth-tabs__link"
+              [class.auth-tabs__link--active]="isLoginModeSignal()"
               (click)="setLoginMode(true)">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
@@ -26,7 +28,8 @@ import { Subscription } from 'rxjs';
             </a>
             <a
               routerLink="/register"
-              [ngClass]="{'active': !isLoginMode}"
+              class="auth-tabs__link"
+              [class.auth-tabs__link--active]="!isLoginModeSignal()"
               (click)="setLoginMode(false)">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -40,7 +43,7 @@ import { Subscription } from 'rxjs';
         </div>
 
         <app-auth-form
-          [isLoginMode]="isLoginMode"
+          [isLoginMode]="isLoginModeSignal()"
           (modeChange)="setLoginMode($event)">
         </app-auth-form>
       </div>
@@ -84,7 +87,7 @@ import { Subscription } from 'rxjs';
       gap: 1rem;
     }
 
-    .auth-tabs a {
+    .auth-tabs__link {
       padding: 0.5rem 0.75rem;
       background: none;
       border: none;
@@ -101,22 +104,22 @@ import { Subscription } from 'rxjs';
       font-size: 0.875rem;
     }
 
-    .auth-tabs a .icon {
+    .auth-tabs__link .icon {
       width: 16px;
       height: 16px;
       stroke-width: 2;
     }
 
-    .auth-tabs a:hover {
+    .auth-tabs__link:hover {
       color: #4255ff;
     }
 
-    .auth-tabs a.active {
+    .auth-tabs__link--active {
       color: #4255ff;
       font-weight: 600;
     }
 
-    .auth-tabs a.active::after {
+    .auth-tabs__link--active::after {
       content: '';
       position: absolute;
       bottom: -1px;
@@ -141,48 +144,43 @@ import { Subscription } from 'rxjs';
         gap: 2rem;
       }
 
-      .auth-tabs a {
+      .auth-tabs__link {
         padding: 0.75rem 1.5rem;
         font-size: 1rem;
       }
 
-      .auth-tabs a .icon {
+      .auth-tabs__link .icon {
         width: 18px;
         height: 18px;
       }
     }
   `]
 })
-export class AuthPageComponent implements OnInit, OnDestroy {
-  isLoginMode = true;
-  private subscription = new Subscription();
+export class AuthPageComponent {
+  private router: Router = inject(Router);
+  private route: ActivatedRoute = inject(ActivatedRoute);
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
+  public isLoginModeSignal: WritableSignal<boolean> = signal<boolean>(this.router.url.includes('/login'));
 
-  ngOnInit(): void {
-    const currentPath = this.router.url;
-    this.isLoginMode = currentPath.includes('/login');
+  private routePathSignal: Signal<string> = toSignal(
+    this.route.url.pipe(
+      map((segments) => segments.map((s) => s.path).join('/'))
+    ),
+    { initialValue: '' }
+  );
 
-    this.subscription.add(
-      this.route.url.subscribe(segments => {
-        const path = segments.map(segment => segment.path).join('/');
-        this.isLoginMode = path === 'login';
-      })
-    );
+  constructor() {
+    effect(() => {
+      const path: string = this.routePathSignal();
+      if (path) {
+        this.isLoginModeSignal.set(path === 'login');
+      }
+    });
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
-  setLoginMode(isLogin: boolean): void {
-    this.isLoginMode = isLogin;
-
-    // Zaktualizuj URL, aby odzwierciedlał aktualny tryb
-    const targetPath = isLogin ? '/login' : '/register';
+  public setLoginMode(isLogin: boolean): void {
+    this.isLoginModeSignal.set(isLogin);
+    const targetPath: string = isLogin ? '/login' : '/register';
     this.router.navigate([targetPath]);
   }
 }

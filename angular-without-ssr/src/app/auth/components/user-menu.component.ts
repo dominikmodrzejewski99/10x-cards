@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, computed, WritableSignal, Signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
 import { UserDTO } from '../../../types';
 import { selectIsAuthenticated, selectUser } from '../store/auth.selectors';
 import * as AuthActions from '../store/auth.actions';
@@ -15,29 +15,29 @@ import * as AuthActions from '../store/auth.actions';
   },
   template: `
     <div class="user-menu-container">
-      @if (isAuthenticated && user?.is_anonymous) {
+      @if (isAuthenticatedSignal() && userSignal()?.is_anonymous) {
         <button class="logout-btn" (click)="onLogout()">
           <i class="pi pi-sign-out"></i>
           Wyloguj
         </button>
-      } @else if (isAuthenticated) {
+      } @else if (isAuthenticatedSignal()) {
         <div class="user-menu-dropdown">
-          <button class="user-menu-button" [class.is-open]="isMenuOpen" (click)="toggleMenu()">
+          <button class="user-menu-button" [class.is-open]="isMenuOpenSignal()" (click)="toggleMenu()">
             <div class="user-avatar">
-              {{ getUserInitials() }}
+              {{ userInitialsSignal() }}
             </div>
-            <span class="user-email">{{ user?.email }}</span>
-            <i class="pi pi-chevron-down chevron" [class.chevron--open]="isMenuOpen"></i>
+            <span class="user-email">{{ userSignal()?.email }}</span>
+            <i class="pi pi-chevron-down chevron" [class.chevron--open]="isMenuOpenSignal()"></i>
           </button>
 
-          @if (isMenuOpen) {
+          @if (isMenuOpenSignal()) {
             <div class="dropdown-backdrop" (click)="closeMenu()"></div>
             <div class="dropdown-menu">
               <div class="dropdown-header">
-                <div class="user-avatar user-avatar--lg">{{ getUserInitials() }}</div>
+                <div class="user-avatar user-avatar--lg">{{ userInitialsSignal() }}</div>
                 <div class="user-info">
                   <span class="user-name">Moje konto</span>
-                  <span class="user-email-small">{{ user?.email }}</span>
+                  <span class="user-email-small">{{ userSignal()?.email }}</span>
                 </div>
               </div>
               <nav class="dropdown-nav">
@@ -92,7 +92,6 @@ import * as AuthActions from '../store/auth.actions';
       background: #fff0ed;
     }
 
-    /* ---- Trigger button ---- */
     .user-menu-button {
       display: flex;
       align-items: center;
@@ -155,14 +154,12 @@ import * as AuthActions from '../store/auth.actions';
       transform: rotate(180deg);
     }
 
-    /* ---- Backdrop (mobile-friendly close target) ---- */
     .dropdown-backdrop {
       position: fixed;
       inset: 0;
       z-index: 49;
     }
 
-    /* ---- Dropdown panel ---- */
     .dropdown-menu {
       position: absolute;
       top: calc(100% + 0.5rem);
@@ -190,7 +187,6 @@ import * as AuthActions from '../store/auth.actions';
       }
     }
 
-    /* ---- Header ---- */
     .dropdown-header {
       display: flex;
       align-items: center;
@@ -221,7 +217,6 @@ import * as AuthActions from '../store/auth.actions';
       white-space: nowrap;
     }
 
-    /* ---- Nav section ---- */
     .dropdown-nav {
       padding: 0.375rem 0;
     }
@@ -261,7 +256,6 @@ import * as AuthActions from '../store/auth.actions';
       color: #4255ff;
     }
 
-    /* ---- Footer / Logout ---- */
     .dropdown-footer {
       border-top: 1px solid #f0f1f5;
       padding: 0.375rem 0;
@@ -284,7 +278,6 @@ import * as AuthActions from '../store/auth.actions';
       color: #b91c1c;
     }
 
-    /* ---- Mobile ---- */
     @media (max-width: 640px) {
       .user-menu-button {
         padding: 0.2rem;
@@ -324,47 +317,29 @@ import * as AuthActions from '../store/auth.actions';
     }
   `]
 })
-export class UserMenuComponent implements OnInit, OnDestroy {
-  public isAuthenticated: boolean = false;
-  public user: UserDTO | null = null;
-  public isMenuOpen: boolean = false;
-
+export class UserMenuComponent {
   private store: Store = inject(Store);
-  private subscriptions: Subscription = new Subscription();
 
-  public getUserInitials(): string {
-    if (!this.user?.email) return '?';
-    return this.user.email.charAt(0).toUpperCase();
-  }
+  public isAuthenticatedSignal: Signal<boolean> = toSignal(this.store.select(selectIsAuthenticated), { initialValue: false });
+  public userSignal: Signal<UserDTO | null> = toSignal(this.store.select(selectUser), { initialValue: null as UserDTO | null });
+  public isMenuOpenSignal: WritableSignal<boolean> = signal<boolean>(false);
+
+  public readonly userInitialsSignal: Signal<string> = computed<string>(() => {
+    const u: UserDTO | null = this.userSignal();
+    if (!u?.email) return '?';
+    return u.email.charAt(0).toUpperCase();
+  });
 
   public toggleMenu(): void {
-    this.isMenuOpen = !this.isMenuOpen;
+    this.isMenuOpenSignal.update((v: boolean) => !v);
   }
 
   public closeMenu(): void {
-    this.isMenuOpen = false;
+    this.isMenuOpenSignal.set(false);
   }
 
   public onEscape(): void {
-    if (this.isMenuOpen) this.closeMenu();
-  }
-
-  public ngOnInit(): void {
-    this.subscriptions.add(
-      this.store.select(selectIsAuthenticated).subscribe((isAuthenticated: boolean) => {
-        this.isAuthenticated = isAuthenticated;
-      })
-    );
-
-    this.subscriptions.add(
-      this.store.select(selectUser).subscribe((user: UserDTO | null) => {
-        this.user = user;
-      })
-    );
-  }
-
-  public ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+    if (this.isMenuOpenSignal()) this.closeMenu();
   }
 
   public onLogout(): void {

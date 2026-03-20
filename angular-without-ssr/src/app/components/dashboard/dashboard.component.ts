@@ -4,8 +4,7 @@ import {
   OnInit,
   inject,
   signal,
-  computed,
-  ChangeDetectorRef
+  computed
 } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { StreakService } from '../../shared/services/streak.service';
@@ -37,7 +36,6 @@ export class DashboardComponent implements OnInit {
   private streak = inject(StreakService);
   private reviewApi = inject(ReviewApiService);
   private setApi = inject(FlashcardSetApiService);
-  private cdr = inject(ChangeDetectorRef);
   private reminderService = inject(ReviewReminderService);
   private router = inject(Router);
 
@@ -90,12 +88,10 @@ export class DashboardComponent implements OnInit {
         this.sets.set(sets);
         this.nextReviewDate.set(nextReview);
         this.loading.set(false);
-        this.cdr.markForCheck();
         this.checkReminder();
       },
       error: () => {
         this.loading.set(false);
-        this.cdr.markForCheck();
       }
     });
   }
@@ -162,8 +158,7 @@ export class DashboardComponent implements OnInit {
           this.reminderDueCount.set(count);
           this.reminderVisible.set(true);
           this.reminderService.markAsShown();
-          this.cdr.markForCheck();
-        }
+          }
       }
     });
   }

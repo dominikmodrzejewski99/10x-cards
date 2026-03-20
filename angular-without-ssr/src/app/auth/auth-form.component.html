@@ -1,0 +1,86 @@
+<form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+  <div class="auth-form__field">
+    <label for="email" class="auth-form__label">Email</label>
+    <input
+      type="email"
+      id="email"
+      class="auth-form__input"
+      formControlName="email"
+      placeholder="Wprowadź swój adres email"
+      data-testid="login-email-input"
+    />
+    @if (submittedSignal() && f['email'].errors) {
+      <div class="auth-form__error">
+        @if (f['email'].errors['required']) {
+          <span>Email jest wymagany</span>
+        }
+        @if (f['email'].errors['email']) {
+          <span>Niepoprawny format email</span>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="auth-form__field">
+    <label for="password" class="auth-form__label">Hasło</label>
+    <input
+      type="password"
+      id="password"
+      class="auth-form__input"
+      formControlName="password"
+      placeholder="Minimum 6 znaków"
+      data-testid="login-password-input"
+    />
+    @if (submittedSignal() && f['password'].errors) {
+      <div class="auth-form__error">
+        @if (f['password'].errors['required']) {
+          <span>Hasło jest wymagane</span>
+        }
+        @if (f['password'].errors['minlength']) {
+          <span>Hasło musi mieć co najmniej 6 znaków</span>
+        }
+      </div>
+    }
+  </div>
+
+  <button
+    type="submit"
+    class="auth-form__submit"
+    [disabled]="loadingSignal()"
+    data-testid="login-submit-button">
+    {{ isLoginMode() ? 'Zaloguj się' : 'Zarejestruj się' }}
+    @if (loadingSignal()) { <span>...</span> }
+  </button>
+
+  @if (errorSignal()) {
+    <div class="auth-form__error auth-form__error--global">
+      {{ errorSignal() }}
+    </div>
+  }
+
+  <div class="auth-form__divider">
+    <span>lub</span>
+  </div>
+
+  <button
+    type="button"
+    class="auth-form__anon-btn"
+    [disabled]="loadingSignal()"
+    (click)="onAnonymousLogin()"
+    data-testid="anonymous-login-button">
+    <i class="pi pi-user"></i>
+    Wypróbuj bez rejestracji
+  </button>
+
+  <div class="auth-form__footer">
+    <p>
+      {{ isLoginMode() ? 'Nie masz jeszcze konta?' : 'Masz już konto?' }}
+      <a
+        [routerLink]="isLoginMode() ? '/register' : '/login'"
+        class="auth-form__footer-link"
+        (click)="toggleAuthMode()">
+        {{ isLoginMode() ? 'Zarejestruj się' : 'Zaloguj się' }}
+      </a>
+    </p>
+  </div>
+</form>
