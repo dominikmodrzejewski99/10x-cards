@@ -40,8 +40,7 @@
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.1.4",
     "tslib": "^2.3.0",
-    "url": "^0.11.4",
-    "zone.js": "~0.15.0"
+    "url": "^0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^21.2.2",
