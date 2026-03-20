@@ -14,7 +14,7 @@ import { FlashcardProposalDTO } from '../../../../types';
     TextareaModule
   ],
   templateUrl: './flashcard-proposal-list.component.html',
-  styleUrls: ['./flashcard-proposal-list.component.css']
+  styleUrls: ['./flashcard-proposal-list.component.scss']
 })
 export class FlashcardProposalListComponent {
   public proposalsSignal: InputSignal<(FlashcardProposalDTO & { accepted?: boolean })[]> =

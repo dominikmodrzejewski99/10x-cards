@@ -3,7 +3,7 @@ import { Component, input, InputSignal, signal, OnInit, OnDestroy, effect } from
 @Component({
   selector: 'app-loading-indicator',
   templateUrl: './loading-indicator.component.html',
-  styleUrls: ['./loading-indicator.component.css']
+  styleUrls: ['./loading-indicator.component.scss']
 })
 export class LoadingIndicatorComponent implements OnInit, OnDestroy {
   public isLoadingSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'isLoading' });

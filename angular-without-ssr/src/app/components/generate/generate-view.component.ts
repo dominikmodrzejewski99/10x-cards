@@ -1,20 +1,20 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy, signal, computed } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { GenerationApiService } from '../../services/generation-api.service';
-import { FlashcardApiService } from '../../services/flashcard-api.service';
-import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
-import { MessageService } from 'primeng/api';
-import { ToastModule } from 'primeng/toast';
-import { ButtonModule } from 'primeng/button';
-import { GenerateFlashcardsCommand, GenerationDTO, FlashcardProposalDTO, FlashcardSetDTO } from '../../../types';
+import {ChangeDetectionStrategy, Component, computed, inject, OnInit, signal} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {Router, RouterModule} from '@angular/router';
+import {GenerationApiService} from '../../services/generation-api.service';
+import {FlashcardApiService} from '../../services/flashcard-api.service';
+import {FlashcardSetApiService} from '../../services/flashcard-set-api.service';
+import {MessageService} from 'primeng/api';
+import {ToastModule} from 'primeng/toast';
+import {ButtonModule} from 'primeng/button';
+import {FlashcardProposalDTO, FlashcardSetDTO, GenerateFlashcardsCommand, GenerationDTO} from '../../../types';
 
-import { LoadingIndicatorComponent } from './loading-indicator/loading-indicator.component';
-import { ErrorMessageComponent } from './error-message/error-message.component';
-import { FlashcardProposalListComponent } from './flashcard-proposal-list/flashcard-proposal-list.component';
-import { BulkSaveButtonComponent } from './bulk-save-button/bulk-save-button.component';
-import { GenerateButtonComponent } from './generate-button/generate-button.component';
-import { SourceTextareaComponent } from './source-textarea/source-textarea.component';
+import {LoadingIndicatorComponent} from './loading-indicator/loading-indicator.component';
+import {ErrorMessageComponent} from './error-message/error-message.component';
+import {FlashcardProposalListComponent} from './flashcard-proposal-list/flashcard-proposal-list.component';
+import {BulkSaveButtonComponent} from './bulk-save-button/bulk-save-button.component';
+import {GenerateButtonComponent} from './generate-button/generate-button.component';
+import {SourceTextareaComponent} from './source-textarea/source-textarea.component';
 
 interface FlashcardProposalViewModel extends FlashcardProposalDTO {
   accepted?: boolean;
@@ -37,7 +37,7 @@ interface FlashcardProposalViewModel extends FlashcardProposalDTO {
   ],
   providers: [MessageService],
   templateUrl: './generate-view.component.html',
-  styleUrls: ['./generate-view.component.css'],
+  styleUrls: ['./generate-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GenerateViewComponent implements OnInit {
@@ -170,8 +170,7 @@ export class GenerateViewComponent implements OnInit {
   }
 
   private handleApiError(error: unknown, action: 'generowania' | 'zapisywania'): void {
-    const defaultMessage = `Wystąpił nieoczekiwany błąd podczas ${action}. Spróbuj ponownie później.`;
-    let message = defaultMessage;
+    let message = `Wystąpił nieoczekiwany błąd podczas ${action}. Spróbuj ponownie później.`;
     let summary = 'Błąd';
     let redirectToLogin = false;
 

@@ -29,7 +29,7 @@ export interface FlashcardFormData {
     TextareaModule
   ],
   templateUrl: './flashcard-form.component.html',
-  styleUrls: ['./flashcard-form.component.css'],
+  styleUrls: ['./flashcard-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FlashcardFormComponent implements OnInit {

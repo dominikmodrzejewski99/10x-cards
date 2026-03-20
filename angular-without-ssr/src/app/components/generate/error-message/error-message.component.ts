@@ -5,7 +5,7 @@ import { Component, input, output, InputSignal, OutputEmitterRef } from '@angula
   selector: 'app-error-message',
   imports: [],
   templateUrl: './error-message.component.html',
-  styleUrls: ['./error-message.component.css']
+  styleUrls: ['./error-message.component.scss']
 })
 export class ErrorMessageComponent {
   public errorMessageSignal: InputSignal<string | null> = input<string | null>(null, { alias: 'errorMessage' });

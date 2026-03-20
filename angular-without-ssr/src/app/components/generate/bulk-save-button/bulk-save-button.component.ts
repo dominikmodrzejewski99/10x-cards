@@ -6,7 +6,7 @@ import { ButtonModule } from 'primeng/button';
   selector: 'app-bulk-save-button',
   imports: [ButtonModule],
   templateUrl: './bulk-save-button.component.html',
-  styleUrls: ['./bulk-save-button.component.css']
+  styleUrls: ['./bulk-save-button.component.scss']
 })
 export class BulkSaveButtonComponent {
   public labelSignal: InputSignal<string> = input<string>('Zapisz wszystkie propozycje', { alias: 'label' });

@@ -6,7 +6,7 @@ import { ButtonModule } from 'primeng/button';
   selector: 'app-generate-button',
   imports: [ButtonModule],
   templateUrl: './generate-button.component.html',
-  styleUrls: ['./generate-button.component.css']
+  styleUrls: ['./generate-button.component.scss']
 })
 export class GenerateButtonComponent {
   public labelSignal: InputSignal<string> = input<string>('Generuj Fiszki', { alias: 'label' });

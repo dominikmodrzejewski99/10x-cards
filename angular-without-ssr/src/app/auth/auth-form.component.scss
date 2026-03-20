@@ -1,63 +1,61 @@
-@use 'variables' as *;
-
 form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.form-field {
+.auth-form__field {
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
 }
 
-label {
+.auth-form__label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: $color-text;
+  color: #282e3e;
 }
 
-input {
+.auth-form__input {
   padding: 0.75rem 0.875rem;
-  border: 1.5px solid $color-border;
-  border-radius: $radius-md;
+  border: 1.5px solid #d9dbe9;
+  border-radius: 0.5rem;
   font-size: 0.9375rem;
-  color: $color-text;
-  transition: $transition-fast;
-  background-color: $color-white;
+  color: #282e3e;
+  transition: all 0.15s;
+  background-color: #ffffff;
   width: 100%;
   box-sizing: border-box;
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0px 1000px $color-white inset !important;
-  -webkit-text-fill-color: $color-text !important;
-  background-color: $color-white !important;
+.auth-form__input:-webkit-autofill,
+.auth-form__input:-webkit-autofill:hover,
+.auth-form__input:-webkit-autofill:focus,
+.auth-form__input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+  -webkit-text-fill-color: #282e3e;
+  background-color: #ffffff;
 }
 
-input::placeholder {
+.auth-form__input::placeholder {
   color: #b0b5c4;
   font-size: 0.875rem;
 }
 
-input:focus {
+.auth-form__input:focus {
   outline: none;
-  border-color: $color-primary;
+  border-color: #4255ff;
   box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.12);
-  color: $color-text !important;
+  color: #282e3e;
 }
 
-.submit-button {
+.auth-form__submit {
   margin-top: 0.75rem;
   padding: 0.75rem;
-  background-color: $color-primary;
-  color: $color-white;
+  background-color: #4255ff;
+  color: #ffffff;
   border: none;
-  border-radius: $radius-md;
+  border-radius: 0.5rem;
   font-weight: 700;
   font-size: 0.9375rem;
   cursor: pointer;
@@ -65,82 +63,48 @@ input:focus {
   width: 100%;
 }
 
-.submit-button:hover {
-  background-color: $color-primary-hover;
+.auth-form__submit:hover {
+  background-color: #3b4ce3;
 }
 
-.submit-button:disabled {
+.auth-form__submit:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.error-message {
-  color: $color-danger;
+.auth-form__error {
+  color: #ff6240;
   font-size: 0.8125rem;
   font-weight: 500;
 }
 
-.global-error {
+.auth-form__error--global {
   margin-top: 1rem;
   text-align: center;
   padding: 0.75rem;
-  background-color: $color-danger-light;
-  border-radius: $radius-md;
+  background-color: #fff0ed;
+  border-radius: 0.5rem;
   border: 1px solid #ffcfc5;
   font-size: 0.875rem;
-  color: $color-danger;
+  color: #ff6240;
 }
 
-.auth-footer {
-  margin-top: 0.75rem;
-  text-align: center;
-  color: $color-text-secondary;
-  font-size: 0.8125rem;
-}
-
-.auth-footer a {
-  color: $color-primary;
-  font-weight: 600;
-  text-decoration: none;
-  margin-left: 0.25rem;
-  transition: $transition-fast;
-}
-
-.auth-footer a:hover {
-  text-decoration: underline;
-  color: $color-primary-hover;
-}
-
-.forgot-password {
-  margin-top: 0.5rem;
-  font-size: 0.75rem;
-}
-
-.forgot-password a {
-  color: $color-text-secondary;
-  margin-left: 0;
-}
-
-.forgot-password a:hover {
-  color: $color-primary;
-}
-
-.auth-divider {
+.auth-form__divider {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   margin: 0.25rem 0;
 }
 
-.auth-divider::before,
-.auth-divider::after {
+.auth-form__divider::before,
+.auth-form__divider::after {
   content: '';
   flex: 1;
   height: 1px;
-  background: $color-border;
+  background: #d9dbe9;
 }
 
-.auth-divider span {
+.auth-form__divider span {
   font-size: 0.75rem;
   color: #b0b5c4;
   font-weight: 600;
@@ -148,17 +112,17 @@ input:focus {
   letter-spacing: 0.05em;
 }
 
-.anon-button {
+.auth-form__anon-btn {
   width: 100%;
   padding: 0.75rem;
-  background: $color-white;
-  color: $color-text-secondary;
-  border: 1.5px solid $color-border;
-  border-radius: $radius-md;
+  background: #ffffff;
+  color: #586380;
+  border: 1.5px solid #d9dbe9;
+  border-radius: 0.5rem;
   font-weight: 600;
   font-size: 0.9375rem;
   cursor: pointer;
-  transition: $transition-fast;
+  transition: all 0.15s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -166,19 +130,39 @@ input:focus {
   font-family: inherit;
 }
 
-.anon-button:hover {
-  background: $color-bg;
-  border-color: $color-primary;
-  color: $color-primary;
+.auth-form__anon-btn:hover {
+  background: #f6f7fb;
+  border-color: #4255ff;
+  color: #4255ff;
 }
 
-.anon-button:disabled {
+.auth-form__anon-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.anon-button i {
+.auth-form__anon-btn i {
   font-size: 0.875rem;
+}
+
+.auth-form__footer {
+  margin-top: 0.75rem;
+  text-align: center;
+  color: #586380;
+  font-size: 0.8125rem;
+}
+
+.auth-form__footer-link {
+  color: #4255ff;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 0.25rem;
+  transition: all 0.15s;
+}
+
+.auth-form__footer-link:hover {
+  text-decoration: underline;
+  color: #3b4ce3;
 }
 
 @media (min-width: 480px) {
@@ -186,51 +170,46 @@ input:focus {
     gap: 1.25rem;
   }
 
-  .form-field {
+  .auth-form__field {
     gap: 0.5rem;
   }
 
-  input {
+  .auth-form__input {
     padding: 0.75rem 1rem;
     font-size: 1rem;
   }
 
-  input::placeholder {
+  .auth-form__input::placeholder {
     font-size: 0.9375rem;
   }
 
-  .submit-button {
+  .auth-form__submit {
     padding: 0.875rem;
     font-size: 1rem;
   }
 
-  .error-message {
+  .auth-form__error {
     font-size: 0.875rem;
   }
 
-  .auth-footer {
+  .auth-form__footer {
     margin-top: 1rem;
     font-size: 0.875rem;
-  }
-
-  .forgot-password {
-    margin-top: 0.5rem;
-    font-size: 0.8125rem;
   }
 }
 
 @media (max-width: 359px) {
-  input {
+  .auth-form__input {
     padding: 0.625rem 0.75rem;
     font-size: 0.875rem;
   }
 
-  .submit-button {
+  .auth-form__submit {
     padding: 0.625rem;
     font-size: 0.875rem;
   }
 
-  .auth-footer {
+  .auth-form__footer {
     font-size: 0.75rem;
   }
 }

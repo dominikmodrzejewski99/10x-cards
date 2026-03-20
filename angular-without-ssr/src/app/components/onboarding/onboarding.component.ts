@@ -77,7 +77,7 @@ const STEPS: OnboardingStep[] = [
   selector: 'app-onboarding',
   imports: [DialogModule],
   templateUrl: './onboarding.component.html',
-  styleUrls: ['./onboarding.component.css'],
+  styleUrls: ['./onboarding.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OnboardingComponent {

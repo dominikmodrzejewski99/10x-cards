@@ -7,13 +7,13 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AuthNavbarComponent } from './shared/components/auth-navbar.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
-import { selectIsAuthenticated } from './auth/store/auth.selectors';
+import { selectIsAuthenticated } from './auth/store';
 import * as AuthActions from './auth/store/auth.actions';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ButtonModule, RouterModule, AuthNavbarComponent, OnboardingComponent],
 })

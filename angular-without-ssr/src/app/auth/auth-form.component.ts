@@ -4,7 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import * as AuthActions from './store/auth.actions';
-import { selectAuthError, selectAuthLoading } from './store/auth.selectors';
+import { selectAuthError, selectAuthLoading } from './store';
 import { input, output } from '@angular/core';
 
 @Component({
@@ -12,7 +12,7 @@ import { input, output } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, RouterModule],
   templateUrl: './auth-form.component.html',
-  styleUrls: ['./auth-form.component.css']
+  styleUrls: ['./auth-form.component.scss']
 })
 export class AuthFormComponent {
   public isLoginMode: InputSignal<boolean> = input<boolean>(true);

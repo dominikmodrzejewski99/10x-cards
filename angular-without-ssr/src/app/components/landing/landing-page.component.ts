@@ -8,7 +8,7 @@ import * as AuthActions from '../../auth/store/auth.actions';
   selector: 'app-landing-page',
   imports: [RouterModule],
   templateUrl: './landing-page.component.html',
-  styleUrls: ['./landing-page.component.css'],
+  styleUrls: ['./landing-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'landing-host'

@@ -42,7 +42,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use `computed()` for derived state
 - Use `linkedSignal()` for dependent reactive state
 - Set `changeDetection: ChangeDetectionStrategy.OnPush` in the `@Component` decorator
-- use separate `.html` and `.css`/`.scss` files for components
+- Use separate `.html` and `.scss` files for components — always use SCSS, never plain CSS
 - Do NOT use `ngClass`; use `class` bindings instead
 - Do NOT use `ngStyle`; use `style` bindings instead
 - When using external templates/styles, use paths relative to the component TS file

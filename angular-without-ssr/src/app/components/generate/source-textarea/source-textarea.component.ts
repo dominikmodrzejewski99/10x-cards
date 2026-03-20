@@ -7,7 +7,7 @@ import { TextareaModule } from 'primeng/textarea';
   selector: 'app-source-textarea',
   imports: [CommonModule, FormsModule, TextareaModule],
   templateUrl: './source-textarea.component.html',
-  styleUrls: ['./source-textarea.component.css']
+  styleUrls: ['./source-textarea.component.scss']
 })
 export class SourceTextareaComponent implements OnInit {
   public minLengthSignal: InputSignal<number> = input<number>(1000, { alias: 'minLength' });
