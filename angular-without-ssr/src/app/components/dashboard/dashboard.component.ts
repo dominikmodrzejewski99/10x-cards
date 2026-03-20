@@ -14,6 +14,7 @@ import { ReviewApiService } from '../../services/review-api.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { LanguageTestWidgetComponent } from '../language-test/language-test-widget.component';
 import { forkJoin } from 'rxjs';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FlashcardSetDTO, StudyCardDTO } from '../../../types';
 
 interface CardBreakdown {
@@ -27,7 +28,7 @@ interface CardBreakdown {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterModule, ReviewReminderComponent, LanguageTestWidgetComponent],
+  imports: [RouterModule, ReviewReminderComponent, LanguageTestWidgetComponent, NgxSkeletonLoaderModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']

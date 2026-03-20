@@ -17,12 +17,13 @@ import { SpacedRepetitionService, Sm2Result } from '../../services/spaced-repeti
 import { StreakService } from '../../shared/services/streak.service';
 import { StudyCardDTO, ReviewQuality, SessionResultDTO, FlashcardSetDTO } from '../../../types';
 import { FlashcardFlipComponent } from './flashcard-flip/flashcard-flip.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { launchConfetti } from '../../shared/utils/confetti';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-study-view',
-  imports: [RouterModule, FormsModule, FlashcardFlipComponent],
+  imports: [RouterModule, FormsModule, FlashcardFlipComponent, NgxSkeletonLoaderModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './study-view.component.html',
   styleUrls: ['./study-view.component.scss'],
@@ -157,18 +158,16 @@ export class StudyViewComponent implements OnInit, OnDestroy {
         this.originalCardsSignal.set([...cards]);
         this.currentIndexSignal.set(0);
         this.isFlippedSignal.set(false);
-        this.loadingSignal.set(false);
 
         if (cards.length === 0) {
           this.loadNextReviewDate();
+        } else {
+          this.loadingSignal.set(false);
         }
-
-
       },
       error: () => {
         this.errorSignal.set('Nie udało się załadować fiszek. Spróbuj ponownie.');
         this.loadingSignal.set(false);
-
       }
     });
   }
@@ -317,7 +316,10 @@ export class StudyViewComponent implements OnInit, OnDestroy {
     this.loadSubscription = this.reviewApi.getNextReviewDate().subscribe({
       next: (date: string | null) => {
         this.nextReviewDateSignal.set(date);
-
+        this.loadingSignal.set(false);
+      },
+      error: () => {
+        this.loadingSignal.set(false);
       }
     });
   }

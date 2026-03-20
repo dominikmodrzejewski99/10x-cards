@@ -7,6 +7,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { FlashcardSetDTO, CreateFlashcardSetCommand, UpdateFlashcardSetCommand } from '../../../types';
 
@@ -29,7 +30,8 @@ interface SetListState {
     DialogModule,
     ToastModule,
     ConfirmDialogModule,
-    ButtonModule
+    ButtonModule,
+    NgxSkeletonLoaderModule
   ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './set-list.component.html',
@@ -64,7 +66,7 @@ export class SetListComponent implements OnInit {
       next: (sets) => {
         this.state.update(s => ({ ...s, sets, loading: false }));
       },
-      error: (err) => {
+      error: () => {
         this.state.update(s => ({
           ...s,
           loading: false,

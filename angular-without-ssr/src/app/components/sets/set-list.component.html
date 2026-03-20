@@ -7,9 +7,18 @@
   </div>
 
   @if (state().loading && state().sets.length === 0) {
-    <div class="sets__loading">
-      <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: #4255ff;"></i>
-      <p>Ładowanie zestawów...</p>
+    <div class="sets__grid">
+      @for (_ of [1,2,3,4,5,6]; track $index) {
+        <div class="set-card">
+          <div class="set-card__header">
+            <ngx-skeleton-loader [theme]="{ width: '60%', height: '1.25rem' }"></ngx-skeleton-loader>
+          </div>
+          <ngx-skeleton-loader [theme]="{ width: '80%', height: '0.85rem', margin: '0.5rem 1rem' }"></ngx-skeleton-loader>
+          <div class="set-card__footer">
+            <ngx-skeleton-loader [theme]="{ width: '6rem', height: '0.75rem' }"></ngx-skeleton-loader>
+          </div>
+        </div>
+      }
     </div>
   }
 

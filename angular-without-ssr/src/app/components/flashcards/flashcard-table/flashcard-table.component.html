@@ -37,9 +37,15 @@
   }
 
   @if (loadingSignal() && flashcardsSignal().length === 0) {
-    <div class="ftable__loading" data-test-id="loading-indicator">
-      <i class="pi pi-spin pi-spinner"></i>
-      <span>Ładowanie fiszek...</span>
+    <div class="ftable__list" data-test-id="loading-indicator">
+      @for (_ of [1,2,3,4,5]; track $index) {
+        <div class="ftable__card">
+          <div style="padding: 1rem; width: 100%;">
+            <ngx-skeleton-loader [theme]="{ width: '90%', height: '1rem', 'margin-bottom': '0.5rem' }"></ngx-skeleton-loader>
+            <ngx-skeleton-loader [theme]="{ width: '60%', height: '0.85rem' }"></ngx-skeleton-loader>
+          </div>
+        </div>
+      }
     </div>
   }
 

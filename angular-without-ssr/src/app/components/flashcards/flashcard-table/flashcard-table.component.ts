@@ -1,6 +1,7 @@
 import { Component, computed, input, output, signal, InputSignal, OutputEmitterRef, Signal, WritableSignal } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 import { FlashcardDTO } from '../../../../types';
 
@@ -14,8 +15,9 @@ export interface TableLazyLoadEvent {
 @Component({
   selector: 'app-flashcard-table',
   imports: [
-    FormsModule
-],
+    FormsModule,
+    NgxSkeletonLoaderModule
+  ],
   templateUrl: './flashcard-table.component.html',
   styleUrls: ['./flashcard-table.component.scss']
 })

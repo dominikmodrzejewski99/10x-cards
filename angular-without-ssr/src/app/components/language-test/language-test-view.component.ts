@@ -4,12 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { LanguageTestBankService } from '../../services/language-test-bank.service';
 import { LanguageTestService, TestAnswer } from '../../services/language-test.service';
 import { LanguageTestResultsService } from '../../services/language-test-results.service';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TestDefinition, TestLevel, TestQuestion } from '../../../types';
 
 @Component({
   selector: 'app-language-test-view',
-  standalone: true,
-  imports: [FormsModule, RouterModule],
+  imports: [FormsModule, RouterModule, NgxSkeletonLoaderModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './language-test-view.component.html',
   styleUrl: './language-test-view.component.scss'

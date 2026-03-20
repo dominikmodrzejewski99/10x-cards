@@ -1,12 +1,67 @@
 <div class="dash">
   @if (loading()) {
-    <div class="dash__loading">
-      <div class="dash__loading-spinner">
-        <div class="dash__loading-spinner-track"></div>
-        <div class="dash__loading-spinner-fill"></div>
+    <!-- Header: greeting + subtitle -->
+    <header class="dash__header">
+      <div>
+        <ngx-skeleton-loader [theme]="{ width: '14rem', height: '2rem', 'margin-bottom': '0.4rem', 'border-radius': '0.5rem' }"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{ width: '20rem', height: '1rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
       </div>
-      <p class="dash__loading-text">Przygotowuję Twój pulpit...</p>
+    </header>
+
+    <!-- Streak row -->
+    <div class="dash__streak-start" style="pointer-events: none;">
+      <ngx-skeleton-loader appearance="circle" [theme]="{ width: '3rem', height: '3rem', 'border-radius': '0.85rem' }"></ngx-skeleton-loader>
+      <div style="flex: 1;">
+        <ngx-skeleton-loader [theme]="{ width: '14rem', height: '0.95rem', 'margin-bottom': '0.35rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{ width: '20rem', height: '0.8rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
+      </div>
     </div>
+
+    <!-- Stats row -->
+    <div class="dash__stats">
+      @for (_ of [1,2,3,4]; track $index) {
+        <div class="dash__stat">
+          <ngx-skeleton-loader [theme]="{ width: '2.5rem', height: '2.5rem', 'border-radius': '0.65rem' }"></ngx-skeleton-loader>
+          <div class="dash__stat-body">
+            <ngx-skeleton-loader [theme]="{ width: '2.5rem', height: '1.35rem', 'margin-bottom': '0.2rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
+            <ngx-skeleton-loader [theme]="{ width: '4rem', height: '0.65rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Quick actions -->
+    <section class="dash__actions">
+      <ngx-skeleton-loader [theme]="{ width: '8rem', height: '1.15rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
+      <div class="dash__action-grid">
+        @for (_ of [1,2]; track $index) {
+          <div class="dash__action" style="pointer-events: none;">
+            <ngx-skeleton-loader [theme]="{ width: '2.5rem', height: '2.5rem', 'border-radius': '0.65rem' }"></ngx-skeleton-loader>
+            <div class="dash__action-body">
+              <ngx-skeleton-loader [theme]="{ width: '7rem', height: '0.9rem', 'margin-bottom': '0.25rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
+              <ngx-skeleton-loader [theme]="{ width: '10rem', height: '0.78rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Sets -->
+    <section class="dash__sets">
+      <div class="dash__sets-header">
+        <ngx-skeleton-loader [theme]="{ width: '8rem', height: '1.15rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{ width: '6rem', height: '0.8rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
+      </div>
+      <div class="dash__sets-grid">
+        @for (_ of [1,2,3]; track $index) {
+          <div class="dash__set-card">
+            <ngx-skeleton-loader [theme]="{ width: '70%', height: '0.95rem', 'margin-bottom': '0.4rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
+            <ngx-skeleton-loader [theme]="{ width: '50%', height: '0.8rem', 'margin-bottom': '0.5rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
+            <ngx-skeleton-loader [theme]="{ width: '5rem', height: '0.7rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
+          </div>
+        }
+      </div>
+    </section>
   } @else {
 
     <!-- Header -->

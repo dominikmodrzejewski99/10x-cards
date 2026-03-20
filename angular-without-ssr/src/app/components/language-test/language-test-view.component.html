@@ -1,7 +1,22 @@
 <div class="test-view">
   @if (loading()) {
-    <div class="test-view__loading">
-      <i class="pi pi-spin pi-spinner"></i> Ładowanie testu...
+    <!-- Progress skeleton -->
+    <div class="test-view__progress">
+      <ngx-skeleton-loader [theme]="{ width: '3rem', height: '0.85rem' }"></ngx-skeleton-loader>
+      <ngx-skeleton-loader [theme]="{ width: '100%', height: '0.35rem', 'border-radius': '9999px' }"></ngx-skeleton-loader>
+      <ngx-skeleton-loader [theme]="{ width: '6rem', height: '0.75rem' }"></ngx-skeleton-loader>
+    </div>
+    <!-- Question skeleton -->
+    <div style="margin: 1.5rem 0;">
+      <ngx-skeleton-loader [theme]="{ width: '100%', height: '2.5rem', 'margin-bottom': '1rem' }"></ngx-skeleton-loader>
+    </div>
+    <!-- Options skeleton -->
+    @for (_ of [1,2,3,4]; track $index) {
+      <ngx-skeleton-loader [theme]="{ width: '100%', height: '3rem', 'border-radius': '0.75rem', 'margin-bottom': '0.5rem' }"></ngx-skeleton-loader>
+    }
+    <!-- Button skeleton -->
+    <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
+      <ngx-skeleton-loader [theme]="{ width: '8rem', height: '2.5rem', 'border-radius': '0.5rem' }"></ngx-skeleton-loader>
     </div>
   } @else if (error()) {
     <div class="test-view__error">

@@ -17,9 +17,23 @@
   }
 
   @if (loadingSignal()) {
-    <div class="study__state">
-      <i class="pi pi-spin pi-spinner study__state-icon" style="color: #4255ff;"></i>
-      <p class="study__state-text">Ładowanie fiszek...</p>
+    <div class="study__body">
+      <div class="study__header">
+        <ngx-skeleton-loader [theme]="{ width: '6rem', height: '1.5rem', margin: '0 auto 0.5rem' }"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{ width: '14rem', height: '0.85rem', margin: '0 auto' }"></ngx-skeleton-loader>
+      </div>
+      <div class="study__card">
+        <ngx-skeleton-loader [theme]="{ width: '100%', height: 'clamp(200px, 40vh, 400px)', 'border-radius': '1rem' }"></ngx-skeleton-loader>
+      </div>
+      <div class="study__controls">
+        <ngx-skeleton-loader appearance="circle" [theme]="{ width: '2rem', height: '2rem' }"></ngx-skeleton-loader>
+        <div class="study__controls-center">
+          <ngx-skeleton-loader appearance="circle" [theme]="{ width: '2.5rem', height: '2.5rem' }"></ngx-skeleton-loader>
+          <ngx-skeleton-loader [theme]="{ width: '3rem', height: '0.85rem' }"></ngx-skeleton-loader>
+        </div>
+        <ngx-skeleton-loader appearance="circle" [theme]="{ width: '2rem', height: '2rem' }"></ngx-skeleton-loader>
+      </div>
+      <ngx-skeleton-loader [theme]="{ width: '100%', height: '0.25rem', 'border-radius': '9999px', 'max-width': '600px' }"></ngx-skeleton-loader>
     </div>
   }
 

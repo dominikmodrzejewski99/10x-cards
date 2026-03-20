@@ -3,13 +3,13 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { LanguageTestResultsService } from '../../services/language-test-results.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { FlashcardApiService } from '../../services/flashcard-api.service';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { LanguageTestResultDTO, TestLevel } from '../../../types';
 import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-language-test-results',
-  standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, NgxSkeletonLoaderModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './language-test-results.component.html',
   styleUrl: './language-test-results.component.scss'
