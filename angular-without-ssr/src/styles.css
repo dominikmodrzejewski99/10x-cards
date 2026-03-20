@@ -25,6 +25,7 @@ body {
   background-color: var(--app-bg, #f6f7fb);
   margin: 0;
   -webkit-font-smoothing: antialiased;
+  touch-action: manipulation;
 }
 
 a { color: inherit; text-decoration: none; }
