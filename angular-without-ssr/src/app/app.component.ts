@@ -1,14 +1,9 @@
-import { Component, ChangeDetectionStrategy, OnDestroy, AfterViewInit, ViewChild, inject, Signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, AfterViewInit, ViewChild, inject, effect, Signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Store, ActionsSubject } from '@ngrx/store';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
 import { AuthNavbarComponent } from './shared/components/auth-navbar.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
-import { selectIsAuthenticated } from './auth/store';
-import * as AuthActions from './auth/store/auth.actions';
+import { AuthStore } from './auth/store';
 
 @Component({
   selector: 'app-root',
@@ -17,11 +12,10 @@ import * as AuthActions from './auth/store/auth.actions';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ButtonModule, RouterModule, AuthNavbarComponent, OnboardingComponent],
 })
-export class AppComponent implements AfterViewInit, OnDestroy {
-  private store: Store = inject(Store);
-  private actionsSubject: ActionsSubject = inject(ActionsSubject);
+export class AppComponent implements AfterViewInit {
+  private authStore = inject(AuthStore);
 
-  public isAuthenticatedSignal: Signal<boolean> = toSignal(this.store.select(selectIsAuthenticated), { initialValue: false });
+  public isAuthenticatedSignal: Signal<boolean> = this.authStore.isAuthenticated;
   public title: string = '10xCards - Twórz i zarządzaj fiszkami efektywnie';
   public currentYear: number = new Date().getFullYear();
 
@@ -29,21 +23,16 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   private pendingOnboarding: boolean = false;
   private viewReady: boolean = false;
-  private subscription: Subscription = new Subscription();
 
   constructor() {
-    this.store.dispatch(AuthActions.checkAuthState());
+    this.authStore.checkAuthState();
 
-    this.subscription.add(
-      this.actionsSubject.pipe(
-        filter((action) =>
-          action.type === AuthActions.registerSuccess.type ||
-          action.type === AuthActions.loginAnonymouslySuccess.type
-        )
-      ).subscribe(() => {
+    effect(() => {
+      const trigger: number = this.authStore.onboardingTrigger();
+      if (trigger > 0) {
         this.triggerOnboarding();
-      })
-    );
+      }
+    });
   }
 
   public ngAfterViewInit(): void {
@@ -52,10 +41,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       this.pendingOnboarding = false;
       setTimeout(() => this.onboarding?.checkAndShow(), 300);
     }
-  }
-
-  public ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 
   private triggerOnboarding(): void {

@@ -1,28 +1,23 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { combineLatest, first } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { first } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { selectIsAuthenticated, selectAuthChecked } from '../store/auth.selectors';
 import { AuthRedirectService } from '../services/auth-redirect.service';
-import * as AuthActions from '../store/auth.actions';
+import { AuthStore } from '../store';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  const store = inject(Store);
-  const router = inject(Router);
-  const authRedirectService = inject(AuthRedirectService);
+  const authStore = inject(AuthStore);
+  const router: Router = inject(Router);
+  const authRedirectService: AuthRedirectService = inject(AuthRedirectService);
 
-  // Ensure auth check is dispatched (idempotent — effect deduplicates via switchMap)
-  store.dispatch(AuthActions.checkAuthState());
+  authStore.checkAuthState();
 
-  return combineLatest([
-    store.select(selectIsAuthenticated),
-    store.select(selectAuthChecked)
-  ]).pipe(
-    filter(([_, authChecked]) => authChecked),
+  return toObservable(authStore.authChecked).pipe(
+    filter((checked: boolean) => checked),
     first(),
-    map(([isAuthenticated]) => {
-      if (isAuthenticated) {
+    map(() => {
+      if (authStore.isAuthenticated()) {
         return true;
       }
 

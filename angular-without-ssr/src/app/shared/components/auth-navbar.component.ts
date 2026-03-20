@@ -1,9 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, signal, WritableSignal, Signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Store } from '@ngrx/store';
 import { UserMenuComponent } from '../../auth/components/user-menu.component';
-import { selectIsAuthenticated, selectIsAnonymous, selectAuthChecked } from '../../auth/store/auth.selectors';
+import { AuthStore } from '../../auth/store';
 
 @Component({
   selector: 'app-auth-navbar',
@@ -87,11 +85,11 @@ import { selectIsAuthenticated, selectIsAnonymous, selectAuthChecked } from '../
   styleUrl: './auth-navbar.component.scss'
 })
 export class AuthNavbarComponent {
-  private store: Store = inject(Store);
+  private authStore = inject(AuthStore);
 
-  public authCheckedSignal: Signal<boolean> = toSignal(this.store.select(selectAuthChecked), { initialValue: false });
-  public isAuthenticatedSignal: Signal<boolean> = toSignal(this.store.select(selectIsAuthenticated), { initialValue: false });
-  public isAnonymousSignal: Signal<boolean> = toSignal(this.store.select(selectIsAnonymous), { initialValue: false });
+  public authCheckedSignal: Signal<boolean> = this.authStore.authChecked;
+  public isAuthenticatedSignal: Signal<boolean> = this.authStore.isAuthenticated;
+  public isAnonymousSignal: Signal<boolean> = this.authStore.isAnonymous;
   public mobileOpenSignal: WritableSignal<boolean> = signal<boolean>(false);
 
   public toggleMobile(): void {

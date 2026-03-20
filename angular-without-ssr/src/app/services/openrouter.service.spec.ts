@@ -1,11 +1,9 @@
 import { TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
-import { OpenRouterService } from '../services/openrouter.service';
-import { SessionManager } from '../services/session-manager.service';
+import { OpenRouterService } from './openrouter.service';
+import { SessionManager } from './session-manager.service';
 import { OpenRouterResponse, Session } from '../interfaces/openrouter.interface';
 import { environment } from '../../environments/environments';
-import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withFetch } from '@angular/common/http';
@@ -15,7 +13,6 @@ describe('OpenRouterService', () => {
   let service: OpenRouterService;
   let httpMock: HttpTestingController;
   let sessionManagerSpy: jasmine.SpyObj<SessionManager>;
-  let mockStore: MockStore;
 
   // Dane testowe używane w wielu testach
   let mockSession: Session;
@@ -67,22 +64,6 @@ describe('OpenRouterService', () => {
       providers: [
         OpenRouterService,
         { provide: SessionManager, useValue: mockSessionManager },
-        // Dodanie mockowanego Store dla NgRx z pełną konfiguracją
-        provideMockStore({
-          initialState: {
-            auth: {
-              isAuthenticated: false,
-              user: null,
-              error: null,
-              loading: false
-            },
-            flashcards: {
-              flashcards: [],
-              loading: false,
-              error: null
-            }
-          }
-        }),
         provideHttpClient(withFetch()),
         provideHttpClientTesting(),
         provideRouter([]),
@@ -94,7 +75,6 @@ describe('OpenRouterService', () => {
     service = TestBed.inject(OpenRouterService);
     httpMock = TestBed.inject(HttpTestingController);
     sessionManagerSpy = TestBed.inject(SessionManager) as jasmine.SpyObj<SessionManager>;
-    mockStore = TestBed.inject(Store) as MockStore;
   });
 
   afterEach(() => {
@@ -225,9 +205,8 @@ describe('OpenRouterService', () => {
       sessionManagerSpy.addMessage.and.returnValue(mockSession);
 
       // Działanie
-      const sendMessagePromise = service.sendMessage(userMessage, undefined, customOptions);
-
-      // Sprawdzenie zapytania HTTP
+      service.sendMessage(userMessage, undefined, customOptions);
+// Sprawdzenie zapytania HTTP
       const req = httpMock.expectOne(request => request.url === 'https://openrouter.ai/api/v1/chat/completions');
 
       // Sprawdzenie body zapytania

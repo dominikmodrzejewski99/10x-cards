@@ -1,8 +1,7 @@
 import { Component, AfterViewInit, OnDestroy, ElementRef, ChangeDetectionStrategy, inject } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
-import { Store } from '@ngrx/store';
-import * as AuthActions from '../../auth/store/auth.actions';
+import { AuthStore } from '../../auth/store';
 
 @Component({
   selector: 'app-landing-page',
@@ -16,12 +15,12 @@ import * as AuthActions from '../../auth/store/auth.actions';
 })
 export class LandingPageComponent implements AfterViewInit, OnDestroy {
   private observer: IntersectionObserver | null = null;
-  private store = inject(Store);
+  private authStore = inject(AuthStore);
 
   constructor(private el: ElementRef<HTMLElement>) {}
 
   tryAnonymously(): void {
-    this.store.dispatch(AuthActions.loginAnonymously());
+    this.authStore.loginAnonymously();
   }
 
   ngAfterViewInit(): void {

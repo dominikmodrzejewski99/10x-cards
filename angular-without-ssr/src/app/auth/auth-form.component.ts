@@ -1,11 +1,8 @@
 import { Component, ChangeDetectionStrategy, inject, signal, InputSignal, OutputEmitterRef, WritableSignal, Signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Store } from '@ngrx/store';
-import * as AuthActions from './store/auth.actions';
-import { selectAuthError, selectAuthLoading } from './store';
 import { input, output } from '@angular/core';
+import { AuthStore } from './store';
 
 @Component({
   selector: 'app-auth-form',
@@ -19,11 +16,11 @@ export class AuthFormComponent {
   public modeChange: OutputEmitterRef<boolean> = output<boolean>();
 
   private fb: FormBuilder = inject(FormBuilder);
-  private store: Store = inject(Store);
+  private authStore = inject(AuthStore);
   private router: Router = inject(Router);
 
-  public loadingSignal: Signal<boolean> = toSignal(this.store.select(selectAuthLoading), { initialValue: false });
-  public errorSignal: Signal<string | null> = toSignal(this.store.select(selectAuthError), { initialValue: null });
+  public loadingSignal: Signal<boolean> = this.authStore.loading;
+  public errorSignal: Signal<string | null> = this.authStore.error;
   public submittedSignal: WritableSignal<boolean> = signal<boolean>(false);
 
   public authForm: FormGroup = this.fb.group({
@@ -47,7 +44,7 @@ export class AuthFormComponent {
 
   public onSubmit(): void {
     this.submittedSignal.set(true);
-    this.store.dispatch(AuthActions.clearAuthError());
+    this.authStore.clearError();
 
     if (this.authForm.invalid) {
       return;
@@ -56,18 +53,18 @@ export class AuthFormComponent {
     const { email, password } = this.authForm.value;
 
     if (this.isLoginMode()) {
-      this.store.dispatch(AuthActions.login({ email, password }));
+      this.authStore.login({ email, password });
     } else {
-      this.store.dispatch(AuthActions.register({
+      this.authStore.register({
         email,
         password,
         passwordConfirmation: password
-      }));
+      });
     }
   }
 
   public onAnonymousLogin(): void {
-    this.store.dispatch(AuthActions.clearAuthError());
-    this.store.dispatch(AuthActions.loginAnonymously());
+    this.authStore.clearError();
+    this.authStore.loginAnonymously();
   }
 }

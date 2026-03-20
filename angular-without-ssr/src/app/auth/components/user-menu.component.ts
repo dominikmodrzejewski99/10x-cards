@@ -1,10 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, WritableSignal, Signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Store } from '@ngrx/store';
 import { UserDTO } from '../../../types';
-import { selectIsAuthenticated, selectUser } from '../store/auth.selectors';
-import * as AuthActions from '../store/auth.actions';
+import { AuthStore } from '../store';
 
 @Component({
   selector: 'app-user-menu',
@@ -318,10 +315,10 @@ import * as AuthActions from '../store/auth.actions';
   `]
 })
 export class UserMenuComponent {
-  private store: Store = inject(Store);
+  private authStore = inject(AuthStore);
 
-  public isAuthenticatedSignal: Signal<boolean> = toSignal(this.store.select(selectIsAuthenticated), { initialValue: false });
-  public userSignal: Signal<UserDTO | null> = toSignal(this.store.select(selectUser), { initialValue: null as UserDTO | null });
+  public isAuthenticatedSignal: Signal<boolean> = this.authStore.isAuthenticated;
+  public userSignal: Signal<UserDTO | null> = this.authStore.user;
   public isMenuOpenSignal: WritableSignal<boolean> = signal<boolean>(false);
 
   public readonly userInitialsSignal: Signal<string> = computed<string>(() => {
@@ -344,6 +341,6 @@ export class UserMenuComponent {
 
   public onLogout(): void {
     this.closeMenu();
-    this.store.dispatch(AuthActions.logout());
+    this.authStore.logout();
   }
 }

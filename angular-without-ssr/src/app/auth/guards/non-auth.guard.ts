@@ -1,26 +1,21 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { combineLatest, first } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { first } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { selectIsAuthenticated, selectIsAnonymous, selectAuthChecked } from '../store/auth.selectors';
-import * as AuthActions from '../store/auth.actions';
+import { AuthStore } from '../store';
 
-export const nonAuthGuard: CanActivateFn = (route, state) => {
-  const store = inject(Store);
-  const router = inject(Router);
+export const nonAuthGuard: CanActivateFn = () => {
+  const authStore = inject(AuthStore);
+  const router: Router = inject(Router);
 
-  store.dispatch(AuthActions.checkAuthState());
+  authStore.checkAuthState();
 
-  return combineLatest([
-    store.select(selectIsAuthenticated),
-    store.select(selectIsAnonymous),
-    store.select(selectAuthChecked)
-  ]).pipe(
-    filter(([_, __, authChecked]) => authChecked),
+  return toObservable(authStore.authChecked).pipe(
+    filter((checked: boolean) => checked),
     first(),
-    map(([isAuthenticated, isAnonymous]) => {
-      if (!isAuthenticated || isAnonymous) {
+    map(() => {
+      if (!authStore.isAuthenticated() || authStore.isAnonymous()) {
         return true;
       }
       return router.createUrlTree(['/dashboard']);

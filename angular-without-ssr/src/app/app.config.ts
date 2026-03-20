@@ -1,4 +1,4 @@
-import { ApplicationConfig, isDevMode } from '@angular/core';
+import { ApplicationConfig } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import { provideRouter, withEnabledBlockingInitialNavigation } from '@angular/router';
@@ -7,11 +7,6 @@ import { routes } from './app.routes';
 import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 import { authInterceptor } from './services/auth.interceptor';
-import { provideStore } from '@ngrx/store';
-import { provideEffects } from '@ngrx/effects';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { authReducer } from './auth/store/auth.reducer';
-import { AuthEffects } from './auth/store/auth.effects';
 
 // Definiujemy własny preset bazujący na Aura z jasnymi kolorami dla dialogów i toastów
 const LightThemePreset = definePreset(Aura, {
@@ -91,10 +86,6 @@ export const appConfig: ApplicationConfig = {
             withInterceptors([authInterceptor]),
             withFetch()
         ),
-        provideStore({ auth: authReducer }),
-        provideEffects([AuthEffects]),
-        provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-
         providePrimeNG({
             theme: {
                 preset: LightThemePreset,

@@ -54,7 +54,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use `linkedSignal()` when state depends on other signals
 - Keep state transformations pure and predictable
 - Do NOT use `mutate` on signals; use `update` or `set` instead
-- Do NOT use NgRx — this package will be removed from the project
+- Use `@ngrx/signals` (Signal Store) for shared state management — old `@ngrx/store`, `@ngrx/effects` have been removed
 - Prefer moving business logic into shared services
 
 ## Templates
