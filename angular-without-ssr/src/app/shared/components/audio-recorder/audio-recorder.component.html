@@ -1,0 +1,47 @@
+@if (errorSignal()) {
+  <div class="audio-recorder__error">
+    <i class="pi pi-exclamation-circle"></i>
+    {{ errorSignal() }}
+  </div>
+}
+
+@if (!recordingSignal() && !previewUrlSignal()) {
+  <button
+    class="audio-recorder__btn"
+    (click)="startRecording()"
+    [disabled]="disabledSignal()"
+    type="button">
+    <i class="pi pi-microphone"></i> Nagraj
+  </button>
+}
+
+@if (recordingSignal()) {
+  <div class="audio-recorder__active">
+    <span class="audio-recorder__dot"></span>
+    <span class="audio-recorder__timer">
+      {{ elapsedSignal() }}s / {{ maxDurationSignal() }}s
+    </span>
+    <div class="audio-recorder__bar">
+      <div class="audio-recorder__bar-fill" [style.width.%]="(elapsedSignal() / maxDurationSignal()) * 100"></div>
+    </div>
+    <button
+      class="audio-recorder__stop"
+      (click)="stopRecording()"
+      type="button">
+      <i class="pi pi-stop-circle"></i> Stop
+    </button>
+  </div>
+}
+
+@if (previewUrlSignal()) {
+  <div class="audio-recorder__preview">
+    <app-audio-player [audioUrl]="previewUrlSignal()!" />
+    <button
+      class="audio-recorder__discard"
+      (click)="discardRecording()"
+      type="button"
+      title="Odrzuć nagranie">
+      <i class="pi pi-trash"></i>
+    </button>
+  </div>
+}
