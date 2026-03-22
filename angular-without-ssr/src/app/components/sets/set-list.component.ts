@@ -228,6 +228,10 @@ export class SetListComponent implements OnInit {
     this.router.navigate(['/study'], { queryParams: { setId: set.id } });
   }
 
+  quizSet(set: FlashcardSetDTO): void {
+    this.router.navigate(['/quiz', set.id]);
+  }
+
   formatDate(dateStr: string): string {
     return new Date(dateStr).toLocaleDateString('pl-PL', {
       day: 'numeric',
