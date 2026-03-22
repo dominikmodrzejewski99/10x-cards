@@ -1,10 +1,12 @@
 import { Component, OnInit, WritableSignal, signal, effect, inject, input, output, InputSignal, OutputEmitterRef, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
+import { SelectModule } from 'primeng/select';
 import { FlashcardDTO, FlashcardLanguage } from '../../../../types';
 import { ImageUploadService } from '../../../services/image-upload.service';
+import { OpenRouterService } from '../../../services/openrouter.service';
 
 export function noWhitespaceValidator() {
   return (control: { value: string }) => {
@@ -26,9 +28,11 @@ export interface FlashcardFormData {
   selector: 'app-flashcard-form',
   imports: [
     ReactiveFormsModule,
+    FormsModule,
     ButtonModule,
     InputTextModule,
-    TextareaModule
+    TextareaModule,
+    SelectModule
   ],
   templateUrl: './flashcard-form.component.html',
   styleUrls: ['./flashcard-form.component.scss'],
@@ -43,10 +47,24 @@ export class FlashcardFormComponent implements OnInit {
 
   private fb: FormBuilder = inject(FormBuilder);
   private imageUploadService: ImageUploadService = inject(ImageUploadService);
+  private openRouterService: OpenRouterService = inject(OpenRouterService);
 
   public imagePreviewSignal: WritableSignal<string | null> = signal<string | null>(null);
   public uploadingSignal: WritableSignal<boolean> = signal<boolean>(false);
   public imageErrorSignal: WritableSignal<string | null> = signal<string | null>(null);
+  public translationSuggestionSignal: WritableSignal<string | null> = signal<string | null>(null);
+  public translatingSignal: WritableSignal<boolean> = signal<boolean>(false);
+  public frontLanguageSignal: WritableSignal<FlashcardLanguage | null> = signal<FlashcardLanguage | null>(null);
+  public backLanguageSignal: WritableSignal<FlashcardLanguage | null> = signal<FlashcardLanguage | null>(null);
+
+  public readonly LANGUAGES: { label: string; value: FlashcardLanguage | null }[] = [
+    { label: '—', value: null },
+    { label: 'English', value: 'en' },
+    { label: 'Polski', value: 'pl' },
+    { label: 'Deutsch', value: 'de' },
+    { label: 'Español', value: 'es' },
+    { label: 'Français', value: 'fr' }
+  ];
 
   public flashcardForm!: FormGroup;
   public submitting: boolean = false;
@@ -55,6 +73,7 @@ export class FlashcardFormComponent implements OnInit {
   public readonly BACK_MAX_LENGTH: number = 1000;
 
   private pendingImageUrl: string | null = null;
+  private translationTimeout: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
     effect(() => {
@@ -98,7 +117,9 @@ export class FlashcardFormComponent implements OnInit {
     const formData: FlashcardFormData = {
       front: formValue.front,
       back: formValue.back,
-      front_image_url: this.pendingImageUrl
+      front_image_url: this.pendingImageUrl,
+      front_language: this.frontLanguageSignal(),
+      back_language: this.backLanguageSignal()
     };
 
     const flashcard: FlashcardDTO | null = this.flashcardToEditSignal();
@@ -108,6 +129,48 @@ export class FlashcardFormComponent implements OnInit {
 
     this.save.emit(formData);
     this.submitting = false;
+  }
+
+  public onFrontBlur(): void {
+    if (this.translationTimeout) {
+      clearTimeout(this.translationTimeout);
+    }
+
+    const frontLang: FlashcardLanguage | null = this.frontLanguageSignal();
+    const backLang: FlashcardLanguage | null = this.backLanguageSignal();
+    const frontValue: string = this.flashcardForm.get('front')?.value?.trim() || '';
+
+    if (!frontLang || !backLang || !frontValue || frontLang === backLang) {
+      this.translationSuggestionSignal.set(null);
+      return;
+    }
+
+    this.translationTimeout = setTimeout(() => {
+      this.translatingSignal.set(true);
+      this.translationSuggestionSignal.set(null);
+
+      this.openRouterService.translateText(frontValue, frontLang, backLang)
+        .then((translation: string) => {
+          this.translationSuggestionSignal.set(translation);
+          this.translatingSignal.set(false);
+        })
+        .catch(() => {
+          this.translatingSignal.set(false);
+        });
+    }, 500);
+  }
+
+  public acceptTranslation(): void {
+    const suggestion: string | null = this.translationSuggestionSignal();
+    if (suggestion) {
+      const currentBack: string = this.flashcardForm.get('back')?.value?.trim() || '';
+      if (currentBack) {
+        this.flashcardForm.patchValue({ back: currentBack + '; ' + suggestion });
+      } else {
+        this.flashcardForm.patchValue({ back: suggestion });
+      }
+      this.translationSuggestionSignal.set(null);
+    }
   }
 
   public onCancel(): void {
@@ -181,12 +244,17 @@ export class FlashcardFormComponent implements OnInit {
         });
         this.pendingImageUrl = flashcard.front_image_url || null;
         this.imagePreviewSignal.set(flashcard.front_image_url || null);
+        this.frontLanguageSignal.set(flashcard.front_language || null);
+        this.backLanguageSignal.set(flashcard.back_language || null);
       } else {
         this.flashcardForm.reset();
         this.pendingImageUrl = null;
         this.imagePreviewSignal.set(null);
+        this.frontLanguageSignal.set(null);
+        this.backLanguageSignal.set(null);
       }
       this.imageErrorSignal.set(null);
+      this.translationSuggestionSignal.set(null);
     }
   }
 }

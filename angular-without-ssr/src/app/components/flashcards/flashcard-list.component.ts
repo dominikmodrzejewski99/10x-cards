@@ -203,7 +203,13 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
     if (isEdit && formData.id) {
       this.flashcardApiService.updateFlashcard(
         formData.id,
-        { front: formData.front, back: formData.back, front_image_url: formData.front_image_url }
+        {
+          front: formData.front,
+          back: formData.back,
+          front_image_url: formData.front_image_url,
+          front_language: formData.front_language,
+          back_language: formData.back_language
+        }
       ).subscribe({
         next: (updatedFlashcard) => {
           this.state.update(state => ({
@@ -227,6 +233,8 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
         front: formData.front,
         back: formData.back,
         front_image_url: formData.front_image_url,
+        front_language: formData.front_language,
+        back_language: formData.back_language,
         source: 'manual',
         set_id: this.state().setId
       }).subscribe({
