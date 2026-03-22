@@ -1,0 +1,36 @@
+<div class="audio-player" [class.audio-player--compact]="compactSignal()">
+  <audio
+    #audioEl
+    [src]="audioUrlSignal()"
+    preload="metadata"
+    (loadedmetadata)="onLoadedMetadata()"
+    (timeupdate)="onTimeUpdate()"
+    (ended)="onEnded()">
+  </audio>
+
+  <button
+    class="audio-player__btn"
+    (click)="togglePlay()"
+    [attr.aria-label]="playingSignal() ? 'Pauza' : 'Odtwórz'"
+    type="button">
+    <i class="pi" [class.pi-play]="!playingSignal()" [class.pi-pause]="playingSignal()"></i>
+  </button>
+
+  <div
+    class="audio-player__progress"
+    (click)="onProgressClick($event)"
+    role="progressbar"
+    [attr.aria-valuenow]="progressSignal()"
+    aria-valuemin="0"
+    aria-valuemax="100">
+    <div class="audio-player__progress-fill" [style.width.%]="progressSignal()"></div>
+  </div>
+
+  <span class="audio-player__time">
+    @if (compactSignal()) {
+      {{ durationTextSignal() }}
+    } @else {
+      {{ currentTimeTextSignal() }} / {{ durationTextSignal() }}
+    }
+  </span>
+</div>
