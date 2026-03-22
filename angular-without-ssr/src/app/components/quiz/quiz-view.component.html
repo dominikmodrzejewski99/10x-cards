@@ -49,6 +49,7 @@
           [gradeText]="gradeTextSignal()"
           (retry)="onRetry()"
           (retryWrong)="onRetryWrong()"
+          (retryStarred)="onRetryStarred($event)"
           (goBack)="onGoBack()">
         </app-quiz-results>
       }

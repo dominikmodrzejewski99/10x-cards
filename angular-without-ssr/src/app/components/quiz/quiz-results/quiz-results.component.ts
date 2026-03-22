@@ -15,10 +15,12 @@ export class QuizResultsComponent {
 
   public retry: OutputEmitterRef<void> = output<void>();
   public retryWrong: OutputEmitterRef<void> = output<void>();
+  public retryStarred: OutputEmitterRef<number[]> = output<number[]>();
   public goBack: OutputEmitterRef<void> = output<void>();
 
   public wrongExpandedSignal: WritableSignal<boolean> = signal<boolean>(false);
-  public allAnswersExpandedSignal: WritableSignal<boolean> = signal<boolean>(false);
+  public allAnswersExpandedSignal: WritableSignal<boolean> = signal<boolean>(true);
+  public starredIdsSignal: WritableSignal<Set<number>> = signal<Set<number>>(new Set<number>());
 
   public readonly wrongAnswersSignal: Signal<QuizAnswer[]> = computed<QuizAnswer[]>(() =>
     this.resultSignal().answers.filter((a: QuizAnswer) => !a.isCorrect)
@@ -75,12 +77,36 @@ export class QuizResultsComponent {
     this.resultSignal().answers
   );
 
+  public readonly starredCountSignal: Signal<number> = computed<number>(() =>
+    this.starredIdsSignal().size
+  );
+
+  public readonly hasStarredSignal: Signal<boolean> = computed<boolean>(() =>
+    this.starredIdsSignal().size > 0
+  );
+
   public toggleWrongExpanded(): void {
     this.wrongExpandedSignal.update((v: boolean) => !v);
   }
 
   public toggleAllAnswersExpanded(): void {
     this.allAnswersExpandedSignal.update((v: boolean) => !v);
+  }
+
+  public toggleStarred(questionId: number): void {
+    this.starredIdsSignal.update((ids: Set<number>) => {
+      const next: Set<number> = new Set<number>(ids);
+      if (next.has(questionId)) {
+        next.delete(questionId);
+      } else {
+        next.add(questionId);
+      }
+      return next;
+    });
+  }
+
+  public isStarred(questionId: number): boolean {
+    return this.starredIdsSignal().has(questionId);
   }
 
   public formatTimeMs(ms: number): string {
@@ -94,6 +120,10 @@ export class QuizResultsComponent {
 
   public onRetryWrong(): void {
     this.retryWrong.emit();
+  }
+
+  public onRetryStarred(): void {
+    this.retryStarred.emit([...this.starredIdsSignal()]);
   }
 
   public onGoBack(): void {

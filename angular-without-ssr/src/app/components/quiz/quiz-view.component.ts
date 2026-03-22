@@ -147,6 +147,43 @@ export class QuizViewComponent implements OnInit, OnDestroy {
     this.phaseSignal.set('test');
   }
 
+  public onRetryStarred(questionIds: number[]): void {
+    if (!this.lastConfig) return;
+
+    const starredFlashcards: FlashcardDTO[] = questionIds
+      .map((id: number) => {
+        const question: QuizQuestion | undefined = this.questionsSignal().find((q: QuizQuestion) => q.id === id);
+        return question?.sourceFlashcard;
+      })
+      .filter((f: FlashcardDTO | undefined): f is FlashcardDTO => !!f);
+
+    if (starredFlashcards.length === 0) return;
+
+    const config: QuizConfig = { ...this.lastConfig, questionCount: 'all' };
+    const pool: FlashcardDTO[] = starredFlashcards.length >= 4 ? starredFlashcards : this.flashcardsSignal();
+    const questions: QuizQuestion[] = starredFlashcards.map((card: FlashcardDTO, index: number) => {
+      const singleConfig: QuizConfig = { ...config, questionCount: 1 };
+      const generated: QuizQuestion[] = this.quizService.generateQuestions([card], singleConfig);
+      if (generated[0] && generated[0].type === 'multiple-choice' && pool.length > starredFlashcards.length) {
+        const fullGenerated: QuizQuestion[] = this.quizService.generateQuestions(pool, { ...config, questionCount: pool.length });
+        const matching: QuizQuestion | undefined = fullGenerated.find(
+          (q: QuizQuestion) => q.sourceFlashcard.id === card.id && q.type === 'multiple-choice'
+        );
+        if (matching) {
+          return { ...matching, id: index };
+        }
+      }
+      return { ...generated[0], id: index };
+    });
+
+    this.questionsSignal.set(questions);
+    this.currentIndexSignal.set(0);
+    this.answersSignal.set([]);
+    this.resultSignal.set(null);
+    this.questionStartTime = Date.now();
+    this.phaseSignal.set('test');
+  }
+
   public onGoBack(): void {
     this.router.navigate(['/sets', this.setIdSignal()]);
   }

@@ -60,6 +60,19 @@
           </button>
         }
 
+        @if (hasStarredSignal()) {
+          <button class="quiz-results__action-card" (click)="onRetryStarred()">
+            <div class="quiz-results__action-card-icon quiz-results__action-card-icon--starred">
+              <i class="pi pi-star-fill"></i>
+            </div>
+            <div class="quiz-results__action-card-text">
+              <strong>Powtórz wyróżnione</strong>
+              <span>Przećwicz {{ starredCountSignal() }} wyróżnionych pytań</span>
+            </div>
+            <i class="pi pi-chevron-right"></i>
+          </button>
+        }
+
         <button class="quiz-results__action-card" (click)="onRetry()">
           <div class="quiz-results__action-card-icon quiz-results__action-card-icon--new">
             <i class="pi pi-replay"></i>
@@ -116,7 +129,10 @@
     @if (allAnswersExpandedSignal()) {
       <div class="quiz-results__answers-list">
         @for (answer of sortedAnswersSignal(); track answer.questionId; let i = $index) {
-          <div class="quiz-results__answer-item" [class.quiz-results__answer-item--wrong]="!answer.isCorrect">
+          <div
+            class="quiz-results__answer-item"
+            [class.quiz-results__answer-item--wrong]="!answer.isCorrect"
+            [class.quiz-results__answer-item--starred]="isStarred(answer.questionId)">
             <div class="quiz-results__answer-header">
               <span class="quiz-results__answer-number">{{ i + 1 }} / {{ resultSignal().totalQuestions }}</span>
               <span class="quiz-results__answer-time">{{ formatTimeMs(answer.timeMs) }}</span>
@@ -136,6 +152,16 @@
                 </span>
               }
             </div>
+            <button
+              class="quiz-results__mark-btn"
+              [class.quiz-results__mark-btn--active]="isStarred(answer.questionId)"
+              (click)="toggleStarred(answer.questionId)">
+              @if (isStarred(answer.questionId)) {
+                <i class="pi pi-star-fill"></i> Wyróżnione
+              } @else {
+                <i class="pi pi-star"></i> Do powtórki
+              }
+            </button>
           </div>
         }
       </div>

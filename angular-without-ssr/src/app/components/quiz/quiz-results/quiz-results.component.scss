@@ -209,6 +209,11 @@
     background: $color-warning-light;
     color: $color-warning;
   }
+
+  &--starred {
+    background: $color-purple-light;
+    color: $color-purple;
+  }
 }
 
 .quiz-results__action-card-text {
@@ -326,10 +331,50 @@
   }
 }
 
+.quiz-results__answer-item--starred {
+  border-left: 3px solid $color-purple;
+  background: $color-purple-light;
+}
+
 .quiz-results__answer-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 0.3rem;
+}
+
+.quiz-results__mark-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: $radius-pill;
+  border: 1.5px solid $color-border;
+  background: $color-white;
+  color: $color-text-secondary;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    border-color: $color-purple;
+    color: $color-purple;
+    background: $color-purple-light;
+  }
+
+  &--active {
+    border-color: $color-purple;
+    background: $color-purple;
+    color: $color-white;
+
+    &:hover {
+      background: $color-purple-hover;
+      color: $color-white;
+    }
+  }
 }
 
 .quiz-results__answer-number {
