@@ -1,0 +1,83 @@
+@use 'variables' as *;
+
+.quiz-list {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
+
+.quiz-list__title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: $color-text;
+  margin: 0 0 1.5rem;
+}
+
+.quiz-list__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.quiz-list__state-text {
+  color: $color-text-secondary;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.quiz-list__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.quiz-list__card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  background: $color-white;
+  transition: box-shadow 0.15s;
+
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+}
+
+.quiz-list__card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.quiz-list__card-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: $color-text;
+  margin: 0 0 0.15rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.quiz-list__card-count {
+  font-size: 0.8rem;
+  color: $color-text-secondary;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .quiz-list {
+    padding: 1.25rem 0.75rem;
+  }
+
+  .quiz-list__card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+}

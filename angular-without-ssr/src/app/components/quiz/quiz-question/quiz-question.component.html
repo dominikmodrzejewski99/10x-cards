@@ -1,0 +1,129 @@
+<div class="quiz-question" (keydown)="onKeydown($event)">
+  <div class="quiz-question__progress">
+    <span class="quiz-question__progress-text">
+      Pytanie {{ currentIndexSignal() + 1 }} / {{ totalQuestionsSignal() }}
+    </span>
+    <div class="quiz-question__progress-bar">
+      <div class="quiz-question__progress-fill" [style.width.%]="progressPercentSignal()"></div>
+    </div>
+  </div>
+
+  <div class="quiz-question__content">
+    @if (questionSignal().questionImageUrl) {
+      <img
+        [src]="questionSignal().questionImageUrl"
+        alt="Obrazek pytania"
+        class="quiz-question__image" />
+    }
+
+    <h2 class="quiz-question__text">{{ questionSignal().questionText }}</h2>
+  </div>
+
+  @switch (questionSignal().type) {
+    @case ('written') {
+      <div class="quiz-question__written">
+        <input
+          type="text"
+          pInputText
+          class="quiz-question__input"
+          [class.quiz-question__input--correct]="isAnsweredSignal() && isCorrectSignal()"
+          [class.quiz-question__input--wrong]="isAnsweredSignal() && !isCorrectSignal()"
+          [ngModel]="writtenAnswerSignal()"
+          (ngModelChange)="writtenAnswerSignal.set($event)"
+          [disabled]="isAnsweredSignal()"
+          placeholder="Wpisz odpowiedź..."
+          (keydown)="onKeydown($event)" />
+
+        @if (!isAnsweredSignal()) {
+          <button
+            pButton
+            label="Sprawdź"
+            icon="pi pi-check"
+            class="p-button-primary"
+            [disabled]="!writtenAnswerSignal().trim()"
+            (click)="onCheckWritten()">
+          </button>
+        }
+
+        @if (isAnsweredSignal() && !isCorrectSignal()) {
+          <p class="quiz-question__correct-answer">
+            Poprawna odpowiedź: <strong>{{ questionSignal().correctAnswer }}</strong>
+          </p>
+        }
+      </div>
+    }
+
+    @case ('multiple-choice') {
+      <div class="quiz-question__options">
+        @for (option of questionSignal().options; track option) {
+          <button
+            class="quiz-question__option"
+            [class]="getOptionClass(option)"
+            [disabled]="isAnsweredSignal()"
+            (click)="onSelectOption(option)">
+            {{ option }}
+          </button>
+        }
+      </div>
+    }
+
+    @case ('true-false') {
+      <div class="quiz-question__true-false">
+        <p class="quiz-question__pairing">
+          {{ questionSignal().questionText }} = {{ questionSignal().trueFalsePairing?.shown }}
+        </p>
+        <div class="quiz-question__tf-buttons">
+          <button
+            pButton
+            label="Prawda"
+            icon="pi pi-check"
+            class="p-button-success p-button-outlined"
+            [class.quiz-question__tf--correct]="isAnsweredSignal() && questionSignal().trueFalsePairing?.isCorrect === true"
+            [class.quiz-question__tf--wrong]="isAnsweredSignal() && selectedTrueFalseSignal() === true && !questionSignal().trueFalsePairing?.isCorrect"
+            [disabled]="isAnsweredSignal()"
+            (click)="onSelectTrueFalse(true)">
+          </button>
+          <button
+            pButton
+            label="Fałsz"
+            icon="pi pi-times"
+            class="p-button-danger p-button-outlined"
+            [class.quiz-question__tf--correct]="isAnsweredSignal() && questionSignal().trueFalsePairing?.isCorrect === false"
+            [class.quiz-question__tf--wrong]="isAnsweredSignal() && selectedTrueFalseSignal() === false && questionSignal().trueFalsePairing?.isCorrect"
+            [disabled]="isAnsweredSignal()"
+            (click)="onSelectTrueFalse(false)">
+          </button>
+        </div>
+
+        @if (isAnsweredSignal() && !isCorrectSignal()) {
+          <p class="quiz-question__correct-answer">
+            Poprawna odpowiedź: <strong>{{ questionSignal().correctAnswer }}</strong>
+          </p>
+        }
+      </div>
+    }
+  }
+
+  @if (isAnsweredSignal()) {
+    <div class="quiz-question__feedback">
+      @if (isCorrectSignal()) {
+        <span class="quiz-question__feedback--correct">
+          <i class="pi pi-check-circle"></i> Dobrze!
+        </span>
+      } @else {
+        <span class="quiz-question__feedback--wrong">
+          <i class="pi pi-times-circle"></i> Źle
+        </span>
+      }
+    </div>
+
+    <button
+      pButton
+      label="Dalej"
+      icon="pi pi-arrow-right"
+      iconPos="right"
+      class="p-button-primary quiz-question__next"
+      (click)="onNext()">
+    </button>
+  }
+</div>

@@ -1,0 +1,51 @@
+<div class="quiz-list">
+  <h1 class="quiz-list__title">Wybierz zestaw do testu</h1>
+
+  @if (loadingSignal()) {
+    <div class="quiz-list__state">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: #4255ff;"></i>
+    </div>
+  }
+
+  @if (errorSignal()) {
+    <div class="quiz-list__state">
+      <p class="quiz-list__state-text">{{ errorSignal() }}</p>
+    </div>
+  }
+
+  @if (!loadingSignal() && !errorSignal() && setsSignal().length === 0) {
+    <div class="quiz-list__state">
+      <i class="pi pi-folder-open" style="font-size: 2.5rem; color: #4255ff;"></i>
+      <p class="quiz-list__state-text">Nie masz jeszcze zestawów fiszek.</p>
+      <button
+        pButton
+        label="Przejdź do zestawów"
+        icon="pi pi-arrow-right"
+        class="p-button-primary"
+        (click)="onGoToSets()">
+      </button>
+    </div>
+  }
+
+  @if (!loadingSignal() && !errorSignal() && setsSignal().length > 0) {
+    <div class="quiz-list__grid">
+      @for (item of setsSignal(); track item.set.id) {
+        <div class="quiz-list__card">
+          <div class="quiz-list__card-body">
+            <h3 class="quiz-list__card-name">{{ item.set.name }}</h3>
+            <p class="quiz-list__card-count">{{ item.cardCount }} fiszek</p>
+          </div>
+          <button
+            pButton
+            label="Rozpocznij test"
+            icon="pi pi-play"
+            class="p-button-primary p-button-sm"
+            [disabled]="item.cardCount < 4"
+            [title]="item.cardCount < 4 ? 'Minimum 4 fiszki' : ''"
+            (click)="onStartQuiz(item.set.id)">
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>

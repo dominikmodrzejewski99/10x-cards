@@ -1,0 +1,62 @@
+@use 'variables' as *;
+
+.quiz-config {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
+
+.quiz-config__title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: $color-text;
+  margin: 0 0 0.25rem;
+}
+
+.quiz-config__subtitle {
+  font-size: 0.85rem;
+  color: $color-text-secondary;
+  margin: 0 0 2rem;
+}
+
+.quiz-config__section {
+  margin-bottom: 1.5rem;
+}
+
+.quiz-config__label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: $color-text;
+  margin-bottom: 0.5rem;
+}
+
+.quiz-config__checkboxes,
+.quiz-config__radios {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.quiz-config__error {
+  display: block;
+  color: $color-danger;
+  font-size: 0.8rem;
+  margin-top: 0.4rem;
+}
+
+.quiz-config__actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 480px) {
+  .quiz-config {
+    padding: 1.25rem 0.75rem;
+  }
+
+  .quiz-config__actions {
+    flex-direction: column;
+  }
+}

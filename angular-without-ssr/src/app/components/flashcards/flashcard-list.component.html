@@ -10,6 +10,9 @@
       <a [routerLink]="['/study']" [queryParams]="{setId: state().setId}" class="flist__btn flist__btn--study" data-test-id="start-study-button">
         <i class="pi pi-book"></i> Rozpocznij naukę
       </a>
+      <a [routerLink]="['/quiz', state().setId]" class="flist__btn flist__btn--quiz" data-test-id="start-quiz-button">
+        <i class="pi pi-file-edit"></i> Test
+      </a>
       <button (click)="openAddModal()" class="flist__btn flist__btn--add" data-test-id="add-flashcard-button">
         <i class="pi pi-plus"></i> Dodaj fiszkę
       </button>

@@ -1,0 +1,26 @@
+@use 'variables' as *;
+
+.quiz-view {
+  min-height: calc(100vh - 64px);
+}
+
+.quiz-view__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4rem 1rem;
+  text-align: center;
+}
+
+.quiz-view__state-icon {
+  font-size: 3rem;
+  color: $color-primary;
+}
+
+.quiz-view__state-text {
+  color: $color-text-secondary;
+  font-size: 0.95rem;
+  margin: 0;
+}

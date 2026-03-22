@@ -1,0 +1,52 @@
+<div class="quiz-results">
+  <div class="quiz-results__header">
+    <div class="quiz-results__score">
+      {{ resultSignal().correctCount }}/{{ resultSignal().totalQuestions }}
+    </div>
+    <div class="quiz-results__percentage">{{ resultSignal().percentage }}%</div>
+    <h2 class="quiz-results__grade">{{ gradeTextSignal() }}</h2>
+  </div>
+
+  @if (hasWrongAnswers) {
+    <div class="quiz-results__wrong">
+      <h3 class="quiz-results__wrong-title">Błędne odpowiedzi</h3>
+      @for (answer of wrongAnswers; track answer.questionId) {
+        <div class="quiz-results__wrong-item">
+          <p class="quiz-results__wrong-question">{{ answer.questionText }}</p>
+          <p class="quiz-results__wrong-user">
+            <i class="pi pi-times"></i> {{ answer.userAnswer || '(brak odpowiedzi)' }}
+          </p>
+          <p class="quiz-results__wrong-correct">
+            <i class="pi pi-check"></i> {{ answer.correctAnswer }}
+          </p>
+        </div>
+      }
+    </div>
+  }
+
+  <div class="quiz-results__actions">
+    @if (hasWrongAnswers) {
+      <button
+        pButton
+        label="Powtórz tylko błędne"
+        icon="pi pi-refresh"
+        class="p-button-primary"
+        (click)="onRetryWrong()">
+      </button>
+    }
+    <button
+      pButton
+      label="Powtórz test"
+      icon="pi pi-replay"
+      [class]="hasWrongAnswers ? 'p-button-outlined p-button-secondary' : 'p-button-primary'"
+      (click)="onRetry()">
+    </button>
+    <button
+      pButton
+      label="Wróć do zestawu"
+      icon="pi pi-arrow-left"
+      class="p-button-outlined p-button-secondary"
+      (click)="onGoBack()">
+    </button>
+  </div>
+</div>

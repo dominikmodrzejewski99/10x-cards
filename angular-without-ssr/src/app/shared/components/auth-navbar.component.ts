@@ -39,6 +39,9 @@ import { AuthStore } from '../../auth/store';
             <a routerLink="/language-test" routerLinkActive="navbar__link--active" class="navbar__link">
               <i class="pi pi-check-square"></i> Testy
             </a>
+            <a routerLink="/quiz" routerLinkActive="navbar__link--active" class="navbar__link">
+              <i class="pi pi-file-edit"></i> Quiz
+            </a>
           }
         </div>
 
@@ -77,6 +80,9 @@ import { AuthStore } from '../../auth/store';
           </a>
           <a routerLink="/language-test" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
             <i class="pi pi-check-square"></i> Testy
+          </a>
+          <a routerLink="/quiz" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
+            <i class="pi pi-file-edit"></i> Quiz
           </a>
         </div>
       }

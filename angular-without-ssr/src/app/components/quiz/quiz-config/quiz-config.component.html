@@ -1,0 +1,96 @@
+<div class="quiz-config">
+  <h1 class="quiz-config__title">Test: {{ setNameSignal() }}</h1>
+  <p class="quiz-config__subtitle">{{ cardCountSignal() }} fiszek w zestawie</p>
+
+  <div class="quiz-config__section">
+    <label class="quiz-config__label">Liczba pytań</label>
+    <p-select
+      [options]="availableCountOptions"
+      optionLabel="label"
+      optionValue="value"
+      [ngModel]="selectedCountSignal()"
+      (ngModelChange)="selectedCountSignal.set($event)"
+      [style]="{ width: '100%' }">
+    </p-select>
+  </div>
+
+  <div class="quiz-config__section">
+    <label class="quiz-config__label">Typy pytań</label>
+    <div class="quiz-config__checkboxes">
+      <div class="quiz-config__checkbox">
+        <p-checkbox
+          [ngModel]="writtenEnabledSignal()"
+          (ngModelChange)="writtenEnabledSignal.set($event)"
+          [binary]="true"
+          inputId="written"
+          label="Wpisywanie odpowiedzi">
+        </p-checkbox>
+      </div>
+      <div class="quiz-config__checkbox">
+        <p-checkbox
+          [ngModel]="multipleChoiceEnabledSignal()"
+          (ngModelChange)="multipleChoiceEnabledSignal.set($event)"
+          [binary]="true"
+          inputId="multipleChoice"
+          label="Wielokrotny wybór">
+        </p-checkbox>
+      </div>
+      <div class="quiz-config__checkbox">
+        <p-checkbox
+          [ngModel]="trueFalseEnabledSignal()"
+          (ngModelChange)="trueFalseEnabledSignal.set($event)"
+          [binary]="true"
+          inputId="trueFalse"
+          label="Prawda / Fałsz">
+        </p-checkbox>
+      </div>
+    </div>
+    @if (!isValid) {
+      <small class="quiz-config__error">Wybierz co najmniej jeden typ pytania</small>
+    }
+  </div>
+
+  <div class="quiz-config__section">
+    <label class="quiz-config__label">Kierunek</label>
+    <div class="quiz-config__radios">
+      <div class="quiz-config__radio">
+        <p-radioButton
+          name="direction"
+          [value]="false"
+          [ngModel]="reversedSignal()"
+          (ngModelChange)="reversedSignal.set($event)"
+          inputId="frontToBack"
+          label="Przód → Tył">
+        </p-radioButton>
+      </div>
+      <div class="quiz-config__radio">
+        <p-radioButton
+          name="direction"
+          [value]="true"
+          [ngModel]="reversedSignal()"
+          (ngModelChange)="reversedSignal.set($event)"
+          inputId="backToFront"
+          label="Tył → Przód">
+        </p-radioButton>
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz-config__actions">
+    <button
+      pButton
+      label="Rozpocznij test"
+      icon="pi pi-play"
+      class="p-button-primary"
+      [disabled]="!isValid"
+      (click)="onStart()">
+    </button>
+    <button
+      pButton
+      label="Wróć"
+      icon="pi pi-arrow-left"
+      class="p-button-outlined p-button-secondary"
+      (click)="onGoBack()">
+    </button>
+  </div>
+</div>

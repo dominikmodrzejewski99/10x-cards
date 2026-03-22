@@ -34,6 +34,16 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'quiz',
+    loadComponent: () => import('./components/quiz/quiz-list.component').then(m => m.QuizListComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'quiz/:setId',
+    loadComponent: () => import('./components/quiz/quiz-view.component').then(m => m.QuizViewComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'learning-guide',
     loadComponent: () => import('./components/learning-guide/learning-guide.component').then(m => m.LearningGuideComponent),
     canActivate: [authGuard]

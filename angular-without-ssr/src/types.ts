@@ -259,3 +259,40 @@ export interface LanguageTestResultDTO {
   created_at: string;
   updated_at: string;
 }
+
+// ============ Quiz/Test Mode ============
+
+export type QuizQuestionType = 'written' | 'multiple-choice' | 'true-false';
+
+export interface QuizConfig {
+  setId: number;
+  questionCount: number | 'all';
+  questionTypes: QuizQuestionType[];
+  reversed: boolean;
+}
+
+export interface QuizQuestion {
+  id: number;
+  type: QuizQuestionType;
+  questionText: string;
+  questionImageUrl: string | null;
+  correctAnswer: string;
+  options?: string[];
+  trueFalsePairing?: { shown: string; isCorrect: boolean };
+  sourceFlashcard: FlashcardDTO;
+}
+
+export interface QuizAnswer {
+  questionId: number;
+  userAnswer: string;
+  isCorrect: boolean;
+  correctAnswer: string;
+  questionText: string;
+}
+
+export interface QuizResult {
+  totalQuestions: number;
+  correctCount: number;
+  percentage: number;
+  answers: QuizAnswer[];
+}

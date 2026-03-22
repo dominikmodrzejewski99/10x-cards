@@ -52,6 +52,11 @@
   @include btn-md;
 }
 
+.flist__btn--quiz {
+  @include btn-warning;
+  @include btn-md;
+}
+
 .flist__btn--add {
   @include btn-primary;
   @include btn-md;

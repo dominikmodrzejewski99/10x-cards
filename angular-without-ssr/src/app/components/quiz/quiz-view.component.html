@@ -1,0 +1,57 @@
+<div class="quiz-view">
+  @switch (phaseSignal()) {
+    @case ('loading') {
+      <div class="quiz-view__state">
+        <i class="pi pi-spin pi-spinner quiz-view__state-icon"></i>
+        <p class="quiz-view__state-text">Ładowanie zestawu...</p>
+      </div>
+    }
+
+    @case ('error') {
+      <div class="quiz-view__state">
+        <i class="pi pi-exclamation-triangle quiz-view__state-icon" style="color: #ff6240;"></i>
+        <p class="quiz-view__state-text">{{ errorMessageSignal() }}</p>
+        <button
+          pButton
+          label="Wróć do zestawu"
+          icon="pi pi-arrow-left"
+          class="p-button-outlined p-button-secondary"
+          (click)="onGoBack()">
+        </button>
+      </div>
+    }
+
+    @case ('config') {
+      <app-quiz-config
+        [setId]="setIdSignal()"
+        [setName]="setNameSignal()"
+        [cardCount]="flashcardsSignal().length"
+        (startQuiz)="onStartQuiz($event)"
+        (goBack)="onGoBackFromConfig()">
+      </app-quiz-config>
+    }
+
+    @case ('test') {
+      @if (currentQuestionSignal; as question) {
+        <app-quiz-question
+          [question]="question"
+          [currentIndex]="currentIndexSignal()"
+          [totalQuestions]="questionsSignal().length"
+          (answerSubmitted)="onAnswerSubmitted($event)">
+        </app-quiz-question>
+      }
+    }
+
+    @case ('results') {
+      @if (resultSignal(); as result) {
+        <app-quiz-results
+          [result]="result"
+          [gradeText]="gradeTextSignal()"
+          (retry)="onRetry()"
+          (retryWrong)="onRetryWrong()"
+          (goBack)="onGoBack()">
+        </app-quiz-results>
+      }
+    }
+  }
+</div>
