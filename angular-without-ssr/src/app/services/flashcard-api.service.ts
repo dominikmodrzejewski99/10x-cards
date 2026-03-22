@@ -4,7 +4,7 @@ import { FlashcardProposalDTO, FlashcardDTO, CreateFlashcardCommand, UpdateFlash
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from './supabase-client.factory';
 
-const FLASHCARD_COLUMNS = 'id, front, back, front_image_url, source, set_id, generation_id, user_id, created_at, updated_at';
+const FLASHCARD_COLUMNS = 'id, front, back, front_image_url, front_language, back_language, source, set_id, generation_id, user_id, created_at, updated_at';
 const ALLOWED_SORT_FIELDS = ['front', 'back', 'created_at', 'updated_at', 'source', 'id'];
 
 function sanitizeSearchParam(search: string): string {
@@ -127,6 +127,8 @@ export class FlashcardApiService {
           front: data.front,
           back: data.back,
           front_image_url: data.front_image_url || null,
+          front_language: data.front_language || null,
+          back_language: data.back_language || null,
           source: data.source || 'manual',
           user_id: userId,
           created_at: new Date().toISOString(),

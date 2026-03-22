@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
-import { FlashcardDTO } from '../../../../types';
+import { FlashcardDTO, FlashcardLanguage } from '../../../../types';
 import { ImageUploadService } from '../../../services/image-upload.service';
 
 export function noWhitespaceValidator() {
@@ -18,6 +18,8 @@ export interface FlashcardFormData {
   front: string;
   back: string;
   front_image_url?: string | null;
+  front_language?: FlashcardLanguage | null;
+  back_language?: FlashcardLanguage | null;
 }
 
 @Component({

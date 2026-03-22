@@ -36,6 +36,8 @@ export interface UserDTO {
 
 export type Source = 'ai-full' | 'ai-edited' | 'manual' | 'test';
 
+export type FlashcardLanguage = 'en' | 'pl' | 'de' | 'es' | 'fr';
+
 /** ---------- Flashcards ---------- */
 
 // Flashcard DTO corresponds to a record from the flashcards table
@@ -44,6 +46,8 @@ export interface FlashcardDTO {
   front: string;
   back: string;
   front_image_url: string | null;
+  front_language: FlashcardLanguage | null;
+  back_language: FlashcardLanguage | null;
   source: Source;
   created_at: string;
   updated_at: string;
@@ -60,8 +64,10 @@ export interface FlashcardProposalDTO {
 
 // Command model for creating a flashcard
 // Uses Omit to exclude fields that are set by the system
-export type CreateFlashcardCommand = Omit<FlashcardDTO, 'id' | 'created_at' | 'updated_at' | 'user_id' | 'generation_id' | 'set_id' | 'front_image_url'> & {
+export type CreateFlashcardCommand = Omit<FlashcardDTO, 'id' | 'created_at' | 'updated_at' | 'user_id' | 'generation_id' | 'set_id' | 'front_image_url' | 'front_language' | 'back_language'> & {
   front_image_url?: string | null;
+  front_language?: FlashcardLanguage | null;
+  back_language?: FlashcardLanguage | null;
   generation_id?: number | null;
   set_id: number;
 };
