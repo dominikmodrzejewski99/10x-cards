@@ -121,4 +121,106 @@ label {
   small { font-size: 0.75rem; }
   .image-upload { padding: 1rem; }
   .image-preview__img { max-height: 150px; }
+  .audio-upload { padding: 1rem; }
+  .audio-upload__actions { flex-direction: column; gap: 0.5rem; }
+}
+
+// Audio upload section
+.audio-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border: 2px dashed #d9dbe9;
+  border-radius: 0.65rem;
+}
+
+.audio-upload__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.audio-upload__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.audio-upload__btn--record {
+  background: #7c3aed;
+  color: #ffffff;
+
+  &:hover:not(:disabled) {
+    background: #6d28d9;
+    transform: translateY(-1px);
+  }
+}
+
+.audio-upload__btn--file {
+  background: transparent;
+  color: #586380;
+  border: 1.5px solid #d9dbe9;
+  border-radius: 50px;
+
+  &:hover {
+    background: #f6f7fb;
+    border-color: #586380;
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+.audio-upload__input {
+  display: none;
+}
+
+.audio-upload__divider {
+  color: #586380;
+  font-size: 0.8rem;
+}
+
+.audio-upload__hint {
+  font-size: 0.75rem;
+  color: #586380;
+}
+
+.audio-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid #d9dbe9;
+  border-radius: 0.65rem;
+  background-color: #f6f7fb;
+}
+
+.audio-preview__remove {
+  align-self: center;
+}
+
+.audio-uploading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  border: 2px dashed #d9dbe9;
+  border-radius: 0.65rem;
+  color: #586380;
+  font-size: 0.9rem;
 }

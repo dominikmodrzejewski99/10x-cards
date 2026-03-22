@@ -7,6 +7,9 @@ import { SelectModule } from 'primeng/select';
 import { FlashcardDTO, FlashcardLanguage } from '../../../../types';
 import { ImageUploadService } from '../../../services/image-upload.service';
 import { OpenRouterService } from '../../../services/openrouter.service';
+import { AudioUploadService } from '../../../services/audio-upload.service';
+import { AudioRecorderComponent } from '../../../shared/components/audio-recorder/audio-recorder.component';
+import { AudioPlayerComponent } from '../../../shared/components/audio-player/audio-player.component';
 
 export function noWhitespaceValidator() {
   return (control: { value: string }) => {
@@ -33,7 +36,9 @@ export interface FlashcardFormData {
     ButtonModule,
     InputTextModule,
     TextareaModule,
-    SelectModule
+    SelectModule,
+    AudioRecorderComponent,
+    AudioPlayerComponent
   ],
   templateUrl: './flashcard-form.component.html',
   styleUrls: ['./flashcard-form.component.scss'],
@@ -49,6 +54,7 @@ export class FlashcardFormComponent implements OnInit {
   private fb: FormBuilder = inject(FormBuilder);
   private imageUploadService: ImageUploadService = inject(ImageUploadService);
   private openRouterService: OpenRouterService = inject(OpenRouterService);
+  private audioUploadService: AudioUploadService = inject(AudioUploadService);
 
   public imagePreviewSignal: WritableSignal<string | null> = signal<string | null>(null);
   public uploadingSignal: WritableSignal<boolean> = signal<boolean>(false);
@@ -57,6 +63,11 @@ export class FlashcardFormComponent implements OnInit {
   public translatingSignal: WritableSignal<boolean> = signal<boolean>(false);
   public frontLanguageSignal: WritableSignal<FlashcardLanguage | null> = signal<FlashcardLanguage | null>(null);
   public backLanguageSignal: WritableSignal<FlashcardLanguage | null> = signal<FlashcardLanguage | null>(null);
+
+  public audioPreviewSignal: WritableSignal<string | null> = signal<string | null>(null);
+  public audioUploadingSignal: WritableSignal<boolean> = signal<boolean>(false);
+  public audioErrorSignal: WritableSignal<string | null> = signal<string | null>(null);
+  public showRecorderSignal: WritableSignal<boolean> = signal<boolean>(false);
 
   public readonly LANGUAGES: { label: string; value: FlashcardLanguage }[] = [
     { label: 'English', value: 'en' },
@@ -73,6 +84,7 @@ export class FlashcardFormComponent implements OnInit {
   public readonly BACK_MAX_LENGTH: number = 1000;
 
   private pendingImageUrl: string | null = null;
+  private pendingAudioUrl: string | null = null;
   private translationTimeout: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
@@ -103,7 +115,7 @@ export class FlashcardFormComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    if (this.flashcardForm.invalid || this.submitting || this.uploadingSignal()) {
+    if (this.flashcardForm.invalid || this.submitting || this.uploadingSignal() || this.audioUploadingSignal()) {
       Object.keys(this.flashcardForm.controls).forEach((key: string) => {
         const control = this.flashcardForm.get(key);
         control?.markAsTouched();
@@ -118,6 +130,7 @@ export class FlashcardFormComponent implements OnInit {
       front: formValue.front,
       back: formValue.back,
       front_image_url: this.pendingImageUrl,
+      back_audio_url: this.pendingAudioUrl,
       front_language: this.frontLanguageSignal(),
       back_language: this.backLanguageSignal()
     };
@@ -217,6 +230,57 @@ export class FlashcardFormComponent implements OnInit {
     this.imageErrorSignal.set(null);
   }
 
+  public onAudioFileSelected(event: Event): void {
+    const input: HTMLInputElement = event.target as HTMLInputElement;
+    const file: File | undefined = input.files?.[0];
+    if (!file) return;
+
+    this.uploadAudioFile(file);
+    input.value = '';
+  }
+
+  public onAudioRecorded(file: File): void {
+    this.showRecorderSignal.set(false);
+    this.uploadAudioFile(file);
+  }
+
+  public removeAudio(): void {
+    const currentUrl: string | null = this.pendingAudioUrl;
+    if (currentUrl) {
+      this.audioUploadService.deleteAudio(currentUrl).subscribe();
+    }
+    this.pendingAudioUrl = null;
+    this.audioPreviewSignal.set(null);
+    this.audioErrorSignal.set(null);
+  }
+
+  public toggleRecorder(): void {
+    this.showRecorderSignal.update((v: boolean) => !v);
+  }
+
+  private uploadAudioFile(file: File): void {
+    this.audioErrorSignal.set(null);
+
+    const validationError: string | null = this.audioUploadService.validateFile(file);
+    if (validationError) {
+      this.audioErrorSignal.set(validationError);
+      return;
+    }
+
+    this.audioUploadingSignal.set(true);
+    this.audioUploadService.uploadAudio(file).subscribe({
+      next: (url: string) => {
+        this.pendingAudioUrl = url;
+        this.audioPreviewSignal.set(url);
+        this.audioUploadingSignal.set(false);
+      },
+      error: (err: Error) => {
+        this.audioErrorSignal.set(err.message);
+        this.audioUploadingSignal.set(false);
+      }
+    });
+  }
+
   private initializeForm(): void {
     this.flashcardForm = this.fb.group({
       front: ['', [
@@ -244,16 +308,22 @@ export class FlashcardFormComponent implements OnInit {
         });
         this.pendingImageUrl = flashcard.front_image_url || null;
         this.imagePreviewSignal.set(flashcard.front_image_url || null);
+        this.pendingAudioUrl = flashcard.back_audio_url || null;
+        this.audioPreviewSignal.set(flashcard.back_audio_url || null);
         this.frontLanguageSignal.set(flashcard.front_language || null);
         this.backLanguageSignal.set(flashcard.back_language || null);
       } else {
         this.flashcardForm.reset();
         this.pendingImageUrl = null;
         this.imagePreviewSignal.set(null);
+        this.pendingAudioUrl = null;
+        this.audioPreviewSignal.set(null);
+        this.showRecorderSignal.set(false);
         this.frontLanguageSignal.set(null);
         this.backLanguageSignal.set(null);
       }
       this.imageErrorSignal.set(null);
+      this.audioErrorSignal.set(null);
       this.translationSuggestionSignal.set(null);
     }
   }
