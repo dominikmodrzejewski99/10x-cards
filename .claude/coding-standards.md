@@ -26,7 +26,10 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Do NOT use `@HostBinding` and `@HostListener` decorators; use the `host` object in `@Component` or `@Directive` instead
 - Use `NgOptimizedImage` for all static images (`NgOptimizedImage` does not work for inline base64 images)
 - Use `ngSrc` instead of `src` on `<img>` elements when using `NgOptimizedImage`
-- Prefer zoneless change detection — zone.js is no longer included by default in Angular v21
+- This project is zoneless — zone.js is NOT included in the production build (`"polyfills": []`)
+- zone.js is ONLY added in the `angular.json` → `test` section polyfills because Karma/Jasmine TestBed requires it
+- Do NOT add zone.js to the build polyfills
+- Use Angular signals for reactivity, not zone-based change detection
 - Use `resource()` or `httpResource()` for reactive async data fetching with signals (experimental)
 
 ## Accessibility Requirements
