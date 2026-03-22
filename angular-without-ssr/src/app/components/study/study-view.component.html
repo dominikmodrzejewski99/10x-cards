@@ -118,6 +118,18 @@
 
       <div class="study__header">
         <h1 class="study__title">Nauka</h1>
+        <div class="study__direction-toggle">
+          <button
+            class="study__ctrl study__ctrl--direction"
+            [class.study__ctrl--active]="isReversedSignal()"
+            (click)="toggleDirection()"
+            [attr.aria-label]="isReversedSignal() ? 'Tryb normalny' : 'Odwróć kierunek'">
+            <i class="pi pi-arrow-right-arrow-left"></i>
+          </button>
+          <span class="study__direction-label">
+            {{ isReversedSignal() ? 'Odwrócony' : 'Normalny' }}
+          </span>
+        </div>
         <p class="study__hint">
           @if (!isFlippedSignal()) {
             Kliknij kartę lub naciśnij spację
@@ -130,9 +142,9 @@
       <div class="study__card">
         @if (currentCardSignal(); as card) {
           <app-flashcard-flip
-            [front]="card.flashcard.front"
-            [back]="card.flashcard.back"
-            [frontImageUrl]="card.flashcard.front_image_url"
+            [front]="displayFrontSignal()"
+            [back]="displayBackSignal()"
+            [frontImageUrl]="displayFrontImageSignal()"
             [isFlipped]="isFlippedSignal()"
             [skipTransition]="skipTransitionSignal()"
             (flipToggle)="flip()">

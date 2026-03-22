@@ -41,6 +41,7 @@ export class StudyViewComponent implements OnInit, OnDestroy {
   private answerSubscription: Subscription | null = null;
   private routeSub: Subscription | null = null;
 
+  public isReversedSignal: WritableSignal<boolean> = signal<boolean>(false);
   public dueCardsSignal: WritableSignal<StudyCardDTO[]> = signal<StudyCardDTO[]>([]);
   private originalCardsSignal: WritableSignal<StudyCardDTO[]> = signal<StudyCardDTO[]>([]);
   public isShuffledSignal: WritableSignal<boolean> = signal<boolean>(false);
@@ -82,6 +83,36 @@ export class StudyViewComponent implements OnInit, OnDestroy {
     const total: number = this.dueCardsSignal().length;
     if (total === 0) return 0;
     return Math.round(((this.currentIndexSignal() + 1) / total) * 100);
+  });
+
+  public displayFrontSignal: Signal<string> = computed<string>(() => {
+    const card: StudyCardDTO | null = this.currentCardSignal();
+    if (!card) return '';
+    if (this.isReversedSignal()) {
+      const back: string = card.flashcard.back;
+      const firstMeaning: string = back.split(';')[0].trim();
+      return firstMeaning;
+    }
+    return card.flashcard.front;
+  });
+
+  public displayBackSignal: Signal<string> = computed<string>(() => {
+    const card: StudyCardDTO | null = this.currentCardSignal();
+    if (!card) return '';
+    if (this.isReversedSignal()) {
+      return card.flashcard.front;
+    }
+    const back: string = card.flashcard.back;
+    if (back.includes(';')) {
+      return back.split(';').map((m: string) => m.trim()).filter((m: string) => m).join('\n• ');
+    }
+    return back;
+  });
+
+  public displayFrontImageSignal: Signal<string | null> = computed<string | null>(() => {
+    const card: StudyCardDTO | null = this.currentCardSignal();
+    if (!card) return null;
+    return this.isReversedSignal() ? null : card.flashcard.front_image_url;
   });
 
   public ngOnInit(): void {
@@ -235,6 +266,10 @@ export class StudyViewComponent implements OnInit, OnDestroy {
     if (!this.trackProgressSignal()) {
       this.failedCardsSignal.set([]);
     }
+  }
+
+  public toggleDirection(): void {
+    this.isReversedSignal.update((v: boolean) => !v);
   }
 
   public restartWithFailedCards(): void {

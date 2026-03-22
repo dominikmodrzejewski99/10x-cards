@@ -139,6 +139,26 @@
   margin: 0;
 }
 
+.study__direction-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.study__direction-label {
+  font-size: 0.8rem;
+  color: var(--app-text-secondary, #586380);
+}
+
+.study__ctrl--direction {
+  @include btn-icon(2rem);
+  border: 1.5px solid $color-border;
+  border-radius: 50%;
+  font-size: 0.85rem;
+}
+
 /* Card */
 .study__card {
   width: 100%;

@@ -88,6 +88,7 @@
   text-align: center;
   word-break: break-word;
   color: var(--app-text, #282e3e);
+  white-space: pre-line;
 }
 
 @media (max-width: 480px) {
