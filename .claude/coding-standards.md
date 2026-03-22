@@ -105,9 +105,19 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Validate user data on the frontend side as well
 - Use guards adjusted to role-based permissions
 
-## Unit Testing
-- Tests are written using Jest (via `jest-preset-angular` in Nx)
-- Angular v21 defaults to Vitest for new projects — consider migrating in the future
+## Unit Testing — MANDATORY
+- Tests are written using Karma/Jasmine with Angular TestBed
+- Every new feature or code change MUST have unit test coverage (`*.spec.ts` next to source file)
+- Minimum 80% coverage target for new code
+- Run unit tests: `npm run test:quiz` or `ng test --no-watch --browsers=ChromeHeadless`
+
+## E2E Testing — MANDATORY
+- E2E tests use Playwright with the Page Object Model (POM) pattern
+- Every new user-facing flow MUST have E2E test coverage
+- E2E tests: `tests/e2e/tests/*.spec.ts`
+- Page objects: `tests/e2e/page-objects/*.ts`
+- Run E2E tests: `npm run e2e:quiz` (requires running app + E2E credentials)
+- Use `BasePage` for shared navigation helpers
 
 ## Styles
 

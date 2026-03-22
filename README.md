@@ -24,16 +24,21 @@ Można też kliknąć „Wypróbuj bez rejestracji" aby korzystać anonimowo.
 - **Inteligentne powtórki** — algorytm SM-2 z oceną 1 (nie wiem) / 3 (trudne) / 4 (wiem) planuje, kiedy powtórzyć pytanie
 - **Edycja propozycji** — akceptuj, odrzucaj i edytuj fiszki zaproponowane przez AI
 - **Dashboard** — statystyki: seria nauki, fiszki do powtórki, liczba sesji
+- **Tryb testu (Quiz)** — test z fiszek z trzema typami pytań: wielokrotny wybór, wpisywanie odpowiedzi, prawda/fałsz
+- **Panel wyników testu** — podsumowanie z wynikiem procentowym, czasem odpowiedzi, najwolniejszymi odpowiedziami i ring chart
+- **Wyróżnianie fiszek** — po teście oznacz fiszki „do powtórki" i powtórz tylko wyróżnione
+- **Testy językowe** — gotowe banki pytań B1, B2-FCE, C1-CAE do nauki języka angielskiego
 
 ## Stack technologiczny
 
 | Warstwa | Technologia |
 |---------|-------------|
-| Frontend | Angular 19 (standalone, OnPush, signals) |
-| State management | NgRx (auth store) |
-| UI | PrimeNG 19, Tailwind CSS 4 |
+| Frontend | Angular 21 (standalone, OnPush, signals, zoneless) |
+| State management | NgRx Signals (auth store) |
+| UI | PrimeNG 21, Tailwind CSS 4 |
 | Backend / Auth | Supabase (PostgreSQL, Auth, RLS) |
 | AI | OpenRouter API (stepfun/step-3.5-flash:free) |
+| Testing | Karma/Jasmine (unit), Playwright (E2E) |
 | Hosting | Cloudflare Pages |
 
 ## Uruchomienie
@@ -89,9 +94,11 @@ angular-without-ssr/src/app/
 │   ├── flashcards/     # Lista fiszek w zestawie
 │   ├── sets/           # Zarządzanie zestawami
 │   ├── study/          # Sesja nauki (SM-2)
+│   ├── quiz/           # Tryb testu (konfiguracja, pytania, wyniki)
+│   ├── language-test/  # Testy językowe (B1, B2-FCE, C1-CAE)
 │   ├── landing/        # Strona główna
 │   └── onboarding/     # Onboarding po rejestracji
-├── services/           # Serwisy API (flashcard, generation, review, openrouter)
+├── services/           # Serwisy API (flashcard, generation, review, quiz, openrouter)
 ├── shared/             # Współdzielone komponenty i serwisy
 └── interfaces/         # Interfejsy TypeScript
 ```
