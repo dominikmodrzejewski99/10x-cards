@@ -125,6 +125,10 @@ label {
   .audio-upload__actions { flex-direction: column; gap: 0.5rem; }
 }
 
+.audio-section--hidden {
+  display: none !important;
+}
+
 // Audio upload section
 .audio-upload {
   display: flex;

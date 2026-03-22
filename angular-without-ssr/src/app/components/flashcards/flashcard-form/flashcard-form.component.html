@@ -118,9 +118,12 @@
   <div class="field mb-4">
     <label class="block mb-2 text-gray-700 font-medium">Notatka głosowa — tył (opcjonalnie)</label>
 
-    @if (audioPreviewSignal() && !audioUploadingSignal()) {
-      <div class="audio-preview">
-        <app-audio-player [audioUrl]="audioPreviewSignal()!" />
+    <div class="audio-section">
+      <div class="audio-preview"
+           [class.audio-section--hidden]="!audioPreviewSignal() || audioUploadingSignal()">
+        @if (audioPreviewSignal()) {
+          <app-audio-player [audioUrl]="audioPreviewSignal()!" />
+        }
         <button
           type="button"
           pButton
@@ -131,10 +134,10 @@
           [disabled]="audioUploadingSignal()">
         </button>
       </div>
-    }
 
-    @if (!audioPreviewSignal() && !audioUploadingSignal() && !showRecorderSignal()) {
-      <div class="audio-upload" data-test-id="audio-upload">
+      <div class="audio-upload"
+           [class.audio-section--hidden]="audioPreviewSignal() || audioUploadingSignal() || showRecorderSignal()"
+           data-test-id="audio-upload">
         <div class="audio-upload__actions">
           <button
             type="button"
@@ -154,21 +157,20 @@
         </div>
         <small class="audio-upload__hint">MP3, WAV, OGG, WebM — max. 30s / 2MB</small>
       </div>
-    }
 
-    @if (showRecorderSignal() && !audioPreviewSignal()) {
-      <app-audio-recorder
-        [autoStart]="true"
-        (audioRecorded)="onAudioRecorded($event)"
-        (cancelled)="showRecorderSignal.set(false)" />
-    }
+      @if (showRecorderSignal() && !audioPreviewSignal()) {
+        <app-audio-recorder
+          [autoStart]="true"
+          (audioRecorded)="onAudioRecorded($event)"
+          (cancelled)="showRecorderSignal.set(false)" />
+      }
 
-    @if (audioUploadingSignal()) {
-      <div class="audio-uploading">
+      <div class="audio-uploading"
+           [class.audio-section--hidden]="!audioUploadingSignal()">
         <i class="pi pi-spin pi-spinner"></i>
         <span>Przesyłanie audio...</span>
       </div>
-    }
+    </div>
 
     @if (audioErrorSignal()) {
       <small class="text-red-500 block mt-1" data-test-id="audio-error">
