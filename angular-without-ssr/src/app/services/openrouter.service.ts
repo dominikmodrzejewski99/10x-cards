@@ -141,6 +141,29 @@ export class OpenRouterService {
   }
 
   /**
+   * Tłumaczy tekst z jednego języka na drugi za pomocą modelu AI.
+   * @param text Tekst do przetłumaczenia
+   * @param fromLang Kod języka źródłowego (en, pl, de, es, fr)
+   * @param toLang Kod języka docelowego (en, pl, de, es, fr)
+   * @returns Promise z przetłumaczonym tekstem
+   */
+  public async translateText(text: string, fromLang: string, toLang: string): Promise<string> {
+    const langNames: Record<string, string> = {
+      en: 'English', pl: 'Polish', de: 'German', es: 'Spanish', fr: 'French'
+    };
+    const fromName: string = langNames[fromLang] || fromLang;
+    const toName: string = langNames[toLang] || toLang;
+
+    const result: string = await this.sendMessage(text, undefined, {
+      systemMessage: `You are a translator. Translate the given word or phrase from ${fromName} to ${toName}. Return ONLY the translation. If there are multiple common meanings, separate them with semicolons. Do not add explanations.`,
+      temperature: 0.3,
+      max_tokens: 200
+    });
+
+    return result.trim();
+  }
+
+  /**
    * Wykonuje zapytanie do API OpenRouter
    * @param payload Dane do wysłania
    * @returns Observable z odpowiedzią API
