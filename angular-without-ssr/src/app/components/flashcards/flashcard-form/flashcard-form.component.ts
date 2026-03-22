@@ -57,8 +57,7 @@ export class FlashcardFormComponent implements OnInit {
   public frontLanguageSignal: WritableSignal<FlashcardLanguage | null> = signal<FlashcardLanguage | null>(null);
   public backLanguageSignal: WritableSignal<FlashcardLanguage | null> = signal<FlashcardLanguage | null>(null);
 
-  public readonly LANGUAGES: { label: string; value: FlashcardLanguage | null }[] = [
-    { label: '—', value: null },
+  public readonly LANGUAGES: { label: string; value: FlashcardLanguage }[] = [
     { label: 'English', value: 'en' },
     { label: 'Polski', value: 'pl' },
     { label: 'Deutsch', value: 'de' },

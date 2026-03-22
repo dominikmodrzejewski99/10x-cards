@@ -1,7 +1,7 @@
 <form [formGroup]="flashcardForm" (ngSubmit)="onSubmit()" class="p-fluid bg-white" data-test-id="flashcard-form">
   <div class="flex gap-3 mb-4">
     <div class="flex-1">
-      <label class="block mb-2 text-gray-700 font-medium text-sm">Język frontu</label>
+      <label class="block mb-2 text-gray-700 font-medium text-sm">Język pytania</label>
       <p-select
         [options]="LANGUAGES"
         optionLabel="label"
@@ -10,12 +10,13 @@
         [ngModelOptions]="{ standalone: true }"
         (ngModelChange)="frontLanguageSignal.set($event)"
         [style]="{ width: '100%' }"
-        placeholder="—"
+        [showClear]="!!frontLanguageSignal()"
+        placeholder="Brak"
         data-test-id="front-language-select">
       </p-select>
     </div>
     <div class="flex-1">
-      <label class="block mb-2 text-gray-700 font-medium text-sm">Język tyłu</label>
+      <label class="block mb-2 text-gray-700 font-medium text-sm">Język odpowiedzi</label>
       <p-select
         [options]="LANGUAGES"
         optionLabel="label"
@@ -24,7 +25,8 @@
         [ngModelOptions]="{ standalone: true }"
         (ngModelChange)="backLanguageSignal.set($event)"
         [style]="{ width: '100%' }"
-        placeholder="—"
+        [showClear]="!!backLanguageSignal()"
+        placeholder="Brak"
         data-test-id="back-language-select">
       </p-select>
     </div>
