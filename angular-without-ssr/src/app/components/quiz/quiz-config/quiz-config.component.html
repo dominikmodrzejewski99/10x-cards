@@ -17,33 +17,30 @@
   <div class="quiz-config__section">
     <label class="quiz-config__label">Typy pytań</label>
     <div class="quiz-config__checkboxes">
-      <div class="quiz-config__checkbox">
-        <p-checkbox
-          [ngModel]="writtenEnabledSignal()"
-          (ngModelChange)="writtenEnabledSignal.set($event)"
-          [binary]="true"
-          inputId="written"
-          label="Wpisywanie odpowiedzi">
-        </p-checkbox>
-      </div>
-      <div class="quiz-config__checkbox">
-        <p-checkbox
-          [ngModel]="multipleChoiceEnabledSignal()"
-          (ngModelChange)="multipleChoiceEnabledSignal.set($event)"
-          [binary]="true"
-          inputId="multipleChoice"
-          label="Wielokrotny wybór">
-        </p-checkbox>
-      </div>
-      <div class="quiz-config__checkbox">
-        <p-checkbox
-          [ngModel]="trueFalseEnabledSignal()"
-          (ngModelChange)="trueFalseEnabledSignal.set($event)"
-          [binary]="true"
-          inputId="trueFalse"
-          label="Prawda / Fałsz">
-        </p-checkbox>
-      </div>
+      <label class="quiz-config__check-item">
+        <input
+          type="checkbox"
+          class="quiz-config__check-input"
+          [checked]="writtenEnabledSignal()"
+          (change)="writtenEnabledSignal.set(!writtenEnabledSignal())" />
+        <span class="quiz-config__check-text">Wpisywanie odpowiedzi</span>
+      </label>
+      <label class="quiz-config__check-item">
+        <input
+          type="checkbox"
+          class="quiz-config__check-input"
+          [checked]="multipleChoiceEnabledSignal()"
+          (change)="multipleChoiceEnabledSignal.set(!multipleChoiceEnabledSignal())" />
+        <span class="quiz-config__check-text">Wielokrotny wybór</span>
+      </label>
+      <label class="quiz-config__check-item">
+        <input
+          type="checkbox"
+          class="quiz-config__check-input"
+          [checked]="trueFalseEnabledSignal()"
+          (change)="trueFalseEnabledSignal.set(!trueFalseEnabledSignal())" />
+        <span class="quiz-config__check-text">Prawda / Fałsz</span>
+      </label>
     </div>
     @if (!isValid) {
       <small class="quiz-config__error">Wybierz co najmniej jeden typ pytania</small>
@@ -53,26 +50,24 @@
   <div class="quiz-config__section">
     <label class="quiz-config__label">Kierunek</label>
     <div class="quiz-config__radios">
-      <div class="quiz-config__radio">
-        <p-radioButton
+      <label class="quiz-config__check-item">
+        <input
+          type="radio"
           name="direction"
-          [value]="false"
-          [ngModel]="reversedSignal()"
-          (ngModelChange)="reversedSignal.set($event)"
-          inputId="frontToBack"
-          label="Przód → Tył">
-        </p-radioButton>
-      </div>
-      <div class="quiz-config__radio">
-        <p-radioButton
+          class="quiz-config__check-input"
+          [checked]="!reversedSignal()"
+          (change)="reversedSignal.set(false)" />
+        <span class="quiz-config__check-text">Przód → Tył</span>
+      </label>
+      <label class="quiz-config__check-item">
+        <input
+          type="radio"
           name="direction"
-          [value]="true"
-          [ngModel]="reversedSignal()"
-          (ngModelChange)="reversedSignal.set($event)"
-          inputId="backToFront"
-          label="Tył → Przód">
-        </p-radioButton>
-      </div>
+          class="quiz-config__check-input"
+          [checked]="reversedSignal()"
+          (change)="reversedSignal.set(true)" />
+        <span class="quiz-config__check-text">Tył → Przód</span>
+      </label>
     </div>
   </div>
 

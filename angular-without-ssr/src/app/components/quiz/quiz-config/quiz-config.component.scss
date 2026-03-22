@@ -35,7 +35,37 @@
 .quiz-config__radios {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.6rem;
+}
+
+.quiz-config__check-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-md;
+  transition: all 0.15s;
+
+  &:hover {
+    border-color: $color-primary;
+    background: $color-primary-light;
+  }
+}
+
+.quiz-config__check-input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: $color-primary;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.quiz-config__check-text {
+  font-size: 0.9rem;
+  color: $color-text;
+  font-weight: 500;
 }
 
 .quiz-config__error {
