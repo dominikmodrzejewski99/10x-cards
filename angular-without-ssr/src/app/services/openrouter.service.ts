@@ -142,6 +142,7 @@ export class OpenRouterService {
 
   /**
    * Tłumaczy tekst z jednego języka na drugi za pomocą modelu AI.
+   * Używa bezpośredniego wywołania API bez zarządzania sesją.
    * @param text Tekst do przetłumaczenia
    * @param fromLang Kod języka źródłowego (en, pl, de, es, fr)
    * @param toLang Kod języka docelowego (en, pl, de, es, fr)
@@ -154,14 +155,34 @@ export class OpenRouterService {
     const fromName: string = langNames[fromLang] || fromLang;
     const toName: string = langNames[toLang] || toLang;
 
-    const result: string = await this.sendMessage(text, undefined, {
-      systemMessage: `You are a translator. Translate the given word or phrase from ${fromName} to ${toName}. Return ONLY the translation. If there are multiple common meanings, separate them with semicolons. Do not add explanations.`,
+    const payload: OpenRouterRequestPayload = {
+      model: this.defaultModel,
+      messages: [
+        {
+          role: 'user',
+          content: `Translate "${text}" from ${fromName} to ${toName}. Return ONLY the translation. If there are multiple common meanings, separate them with semicolons. No explanations.`
+        }
+      ],
       temperature: 0.3,
-      max_tokens: 200,
-      model: 'google/gemma-3-4b-it:free'
-    });
+      max_tokens: 200
+    };
 
-    return result.trim();
+    const maxRetries: number = 3;
+    for (let attempt: number = 0; attempt < maxRetries; attempt++) {
+      try {
+        const response: OpenRouterResponse = await firstValueFrom(this.callApi(payload));
+        const content: string | undefined = response?.choices?.[0]?.message?.content;
+        if (content && content.trim()) {
+          return content.trim();
+        }
+      } catch {
+        if (attempt === maxRetries - 1) {
+          throw new Error('Nie udało się przetłumaczyć tekstu');
+        }
+      }
+    }
+
+    throw new Error('Otrzymano pustą odpowiedź od modelu AI po wielu próbach');
   }
 
   /**
