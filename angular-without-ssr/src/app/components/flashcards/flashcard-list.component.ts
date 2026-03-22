@@ -208,7 +208,8 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
           back: formData.back,
           front_image_url: formData.front_image_url,
           front_language: formData.front_language,
-          back_language: formData.back_language
+          back_language: formData.back_language,
+          back_audio_url: formData.back_audio_url,
         }
       ).subscribe({
         next: (updatedFlashcard) => {
@@ -235,6 +236,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
         front_image_url: formData.front_image_url,
         front_language: formData.front_language,
         back_language: formData.back_language,
+        back_audio_url: formData.back_audio_url,
         source: 'manual',
         set_id: this.state().setId
       }).subscribe({
