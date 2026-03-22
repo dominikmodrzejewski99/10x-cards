@@ -77,6 +77,11 @@
             <div class="ftable__card-side">
               <span class="ftable__card-label">Tył</span>
               <p class="ftable__card-text">{{ flashcard.back }}</p>
+              @if (flashcard.back_audio_url) {
+                <span class="ftable__card-audio" title="Ma notatkę głosową">
+                  <i class="pi pi-volume-up"></i>
+                </span>
+              }
             </div>
           </div>
           <div class="ftable__card-actions">

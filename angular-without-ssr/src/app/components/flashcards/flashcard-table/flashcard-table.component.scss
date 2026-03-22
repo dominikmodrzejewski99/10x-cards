@@ -265,6 +265,18 @@
   word-break: break-word;
 }
 
+.ftable__card-audio {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.25rem;
+  padding: 0.125rem 0.375rem;
+  background: $color-purple-light;
+  color: $color-purple;
+  border-radius: 0.25rem;
+  font-size: 0.7rem;
+}
+
 .ftable__card-divider {
   width: 1px;
   background: #edeff5;
