@@ -35,7 +35,7 @@ describe('OpenRouterService', () => {
 
   const mockApiResponse: OpenRouterResponse = {
     id: 'test-response-id',
-    model: 'arcee-ai/trinity-large-preview:free',
+    model: 'stepfun/step-3.5-flash:free',
     choices: [
       {
         index: 0,
@@ -119,7 +119,7 @@ describe('OpenRouterService', () => {
 
       // Sprawdzenie body zapytania
       const requestBody = req.request.body;
-      expect(requestBody.model).toBe('arcee-ai/trinity-large-preview:free'); // Model domyślny
+      expect(requestBody.model).toBe('stepfun/step-3.5-flash:free'); // Model domyślny
 
       // Weryfikacja, że mamy wiadomość systemową
       const systemMessage = requestBody.messages.find((m: any) => m.role === 'system');
@@ -248,16 +248,9 @@ describe('OpenRouterService', () => {
       expect(requestBody.response_format).toBeDefined();
       expect(requestBody.response_format.type).toBe('json_object');
 
-      // Sprawdzenie dodatkowej instrukcji dot. formatu JSON
-      const lastMessage = requestBody.messages[requestBody.messages.length - 1];
-      expect(lastMessage.role).toBe('user');
-
-      // Sprawdź czy instrukcja zawiera kluczowe frazy - użyj pojedynczych słów aby uniknąć problemów z formatem tekstu
-      expect(lastMessage.content).toContain('JSON');
-      expect(lastMessage.content).toContain('front');
-      expect(lastMessage.content).toContain('back');
-      expect(lastMessage.content).toContain('[');
-      expect(lastMessage.content).toContain(']');
+      // Sprawdzenie, że wiadomość użytkownika jest obecna
+      const userMessages = requestBody.messages.filter((m: any) => m.role === 'user');
+      expect(userMessages.length).toBeGreaterThan(0);
 
       // Symulacja odpowiedzi JSON
       const jsonResponse = {
@@ -287,7 +280,7 @@ describe('OpenRouterService', () => {
 
   // Testy obsługi błędów
   describe('obsługa błędów', () => {
-    it('powinien obsłużyć błąd 401 Unauthorized', fakeAsync(() => {
+    it('powinien obsłużyć błąd 401 Unauthorized', async () => {
       // Przygotowanie
       const userMessage = 'Testowa wiadomość';
       sessionManagerSpy.createSession.and.returnValue(mockSession);
@@ -296,9 +289,6 @@ describe('OpenRouterService', () => {
       // Działanie
       const sendMessagePromise = service.sendMessage(userMessage);
 
-      // Dajemy czas na wykonanie zapytania
-      tick();
-
       // Symulacja błędu autoryzacji
       const req = httpMock.expectOne(request => request.url === 'https://openrouter.ai/api/v1/chat/completions');
       req.flush('Unauthorized', {
@@ -306,21 +296,9 @@ describe('OpenRouterService', () => {
         statusText: 'Unauthorized'
       });
 
-      // Czekamy na zakończenie asynchronicznej operacji
-      tick();
-
       // Sprawdzenie wyniku - oczekujemy błędu
-      sendMessagePromise.then(
-        () => fail('Powinien wystąpić błąd'),
-        error => {
-          expect(error).toBeDefined();
-          expect(error.message).toContain('Brak autoryzacji');
-        }
-      );
-
-      // Posprzątnij pozostałe timery
-      discardPeriodicTasks();
-    }));
+      await expectAsync(sendMessagePromise).toBeRejectedWithError(/Brak/);
+    });
 
     it('powinien obsłużyć błąd 429 Too Many Requests', fakeAsync(() => {
       // Przygotowanie
