@@ -69,29 +69,31 @@
 
     @case ('true-false') {
       <div class="quiz-question__true-false">
-        <p class="quiz-question__pairing">
-          {{ questionSignal().questionText }} = {{ questionSignal().trueFalsePairing?.shown }}
-        </p>
+        <p class="quiz-question__tf-label">Proponowana odpowiedź:</p>
+        <div class="quiz-question__tf-answer"
+          [class.quiz-question__tf-answer--correct]="isAnsweredSignal() && questionSignal().trueFalsePairing?.isCorrect"
+          [class.quiz-question__tf-answer--wrong]="isAnsweredSignal() && !questionSignal().trueFalsePairing?.isCorrect">
+          {{ questionSignal().trueFalsePairing?.shown }}
+        </div>
+        <p class="quiz-question__tf-prompt">Czy ta odpowiedź jest poprawna?</p>
         <div class="quiz-question__tf-buttons">
           <button
-            pButton
-            label="Prawda"
-            icon="pi pi-check"
-            class="p-button-success p-button-outlined"
-            [class.quiz-question__tf--correct]="isAnsweredSignal() && questionSignal().trueFalsePairing?.isCorrect === true"
-            [class.quiz-question__tf--wrong]="isAnsweredSignal() && selectedTrueFalseSignal() === true && !questionSignal().trueFalsePairing?.isCorrect"
+            class="quiz-question__tf-btn quiz-question__tf-btn--true"
+            [class.quiz-question__tf-btn--selected]="selectedTrueFalseSignal() === true"
+            [class.quiz-question__tf-btn--correct-result]="isAnsweredSignal() && questionSignal().trueFalsePairing?.isCorrect === true"
+            [class.quiz-question__tf-btn--wrong-result]="isAnsweredSignal() && selectedTrueFalseSignal() === true && !questionSignal().trueFalsePairing?.isCorrect"
             [disabled]="isAnsweredSignal()"
             (click)="onSelectTrueFalse(true)">
+            <i class="pi pi-check"></i> Prawda
           </button>
           <button
-            pButton
-            label="Fałsz"
-            icon="pi pi-times"
-            class="p-button-danger p-button-outlined"
-            [class.quiz-question__tf--correct]="isAnsweredSignal() && questionSignal().trueFalsePairing?.isCorrect === false"
-            [class.quiz-question__tf--wrong]="isAnsweredSignal() && selectedTrueFalseSignal() === false && questionSignal().trueFalsePairing?.isCorrect"
+            class="quiz-question__tf-btn quiz-question__tf-btn--false"
+            [class.quiz-question__tf-btn--selected]="selectedTrueFalseSignal() === false"
+            [class.quiz-question__tf-btn--correct-result]="isAnsweredSignal() && questionSignal().trueFalsePairing?.isCorrect === false"
+            [class.quiz-question__tf-btn--wrong-result]="isAnsweredSignal() && selectedTrueFalseSignal() === false && questionSignal().trueFalsePairing?.isCorrect"
             [disabled]="isAnsweredSignal()"
             (click)="onSelectTrueFalse(false)">
+            <i class="pi pi-times"></i> Fałsz
           </button>
         </div>
 

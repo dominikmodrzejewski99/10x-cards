@@ -135,30 +135,107 @@
   text-align: center;
 }
 
-.quiz-question__pairing {
-  font-size: 1.1rem;
+.quiz-question__tf-label {
+  font-size: 0.8rem;
   font-weight: 600;
+  color: $color-text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.5rem;
+}
+
+.quiz-question__tf-answer {
+  font-size: 1rem;
+  font-weight: 500;
   color: $color-text;
-  margin: 0 0 1.25rem;
-  padding: 1rem;
+  padding: 1rem 1.25rem;
   background: $color-bg;
-  border-radius: $radius-md;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-lg;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+  transition: border-color 0.2s, background 0.2s;
 }
 
-.quiz-question__tf-buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-
-.quiz-question__tf--correct {
+.quiz-question__tf-answer--correct {
   border-color: $color-success;
   background: $color-success-light;
 }
 
-.quiz-question__tf--wrong {
+.quiz-question__tf-answer--wrong {
   border-color: $color-danger;
   background: $color-danger-light;
+}
+
+.quiz-question__tf-prompt {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $color-text;
+  margin: 0 0 0.75rem;
+}
+
+.quiz-question__tf-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.quiz-question__tf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.5rem;
+  border-radius: $radius-md;
+  font-weight: 700;
+  font-size: 0.9rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+  flex: 1;
+  max-width: 180px;
+}
+
+.quiz-question__tf-btn--true {
+  background: $color-white;
+  color: $color-success;
+  border: 2px solid $color-success;
+
+  &:hover:not(:disabled) {
+    background: $color-success-light;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
+}
+
+.quiz-question__tf-btn--false {
+  background: $color-white;
+  color: $color-danger;
+  border: 2px solid $color-danger;
+
+  &:hover:not(:disabled) {
+    background: $color-danger-light;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
+}
+
+.quiz-question__tf-btn--correct-result {
+  background: $color-success;
+  color: $color-white;
+  opacity: 1;
+}
+
+.quiz-question__tf-btn--wrong-result {
+  background: $color-danger;
+  color: $color-white;
+  opacity: 1;
 }
 
 // Correct answer display
