@@ -1,85 +1,144 @@
 <div class="quiz-results">
+  <!-- Header: Grade text -->
   <div class="quiz-results__header">
-    <div class="quiz-results__ring">
-      <svg viewBox="0 0 120 120" class="quiz-results__ring-svg">
-        <circle cx="60" cy="60" r="54" fill="none" stroke="#e8e8e8" stroke-width="8" />
-        <circle
-          cx="60" cy="60" r="54"
-          fill="none"
-          [attr.stroke]="scoreColorSignal()"
-          stroke-width="8"
-          stroke-linecap="round"
-          [attr.stroke-dasharray]="ringDashSignal()"
-          transform="rotate(-90 60 60)" />
-      </svg>
-      <div class="quiz-results__ring-content">
-        <span class="quiz-results__ring-score" [style.color]="scoreColorSignal()">
-          {{ resultSignal().percentage }}%
-        </span>
+    <h1 class="quiz-results__grade" [style.color]="scoreColorSignal()">
+      {{ gradeTextSignal() }}
+    </h1>
+  </div>
+
+  <!-- Stats row: Ring + Correct/Incorrect + Time -->
+  <div class="quiz-results__stats">
+    <div class="quiz-results__ring-section">
+      <div class="quiz-results__time-label">Twój czas: {{ totalTimeTextSignal() }}</div>
+      <div class="quiz-results__ring-row">
+        <div class="quiz-results__ring">
+          <svg viewBox="0 0 120 120" class="quiz-results__ring-svg">
+            <circle cx="60" cy="60" r="54" fill="none" stroke="#e8e8e8" stroke-width="8" />
+            <circle
+              cx="60" cy="60" r="54"
+              fill="none"
+              [attr.stroke]="scoreColorSignal()"
+              stroke-width="8"
+              stroke-linecap="round"
+              [attr.stroke-dasharray]="ringDashSignal()"
+              transform="rotate(-90 60 60)" />
+          </svg>
+          <div class="quiz-results__ring-content">
+            <span class="quiz-results__ring-score" [style.color]="scoreColorSignal()">
+              {{ resultSignal().percentage }}%
+            </span>
+          </div>
+        </div>
+
+        <div class="quiz-results__counts">
+          <div class="quiz-results__count-row">
+            <span class="quiz-results__count-label quiz-results__count-label--correct">Poprawne</span>
+            <span class="quiz-results__count-badge quiz-results__count-badge--correct">{{ correctCountSignal() }}</span>
+          </div>
+          <div class="quiz-results__count-row">
+            <span class="quiz-results__count-label quiz-results__count-label--wrong">Błędne</span>
+            <span class="quiz-results__count-badge quiz-results__count-badge--wrong">{{ incorrectCountSignal() }}</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="quiz-results__count">
-      {{ correctCountSignal() }} / {{ resultSignal().totalQuestions }}
+    <!-- Next steps -->
+    <div class="quiz-results__next-steps">
+      <h3 class="quiz-results__section-title">Co dalej?</h3>
+      <div class="quiz-results__action-cards">
+        @if (hasWrongAnswersSignal()) {
+          <button class="quiz-results__action-card" (click)="onRetryWrong()">
+            <div class="quiz-results__action-card-icon quiz-results__action-card-icon--retry">
+              <i class="pi pi-refresh"></i>
+            </div>
+            <div class="quiz-results__action-card-text">
+              <strong>Powtórz błędne</strong>
+              <span>Przećwicz {{ incorrectCountSignal() }} pytań, w których się pomyliłeś</span>
+            </div>
+            <i class="pi pi-chevron-right"></i>
+          </button>
+        }
+
+        <button class="quiz-results__action-card" (click)="onRetry()">
+          <div class="quiz-results__action-card-icon quiz-results__action-card-icon--new">
+            <i class="pi pi-replay"></i>
+          </div>
+          <div class="quiz-results__action-card-text">
+            <strong>Powtórz cały test</strong>
+            <span>Rozwiąż test jeszcze raz z losowymi pytaniami</span>
+          </div>
+          <i class="pi pi-chevron-right"></i>
+        </button>
+
+        <button class="quiz-results__action-card" (click)="onGoBack()">
+          <div class="quiz-results__action-card-icon quiz-results__action-card-icon--back">
+            <i class="pi pi-arrow-left"></i>
+          </div>
+          <div class="quiz-results__action-card-text">
+            <strong>Wróć do zestawu</strong>
+            <span>Przejrzyj fiszki lub naucz się nowych</span>
+          </div>
+          <i class="pi pi-chevron-right"></i>
+        </button>
+      </div>
     </div>
-    <h2 class="quiz-results__grade" [style.color]="scoreColorSignal()">
-      {{ gradeTextSignal() }}
-    </h2>
   </div>
 
-  @if (hasWrongAnswersSignal()) {
-    <div class="quiz-results__wrong">
-      <button
-        class="quiz-results__wrong-toggle"
-        (click)="toggleWrongExpanded()">
-        <span class="quiz-results__wrong-toggle-text">
-          <i class="pi pi-times-circle"></i>
-          Błędne odpowiedzi ({{ wrongAnswersSignal().length }})
-        </span>
-        <i class="pi" [class.pi-chevron-down]="!wrongExpandedSignal()" [class.pi-chevron-up]="wrongExpandedSignal()"></i>
-      </button>
-
-      @if (wrongExpandedSignal()) {
-        <div class="quiz-results__wrong-list">
-          @for (answer of wrongAnswersSignal(); track answer.questionId) {
-            <div class="quiz-results__wrong-item">
-              <p class="quiz-results__wrong-question">{{ answer.questionText }}</p>
-              <p class="quiz-results__wrong-user">
-                <i class="pi pi-times"></i> {{ answer.userAnswer || '(brak odpowiedzi)' }}
-              </p>
-              <p class="quiz-results__wrong-correct">
-                <i class="pi pi-check"></i> {{ answer.correctAnswer }}
-              </p>
-            </div>
-          }
-        </div>
-      }
+  <!-- Slowest answers -->
+  @if (slowestAnswersSignal().length > 0) {
+    <div class="quiz-results__slowest">
+      <h3 class="quiz-results__section-title">
+        <i class="pi pi-clock"></i> Najdłużej zastanawiałeś się nad
+      </h3>
+      <div class="quiz-results__slowest-list">
+        @for (answer of slowestAnswersSignal(); track answer.questionId) {
+          <div class="quiz-results__slowest-item" [class.quiz-results__slowest-item--wrong]="!answer.isCorrect">
+            <div class="quiz-results__slowest-question">{{ answer.questionText }}</div>
+            <div class="quiz-results__slowest-time">{{ formatTimeMs(answer.timeMs) }}</div>
+          </div>
+        }
+      </div>
     </div>
   }
 
-  <div class="quiz-results__actions">
-    @if (hasWrongAnswersSignal()) {
-      <button
-        pButton
-        label="Powtórz tylko błędne"
-        icon="pi pi-refresh"
-        class="p-button-primary"
-        (click)="onRetryWrong()">
-      </button>
+  <!-- All answers -->
+  <div class="quiz-results__all-answers">
+    <button
+      class="quiz-results__answers-toggle"
+      (click)="toggleAllAnswersExpanded()">
+      <span class="quiz-results__answers-toggle-text">
+        Twoje odpowiedzi
+      </span>
+      <i class="pi" [class.pi-chevron-down]="!allAnswersExpandedSignal()" [class.pi-chevron-up]="allAnswersExpandedSignal()"></i>
+    </button>
+
+    @if (allAnswersExpandedSignal()) {
+      <div class="quiz-results__answers-list">
+        @for (answer of sortedAnswersSignal(); track answer.questionId; let i = $index) {
+          <div class="quiz-results__answer-item" [class.quiz-results__answer-item--wrong]="!answer.isCorrect">
+            <div class="quiz-results__answer-header">
+              <span class="quiz-results__answer-number">{{ i + 1 }} / {{ resultSignal().totalQuestions }}</span>
+              <span class="quiz-results__answer-time">{{ formatTimeMs(answer.timeMs) }}</span>
+            </div>
+            <div class="quiz-results__answer-question">{{ answer.questionText }}</div>
+            <div class="quiz-results__answer-detail">
+              @if (answer.isCorrect) {
+                <span class="quiz-results__answer-badge quiz-results__answer-badge--correct">
+                  <i class="pi pi-check"></i> {{ answer.userAnswer }}
+                </span>
+              } @else {
+                <span class="quiz-results__answer-badge quiz-results__answer-badge--wrong">
+                  <i class="pi pi-times"></i> {{ answer.userAnswer || '(brak)' }}
+                </span>
+                <span class="quiz-results__answer-correct">
+                  <i class="pi pi-check"></i> {{ answer.correctAnswer }}
+                </span>
+              }
+            </div>
+          </div>
+        }
+      </div>
     }
-    <button
-      pButton
-      label="Powtórz test"
-      icon="pi pi-replay"
-      [class]="hasWrongAnswersSignal() ? 'p-button-outlined p-button-secondary' : 'p-button-primary'"
-      (click)="onRetry()">
-    </button>
-    <button
-      pButton
-      label="Wróć do zestawu"
-      icon="pi pi-arrow-left"
-      class="p-button-outlined p-button-secondary"
-      (click)="onGoBack()">
-    </button>
   </div>
 </div>

@@ -80,7 +80,8 @@ export class QuizQuestionComponent {
       userAnswer,
       isCorrect: this.isCorrectSignal() ?? false,
       correctAnswer: question.correctAnswer,
-      questionText: question.questionText
+      questionText: question.questionText,
+      timeMs: 0
     };
 
     this.answerSubmitted.emit(answer);

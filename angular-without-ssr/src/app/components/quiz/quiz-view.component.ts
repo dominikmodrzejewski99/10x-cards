@@ -45,6 +45,7 @@ export class QuizViewComponent implements OnInit, OnDestroy {
 
   private lastConfig: QuizConfig | null = null;
   private routeSub: Subscription | null = null;
+  private questionStartTime: number = 0;
 
   public get currentQuestionSignal(): QuizQuestion | null {
     const questions: QuizQuestion[] = this.questionsSignal();
@@ -75,11 +76,17 @@ export class QuizViewComponent implements OnInit, OnDestroy {
     this.currentIndexSignal.set(0);
     this.answersSignal.set([]);
     this.resultSignal.set(null);
+    this.questionStartTime = Date.now();
     this.phaseSignal.set('test');
   }
 
   public onAnswerSubmitted(answer: QuizAnswer): void {
-    this.answersSignal.update((answers: QuizAnswer[]) => [...answers, answer]);
+    const now: number = Date.now();
+    const timeMs: number = now - this.questionStartTime;
+    this.questionStartTime = now;
+
+    const timedAnswer: QuizAnswer = { ...answer, timeMs };
+    this.answersSignal.update((answers: QuizAnswer[]) => [...answers, timedAnswer]);
 
     const nextIndex: number = this.currentIndexSignal() + 1;
     if (nextIndex >= this.questionsSignal().length) {
@@ -136,6 +143,7 @@ export class QuizViewComponent implements OnInit, OnDestroy {
     this.currentIndexSignal.set(0);
     this.answersSignal.set([]);
     this.resultSignal.set(null);
+    this.questionStartTime = Date.now();
     this.phaseSignal.set('test');
   }
 

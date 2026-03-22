@@ -288,11 +288,13 @@ export interface QuizAnswer {
   isCorrect: boolean;
   correctAnswer: string;
   questionText: string;
+  timeMs: number;
 }
 
 export interface QuizResult {
   totalQuestions: number;
   correctCount: number;
   percentage: number;
+  totalTimeMs: number;
   answers: QuizAnswer[];
 }

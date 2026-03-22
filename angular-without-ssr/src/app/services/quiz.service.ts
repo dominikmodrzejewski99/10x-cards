@@ -1,12 +1,5 @@
-import { Injectable } from '@angular/core';
-import {
-  FlashcardDTO,
-  QuizConfig,
-  QuizQuestion,
-  QuizQuestionType,
-  QuizAnswer,
-  QuizResult
-} from '../../types';
+import {Injectable} from '@angular/core';
+import {FlashcardDTO, QuizAnswer, QuizConfig, QuizQuestion, QuizQuestionType, QuizResult} from '../../types';
 
 @Injectable({
   providedIn: 'root'
@@ -40,8 +33,9 @@ export class QuizService {
     const percentage: number = totalQuestions > 0
       ? Math.round((correctCount / totalQuestions) * 100)
       : 0;
+    const totalTimeMs: number = answers.reduce((sum: number, a: QuizAnswer) => sum + a.timeMs, 0);
 
-    return { totalQuestions, correctCount, percentage, answers };
+    return { totalQuestions, correctCount, percentage, totalTimeMs, answers };
   }
 
   public getGradeText(percentage: number): string {
@@ -101,8 +95,7 @@ export class QuizService {
       distractors.push('—');
     }
 
-    const options: string[] = this.shuffle([correctAnswer, ...distractors]);
-    return options;
+    return this.shuffle([correctAnswer, ...distractors]);
   }
 
   private buildTrueFalsePairing(
