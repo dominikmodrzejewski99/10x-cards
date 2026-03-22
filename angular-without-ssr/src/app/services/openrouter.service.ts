@@ -157,7 +157,8 @@ export class OpenRouterService {
     const result: string = await this.sendMessage(text, undefined, {
       systemMessage: `You are a translator. Translate the given word or phrase from ${fromName} to ${toName}. Return ONLY the translation. If there are multiple common meanings, separate them with semicolons. Do not add explanations.`,
       temperature: 0.3,
-      max_tokens: 200
+      max_tokens: 200,
+      model: 'google/gemma-3-4b-it:free'
     });
 
     return result.trim();
