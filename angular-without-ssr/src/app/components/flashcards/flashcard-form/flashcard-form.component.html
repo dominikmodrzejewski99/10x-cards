@@ -40,7 +40,6 @@
       [class.ng-invalid]="hasError('front', 'required') || hasError('front', 'maxlength') || hasError('front', 'whitespace')"
       class="w-full p-inputtext bg-white text-gray-800 border border-gray-300 rounded-md"
       placeholder="Wpisz pytanie lub pojęcie (max. 200 znaków)"
-      (blur)="onFrontBlur()"
       data-test-id="front-input"
     />
 
@@ -126,21 +125,6 @@
       [placeholder]="frontLanguageSignal() && backLanguageSignal() ? 'Wpisz tłumaczenie, np. dom; budynek; rodzina' : 'Wpisz odpowiedź lub definicję (max. 1000 znaków)'"
       data-test-id="back-input"
     ></textarea>
-
-    @if (translatingSignal()) {
-      <small class="text-gray-400 block mt-1">
-        <i class="pi pi-spin pi-spinner"></i> Tłumaczenie...
-      </small>
-    }
-    @if (translationSuggestionSignal()) {
-      <button
-        type="button"
-        class="text-blue-500 text-sm mt-1 cursor-pointer bg-transparent border-0 p-0 hover:underline"
-        (click)="acceptTranslation()"
-        data-test-id="accept-translation">
-        Sugerowane: {{ translationSuggestionSignal() }}
-      </button>
-    }
 
     <div class="mt-1 flex justify-between">
       <div>

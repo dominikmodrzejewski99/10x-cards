@@ -118,18 +118,6 @@
 
       <div class="study__header">
         <h1 class="study__title">Nauka</h1>
-        <div class="study__direction-toggle">
-          <button
-            class="study__ctrl study__ctrl--direction"
-            [class.study__ctrl--active]="isReversedSignal()"
-            (click)="toggleDirection()"
-            [attr.aria-label]="isReversedSignal() ? 'Tryb normalny' : 'Odwróć kierunek'">
-            <i class="pi pi-arrow-right-arrow-left"></i>
-          </button>
-          <span class="study__direction-label">
-            {{ isReversedSignal() ? 'Odwrócony' : 'Normalny' }}
-          </span>
-        </div>
         <p class="study__hint">
           @if (!isFlippedSignal()) {
             Kliknij kartę lub naciśnij spację
@@ -179,6 +167,16 @@
           </div>
 
           <div class="study__controls-side study__controls-side--end">
+            <div class="study__tooltip-wrap">
+              <button
+                class="study__ctrl"
+                [class.study__ctrl--active]="isReversedSignal()"
+                (click)="toggleDirection()"
+                [attr.aria-label]="isReversedSignal() ? 'Tryb normalny' : 'Odwróć kierunek'">
+                <i class="pi pi-arrow-right-arrow-left"></i>
+              </button>
+              <span class="study__tooltip">{{ isReversedSignal() ? 'Tryb normalny' : 'Odwróć kierunek' }}</span>
+            </div>
             <div class="study__tooltip-wrap">
               @if (isShuffledSignal()) {
                 <button class="study__ctrl study__ctrl--active" (click)="restoreOrder()">
@@ -231,6 +229,16 @@
           </div>
 
           <div class="study__controls-side study__controls-side--end">
+            <div class="study__tooltip-wrap">
+              <button
+                class="study__ctrl"
+                [class.study__ctrl--active]="isReversedSignal()"
+                (click)="toggleDirection()"
+                [attr.aria-label]="isReversedSignal() ? 'Tryb normalny' : 'Odwróć kierunek'">
+                <i class="pi pi-arrow-right-arrow-left"></i>
+              </button>
+              <span class="study__tooltip">{{ isReversedSignal() ? 'Tryb normalny' : 'Odwróć kierunek' }}</span>
+            </div>
             <div class="study__tooltip-wrap">
               @if (isShuffledSignal()) {
                 <button class="study__ctrl study__ctrl--active" (click)="restoreOrder()">
