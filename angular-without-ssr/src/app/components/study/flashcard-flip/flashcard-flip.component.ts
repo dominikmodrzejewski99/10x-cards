@@ -1,8 +1,9 @@
 import { Component, ChangeDetectionStrategy, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
+import { AudioPlayerComponent } from '../../../shared/components/audio-player/audio-player.component';
 
 @Component({
   selector: 'app-flashcard-flip',
-  imports: [],
+  imports: [AudioPlayerComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './flashcard-flip.component.html',
   styleUrls: ['./flashcard-flip.component.scss']
@@ -13,6 +14,7 @@ export class FlashcardFlipComponent {
   public frontImageUrlSignal: InputSignal<string | null> = input<string | null>(null, { alias: 'frontImageUrl' });
   public isFlippedSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'isFlipped' });
   public skipTransitionSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'skipTransition' });
+  public backAudioUrlSignal: InputSignal<string | null> = input<string | null>(null, { alias: 'backAudioUrl' });
 
   public flipToggle: OutputEmitterRef<void> = output<void>();
 

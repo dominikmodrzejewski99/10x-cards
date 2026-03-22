@@ -115,6 +115,12 @@ export class StudyViewComponent implements OnInit, OnDestroy {
     return this.isReversedSignal() ? null : card.flashcard.front_image_url;
   });
 
+  public displayBackAudioSignal: Signal<string | null> = computed<string | null>(() => {
+    const card: StudyCardDTO | null = this.currentCardSignal();
+    if (!card) return null;
+    return this.isReversedSignal() ? null : card.flashcard.back_audio_url;
+  });
+
   public ngOnInit(): void {
     this.loadSets();
     this.routeSub = this.route.queryParams.subscribe(params => {

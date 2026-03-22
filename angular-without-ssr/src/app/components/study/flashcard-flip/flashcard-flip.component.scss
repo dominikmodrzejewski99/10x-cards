@@ -91,6 +91,11 @@
   white-space: pre-line;
 }
 
+.flip-card__audio {
+  margin-top: 0.75rem;
+  flex-shrink: 0;
+}
+
 @media (max-width: 480px) {
   .flip-card,
   .flip-card__inner {

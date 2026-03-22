@@ -17,6 +17,11 @@
     <div class="flip-card__face flip-card__face--back">
       <div class="flip-card__label">Odpowiedź</div>
       <div class="flip-card__content">{{ backSignal() }}</div>
+      @if (backAudioUrlSignal()) {
+        <div class="flip-card__audio">
+          <app-audio-player [audioUrl]="backAudioUrlSignal()!" [compact]="true" />
+        </div>
+      }
     </div>
   </div>
 </div>
