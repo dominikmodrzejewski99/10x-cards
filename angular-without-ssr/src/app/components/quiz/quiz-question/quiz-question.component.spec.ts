@@ -13,6 +13,7 @@ describe('QuizQuestionComponent', () => {
     front: 'dog',
     back: 'pies',
     front_image_url: null,
+    back_audio_url: null,
     front_language: 'en',
     back_language: 'pl',
     source: 'manual',

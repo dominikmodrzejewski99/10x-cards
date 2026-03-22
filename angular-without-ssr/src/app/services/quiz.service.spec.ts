@@ -10,6 +10,7 @@ describe('QuizService', () => {
     front,
     back,
     front_image_url: frontImageUrl,
+    back_audio_url: null,
     front_language: 'en',
     back_language: 'pl',
     source: 'manual',
