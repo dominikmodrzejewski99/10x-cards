@@ -157,7 +157,10 @@
     }
 
     @if (showRecorderSignal() && !audioPreviewSignal()) {
-      <app-audio-recorder (audioRecorded)="onAudioRecorded($event)" />
+      <app-audio-recorder
+        [autoStart]="true"
+        (audioRecorded)="onAudioRecorded($event)"
+        (cancelled)="showRecorderSignal.set(false)" />
     }
 
     @if (audioUploadingSignal()) {

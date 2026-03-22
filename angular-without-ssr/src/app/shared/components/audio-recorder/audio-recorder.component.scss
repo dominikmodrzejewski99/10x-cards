@@ -83,6 +83,19 @@
   @include btn-icon-danger;
 }
 
+.audio-recorder__idle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.audio-recorder__cancel {
+  @include btn-base;
+  @include btn-sm;
+  @include btn-ghost;
+  border-radius: $radius-pill;
+}
+
 .audio-recorder__error {
   display: flex;
   align-items: center;

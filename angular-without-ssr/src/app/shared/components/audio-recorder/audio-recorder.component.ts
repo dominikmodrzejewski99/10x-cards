@@ -1,6 +1,6 @@
 import {
   Component, ChangeDetectionStrategy, input, output, InputSignal,
-  OutputEmitterRef, WritableSignal, signal, OnDestroy
+  OutputEmitterRef, WritableSignal, signal, OnDestroy, OnInit
 } from '@angular/core';
 import { AudioPlayerComponent } from '../audio-player/audio-player.component';
 
@@ -11,16 +11,24 @@ import { AudioPlayerComponent } from '../audio-player/audio-player.component';
   styleUrls: ['./audio-recorder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AudioRecorderComponent implements OnDestroy {
+export class AudioRecorderComponent implements OnDestroy, OnInit {
   public maxDurationSignal: InputSignal<number> = input<number>(30, { alias: 'maxDuration' });
   public disabledSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'disabled' });
+  public autoStartSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'autoStart' });
 
   public audioRecorded: OutputEmitterRef<File> = output<File>();
+  public cancelled: OutputEmitterRef<void> = output<void>();
 
   public recordingSignal: WritableSignal<boolean> = signal<boolean>(false);
   public elapsedSignal: WritableSignal<number> = signal<number>(0);
   public previewUrlSignal: WritableSignal<string | null> = signal<string | null>(null);
   public errorSignal: WritableSignal<string | null> = signal<string | null>(null);
+
+  public ngOnInit(): void {
+    if (this.autoStartSignal()) {
+      this.startRecording();
+    }
+  }
 
   private mediaRecorder: MediaRecorder | null = null;
   private chunks: Blob[] = [];
