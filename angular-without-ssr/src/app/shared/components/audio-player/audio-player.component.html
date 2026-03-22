@@ -4,6 +4,7 @@
     [src]="audioUrlSignal()"
     preload="metadata"
     (loadedmetadata)="onLoadedMetadata()"
+    (durationchange)="onDurationChange()"
     (timeupdate)="onTimeUpdate()"
     (ended)="onEnded()">
   </audio>

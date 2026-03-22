@@ -32,16 +32,26 @@ export class AudioPlayerComponent implements OnDestroy {
 
   public onLoadedMetadata(): void {
     const audio: HTMLAudioElement | undefined = this.audioRef()?.nativeElement;
-    if (audio) {
+    if (audio && isFinite(audio.duration)) {
+      this.durationSignal.set(audio.duration);
+    }
+  }
+
+  public onDurationChange(): void {
+    const audio: HTMLAudioElement | undefined = this.audioRef()?.nativeElement;
+    if (audio && isFinite(audio.duration)) {
       this.durationSignal.set(audio.duration);
     }
   }
 
   public onTimeUpdate(): void {
     const audio: HTMLAudioElement | undefined = this.audioRef()?.nativeElement;
-    if (audio && audio.duration) {
-      this.currentTimeSignal.set(audio.currentTime);
-      this.progressSignal.set((audio.currentTime / audio.duration) * 100);
+    if (!audio) return;
+    const duration: number = isFinite(audio.duration) ? audio.duration : 0;
+    this.currentTimeSignal.set(audio.currentTime);
+    if (duration > 0) {
+      this.durationSignal.set(duration);
+      this.progressSignal.set((audio.currentTime / duration) * 100);
     }
   }
 
