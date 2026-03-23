@@ -33,7 +33,7 @@ const ARTICLES: LearningArticle[] = [
     paragraphs: [
       'Powtarzanie w odstępach (ang. Spaced Repetition) to technika uczenia się, w której materiał jest powtarzany w coraz dłuższych odstępach czasu. Zamiast wkuwać wszystko na raz, rozdzielasz naukę na wiele sesji rozłożonych w czasie.',
       'Badania naukowe potwierdzają, że ta metoda jest jedną z najskuteczniejszych strategii zapamiętywania. Kluczem jest powtarzanie materiału tuż przed momentem, w którym zaczynasz go zapominać — tzw. "punkt optymalnej powtórki".',
-      'Algorytm SM-2, na którym opiera się wiele nowoczesnych aplikacji do nauki (w tym 10xCards), automatycznie oblicza optymalny moment kolejnej powtórki na podstawie Twojej oceny trudności materiału.',
+      'Algorytm SM-2, na którym opiera się wiele nowoczesnych aplikacji do nauki (w tym Memlo), automatycznie oblicza optymalny moment kolejnej powtórki na podstawie Twojej oceny trudności materiału.',
       'Praktyczna wskazówka: ucz się regularnie, nawet jeśli to tylko 10-15 minut dziennie. Konsekwencja jest ważniejsza niż długość pojedynczej sesji.'
     ],
     keyTakeaway: 'Regularne, krótkie sesje powtórkowe są skuteczniejsze niż jednorazowe, długie sesje nauki.',
@@ -62,7 +62,7 @@ const ARTICLES: LearningArticle[] = [
       'W 1885 roku Hermann Ebbinghaus odkrył, że nowo nauczone informacje są zapominane w przewidywalny sposób. Bez powtórek zapominamy około 70% materiału w ciągu 24 godzin i ponad 90% w ciągu tygodnia.',
       'Krzywa zapominania pokazuje wykładniczy spadek retencji pamięci w czasie. Jednak każda powtórka "resetuje" krzywą i spowalnia tempo zapominania — po kilku powtórkach informacja zostaje w pamięci długoterminowej.',
       'To odkrycie jest fundamentem dla metody powtarzania w odstępach. Pierwsza powtórka powinna nastąpić już następnego dnia, kolejna po kilku dniach, potem po tygodniu, miesiącu itd.',
-      'Dlatego w 10xCards algorytm planuje powtórki w rosnących odstępach — aby złapać Cię tuż przed momentem zapomnienia i wzmocnić ślad pamięciowy.'
+      'Dlatego w Memlo algorytm planuje powtórki w rosnących odstępach — aby złapać Cię tuż przed momentem zapomnienia i wzmocnić ślad pamięciowy.'
     ],
     keyTakeaway: 'Bez powtórek zapominasz 70% w ciągu doby. Regularne powtórki mogą zatrzymać niemal 100% wiedzy.',
     color: 'orange'

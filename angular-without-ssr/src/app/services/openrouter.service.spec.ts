@@ -115,7 +115,7 @@ describe('OpenRouterService', () => {
       expect(req.request.method).toBe('POST');
       expect(req.request.headers.get('Authorization')).toBe(`Bearer ${environment.openRouterKey}`);
       expect(req.request.headers.get('Content-Type')).toBe('application/json');
-      expect(req.request.headers.get('X-Title')).toBe('10xCards');
+      expect(req.request.headers.get('X-Title')).toBe('Memlo');
 
       // Sprawdzenie body zapytania
       const requestBody = req.request.body;

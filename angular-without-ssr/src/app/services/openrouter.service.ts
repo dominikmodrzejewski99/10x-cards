@@ -196,7 +196,7 @@ export class OpenRouterService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${environment.openRouterKey}`,
       'HTTP-Referer': window.location.origin,
-      'X-Title': '10xCards'
+      'X-Title': 'Memlo'
     });
 
     return this.http.post<OpenRouterResponse>(this.apiUrl, payload, { headers })

@@ -7,12 +7,12 @@ import { RouterModule } from '@angular/router';
   imports: [RouterModule],
   template: `
     <div class="legal">
-      <h1 class="legal__title">Polityka prywatności 10xCards</h1>
+      <h1 class="legal__title">Polityka prywatności Memlo</h1>
       <p class="legal__date">Ostatnia aktualizacja: 23 marca 2026</p>
 
       <section class="legal__section">
         <h2>1. Administrator danych</h2>
-        <p>Administratorem danych osobowych jest 10xCards. Kontakt: <strong>kontakt&#64;10xcards.com</strong></p>
+        <p>Administratorem danych osobowych jest Memlo. Kontakt: <strong>kontakt&#64;memlo.app</strong></p>
       </section>
 
       <section class="legal__section">
@@ -100,7 +100,7 @@ import { RouterModule } from '@angular/router';
 
       <section class="legal__section">
         <h2>11. Kontakt</h2>
-        <p>W sprawach dotyczących prywatności: <strong>kontakt&#64;10xcards.com</strong></p>
+        <p>W sprawach dotyczących prywatności: <strong>kontakt&#64;memlo.app</strong></p>
       </section>
 
       <div class="legal__back">

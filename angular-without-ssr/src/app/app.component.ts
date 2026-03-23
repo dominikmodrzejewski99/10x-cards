@@ -18,7 +18,7 @@ export class AppComponent implements AfterViewInit {
   private authStore = inject(AuthStore);
 
   public isAuthenticatedSignal: Signal<boolean> = this.authStore.isAuthenticated;
-  public title: string = '10xCards - Twórz i zarządzaj fiszkami efektywnie';
+  public title: string = 'Memlo - Twórz i zarządzaj fiszkami efektywnie';
   public currentYear: number = new Date().getFullYear();
 
   @ViewChild(OnboardingComponent) private onboarding!: OnboardingComponent;

@@ -21,7 +21,7 @@
 .navbar__logo {
   display: flex;
   align-items: center;
-  gap: 0.15rem;
+  gap: 0.45rem;
   text-decoration: none;
   font-weight: 800;
   font-size: 1.35rem;
@@ -29,12 +29,16 @@
   letter-spacing: -0.02em;
 }
 
-.navbar__logo-icon {
-  color: $color-primary;
+.navbar__logo-svg {
+  flex-shrink: 0;
 }
 
 .navbar__logo-text {
   color: $color-text;
+}
+
+.navbar__logo-accent {
+  color: $color-primary;
 }
 
 /* Desktop links */

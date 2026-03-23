@@ -1,6 +1,6 @@
 {
-  "name": "10xCards - Fiszki wspierane przez AI",
-  "short_name": "10xCards",
+  "name": "Memlo - Fiszki wspierane przez AI",
+  "short_name": "Memlo",
   "description": "Twórz i zarządzaj fiszkami edukacyjnymi. Generuj fiszki automatycznie, organizuj je i ucz się efektywniej.",
   "start_url": "/dashboard",
   "display": "standalone",

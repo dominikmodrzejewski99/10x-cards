@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://10x-cards-70n.pages.dev/sitemap.xml
+Sitemap: https://memlo.app/sitemap.xml

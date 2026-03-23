@@ -7,19 +7,19 @@ import { RouterModule } from '@angular/router';
   imports: [RouterModule],
   template: `
     <div class="legal">
-      <h1 class="legal__title">Regulamin serwisu 10xCards</h1>
+      <h1 class="legal__title">Regulamin serwisu Memlo</h1>
       <p class="legal__date">Ostatnia aktualizacja: 23 marca 2026</p>
 
       <section class="legal__section">
         <h2>1. Postanowienia ogólne</h2>
-        <p>Niniejszy regulamin określa zasady korzystania z serwisu internetowego 10xCards, dostępnego pod adresem 10xcards.com.</p>
+        <p>Niniejszy regulamin określa zasady korzystania z serwisu internetowego Memlo, dostępnego pod adresem memlo.app.</p>
         <p>Korzystając z serwisu, użytkownik akceptuje poniższe warunki.</p>
       </section>
 
       <section class="legal__section">
         <h2>2. Definicje</h2>
         <ul>
-          <li><strong>Serwis</strong> — aplikacja webowa 10xCards do tworzenia i nauki fiszek.</li>
+          <li><strong>Serwis</strong> — aplikacja webowa Memlo do tworzenia i nauki fiszek.</li>
           <li><strong>Użytkownik</strong> — osoba korzystająca z serwisu.</li>
           <li><strong>Konto</strong> — indywidualny profil użytkownika w serwisie.</li>
           <li><strong>Treści</strong> — fiszki, zestawy i inne materiały tworzone przez użytkownika.</li>
@@ -47,13 +47,13 @@ import { RouterModule } from '@angular/router';
         <h2>5. Generowanie treści przez AI</h2>
         <p>Serwis umożliwia generowanie fiszek przy pomocy sztucznej inteligencji.</p>
         <p>Treści generowane przez AI mają charakter pomocniczy i mogą zawierać błędy. Użytkownik powinien weryfikować ich poprawność.</p>
-        <p>10xCards nie ponosi odpowiedzialności za treści wygenerowane przez AI.</p>
+        <p>Memlo nie ponosi odpowiedzialności za treści wygenerowane przez AI.</p>
       </section>
 
       <section class="legal__section">
         <h2>6. Własność intelektualna</h2>
         <p>Treści tworzone przez użytkownika pozostają jego własnością.</p>
-        <p>Kod źródłowy, design i marka 10xCards są chronione prawem autorskim.</p>
+        <p>Kod źródłowy, design i marka Memlo są chronione prawem autorskim.</p>
       </section>
 
       <section class="legal__section">
@@ -65,17 +65,17 @@ import { RouterModule } from '@angular/router';
       <section class="legal__section">
         <h2>8. Ograniczenie odpowiedzialności</h2>
         <p>Serwis jest dostarczany w stanie „tak jak jest" (as-is).</p>
-        <p>10xCards dokłada starań, aby zapewnić ciągłość działania, ale nie gwarantuje nieprzerwanego dostępu.</p>
+        <p>Memlo dokłada starań, aby zapewnić ciągłość działania, ale nie gwarantuje nieprzerwanego dostępu.</p>
       </section>
 
       <section class="legal__section">
         <h2>9. Zmiany regulaminu</h2>
-        <p>10xCards zastrzega sobie prawo do zmiany regulaminu. O istotnych zmianach użytkownicy zostaną poinformowani.</p>
+        <p>Memlo zastrzega sobie prawo do zmiany regulaminu. O istotnych zmianach użytkownicy zostaną poinformowani.</p>
       </section>
 
       <section class="legal__section">
         <h2>10. Kontakt</h2>
-        <p>Pytania dotyczące regulaminu należy kierować na adres: <strong>kontakt&#64;10xcards.com</strong></p>
+        <p>Pytania dotyczące regulaminu należy kierować na adres: <strong>kontakt&#64;memlo.app</strong></p>
       </section>
 
       <div class="legal__back">

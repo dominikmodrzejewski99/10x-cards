@@ -1,0 +1,30 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#f6f7fb"/>
+
+  <!-- Right side: card stack -->
+  <g transform="translate(680, 100)">
+    <rect x="0" y="60" width="240" height="320" rx="24" fill="#d9dbe9" transform="rotate(-7 120 220)"/>
+    <rect x="50" y="30" width="240" height="320" rx="24" fill="#edefff" stroke="#d9dbe9" stroke-width="1.5" transform="rotate(-3 170 190)"/>
+    <rect x="100" y="0" width="240" height="320" rx="24" fill="#fff" stroke="#d9dbe9" stroke-width="2"/>
+    <path d="M140 55 L300 55" stroke="#282e3e" stroke-width="7" stroke-linecap="round"/>
+    <path d="M140 90 L290 90" stroke="#d9dbe9" stroke-width="5" stroke-linecap="round"/>
+    <path d="M140 115 L270 115" stroke="#d9dbe9" stroke-width="5" stroke-linecap="round"/>
+    <path d="M140 140 L240 140" stroke="#d9dbe9" stroke-width="5" stroke-linecap="round"/>
+    <rect x="130" y="175" width="180" height="105" rx="16" fill="#edefff"/>
+    <path d="M160 210 L280 210" stroke="#4255ff" stroke-width="5" stroke-linecap="round" opacity="0.4"/>
+    <path d="M160 238 L255 238" stroke="#4255ff" stroke-width="5" stroke-linecap="round" opacity="0.25"/>
+    <circle cx="310" cy="290" r="34" fill="#4255ff"/>
+    <path d="M292 290 L304 302 L328 278" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Left side: wordmark -->
+  <text x="100" y="300" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="900" font-size="96" letter-spacing="-2">
+    <tspan fill="#282e3e">mem</tspan><tspan fill="#4255ff">lo</tspan>
+  </text>
+
+  <!-- Tagline -->
+  <text x="104" y="375" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="500" font-size="32" fill="#586380">Ucz się mądrzej z fiszkami.</text>
+
+  <!-- Bottom accent -->
+  <rect x="0" y="612" width="1200" height="18" fill="#4255ff"/>
+</svg>
