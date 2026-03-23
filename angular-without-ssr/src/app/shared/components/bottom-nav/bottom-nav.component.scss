@@ -62,6 +62,10 @@ $bottom-nav-height: 3.5rem;
   width: 2rem;
 }
 
+.bottom-nav__item--study.bottom-nav__item--active::before {
+  width: 0;
+}
+
 .bottom-nav__icon {
   font-size: 1.2rem;
   line-height: 1;
