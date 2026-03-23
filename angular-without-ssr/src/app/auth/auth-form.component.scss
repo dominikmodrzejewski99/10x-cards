@@ -145,6 +145,41 @@ form {
   font-size: 0.875rem;
 }
 
+.auth-form__forgot {
+  text-align: right;
+  margin-top: -0.25rem;
+}
+
+.auth-form__forgot-link {
+  color: #586380;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.auth-form__forgot-link:hover {
+  color: #4255ff;
+}
+
+.auth-form__terms {
+  font-size: 0.75rem;
+  color: #586380;
+  text-align: center;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.auth-form__terms-link {
+  color: #4255ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-form__terms-link:hover {
+  text-decoration: underline;
+}
+
 .auth-form__footer {
   margin-top: 0.75rem;
   text-align: center;

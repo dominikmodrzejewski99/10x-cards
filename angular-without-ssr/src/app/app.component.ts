@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, AfterViewInit, ViewChild, inject, effect, Signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
+import { ToastModule } from 'primeng/toast';
 import { AuthNavbarComponent } from './shared/components/auth-navbar.component';
 import { BottomNavComponent } from './shared/components/bottom-nav/bottom-nav.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
@@ -11,7 +12,7 @@ import { AuthStore } from './auth/store';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ButtonModule, RouterModule, AuthNavbarComponent, BottomNavComponent, OnboardingComponent],
+  imports: [ButtonModule, RouterModule, ToastModule, AuthNavbarComponent, BottomNavComponent, OnboardingComponent],
 })
 export class AppComponent implements AfterViewInit {
   private authStore = inject(AuthStore);

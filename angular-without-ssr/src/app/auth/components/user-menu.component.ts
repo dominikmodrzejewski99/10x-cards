@@ -1,12 +1,15 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, WritableSignal, Signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 import { UserDTO } from '../../../types';
 import { AuthStore } from '../store';
 
 @Component({
   selector: 'app-user-menu',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule],
+  imports: [RouterModule, ConfirmDialogModule],
+  providers: [ConfirmationService],
   host: {
     '(document:keydown.escape)': 'onEscape()'
   },
@@ -52,6 +55,10 @@ import { AuthStore } from '../store';
                 </a>
               </nav>
               <div class="dropdown-footer">
+                <button class="dropdown-item dropdown-item--delete" (click)="onDeleteAccount()">
+                  <i class="pi pi-trash"></i>
+                  Usuń konto
+                </button>
                 <button class="dropdown-item dropdown-item--logout" (click)="onLogout()">
                   <i class="pi pi-sign-out"></i>
                   Wyloguj się
@@ -61,6 +68,7 @@ import { AuthStore } from '../store';
           }
         </div>
       }
+      <p-confirmDialog></p-confirmDialog>
     </div>
   `,
   styles: [`
@@ -258,6 +266,23 @@ import { AuthStore } from '../store';
       padding: 0.375rem 0;
     }
 
+    .dropdown-item--delete {
+      color: #586380;
+    }
+
+    .dropdown-item--delete i {
+      color: #8b92a5;
+    }
+
+    .dropdown-item--delete:hover {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    .dropdown-item--delete:hover i {
+      color: #b91c1c;
+    }
+
     .dropdown-item--logout {
       color: #dc3545;
     }
@@ -316,6 +341,7 @@ import { AuthStore } from '../store';
 })
 export class UserMenuComponent {
   private authStore = inject(AuthStore);
+  private confirmationService = inject(ConfirmationService);
 
   public isAuthenticatedSignal: Signal<boolean> = this.authStore.isAuthenticated;
   public userSignal: Signal<UserDTO | null> = this.authStore.user;
@@ -337,6 +363,21 @@ export class UserMenuComponent {
 
   public onEscape(): void {
     if (this.isMenuOpenSignal()) this.closeMenu();
+  }
+
+  public onDeleteAccount(): void {
+    this.closeMenu();
+    this.confirmationService.confirm({
+      header: 'Usuwanie konta',
+      message: 'Czy na pewno chcesz usunąć swoje konto? Ta operacja jest nieodwracalna — wszystkie fiszki, zestawy i historia nauki zostaną trwale usunięte.',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Usuń konto',
+      rejectLabel: 'Anuluj',
+      acceptButtonStyleClass: 'p-button-danger',
+      accept: () => {
+        this.authStore.deleteAccount();
+      }
+    });
   }
 
   public onLogout(): void {

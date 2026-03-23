@@ -30,6 +30,21 @@
   color: #4255ff;
 }
 
+.app__footer-sep {
+  color: var(--app-border, #d9dbe9);
+}
+
+.app__footer-link {
+  color: var(--app-text-secondary, #586380);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: color 0.15s;
+}
+
+.app__footer-link:hover {
+  color: #4255ff;
+}
+
 /* Mobile: add space for fixed bottom nav, hide footer */
 @media (max-width: 640px) {
   .app__main {

@@ -140,6 +140,61 @@ export const AuthStore = signalStore(
         )
       ),
 
+      resetPassword: rxMethod<string>(
+        pipe(
+          tap(() => patchState(store, { loading: true, error: null })),
+          switchMap((email: string) =>
+            authService.resetPassword(email).pipe(
+              tap(() => {
+                patchState(store, { loading: false, error: null });
+              }),
+              catchError((error: unknown) => {
+                patchState(store, { loading: false, error: handleError(error) });
+                return of(null);
+              })
+            )
+          )
+        )
+      ),
+
+      updatePassword: rxMethod<string>(
+        pipe(
+          tap(() => patchState(store, { loading: true, error: null })),
+          switchMap((newPassword: string) =>
+            authService.updatePassword(newPassword).pipe(
+              tap(() => {
+                patchState(store, { loading: false, error: null });
+                router.navigate(['/dashboard']);
+              }),
+              catchError((error: unknown) => {
+                patchState(store, { loading: false, error: handleError(error) });
+                return of(null);
+              })
+            )
+          )
+        )
+      ),
+
+      deleteAccount: rxMethod<void>(
+        pipe(
+          tap(() => patchState(store, { loading: true, error: null })),
+          switchMap(() =>
+            authService.deleteAccount().pipe(
+              tap(() => {
+                patchState(store, { user: null, loading: false, error: null });
+                userPreferencesService.clearCache();
+                streakService.reset();
+                router.navigate(['/']);
+              }),
+              catchError((error: unknown) => {
+                patchState(store, { loading: false, error: handleError(error) });
+                return of(null);
+              })
+            )
+          )
+        )
+      ),
+
       checkAuthState: rxMethod<void>(
         pipe(
           exhaustMap(() =>

@@ -43,6 +43,12 @@
     }
   </div>
 
+  @if (isLoginMode()) {
+    <div class="auth-form__forgot">
+      <a routerLink="/forgot-password" class="auth-form__forgot-link">Zapomniałeś hasła?</a>
+    </div>
+  }
+
   <button
     type="submit"
     class="auth-form__submit"
@@ -56,6 +62,15 @@
     <div class="auth-form__error auth-form__error--global">
       {{ errorSignal() }}
     </div>
+  }
+
+  @if (!isLoginMode()) {
+    <p class="auth-form__terms">
+      Rejestrując się, akceptujesz
+      <a routerLink="/terms" class="auth-form__terms-link">Regulamin</a>
+      oraz
+      <a routerLink="/privacy" class="auth-form__terms-link">Politykę prywatności</a>.
+    </p>
   }
 
   <div class="auth-form__divider">

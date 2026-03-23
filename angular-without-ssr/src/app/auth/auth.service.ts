@@ -155,6 +155,68 @@ export class AuthService {
   }
 
   /**
+   * Wysyła email z linkiem do resetu hasła
+   */
+  resetPassword(email: string): Observable<void> {
+    const redirectTo = `${window.location.origin}/reset-password`;
+    return from(this.supabase.auth.resetPasswordForEmail(email, { redirectTo })).pipe(
+      map(response => {
+        if (response.error) {
+          throw response.error;
+        }
+      }),
+      catchError(error => {
+        console.error('Błąd resetowania hasła:', error);
+        return throwError(() => this.handleAuthError(error));
+      })
+    );
+  }
+
+  /**
+   * Ustawia nowe hasło (po kliknięciu linku z emaila)
+   */
+  updatePassword(newPassword: string): Observable<UserDTO> {
+    return from(this.supabase.auth.updateUser({ password: newPassword })).pipe(
+      map(response => {
+        if (response.error) {
+          throw response.error;
+        }
+        if (!response.data.user) {
+          throw new Error('Nie udało się zaktualizować hasła.');
+        }
+        return this.mapUserToDTO(response.data.user);
+      }),
+      catchError(error => {
+        console.error('Błąd aktualizacji hasła:', error);
+        return throwError(() => this.handleAuthError(error));
+      })
+    );
+  }
+
+  /**
+   * Usuwa konto użytkownika i wszystkie powiązane dane
+   */
+  deleteAccount(): Observable<void> {
+    return from(this.supabase.rpc('delete_user_account')).pipe(
+      switchMap(response => {
+        if (response.error) {
+          throw response.error;
+        }
+        return from(this.supabase.auth.signOut());
+      }),
+      map(response => {
+        if (response.error) {
+          throw response.error;
+        }
+      }),
+      catchError(error => {
+        console.error('Błąd usuwania konta:', error);
+        return throwError(() => this.handleAuthError(error));
+      })
+    );
+  }
+
+  /**
    * Wylogowuje użytkownika
    */
   logout(): Observable<void> {
@@ -236,7 +298,22 @@ export class AuthService {
             message = 'Użytkownik o podanym adresie email już istnieje. Spróbuj się zalogować.';
             break;
           case 'Password should be at least 6 characters':
+          case 'Password should be at least 6 characters.':
             message = 'Hasło powinno mieć co najmniej 6 znaków.';
+            break;
+          case 'New password should be different from the old password.':
+          case 'New password should be different from the old password':
+            message = 'Nowe hasło musi być inne niż obecne hasło.';
+            break;
+          case 'Auth session missing!':
+          case 'Auth session missing':
+            message = 'Sesja wygasła. Spróbuj ponownie zresetować hasło.';
+            break;
+          case 'For security purposes, you can only request this once every 60 seconds':
+            message = 'Ze względów bezpieczeństwa możesz wysłać prośbę raz na 60 sekund.';
+            break;
+          case 'Unable to validate email address: invalid format':
+            message = 'Nieprawidłowy format adresu email.';
             break;
           default:
             message = error.message;

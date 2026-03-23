@@ -1,12 +1,14 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, ErrorHandler } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import { provideRouter, withEnabledBlockingInitialNavigation } from '@angular/router';
 import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
 import { routes } from './app.routes';
 import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 import { authInterceptor } from './services/auth.interceptor';
+import { GlobalErrorHandler } from './services/global-error-handler';
 
 // Definiujemy własny preset bazujący na Aura z jasnymi kolorami dla dialogów i toastów
 const LightThemePreset = definePreset(Aura, {
@@ -80,6 +82,8 @@ const LightThemePreset = definePreset(Aura, {
 
 export const appConfig: ApplicationConfig = {
     providers: [
+        { provide: ErrorHandler, useClass: GlobalErrorHandler },
+        MessageService,
         provideAnimationsAsync(),
         provideRouter(routes, withEnabledBlockingInitialNavigation()),
         provideHttpClient(
