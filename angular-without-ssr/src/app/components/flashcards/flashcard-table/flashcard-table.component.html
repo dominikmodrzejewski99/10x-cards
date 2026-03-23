@@ -58,7 +58,7 @@
   }
 
   @if (flashcardsSignal().length > 0) {
-    <div class="ftable__list">
+    <div class="ftable__list fade-in">
       @for (flashcard of flashcardsSignal(); track flashcard.id; let i = $index) {
         <div class="ftable__card" [class.ftable__card--loading]="loadingSignal()" [class.ftable__card--selected]="isSelected(flashcard.id)">
           <label class="ftable__card-check">

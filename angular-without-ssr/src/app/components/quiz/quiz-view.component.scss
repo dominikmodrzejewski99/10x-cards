@@ -24,3 +24,29 @@
   font-size: 0.95rem;
   margin: 0;
 }
+
+.quiz-view__skeleton {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
+
+.quiz-view__skeleton-section {
+  margin-bottom: 1.5rem;
+}
+
+.quiz-view__skeleton-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 480px) {
+  .quiz-view__skeleton {
+    padding: 1.25rem 0.75rem;
+  }
+
+  .quiz-view__skeleton-actions {
+    flex-direction: column;
+  }
+}

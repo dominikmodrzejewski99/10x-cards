@@ -1,45 +1,52 @@
 import { Component, ChangeDetectionStrategy, ViewEncapsulation, inject, signal, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { LanguageTestResultsService } from '../../services/language-test-results.service';
 import { LanguageTestResultDTO } from '../../../types';
 
 @Component({
   selector: 'app-language-test-widget',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, NgxSkeletonLoaderModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.Emulated,
   template: `
-    @if (!loading()) {
-      <div class="dash__card dash__card--test-widget">
-        @if (latestResult(); as r) {
-          <div class="dash__test-result">
-            <div class="dash__test-score" [class.dash__test-score--pass]="r.percentage >= 60" [class.dash__test-score--fail]="r.percentage < 60">
-              {{ r.percentage }}%
-            </div>
-            <div class="dash__test-info">
-              <strong>{{ getLevelLabel(r.level) }} — {{ r.percentage >= 60 ? 'Zdane!' : 'Nie zdane' }}</strong>
-              <span class="dash__test-date">{{ getRelativeDate(r.completed_at) }}</span>
-            </div>
-            <div class="dash__test-actions">
-              <a [routerLink]="['/language-test', r.level]" class="dash__test-btn">Powtórz</a>
-              <a routerLink="/language-test" class="dash__test-btn dash__test-btn--secondary">Inny test</a>
-            </div>
+    <div class="dash__card dash__card--test-widget">
+      @if (loading()) {
+        <div class="dash__test-cta">
+          <ngx-skeleton-loader appearance="circle" [theme]="{ width: '3rem', height: '3rem', 'border-radius': '0.85rem', 'flex-shrink': '0' }"></ngx-skeleton-loader>
+          <div class="dash__test-cta-body">
+            <ngx-skeleton-loader [theme]="{ width: '70%', height: '0.95rem', 'margin-bottom': '0.3rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
+            <ngx-skeleton-loader [theme]="{ width: '90%', height: '0.78rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
           </div>
-        } @else {
-          <a routerLink="/language-test" class="dash__test-cta">
-            <div class="dash__test-cta-icon">
-              <i class="pi pi-check-square"></i>
-            </div>
-            <div class="dash__test-cta-body">
-              <div class="dash__test-cta-title">Nie znasz jeszcze swojego poziomu?</div>
-              <div class="dash__test-cta-desc">Sprawdź znajomość angielskiego na poziomie B1, B2 lub C1</div>
-            </div>
-            <i class="pi pi-arrow-right dash__test-cta-arrow"></i>
-          </a>
-        }
-      </div>
-    }
+        </div>
+      } @else if (latestResult(); as r) {
+        <div class="dash__test-result fade-in">
+          <div class="dash__test-score" [class.dash__test-score--pass]="r.percentage >= 60" [class.dash__test-score--fail]="r.percentage < 60">
+            {{ r.percentage }}%
+          </div>
+          <div class="dash__test-info">
+            <strong>{{ getLevelLabel(r.level) }} — {{ r.percentage >= 60 ? 'Zdane!' : 'Nie zdane' }}</strong>
+            <span class="dash__test-date">{{ getRelativeDate(r.completed_at) }}</span>
+          </div>
+          <div class="dash__test-actions">
+            <a [routerLink]="['/language-test', r.level]" class="dash__test-btn">Powtórz</a>
+            <a routerLink="/language-test" class="dash__test-btn dash__test-btn--secondary">Inny test</a>
+          </div>
+        </div>
+      } @else {
+        <a routerLink="/language-test" class="dash__test-cta fade-in">
+          <div class="dash__test-cta-icon">
+            <i class="pi pi-check-square"></i>
+          </div>
+          <div class="dash__test-cta-body">
+            <div class="dash__test-cta-title">Nie znasz jeszcze swojego poziomu?</div>
+            <div class="dash__test-cta-desc">Sprawdź znajomość angielskiego na poziomie B1, B2 lub C1</div>
+          </div>
+          <i class="pi pi-arrow-right dash__test-cta-arrow"></i>
+        </a>
+      }
+    </div>
   `,
   styles: [`
     /* Language Test Widget */
