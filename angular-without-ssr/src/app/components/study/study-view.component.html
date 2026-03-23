@@ -127,7 +127,17 @@
         </p>
       </div>
 
-      <div class="study__card">
+      <div class="study__card"
+           #swipeArea
+           (touchstart)="onTouchStart($event)"
+           (touchmove)="onTouchMove($event)"
+           (touchend)="onTouchEnd()"
+           [class.study__card--swiping]="swipeActiveSignal() && isFlippedSignal()"
+           [class.study__card--swipe-left]="swipeDirectionSignal() === 'left'"
+           [class.study__card--swipe-right]="swipeDirectionSignal() === 'right'"
+           [class.study__card--swipe-up]="swipeDirectionSignal() === 'up'"
+           [style.--swipe-x.px]="swipeDeltaXSignal()"
+           [style.--swipe-y.px]="swipeDeltaYSignal()">
         @if (currentCardSignal(); as card) {
           <app-flashcard-flip
             [front]="displayFrontSignal()"
@@ -138,6 +148,29 @@
             [skipTransition]="skipTransitionSignal()"
             (flipToggle)="flip()">
           </app-flashcard-flip>
+        }
+
+        <!-- Swipe hint overlay (mobile only) -->
+        @if (swipeActiveSignal() && isFlippedSignal()) {
+          <div class="study__swipe-hint"
+               [class.study__swipe-hint--left]="swipeDirectionSignal() === 'left'"
+               [class.study__swipe-hint--right]="swipeDirectionSignal() === 'right'"
+               [class.study__swipe-hint--up]="swipeDirectionSignal() === 'up'">
+            @switch (swipeDirectionSignal()) {
+              @case ('left') {
+                <i class="pi pi-times"></i>
+                <span>Nie wiem</span>
+              }
+              @case ('right') {
+                <i class="pi pi-check"></i>
+                <span>Wiem</span>
+              }
+              @case ('up') {
+                <i class="pi pi-minus"></i>
+                <span>Trudne</span>
+              }
+            }
+          </div>
         }
       </div>
 
@@ -261,11 +294,18 @@
         <div class="study__progress-fill" [style.width.%]="progressPercentSignal()"></div>
       </div>
 
-      <p class="study__kbd">
+      <p class="study__kbd study__kbd--desktop">
         @if (!isFlippedSignal()) {
           spacja = odwróć
         } @else {
           1 = Nie wiem &nbsp;|&nbsp; 2 = Trudne &nbsp;|&nbsp; 3 = Wiem
+        }
+      </p>
+      <p class="study__kbd study__kbd--mobile">
+        @if (!isFlippedSignal()) {
+          Dotknij kartę, aby odwrócić
+        } @else {
+          ← Nie wiem &nbsp;|&nbsp; ↑ Trudne &nbsp;|&nbsp; → Wiem
         }
       </p>
     </div>

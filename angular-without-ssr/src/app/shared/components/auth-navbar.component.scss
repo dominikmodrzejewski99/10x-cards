@@ -183,8 +183,9 @@
 @media (max-width: 640px) {
   .navbar__inner {
     padding: 0 0.75rem;
+    padding-top: env(safe-area-inset-top, 0px);
     gap: 0.5rem;
-    height: 3rem;
+    height: calc(3rem + env(safe-area-inset-top, 0px));
   }
 
   .navbar__logo {
@@ -195,12 +196,13 @@
     display: none;
   }
 
+  /* Hamburger/drawer replaced by bottom nav for authenticated users */
   .navbar__burger {
-    display: flex;
+    display: none;
   }
 
   .navbar__drawer {
-    display: flex;
+    display: none;
   }
 
   .navbar__auth-btn {

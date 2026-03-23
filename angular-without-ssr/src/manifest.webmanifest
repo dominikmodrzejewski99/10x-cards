@@ -1,0 +1,26 @@
+{
+  "name": "10xCards - Fiszki wspierane przez AI",
+  "short_name": "10xCards",
+  "description": "Twórz i zarządzaj fiszkami edukacyjnymi. Generuj fiszki automatycznie, organizuj je i ucz się efektywniej.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f6f7fb",
+  "theme_color": "#4255ff",
+  "lang": "pl",
+  "categories": ["education"],
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -73,3 +73,17 @@
   font-size: 0.7rem;
   min-width: 2rem;
 }
+
+/* Mobile: ensure 44px touch targets */
+@media (max-width: 640px) {
+  .audio-player__btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .audio-player__progress {
+    padding: 1rem 0;
+    margin: -1rem 0;
+    background-clip: content-box;
+  }
+}

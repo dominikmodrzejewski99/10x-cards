@@ -29,3 +29,14 @@
   font-weight: 700;
   color: #4255ff;
 }
+
+/* Mobile: add space for fixed bottom nav, hide footer */
+@media (max-width: 640px) {
+  .app__main {
+    padding-bottom: calc(3.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .app__footer {
+    display: none;
+  }
+}

@@ -454,6 +454,72 @@
   display: none;
 }
 
+.study__kbd--desktop {
+  display: none;
+}
+
+.study__kbd--mobile {
+  display: none;
+}
+
+/* Swipe gesture feedback */
+.study__card {
+  position: relative;
+}
+
+.study__card--swiping app-flashcard-flip {
+  transform: translate(
+    calc(var(--swipe-x, 0) * 0.4px),
+    calc(min(var(--swipe-y, 0), 0) * 0.3px)
+  ) rotate(calc(var(--swipe-x, 0) * 0.05deg));
+  transition: none;
+}
+
+.study__card--swipe-left app-flashcard-flip {
+  box-shadow: -4px 0 20px rgba(255, 98, 64, 0.2);
+}
+
+.study__card--swipe-right app-flashcard-flip {
+  box-shadow: 4px 0 20px rgba(35, 178, 109, 0.2);
+}
+
+.study__card--swipe-up app-flashcard-flip {
+  box-shadow: 0 -4px 20px rgba(245, 166, 35, 0.2);
+}
+
+.study__swipe-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: transparent;
+  pointer-events: none;
+  z-index: 5;
+  transition: color 0.15s;
+
+  i {
+    font-size: 1.5rem;
+  }
+}
+
+.study__swipe-hint--left {
+  color: $color-danger;
+}
+
+.study__swipe-hint--right {
+  color: $color-success;
+}
+
+.study__swipe-hint--up {
+  color: $color-warning;
+}
+
 @media (max-width: 480px) {
   .study {
     padding: 1.25rem 0.75rem;
@@ -487,19 +553,23 @@
   .study__ctrl--wrong,
   .study__ctrl--hard,
   .study__ctrl--right {
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    min-width: 44px;
+    min-height: 44px;
 
-    i { font-size: 0.95rem; }
+    i { font-size: 1.1rem; }
   }
 
   .study__ctrl,
   .study__ctrl--flip,
   .study__ctrl--active {
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    min-width: 44px;
+    min-height: 44px;
 
-    i { font-size: 0.85rem; }
+    i { font-size: 1rem; }
   }
 
   .study__counter {
@@ -523,17 +593,21 @@
   }
 
   .study__toggle-switch {
-    width: 1.85rem;
-    height: 1rem;
+    width: 2.25rem;
+    height: 1.25rem;
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
   }
 
   .study__toggle-knob {
-    width: 0.75rem;
-    height: 0.75rem;
+    width: 0.85rem;
+    height: 0.85rem;
   }
 
   .study__toggle-switch--on .study__toggle-knob {
-    transform: translateX(0.85rem);
+    transform: translateX(1rem);
   }
 
   .study__stats {
@@ -568,12 +642,18 @@
   }
 }
 
+@media (max-width: 640px) {
+  .study__kbd--mobile {
+    display: block;
+  }
+}
+
 @media (min-width: 768px) {
   .study {
     padding: 2.5rem 1.25rem;
   }
 
-  .study__kbd {
+  .study__kbd--desktop {
     display: block;
   }
 }
