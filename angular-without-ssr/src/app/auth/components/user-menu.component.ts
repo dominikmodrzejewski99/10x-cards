@@ -92,8 +92,8 @@ import { AuthStore } from '../store';
     .user-menu-button {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.35rem 0.75rem 0.35rem 0.35rem;
+      gap: 0.6rem;
+      padding: 0.35rem 1rem 0.35rem 0.35rem;
       background: #ffffff;
       border: 1.5px solid #d9dbe9;
       border-radius: 9999px;
@@ -132,12 +132,12 @@ import { AuthStore } from '../store';
     }
 
     .user-email {
-      max-width: 150px;
+      max-width: 220px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
       color: #282e3e;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
     }
 
     .chevron {

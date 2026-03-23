@@ -196,13 +196,12 @@
     display: none;
   }
 
-  /* Hamburger/drawer replaced by bottom nav for authenticated users */
   .navbar__burger {
-    display: none;
+    display: flex;
   }
 
   .navbar__drawer {
-    display: none;
+    display: flex;
   }
 
   .navbar__auth-btn {
