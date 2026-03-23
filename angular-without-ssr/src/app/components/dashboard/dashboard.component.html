@@ -80,6 +80,32 @@
       </div>
     </header>
 
+    <!-- Quick nav strip (mobile-friendly) -->
+    <div class="dash__quick-nav">
+      @if (dueCount() > 0) {
+        <a routerLink="/study" class="dash__quick-chip dash__quick-chip--primary">
+          <i class="pi pi-play-circle"></i>
+          <span>Nauka</span>
+          <span class="dash__quick-chip-badge">{{ dueCount() }}</span>
+        </a>
+      }
+      <a routerLink="/sets" class="dash__quick-chip">
+        <i class="pi pi-folder"></i>
+        <span>Zestawy</span>
+        @if (totalSets() > 0) {
+          <span class="dash__quick-chip-count">{{ totalSets() }}</span>
+        }
+      </a>
+      <a routerLink="/generate" class="dash__quick-chip">
+        <i class="pi pi-sparkles"></i>
+        <span>Generuj</span>
+      </a>
+      <a routerLink="/quiz" class="dash__quick-chip">
+        <i class="pi pi-file-edit"></i>
+        <span>Quiz</span>
+      </a>
+    </div>
+
     <!-- Primary CTA — Study -->
     @if (dueCount() > 0) {
       <a routerLink="/study" class="dash__study-cta">
