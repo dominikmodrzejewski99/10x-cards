@@ -26,7 +26,7 @@
     </div>
   } @else if (currentQuestion(); as q) {
     <!-- Progress -->
-    <div class="test-view__progress">
+    <div class="test-view__progress fade-in">
       <span class="test-view__progress-text">{{ currentIndex() + 1 }}/{{ testDefinition()!.questions.length }}</span>
       <div class="test-view__progress-bar">
         <div class="test-view__progress-fill" [style.width.%]="progress()"></div>

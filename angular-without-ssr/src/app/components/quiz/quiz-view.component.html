@@ -1,9 +1,23 @@
 <div class="quiz-view">
   @switch (phaseSignal()) {
     @case ('loading') {
-      <div class="quiz-view__state">
-        <i class="pi pi-spin pi-spinner quiz-view__state-icon"></i>
-        <p class="quiz-view__state-text">Ładowanie zestawu...</p>
+      <div class="quiz-view__skeleton">
+        <ngx-skeleton-loader [theme]="{ width: '70%', height: '1.5rem', 'margin-bottom': '0.25rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{ width: '40%', height: '0.85rem', 'margin-bottom': '2rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
+
+        @for (_ of [1,2,3]; track $index) {
+          <div class="quiz-view__skeleton-section">
+            <ngx-skeleton-loader [theme]="{ width: '6em', height: '0.85rem', 'margin-bottom': '0.5rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
+            @for (_ of [1,2]; track $index) {
+              <ngx-skeleton-loader [theme]="{ width: '100%', height: '2.5rem', 'margin-bottom': '0.6rem', 'border-radius': '0.5rem' }"></ngx-skeleton-loader>
+            }
+          </div>
+        }
+
+        <div class="quiz-view__skeleton-actions">
+          <ngx-skeleton-loader [theme]="{ width: '9em', height: '2.5rem', 'border-radius': '0.5rem' }"></ngx-skeleton-loader>
+          <ngx-skeleton-loader [theme]="{ width: '5em', height: '2.5rem', 'border-radius': '0.5rem' }"></ngx-skeleton-loader>
+        </div>
       </div>
     }
 
@@ -22,7 +36,7 @@
     }
 
     @case ('config') {
-      <app-quiz-config
+      <app-quiz-config class="fade-in"
         [setId]="setIdSignal()"
         [setName]="setNameSignal()"
         [cardCount]="flashcardsSignal().length"

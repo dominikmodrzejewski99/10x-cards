@@ -42,7 +42,7 @@
   }
 
   @if (state().sets.length > 0) {
-    <div class="sets__grid">
+    <div class="sets__grid fade-in">
       @for (set of state().sets; track set.id) {
         <div class="set-card" (click)="navigateToSet(set)">
           <div class="set-card__header">

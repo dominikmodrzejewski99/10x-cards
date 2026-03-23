@@ -18,22 +18,39 @@
 
   @if (loadingSignal()) {
     <div class="study__body">
+      <!-- Header: title + hint -->
       <div class="study__header">
-        <ngx-skeleton-loader [theme]="{ width: '6rem', height: '1.5rem', margin: '0 auto 0.5rem' }"></ngx-skeleton-loader>
-        <ngx-skeleton-loader [theme]="{ width: '14rem', height: '0.85rem', margin: '0 auto' }"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{ width: '5rem', height: '1.5rem', margin: '0 auto 0.25rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{ width: '16rem', height: '0.85rem', margin: '0 auto', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
       </div>
+
+      <!-- Flashcard -->
       <div class="study__card">
         <ngx-skeleton-loader [theme]="{ width: '100%', height: 'clamp(200px, 40vh, 400px)', 'border-radius': '1rem' }"></ngx-skeleton-loader>
       </div>
+
+      <!-- Controls: left toggle | center flip+counter | right 2 buttons -->
       <div class="study__controls">
-        <ngx-skeleton-loader appearance="circle" [theme]="{ width: '2rem', height: '2rem' }"></ngx-skeleton-loader>
+        <div class="study__controls-side">
+          <ngx-skeleton-loader [theme]="{ width: '8rem', height: '1.75rem', 'border-radius': '1rem' }"></ngx-skeleton-loader>
+        </div>
         <div class="study__controls-center">
           <ngx-skeleton-loader appearance="circle" [theme]="{ width: '2.5rem', height: '2.5rem' }"></ngx-skeleton-loader>
-          <ngx-skeleton-loader [theme]="{ width: '3rem', height: '0.85rem' }"></ngx-skeleton-loader>
+          <ngx-skeleton-loader [theme]="{ width: '3rem', height: '0.85rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
         </div>
-        <ngx-skeleton-loader appearance="circle" [theme]="{ width: '2rem', height: '2rem' }"></ngx-skeleton-loader>
+        <div class="study__controls-side study__controls-side--end">
+          <ngx-skeleton-loader appearance="circle" [theme]="{ width: '2.5rem', height: '2.5rem' }"></ngx-skeleton-loader>
+          <ngx-skeleton-loader appearance="circle" [theme]="{ width: '2.5rem', height: '2.5rem' }"></ngx-skeleton-loader>
+        </div>
       </div>
-      <ngx-skeleton-loader [theme]="{ width: '100%', height: '0.25rem', 'border-radius': '9999px', 'max-width': '600px' }"></ngx-skeleton-loader>
+
+      <!-- Progress bar -->
+      <div class="study__progress-bar">
+        <ngx-skeleton-loader [theme]="{ width: '30%', height: '100%', 'border-radius': '9999px' }"></ngx-skeleton-loader>
+      </div>
+
+      <!-- Keyboard hint -->
+      <ngx-skeleton-loader [theme]="{ width: '10rem', height: '0.75rem', margin: '0 auto', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
     </div>
   }
 
@@ -46,7 +63,7 @@
   }
 
   @if (!loadingSignal() && !errorSignal() && dueCardsSignal().length === 0 && !isSessionCompleteSignal()) {
-    <div class="study__state">
+    <div class="study__state fade-in">
       @if (nextReviewDateSignal()) {
         <i class="pi pi-check-circle study__state-icon" style="color: #23b26d;"></i>
         <h2 class="study__state-title">Wszystko powtórzone!</h2>
@@ -114,7 +131,7 @@
   }
 
   @if (!loadingSignal() && !errorSignal() && dueCardsSignal().length > 0 && !isSessionCompleteSignal()) {
-    <div class="study__body">
+    <div class="study__body fade-in">
 
       <div class="study__header">
         <h1 class="study__title">Nauka</h1>
