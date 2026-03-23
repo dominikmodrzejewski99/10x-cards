@@ -41,17 +41,27 @@ $bottom-nav-height: 3.5rem;
   position: relative;
 }
 
+/* Active pill behind icon (Material 3 style) */
 .bottom-nav__item::before {
   content: '';
   position: absolute;
-  top: 0;
+  top: 0.3rem;
   left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 2px;
-  background: $color-primary;
-  border-radius: 0 0 2px 2px;
-  transition: width 0.2s ease;
+  transform: translateX(-50%) scaleX(0);
+  width: 3rem;
+  height: 1.75rem;
+  background: $color-primary-light;
+  border-radius: $radius-pill;
+  transition: transform 0.2s ease;
+}
+
+.bottom-nav__item:active {
+  color: $color-primary;
+}
+
+.bottom-nav__item:active::before {
+  transform: translateX(-50%) scaleX(1);
+  background: rgba($color-primary, 0.1);
 }
 
 .bottom-nav__item--active {
@@ -59,21 +69,25 @@ $bottom-nav-height: 3.5rem;
 }
 
 .bottom-nav__item--active::before {
-  width: 2rem;
+  transform: translateX(-50%) scaleX(1);
 }
 
-.bottom-nav__item--study.bottom-nav__item--active::before {
-  width: 0;
+.bottom-nav__item--study::before {
+  display: none;
 }
 
 .bottom-nav__icon {
   font-size: 1.2rem;
   line-height: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .bottom-nav__label {
   line-height: 1;
   letter-spacing: 0.01em;
+  position: relative;
+  z-index: 1;
 }
 
 /* Elevated study button */
