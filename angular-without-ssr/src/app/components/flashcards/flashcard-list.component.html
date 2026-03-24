@@ -19,6 +19,12 @@
       <button (click)="openImportModal()" class="flist__btn flist__btn--import" data-test-id="import-flashcards-button">
         <i class="pi pi-upload"></i> Importuj
       </button>
+      <button (click)="exportCsv()" class="flist__btn flist__btn--export" data-test-id="export-csv-button">
+        <i class="pi pi-download"></i> Eksport CSV
+      </button>
+      <button (click)="exportJson()" class="flist__btn flist__btn--export" data-test-id="export-json-button">
+        <i class="pi pi-download"></i> Eksport JSON
+      </button>
     </div>
   </div>
 

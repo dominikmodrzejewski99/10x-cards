@@ -67,6 +67,11 @@
   @include btn-md;
 }
 
+.flist__btn--export {
+  @include btn-ghost;
+  @include btn-md;
+}
+
 .flist__table {
   background: $color-white;
   border: 1px solid $color-border;

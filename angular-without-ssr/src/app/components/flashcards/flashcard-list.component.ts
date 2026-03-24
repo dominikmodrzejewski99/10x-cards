@@ -9,6 +9,7 @@ import { catchError } from 'rxjs/operators';
 
 import { FlashcardApiService } from '../../services/flashcard-api.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
+import { FlashcardExportService } from '../../services/flashcard-export.service';
 import { FlashcardTableComponent } from './flashcard-table/flashcard-table.component';
 import { FlashcardFormComponent, FlashcardFormData } from './flashcard-form/flashcard-form.component';
 import { ImportModalComponent } from './import-modal/import-modal.component';
@@ -48,12 +49,13 @@ interface FlashcardListState {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FlashcardListComponent implements OnInit, OnDestroy {
-  private flashcardApiService = inject(FlashcardApiService);
-  private flashcardSetApiService = inject(FlashcardSetApiService);
-  private messageService = inject(MessageService);
-  private confirmationService = inject(ConfirmationService);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
+  private flashcardApiService: FlashcardApiService = inject(FlashcardApiService);
+  private flashcardSetApiService: FlashcardSetApiService = inject(FlashcardSetApiService);
+  private flashcardExportService: FlashcardExportService = inject(FlashcardExportService);
+  private messageService: MessageService = inject(MessageService);
+  private confirmationService: ConfirmationService = inject(ConfirmationService);
+  private router: Router = inject(Router);
+  private route: ActivatedRoute = inject(ActivatedRoute);
 
   state = signal<FlashcardListState>({
     flashcards: [],
@@ -417,6 +419,44 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
         this.loadFlashcards();
       },
       error: (error) => this.handleApiError(error, 'importowania')
+    });
+  }
+
+  exportCsv(): void {
+    this.fetchAllFlashcardsForExport((flashcards: FlashcardDTO[]) => {
+      const filename: string = `${this.state().setName || 'flashcards'}.csv`;
+      this.flashcardExportService.exportToCsv(flashcards, filename);
+    });
+  }
+
+  exportJson(): void {
+    this.fetchAllFlashcardsForExport((flashcards: FlashcardDTO[]) => {
+      const filename: string = `${this.state().setName || 'flashcards'}.json`;
+      this.flashcardExportService.exportToJson(flashcards, filename);
+    });
+  }
+
+  private fetchAllFlashcardsForExport(callback: (flashcards: FlashcardDTO[]) => void): void {
+    this.state.update(s => ({ ...s, loading: true }));
+
+    this.flashcardApiService.getFlashcards({
+      limit: 10000,
+      offset: 0,
+      search: '',
+      sortField: 'id',
+      sortOrder: -1,
+      setId: this.state().setId
+    }).subscribe({
+      next: (response: { flashcards: FlashcardDTO[]; totalRecords: number }) => {
+        this.state.update(s => ({ ...s, loading: false }));
+        callback(response.flashcards);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sukces',
+          detail: `Wyeksportowano ${response.flashcards.length} fiszek.`
+        });
+      },
+      error: (error: unknown) => this.handleApiError(error, 'eksportowania')
     });
   }
 
