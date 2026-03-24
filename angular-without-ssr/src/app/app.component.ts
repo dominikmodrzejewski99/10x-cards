@@ -6,6 +6,7 @@ import { AuthNavbarComponent } from './shared/components/auth-navbar.component';
 import { BottomNavComponent } from './shared/components/bottom-nav/bottom-nav.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
 import { AuthStore } from './auth/store';
+import { UpdateService } from './services/update.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,8 @@ import { AuthStore } from './auth/store';
   imports: [ButtonModule, RouterModule, ToastModule, AuthNavbarComponent, BottomNavComponent, OnboardingComponent],
 })
 export class AppComponent implements AfterViewInit {
-  private authStore = inject(AuthStore);
+  private readonly authStore = inject(AuthStore);
+  private readonly updateService: UpdateService = inject(UpdateService);
 
   public isAuthenticatedSignal: Signal<boolean> = this.authStore.isAuthenticated;
   public title: string = 'Memlo - Twórz i zarządzaj fiszkami efektywnie';
@@ -28,6 +30,7 @@ export class AppComponent implements AfterViewInit {
 
   constructor() {
     this.authStore.checkAuthState();
+    this.updateService.checkForUpdates();
 
     effect(() => {
       const trigger: number = this.authStore.onboardingTrigger();

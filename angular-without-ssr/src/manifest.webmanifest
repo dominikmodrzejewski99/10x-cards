@@ -1,8 +1,8 @@
 {
-  "name": "Memlo - Fiszki wspierane przez AI",
+  "name": "Memlo",
   "short_name": "Memlo",
   "description": "Twórz i zarządzaj fiszkami edukacyjnymi. Generuj fiszki automatycznie, organizuj je i ucz się efektywniej.",
-  "start_url": "/dashboard",
+  "start_url": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#f6f7fb",
