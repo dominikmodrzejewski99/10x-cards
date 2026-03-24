@@ -1,13 +1,15 @@
 import { ErrorHandler, Injectable, NgZone, inject } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { SentryService } from './sentry.service';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
-  private messageService = inject(MessageService);
-  private ngZone = inject(NgZone);
+  private messageService: MessageService = inject(MessageService);
+  private ngZone: NgZone = inject(NgZone);
+  private sentryService: SentryService = inject(SentryService);
 
-  handleError(error: unknown): void {
-    const message = this.extractMessage(error);
+  public handleError(error: unknown): void {
+    const message: string = this.extractMessage(error);
 
     // Don't show toast for known non-critical errors
     if (this.isIgnorable(message)) {
@@ -16,6 +18,9 @@ export class GlobalErrorHandler implements ErrorHandler {
     }
 
     console.error('[GlobalErrorHandler]', error);
+
+    // Capture error in Sentry (no-op if DSN is empty)
+    this.sentryService.captureException(error);
 
     // Show toast in Angular zone to trigger change detection
     this.ngZone.run(() => {
@@ -42,10 +47,10 @@ export class GlobalErrorHandler implements ErrorHandler {
     }
 
     if (typeof error === 'object' && error !== null) {
-      const err = error as Record<string, unknown>;
+      const err: Record<string, unknown> = error as Record<string, unknown>;
       if (typeof err['message'] === 'string') return err['message'];
       if (typeof err['rejection'] === 'object' && err['rejection'] !== null) {
-        const rejection = err['rejection'] as Record<string, unknown>;
+        const rejection: Record<string, unknown> = err['rejection'] as Record<string, unknown>;
         if (typeof rejection['message'] === 'string') return rejection['message'];
       }
     }
@@ -54,7 +59,7 @@ export class GlobalErrorHandler implements ErrorHandler {
   }
 
   private isIgnorable(message: string): boolean {
-    const ignoredPatterns = [
+    const ignoredPatterns: string[] = [
       'ResizeObserver loop',
       'Loading chunk',
       'ChunkLoadError',
@@ -62,6 +67,6 @@ export class GlobalErrorHandler implements ErrorHandler {
       'AbortError',
       'cancelled',
     ];
-    return ignoredPatterns.some(p => message.includes(p));
+    return ignoredPatterns.some((p: string) => message.includes(p));
   }
 }

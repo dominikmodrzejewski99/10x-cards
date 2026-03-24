@@ -1,4 +1,5 @@
-import { Injectable, isDevMode } from '@angular/core';
+import { inject, Injectable, isDevMode } from '@angular/core';
+import { SentryService } from './sentry.service';
 
 export interface LogEntry {
   timestamp: Date;
@@ -12,6 +13,7 @@ const MAX_BUFFER_SIZE: number = 50;
 
 @Injectable({ providedIn: 'root' })
 export class LoggerService {
+  private sentryService: SentryService = inject(SentryService);
   private buffer: LogEntry[] = [];
 
   public error(context: string, error: unknown): void {
@@ -24,6 +26,9 @@ export class LoggerService {
     };
 
     this.addToBuffer(entry);
+
+    // Add breadcrumb to Sentry for debugging context
+    this.sentryService.addBreadcrumb(context, entry.message, 'error');
 
     if (isDevMode()) {
       console.error(`[${context}]`, error);

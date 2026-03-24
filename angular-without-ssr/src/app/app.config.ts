@@ -10,6 +10,10 @@ import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 import { authInterceptor } from './services/auth.interceptor';
 import { GlobalErrorHandler } from './services/global-error-handler';
+import { SentryService } from './services/sentry.service';
+
+// Initialize Sentry before Angular bootstrap (no-op if DSN is empty)
+SentryService.init();
 
 // Definiujemy własny preset bazujący na Aura z jasnymi kolorami dla dialogów i toastów
 const LightThemePreset = definePreset(Aura, {
