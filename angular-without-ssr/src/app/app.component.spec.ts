@@ -5,6 +5,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { AppComponent } from './app.component';
 import { AuthStore } from './auth/store';
+import { UpdateService } from './services/update.service';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -20,6 +21,15 @@ describe('AppComponent', () => {
       isAuthenticated: signal<boolean>(false),
       checkAuthState: jasmine.createSpy('checkAuthState'),
       onboardingTrigger: signal<number>(0),
+      authChecked: signal<boolean>(true),
+      isAnonymous: signal<boolean>(false),
+      user: signal(null),
+      logout: jasmine.createSpy('logout'),
+      deleteAccount: jasmine.createSpy('deleteAccount'),
+    } as unknown as typeof mockAuthStore;
+
+    const mockUpdateService: { checkForUpdates: jasmine.Spy } = {
+      checkForUpdates: jasmine.createSpy('checkForUpdates'),
     };
 
     await TestBed.configureTestingModule({
@@ -27,6 +37,7 @@ describe('AppComponent', () => {
       providers: [
         provideRouter([]),
         { provide: AuthStore, useValue: mockAuthStore },
+        { provide: UpdateService, useValue: mockUpdateService },
         MessageService,
       ],
       schemas: [NO_ERRORS_SCHEMA],

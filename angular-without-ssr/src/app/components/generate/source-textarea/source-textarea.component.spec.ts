@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
 
 import { SourceTextareaComponent } from './source-textarea.component';
@@ -69,9 +69,12 @@ describe('SourceTextareaComponent', () => {
 
   describe('ngOnInit', () => {
     it('should emit empty text and false validity on init', fakeAsync(() => {
-      tick(0);
-      expect(host.lastText).toBe('');
-      expect(host.lastValidity).toBeFalse();
+      const initFixture: ComponentFixture<TestHostComponent> = TestBed.createComponent(TestHostComponent);
+      const initHost: TestHostComponent = initFixture.componentInstance;
+      initFixture.detectChanges();
+      flush();
+      expect(initHost.lastText).toBe('');
+      expect(initHost.lastValidity).toBeFalse();
     }));
   });
 

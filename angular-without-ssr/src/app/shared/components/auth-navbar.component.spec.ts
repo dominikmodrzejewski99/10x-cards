@@ -12,6 +12,9 @@ describe('AuthNavbarComponent', () => {
     authChecked: WritableSignal<boolean>;
     isAuthenticated: WritableSignal<boolean>;
     isAnonymous: WritableSignal<boolean>;
+    user: WritableSignal<unknown>;
+    logout: jasmine.Spy;
+    deleteAccount: jasmine.Spy;
   };
 
   beforeEach(async () => {
@@ -19,6 +22,9 @@ describe('AuthNavbarComponent', () => {
       authChecked: signal<boolean>(true),
       isAuthenticated: signal<boolean>(false),
       isAnonymous: signal<boolean>(false),
+      user: signal(null),
+      logout: jasmine.createSpy('logout'),
+      deleteAccount: jasmine.createSpy('deleteAccount'),
     };
 
     await TestBed.configureTestingModule({

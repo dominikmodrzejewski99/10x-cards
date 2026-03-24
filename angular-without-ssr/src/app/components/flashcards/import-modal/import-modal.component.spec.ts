@@ -202,8 +202,8 @@ describe('ImportModalComponent', () => {
         savedSpy.calls.mostRecent().args[0] as FlashcardProposalDTO[];
       expect(emitted.length).toBe(1);
       expect(emitted[0].front).toBe('Q1');
-      expect((emitted[0] as Record<string, unknown>)['_id']).toBeUndefined();
-      expect((emitted[0] as Record<string, unknown>)['accepted']).toBeUndefined();
+      expect((emitted[0] as unknown as Record<string, unknown>)['_id']).toBeUndefined();
+      expect((emitted[0] as unknown as Record<string, unknown>)['accepted']).toBeUndefined();
     });
   });
 

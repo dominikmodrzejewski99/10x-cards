@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { provideRouter } from '@angular/router';
 
 import { LanguageTestWidgetComponent } from './language-test-widget.component';
 import { LanguageTestResultsService } from '../../services/language-test-results.service';
@@ -34,6 +35,7 @@ describe('LanguageTestWidgetComponent', () => {
       imports: [LanguageTestWidgetComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
+        provideRouter([]),
         { provide: LanguageTestResultsService, useValue: resultsServiceMock }
       ]
     }).compileComponents();

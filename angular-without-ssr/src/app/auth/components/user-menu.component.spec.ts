@@ -3,6 +3,7 @@ import { provideRouter } from '@angular/router';
 import { signal, WritableSignal } from '@angular/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
+import { Subject } from 'rxjs';
 import { UserMenuComponent } from './user-menu.component';
 import { AuthStore } from '../store';
 import { UserDTO } from '../../../types';
@@ -16,7 +17,7 @@ describe('UserMenuComponent', () => {
     logout: jasmine.Spy;
     deleteAccount: jasmine.Spy;
   };
-  let mockConfirmationService: jasmine.SpyObj<ConfirmationService>;
+  let mockConfirmationService: jasmine.SpyObj<ConfirmationService> & { requireConfirmation$: Subject<unknown> };
 
   const mockUser: UserDTO = {
     id: 'user-1',
@@ -34,17 +35,25 @@ describe('UserMenuComponent', () => {
       deleteAccount: jasmine.createSpy('deleteAccount'),
     };
 
-    mockConfirmationService = jasmine.createSpyObj<ConfirmationService>('ConfirmationService', ['confirm']);
+    mockConfirmationService = {
+      ...jasmine.createSpyObj<ConfirmationService>('ConfirmationService', ['confirm']),
+      requireConfirmation$: new Subject<unknown>(),
+    } as jasmine.SpyObj<ConfirmationService> & { requireConfirmation$: Subject<unknown> };
 
     await TestBed.configureTestingModule({
       imports: [UserMenuComponent],
       providers: [
         provideRouter([]),
         { provide: AuthStore, useValue: mockAuthStore },
-        { provide: ConfirmationService, useValue: mockConfirmationService },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+    .overrideComponent(UserMenuComponent, {
+      set: {
+        providers: [{ provide: ConfirmationService, useValue: mockConfirmationService }],
+      },
+    })
+    .compileComponents();
 
     fixture = TestBed.createComponent(UserMenuComponent);
     component = fixture.componentInstance;

@@ -213,7 +213,15 @@ describe('LanguageTestResultsService', () => {
         data: { session: { user: { id: TEST_USER_ID } } },
         error: null
       });
-      queryBuilder.limit.and.resolveTo({ data: [], error: null });
+      // When level is provided, chain is: select -> eq(user_id) -> order -> limit -> eq(level)
+      // limit must return queryBuilder (for chaining), and the final eq (for level) must resolve
+      queryBuilder.limit.and.returnValue(queryBuilder);
+      queryBuilder.eq.and.callFake((_col: string, _val: string) => {
+        if (_col === 'level') {
+          return Promise.resolve({ data: [], error: null });
+        }
+        return queryBuilder;
+      });
 
       service.getLatestResult('c1-cae').subscribe({
         next: (result: LanguageTestResultDTO | null) => {
