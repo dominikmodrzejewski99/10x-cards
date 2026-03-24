@@ -63,9 +63,10 @@
       </div>
     </section>
   } @else {
+    <div class="fade-in">
 
     <!-- Header -->
-    <header class="dash__header fade-in">
+    <header class="dash__header">
       <div>
         <h1 class="dash__greeting">{{ greeting() }}</h1>
         <p class="dash__subtitle">
@@ -290,6 +291,7 @@
     }
 
     <app-language-test-widget />
+    </div>
   }
 
   <app-review-reminder
