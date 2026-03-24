@@ -128,6 +128,32 @@ export class FlashcardSetApiService {
     );
   }
 
+  getSetsWithCardCount(): Observable<{ set: FlashcardSetDTO; cardCount: number }[]> {
+    return this.getCurrentUserId().pipe(
+      switchMap(userId =>
+        from(
+          this.supabase
+            .from('flashcard_sets')
+            .select('*, flashcards(count)')
+            .eq('user_id', userId)
+            .order('created_at', { ascending: false })
+        ).pipe(
+          map(response => {
+            if (response.error) throw new Error(response.error.message);
+            interface SetWithCount extends FlashcardSetDTO {
+              flashcards: { count: number }[];
+            }
+            return (response.data as SetWithCount[]).map((row: SetWithCount) => ({
+              set: { id: row.id, name: row.name, description: row.description, user_id: row.user_id, created_at: row.created_at, updated_at: row.updated_at } as FlashcardSetDTO,
+              cardCount: row.flashcards?.[0]?.count ?? 0
+            }));
+          })
+        )
+      ),
+      catchError(error => throwError(() => error))
+    );
+  }
+
   getSetCardCount(setId: number): Observable<number> {
     return this.getCurrentUserId().pipe(
       switchMap(userId =>

@@ -4,7 +4,8 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
-import { Subscription, forkJoin } from 'rxjs';
+import { Subscription, forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { FlashcardApiService } from '../../services/flashcard-api.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
@@ -307,17 +308,39 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
       accept: () => {
         this.state.update(state => ({ ...state, loading: true }));
 
-        const deleteObservables = ids.map(id => this.flashcardApiService.deleteFlashcard(id));
+        const deleteObservables = ids.map(id =>
+          this.flashcardApiService.deleteFlashcard(id).pipe(
+            catchError(() => of({ error: true, id }))
+          )
+        );
         forkJoin(deleteObservables).subscribe({
-          next: () => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Sukces',
-              detail: `Usunięto ${ids.length} ${ids.length === 1 ? 'fiszkę' : (ids.length < 5 ? 'fiszki' : 'fiszek')}.`
-            });
+          next: (results) => {
+            const failed = results.filter((r): r is { error: true; id: number } => typeof r === 'object' && r !== null && 'error' in r);
+            const successCount = ids.length - failed.length;
+
+            if (failed.length === 0) {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Sukces',
+                detail: `Usunięto ${successCount} ${successCount === 1 ? 'fiszkę' : (successCount < 5 ? 'fiszki' : 'fiszek')}.`
+              });
+            } else if (successCount > 0) {
+              this.messageService.add({
+                severity: 'warn',
+                summary: 'Częściowy sukces',
+                detail: `Usunięto ${successCount} z ${ids.length}. Nie udało się usunąć ${failed.length}.`,
+                life: 5000
+              });
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Błąd',
+                detail: 'Nie udało się usunąć fiszek. Spróbuj ponownie.',
+                life: 5000
+              });
+            }
             this.loadFlashcards();
-          },
-          error: (error: unknown) => this.handleApiError(error, 'usuwania')
+          }
         });
       }
     });

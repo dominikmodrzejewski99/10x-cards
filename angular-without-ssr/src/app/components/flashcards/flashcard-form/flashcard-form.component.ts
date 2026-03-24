@@ -223,7 +223,9 @@ export class FlashcardFormComponent implements OnInit {
   public removeImage(): void {
     const currentUrl: string | null = this.pendingImageUrl;
     if (currentUrl) {
-      this.imageUploadService.deleteImage(currentUrl).subscribe();
+      this.imageUploadService.deleteImage(currentUrl).subscribe({
+        error: () => console.error('Failed to delete image from storage:', currentUrl)
+      });
     }
     this.pendingImageUrl = null;
     this.imagePreviewSignal.set(null);
@@ -247,7 +249,9 @@ export class FlashcardFormComponent implements OnInit {
   public removeAudio(): void {
     const currentUrl: string | null = this.pendingAudioUrl;
     if (currentUrl) {
-      this.audioUploadService.deleteAudio(currentUrl).subscribe();
+      this.audioUploadService.deleteAudio(currentUrl).subscribe({
+        error: () => console.error('Failed to delete audio from storage:', currentUrl)
+      });
     }
     this.pendingAudioUrl = null;
     this.audioPreviewSignal.set(null);

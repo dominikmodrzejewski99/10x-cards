@@ -100,6 +100,10 @@ PRZYKŁAD POPRAWNEJ ODPOWIEDZI:
           console.error('Błąd parsowania odpowiedzi JSON:', error);
         }
 
+        if (flashcards.length === 0) {
+          throw new Error('Nie udało się wygenerować fiszek. Model AI zwrócił niepoprawną odpowiedź. Spróbuj ponownie lub zmień tekst źródłowy.');
+        }
+
         const endTime = new Date();
         const generationDuration = (endTime.getTime() - startTime.getTime()) / 1000;
 

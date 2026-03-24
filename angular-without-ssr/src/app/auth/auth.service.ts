@@ -258,10 +258,10 @@ export class AuthService {
   /**
    * Mapuje obiekt User z Supabase na UserDTO
    */
-  private mapUserToDTO(user: any): UserDTO {
+  private mapUserToDTO(user: { id: string; email?: string; is_anonymous?: boolean; created_at: string; updated_at?: string }): UserDTO {
     return {
       id: user.id,
-      email: user.email,
+      email: user.email ?? '',
       is_anonymous: !!user.is_anonymous,
       created_at: user.created_at,
       updated_at: user.updated_at || user.created_at
@@ -271,26 +271,27 @@ export class AuthService {
   /**
    * Obsługuje błędy autentykacji i zwraca przyjazne dla użytkownika komunikaty
    */
-  private handleAuthError(error: any): Error {
+  private handleAuthError(error: unknown): Error {
     let message = 'Wystąpił nieznany błąd. Spróbuj ponownie później.';
 
     if (typeof error === 'string') {
       return new Error(error);
     }
 
-    if (error.message) {
+    const err = error as { message?: string; status?: number };
+    if (err.message) {
       // Ignorujemy błąd potwierdzenia email - użytkownik może się zalogować bez potwierdzania
-      if (error.message.includes('Email not confirmed') ||
-          error.message.includes('Email verification required')) {
+      if (err.message.includes('Email not confirmed') ||
+          err.message.includes('Email verification required')) {
         return new Error('');
       }
 
       // Sprawdzamy, czy błąd dotyczy nieprawidłowego adresu email
-      if (error.message.includes('Email address') && error.message.includes('is invalid')) {
+      if (err.message.includes('Email address') && err.message.includes('is invalid')) {
         message = 'Podany adres email jest nieprawidłowy. Użyj poprawnego adresu email.';
       } else {
         // Mapowanie komunikatów błędów z Supabase na przyjazne dla użytkownika komunikaty
-        switch (error.message) {
+        switch (err.message) {
           case 'Invalid login credentials':
             message = 'Nieprawidłowy email lub hasło.';
             break;
@@ -316,7 +317,7 @@ export class AuthService {
             message = 'Nieprawidłowy format adresu email.';
             break;
           default:
-            message = error.message;
+            message = err.message;
         }
       }
     }

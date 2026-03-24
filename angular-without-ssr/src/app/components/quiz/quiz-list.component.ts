@@ -2,9 +2,7 @@ import { Component, OnInit, inject, signal, WritableSignal, ChangeDetectionStrat
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { forkJoin } from 'rxjs';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
-import { FlashcardApiService } from '../../services/flashcard-api.service';
 import { FlashcardSetDTO } from '../../../types';
 
 interface QuizSetItem {
@@ -22,7 +20,6 @@ interface QuizSetItem {
 export class QuizListComponent implements OnInit {
   private router: Router = inject(Router);
   private flashcardSetApiService: FlashcardSetApiService = inject(FlashcardSetApiService);
-  private flashcardApiService: FlashcardApiService = inject(FlashcardApiService);
 
   public setsSignal: WritableSignal<QuizSetItem[]> = signal<QuizSetItem[]>([]);
   public loadingSignal: WritableSignal<boolean> = signal<boolean>(true);
@@ -44,32 +41,10 @@ export class QuizListComponent implements OnInit {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
-    this.flashcardSetApiService.getSets().subscribe({
-      next: (sets: FlashcardSetDTO[]) => {
-        if (sets.length === 0) {
-          this.setsSignal.set([]);
-          this.loadingSignal.set(false);
-          return;
-        }
-
-        const countObservables = sets.map((set: FlashcardSetDTO) =>
-          this.flashcardApiService.getFlashcards({ limit: 1, offset: 0, setId: set.id })
-        );
-
-        forkJoin(countObservables).subscribe({
-          next: (responses) => {
-            const items: QuizSetItem[] = sets.map((set: FlashcardSetDTO, i: number) => ({
-              set,
-              cardCount: responses[i].totalRecords
-            }));
-            this.setsSignal.set(items);
-            this.loadingSignal.set(false);
-          },
-          error: () => {
-            this.errorSignal.set('Nie udało się pobrać liczby fiszek.');
-            this.loadingSignal.set(false);
-          }
-        });
+    this.flashcardSetApiService.getSetsWithCardCount().subscribe({
+      next: (items) => {
+        this.setsSignal.set(items);
+        this.loadingSignal.set(false);
       },
       error: () => {
         this.errorSignal.set('Nie udało się pobrać zestawów.');
