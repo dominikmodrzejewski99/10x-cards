@@ -4,6 +4,7 @@ import {Router, RouterModule} from '@angular/router';
 import {GenerationApiService} from '../../services/generation-api.service';
 import {FlashcardApiService} from '../../services/flashcard-api.service';
 import {FlashcardSetApiService} from '../../services/flashcard-set-api.service';
+import {LoggerService} from '../../services/logger.service';
 import {MessageService} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
 import {ButtonModule} from 'primeng/button';
@@ -44,6 +45,7 @@ export class GenerateViewComponent implements OnInit {
   private generationApi = inject(GenerationApiService);
   private flashcardApi = inject(FlashcardApiService);
   private flashcardSetApi = inject(FlashcardSetApiService);
+  private logger: LoggerService = inject(LoggerService);
   private messageService = inject(MessageService);
   private router = inject(Router);
 
@@ -81,7 +83,7 @@ export class GenerateViewComponent implements OnInit {
   private loadSets(): void {
     this.flashcardSetApi.getSets().subscribe({
       next: (sets) => this.sets.set(sets),
-      error: (err) => console.error('Błąd ładowania zestawów:', err)
+      error: (err: unknown) => this.logger.error('GenerateViewComponent.loadSets', err)
     });
   }
 
