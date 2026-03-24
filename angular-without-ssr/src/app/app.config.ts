@@ -1,4 +1,6 @@
-import { ApplicationConfig, ErrorHandler, isDevMode } from '@angular/core';
+import { ApplicationConfig, ErrorHandler, APP_INITIALIZER, isDevMode } from '@angular/core';
+import { Router } from '@angular/router';
+import * as Sentry from '@sentry/angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideServiceWorker } from '@angular/service-worker';
 import { providePrimeNG } from 'primeng/config';
@@ -88,6 +90,16 @@ const LightThemePreset = definePreset(Aura, {
 export const appConfig: ApplicationConfig = {
     providers: [
         { provide: ErrorHandler, useClass: GlobalErrorHandler },
+        {
+            provide: Sentry.TraceService,
+            deps: [Router],
+        },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: () => () => {},
+            deps: [Sentry.TraceService],
+            multi: true,
+        },
         MessageService,
         provideAnimationsAsync(),
         provideRouter(routes, withEnabledBlockingInitialNavigation()),

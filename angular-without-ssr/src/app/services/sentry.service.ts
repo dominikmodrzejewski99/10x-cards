@@ -19,6 +19,7 @@ export class SentryService {
     Sentry.init({
       dsn,
       environment: environment.production ? 'production' : 'development',
+      sendDefaultPii: true,
       tracesSampleRate: 0.1,
       replaysSessionSampleRate: 0,
     });
