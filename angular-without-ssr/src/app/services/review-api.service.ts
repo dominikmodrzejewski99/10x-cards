@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, from, map, switchMap, throwError, catchError, of } from 'rxjs';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from './supabase-client.factory';
+import { LoggerService } from './logger.service';
 import { FlashcardDTO, FlashcardReviewDTO, StudyCardDTO } from '../../types';
 import { Sm2Result } from './spaced-repetition.service';
 
@@ -10,6 +11,7 @@ import { Sm2Result } from './spaced-repetition.service';
 })
 export class ReviewApiService {
   private supabase: SupabaseClient = inject(SupabaseClientFactory).getClient();
+  private logger: LoggerService = inject(LoggerService);
 
   public getDueCards(setId?: number | null): Observable<StudyCardDTO[]> {
     return this.getCurrentUserId().pipe(
@@ -65,7 +67,7 @@ export class ReviewApiService {
               });
           }),
           catchError((error: unknown) => {
-            console.error('Błąd podczas pobierania kart do powtórki:', error);
+            this.logger.error('ReviewApiService.getDueCards', error);
             return throwError(() => error);
           })
         );
@@ -108,7 +110,7 @@ export class ReviewApiService {
             return data[0];
           }),
           catchError((error: unknown) => {
-            console.error('Błąd podczas zapisywania recenzji:', error);
+            this.logger.error('ReviewApiService.saveReview', error);
             return throwError(() => error);
           })
         );
@@ -154,7 +156,7 @@ export class ReviewApiService {
             });
           }),
           catchError((error: unknown) => {
-            console.error('Błąd podczas pobierania kart:', error);
+            this.logger.error('ReviewApiService.getAllCardsWithReviews', error);
             return throwError(() => error);
           })
         );

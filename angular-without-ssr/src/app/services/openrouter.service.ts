@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { SessionManager } from './session-manager.service';
+import { LoggerService } from './logger.service';
 import {
   Session,
   Message,
@@ -14,6 +15,7 @@ import { environment } from '../../environments/environments';
   providedIn: 'root'
 })
 export class OpenRouterService {
+  private logger: LoggerService = inject(LoggerService);
   private apiUrl: string;
   private sessionManager: SessionManager;
   private defaultModel = 'stepfun/step-3.5-flash:free';
@@ -114,7 +116,7 @@ export class OpenRouterService {
 
         return content;
       } else {
-        console.error('Otrzymano pustą odpowiedź od modelu AI:', response);
+        this.logger.error('OpenRouterService.sendMessage', response);
         throw new Error('Otrzymano pustą odpowiedź od modelu AI');
       }
     } catch (error) {
@@ -253,7 +255,7 @@ export class OpenRouterService {
       }
     }
 
-    console.error(errorMessage, error);
+    this.logger.error('OpenRouterService.callApi', error);
     return throwError(() => new Error(errorMessage));
   }
 
@@ -262,7 +264,6 @@ export class OpenRouterService {
    * @param error Błąd
    */
   private handleError(error: Error): void {
-    console.error('Błąd podczas przetwarzania wiadomości:', error);
-    // Tutaj można dodać kod do logowania błędów, wysyłania powiadomień itp.
+    this.logger.error('OpenRouterService.handleError', error);
   }
 }

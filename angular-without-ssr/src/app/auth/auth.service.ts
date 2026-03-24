@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Observable, from, map, catchError, throwError, of, switchMap } from 'rxjs';
 import { LoginUserCommand, RegisterUserCommand, UserDTO } from '../../types';
 import { SupabaseClientFactory } from '../services/supabase-client.factory';
+import { LoggerService } from '../services/logger.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private logger: LoggerService = inject(LoggerService);
   private supabase: SupabaseClient;
 
   constructor(private supabaseFactory: SupabaseClientFactory) {
@@ -51,7 +53,7 @@ export class AuthService {
             return user;
           }),
           catchError(error => {
-            console.error('Błąd podczas tworzenia rekordu użytkownika:', error);
+            this.logger.error('AuthService.createUserRecord', error);
             // Zwracamy oryginalnego użytkownika, nawet jeśli nie udało się utworzyć rekordu
             // Nie chcemy, aby to blokowało proces logowania/rejestracji
             return of(user);
@@ -59,7 +61,7 @@ export class AuthService {
         );
       }),
       catchError(error => {
-        console.error('Błąd podczas sprawdzania rekordu użytkownika:', error);
+        this.logger.error('AuthService.createUserRecord', error);
         // Zwracamy oryginalnego użytkownika, nawet jeśli nie udało się sprawdzić rekordu
         return of(user);
       })
@@ -101,7 +103,7 @@ export class AuthService {
         });
       }),
       catchError(error => {
-        console.error('Błąd rejestracji:', error);
+        this.logger.error('AuthService.register', error);
         return throwError(() => this.handleAuthError(error));
       })
     );
@@ -123,7 +125,7 @@ export class AuthService {
       }),
       switchMap(user => this.createUserRecord(user)),
       catchError(error => {
-        console.error('Błąd anonimowego logowania:', error);
+        this.logger.error('AuthService.signInAnonymously', error);
         return throwError(() => this.handleAuthError(error));
       })
     );
@@ -148,7 +150,7 @@ export class AuthService {
       }),
       switchMap(user => this.createUserRecord(user)),
       catchError(error => {
-        console.error('Błąd logowania:', error);
+        this.logger.error('AuthService.login', error);
         return throwError(() => this.handleAuthError(error));
       })
     );
@@ -166,7 +168,7 @@ export class AuthService {
         }
       }),
       catchError(error => {
-        console.error('Błąd resetowania hasła:', error);
+        this.logger.error('AuthService.resetPassword', error);
         return throwError(() => this.handleAuthError(error));
       })
     );
@@ -187,7 +189,7 @@ export class AuthService {
         return this.mapUserToDTO(response.data.user);
       }),
       catchError(error => {
-        console.error('Błąd aktualizacji hasła:', error);
+        this.logger.error('AuthService.updatePassword', error);
         return throwError(() => this.handleAuthError(error));
       })
     );
@@ -210,7 +212,7 @@ export class AuthService {
         }
       }),
       catchError(error => {
-        console.error('Błąd usuwania konta:', error);
+        this.logger.error('AuthService.deleteAccount', error);
         return throwError(() => this.handleAuthError(error));
       })
     );
@@ -228,7 +230,7 @@ export class AuthService {
         return;
       }),
       catchError(error => {
-        console.error('Błąd wylogowania:', error);
+        this.logger.error('AuthService.logout', error);
         return throwError(() => this.handleAuthError(error));
       })
     );
@@ -249,7 +251,7 @@ export class AuthService {
         return this.mapUserToDTO(response.data.session.user);
       }),
       catchError(error => {
-        console.error('Błąd pobierania sesji:', error);
+        this.logger.error('AuthService.getCurrentUser', error);
         return of(null);
       })
     );

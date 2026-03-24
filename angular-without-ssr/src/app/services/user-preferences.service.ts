@@ -2,11 +2,13 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, from, map, switchMap, throwError, catchError, of, shareReplay } from 'rxjs';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from './supabase-client.factory';
+import { LoggerService } from './logger.service';
 import { UserPreferencesDTO } from '../../types';
 
 @Injectable({ providedIn: 'root' })
 export class UserPreferencesService {
   private supabase: SupabaseClient = inject(SupabaseClientFactory).getClient();
+  private logger: LoggerService = inject(LoggerService);
   private cache$: Observable<UserPreferencesDTO> | null = null;
 
   private getCurrentUserId(): Observable<string> {
@@ -65,7 +67,7 @@ export class UserPreferencesService {
             return response.data as UserPreferencesDTO;
           }),
           catchError(error => {
-            console.error('Failed to update preferences:', error);
+            this.logger.error('UserPreferencesService.updatePreferences', error);
             if (error.message?.includes('foreign key constraint')) {
               return of(this.defaultPrefs(userId));
             }
@@ -94,7 +96,7 @@ export class UserPreferencesService {
             return response.data as UserPreferencesDTO;
           }),
           catchError(error => {
-            console.error('Failed to record study session:', error);
+            this.logger.error('UserPreferencesService.recordStudySession', error);
             return throwError(() => error);
           })
         )

@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, from, map } from 'rxjs';
 import { GenerateFlashcardsCommand, GenerationDTO, FlashcardProposalDTO } from '../../types';
 import { OpenRouterService } from './openrouter.service';
+import { LoggerService } from './logger.service';
 
 const DEFAULT_AI_MODEL = 'stepfun/step-3.5-flash:free';
 const MAX_FLASHCARDS = 15;
@@ -11,6 +12,8 @@ const MAX_TOKENS = 8000;
   providedIn: 'root'
 })
 export class GenerationApiService {
+  private logger: LoggerService = inject(LoggerService);
+
   constructor(private openRouterService: OpenRouterService) {}
 
   generateFlashcards(command: GenerateFlashcardsCommand): Observable<{
@@ -97,7 +100,7 @@ PRZYKŁAD POPRAWNEJ ODPOWIEDZI:
               }));
           }
         } catch (error) {
-          console.error('Błąd parsowania odpowiedzi JSON:', error);
+          this.logger.error('GenerationApiService.generateFlashcards', error);
         }
 
         if (flashcards.length === 0) {
