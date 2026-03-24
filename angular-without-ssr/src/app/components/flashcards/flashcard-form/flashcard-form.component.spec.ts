@@ -352,7 +352,12 @@ describe('FlashcardFormComponent', () => {
     }));
 
     it('should handle translation error gracefully', fakeAsync(() => {
-      openRouterMock.translateText.and.returnValue(Promise.reject(new Error('Translation failed')));
+      openRouterMock.translateText.and.callFake(() => {
+        const p: Promise<string> = Promise.reject(new Error('Translation failed'));
+        // Prevent unhandled rejection warning
+        p.catch(() => {});
+        return p;
+      });
 
       component.frontLanguageSignal.set('en');
       component.backLanguageSignal.set('pl');

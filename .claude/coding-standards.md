@@ -107,8 +107,10 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 ## Unit Testing — MANDATORY
 - Tests are written using Karma/Jasmine with Angular TestBed
-- Every new feature or code change MUST have unit test coverage (`*.spec.ts` next to source file)
-- Minimum 80% coverage target for new code
+- Every service (`*.service.ts`) and component (`*.component.ts`) MUST have a corresponding `*.spec.ts` file — no exceptions
+- A PR/commit that adds or modifies a service or component without updating its spec file MUST be rejected
+- Minimum 80% branch coverage for every file; target 100% for services
+- Use `jasmine.createSpyObj` for dependency mocks; never use `any` in test code — use proper typed interfaces
 - Run unit tests: `npm run test:quiz` or `ng test --no-watch --browsers=ChromeHeadless`
 
 ## E2E Testing — MANDATORY

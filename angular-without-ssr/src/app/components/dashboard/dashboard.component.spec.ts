@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 
 import { DashboardComponent } from './dashboard.component';
@@ -9,6 +9,7 @@ import { ReviewReminderService } from '../../shared/services/review-reminder.ser
 import { ReviewApiService } from '../../services/review-api.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { FlashcardSetDTO, StudyCardDTO } from '../../../types';
+import { LanguageTestResultsService } from '../../services/language-test-results.service';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -25,6 +26,7 @@ describe('DashboardComponent', () => {
   let setApiMock: jasmine.SpyObj<FlashcardSetApiService>;
   let reminderServiceMock: jasmine.SpyObj<ReviewReminderService>;
   let routerMock: jasmine.SpyObj<Router>;
+  let languageTestResultsServiceMock: jasmine.SpyObj<LanguageTestResultsService>;
 
   const mockSets: FlashcardSetDTO[] = [
     {
@@ -97,11 +99,16 @@ describe('DashboardComponent', () => {
       ['checkDueCards', 'markAsShown']
     );
     routerMock = jasmine.createSpyObj<Router>('Router', ['navigate']);
+    languageTestResultsServiceMock = jasmine.createSpyObj<LanguageTestResultsService>(
+      'LanguageTestResultsService',
+      ['getLatestResult']
+    );
 
     reviewApiMock.getAllCardsWithReviews.and.returnValue(of(mockCards));
     setApiMock.getSets.and.returnValue(of(mockSets));
     reviewApiMock.getNextReviewDate.and.returnValue(of('2026-04-01T10:00:00Z'));
     reminderServiceMock.checkDueCards.and.returnValue(of(0));
+    languageTestResultsServiceMock.getLatestResult.and.returnValue(of(null));
 
     await TestBed.configureTestingModule({
       imports: [DashboardComponent],
@@ -111,7 +118,9 @@ describe('DashboardComponent', () => {
         { provide: ReviewApiService, useValue: reviewApiMock },
         { provide: FlashcardSetApiService, useValue: setApiMock },
         { provide: ReviewReminderService, useValue: reminderServiceMock },
-        { provide: Router, useValue: routerMock }
+        { provide: Router, useValue: routerMock },
+        { provide: ActivatedRoute, useValue: {} },
+        { provide: LanguageTestResultsService, useValue: languageTestResultsServiceMock }
       ]
     }).compileComponents();
 

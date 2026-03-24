@@ -100,6 +100,23 @@ alwaysApply: true
 - Always use `translate` pipe or `translate.instant()` with translation keys
 - Check existing shared groups before adding new keys
 
+## Unit Testing — MANDATORY
+
+- Karma/Jasmine with Angular TestBed
+- Every `*.service.ts` and `*.component.ts` MUST have a `*.spec.ts` file — no exceptions
+- A PR that adds/modifies a service or component without updating its spec file MUST be rejected
+- Minimum 80% branch coverage; target 100% for services
+- Use `jasmine.createSpyObj<T>()` with explicit generic types — no `any` in tests
+- Use `NO_ERRORS_SCHEMA` to avoid deep rendering of child components
+- Run: `ng test --no-watch --browsers=ChromeHeadless`
+
+## E2E Testing — MANDATORY
+
+- Playwright with Page Object Model (POM) pattern
+- Every new user-facing flow MUST have E2E coverage
+- Tests: `tests/e2e/tests/*.spec.ts`, Page objects: `tests/e2e/page-objects/*.ts`
+- Run: `npm run e2e:quiz`
+
 ## Accessibility
 
 - Must pass all AXE checks
