@@ -23,14 +23,24 @@
 
   <div class="auth-form__field">
     <label for="password" class="auth-form__label">Hasło</label>
-    <input
-      type="password"
-      id="password"
-      class="auth-form__input"
-      formControlName="password"
-      placeholder="Minimum 6 znaków"
-      data-testid="login-password-input"
-    />
+    <div class="auth-form__input-wrap">
+      <input
+        [type]="showPasswordSignal() ? 'text' : 'password'"
+        id="password"
+        class="auth-form__input auth-form__input--password"
+        formControlName="password"
+        placeholder="Minimum 6 znaków"
+        data-testid="login-password-input"
+      />
+      <button
+        type="button"
+        class="auth-form__toggle-password"
+        (click)="showPasswordSignal.set(!showPasswordSignal())"
+        [attr.aria-label]="showPasswordSignal() ? 'Ukryj hasło' : 'Pokaż hasło'"
+        tabindex="-1">
+        <i [class]="showPasswordSignal() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+      </button>
+    </div>
     @if (submittedSignal() && f['password'].errors) {
       <div class="auth-form__error">
         @if (f['password'].errors['required']) {
@@ -59,7 +69,7 @@
   </button>
 
   @if (errorSignal()) {
-    <div class="auth-form__error auth-form__error--global">
+    <div class="auth-form__error auth-form__error--global" role="alert" aria-live="assertive">
       {{ errorSignal() }}
     </div>
   }

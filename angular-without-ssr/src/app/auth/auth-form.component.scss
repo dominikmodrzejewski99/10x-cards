@@ -49,6 +49,33 @@ form {
   color: #282e3e;
 }
 
+.auth-form__input-wrap {
+  position: relative;
+}
+
+.auth-form__input--password {
+  padding-right: 2.75rem;
+}
+
+.auth-form__toggle-password {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  color: #b0b5c4;
+  font-size: 1rem;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.auth-form__toggle-password:hover {
+  color: #586380;
+}
+
 .auth-form__submit {
   margin-top: 0.75rem;
   padding: 0.75rem;

@@ -52,6 +52,11 @@
   color: $color-text-secondary;
 }
 
+.sets__empty-icon {
+  font-size: 3rem;
+  color: $color-border;
+}
+
 .sets__error i {
   font-size: 2rem;
   color: $color-danger;
@@ -184,6 +189,11 @@
 .set-form__textarea {
   resize: vertical;
   min-height: 70px;
+}
+
+.set-form__hint {
+  color: var(--app-error, #ff6240);
+  font-size: 0.75rem;
 }
 
 .set-form__actions {

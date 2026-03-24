@@ -188,6 +188,17 @@
   font-size: 0.85rem;
 }
 
+.ftable__empty-link {
+  background: none;
+  border: none;
+  color: $color-primary;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
 /* Card list */
 .ftable__list {
   display: flex;

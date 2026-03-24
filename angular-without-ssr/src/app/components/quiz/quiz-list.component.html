@@ -27,7 +27,7 @@
 
   @if (!loadingSignal() && !errorSignal() && setsSignal().length === 0) {
     <div class="quiz-list__state fade-in">
-      <i class="pi pi-folder-open" style="font-size: 2.5rem; color: #4255ff;"></i>
+      <i class="pi pi-folder-open quiz-list__state-icon"></i>
       <p class="quiz-list__state-text">Nie masz jeszcze zestawów fiszek.</p>
       <button
         pButton
@@ -47,15 +47,17 @@
             <h3 class="quiz-list__card-name">{{ item.set.name }}</h3>
             <p class="quiz-list__card-count">{{ item.cardCount }} fiszek</p>
           </div>
-          <button
-            pButton
-            label="Rozpocznij test"
-            icon="pi pi-play"
-            class="p-button-primary p-button-sm"
-            [disabled]="item.cardCount < 4"
-            [title]="item.cardCount < 4 ? 'Minimum 4 fiszki' : ''"
-            (click)="onStartQuiz(item.set.id)">
-          </button>
+          @if (item.cardCount >= 4) {
+            <button
+              pButton
+              label="Rozpocznij test"
+              icon="pi pi-play"
+              class="p-button-primary p-button-sm"
+              (click)="onStartQuiz(item.set.id)">
+            </button>
+          } @else {
+            <span class="quiz-list__card-hint">Min. 4 fiszki</span>
+          }
         </div>
       }
     </div>

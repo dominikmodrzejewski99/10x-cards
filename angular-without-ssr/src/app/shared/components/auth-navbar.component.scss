@@ -184,7 +184,7 @@
 }
 
 /* ===== Mobile breakpoint ===== */
-@media (max-width: 640px) {
+@media (max-width: 992px) {
   .navbar__inner {
     padding: 0 0.75rem;
     padding-top: env(safe-area-inset-top, 0px);

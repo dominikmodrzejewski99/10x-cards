@@ -1,4 +1,4 @@
-<div class="study">
+<div class="study" [attr.aria-busy]="loadingSignal()">
 
   @if (setsSignal().length > 0) {
     <div class="study__set-filter">
@@ -56,7 +56,7 @@
 
   @if (errorSignal()) {
     <div class="study__state">
-      <i class="pi pi-exclamation-triangle study__state-icon" style="color: #ff6240;"></i>
+      <i class="pi pi-exclamation-triangle study__state-icon study__state-icon--error"></i>
       <p class="study__state-text">{{ errorSignal() }}</p>
       <button (click)="loadDueCards()" class="study__link study__link--primary">Spróbuj ponownie</button>
     </div>
@@ -65,7 +65,7 @@
   @if (!loadingSignal() && !errorSignal() && dueCardsSignal().length === 0 && !isSessionCompleteSignal()) {
     <div class="study__state fade-in">
       @if (nextReviewDateSignal()) {
-        <i class="pi pi-check-circle study__state-icon" style="color: #23b26d;"></i>
+        <i class="pi pi-check-circle study__state-icon study__state-icon--success"></i>
         <h2 class="study__state-title">Wszystko powtórzone!</h2>
         <p class="study__state-text">Następna powtórka: <strong>{{ formatDate(nextReviewDateSignal()!) }}</strong></p>
         <div class="study__links">
@@ -76,7 +76,7 @@
           <a routerLink="/sets" class="study__link study__link--ghost">Moje zestawy</a>
         </div>
       } @else if (setsSignal().length === 0) {
-        <i class="pi pi-folder-open study__state-icon" style="color: #4255ff;"></i>
+        <i class="pi pi-folder-open study__state-icon study__state-icon--primary"></i>
         <h2 class="study__state-title">Nie masz jeszcze zestawów</h2>
         <p class="study__state-text">Utwórz swój pierwszy zestaw fiszek, aby rozpocząć naukę.</p>
         <div class="study__links">
@@ -84,7 +84,7 @@
           <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-sparkles"></i> Generuj z AI</a>
         </div>
       } @else {
-        <i class="pi pi-inbox study__state-icon" style="color: #4255ff;"></i>
+        <i class="pi pi-inbox study__state-icon study__state-icon--primary"></i>
         <h2 class="study__state-title">Brak fiszek do nauki</h2>
         <p class="study__state-text">Dodaj fiszki do swoich zestawów, aby rozpocząć naukę.</p>
         <div class="study__links">
@@ -307,7 +307,7 @@
         }
       </div>
 
-      <div class="study__progress-bar">
+      <div class="study__progress-bar" role="progressbar" [attr.aria-valuenow]="progressPercentSignal()" aria-valuemin="0" aria-valuemax="100" aria-label="Postęp sesji">
         <div class="study__progress-fill" [style.width.%]="progressPercentSignal()"></div>
       </div>
 

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, signal, WritableSignal, Signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, WritableSignal, Signal, ElementRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { UserMenuComponent } from '../../auth/components/user-menu.component';
 import { AuthStore } from '../../auth/store';
@@ -8,7 +8,8 @@ import { AuthStore } from '../../auth/store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterModule, UserMenuComponent],
   host: {
-    '(document:keydown.escape)': 'onEscape()'
+    '(document:keydown.escape)': 'onEscape()',
+    '(document:click)': 'onDocumentClick($event)'
   },
   template: `
     <nav class="navbar">
@@ -102,6 +103,7 @@ import { AuthStore } from '../../auth/store';
 })
 export class AuthNavbarComponent {
   private authStore = inject(AuthStore);
+  private elementRef = inject(ElementRef);
 
   public authCheckedSignal: Signal<boolean> = this.authStore.authChecked;
   public isAuthenticatedSignal: Signal<boolean> = this.authStore.isAuthenticated;
@@ -118,5 +120,11 @@ export class AuthNavbarComponent {
 
   public onEscape(): void {
     this.closeMobile();
+  }
+
+  public onDocumentClick(event: MouseEvent): void {
+    if (this.mobileOpenSignal() && !this.elementRef.nativeElement.contains(event.target)) {
+      this.closeMobile();
+    }
   }
 }

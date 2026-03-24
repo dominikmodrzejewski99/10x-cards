@@ -1,4 +1,4 @@
-<div class="dash">
+<div class="dash" [attr.aria-busy]="loading()">
   @if (loading()) {
     <!-- Header: greeting + subtitle -->
     <header class="dash__header">

@@ -32,7 +32,7 @@
 
   @if (!state().loading && state().sets.length === 0 && !state().error) {
     <div class="sets__empty">
-      <i class="pi pi-folder-open" style="font-size: 3rem; color: #d9dbe9;"></i>
+      <i class="pi pi-folder-open sets__empty-icon"></i>
       <h2>Brak zestawów</h2>
       <p>Utwórz swój pierwszy zestaw, aby organizować fiszki.</p>
       <button (click)="openCreateDialog()" class="sets__btn sets__btn--create">
@@ -99,6 +99,9 @@
           placeholder="np. Biologia – rozdział 5"
           maxlength="100"
           autofocus />
+        @if (!state().formName.trim() && state().formName !== '') {
+          <small class="set-form__hint">Nazwa nie może być pusta</small>
+        }
       </div>
       <div class="set-form__field">
         <label class="set-form__label" for="setDesc">Opis (opcjonalnie)</label>

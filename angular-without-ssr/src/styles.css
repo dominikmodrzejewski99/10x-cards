@@ -47,6 +47,20 @@ router-outlet + * {
   animation: fadeIn 0.3s ease-out both;
 }
 
+/* Global focus-visible ring for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--app-primary, #4255ff);
+  outline-offset: 2px;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+  border-color: var(--app-primary, #4255ff);
+  box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.12);
+}
+
 /* ngx-skeleton-loader reset — kill default margins to prevent layout shift */
 ngx-skeleton-loader {
   display: block;

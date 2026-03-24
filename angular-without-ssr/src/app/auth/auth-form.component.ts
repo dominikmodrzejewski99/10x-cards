@@ -22,6 +22,7 @@ export class AuthFormComponent {
   public loadingSignal: Signal<boolean> = this.authStore.loading;
   public errorSignal: Signal<string | null> = this.authStore.error;
   public submittedSignal: WritableSignal<boolean> = signal<boolean>(false);
+  public showPasswordSignal: WritableSignal<boolean> = signal<boolean>(false);
 
   public authForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],

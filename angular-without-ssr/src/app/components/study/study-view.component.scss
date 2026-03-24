@@ -61,6 +61,18 @@
   font-size: 3rem;
 }
 
+.study__state-icon--error {
+  color: $color-danger;
+}
+
+.study__state-icon--success {
+  color: $color-success;
+}
+
+.study__state-icon--primary {
+  color: $color-primary;
+}
+
 .study__state--complete {
   animation: fadeInUp 0.6s ease-out;
 }
@@ -290,6 +302,11 @@
   padding: 0;
   transition: background 0.2s;
   flex-shrink: 0;
+}
+
+.study__toggle-switch:focus-visible {
+  outline: 2px solid $color-primary;
+  outline-offset: 2px;
 }
 
 .study__toggle-switch--on {

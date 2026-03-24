@@ -51,9 +51,15 @@
 
   @if (!loadingSignal() && flashcardsSignal().length === 0) {
     <div class="ftable__empty" data-test-id="empty-message">
-      <i class="pi pi-inbox"></i>
-      <p>Brak fiszek w tym zestawie.</p>
-      <span>Dodaj pierwszą fiszkę przyciskiem powyżej.</span>
+      @if (searchTerm) {
+        <i class="pi pi-search"></i>
+        <p>Brak wyników dla „{{ searchTerm }}"</p>
+        <span><button class="ftable__empty-link" (click)="onResetFilter()">Wyczyść wyszukiwanie</button></span>
+      } @else {
+        <i class="pi pi-inbox"></i>
+        <p>Brak fiszek w tym zestawie.</p>
+        <span>Dodaj pierwszą fiszkę przyciskiem powyżej.</span>
+      }
     </div>
   }
 
