@@ -11,6 +11,8 @@ declare global {
       E2E_USERNAME_ID: string;
       E2E_USERNAME: string;
       E2E_PASSWORD: string;
+      cfAnalyticsToken: string;
+      sentryDsn: string;
     };
   }
 }
@@ -36,5 +38,11 @@ export const environment = {
   },
   get E2E_PASSWORD() {
     return window.RUNTIME_CONFIG?.E2E_PASSWORD || '';
+  },
+  get cfAnalyticsToken() {
+    return window.RUNTIME_CONFIG?.cfAnalyticsToken || '';
+  },
+  get sentryDsn() {
+    return window.RUNTIME_CONFIG?.sentryDsn || '';
   }
 }

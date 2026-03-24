@@ -11,6 +11,8 @@ const openRouterKey = process.env.openRouterKey || '';
 const e2eUsername = process.env.E2E_USERNAME || '';
 const e2ePassword = process.env.E2E_PASSWORD || '';
 const e2eUsernameId = process.env.E2E_USERNAME_ID || '';
+const cfAnalyticsToken = process.env.CF_ANALYTICS_TOKEN || '';
+const sentryDsn = process.env.SENTRY_DSN || '';
 
 // Zawartość pliku environments.ts
 const envFileContent = `// This file is auto-generated during the build process
@@ -23,7 +25,9 @@ export const environment = {
   openRouterKey: '${openRouterKey}',
   E2E_USERNAME_ID: '${e2eUsernameId}',
   E2E_USERNAME: '${e2eUsername}',
-  E2E_PASSWORD: '${e2ePassword}'
+  E2E_PASSWORD: '${e2ePassword}',
+  cfAnalyticsToken: '${cfAnalyticsToken}',
+  sentryDsn: '${sentryDsn}'
 };
 `;
 
