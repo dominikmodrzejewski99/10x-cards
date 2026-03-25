@@ -1,0 +1,28 @@
+@use 'variables' as *;
+
+.sync-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: $radius-pill;
+  background-color: $color-bg;
+  border: 1px solid $color-border;
+  font-size: 0.8125rem;
+  line-height: 1;
+  white-space: nowrap;
+
+  &__icon {
+    font-size: 0.875rem;
+    color: $color-primary;
+
+    &--offline {
+      color: $color-warning;
+    }
+  }
+
+  &__text {
+    color: $color-text-secondary;
+    font-weight: 500;
+  }
+}

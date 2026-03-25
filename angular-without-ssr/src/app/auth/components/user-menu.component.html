@@ -1,0 +1,42 @@
+<div class="user-menu-container">
+  @if (isAuthenticatedSignal() && userSignal()?.is_anonymous) {
+    <button class="logout-btn" (click)="onLogout()">
+      <i class="pi pi-sign-out"></i>
+      Zakończ sesję
+    </button>
+  } @else if (isAuthenticatedSignal()) {
+    <div class="user-menu-dropdown">
+      <button class="user-menu-button" [class.is-open]="isMenuOpenSignal()" (click)="toggleMenu()">
+        <div class="user-avatar">
+          {{ userInitialsSignal() }}
+        </div>
+        <span class="user-email">{{ userSignal()?.email }}</span>
+        <i class="pi pi-chevron-down chevron" [class.chevron--open]="isMenuOpenSignal()"></i>
+      </button>
+
+      @if (isMenuOpenSignal()) {
+        <div class="dropdown-backdrop" (click)="closeMenu()"></div>
+        <div class="dropdown-menu">
+          <div class="dropdown-header">
+            <div class="user-avatar user-avatar--lg">{{ userInitialsSignal() }}</div>
+            <div class="user-info">
+              <span class="user-name">Moje konto</span>
+              <span class="user-email-small">{{ userSignal()?.email }}</span>
+            </div>
+          </div>
+          <div class="dropdown-footer">
+            <button class="dropdown-item dropdown-item--delete" (click)="onDeleteAccount()">
+              <i class="pi pi-trash"></i>
+              Usuń konto
+            </button>
+            <button class="dropdown-item dropdown-item--logout" (click)="onLogout()">
+              <i class="pi pi-sign-out"></i>
+              Wyloguj się
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+  <p-confirmDialog></p-confirmDialog>
+</div>
