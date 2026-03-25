@@ -10,7 +10,7 @@
     <div class="flip-card__face">
       <div class="flip-card__label">Pytanie</div>
       @if (frontImageUrlSignal()) {
-        <img [src]="frontImageUrlSignal()" [alt]="'Obrazek do: ' + frontSignal()" class="flip-card__image" />
+        <img [src]="frontImageUrlSignal()" [alt]="'Obrazek do: ' + frontSignal()" class="flip-card__image" loading="lazy" />
       }
       <div class="flip-card__content">{{ frontSignal() }}</div>
     </div>

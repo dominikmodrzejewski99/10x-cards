@@ -180,9 +180,7 @@ describe('FlashcardListComponent', () => {
 
       expect(confirmationServiceMock.confirm).toHaveBeenCalled();
       expect(flashcardApiMock.deleteFlashcard).toHaveBeenCalledWith(1);
-      expect(messageServiceMock.add).toHaveBeenCalledWith(
-        jasmine.objectContaining({ severity: 'success' })
-      );
+      expect(component.lastDeletedSignal()).toEqual(mockFlashcard);
     });
 
     it('should show error message on delete failure', () => {

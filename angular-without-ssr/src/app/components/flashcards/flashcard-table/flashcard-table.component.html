@@ -75,7 +75,7 @@
             <div class="ftable__card-side">
               <span class="ftable__card-label">Przód</span>
               @if (flashcard.front_image_url) {
-                <img [src]="flashcard.front_image_url" [alt]="'Obrazek do: ' + flashcard.front" class="ftable__card-thumb" />
+                <img [src]="flashcard.front_image_url" [alt]="'Obrazek do: ' + flashcard.front" class="ftable__card-thumb" loading="lazy" />
               }
               <p class="ftable__card-text">{{ flashcard.front }}</p>
             </div>

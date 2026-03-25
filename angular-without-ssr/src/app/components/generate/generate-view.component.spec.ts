@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError, Subject } from 'rxjs';
 import { MessageService } from 'primeng/api';
 
@@ -94,7 +94,8 @@ describe('GenerateViewComponent', () => {
         { provide: GenerationApiService, useValue: generationApiMock },
         { provide: FlashcardApiService, useValue: flashcardApiMock },
         { provide: FlashcardSetApiService, useValue: flashcardSetApiMock },
-        { provide: Router, useValue: routerMock }
+        { provide: Router, useValue: routerMock },
+        { provide: ActivatedRoute, useValue: {} }
       ]
     })
     .overrideComponent(GenerateViewComponent, {

@@ -128,7 +128,7 @@
 
     @if (imagePreviewSignal()) {
       <div class="image-preview">
-        <img [src]="imagePreviewSignal()" alt="Podgląd obrazka" class="image-preview__img" />
+        <img [src]="imagePreviewSignal()" alt="Podgląd obrazka" class="image-preview__img" loading="lazy" />
         <button
           type="button"
           pButton

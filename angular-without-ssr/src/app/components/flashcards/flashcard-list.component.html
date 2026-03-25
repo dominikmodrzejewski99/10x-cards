@@ -66,6 +66,16 @@
     </app-flashcard-form>
   </p-dialog>
 
+  @if (lastDeletedSignal()) {
+    <div class="flist__undo">
+      <span class="flist__undo-text">Fiszka usunięta</span>
+      <button class="flist__undo-btn" (click)="undoDelete()">Cofnij</button>
+      <button class="flist__undo-close" (click)="dismissUndo()" aria-label="Zamknij">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+  }
+
   <p-toast position="top-right"></p-toast>
   <p-confirmDialog
     styleClass="modern-dialog"

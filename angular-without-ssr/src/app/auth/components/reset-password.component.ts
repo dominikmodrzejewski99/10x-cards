@@ -27,6 +27,7 @@ import { AuthStore } from '../store';
                 class="auth-input"
                 formControlName="password"
                 placeholder="Minimum 6 znaków"
+                autocomplete="new-password"
               />
               @if ((submittedSignal() || form.controls['password'].touched) && form.controls['password'].errors) {
                 <div class="auth-error">
@@ -48,6 +49,7 @@ import { AuthStore } from '../store';
                 class="auth-input"
                 formControlName="confirmPassword"
                 placeholder="Powtórz nowe hasło"
+                autocomplete="new-password"
               />
               @if ((submittedSignal() || form.controls['confirmPassword'].touched) && mismatchSignal()) {
                 <div class="auth-error">

@@ -36,6 +36,7 @@ import { AuthStore } from '../store';
                 class="auth-input"
                 formControlName="email"
                 placeholder="Wprowadź swój adres email"
+                autocomplete="email"
               />
               @if ((submittedSignal() || form.controls['email'].touched) && form.controls['email'].errors) {
                 <div class="auth-error">

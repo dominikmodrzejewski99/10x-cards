@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject, signal, InputSignal, OutputEmitterRef, WritableSignal, Signal, effect } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { input, output } from '@angular/core';
 import { AuthStore } from './store';
@@ -29,22 +29,32 @@ export class AuthFormComponent {
 
   public authForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    confirmPassword: ['']
   });
 
   constructor() {
     effect(() => {
       const isLogin: boolean = this.isLoginMode();
-      const emailControl = this.authForm.get('email');
-      if (!emailControl) return;
+      const emailControl: AbstractControl | null = this.authForm.get('email');
+      const confirmControl: AbstractControl | null = this.authForm.get('confirmPassword');
+      if (!emailControl || !confirmControl) return;
 
       if (isLogin) {
         emailControl.clearAsyncValidators();
+        confirmControl.clearValidators();
       } else {
         emailControl.setAsyncValidators(emailExistsValidator(this.authService));
+        confirmControl.setValidators([Validators.required, this.passwordMismatchValidator.bind(this)]);
       }
       emailControl.updateValueAndValidity();
+      confirmControl.updateValueAndValidity();
     });
+  }
+
+  private passwordMismatchValidator(control: AbstractControl): ValidationErrors | null {
+    const password: string = this.authForm?.get('password')?.value || '';
+    return control.value && control.value !== password ? { passwordMismatch: true } : null;
   }
 
   public get f(): Record<string, import('@angular/forms').AbstractControl> {

@@ -38,5 +38,40 @@
       }
     </div>
   }
-  <p-confirmDialog></p-confirmDialog>
+  <p-dialog
+    header="Usuwanie konta"
+    [visible]="isDeleteDialogVisibleSignal()"
+    (visibleChange)="cancelDeleteAccount()"
+    [modal]="true"
+    [closeOnEscape]="true"
+    [dismissableMask]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{width: '95vw', maxWidth: '420px'}"
+    styleClass="modern-dialog">
+    <div class="delete-dialog">
+      <i class="pi pi-exclamation-triangle delete-dialog__icon"></i>
+      <p class="delete-dialog__text">
+        Ta operacja jest <strong>nieodwracalna</strong>. Wszystkie Twoje fiszki, zestawy i historia nauki zostaną trwale usunięte.
+      </p>
+      <p class="delete-dialog__prompt">
+        Wpisz <strong>USUŃ</strong> aby potwierdzić:
+      </p>
+      <input
+        type="text"
+        class="delete-dialog__input"
+        [(ngModel)]="deleteConfirmText"
+        placeholder="USUŃ"
+        autocomplete="off" />
+      <div class="delete-dialog__actions">
+        <button class="delete-dialog__btn delete-dialog__btn--cancel" (click)="cancelDeleteAccount()">Anuluj</button>
+        <button
+          class="delete-dialog__btn delete-dialog__btn--delete"
+          [disabled]="deleteConfirmText.trim().toUpperCase() !== 'USUŃ'"
+          (click)="confirmDeleteAccount()">
+          Usuń konto
+        </button>
+      </div>
+    </div>
+  </p-dialog>
 </div>

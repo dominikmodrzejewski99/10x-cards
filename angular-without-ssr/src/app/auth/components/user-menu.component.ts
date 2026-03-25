@@ -1,15 +1,14 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, WritableSignal, Signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService } from 'primeng/api';
+import { DialogModule } from 'primeng/dialog';
 import { UserDTO } from '../../../types';
 import { AuthStore } from '../store';
 
 @Component({
   selector: 'app-user-menu',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, ConfirmDialogModule],
-  providers: [ConfirmationService],
+  imports: [RouterModule, FormsModule, DialogModule],
   host: {
     '(document:keydown.escape)': 'onEscape()'
   },
@@ -18,11 +17,12 @@ import { AuthStore } from '../store';
 })
 export class UserMenuComponent {
   private authStore = inject(AuthStore);
-  private confirmationService = inject(ConfirmationService);
 
   public isAuthenticatedSignal: Signal<boolean> = this.authStore.isAuthenticated;
   public userSignal: Signal<UserDTO | null> = this.authStore.user;
   public isMenuOpenSignal: WritableSignal<boolean> = signal<boolean>(false);
+  public isDeleteDialogVisibleSignal: WritableSignal<boolean> = signal<boolean>(false);
+  public deleteConfirmText: string = '';
 
   public readonly userInitialsSignal: Signal<string> = computed<string>(() => {
     const u: UserDTO | null = this.userSignal();
@@ -44,17 +44,19 @@ export class UserMenuComponent {
 
   public onDeleteAccount(): void {
     this.closeMenu();
-    this.confirmationService.confirm({
-      header: 'Usuwanie konta',
-      message: 'Czy na pewno chcesz usunąć swoje konto? Ta operacja jest nieodwracalna — wszystkie fiszki, zestawy i historia nauki zostaną trwale usunięte.',
-      icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'Usuń konto',
-      rejectLabel: 'Anuluj',
-      acceptButtonStyleClass: 'p-button-danger',
-      accept: () => {
-        this.authStore.deleteAccount();
-      }
-    });
+    this.deleteConfirmText = '';
+    this.isDeleteDialogVisibleSignal.set(true);
+  }
+
+  public confirmDeleteAccount(): void {
+    if (this.deleteConfirmText.trim().toUpperCase() !== 'USUŃ') return;
+    this.isDeleteDialogVisibleSignal.set(false);
+    this.authStore.deleteAccount();
+  }
+
+  public cancelDeleteAccount(): void {
+    this.isDeleteDialogVisibleSignal.set(false);
+    this.deleteConfirmText = '';
   }
 
   public onLogout(): void {

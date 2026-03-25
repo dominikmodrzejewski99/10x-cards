@@ -2,8 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { signal, WritableSignal } from '@angular/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ConfirmationService } from 'primeng/api';
-import { Subject } from 'rxjs';
 import { UserMenuComponent } from './user-menu.component';
 import { AuthStore } from '../store';
 import { UserDTO } from '../../../types';
@@ -17,7 +15,6 @@ describe('UserMenuComponent', () => {
     logout: jasmine.Spy;
     deleteAccount: jasmine.Spy;
   };
-  let mockConfirmationService: jasmine.SpyObj<ConfirmationService> & { requireConfirmation$: Subject<unknown> };
 
   const mockUser: UserDTO = {
     id: 'user-1',
@@ -35,11 +32,6 @@ describe('UserMenuComponent', () => {
       deleteAccount: jasmine.createSpy('deleteAccount'),
     };
 
-    mockConfirmationService = {
-      ...jasmine.createSpyObj<ConfirmationService>('ConfirmationService', ['confirm']),
-      requireConfirmation$: new Subject<unknown>(),
-    } as jasmine.SpyObj<ConfirmationService> & { requireConfirmation$: Subject<unknown> };
-
     await TestBed.configureTestingModule({
       imports: [UserMenuComponent],
       providers: [
@@ -47,11 +39,6 @@ describe('UserMenuComponent', () => {
         { provide: AuthStore, useValue: mockAuthStore },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .overrideComponent(UserMenuComponent, {
-      set: {
-        providers: [{ provide: ConfirmationService, useValue: mockConfirmationService }],
-      },
     })
     .compileComponents();
 
@@ -115,19 +102,27 @@ describe('UserMenuComponent', () => {
     expect(component.isMenuOpenSignal()).toBeFalse();
   });
 
-  it('should show confirmation dialog on delete account', () => {
+  it('should open delete dialog on delete account', () => {
     component.isMenuOpenSignal.set(true);
     component.onDeleteAccount();
     expect(component.isMenuOpenSignal()).toBeFalse();
-    expect(mockConfirmationService.confirm).toHaveBeenCalled();
+    expect(component.isDeleteDialogVisibleSignal()).toBeTrue();
   });
 
-  it('should call deleteAccount when confirmation is accepted', () => {
+  it('should call deleteAccount when confirmation text matches and confirmDeleteAccount is called', () => {
     component.onDeleteAccount();
-    const confirmArgs: Record<string, unknown> = mockConfirmationService.confirm.calls.first().args[0] as Record<string, unknown>;
-    const acceptFn: () => void = confirmArgs['accept'] as () => void;
-    acceptFn();
+    component.deleteConfirmText = 'USUŃ';
+    component.confirmDeleteAccount();
+    expect(component.isDeleteDialogVisibleSignal()).toBeFalse();
     expect(mockAuthStore.deleteAccount).toHaveBeenCalled();
+  });
+
+  it('should not call deleteAccount when confirmation text does not match', () => {
+    component.onDeleteAccount();
+    component.deleteConfirmText = 'wrong';
+    component.confirmDeleteAccount();
+    expect(component.isDeleteDialogVisibleSignal()).toBeTrue();
+    expect(mockAuthStore.deleteAccount).not.toHaveBeenCalled();
   });
 
   it('should render user-menu-button when authenticated and not anonymous', () => {

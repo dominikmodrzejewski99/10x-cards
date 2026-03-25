@@ -23,6 +23,7 @@ import { FlashcardFlipComponent } from './flashcard-flip/flashcard-flip.componen
 import { SyncStatusComponent } from '../../shared/components/sync-status/sync-status.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { launchConfetti } from '../../shared/utils/confetti';
+import { classifyError, ClassifiedError } from '../../shared/utils/error-classifier';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -296,8 +297,9 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
           this.loadingSignal.set(false);
         }
       },
-      error: () => {
-        this.errorSignal.set('Nie udało się załadować fiszek. Spróbuj ponownie.');
+      error: (err: unknown) => {
+        const classified: ClassifiedError = classifyError(err, 'załadować fiszek');
+        this.errorSignal.set(classified.message);
         this.loadingSignal.set(false);
       }
     });
@@ -334,9 +336,10 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
         this.moveToNextCard();
 
       },
-      error: () => {
+      error: (err: unknown) => {
         this.savingSignal.set(false);
-        this.errorSignal.set('Nie udało się zapisać odpowiedzi.');
+        const classified: ClassifiedError = classifyError(err, 'zapisać odpowiedzi');
+        this.errorSignal.set(classified.message);
       }
     });
   }

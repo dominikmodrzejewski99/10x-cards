@@ -41,6 +41,7 @@ export class DashboardComponent implements OnInit {
   private router = inject(Router);
 
   loading = signal(true);
+  errorMessage = signal<string | null>(null);
   reminderVisible = signal(false);
   reminderDueCount = signal(0);
   currentStreak = this.streak.currentStreak;
@@ -78,7 +79,9 @@ export class DashboardComponent implements OnInit {
     this.loadData();
   }
 
-  private loadData(): void {
+  public loadData(): void {
+    this.loading.set(true);
+    this.errorMessage.set(null);
     forkJoin({
       allCards: this.reviewApi.getAllCardsWithReviews(),
       sets: this.setApi.getSets(),
@@ -91,8 +94,16 @@ export class DashboardComponent implements OnInit {
         this.loading.set(false);
         this.checkReminder();
       },
-      error: () => {
+      error: (err: unknown) => {
         this.loading.set(false);
+        const isOffline: boolean = !navigator.onLine;
+        if (isOffline) {
+          this.errorMessage.set('Brak połączenia z internetem. Sprawdź sieć i odśwież stronę.');
+        } else if ((err as { status?: number })?.status === 401) {
+          this.errorMessage.set('Sesja wygasła. Zaloguj się ponownie.');
+        } else {
+          this.errorMessage.set('Nie udało się załadować danych. Spróbuj odświeżyć stronę.');
+        }
       }
     });
   }

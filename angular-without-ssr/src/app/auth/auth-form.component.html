@@ -7,6 +7,7 @@
       class="auth-form__input"
       formControlName="email"
       placeholder="Wprowadź swój adres email"
+      autocomplete="email"
       data-testid="login-email-input"
     />
     @if ((submittedSignal() || f['email'].touched) && f['email'].errors) {
@@ -38,6 +39,7 @@
         class="auth-form__input auth-form__input--password"
         formControlName="password"
         placeholder="Minimum 6 znaków"
+        [attr.autocomplete]="isLoginMode() ? 'current-password' : 'new-password'"
         data-testid="login-password-input"
       />
       <button
@@ -60,6 +62,30 @@
       </div>
     }
   </div>
+
+  @if (!isLoginMode()) {
+    <div class="auth-form__field">
+      <label for="confirmPassword" class="auth-form__label">Potwierdź hasło</label>
+      <input
+        type="password"
+        id="confirmPassword"
+        class="auth-form__input"
+        formControlName="confirmPassword"
+        placeholder="Powtórz hasło"
+        autocomplete="new-password"
+      />
+      @if ((submittedSignal() || f['confirmPassword']?.touched) && f['confirmPassword']?.errors) {
+        <div class="auth-form__error">
+          @if (f['confirmPassword']?.errors?.['required']) {
+            <span>Potwierdzenie hasła jest wymagane</span>
+          }
+          @if (f['confirmPassword']?.errors?.['passwordMismatch']) {
+            <span>Hasła nie są zgodne</span>
+          }
+        </div>
+      }
+    </div>
+  }
 
   @if (isLoginMode()) {
     <div class="auth-form__forgot">

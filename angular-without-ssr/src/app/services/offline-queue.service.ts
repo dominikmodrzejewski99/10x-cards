@@ -282,13 +282,11 @@ export class OfflineQueueService {
   }
 
   private startConnectivityWatch(): void {
-    let wasOffline: boolean = !navigator.onLine;
-    setInterval(() => {
-      const isOnline: boolean = this.connectivity.onlineSignal();
-      if (isOnline && wasOffline) {
+    const onOnline: () => void = () => {
+      if (this.pendingCountSignal() > 0) {
         this.processQueue();
       }
-      wasOffline = !isOnline;
-    }, 1000);
+    };
+    window.addEventListener('online', onOnline);
   }
 }

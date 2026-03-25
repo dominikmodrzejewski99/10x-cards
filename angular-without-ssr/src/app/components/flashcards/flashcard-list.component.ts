@@ -74,6 +74,8 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
     setName: ''
   });
 
+  public lastDeletedSignal = signal<FlashcardDTO | null>(null);
+  private undoTimer: ReturnType<typeof setTimeout> | null = null;
   private routeSub: Subscription | null = null;
 
   ngOnInit(): void {
@@ -288,11 +290,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
             } else {
               this.loadFlashcards();
             }
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Sukces',
-              detail: 'Fiszka została usunięta.'
-            });
+            this.showUndoDelete(flashcard);
           },
           error: (error) => this.handleApiError(error, 'usuwania')
         });
@@ -461,6 +459,52 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
   }
 
   // Pomocnicza metoda do obsługi błędów API
+  private showUndoDelete(flashcard: FlashcardDTO): void {
+    this.lastDeletedSignal.set(flashcard);
+    if (this.undoTimer) clearTimeout(this.undoTimer);
+    this.undoTimer = setTimeout(() => this.lastDeletedSignal.set(null), 6000);
+  }
+
+  public undoDelete(): void {
+    const flashcard: FlashcardDTO | null = this.lastDeletedSignal();
+    if (!flashcard) return;
+
+    if (this.undoTimer) clearTimeout(this.undoTimer);
+    this.lastDeletedSignal.set(null);
+
+    this.flashcardApiService.createFlashcard({
+      front: flashcard.front,
+      back: flashcard.back,
+      front_image_url: flashcard.front_image_url,
+      back_audio_url: flashcard.back_audio_url,
+      front_language: flashcard.front_language,
+      back_language: flashcard.back_language,
+      source: flashcard.source,
+      set_id: flashcard.set_id
+    }).subscribe({
+      next: () => {
+        this.loadFlashcards();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Przywrócono',
+          detail: 'Fiszka została przywrócona.'
+        });
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Błąd',
+          detail: 'Nie udało się przywrócić fiszki.'
+        });
+      }
+    });
+  }
+
+  public dismissUndo(): void {
+    if (this.undoTimer) clearTimeout(this.undoTimer);
+    this.lastDeletedSignal.set(null);
+  }
+
   private handleApiError(error: unknown, action: string): void {
     let errorMessage = `Nie udało się wykonać operacji ${action}. Spróbuj ponownie później.`;
     let summary = 'Błąd';

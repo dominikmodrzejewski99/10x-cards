@@ -274,6 +274,10 @@
   color: $color-text;
   line-height: 1.4;
   word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .ftable__card-audio {
@@ -307,11 +311,15 @@
 .ftable__action {
   @include btn-icon;
   font-size: 0.85rem;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .ftable__action--delete {
   @include btn-icon-danger;
   font-size: 0.85rem;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 /* Pagination */
@@ -329,6 +337,8 @@
   @include btn-ghost;
   width: 2.25rem;
   height: 2.25rem;
+  min-width: 44px;
+  min-height: 44px;
   padding: 0;
 }
 
