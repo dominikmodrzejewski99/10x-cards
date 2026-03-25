@@ -18,7 +18,7 @@ import { AuthStore } from '../store';
       @if (isAuthenticatedSignal() && userSignal()?.is_anonymous) {
         <button class="logout-btn" (click)="onLogout()">
           <i class="pi pi-sign-out"></i>
-          Wyloguj
+          Zakończ sesję
         </button>
       } @else if (isAuthenticatedSignal()) {
         <div class="user-menu-dropdown">
