@@ -1,3 +1,55 @@
+.form-extras {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.25rem 0;
+
+  &__label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #9ca3af;
+    margin-right: 0.125rem;
+  }
+}
+
+.form-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  border: 1.5px solid #d9dbe9;
+  background: #fff;
+  color: #586380;
+  font-size: 0.8rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+
+  i {
+    font-size: 0.75rem;
+  }
+
+  &:hover {
+    border-color: #4255ff;
+    color: #4255ff;
+    background: #f4f5ff;
+  }
+
+  &--active {
+    border-color: #4255ff;
+    background: #edefff;
+    color: #4255ff;
+  }
+
+  &--active:hover {
+    background: #dde0ff;
+  }
+}
+
 .p-inputtext, .p-inputtextarea {
   width: 100%;
 }

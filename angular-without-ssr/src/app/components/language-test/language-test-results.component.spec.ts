@@ -144,12 +144,13 @@ describe('LanguageTestResultsComponent', () => {
       expect(component.flashcardsGenerated()).toBeFalse();
     });
 
-    it('should redirect when result is null', () => {
+    it('should show empty state when result is null', () => {
       resultsServiceMock.getLatestResult.and.returnValue(of(null));
 
       fixture.detectChanges();
 
-      expect(routerMock.navigate).toHaveBeenCalledWith(['/language-test']);
+      expect(component.loading()).toBeFalse();
+      expect(component.result()).toBeNull();
     });
 
     it('should redirect for invalid level', () => {

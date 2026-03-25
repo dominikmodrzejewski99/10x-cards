@@ -64,6 +64,10 @@ export class FlashcardFormComponent implements OnInit {
   public frontLanguageSignal: WritableSignal<FlashcardLanguage | null> = signal<FlashcardLanguage | null>(null);
   public backLanguageSignal: WritableSignal<FlashcardLanguage | null> = signal<FlashcardLanguage | null>(null);
 
+  public showLanguageSignal: WritableSignal<boolean> = signal<boolean>(false);
+  public showImageSignal: WritableSignal<boolean> = signal<boolean>(false);
+  public showAudioSignal: WritableSignal<boolean> = signal<boolean>(false);
+
   public audioPreviewSignal: WritableSignal<string | null> = signal<string | null>(null);
   public audioUploadingSignal: WritableSignal<boolean> = signal<boolean>(false);
   public audioErrorSignal: WritableSignal<string | null> = signal<string | null>(null);
@@ -316,6 +320,9 @@ export class FlashcardFormComponent implements OnInit {
         this.audioPreviewSignal.set(flashcard.back_audio_url || null);
         this.frontLanguageSignal.set(flashcard.front_language || null);
         this.backLanguageSignal.set(flashcard.back_language || null);
+        this.showLanguageSignal.set(!!flashcard.front_language || !!flashcard.back_language);
+        this.showImageSignal.set(!!flashcard.front_image_url);
+        this.showAudioSignal.set(!!flashcard.back_audio_url);
       } else {
         this.flashcardForm.reset();
         this.pendingImageUrl = null;

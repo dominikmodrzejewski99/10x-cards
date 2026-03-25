@@ -12,7 +12,6 @@
     <div class="hero__cta" data-animate="fade-up">
       <a routerLink="/register" class="btn btn--primary">Zacznij za darmo</a>
       <button class="btn btn--outline" (click)="tryAnonymously()">Wypróbuj bez rejestracji</button>
-      <a routerLink="/login" class="btn btn--ghost">Mam już konto</a>
     </div>
   </div>
 </section>
@@ -20,25 +19,28 @@
 <!-- Jak to działa -->
 <section class="section section--alt">
   <div class="landing__inner">
-    <h2 class="section__title" data-animate="fade-up">Cztery kroki do lepszej nauki</h2>
+    <h2 class="section__title" data-animate="fade-up">Nasze cztery kroki do <span class="section__accent">skutecznej</span> nauki</h2>
     <div class="steps">
       <div class="step" data-animate="slide-left">
-        <div class="step__num">1</div>
+        <div class="step__icon"><i class="pi pi-upload"></i></div>
         <h3 class="step__title">Wrzuć materiał</h3>
         <p class="step__desc">Skopiuj fragment notatek, artykuł naukowy albo rozdział z książki.</p>
       </div>
+      <div class="step__arrow" data-animate="fade-up"><i class="pi pi-chevron-right"></i></div>
       <div class="step" data-animate="slide-right">
-        <div class="step__num">2</div>
+        <div class="step__icon"><i class="pi pi-sparkles"></i></div>
         <h3 class="step__title">Odbierz fiszki</h3>
         <p class="step__desc">AI wyciągnie kluczowe pojęcia i ułoży je w pytania i odpowiedzi.</p>
       </div>
+      <div class="step__arrow" data-animate="fade-up"><i class="pi pi-chevron-right"></i></div>
       <div class="step" data-animate="slide-left">
-        <div class="step__num">3</div>
+        <div class="step__icon"><i class="pi pi-folder"></i></div>
         <h3 class="step__title">Utwórz zestaw</h3>
         <p class="step__desc">Grupuj fiszki tematycznie — osobny zestaw na każdy przedmiot czy rozdział.</p>
       </div>
+      <div class="step__arrow" data-animate="fade-up"><i class="pi pi-chevron-right"></i></div>
       <div class="step" data-animate="slide-right">
-        <div class="step__num">4</div>
+        <div class="step__icon"><i class="pi pi-sync"></i></div>
         <h3 class="step__title">Powtarzaj z głową</h3>
         <p class="step__desc">Algorytm sam ustali, kiedy warto wrócić do danego pytania.</p>
       </div>
@@ -86,7 +88,7 @@
 <!-- Funkcje -->
 <section class="section section--alt">
   <div class="landing__inner">
-    <h2 class="section__title" data-animate="fade-up">Co dostajesz</h2>
+    <h2 class="section__title" data-animate="fade-up">Wszystko, czego <span class="section__accent">potrzebujesz</span></h2>
     <div class="features">
       <div class="fcard" data-animate="slide-left">
         <i class="pi pi-bolt fcard__icon fcard__icon--blue"></i>

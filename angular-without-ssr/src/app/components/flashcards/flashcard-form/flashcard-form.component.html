@@ -1,37 +1,4 @@
 <form [formGroup]="flashcardForm" (ngSubmit)="onSubmit()" class="p-fluid bg-white" data-test-id="flashcard-form">
-  <div class="flex gap-3 mb-4">
-    <div class="flex-1">
-      <label class="block mb-2 text-gray-700 font-medium text-sm">Język pytania</label>
-      <p-select
-        [options]="LANGUAGES"
-        optionLabel="label"
-        optionValue="value"
-        [ngModel]="frontLanguageSignal()"
-        [ngModelOptions]="{ standalone: true }"
-        (ngModelChange)="frontLanguageSignal.set($event)"
-        [style]="{ width: '100%' }"
-        [showClear]="!!frontLanguageSignal()"
-        placeholder="Brak"
-        data-test-id="front-language-select">
-      </p-select>
-    </div>
-    <div class="flex-1">
-      <label class="block mb-2 text-gray-700 font-medium text-sm">Język odpowiedzi</label>
-      <p-select
-        [options]="LANGUAGES"
-        optionLabel="label"
-        optionValue="value"
-        [ngModel]="backLanguageSignal()"
-        [ngModelOptions]="{ standalone: true }"
-        (ngModelChange)="backLanguageSignal.set($event)"
-        [style]="{ width: '100%' }"
-        [showClear]="!!backLanguageSignal()"
-        placeholder="Brak"
-        data-test-id="back-language-select">
-      </p-select>
-    </div>
-  </div>
-
   <div class="field mb-4">
     <label for="front" class="block mb-2 text-gray-700 font-medium">Przód fiszki <span class="text-red-500">*</span></label>
     <input
@@ -70,7 +37,94 @@
   </div>
 
   <div class="field mb-4">
-    <label class="block mb-2 text-gray-700 font-medium">Obrazek (opcjonalnie)</label>
+    <label for="back" class="block mb-2 text-gray-700 font-medium">Tył fiszki <span class="text-red-500">*</span></label>
+    <textarea
+      id="back"
+      rows="4"
+      pTextarea
+      formControlName="back"
+      [class.ng-invalid]="hasError('back', 'required') || hasError('back', 'maxlength') || hasError('back', 'whitespace')"
+      class="w-full p-inputtextarea bg-white text-gray-800 border border-gray-300 rounded-md"
+      [placeholder]="frontLanguageSignal() && backLanguageSignal() ? 'Wpisz tłumaczenie, np. dom; budynek; rodzina' : 'Wpisz odpowiedź lub definicję (max. 1000 znaków)'"
+      data-test-id="back-input"
+    ></textarea>
+
+    <div class="mt-1 flex justify-between">
+      <div>
+        @if (hasError('back', 'required')) {
+        <small class="text-red-500 block" data-test-id="back-required-error">
+          Tył fiszki jest wymagany.
+        </small>
+        }
+        @if (hasError('back', 'maxlength')) {
+        <small class="text-red-500 block" data-test-id="back-maxlength-error">
+          Tył fiszki nie może być dłuższy niż {{ BACK_MAX_LENGTH }} znaków.
+        </small>
+        }
+        @if (hasError('back', 'whitespace')) {
+        <small class="text-red-500 block" data-test-id="back-whitespace-error">
+          Tył fiszki nie może zawierać tylko białych znaków.
+        </small>
+        }
+      </div>
+      <small class="text-gray-500 block">
+        {{ backControl?.value?.length || 0 }}/{{ BACK_MAX_LENGTH }}
+      </small>
+    </div>
+  </div>
+
+  <!-- Optional sections -->
+  <div class="form-extras">
+    <span class="form-extras__label">Opcjonalne:</span>
+    <button type="button" class="form-chip" [class.form-chip--active]="showLanguageSignal()" (click)="showLanguageSignal.set(!showLanguageSignal())">
+      <i class="pi pi-language"></i> Język
+    </button>
+    <button type="button" class="form-chip" [class.form-chip--active]="showImageSignal()" (click)="showImageSignal.set(!showImageSignal())">
+      <i class="pi pi-image"></i> Obrazek
+    </button>
+    <button type="button" class="form-chip" [class.form-chip--active]="showAudioSignal()" (click)="showAudioSignal.set(!showAudioSignal())">
+      <i class="pi pi-microphone"></i> Audio
+    </button>
+  </div>
+
+  @if (showLanguageSignal()) {
+  <div class="flex gap-3 mb-4">
+    <div class="flex-1">
+      <label class="block mb-2 text-gray-700 font-medium text-sm">Język pytania</label>
+      <p-select
+        [options]="LANGUAGES"
+        optionLabel="label"
+        optionValue="value"
+        [ngModel]="frontLanguageSignal()"
+        [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="frontLanguageSignal.set($event)"
+        [style]="{ width: '100%' }"
+        [showClear]="!!frontLanguageSignal()"
+        placeholder="Brak"
+        data-test-id="front-language-select">
+      </p-select>
+    </div>
+    <div class="flex-1">
+      <label class="block mb-2 text-gray-700 font-medium text-sm">Język odpowiedzi</label>
+      <p-select
+        [options]="LANGUAGES"
+        optionLabel="label"
+        optionValue="value"
+        [ngModel]="backLanguageSignal()"
+        [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="backLanguageSignal.set($event)"
+        [style]="{ width: '100%' }"
+        [showClear]="!!backLanguageSignal()"
+        placeholder="Brak"
+        data-test-id="back-language-select">
+      </p-select>
+    </div>
+  </div>
+  }
+
+  @if (showImageSignal()) {
+  <div class="field mb-4">
+    <label class="block mb-2 text-gray-700 font-medium">Obrazek</label>
 
     @if (imagePreviewSignal()) {
       <div class="image-preview">
@@ -114,9 +168,11 @@
       </small>
     }
   </div>
+  }
 
+  @if (showAudioSignal()) {
   <div class="field mb-4">
-    <label class="block mb-2 text-gray-700 font-medium">Notatka głosowa — tył (opcjonalnie)</label>
+    <label class="block mb-2 text-gray-700 font-medium">Notatka głosowa — tył</label>
 
     <div class="audio-section">
       <div class="audio-preview"
@@ -178,43 +234,7 @@
       </small>
     }
   </div>
-
-  <div class="field mb-4">
-    <label for="back" class="block mb-2 text-gray-700 font-medium">Tył fiszki <span class="text-red-500">*</span></label>
-    <textarea
-      id="back"
-      rows="4"
-      pTextarea
-      formControlName="back"
-      [class.ng-invalid]="hasError('back', 'required') || hasError('back', 'maxlength') || hasError('back', 'whitespace')"
-      class="w-full p-inputtextarea bg-white text-gray-800 border border-gray-300 rounded-md"
-      [placeholder]="frontLanguageSignal() && backLanguageSignal() ? 'Wpisz tłumaczenie, np. dom; budynek; rodzina' : 'Wpisz odpowiedź lub definicję (max. 1000 znaków)'"
-      data-test-id="back-input"
-    ></textarea>
-
-    <div class="mt-1 flex justify-between">
-      <div>
-        @if (hasError('back', 'required')) {
-        <small class="text-red-500 block" data-test-id="back-required-error">
-          Tył fiszki jest wymagany.
-        </small>
-        }
-        @if (hasError('back', 'maxlength')) {
-        <small class="text-red-500 block" data-test-id="back-maxlength-error">
-          Tył fiszki nie może być dłuższy niż {{ BACK_MAX_LENGTH }} znaków.
-        </small>
-        }
-        @if (hasError('back', 'whitespace')) {
-        <small class="text-red-500 block" data-test-id="back-whitespace-error">
-          Tył fiszki nie może zawierać tylko białych znaków.
-        </small>
-        }
-      </div>
-      <small class="text-gray-500 block">
-        {{ backControl?.value?.length || 0 }}/{{ BACK_MAX_LENGTH }}
-      </small>
-    </div>
-  </div>
+  }
 
   <div class="flex justify-end gap-2 mt-4">
     <button

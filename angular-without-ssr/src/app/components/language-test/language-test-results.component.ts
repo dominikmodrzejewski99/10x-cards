@@ -47,12 +47,10 @@ export class LanguageTestResultsComponent implements OnInit {
 
     this.resultsService.getLatestResult(level).subscribe({
       next: result => {
-        if (!result) {
-          this.router.navigate(['/language-test']);
-          return;
+        if (result) {
+          this.result.set(result);
+          this.flashcardsGenerated.set(result.generated_set_id !== null);
         }
-        this.result.set(result);
-        this.flashcardsGenerated.set(result.generated_set_id !== null);
         this.loading.set(false);
       },
       error: () => {

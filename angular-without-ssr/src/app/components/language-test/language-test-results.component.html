@@ -74,5 +74,20 @@
         <i class="pi pi-exclamation-triangle"></i> {{ error() }}
       </div>
     }
+  } @else {
+    <div class="test-results__empty fade-in">
+      @if (error()) {
+        <i class="pi pi-exclamation-triangle test-results__empty-icon test-results__empty-icon--error"></i>
+        <h2 class="test-results__empty-title">Błąd ładowania</h2>
+        <p class="test-results__empty-text">{{ error() }}</p>
+      } @else {
+        <i class="pi pi-inbox test-results__empty-icon"></i>
+        <h2 class="test-results__empty-title">Brak wyników</h2>
+        <p class="test-results__empty-text">Nie znaleziono wyników dla tego testu. Wykonaj test, aby zobaczyć wyniki.</p>
+      }
+      <a routerLink="/language-test" class="test-results__btn test-results__btn--primary">
+        <i class="pi pi-arrow-left"></i> Wróć do testów
+      </a>
+    </div>
   }
 </div>
