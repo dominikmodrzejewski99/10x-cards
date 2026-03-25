@@ -170,4 +170,51 @@ describe('AuthNavbarComponent', () => {
     expect(component.isAuthenticatedSignal()).toBeFalse();
     expect(component.isAnonymousSignal()).toBeFalse();
   });
+
+  describe('learn dropdown', () => {
+    it('should initialize with learn dropdown closed', () => {
+      expect(component.learnOpenSignal()).toBeFalse();
+    });
+
+    it('should toggle learn dropdown', () => {
+      component.toggleLearn();
+      expect(component.learnOpenSignal()).toBeTrue();
+
+      component.toggleLearn();
+      expect(component.learnOpenSignal()).toBeFalse();
+    });
+
+    it('should open and close learn dropdown', () => {
+      component.openLearn();
+      expect(component.learnOpenSignal()).toBeTrue();
+
+      component.closeLearn();
+      expect(component.learnOpenSignal()).toBeFalse();
+    });
+
+    it('should close learn dropdown on escape', () => {
+      component.learnOpenSignal.set(true);
+      component.onEscape();
+      expect(component.learnOpenSignal()).toBeFalse();
+    });
+
+    it('should close learn dropdown when clicking outside', () => {
+      component.learnOpenSignal.set(true);
+      const outsideEvent: MouseEvent = new MouseEvent('click');
+      Object.defineProperty(outsideEvent, 'target', { value: document.createElement('div') });
+      component.onDocumentClick(outsideEvent);
+      expect(component.learnOpenSignal()).toBeFalse();
+    });
+
+    it('should show dropdown menu when learn is open and authenticated', () => {
+      mockAuthStore.authChecked.set(true);
+      mockAuthStore.isAuthenticated.set(true);
+      component.learnOpenSignal.set(true);
+      fixture.detectChanges();
+
+      const el: HTMLElement = fixture.nativeElement;
+      const dropdownMenu: HTMLElement | null = el.querySelector('.navbar__dropdown-menu');
+      expect(dropdownMenu).toBeTruthy();
+    });
+  });
 });

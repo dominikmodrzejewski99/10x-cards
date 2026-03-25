@@ -154,11 +154,6 @@
   white-space: nowrap;
 }
 
-/* ---- Nav section ---- */
-.dropdown-nav {
-  padding: 0.375rem 0;
-}
-
 .dropdown-item {
   display: flex;
   align-items: center;
@@ -198,6 +193,23 @@
 .dropdown-footer {
   border-top: 1px solid #f0f1f5;
   padding: 0.375rem 0;
+}
+
+.dropdown-item--delete {
+  color: $color-text-secondary;
+}
+
+.dropdown-item--delete i {
+  color: #8b92a5;
+}
+
+.dropdown-item--delete:hover {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.dropdown-item--delete:hover i {
+  color: #b91c1c;
 }
 
 .dropdown-item--logout {
