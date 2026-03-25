@@ -1,5 +1,5 @@
 <div class="test-view">
-  @if (loading()) {
+  @if (loadingSignal()) {
     <!-- Progress skeleton -->
     <div class="test-view__progress">
       <ngx-skeleton-loader [theme]="{ width: '3rem', height: '0.85rem' }"></ngx-skeleton-loader>
@@ -18,22 +18,26 @@
     <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
       <ngx-skeleton-loader [theme]="{ width: '8rem', height: '2.5rem', 'border-radius': '0.5rem' }"></ngx-skeleton-loader>
     </div>
-  } @else if (error()) {
+  } @else if (errorSignal()) {
     <div class="test-view__error">
       <i class="pi pi-exclamation-triangle"></i>
-      <p>{{ error() }}</p>
+      <p>{{ errorSignal() }}</p>
       <a routerLink="/language-test" class="test-view__back">← Wróć do wyboru testu</a>
     </div>
-  } @else if (currentQuestion(); as q) {
-    <!-- Progress -->
-    <div class="test-view__progress fade-in">
-      <span class="test-view__progress-text">{{ currentIndex() + 1 }}/{{ testDefinition()!.questions.length }}</span>
-      <div class="test-view__progress-bar">
-        <div class="test-view__progress-fill" [style.width.%]="progress()"></div>
-      </div>
-      <span class="test-view__progress-type">
+  } @else if (currentQuestionSignal(); as q) {
+    <!-- Progress header -->
+    <div class="test-view__header fade-in">
+      <span class="test-view__counter">{{ currentIndexSignal() + 1 }}/{{ testDefinitionSignal()!.questions.length }}</span>
+      <span class="test-view__type">
         {{ q.type === 'multiple-choice-cloze' ? 'Multiple Choice' : 'Word Formation' }}
       </span>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="test-view__progress fade-in">
+      <div class="test-view__progress-bar">
+        <div class="test-view__progress-fill" [style.width.%]="progressSignal()"></div>
+      </div>
     </div>
 
     <!-- Multiple Choice Cloze -->
@@ -45,11 +49,12 @@
         @for (option of q.options; track $index) {
           <button
             class="test-view__option"
-            [class.test-view__option--selected]="selectedOption() === $index"
+            [class.test-view__option--selected]="selectedOptionSignal() === $index"
             (click)="selectOption($index)"
           >
             <span class="test-view__option-letter">{{ ['A','B','C','D'][$index] }}</span>
-            {{ option }}
+            <span class="test-view__option-text">{{ option }}</span>
+            <span class="test-view__option-key">{{ $index + 1 }}</span>
           </button>
         }
       </div>
@@ -67,28 +72,46 @@
       <input
         type="text"
         class="test-view__input"
-        [ngModel]="wordFormationInput()"
-        (ngModelChange)="wordFormationInput.set($event)"
+        [ngModel]="wordFormationInputSignal()"
+        (ngModelChange)="wordFormationInputSignal.set($event)"
         placeholder="Wpisz odpowiedź..."
-        (keydown.enter)="canProceed() && next()"
+        (keydown.enter)="canProceedSignal() && next()"
       />
     }
 
-    <!-- Next button -->
+    <!-- Actions -->
     <div class="test-view__actions">
       <button
-        class="test-view__next"
-        [disabled]="!canProceed() || submitting()"
-        (click)="next()"
+        class="test-view__prev"
+        [disabled]="isFirstQuestionSignal()"
+        (click)="previous()"
       >
-        @if (submitting()) {
-          <i class="pi pi-spin pi-spinner"></i> Zapisywanie...
-        } @else if (isLastQuestion()) {
-          Zakończ test
-        } @else {
-          Następne →
-        }
+        ← Poprzednie
       </button>
+
+      <div class="test-view__actions-right">
+        @if (!isLastQuestionSignal()) {
+          <button
+            class="test-view__skip"
+            (click)="skip()"
+          >
+            Pomiń →
+          </button>
+        }
+        <button
+          class="test-view__next"
+          [disabled]="!canProceedSignal() || submittingSignal()"
+          (click)="next()"
+        >
+          @if (submittingSignal()) {
+            <i class="pi pi-spin pi-spinner"></i> Zapisywanie...
+          } @else if (isLastQuestionSignal()) {
+            Zakończ test
+          } @else {
+            Następne →
+          }
+        </button>
+      </div>
     </div>
   }
 </div>

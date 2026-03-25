@@ -130,8 +130,8 @@ describe('LanguageTestViewComponent', () => {
       fixture.detectChanges();
 
       expect(bankServiceMock.getTest).toHaveBeenCalledWith('b2-fce');
-      expect(component.testDefinition()).toEqual(mockTestDefinition);
-      expect(component.loading()).toBeFalse();
+      expect(component.testDefinitionSignal()).toEqual(mockTestDefinition);
+      expect(component.loadingSignal()).toBeFalse();
     });
 
     it('should redirect to /language-test for invalid level', () => {
@@ -157,8 +157,8 @@ describe('LanguageTestViewComponent', () => {
 
       fixture.detectChanges();
 
-      expect(component.error()).toBe('Nie udało się załadować testu. Spróbuj ponownie.');
-      expect(component.loading()).toBeFalse();
+      expect(component.errorSignal()).toBe('Nie udało się załadować testu. Spróbuj ponownie.');
+      expect(component.loadingSignal()).toBeFalse();
     });
   });
 
@@ -167,64 +167,76 @@ describe('LanguageTestViewComponent', () => {
       fixture.detectChanges();
     });
 
-    it('currentQuestion should return the question at current index', () => {
-      expect(component.currentQuestion()).toEqual(mockMcQuestion);
+    it('currentQuestionSignal should return the question at current index', () => {
+      expect(component.currentQuestionSignal()).toEqual(mockMcQuestion);
     });
 
-    it('currentQuestion should return null when no test definition', () => {
-      component.testDefinition.set(null);
+    it('currentQuestionSignal should return null when no test definition', () => {
+      component.testDefinitionSignal.set(null);
 
-      expect(component.currentQuestion()).toBeNull();
+      expect(component.currentQuestionSignal()).toBeNull();
     });
 
-    it('progress should compute correct percentage', () => {
-      component.currentIndex.set(0);
+    it('progressSignal should compute correct percentage', () => {
+      component.currentIndexSignal.set(0);
 
-      expect(component.progress()).toBe(0); // 0/2 * 100 = 0
+      expect(component.progressSignal()).toBe(0);
     });
 
-    it('progress should update as questions are answered', () => {
-      component.currentIndex.set(1);
+    it('progressSignal should update as questions are answered', () => {
+      component.currentIndexSignal.set(1);
 
-      expect(component.progress()).toBe(50); // 1/2 * 100 = 50
+      expect(component.progressSignal()).toBe(50);
     });
 
-    it('isLastQuestion should return false for first question', () => {
-      component.currentIndex.set(0);
+    it('isLastQuestionSignal should return false for first question', () => {
+      component.currentIndexSignal.set(0);
 
-      expect(component.isLastQuestion()).toBeFalse();
+      expect(component.isLastQuestionSignal()).toBeFalse();
     });
 
-    it('isLastQuestion should return true for last question', () => {
-      component.currentIndex.set(1);
+    it('isLastQuestionSignal should return true for last question', () => {
+      component.currentIndexSignal.set(1);
 
-      expect(component.isLastQuestion()).toBeTrue();
+      expect(component.isLastQuestionSignal()).toBeTrue();
     });
 
-    it('canProceed should return false when no option selected for MC', () => {
-      component.selectedOption.set(null);
+    it('isFirstQuestionSignal should return true for first question', () => {
+      component.currentIndexSignal.set(0);
 
-      expect(component.canProceed()).toBeFalse();
+      expect(component.isFirstQuestionSignal()).toBeTrue();
     });
 
-    it('canProceed should return true when option is selected for MC', () => {
-      component.selectedOption.set(1);
+    it('isFirstQuestionSignal should return false for non-first question', () => {
+      component.currentIndexSignal.set(1);
 
-      expect(component.canProceed()).toBeTrue();
+      expect(component.isFirstQuestionSignal()).toBeFalse();
     });
 
-    it('canProceed should return true for word-formation when input has text', () => {
-      component.currentIndex.set(1); // word-formation question
-      component.wordFormationInput.set('construction');
+    it('canProceedSignal should return false when no option selected for MC', () => {
+      component.selectedOptionSignal.set(null);
 
-      expect(component.canProceed()).toBeTrue();
+      expect(component.canProceedSignal()).toBeFalse();
     });
 
-    it('canProceed should return false for word-formation when input is empty', () => {
-      component.currentIndex.set(1);
-      component.wordFormationInput.set('  ');
+    it('canProceedSignal should return true when option is selected for MC', () => {
+      component.selectedOptionSignal.set(1);
 
-      expect(component.canProceed()).toBeFalse();
+      expect(component.canProceedSignal()).toBeTrue();
+    });
+
+    it('canProceedSignal should return true for word-formation when input has text', () => {
+      component.currentIndexSignal.set(1);
+      component.wordFormationInputSignal.set('construction');
+
+      expect(component.canProceedSignal()).toBeTrue();
+    });
+
+    it('canProceedSignal should return false for word-formation when input is empty', () => {
+      component.currentIndexSignal.set(1);
+      component.wordFormationInputSignal.set('  ');
+
+      expect(component.canProceedSignal()).toBeFalse();
     });
   });
 
@@ -232,7 +244,62 @@ describe('LanguageTestViewComponent', () => {
     it('should set selected option index', () => {
       component.selectOption(2);
 
-      expect(component.selectedOption()).toBe(2);
+      expect(component.selectedOptionSignal()).toBe(2);
+    });
+  });
+
+  describe('onKeydown', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('should select option when pressing 1-4 on MC question', () => {
+      const event: KeyboardEvent = new KeyboardEvent('keydown', { key: '2' });
+      spyOn(event, 'preventDefault');
+
+      component.onKeydown(event);
+
+      expect(component.selectedOptionSignal()).toBe(1);
+      expect(event.preventDefault).toHaveBeenCalled();
+    });
+
+    it('should not select option when pressing key > number of options', () => {
+      component.selectedOptionSignal.set(null);
+      const event: KeyboardEvent = new KeyboardEvent('keydown', { key: '5' });
+
+      component.onKeydown(event);
+
+      expect(component.selectedOptionSignal()).toBeNull();
+    });
+
+    it('should call next on Enter when canProceed is true', () => {
+      component.selectedOptionSignal.set(1);
+      spyOn(component, 'next');
+      const event: KeyboardEvent = new KeyboardEvent('keydown', { key: 'Enter' });
+      spyOn(event, 'preventDefault');
+
+      component.onKeydown(event);
+
+      expect(component.next).toHaveBeenCalled();
+    });
+
+    it('should not call next on Enter when canProceed is false', () => {
+      component.selectedOptionSignal.set(null);
+      spyOn(component, 'next');
+      const event: KeyboardEvent = new KeyboardEvent('keydown', { key: 'Enter' });
+
+      component.onKeydown(event);
+
+      expect(component.next).not.toHaveBeenCalled();
+    });
+
+    it('should do nothing when loading', () => {
+      component.loadingSignal.set(true);
+      const event: KeyboardEvent = new KeyboardEvent('keydown', { key: '1' });
+
+      component.onKeydown(event);
+
+      expect(component.selectedOptionSignal()).toBeNull();
     });
   });
 
@@ -241,36 +308,35 @@ describe('LanguageTestViewComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should add answer and advance to next question for MC question', () => {
-      component.selectedOption.set(1);
+    it('should save answer and advance to next question for MC question', () => {
+      component.selectedOptionSignal.set(1);
 
       component.next();
 
-      expect(component.answers().length).toBe(1);
-      expect(component.answers()[0].questionId).toBe('q1');
-      expect(component.answers()[0].answer).toBe(1);
-      expect(component.currentIndex()).toBe(1);
-      expect(component.selectedOption()).toBeNull();
+      expect(component.answersMapSignal().size).toBe(1);
+      const answer: TestAnswer | undefined = component.answersMapSignal().get(0);
+      expect(answer?.questionId).toBe('q1');
+      expect(answer?.answer).toBe(1);
+      expect(component.currentIndexSignal()).toBe(1);
+      expect(component.selectedOptionSignal()).toBeNull();
     });
 
-    it('should add answer with text for word-formation question', () => {
-      component.currentIndex.set(1);
-      component.wordFormationInput.set('construction');
+    it('should save answer with text for word-formation question', () => {
+      component.currentIndexSignal.set(1);
+      component.wordFormationInputSignal.set('construction');
 
       component.next();
 
-      const lastAnswer: TestAnswer = component.answers()[component.answers().length - 1];
-      expect(lastAnswer.questionId).toBe('q2');
-      expect(lastAnswer.answer).toBe('construction');
+      const answer: TestAnswer | undefined = component.answersMapSignal().get(1);
+      expect(answer?.questionId).toBe('q2');
+      expect(answer?.answer).toBe('construction');
     });
 
     it('should submit test when on last question', () => {
-      // Answer first question
-      component.selectedOption.set(1);
+      component.selectedOptionSignal.set(1);
       component.next();
 
-      // Answer second (last) question
-      component.wordFormationInput.set('construction');
+      component.wordFormationInputSignal.set('construction');
       component.next();
 
       expect(testServiceMock.evaluateTest).toHaveBeenCalled();
@@ -281,30 +347,75 @@ describe('LanguageTestViewComponent', () => {
     it('should navigate to results even on save error', () => {
       resultsServiceMock.saveResult.and.returnValue(throwError(() => new Error('save failed')));
 
-      component.selectedOption.set(1);
+      component.selectedOptionSignal.set(1);
       component.next();
-      component.wordFormationInput.set('construction');
+      component.wordFormationInputSignal.set('construction');
       component.next();
 
       expect(routerMock.navigate).toHaveBeenCalledWith(['/language-test', 'b2-fce', 'results']);
     });
 
     it('should do nothing when currentQuestion is null', () => {
-      component.testDefinition.set(null);
+      component.testDefinitionSignal.set(null);
 
       component.next();
 
-      expect(component.answers().length).toBe(0);
+      expect(component.answersMapSignal().size).toBe(0);
     });
 
     it('should reset selectedOption and wordFormationInput after advancing', () => {
-      component.selectedOption.set(1);
-      component.wordFormationInput.set('test');
+      component.selectedOptionSignal.set(1);
+      component.wordFormationInputSignal.set('test');
 
       component.next();
 
-      expect(component.selectedOption()).toBeNull();
-      expect(component.wordFormationInput()).toBe('');
+      expect(component.selectedOptionSignal()).toBeNull();
+      expect(component.wordFormationInputSignal()).toBe('');
+    });
+  });
+
+  describe('skip', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('should advance without saving answer', () => {
+      component.skip();
+
+      expect(component.currentIndexSignal()).toBe(1);
+      expect(component.answersMapSignal().size).toBe(0);
+    });
+
+    it('should not advance past last question', () => {
+      component.currentIndexSignal.set(1);
+
+      component.skip();
+
+      expect(component.currentIndexSignal()).toBe(1);
+    });
+  });
+
+  describe('previous', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('should not go before first question', () => {
+      component.previous();
+
+      expect(component.currentIndexSignal()).toBe(0);
+    });
+
+    it('should go back and restore answer', () => {
+      component.selectedOptionSignal.set(1);
+      component.next();
+
+      expect(component.currentIndexSignal()).toBe(1);
+
+      component.previous();
+
+      expect(component.currentIndexSignal()).toBe(0);
+      expect(component.selectedOptionSignal()).toBe(1);
     });
   });
 });
