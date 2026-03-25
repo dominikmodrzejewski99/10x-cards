@@ -12,7 +12,7 @@
         class="ftable__search-input"
         data-test-id="search-input" />
       @if (searchTerm) {
-        <button class="ftable__search-clear" (click)="onResetFilter()" title="Wyczyść">
+        <button class="ftable__search-clear" (click)="onResetFilter()" title="Wyczyść" aria-label="Wyczyść wyszukiwanie">
           <i class="pi pi-times"></i>
         </button>
       }
@@ -75,7 +75,7 @@
             <div class="ftable__card-side">
               <span class="ftable__card-label">Przód</span>
               @if (flashcard.front_image_url) {
-                <img [src]="flashcard.front_image_url" alt="" class="ftable__card-thumb" />
+                <img [src]="flashcard.front_image_url" [alt]="'Obrazek do: ' + flashcard.front" class="ftable__card-thumb" />
               }
               <p class="ftable__card-text">{{ flashcard.front }}</p>
             </div>
@@ -96,6 +96,7 @@
               (click)="editFlashcard.emit(flashcard)"
               [disabled]="loadingSignal()"
               title="Edytuj"
+              aria-label="Edytuj fiszkę"
               data-test-id="edit-button">
               <i class="pi pi-pencil"></i>
             </button>
@@ -104,6 +105,7 @@
               (click)="deleteFlashcard.emit(flashcard)"
               [disabled]="loadingSignal()"
               title="Usuń"
+              aria-label="Usuń fiszkę"
               data-test-id="delete-button">
               <i class="pi pi-trash"></i>
             </button>
@@ -117,7 +119,8 @@
         <button
           class="ftable__page-btn"
           [disabled]="firstSignal() === 0 || loadingSignal()"
-          (click)="goToPage(firstSignal() - rowsSignal())">
+          (click)="goToPage(firstSignal() - rowsSignal())"
+          aria-label="Poprzednia strona">
           <i class="pi pi-chevron-left"></i>
         </button>
         <span class="ftable__page-info">
@@ -126,7 +129,8 @@
         <button
           class="ftable__page-btn"
           [disabled]="firstSignal() + rowsSignal() >= totalRecordsSignal() || loadingSignal()"
-          (click)="goToPage(firstSignal() + rowsSignal())">
+          (click)="goToPage(firstSignal() + rowsSignal())"
+          aria-label="Następna strona">
           <i class="pi pi-chevron-right"></i>
         </button>
       </div>

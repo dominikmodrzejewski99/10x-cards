@@ -81,10 +81,12 @@
                   placeholder="Tył" />
                 <div class="import__edit-actions">
                   <button class="import__btn import__btn--small import__btn--primary"
+                    aria-label="Zapisz zmiany"
                     (click)="saveEdit(proposal._id, frontInput.value, backInput.value)">
                     <i class="pi pi-check"></i>
                   </button>
                   <button class="import__btn import__btn--small import__btn--ghost"
+                    aria-label="Anuluj edycję"
                     (click)="cancelEdit()">
                     <i class="pi pi-times"></i>
                   </button>
@@ -97,13 +99,13 @@
                 <div class="import__card-back">{{ proposal.back }}</div>
               </div>
               <div class="import__card-actions">
-                <button class="import__icon-btn" title="Edytuj" (click)="startEdit(proposal._id)">
+                <button class="import__icon-btn" title="Edytuj" aria-label="Edytuj fiszkę" (click)="startEdit(proposal._id)">
                   <i class="pi pi-pencil"></i>
                 </button>
-                <button class="import__icon-btn" title="Akceptuj/Odrzuć" (click)="toggleAccept(proposal._id)">
+                <button class="import__icon-btn" title="Akceptuj/Odrzuć" [attr.aria-label]="proposal.accepted ? 'Odrzuć fiszkę' : 'Akceptuj fiszkę'" (click)="toggleAccept(proposal._id)">
                   <i [class]="proposal.accepted ? 'pi pi-check-circle' : 'pi pi-circle'"></i>
                 </button>
-                <button class="import__icon-btn import__icon-btn--danger" title="Usuń" (click)="removeProposal(proposal._id)">
+                <button class="import__icon-btn import__icon-btn--danger" title="Usuń" aria-label="Usuń fiszkę" (click)="removeProposal(proposal._id)">
                   <i class="pi pi-trash"></i>
                 </button>
               </div>

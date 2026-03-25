@@ -209,18 +209,14 @@ export class QuizViewComponent implements OnInit, OnDestroy {
   }
 
   private loadFlashcards(setId: number): void {
-    this.flashcardApiService.getFlashcards({
-      limit: 9999,
-      offset: 0,
-      setId
-    }).subscribe({
-      next: (response) => {
-        if (response.flashcards.length < 4) {
+    this.flashcardApiService.getAllFlashcardsForSet(setId).subscribe({
+      next: (flashcards: FlashcardDTO[]) => {
+        if (flashcards.length < 4) {
           this.errorMessageSignal.set('Zestaw musi mieć minimum 4 fiszki, aby uruchomić test.');
           this.phaseSignal.set('error');
           return;
         }
-        this.flashcardsSignal.set(response.flashcards);
+        this.flashcardsSignal.set(flashcards);
         this.phaseSignal.set('config');
       },
       error: () => {

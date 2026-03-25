@@ -1,7 +1,9 @@
-import { Component, ChangeDetectionStrategy, AfterViewInit, ViewChild, inject, effect, Signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, AfterViewInit, ViewChild, inject, effect, Signal, WritableSignal, signal, OnDestroy } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { AuthNavbarComponent } from './shared/components/auth-navbar.component';
 import { BottomNavComponent } from './shared/components/bottom-nav/bottom-nav.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
@@ -15,13 +17,17 @@ import { UpdateService } from './services/update.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ButtonModule, RouterModule, ToastModule, AuthNavbarComponent, BottomNavComponent, OnboardingComponent],
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements AfterViewInit, OnDestroy {
   private readonly authStore = inject(AuthStore);
   private readonly updateService: UpdateService = inject(UpdateService);
+  private readonly router: Router = inject(Router);
 
   public isAuthenticatedSignal: Signal<boolean> = this.authStore.isAuthenticated;
+  public navigatingSignal: WritableSignal<boolean> = signal<boolean>(false);
   public title: string = 'Memlo - Twórz i zarządzaj fiszkami efektywnie';
   public currentYear: number = new Date().getFullYear();
+
+  private routerSub: Subscription;
 
   @ViewChild(OnboardingComponent) private onboarding!: OnboardingComponent;
 
@@ -31,6 +37,17 @@ export class AppComponent implements AfterViewInit {
   constructor() {
     this.authStore.checkAuthState();
     this.updateService.checkForUpdates();
+
+    this.routerSub = this.router.events.pipe(
+      filter((e): e is NavigationStart | NavigationEnd | NavigationCancel | NavigationError =>
+        e instanceof NavigationStart ||
+        e instanceof NavigationEnd ||
+        e instanceof NavigationCancel ||
+        e instanceof NavigationError
+      )
+    ).subscribe((e) => {
+      this.navigatingSignal.set(e instanceof NavigationStart);
+    });
 
     effect(() => {
       const trigger: number = this.authStore.onboardingTrigger();
@@ -46,6 +63,10 @@ export class AppComponent implements AfterViewInit {
       this.pendingOnboarding = false;
       setTimeout(() => this.onboarding?.checkAndShow(), 300);
     }
+  }
+
+  public ngOnDestroy(): void {
+    this.routerSub.unsubscribe();
   }
 
   private triggerOnboarding(): void {

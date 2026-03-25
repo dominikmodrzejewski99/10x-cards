@@ -28,7 +28,7 @@ import { AuthStore } from '../store';
                 formControlName="password"
                 placeholder="Minimum 6 znaków"
               />
-              @if (submittedSignal() && form.controls['password'].errors) {
+              @if ((submittedSignal() || form.controls['password'].touched) && form.controls['password'].errors) {
                 <div class="auth-error">
                   @if (form.controls['password'].errors['required']) {
                     <span>Hasło jest wymagane</span>
@@ -49,7 +49,7 @@ import { AuthStore } from '../store';
                 formControlName="confirmPassword"
                 placeholder="Powtórz nowe hasło"
               />
-              @if (submittedSignal() && mismatchSignal()) {
+              @if ((submittedSignal() || form.controls['confirmPassword'].touched) && mismatchSignal()) {
                 <div class="auth-error">
                   <span>Hasła nie są zgodne</span>
                 </div>
@@ -200,6 +200,13 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     confirmPassword: ['', [Validators.required]]
   });
 
+  private formSub: Subscription = this.form.valueChanges.subscribe(() => {
+    const { password, confirmPassword } = this.form.value;
+    if (this.form.controls['confirmPassword'].touched && confirmPassword) {
+      this.mismatchSignal.set(password !== confirmPassword);
+    }
+  });
+
   ngOnInit(): void {
     const supabase = this.supabaseFactory.getClient();
 
@@ -227,6 +234,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.authListenerCleanup?.data.subscription.unsubscribe();
+    this.formSub.unsubscribe();
   }
 
   public onSubmit(): void {

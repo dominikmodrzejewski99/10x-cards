@@ -76,7 +76,7 @@ describe('QuizViewComponent', () => {
   beforeEach(async () => {
     routeParamsSubject = new BehaviorSubject<Record<string, string>>({ setId: '14' });
 
-    flashcardApiServiceMock = jasmine.createSpyObj<FlashcardApiService>('FlashcardApiService', ['getFlashcards']);
+    flashcardApiServiceMock = jasmine.createSpyObj<FlashcardApiService>('FlashcardApiService', ['getFlashcards', 'getAllFlashcardsForSet']);
     flashcardSetApiServiceMock = jasmine.createSpyObj<FlashcardSetApiService>('FlashcardSetApiService', ['getSet']);
     quizServiceMock = jasmine.createSpyObj<QuizService>('QuizService', [
       'generateQuestions',
@@ -88,6 +88,7 @@ describe('QuizViewComponent', () => {
 
     flashcardSetApiServiceMock.getSet.and.returnValue(of(mockSet));
     flashcardApiServiceMock.getFlashcards.and.returnValue(of({ flashcards: mockFlashcards, totalRecords: mockFlashcards.length }));
+    flashcardApiServiceMock.getAllFlashcardsForSet.and.returnValue(of(mockFlashcards));
     quizServiceMock.generateQuestions.and.returnValue(mockQuestions);
     quizServiceMock.calculateResult.and.returnValue(mockResult);
     quizServiceMock.getGradeText.and.returnValue('Poćwicz jeszcze');
@@ -118,11 +119,7 @@ describe('QuizViewComponent', () => {
       fixture.detectChanges();
 
       expect(flashcardSetApiServiceMock.getSet).toHaveBeenCalledWith(14);
-      expect(flashcardApiServiceMock.getFlashcards).toHaveBeenCalledWith({
-        limit: 9999,
-        offset: 0,
-        setId: 14
-      });
+      expect(flashcardApiServiceMock.getAllFlashcardsForSet).toHaveBeenCalledWith(14);
       expect(component.setIdSignal()).toBe(14);
       expect(component.setNameSignal()).toBe('Angielski B2');
       expect(component.flashcardsSignal()).toEqual(mockFlashcards);
@@ -152,7 +149,7 @@ describe('QuizViewComponent', () => {
   describe('loadFlashcards', () => {
     it('powinien ustawic blad gdy zestaw ma mniej niz 4 fiszki', () => {
       const tooFewCards: FlashcardDTO[] = mockFlashcards.slice(0, 3);
-      flashcardApiServiceMock.getFlashcards.and.returnValue(of({ flashcards: tooFewCards, totalRecords: tooFewCards.length }));
+      flashcardApiServiceMock.getAllFlashcardsForSet.and.returnValue(of(tooFewCards));
 
       fixture.detectChanges();
 
@@ -161,7 +158,7 @@ describe('QuizViewComponent', () => {
     });
 
     it('powinien ustawic faze error gdy pobranie fiszek zakonczy sie bledem', () => {
-      flashcardApiServiceMock.getFlashcards.and.returnValue(throwError(() => new Error('Network error')));
+      flashcardApiServiceMock.getAllFlashcardsForSet.and.returnValue(throwError(() => new Error('Network error')));
 
       fixture.detectChanges();
 

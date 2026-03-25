@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, from, map, catchError, throwError, switchMap, of } from 'rxjs';
+import { Observable, from, map, catchError, throwError, switchMap, of, expand, reduce, EMPTY } from 'rxjs';
 import { FlashcardProposalDTO, FlashcardDTO, CreateFlashcardCommand, UpdateFlashcardCommand } from '../../types';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from './supabase-client.factory';
@@ -117,6 +117,27 @@ export class FlashcardApiService {
           catchError(error => throwError(() => error))
         );
       })
+    );
+  }
+
+  /**
+   * Pobiera wszystkie fiszki z zestawu, automatycznie paginując w partiach.
+   */
+  getAllFlashcardsForSet(setId: number): Observable<FlashcardDTO[]> {
+    const PAGE_SIZE: number = 500;
+    let currentOffset: number = 0;
+
+    return this.getFlashcards({ limit: PAGE_SIZE, offset: 0, setId }).pipe(
+      expand((response) => {
+        currentOffset += response.flashcards.length;
+
+        if (response.flashcards.length < PAGE_SIZE) {
+          return EMPTY;
+        }
+
+        return this.getFlashcards({ limit: PAGE_SIZE, offset: currentOffset, setId });
+      }),
+      reduce((acc: FlashcardDTO[], response) => [...acc, ...response.flashcards], [] as FlashcardDTO[])
     );
   }
 

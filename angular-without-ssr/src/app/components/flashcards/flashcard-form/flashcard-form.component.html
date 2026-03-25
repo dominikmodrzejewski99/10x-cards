@@ -198,11 +198,12 @@
           <button
             type="button"
             class="audio-upload__btn audio-upload__btn--record"
+            aria-label="Nagraj notatkę głosową"
             (click)="toggleRecorder()">
             <i class="pi pi-microphone"></i> Nagraj
           </button>
           <span class="audio-upload__divider">lub</span>
-          <label class="audio-upload__btn audio-upload__btn--file">
+          <label class="audio-upload__btn audio-upload__btn--file" aria-label="Wybierz plik audio">
             <i class="pi pi-upload"></i> Wybierz plik
             <input
               type="file"

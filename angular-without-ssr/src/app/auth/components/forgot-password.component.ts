@@ -37,7 +37,7 @@ import { AuthStore } from '../store';
                 formControlName="email"
                 placeholder="Wprowadź swój adres email"
               />
-              @if (submittedSignal() && form.controls['email'].errors) {
+              @if ((submittedSignal() || form.controls['email'].touched) && form.controls['email'].errors) {
                 <div class="auth-error">
                   @if (form.controls['email'].errors['required']) {
                     <span>Email jest wymagany</span>

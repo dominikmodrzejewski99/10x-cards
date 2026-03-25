@@ -1,10 +1,18 @@
 <p-toast position="top-right"></p-toast>
 
+@if (navigatingSignal()) {
+  <div class="app__nav-progress" aria-hidden="true">
+    <div class="app__nav-progress-bar"></div>
+  </div>
+}
+
 <div class="app">
   <app-auth-navbar></app-auth-navbar>
 
   <main class="app__main">
-    <router-outlet></router-outlet>
+    <div class="app__route-container" [class.app__route-container--navigating]="navigatingSignal()">
+      <router-outlet></router-outlet>
+    </div>
   </main>
 
   <footer class="app__footer">

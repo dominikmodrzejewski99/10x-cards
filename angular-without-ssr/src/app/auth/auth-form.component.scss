@@ -105,6 +105,12 @@ form {
   font-weight: 500;
 }
 
+.auth-form__hint {
+  color: #586380;
+  font-size: 0.8125rem;
+  font-style: italic;
+}
+
 .auth-form__error--global {
   margin-top: 1rem;
   text-align: center;

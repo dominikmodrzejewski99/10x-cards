@@ -1,8 +1,10 @@
-import { Component, ChangeDetectionStrategy, inject, signal, InputSignal, OutputEmitterRef, WritableSignal, Signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, InputSignal, OutputEmitterRef, WritableSignal, Signal, effect } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { input, output } from '@angular/core';
 import { AuthStore } from './store';
+import { AuthService } from './auth.service';
+import { emailExistsValidator } from './validators/email-exists.validator';
 
 @Component({
   selector: 'app-auth-form',
@@ -17,6 +19,7 @@ export class AuthFormComponent {
 
   private fb: FormBuilder = inject(FormBuilder);
   private authStore = inject(AuthStore);
+  private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
 
   public loadingSignal: Signal<boolean> = this.authStore.loading;
@@ -28,6 +31,21 @@ export class AuthFormComponent {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
+
+  constructor() {
+    effect(() => {
+      const isLogin: boolean = this.isLoginMode();
+      const emailControl = this.authForm.get('email');
+      if (!emailControl) return;
+
+      if (isLogin) {
+        emailControl.clearAsyncValidators();
+      } else {
+        emailControl.setAsyncValidators(emailExistsValidator(this.authService));
+      }
+      emailControl.updateValueAndValidity();
+    });
+  }
 
   public get f(): Record<string, import('@angular/forms').AbstractControl> {
     return this.authForm.controls;

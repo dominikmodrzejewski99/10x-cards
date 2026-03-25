@@ -237,6 +237,21 @@ export class AuthService {
   }
 
   /**
+   * Sprawdza czy email jest już zarejestrowany
+   */
+  checkEmailExists(email: string): Observable<boolean> {
+    return from(this.supabase.rpc('check_email_exists', { check_email: email })).pipe(
+      map(response => {
+        if (response.error) {
+          return false;
+        }
+        return !!response.data;
+      }),
+      catchError(() => of(false))
+    );
+  }
+
+  /**
    * Pobiera aktualnie zalogowanego użytkownika
    */
   getCurrentUser(): Observable<UserDTO | null> {
