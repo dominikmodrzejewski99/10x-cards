@@ -20,13 +20,14 @@ import { SpacedRepetitionService, Sm2Result } from '../../services/spaced-repeti
 import { StreakService } from '../../shared/services/streak.service';
 import { StudyCardDTO, ReviewQuality, SessionResultDTO, FlashcardSetDTO } from '../../../types';
 import { FlashcardFlipComponent } from './flashcard-flip/flashcard-flip.component';
+import { SyncStatusComponent } from '../../shared/components/sync-status/sync-status.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { launchConfetti } from '../../shared/utils/confetti';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-study-view',
-  imports: [RouterModule, FormsModule, FlashcardFlipComponent, NgxSkeletonLoaderModule],
+  imports: [RouterModule, FormsModule, FlashcardFlipComponent, SyncStatusComponent, NgxSkeletonLoaderModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './study-view.component.html',
   styleUrls: ['./study-view.component.scss'],
@@ -335,8 +336,7 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       error: () => {
         this.savingSignal.set(false);
-        this.errorSignal.set('Nie udało się zapisać odpowiedzi. Spróbuj ponownie.');
-
+        this.errorSignal.set('Nie udało się zapisać odpowiedzi.');
       }
     });
   }

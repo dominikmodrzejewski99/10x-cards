@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../page-objects/login-page';
 import { GeneratePage } from '../page-objects/generate-page';
-import { environment } from '../../../src/environments/environments.test';
+import { environment } from '../../../src/environments/environments';
 
 // Dodajemy dodatkowe logowanie dla lepszego debugowania
 test.beforeAll(async () => {

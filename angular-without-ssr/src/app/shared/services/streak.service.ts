@@ -38,7 +38,7 @@ export class StreakService {
     });
   }
 
-  /** Record session via DB RPC, update local signals. */
+  /** Record session via DB RPC, update local signals. Silently skips on network error. */
   recordSession(cardsReviewed: number): void {
     this.preferencesService.recordStudySession(cardsReviewed).subscribe({
       next: (prefs) => {
@@ -47,6 +47,9 @@ export class StreakService {
         this._totalSessions.set(prefs.total_sessions);
         this._totalCardsReviewed.set(prefs.total_cards_reviewed);
         this._lastStudyDate.set(prefs.last_study_date);
+      },
+      error: () => {
+        // Streak will self-correct on next online session
       }
     });
   }

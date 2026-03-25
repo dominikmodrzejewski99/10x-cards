@@ -2,6 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, from, map, switchMap, throwError, catchError, of } from 'rxjs';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from './supabase-client.factory';
+import { ConnectivityService } from './connectivity.service';
+import { OfflineQueueService } from './offline-queue.service';
 import { LoggerService } from './logger.service';
 import { FlashcardDTO, FlashcardReviewDTO, StudyCardDTO } from '../../types';
 import { Sm2Result } from './spaced-repetition.service';
@@ -11,6 +13,8 @@ import { Sm2Result } from './spaced-repetition.service';
 })
 export class ReviewApiService {
   private supabase: SupabaseClient = inject(SupabaseClientFactory).getClient();
+  private connectivity: ConnectivityService = inject(ConnectivityService);
+  private offlineQueue: OfflineQueueService = inject(OfflineQueueService);
   private logger: LoggerService = inject(LoggerService);
 
   public getDueCards(setId?: number | null): Observable<StudyCardDTO[]> {
@@ -82,36 +86,20 @@ export class ReviewApiService {
           return throwError(() => new Error('Użytkownik nie jest zalogowany'));
         }
 
-        const upsertData: Record<string, unknown> = {
-          flashcard_id: flashcardId,
-          user_id: userId,
-          ease_factor: reviewData.ease_factor,
-          interval: reviewData.interval,
-          repetitions: reviewData.repetitions,
-          next_review_date: reviewData.next_review_date,
-          last_reviewed_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        };
+        // If already offline, skip network call and queue immediately
+        if (!this.connectivity.onlineSignal()) {
+          return from(this.offlineQueue.enqueue(flashcardId, userId, reviewData)).pipe(
+            map(() => this.buildSyntheticReview(flashcardId, userId, reviewData))
+          );
+        }
 
-        return from(
-          this.supabase
-            .from('flashcard_reviews')
-            .upsert(upsertData, { onConflict: 'flashcard_id,user_id' })
-            .select()
-        ).pipe(
-          map((response: { data: unknown; error: unknown }) => {
-            if (response.error) {
-              throw new Error(`Błąd Supabase: ${(response.error as { message: string }).message}`);
-            }
-            const data: FlashcardReviewDTO[] = (response.data ?? []) as FlashcardReviewDTO[];
-            if (!data[0]) {
-              throw new Error('Brak zwróconych danych po zapisie recenzji');
-            }
-            return data[0];
-          }),
+        // Try network, fall back to queue on failure
+        return this.doSupabaseUpsert(flashcardId, userId, reviewData).pipe(
           catchError((error: unknown) => {
-            this.logger.error('ReviewApiService.saveReview', error);
-            return throwError(() => error);
+            this.logger.warn('ReviewApiService.saveReview', 'Sieć niedostępna, zapisuję w kolejce offline');
+            return from(this.offlineQueue.enqueue(flashcardId, userId, reviewData)).pipe(
+              map(() => this.buildSyntheticReview(flashcardId, userId, reviewData))
+            );
           })
         );
       })
@@ -190,6 +178,53 @@ export class ReviewApiService {
         );
       })
     );
+  }
+
+  private doSupabaseUpsert(flashcardId: number, userId: string, reviewData: Sm2Result): Observable<FlashcardReviewDTO> {
+    const upsertData: Record<string, unknown> = {
+      flashcard_id: flashcardId,
+      user_id: userId,
+      ease_factor: reviewData.ease_factor,
+      interval: reviewData.interval,
+      repetitions: reviewData.repetitions,
+      next_review_date: reviewData.next_review_date,
+      last_reviewed_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+
+    return from(
+      this.supabase
+        .from('flashcard_reviews')
+        .upsert(upsertData, { onConflict: 'flashcard_id,user_id' })
+        .select()
+    ).pipe(
+      map((response: { data: unknown; error: unknown }) => {
+        if (response.error) {
+          throw new Error(`Błąd Supabase: ${(response.error as { message: string }).message}`);
+        }
+        const data: FlashcardReviewDTO[] = (response.data ?? []) as FlashcardReviewDTO[];
+        if (!data[0]) {
+          throw new Error('Brak zwróconych danych po zapisie recenzji');
+        }
+        return data[0];
+      })
+    );
+  }
+
+  private buildSyntheticReview(flashcardId: number, userId: string, reviewData: Sm2Result): FlashcardReviewDTO {
+    const now: string = new Date().toISOString();
+    return {
+      id: -1,
+      flashcard_id: flashcardId,
+      user_id: userId,
+      ease_factor: reviewData.ease_factor,
+      interval: reviewData.interval,
+      repetitions: reviewData.repetitions,
+      next_review_date: reviewData.next_review_date,
+      last_reviewed_at: now,
+      created_at: now,
+      updated_at: now
+    };
   }
 
   private getCurrentUserId(): Observable<string | null> {

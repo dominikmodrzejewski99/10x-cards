@@ -376,7 +376,7 @@ describe('StudyViewComponent', () => {
       component.answer(4);
 
       expect(component.savingSignal()).toBeFalse();
-      expect(component.errorSignal()).toBe('Nie udało się zapisać odpowiedzi. Spróbuj ponownie.');
+      expect(component.errorSignal()).toBe('Nie udało się zapisać odpowiedzi.');
     });
   });
 

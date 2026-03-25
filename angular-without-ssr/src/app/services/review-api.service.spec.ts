@@ -1,6 +1,9 @@
 import { TestBed } from '@angular/core/testing';
+import { signal } from '@angular/core';
 import { ReviewApiService } from './review-api.service';
 import { SupabaseClientFactory } from './supabase-client.factory';
+import { ConnectivityService } from './connectivity.service';
+import { OfflineQueueService } from './offline-queue.service';
 import { FlashcardDTO, FlashcardReviewDTO, StudyCardDTO } from '../../types';
 import { Sm2Result } from './spaced-repetition.service';
 
@@ -86,6 +89,8 @@ function makeMockReview(overrides: Partial<FlashcardReviewDTO> = {}): FlashcardR
 describe('ReviewApiService', () => {
   let service: ReviewApiService;
   let mockSupabase: MockSupabaseClient;
+  let mockConnectivity: { onlineSignal: ReturnType<typeof signal<boolean>> };
+  let mockOfflineQueue: { enqueue: jasmine.Spy; processQueue: jasmine.Spy; pendingCountSignal: ReturnType<typeof signal<number>> };
 
   beforeEach(() => {
     mockSupabase = {
@@ -100,10 +105,22 @@ describe('ReviewApiService', () => {
       from: jasmine.createSpy('from')
     };
 
+    mockConnectivity = {
+      onlineSignal: signal<boolean>(true)
+    };
+
+    mockOfflineQueue = {
+      enqueue: jasmine.createSpy('enqueue').and.returnValue(Promise.resolve()),
+      processQueue: jasmine.createSpy('processQueue').and.returnValue(Promise.resolve()),
+      pendingCountSignal: signal<number>(0)
+    };
+
     TestBed.configureTestingModule({
       providers: [
         ReviewApiService,
-        { provide: SupabaseClientFactory, useValue: { getClient: (): MockSupabaseClient => mockSupabase } }
+        { provide: SupabaseClientFactory, useValue: { getClient: (): MockSupabaseClient => mockSupabase } },
+        { provide: ConnectivityService, useValue: mockConnectivity },
+        { provide: OfflineQueueService, useValue: mockOfflineQueue }
       ]
     });
 
@@ -203,17 +220,17 @@ describe('ReviewApiService', () => {
   });
 
   describe('saveReview', () => {
-    it('should save a review and return the result', (done: DoneFn) => {
+    const sm2Result: Sm2Result = {
+      ease_factor: 2.6,
+      interval: 6,
+      repetitions: 2,
+      next_review_date: '2026-01-07T00:00:00Z'
+    };
+
+    it('should save a review and return the result when online', (done: DoneFn) => {
       const savedReview: FlashcardReviewDTO = makeMockReview({ interval: 6, repetitions: 2 });
       const queryBuilder: MockQueryBuilder = createMockQueryBuilder({ data: [savedReview], error: null });
       mockSupabase.from.and.returnValue(queryBuilder);
-
-      const sm2Result: Sm2Result = {
-        ease_factor: 2.6,
-        interval: 6,
-        repetitions: 2,
-        next_review_date: '2026-01-07T00:00:00Z'
-      };
 
       service.saveReview(1, sm2Result).subscribe({
         next: (result: FlashcardReviewDTO) => {
@@ -221,6 +238,38 @@ describe('ReviewApiService', () => {
           expect(result.repetitions).toBe(2);
           expect(mockSupabase.from).toHaveBeenCalledWith('flashcard_reviews');
           expect(queryBuilder.upsert).toHaveBeenCalled();
+          expect(mockOfflineQueue.enqueue).not.toHaveBeenCalled();
+          done();
+        }
+      });
+    });
+
+    it('should enqueue to offline queue when already offline', (done: DoneFn) => {
+      mockConnectivity.onlineSignal.set(false);
+
+      service.saveReview(1, sm2Result).subscribe({
+        next: (result: FlashcardReviewDTO) => {
+          expect(result.id).toBe(-1);
+          expect(result.flashcard_id).toBe(1);
+          expect(result.ease_factor).toBe(2.6);
+          expect(mockOfflineQueue.enqueue).toHaveBeenCalledWith(1, MOCK_USER_ID, sm2Result);
+          expect(mockSupabase.from).not.toHaveBeenCalled();
+          done();
+        }
+      });
+    });
+
+    it('should fall back to offline queue on network error', (done: DoneFn) => {
+      const queryBuilder: MockQueryBuilder = createMockQueryBuilder({
+        data: null,
+        error: { message: 'Network error' }
+      });
+      mockSupabase.from.and.returnValue(queryBuilder);
+
+      service.saveReview(1, sm2Result).subscribe({
+        next: (result: FlashcardReviewDTO) => {
+          expect(result.id).toBe(-1);
+          expect(mockOfflineQueue.enqueue).toHaveBeenCalledWith(1, MOCK_USER_ID, sm2Result);
           done();
         }
       });
@@ -230,38 +279,24 @@ describe('ReviewApiService', () => {
       const queryBuilder: MockQueryBuilder = createMockQueryBuilder({ data: [], error: null });
       mockSupabase.from.and.returnValue(queryBuilder);
 
-      const sm2Result: Sm2Result = {
-        ease_factor: 2.5,
-        interval: 1,
-        repetitions: 1,
-        next_review_date: '2026-01-02T00:00:00Z'
-      };
-
       service.saveReview(1, sm2Result).subscribe({
-        error: (err: Error) => {
-          expect(err.message).toContain('Brak zwróconych danych');
+        next: (result: FlashcardReviewDTO) => {
+          // Falls back to offline queue because the "no data" error triggers catchError
+          expect(result.id).toBe(-1);
+          expect(mockOfflineQueue.enqueue).toHaveBeenCalled();
           done();
         }
       });
     });
 
-    it('should throw on Supabase error', (done: DoneFn) => {
-      const queryBuilder: MockQueryBuilder = createMockQueryBuilder({
-        data: null,
-        error: { message: 'Upsert failed' }
-      });
-      mockSupabase.from.and.returnValue(queryBuilder);
-
-      const sm2Result: Sm2Result = {
-        ease_factor: 2.5,
-        interval: 1,
-        repetitions: 1,
-        next_review_date: '2026-01-02T00:00:00Z'
-      };
+    it('should throw when user is not authenticated', (done: DoneFn) => {
+      mockSupabase.auth.getSession.and.returnValue(
+        Promise.resolve({ data: { session: null }, error: null })
+      );
 
       service.saveReview(1, sm2Result).subscribe({
         error: (err: Error) => {
-          expect(err.message).toContain('Upsert failed');
+          expect(err.message).toContain('nie jest zalogowany');
           done();
         }
       });
