@@ -47,10 +47,10 @@
   @include btn-base;
   background: $color-primary;
   color: $color-white;
+  box-shadow: $shadow-primary;
 
   &:hover:not(:disabled) {
     background: $color-primary-hover;
-    transform: translateY(-1px);
     box-shadow: $shadow-primary-hover;
   }
 }
@@ -63,7 +63,6 @@
 
   &:hover:not(:disabled) {
     background: $color-success-hover;
-    transform: translateY(-1px);
   }
 }
 
@@ -75,7 +74,6 @@
 
   &:hover:not(:disabled) {
     background: $color-danger-hover;
-    transform: translateY(-1px);
   }
 }
 
@@ -87,7 +85,6 @@
 
   &:hover:not(:disabled) {
     background: $color-warning-hover;
-    transform: translateY(-1px);
   }
 }
 
@@ -99,7 +96,6 @@
 
   &:hover:not(:disabled) {
     background: $color-purple-hover;
-    transform: translateY(-1px);
   }
 }
 

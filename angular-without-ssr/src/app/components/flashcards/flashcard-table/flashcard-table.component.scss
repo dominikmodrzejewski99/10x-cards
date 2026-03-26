@@ -333,6 +333,11 @@
   background: $color-bg;
 }
 
+.ftable__pagination--top {
+  border-top: none;
+  border-bottom: 1px solid #edeff5;
+}
+
 .ftable__page-btn {
   @include btn-ghost;
   width: 2.25rem;

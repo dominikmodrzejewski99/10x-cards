@@ -76,6 +76,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
 
   public lastDeletedSignal = signal<FlashcardDTO | null>(null);
   public savedCountSignal = signal<number>(0);
+  public moreMenuOpen = signal(false);
   private undoTimer: ReturnType<typeof setTimeout> | null = null;
   private routeSub: Subscription | null = null;
 

@@ -61,19 +61,58 @@
   @include btn-md;
 }
 
-.flist__btn--import {
+.flist__btn--more {
   @include btn-ghost;
   @include btn-md;
+  padding: 0.55rem 0.65rem;
 }
 
-.flist__btn--export {
-  @include btn-ghost;
-  @include btn-md;
+/* ── More dropdown ── */
+.flist__more {
+  position: relative;
 }
 
-.flist__btn--generate {
-  @include btn-ghost;
-  @include btn-md;
+.flist__more-menu {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  right: 0;
+  min-width: 190px;
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 0.25rem 0;
+  z-index: 50;
+  animation: flist-menu-in 0.12s ease-out;
+}
+
+@keyframes flist-menu-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.flist__more-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: $color-text-secondary;
+  cursor: pointer;
+  text-decoration: none;
+  transition: $transition-fast;
+
+  i { font-size: 0.85rem; width: 1.1rem; text-align: center; }
+
+  &:hover {
+    background: $color-primary-light;
+    color: $color-primary;
+  }
 }
 
 /* Saved banner */
@@ -191,8 +230,7 @@
 @media (max-width: 640px) {
   .flist { padding: 1rem 0.75rem; }
   .flist__header { flex-direction: column; align-items: flex-start; }
-  .flist__actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+  .flist__actions { width: 100%; }
   .flist__btn { justify-content: center; font-size: 0.78rem; padding: 0.5rem 0.6rem; }
-  .flist__btn--export { display: none; }
-  .flist__btn--import { display: none; }
+  .flist__more-menu { right: auto; left: 0; }
 }

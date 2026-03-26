@@ -8,26 +8,35 @@
     </div>
     <div class="flist__actions">
       <a [routerLink]="['/study']" [queryParams]="{setId: state().setId}" class="flist__btn flist__btn--study" data-test-id="start-study-button">
-        <i class="pi pi-book"></i> Rozpocznij naukę
+        <i class="pi pi-book"></i> Nauka
       </a>
       <a [routerLink]="['/quiz', state().setId]" class="flist__btn flist__btn--quiz" data-test-id="start-quiz-button">
         <i class="pi pi-file-edit"></i> Test
       </a>
       <button (click)="openAddModal()" class="flist__btn flist__btn--add" data-test-id="add-flashcard-button">
-        <i class="pi pi-plus"></i> Dodaj fiszkę
+        <i class="pi pi-plus"></i> Dodaj
       </button>
-      <button (click)="openImportModal()" class="flist__btn flist__btn--import" data-test-id="import-flashcards-button">
-        <i class="pi pi-upload"></i> Importuj
-      </button>
-      <button (click)="exportCsv()" class="flist__btn flist__btn--export" data-test-id="export-csv-button">
-        <i class="pi pi-download"></i> Eksport CSV
-      </button>
-      <button (click)="exportJson()" class="flist__btn flist__btn--export" data-test-id="export-json-button">
-        <i class="pi pi-download"></i> Eksport JSON
-      </button>
-      <a routerLink="/generate" class="flist__btn flist__btn--generate">
-        <i class="pi pi-sparkles"></i> Generuj kolejne
-      </a>
+      <div class="flist__more">
+        <button class="flist__btn flist__btn--more" (click)="moreMenuOpen.set(!moreMenuOpen())">
+          <i class="pi pi-ellipsis-h"></i>
+        </button>
+        @if (moreMenuOpen()) {
+          <div class="flist__more-menu" (click)="moreMenuOpen.set(false)">
+            <button (click)="openImportModal()" class="flist__more-item" data-test-id="import-flashcards-button">
+              <i class="pi pi-upload"></i> Importuj
+            </button>
+            <button (click)="exportCsv()" class="flist__more-item" data-test-id="export-csv-button">
+              <i class="pi pi-download"></i> Eksport CSV
+            </button>
+            <button (click)="exportJson()" class="flist__more-item" data-test-id="export-json-button">
+              <i class="pi pi-download"></i> Eksport JSON
+            </button>
+            <a routerLink="/generate" class="flist__more-item">
+              <i class="pi pi-sparkles"></i> Generuj z AI
+            </a>
+          </div>
+        }
+      </div>
     </div>
   </div>
 
