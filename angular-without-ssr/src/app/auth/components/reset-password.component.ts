@@ -231,7 +231,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private authStore = inject(AuthStore);
   private supabaseFactory = inject(SupabaseClientFactory);
-  private authListenerCleanup: { data: { subscription: { unsubscribe: () => void } } } | null = null;
+  private authListenerCleanup: { data: { subscription: { unsubscribe(): void } } } | null = null;
 
   public loadingSignal: Signal<boolean> = this.authStore.loading;
   public errorSignal: Signal<string | null> = this.authStore.error;
