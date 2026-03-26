@@ -1,0 +1,30 @@
+@use 'variables' as *;
+
+// ── Card base ──
+@mixin card($radius: $radius-lg) {
+  background: $color-white;
+  border: 1.5px solid $color-border;
+  border-radius: $radius;
+  transition: $transition-normal;
+}
+
+@mixin card-hover {
+  border-color: $color-primary;
+  box-shadow: 0 4px 16px rgba(66, 85, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+@mixin card-interactive($radius: $radius-lg) {
+  @include card($radius);
+  cursor: pointer;
+
+  &:hover {
+    @include card-hover;
+  }
+}
+
+// ── Section card (white box with padding) ──
+@mixin section-card {
+  @include card;
+  padding: 1.25rem 1.5rem;
+}

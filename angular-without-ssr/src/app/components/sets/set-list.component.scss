@@ -1,11 +1,12 @@
-@use 'buttons' as *;
 @use 'variables' as *;
+@use 'buttons' as *;
+@use 'layout' as *;
+@use 'cards' as *;
+@use 'states' as *;
+@use 'forms' as *;
 
 .sets {
-  padding: 1.5rem 1.25rem 2rem;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  @include page-wide;
 }
 
 .sets__header {
@@ -42,24 +43,15 @@
 .sets__loading,
 .sets__error,
 .sets__empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  padding: 3rem 1rem;
-  text-align: center;
-  color: $color-text-secondary;
+  @include empty-state;
 }
 
 .sets__empty-icon {
-  font-size: 3rem;
-  color: $color-border;
+  @include empty-icon;
 }
 
 .sets__error i {
-  font-size: 2rem;
-  color: $color-danger;
+  @include empty-icon(2rem, $color-danger);
 }
 
 .sets__grid {
@@ -69,21 +61,11 @@
 }
 
 .set-card {
-  background: $color-white;
-  border: 1.5px solid $color-border;
-  border-radius: $radius-lg;
+  @include card-interactive;
   padding: 1.25rem;
-  cursor: pointer;
-  transition: $transition-normal;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-}
-
-.set-card:hover {
-  border-color: $color-primary;
-  box-shadow: 0 4px 20px rgba(66, 85, 255, 0.12);
-  transform: translateY(-2px);
 }
 
 .set-card__header {
@@ -154,36 +136,24 @@
 }
 
 .set-form__field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+  @include form-field;
+  margin-bottom: 0;
 }
 
 .set-form__label {
-  font-size: 0.8rem;
-  font-weight: 600;
+  @include form-label;
   color: $color-text-secondary;
+  font-size: 0.8rem;
 }
 
 .set-form__input,
 .set-form__textarea {
-  width: 100%;
-  padding: 0.6rem 0.75rem;
-  border: 1.5px solid $color-border;
-  border-radius: $radius-md;
-  font-family: inherit;
-  font-size: 0.9rem;
-  color: $color-text;
+  @include form-input;
   background: $color-bg;
-  transition: border-color 0.15s;
-  box-sizing: border-box;
-}
 
-.set-form__input:focus,
-.set-form__textarea:focus {
-  outline: none;
-  border-color: $color-primary;
-  background: $color-white;
+  &:focus {
+    background: $color-white;
+  }
 }
 
 .set-form__textarea {
@@ -192,8 +162,7 @@
 }
 
 .set-form__hint {
-  color: var(--app-error, #ff6240);
-  font-size: 0.75rem;
+  @include form-error;
 }
 
 .set-form__actions {
@@ -203,9 +172,7 @@
   padding-top: 0.5rem;
 }
 
-
-@media (max-width: 640px) {
-  .sets { padding: 1rem 0.75rem; }
+@media (max-width: $bp-tablet) {
   .sets__header { flex-direction: column; align-items: flex-start; }
   .sets__grid { grid-template-columns: 1fr; }
 }

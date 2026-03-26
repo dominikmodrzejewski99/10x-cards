@@ -1,5 +1,6 @@
 @use 'variables' as *;
 @use 'buttons' as *;
+@use 'forms' as *;
 
 // ── Form layout ──
 .fc-form {
@@ -9,15 +10,11 @@
 }
 
 .fc-form__field {
-  margin-bottom: 1rem;
+  @include form-field;
 }
 
 .fc-form__label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: $color-text;
+  @include form-label;
 }
 
 .fc-form__label--sm {
@@ -30,21 +27,7 @@
 
 .fc-form__input,
 .fc-form__textarea {
-  width: 100%;
-  padding: 0.6rem 0.75rem;
-  font-family: inherit;
-  font-size: 0.95rem;
-  color: $color-text;
-  background: $color-white;
-  border: 1.5px solid $color-border;
-  border-radius: $radius-md;
-  transition: border-color 0.15s;
-
-  &:focus {
-    outline: none;
-    border-color: $color-primary;
-    box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.12);
-  }
+  @include form-input;
 }
 
 .fc-form__textarea {
@@ -69,16 +52,11 @@
 }
 
 .fc-form__error {
-  display: block;
-  font-size: 0.78rem;
-  color: $color-danger;
+  @include form-error;
 }
 
 .fc-form__counter {
-  display: block;
-  font-size: 0.78rem;
-  color: $color-text-secondary;
-  white-space: nowrap;
+  @include form-counter;
 }
 
 .fc-form__row {

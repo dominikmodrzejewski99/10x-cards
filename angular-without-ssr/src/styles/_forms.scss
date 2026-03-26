@@ -1,0 +1,57 @@
+@use 'variables' as *;
+
+// ── Form field ──
+@mixin form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+// ── Form label ──
+@mixin form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: $color-text;
+  margin-bottom: 0.35rem;
+}
+
+// ── Form input ──
+@mixin form-input {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: $color-text;
+  background: $color-white;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-md;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+
+  &::placeholder {
+    color: #b0b5c4;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.12);
+  }
+}
+
+// ── Form error text ──
+@mixin form-error {
+  display: block;
+  font-size: 0.78rem;
+  color: $color-danger;
+  font-weight: 500;
+}
+
+// ── Form counter ──
+@mixin form-counter {
+  font-size: 0.78rem;
+  color: $color-text-secondary;
+  white-space: nowrap;
+}

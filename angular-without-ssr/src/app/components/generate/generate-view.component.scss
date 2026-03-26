@@ -1,10 +1,11 @@
+@use 'layout' as *;
+
 .gen {
-  padding: 1.5rem 1.25rem 2rem;
+  @include page-narrow;
 }
 
 .gen__inner {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: none;
 }
 
 .gen__header {

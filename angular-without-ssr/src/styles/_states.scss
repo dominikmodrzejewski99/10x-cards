@@ -1,0 +1,45 @@
+@use 'variables' as *;
+
+// ── Empty state (centered column with icon + title + desc) ──
+@mixin empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.75rem;
+  padding: 3rem 1rem;
+  color: $color-text-secondary;
+}
+
+@mixin empty-icon($size: 3rem, $color: $color-border) {
+  font-size: $size;
+  color: $color;
+}
+
+// ── Banner (horizontal info/warning/success bar) ──
+@mixin banner($bg, $border-color) {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1.25rem;
+  background: $bg;
+  border: 1.5px solid $border-color;
+  border-radius: $radius-lg;
+  margin-bottom: 1rem;
+}
+
+@mixin banner-success { @include banner($color-success-light, $color-success); }
+@mixin banner-warning { @include banner($color-warning-light, $color-warning); }
+@mixin banner-danger  { @include banner($color-danger-light, $color-danger); }
+
+// ── Error message (left-bordered) ──
+@mixin error-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: $color-danger-light;
+  border-left: 4px solid $color-danger;
+  border-radius: $radius-md;
+}
