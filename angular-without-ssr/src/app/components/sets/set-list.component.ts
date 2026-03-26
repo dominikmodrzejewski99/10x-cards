@@ -62,6 +62,9 @@ export class SetListComponent implements OnInit {
     this.setApi.getSets().subscribe({
       next: (sets) => {
         this.state.update(s => ({ ...s, sets, loading: false }));
+        if (sets.length === 0) {
+          this.openCreateDialog();
+        }
       },
       error: () => {
         this.state.update(s => ({

@@ -96,4 +96,8 @@ export const routes: Routes = [
     pathMatch: 'full',
     canActivate: [nonAuthGuard]
   },
+  {
+    path: '**',
+    redirectTo: '/dashboard'
+  },
 ];
