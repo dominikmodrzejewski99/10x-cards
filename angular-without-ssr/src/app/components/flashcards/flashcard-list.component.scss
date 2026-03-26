@@ -49,11 +49,13 @@
 .flist__btn--study {
   @include btn-primary;
   @include btn-md;
+  text-decoration: none;
 }
 
 .flist__btn--quiz {
   @include btn-outline;
   @include btn-md;
+  text-decoration: none;
 }
 
 .flist__btn--add {
