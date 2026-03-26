@@ -29,12 +29,8 @@
     <div class="quiz-list__state fade-in">
       <i class="pi pi-folder-open quiz-list__state-icon"></i>
       <p class="quiz-list__state-text">Nie masz jeszcze zestawów fiszek.</p>
-      <button
-        pButton
-        label="Przejdź do zestawów"
-        icon="pi pi-arrow-right"
-        class="p-button-primary"
-        (click)="onGoToSets()">
+      <button class="quiz-list__btn quiz-list__btn--primary" (click)="onGoToSets()">
+        <i class="pi pi-arrow-right"></i> Przejdź do zestawów
       </button>
     </div>
   }
@@ -48,12 +44,8 @@
             <p class="quiz-list__card-count">{{ item.cardCount }} fiszek</p>
           </div>
           @if (item.cardCount >= 4) {
-            <button
-              pButton
-              label="Rozpocznij test"
-              icon="pi pi-play"
-              class="p-button-primary p-button-sm"
-              (click)="onStartQuiz(item.set.id)">
+            <button class="quiz-list__btn quiz-list__btn--primary quiz-list__btn--sm" (click)="onStartQuiz(item.set.id)">
+              <i class="pi pi-play"></i> Rozpocznij test
             </button>
           } @else {
             <span class="quiz-list__card-hint">Min. 4 fiszki</span>

@@ -1,10 +1,8 @@
 import { Component, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
 
-import { ButtonModule } from 'primeng/button';
-
 @Component({
   selector: 'app-bulk-save-button',
-  imports: [ButtonModule],
+  imports: [],
   templateUrl: './bulk-save-button.component.html',
   styleUrls: ['./bulk-save-button.component.scss']
 })

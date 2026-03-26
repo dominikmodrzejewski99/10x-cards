@@ -1,4 +1,5 @@
 @use 'variables' as *;
+@use 'buttons' as *;
 
 .quiz-list {
   max-width: 800px;
@@ -79,6 +80,20 @@
   font-size: 0.75rem;
   color: $color-text-secondary;
   white-space: nowrap;
+}
+
+.quiz-list__btn {
+  @include btn-base;
+  @include btn-md;
+}
+
+.quiz-list__btn--primary {
+  @include btn-primary;
+  @include btn-md;
+}
+
+.quiz-list__btn--sm {
+  @include btn-sm;
 }
 
 @media (max-width: 480px) {

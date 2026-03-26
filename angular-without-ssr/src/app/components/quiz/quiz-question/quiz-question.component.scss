@@ -1,4 +1,15 @@
 @use 'variables' as *;
+@use 'buttons' as *;
+
+.quiz-question__btn {
+  @include btn-base;
+  @include btn-md;
+}
+
+.quiz-question__btn--primary {
+  @include btn-primary;
+  @include btn-md;
+}
 
 .quiz-question {
   max-width: 640px;

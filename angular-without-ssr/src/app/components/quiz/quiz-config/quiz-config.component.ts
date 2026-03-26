@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, input, output, InputSignal, OutputEmitterRef, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
 import { QuizConfig, QuizQuestionType } from '../../../../types';
 
@@ -11,7 +10,7 @@ interface QuestionCountOption {
 
 @Component({
   selector: 'app-quiz-config',
-  imports: [FormsModule, ButtonModule, SelectModule],
+  imports: [FormsModule, SelectModule],
   templateUrl: './quiz-config.component.html',
   styleUrls: ['./quiz-config.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

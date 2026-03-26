@@ -25,12 +25,8 @@
       <div class="quiz-view__state">
         <i class="pi pi-exclamation-triangle quiz-view__state-icon quiz-view__state-icon--error"></i>
         <p class="quiz-view__state-text">{{ errorMessageSignal() }}</p>
-        <button
-          pButton
-          label="Wróć do zestawu"
-          icon="pi pi-arrow-left"
-          class="p-button-outlined p-button-secondary"
-          (click)="onGoBack()">
+        <button class="quiz-view__btn quiz-view__btn--ghost" (click)="onGoBack()">
+          <i class="pi pi-arrow-left"></i> Wróć do zestawu
         </button>
       </div>
     }

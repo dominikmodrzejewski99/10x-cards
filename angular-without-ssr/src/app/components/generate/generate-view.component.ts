@@ -7,7 +7,6 @@ import {FlashcardSetApiService} from '../../services/flashcard-set-api.service';
 import {LoggerService} from '../../services/logger.service';
 import {MessageService} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
-import {ButtonModule} from 'primeng/button';
 import {FlashcardProposalDTO, FlashcardSetDTO, GenerateFlashcardsCommand, GenerationDTO} from '../../../types';
 
 import {LoadingIndicatorComponent} from './loading-indicator/loading-indicator.component';
@@ -28,7 +27,6 @@ interface FlashcardProposalViewModel extends FlashcardProposalDTO {
     ToastModule,
     FormsModule,
     RouterModule,
-    ButtonModule,
     LoadingIndicatorComponent,
     ErrorMessageComponent,
     FlashcardProposalListComponent,

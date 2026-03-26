@@ -5,8 +5,6 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { FlashcardSetDTO, CreateFlashcardSetCommand, UpdateFlashcardSetCommand } from '../../../types';
@@ -30,7 +28,6 @@ interface SetListState {
     DialogModule,
     ToastModule,
     ConfirmDialogModule,
-    ButtonModule,
     NgxSkeletonLoaderModule
   ],
   providers: [MessageService, ConfirmationService],

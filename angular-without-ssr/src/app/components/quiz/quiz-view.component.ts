@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, inject, signal, WritableSignal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ButtonModule } from 'primeng/button';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FlashcardApiService } from '../../services/flashcard-api.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
@@ -21,7 +20,7 @@ type QuizPhase = 'loading' | 'error' | 'config' | 'test' | 'results';
 
 @Component({
   selector: 'app-quiz-view',
-  imports: [ButtonModule, NgxSkeletonLoaderModule, QuizConfigComponent, QuizQuestionComponent, QuizResultsComponent],
+  imports: [NgxSkeletonLoaderModule, QuizConfigComponent, QuizQuestionComponent, QuizResultsComponent],
   templateUrl: './quiz-view.component.html',
   styleUrls: ['./quiz-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

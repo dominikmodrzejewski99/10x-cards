@@ -1,4 +1,15 @@
 @use 'variables' as *;
+@use 'buttons' as *;
+
+.quiz-view__btn {
+  @include btn-base;
+  @include btn-md;
+}
+
+.quiz-view__btn--ghost {
+  @include btn-ghost;
+  @include btn-md;
+}
 
 .quiz-view {
   min-height: calc(100vh - 64px);

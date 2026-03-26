@@ -1,11 +1,10 @@
 import { Component, ChangeDetectionStrategy, input, output, InputSignal, OutputEmitterRef, signal, WritableSignal, computed, Signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
 import { QuizResult, QuizAnswer } from '../../../../types';
 
 @Component({
   selector: 'app-quiz-results',
-  imports: [ButtonModule, RouterModule],
+  imports: [RouterModule],
   templateUrl: './quiz-results.component.html',
   styleUrls: ['./quiz-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -41,12 +41,10 @@
 
         @if (!isAnsweredSignal()) {
           <button
-            pButton
-            label="Sprawdź"
-            icon="pi pi-check"
-            class="p-button-primary"
+            class="quiz-question__btn quiz-question__btn--primary"
             [disabled]="!writtenAnswerSignal().trim()"
             (click)="onCheckWritten()">
+            <i class="pi pi-check"></i> Sprawdź
           </button>
         }
 
@@ -125,12 +123,9 @@
     </div>
 
     <button
-      pButton
-      label="Dalej"
-      icon="pi pi-arrow-right"
-      iconPos="right"
-      class="p-button-primary quiz-question__next"
+      class="quiz-question__btn quiz-question__btn--primary quiz-question__next"
       (click)="onNext()">
+      Dalej <i class="pi pi-arrow-right"></i>
     </button>
   }
 </div>

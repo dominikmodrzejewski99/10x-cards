@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, AfterViewInit, ViewChild, inject, effect, Signal, WritableSignal, signal, OnDestroy } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
 import { Router, RouterModule, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
 import { Subscription } from 'rxjs';
@@ -15,7 +14,7 @@ import { UpdateService } from './services/update.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ButtonModule, RouterModule, ToastModule, AuthNavbarComponent, BottomNavComponent, OnboardingComponent],
+  imports: [RouterModule, ToastModule, AuthNavbarComponent, BottomNavComponent, OnboardingComponent],
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
   private readonly authStore = inject(AuthStore);

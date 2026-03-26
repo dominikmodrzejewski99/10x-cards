@@ -73,19 +73,15 @@
 
   <div class="quiz-config__actions">
     <button
-      pButton
-      label="Rozpocznij test"
-      icon="pi pi-play"
-      class="p-button-primary"
+      class="quiz-config__btn quiz-config__btn--primary"
       [disabled]="!isValid"
       (click)="onStart()">
+      <i class="pi pi-play"></i> Rozpocznij test
     </button>
     <button
-      pButton
-      label="Wróć"
-      icon="pi pi-arrow-left"
-      class="p-button-outlined p-button-secondary"
+      class="quiz-config__btn quiz-config__btn--ghost"
       (click)="onGoBack()">
+      <i class="pi pi-arrow-left"></i> Wróć
     </button>
   </div>
 </div>

@@ -1,6 +1,5 @@
 import { Component, computed, input, output, InputSignal, OutputEmitterRef, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { TextareaModule } from 'primeng/textarea';
 import { FlashcardProposalDTO } from '../../../../types';
@@ -8,7 +7,6 @@ import { FlashcardProposalDTO } from '../../../../types';
 @Component({
   selector: 'app-flashcard-proposal-list',
   imports: [
-    ButtonModule,
     DialogModule,
     FormsModule,
     TextareaModule

@@ -1,6 +1,5 @@
 import { Component, OnInit, inject, signal, WritableSignal, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { FlashcardSetDTO } from '../../../types';
@@ -12,7 +11,7 @@ interface QuizSetItem {
 
 @Component({
   selector: 'app-quiz-list',
-  imports: [ButtonModule, NgxSkeletonLoaderModule],
+  imports: [NgxSkeletonLoaderModule],
   templateUrl: './quiz-list.component.html',
   styleUrls: ['./quiz-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
