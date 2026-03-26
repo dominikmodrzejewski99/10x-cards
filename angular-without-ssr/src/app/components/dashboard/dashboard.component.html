@@ -100,6 +100,40 @@
       </div>
     </header>
 
+    <!-- Onboarding (no sets yet) -->
+    @if (sets().length === 0) {
+      <section class="dash__empty">
+        <h3 class="dash__empty-title">Trzy kroki do efektywnej nauki</h3>
+
+        <div class="dash__onboarding">
+          <a routerLink="/sets" class="dash__onboarding-step">
+            <div class="dash__onboarding-num">1</div>
+            <div class="dash__onboarding-body">
+              <strong>Utwórz zestaw</strong>
+              <span>Pogrupuj fiszki tematycznie — osobny zestaw na każdy przedmiot</span>
+            </div>
+            <i class="pi pi-arrow-right dash__onboarding-arrow"></i>
+          </a>
+          <a routerLink="/sets" class="dash__onboarding-step">
+            <div class="dash__onboarding-num">2</div>
+            <div class="dash__onboarding-body">
+              <strong>Dodaj fiszki</strong>
+              <span>Twórz fiszki ręcznie lub skorzystaj z generatora AI</span>
+            </div>
+            <i class="pi pi-arrow-right dash__onboarding-arrow"></i>
+          </a>
+          <a routerLink="/study" class="dash__onboarding-step">
+            <div class="dash__onboarding-num">3</div>
+            <div class="dash__onboarding-body">
+              <strong>Rozpocznij naukę</strong>
+              <span>Odwracaj karty, oceniaj się — algorytm zaplanuje powtórki</span>
+            </div>
+            <i class="pi pi-arrow-right dash__onboarding-arrow"></i>
+          </a>
+        </div>
+      </section>
+    }
+
     <!-- Quick Actions (always visible, horizontal on mobile) -->
     <section class="dash__actions dash__actions--top">
       <div class="dash__action-grid">
@@ -291,38 +325,6 @@
               </div>
             </a>
           }
-        </div>
-      </section>
-    } @else {
-      <section class="dash__empty">
-        <h3 class="dash__empty-title">Zacznij swoją przygodę z nauką</h3>
-        <p class="dash__empty-desc">Trzy kroki do efektywnej nauki z fiszkami</p>
-
-        <div class="dash__onboarding">
-          <a routerLink="/sets" class="dash__onboarding-step">
-            <div class="dash__onboarding-num">1</div>
-            <div class="dash__onboarding-body">
-              <strong>Utwórz zestaw</strong>
-              <span>Pogrupuj fiszki tematycznie — osobny zestaw na każdy przedmiot</span>
-            </div>
-            <i class="pi pi-arrow-right dash__onboarding-arrow"></i>
-          </a>
-          <a routerLink="/sets" class="dash__onboarding-step">
-            <div class="dash__onboarding-num">2</div>
-            <div class="dash__onboarding-body">
-              <strong>Dodaj fiszki</strong>
-              <span>Twórz fiszki ręcznie lub skorzystaj z generatora AI</span>
-            </div>
-            <i class="pi pi-arrow-right dash__onboarding-arrow"></i>
-          </a>
-          <a routerLink="/study" class="dash__onboarding-step">
-            <div class="dash__onboarding-num">3</div>
-            <div class="dash__onboarding-body">
-              <strong>Rozpocznij naukę</strong>
-              <span>Odwracaj karty, oceniaj się — algorytm zaplanuje powtórki</span>
-            </div>
-            <i class="pi pi-arrow-right dash__onboarding-arrow"></i>
-          </a>
         </div>
       </section>
     }
