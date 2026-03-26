@@ -103,19 +103,19 @@
     <!-- Quick Actions (always visible, horizontal on mobile) -->
     <section class="dash__actions dash__actions--top">
       <div class="dash__action-grid">
-        <a routerLink="/generate" class="dash__action">
-          <div class="dash__action-icon dash__action-icon--purple"><i class="pi pi-sparkles"></i></div>
-          <div class="dash__action-body">
-            <div class="dash__action-title">Generuj z AI</div>
-            <div class="dash__action-desc">Tekst → fiszki w sekundę</div>
-          </div>
-          <i class="pi pi-arrow-right dash__action-arrow"></i>
-        </a>
         <a routerLink="/sets" class="dash__action">
           <div class="dash__action-icon dash__action-icon--blue"><i class="pi pi-folder"></i></div>
           <div class="dash__action-body">
             <div class="dash__action-title">Moje zestawy</div>
             <div class="dash__action-desc">{{ totalSets() }} {{ totalSets() === 1 ? 'zestaw' : 'zestawów' }}</div>
+          </div>
+          <i class="pi pi-arrow-right dash__action-arrow"></i>
+        </a>
+        <a routerLink="/generate" class="dash__action">
+          <div class="dash__action-icon dash__action-icon--purple"><i class="pi pi-sparkles"></i></div>
+          <div class="dash__action-body">
+            <div class="dash__action-title">Generuj z AI</div>
+            <div class="dash__action-desc">Tekst → fiszki w sekundę</div>
           </div>
           <i class="pi pi-arrow-right dash__action-arrow"></i>
         </a>
@@ -299,19 +299,19 @@
         <p class="dash__empty-desc">Trzy kroki do efektywnej nauki z fiszkami</p>
 
         <div class="dash__onboarding">
-          <a routerLink="/generate" class="dash__onboarding-step">
+          <a routerLink="/sets" class="dash__onboarding-step">
             <div class="dash__onboarding-num">1</div>
             <div class="dash__onboarding-body">
-              <strong>Wygeneruj fiszki</strong>
-              <span>Wklej tekst z notatek — AI utworzy pytania i odpowiedzi</span>
+              <strong>Utwórz zestaw</strong>
+              <span>Pogrupuj fiszki tematycznie — osobny zestaw na każdy przedmiot</span>
             </div>
             <i class="pi pi-arrow-right dash__onboarding-arrow"></i>
           </a>
           <a routerLink="/sets" class="dash__onboarding-step">
             <div class="dash__onboarding-num">2</div>
             <div class="dash__onboarding-body">
-              <strong>Utwórz zestaw</strong>
-              <span>Pogrupuj fiszki tematycznie — osobny zestaw na każdy przedmiot</span>
+              <strong>Dodaj fiszki</strong>
+              <span>Twórz fiszki ręcznie lub skorzystaj z generatora AI</span>
             </div>
             <i class="pi pi-arrow-right dash__onboarding-arrow"></i>
           </a>
