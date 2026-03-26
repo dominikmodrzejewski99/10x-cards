@@ -141,7 +141,8 @@
         </div>
         <p class="study__hint">
           @if (currentSetNameSignal()) {
-            Uczysz się z zestawu „{{ currentSetNameSignal() }}"
+            Uczysz się z zestawu
+            <a [routerLink]="['/sets', selectedSetIdSignal()]" class="study__set-link">„{{ currentSetNameSignal() }}"</a>
           } @else if (!isFlippedSignal()) {
             Kliknij kartę lub naciśnij spację
           } @else {

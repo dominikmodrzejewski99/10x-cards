@@ -84,6 +84,50 @@
   }
 }
 
+/* Saved banner */
+.flist__saved-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  background: $color-success-light;
+  border: 1.5px solid $color-success;
+  border-radius: $radius-lg;
+  margin-bottom: 1rem;
+}
+
+.flist__saved-body {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  color: $color-text;
+
+  i {
+    color: $color-success;
+    font-size: 1.1rem;
+  }
+}
+
+.flist__saved-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.flist__saved-cta {
+  @include btn-success;
+  @include btn-md;
+  text-decoration: none;
+}
+
+.flist__saved-dismiss {
+  @include btn-icon(2rem);
+  color: $color-text-secondary;
+}
+
 .flist__table {
   background: $color-white;
   border: 1px solid $color-border;

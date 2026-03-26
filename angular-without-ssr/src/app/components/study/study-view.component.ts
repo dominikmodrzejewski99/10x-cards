@@ -241,6 +241,10 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public onSetChange(setId: number | null): void {
+    const hasProgress = this.currentIndexSignal() > 0 && !this.isSessionCompleteSignal();
+    if (hasProgress && !confirm('Zmiana zestawu zresetuje bieżącą sesję. Kontynuować?')) {
+      return;
+    }
     this.selectedSetIdSignal.set(setId);
     this.loadDueCards();
   }

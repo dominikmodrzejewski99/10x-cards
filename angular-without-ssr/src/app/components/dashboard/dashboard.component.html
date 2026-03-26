@@ -73,6 +73,17 @@
   } @else {
     <div class="fade-in">
 
+    @if (isAnonymous()) {
+      <div class="dash__anon-banner">
+        <div class="dash__anon-icon"><i class="pi pi-info-circle"></i></div>
+        <div class="dash__anon-body">
+          <strong>Tryb testowy</strong>
+          <span>Twoje dane nie zostaną zapisane. Załóż konto, aby zachować postępy.</span>
+        </div>
+        <a routerLink="/register" class="dash__anon-cta">Załóż konto</a>
+      </div>
+    }
+
     <!-- Header -->
     <header class="dash__header">
       <div>
@@ -284,14 +295,33 @@
       </section>
     } @else {
       <section class="dash__empty">
-        <h3 class="dash__empty-title">Nie masz jeszcze zestawów</h3>
-        <p class="dash__empty-desc">Utwórz swój pierwszy zestaw lub wygeneruj fiszki z AI</p>
-        <div class="dash__empty-actions">
-          <a routerLink="/sets" class="dash__empty-cta">
-            <i class="pi pi-plus"></i> Utwórz zestaw
+        <h3 class="dash__empty-title">Zacznij swoją przygodę z nauką</h3>
+        <p class="dash__empty-desc">Trzy kroki do efektywnej nauki z fiszkami</p>
+
+        <div class="dash__onboarding">
+          <a routerLink="/generate" class="dash__onboarding-step">
+            <div class="dash__onboarding-num">1</div>
+            <div class="dash__onboarding-body">
+              <strong>Wygeneruj fiszki</strong>
+              <span>Wklej tekst z notatek — AI utworzy pytania i odpowiedzi</span>
+            </div>
+            <i class="pi pi-arrow-right dash__onboarding-arrow"></i>
           </a>
-          <a routerLink="/generate" class="dash__empty-cta dash__empty-cta--secondary">
-            <i class="pi pi-sparkles"></i> Generuj z AI
+          <a routerLink="/sets" class="dash__onboarding-step">
+            <div class="dash__onboarding-num">2</div>
+            <div class="dash__onboarding-body">
+              <strong>Utwórz zestaw</strong>
+              <span>Pogrupuj fiszki tematycznie — osobny zestaw na każdy przedmiot</span>
+            </div>
+            <i class="pi pi-arrow-right dash__onboarding-arrow"></i>
+          </a>
+          <a routerLink="/study" class="dash__onboarding-step">
+            <div class="dash__onboarding-num">3</div>
+            <div class="dash__onboarding-body">
+              <strong>Rozpocznij naukę</strong>
+              <span>Odwracaj karty, oceniaj się — algorytm zaplanuje powtórki</span>
+            </div>
+            <i class="pi pi-arrow-right dash__onboarding-arrow"></i>
           </a>
         </div>
       </section>

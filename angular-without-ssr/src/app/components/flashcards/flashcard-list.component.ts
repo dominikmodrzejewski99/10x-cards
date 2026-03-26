@@ -75,6 +75,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
   });
 
   public lastDeletedSignal = signal<FlashcardDTO | null>(null);
+  public savedCountSignal = signal<number>(0);
   private undoTimer: ReturnType<typeof setTimeout> | null = null;
   private routeSub: Subscription | null = null;
 
@@ -89,6 +90,16 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
       this.loadSetName(setId);
       this.loadFlashcards();
     });
+
+    const saved = this.route.snapshot.queryParams['saved'];
+    if (saved) {
+      this.savedCountSignal.set(Number(saved));
+      this.router.navigate([], { queryParams: {}, replaceUrl: true });
+    }
+  }
+
+  dismissSavedBanner(): void {
+    this.savedCountSignal.set(0);
   }
 
   ngOnDestroy(): void {

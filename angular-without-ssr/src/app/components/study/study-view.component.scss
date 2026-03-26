@@ -158,6 +158,16 @@
   margin: 0;
 }
 
+.study__set-link {
+  color: $color-primary;
+  text-decoration: none;
+  font-weight: 600;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 
 /* Card */
 .study__card {

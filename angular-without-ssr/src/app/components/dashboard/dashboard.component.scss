@@ -5,6 +5,69 @@
   padding: clamp(1.25rem, 4vw, 2.5rem) clamp(0.75rem, 3vw, 1.5rem) 3rem;
 }
 
+/* ===== Anonymous Banner ===== */
+.dash__anon-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1.25rem;
+  background: linear-gradient(135deg, #fff8e6, #fffdf7);
+  border: 1.5px solid #f5d98a;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.dash__anon-icon {
+  font-size: 1.25rem;
+  color: #f5a623;
+  flex-shrink: 0;
+}
+
+.dash__anon-body {
+  flex: 1;
+  min-width: 0;
+
+  strong {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--app-text, #282e3e);
+  }
+
+  span {
+    font-size: 0.78rem;
+    color: var(--app-text-secondary, #586380);
+  }
+}
+
+.dash__anon-cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 1rem;
+  background: #4255ff;
+  color: #fff;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s;
+
+  &:hover {
+    background: #3b4ce3;
+  }
+}
+
+@media (max-width: 600px) {
+  .dash__anon-banner {
+    flex-wrap: wrap;
+  }
+
+  .dash__anon-cta {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* ===== Error ===== */
 .dash__error {
   display: flex;
@@ -832,6 +895,78 @@
   gap: 0.75rem;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+/* Onboarding steps */
+.dash__onboarding {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 480px;
+  margin-top: 1rem;
+}
+
+.dash__onboarding-step {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--app-white, #fff);
+  border: 1.5px solid var(--app-border, #d9dbe9);
+  border-radius: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+  text-align: left;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: var(--app-primary, #4255ff);
+    box-shadow: 0 4px 16px rgba(66, 85, 255, 0.1);
+    transform: translateY(-2px);
+  }
+}
+
+.dash__onboarding-num {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--app-primary, #4255ff);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.dash__onboarding-body {
+  flex: 1;
+  min-width: 0;
+
+  strong {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--app-text, #282e3e);
+  }
+
+  span {
+    font-size: 0.78rem;
+    color: var(--app-text-secondary, #586380);
+  }
+}
+
+.dash__onboarding-arrow {
+  color: var(--app-primary, #4255ff);
+  opacity: 0.4;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.dash__onboarding-step:hover .dash__onboarding-arrow {
+  opacity: 0.9;
+  transform: translateX(3px);
 }
 
 /* Hide action arrow on narrow screens where it takes up too much space */

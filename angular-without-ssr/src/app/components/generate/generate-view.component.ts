@@ -162,7 +162,7 @@ export class GenerateViewComponent implements OnInit {
         this.generationResult.set(null);
         this.isSaving.set(false);
 
-        this.router.navigate(['/sets', this.selectedSetId()]);
+        this.router.navigate(['/sets', this.selectedSetId()], { queryParams: { saved: savedFlashcards.length } });
       },
       error: (error) => {
         this.handleApiError(error, 'zapisywania');

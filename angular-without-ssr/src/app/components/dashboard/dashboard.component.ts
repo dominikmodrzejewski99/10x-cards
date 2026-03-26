@@ -13,6 +13,7 @@ import { ReviewReminderComponent } from '../../shared/components/review-reminder
 import { ReviewApiService } from '../../services/review-api.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { LanguageTestWidgetComponent } from '../language-test/language-test-widget.component';
+import { AuthStore } from '../../auth/store';
 import { forkJoin } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FlashcardSetDTO, StudyCardDTO } from '../../../types';
@@ -39,7 +40,9 @@ export class DashboardComponent implements OnInit {
   private setApi = inject(FlashcardSetApiService);
   private reminderService = inject(ReviewReminderService);
   private router = inject(Router);
+  private authStore = inject(AuthStore);
 
+  isAnonymous = this.authStore.isAnonymous;
   loading = signal(true);
   errorMessage = signal<string | null>(null);
   reminderVisible = signal(false);

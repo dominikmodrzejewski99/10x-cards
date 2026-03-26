@@ -31,6 +31,23 @@
     </div>
   </div>
 
+  @if (savedCountSignal() > 0) {
+    <div class="flist__saved-banner fade-in">
+      <div class="flist__saved-body">
+        <i class="pi pi-check-circle"></i>
+        <span>Zapisano <strong>{{ savedCountSignal() }}</strong> fiszek. Gotowy, żeby się ich nauczyć?</span>
+      </div>
+      <div class="flist__saved-actions">
+        <a [routerLink]="['/study']" [queryParams]="{setId: state().setId}" class="flist__saved-cta">
+          <i class="pi pi-play-circle"></i> Rozpocznij naukę
+        </a>
+        <button class="flist__saved-dismiss" (click)="dismissSavedBanner()">
+          <i class="pi pi-times"></i>
+        </button>
+      </div>
+    </div>
+  }
+
   <div class="flist__table">
     <app-flashcard-table
       [flashcards]="state().flashcards"
