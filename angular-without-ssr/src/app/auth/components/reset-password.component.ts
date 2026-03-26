@@ -21,14 +21,24 @@ import { AuthStore } from '../store';
           <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="auth-field">
               <label for="password" class="auth-label">Nowe hasło</label>
-              <input
-                type="password"
-                id="password"
-                class="auth-input"
-                formControlName="password"
-                placeholder="Minimum 6 znaków"
-                autocomplete="new-password"
-              />
+              <div class="auth-input-wrap">
+                <input
+                  [type]="showPasswordSignal() ? 'text' : 'password'"
+                  id="password"
+                  class="auth-input auth-input--password"
+                  formControlName="password"
+                  placeholder="Minimum 6 znaków"
+                  autocomplete="new-password"
+                />
+                <button
+                  type="button"
+                  class="auth-toggle-password"
+                  (click)="showPasswordSignal.set(!showPasswordSignal())"
+                  [attr.aria-label]="showPasswordSignal() ? 'Ukryj hasło' : 'Pokaż hasło'"
+                  tabindex="-1">
+                  <i [class]="showPasswordSignal() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+                </button>
+              </div>
               @if ((submittedSignal() || form.controls['password'].touched) && form.controls['password'].errors) {
                 <div class="auth-error">
                   @if (form.controls['password'].errors['required']) {
@@ -43,14 +53,24 @@ import { AuthStore } from '../store';
 
             <div class="auth-field">
               <label for="confirmPassword" class="auth-label">Potwierdź hasło</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                class="auth-input"
-                formControlName="confirmPassword"
-                placeholder="Powtórz nowe hasło"
-                autocomplete="new-password"
-              />
+              <div class="auth-input-wrap">
+                <input
+                  [type]="showConfirmPasswordSignal() ? 'text' : 'password'"
+                  id="confirmPassword"
+                  class="auth-input auth-input--password"
+                  formControlName="confirmPassword"
+                  placeholder="Powtórz nowe hasło"
+                  autocomplete="new-password"
+                />
+                <button
+                  type="button"
+                  class="auth-toggle-password"
+                  (click)="showConfirmPasswordSignal.set(!showConfirmPasswordSignal())"
+                  [attr.aria-label]="showConfirmPasswordSignal() ? 'Ukryj hasło' : 'Pokaż hasło'"
+                  tabindex="-1">
+                  <i [class]="showConfirmPasswordSignal() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+                </button>
+              </div>
               @if ((submittedSignal() || form.controls['confirmPassword'].touched) && mismatchSignal()) {
                 <div class="auth-error">
                   <span>Hasła nie są zgodne</span>
@@ -182,6 +202,29 @@ import { AuthStore } from '../store';
       transition: gap 0.15s;
     }
     .auth-back-link:hover { gap: 0.5rem; }
+    .auth-input-wrap {
+      position: relative;
+    }
+    .auth-input--password {
+      padding-right: 2.75rem;
+    }
+    .auth-toggle-password {
+      position: absolute;
+      right: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #586380;
+      cursor: pointer;
+      padding: 0.35rem;
+      font-size: 0.95rem;
+      line-height: 1;
+      transition: color 0.15s;
+    }
+    .auth-toggle-password:hover {
+      color: #4255ff;
+    }
   `]
 })
 export class ResetPasswordComponent implements OnInit, OnDestroy {
@@ -196,6 +239,8 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   public mismatchSignal: WritableSignal<boolean> = signal(false);
   public readySignal: WritableSignal<boolean> = signal(false);
   public expiredSignal: WritableSignal<boolean> = signal(false);
+  public showPasswordSignal: WritableSignal<boolean> = signal(false);
+  public showConfirmPasswordSignal: WritableSignal<boolean> = signal(false);
 
   public form: FormGroup = this.fb.group({
     password: ['', [Validators.required, Validators.minLength(6)]],

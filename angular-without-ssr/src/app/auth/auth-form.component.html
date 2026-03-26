@@ -66,14 +66,24 @@
   @if (!isLoginMode()) {
     <div class="auth-form__field">
       <label for="confirmPassword" class="auth-form__label">Potwierdź hasło</label>
-      <input
-        type="password"
-        id="confirmPassword"
-        class="auth-form__input"
-        formControlName="confirmPassword"
-        placeholder="Powtórz hasło"
-        autocomplete="new-password"
-      />
+      <div class="auth-form__input-wrap">
+        <input
+          [type]="showConfirmPasswordSignal() ? 'text' : 'password'"
+          id="confirmPassword"
+          class="auth-form__input auth-form__input--password"
+          formControlName="confirmPassword"
+          placeholder="Powtórz hasło"
+          autocomplete="new-password"
+        />
+        <button
+          type="button"
+          class="auth-form__toggle-password"
+          (click)="showConfirmPasswordSignal.set(!showConfirmPasswordSignal())"
+          [attr.aria-label]="showConfirmPasswordSignal() ? 'Ukryj hasło' : 'Pokaż hasło'"
+          tabindex="-1">
+          <i [class]="showConfirmPasswordSignal() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+        </button>
+      </div>
       @if ((submittedSignal() || f['confirmPassword']?.touched) && f['confirmPassword']?.errors) {
         <div class="auth-form__error">
           @if (f['confirmPassword']?.errors?.['required']) {
