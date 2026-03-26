@@ -72,6 +72,18 @@
   @include btn-md;
 }
 
+.flist__btn--generate {
+  @include btn-ghost;
+  @include btn-md;
+  color: $color-purple;
+  border-color: $color-purple;
+
+  &:hover:not(:disabled) {
+    background: $color-purple-light;
+    color: $color-purple-hover;
+  }
+}
+
 .flist__table {
   background: $color-white;
   border: 1px solid $color-border;

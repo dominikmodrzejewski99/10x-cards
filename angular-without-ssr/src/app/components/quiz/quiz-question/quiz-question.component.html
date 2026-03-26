@@ -1,8 +1,13 @@
 <div class="quiz-question" (keydown)="onKeydown($event)">
-  <div class="quiz-question__progress">
+  <div class="quiz-question__top-bar">
     <span class="quiz-question__progress-text">
       Pytanie {{ currentIndexSignal() + 1 }} / {{ totalQuestionsSignal() }}
     </span>
+    <button class="quiz-question__quit" (click)="quitQuiz.emit()" title="Zakończ quiz">
+      <i class="pi pi-times"></i> Zakończ
+    </button>
+  </div>
+  <div class="quiz-question__progress">
     <div class="quiz-question__progress-bar">
       <div class="quiz-question__progress-fill" [style.width.%]="progressPercentSignal()"></div>
     </div>

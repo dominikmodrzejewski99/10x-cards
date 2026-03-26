@@ -72,8 +72,8 @@
           <button (click)="loadExtraPractice()" class="study__link study__link--primary">
             <i class="pi pi-refresh"></i> Dodatkowa powtórka
           </button>
-          <a routerLink="/dashboard" class="study__link study__link--ghost">Dashboard</a>
-          <a routerLink="/sets" class="study__link study__link--ghost">Moje zestawy</a>
+          <a routerLink="/sets" class="study__link study__link--ghost"><i class="pi pi-folder"></i> Moje zestawy</a>
+          <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-sparkles"></i> Generuj fiszki</a>
         </div>
       } @else if (setsSignal().length === 0) {
         <i class="pi pi-folder-open study__state-icon study__state-icon--primary"></i>
@@ -125,7 +125,8 @@
           </button>
         }
         <button (click)="restartSession()" class="study__link" [class.study__link--primary]="failedCountSignal() === 0" [class.study__link--ghost]="failedCountSignal() > 0">Powtórz wszystkie</button>
-        <a routerLink="/dashboard" class="study__link study__link--ghost">Dashboard</a>
+        <a routerLink="/sets" class="study__link study__link--ghost"><i class="pi pi-folder"></i> Moje zestawy</a>
+        <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-sparkles"></i> Generuj fiszki</a>
       </div>
     </div>
   }

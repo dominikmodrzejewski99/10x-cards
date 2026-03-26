@@ -6,6 +6,35 @@
   padding: 1.5rem 1.25rem;
 }
 
+.quiz-question__top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.quiz-question__quit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.65rem;
+  background: transparent;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-md;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: $color-text-secondary;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    border-color: $color-danger;
+    color: $color-danger;
+    background: $color-danger-light;
+  }
+}
+
 .quiz-question__progress {
   margin-bottom: 1.5rem;
 }
@@ -14,8 +43,6 @@
   font-size: 0.8rem;
   font-weight: 700;
   color: $color-text-secondary;
-  display: block;
-  margin-bottom: 0.4rem;
 }
 
 .quiz-question__progress-bar {

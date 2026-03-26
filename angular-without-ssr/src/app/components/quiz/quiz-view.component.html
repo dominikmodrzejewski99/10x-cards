@@ -51,7 +51,8 @@
           [question]="question"
           [currentIndex]="currentIndexSignal()"
           [totalQuestions]="questionsSignal().length"
-          (answerSubmitted)="onAnswerSubmitted($event)">
+          (answerSubmitted)="onAnswerSubmitted($event)"
+          (quitQuiz)="onGoBack()">
         </app-quiz-question>
       }
     }

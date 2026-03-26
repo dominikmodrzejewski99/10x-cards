@@ -17,6 +17,7 @@ export class QuizQuestionComponent {
   public totalQuestionsSignal: InputSignal<number> = input.required<number>({ alias: 'totalQuestions' });
 
   public answerSubmitted: OutputEmitterRef<QuizAnswer> = output<QuizAnswer>();
+  public quitQuiz: OutputEmitterRef<void> = output<void>();
 
   public writtenAnswerSignal: WritableSignal<string> = signal<string>('');
   public selectedOptionSignal: WritableSignal<string | null> = signal<string | null>(null);
