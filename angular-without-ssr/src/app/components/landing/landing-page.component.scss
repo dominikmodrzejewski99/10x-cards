@@ -473,8 +473,8 @@
 .cta {
   text-align: center;
   padding: 5rem 0;
-  background: linear-gradient(135deg, #4255ff 0%, #5c6bff 100%);
-  color: #fff;
+  background: linear-gradient(160deg, #edefff 0%, #dce5ff 40%, #c7d2fe 70%, #edefff 100%);
+  color: #282e3e;
 }
 
 .cta__title {
@@ -485,7 +485,7 @@
 
 .cta__desc {
   font-size: 1rem;
-  opacity: 0.85;
+  color: #586380;
   margin: 0 0 2rem;
 }
 
