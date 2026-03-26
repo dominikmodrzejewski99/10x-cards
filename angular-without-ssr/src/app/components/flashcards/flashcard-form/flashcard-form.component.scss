@@ -1,3 +1,133 @@
+@use 'variables' as *;
+@use 'buttons' as *;
+
+// ── Form layout ──
+.fc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.fc-form__field {
+  margin-bottom: 1rem;
+}
+
+.fc-form__label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: $color-text;
+}
+
+.fc-form__label--sm {
+  font-size: 0.82rem;
+}
+
+.fc-form__required {
+  color: $color-danger;
+}
+
+.fc-form__input,
+.fc-form__textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: $color-text;
+  background: $color-white;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-md;
+  transition: border-color 0.15s;
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.12);
+  }
+}
+
+.fc-form__textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.ng-invalid.ng-touched {
+  border-color: $color-danger;
+}
+
+.fc-form__meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.35rem;
+}
+
+.fc-form__errors {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.fc-form__error {
+  display: block;
+  font-size: 0.78rem;
+  color: $color-danger;
+}
+
+.fc-form__counter {
+  display: block;
+  font-size: 0.78rem;
+  color: $color-text-secondary;
+  white-space: nowrap;
+}
+
+.fc-form__row {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.fc-form__col {
+  flex: 1;
+  min-width: 0;
+}
+
+.fc-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.fc-form__btn {
+  @include btn-base;
+  @include btn-md;
+}
+
+.fc-form__btn--primary {
+  @include btn-primary;
+  @include btn-md;
+}
+
+.fc-form__btn--ghost {
+  @include btn-ghost;
+  @include btn-md;
+}
+
+.fc-form__btn--danger-outline {
+  @include btn-ghost;
+  @include btn-sm;
+  color: $color-danger;
+  border-color: $color-danger-light;
+
+  &:hover:not(:disabled) {
+    background: $color-danger-light;
+    color: $color-danger-hover;
+    border-color: $color-danger;
+  }
+}
+
+// ── Optional section chips ──
 .form-extras {
   display: flex;
   align-items: center;
@@ -8,7 +138,7 @@
   &__label {
     font-size: 0.8rem;
     font-weight: 600;
-    color: #9ca3af;
+    color: $color-text-secondary;
     margin-right: 0.125rem;
   }
 }
@@ -18,31 +148,29 @@
   align-items: center;
   gap: 0.3rem;
   padding: 0.35rem 0.75rem;
-  border-radius: 9999px;
-  border: 1.5px solid #d9dbe9;
-  background: #fff;
-  color: #586380;
+  border-radius: $radius-pill;
+  border: 1.5px solid $color-border;
+  background: $color-white;
+  color: $color-text-secondary;
   font-size: 0.8rem;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: $transition-fast;
   user-select: none;
 
-  i {
-    font-size: 0.75rem;
-  }
+  i { font-size: 0.75rem; }
 
   &:hover {
-    border-color: #4255ff;
-    color: #4255ff;
-    background: #f4f5ff;
+    border-color: $color-primary;
+    color: $color-primary;
+    background: $color-primary-light;
   }
 
   &--active {
-    border-color: #4255ff;
-    background: #edefff;
-    color: #4255ff;
+    border-color: $color-primary;
+    background: $color-primary-light;
+    color: $color-primary;
   }
 
   &--active:hover {
@@ -50,50 +178,38 @@
   }
 }
 
-.p-inputtext, .p-inputtextarea {
-  width: 100%;
-}
-
-label {
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #282e3e;
-}
-
-.ng-invalid.ng-touched {
-  border-color: #ff6240;
-}
-
+// ── PrimeNG overrides ──
 :host ::ng-deep .p-inputtextarea,
 :host ::ng-deep p-textarea textarea {
-  background-color: #ffffff;
-  color: #282e3e;
+  background-color: $color-white;
+  color: $color-text;
 }
 
 :host ::ng-deep .p-inputtextarea:focus {
-  border-color: #4255ff;
+  border-color: $color-primary;
   box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.12);
 }
 
 :host ::ng-deep .p-inputtext {
-  background-color: #ffffff;
-  color: #282e3e;
+  background-color: $color-white;
+  color: $color-text;
 }
 
 :host ::ng-deep .p-dropdown,
 :host ::ng-deep .p-dropdown-panel,
 :host ::ng-deep .p-dropdown-items-wrapper {
-  background-color: #ffffff;
+  background-color: $color-white;
 }
 
 :host ::ng-deep .p-dropdown-item {
-  color: #282e3e;
+  color: $color-text;
 }
 
 :host ::ng-deep .p-dropdown-item:hover {
-  background-color: #f6f7fb;
+  background-color: $color-bg;
 }
 
+// ── Image upload ──
 .image-upload {
   display: flex;
   flex-direction: column;
@@ -101,36 +217,21 @@ label {
   justify-content: center;
   gap: 0.5rem;
   padding: 1.5rem;
-  border: 2px dashed #d9dbe9;
-  border-radius: 0.5rem;
+  border: 2px dashed $color-border;
+  border-radius: $radius-md;
   cursor: pointer;
   transition: border-color 0.2s, background-color 0.2s;
+
+  &:hover {
+    border-color: $color-primary;
+    background-color: $color-bg;
+  }
 }
 
-.image-upload:hover {
-  border-color: #4255ff;
-  background-color: #f6f7fb;
-}
-
-.image-upload__icon {
-  font-size: 1.5rem;
-  color: #939bb4;
-}
-
-.image-upload__text {
-  font-size: 0.9rem;
-  color: #282e3e;
-  font-weight: 500;
-}
-
-.image-upload__hint {
-  font-size: 0.75rem;
-  color: #939bb4;
-}
-
-.image-upload__input {
-  display: none;
-}
+.image-upload__icon { font-size: 1.5rem; color: #939bb4; }
+.image-upload__text { font-size: 0.9rem; color: $color-text; font-weight: 500; }
+.image-upload__hint { font-size: 0.75rem; color: #939bb4; }
+.image-upload__input { display: none; }
 
 .image-preview {
   display: flex;
@@ -138,20 +239,16 @@ label {
   align-items: center;
   gap: 0.75rem;
   padding: 1rem;
-  border: 1px solid #d9dbe9;
-  border-radius: 0.5rem;
-  background-color: #f6f7fb;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  background-color: $color-bg;
 }
 
 .image-preview__img {
   max-width: 100%;
   max-height: 200px;
   object-fit: contain;
-  border-radius: 0.375rem;
-}
-
-.image-preview__remove {
-  align-self: center;
+  border-radius: $radius-sm;
 }
 
 .image-uploading {
@@ -160,38 +257,27 @@ label {
   justify-content: center;
   gap: 0.5rem;
   padding: 1.5rem;
-  border: 2px dashed #d9dbe9;
-  border-radius: 0.5rem;
+  border: 2px dashed $color-border;
+  border-radius: $radius-md;
   color: #939bb4;
   font-size: 0.9rem;
 }
 
-@media (max-width: 640px) {
-  .field { margin-bottom: 1.25rem; }
-  label { font-size: 0.9rem; }
-  .p-inputtext, .p-inputtextarea { font-size: 1rem; padding: 0.625rem; }
-  small { font-size: 0.75rem; }
-  .image-upload { padding: 1rem; }
-  .image-preview__img { max-height: 150px; }
-  .audio-upload { padding: 1rem; }
-  .audio-upload__actions { flex-direction: column; gap: 0.5rem; }
-}
-
+// ── Audio upload ──
 .audio-upload.audio-section--hidden,
 .audio-preview.audio-section--hidden,
 .audio-uploading.audio-section--hidden {
   display: none;
 }
 
-// Audio upload section
 .audio-upload {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
   padding: 1.5rem;
-  border: 2px dashed #d9dbe9;
-  border-radius: 0.65rem;
+  border: 2px dashed $color-border;
+  border-radius: $radius-md;
 }
 
 .audio-upload__actions {
@@ -201,60 +287,36 @@ label {
 }
 
 .audio-upload__btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
+  @include btn-base;
   padding: 0.65rem 1.25rem;
-  border-radius: 50px;
+  border-radius: $radius-pill;
   font-weight: 700;
   font-size: 0.85rem;
-  font-family: inherit;
-  cursor: pointer;
-  border: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .audio-upload__btn--record {
-  background: #7c3aed;
-  color: #ffffff;
+  background: $color-purple;
+  color: $color-white;
 
   &:hover:not(:disabled) {
-    background: #6d28d9;
+    background: $color-purple-hover;
     transform: translateY(-1px);
   }
 }
 
 .audio-upload__btn--file {
   background: transparent;
-  color: #586380;
-  border: 1.5px solid #d9dbe9;
-  border-radius: 50px;
+  color: $color-text-secondary;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-pill;
 
-  &:hover {
-    background: #f6f7fb;
-    border-color: #586380;
-  }
-
-  &:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-  }
+  &:hover { background: $color-bg; border-color: $color-text-secondary; }
+  &:disabled { opacity: 0.45; cursor: not-allowed; }
 }
 
-.audio-upload__input {
-  display: none;
-}
-
-.audio-upload__divider {
-  color: #586380;
-  font-size: 0.8rem;
-}
-
-.audio-upload__hint {
-  font-size: 0.75rem;
-  color: #586380;
-}
+.audio-upload__input { display: none; }
+.audio-upload__divider { color: $color-text-secondary; font-size: 0.8rem; }
+.audio-upload__hint { font-size: 0.75rem; color: $color-text-secondary; }
 
 .audio-preview {
   display: flex;
@@ -262,13 +324,9 @@ label {
   align-items: center;
   gap: 0.75rem;
   padding: 1rem;
-  border: 1px solid #d9dbe9;
-  border-radius: 0.65rem;
-  background-color: #f6f7fb;
-}
-
-.audio-preview__remove {
-  align-self: center;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  background-color: $color-bg;
 }
 
 .audio-uploading {
@@ -277,8 +335,20 @@ label {
   justify-content: center;
   gap: 0.5rem;
   padding: 1.5rem;
-  border: 2px dashed #d9dbe9;
-  border-radius: 0.65rem;
-  color: #586380;
+  border: 2px dashed $color-border;
+  border-radius: $radius-md;
+  color: $color-text-secondary;
   font-size: 0.9rem;
+}
+
+// ── Responsive ──
+@media (max-width: 640px) {
+  .fc-form__field { margin-bottom: 1rem; }
+  .fc-form__label { font-size: 0.85rem; }
+  .fc-form__input, .fc-form__textarea { font-size: 1rem; padding: 0.625rem; }
+  .fc-form__row { flex-direction: column; gap: 0.5rem; }
+  .image-upload { padding: 1rem; }
+  .image-preview__img { max-height: 150px; }
+  .audio-upload { padding: 1rem; }
+  .audio-upload__actions { flex-direction: column; gap: 0.5rem; }
 }

@@ -1,1 +1,65 @@
- 
+@use 'variables' as *;
+
+.error-msg {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: $color-danger-light;
+  border-left: 4px solid $color-danger;
+  border-radius: $radius-md;
+  margin: 0.75rem 0;
+}
+
+.error-msg__icon {
+  flex-shrink: 0;
+  color: $color-danger;
+  font-size: 1.15rem;
+  margin-top: 0.1rem;
+}
+
+.error-msg__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.error-msg__title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: $color-danger-hover;
+  margin: 0 0 0.35rem;
+}
+
+.error-msg__text {
+  font-size: 0.85rem;
+  color: $color-danger;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.error-msg__actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.65rem;
+}
+
+.error-msg__btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: $color-danger;
+  cursor: pointer;
+  transition: color 0.15s;
+
+  &:hover {
+    color: $color-danger-hover;
+    text-decoration: underline;
+  }
+}
+
+.error-msg__btn--dismiss {
+  opacity: 0.65;
+}

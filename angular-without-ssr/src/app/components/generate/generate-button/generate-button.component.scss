@@ -1,2 +1,17 @@
-/* Style specyficzne dla GenerateButtonComponent */
-/* Większość stylów jest obsługiwana przez PrimeNG i Tailwind CSS */ 
+@use 'variables' as *;
+@use 'buttons' as *;
+
+.gen-btn {
+  @include btn-primary;
+  @include btn-lg;
+  min-width: 150px;
+  box-shadow: $shadow-primary;
+
+  &:hover:not(:disabled) {
+    box-shadow: $shadow-primary-hover;
+  }
+
+  i {
+    font-size: 0.95rem;
+  }
+}

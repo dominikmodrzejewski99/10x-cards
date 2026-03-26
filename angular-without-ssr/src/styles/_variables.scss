@@ -1,3 +1,7 @@
+// ══════════════════════════════════════
+//  DESIGN TOKENS — single source of truth
+// ══════════════════════════════════════
+
 // ── Colors ──
 $color-primary: #4255ff;
 $color-primary-hover: #3b4ce3;
@@ -26,17 +30,33 @@ $color-bg: #f6f7fb;
 $color-white: #ffffff;
 
 // ── Radii ──
-$radius-sm: 0.375rem;
-$radius-md: 0.5rem;
-$radius-lg: 0.75rem;
-$radius-pill: 9999px;
+$radius-sm: 0.375rem;   // small badges, pills
+$radius-md: 0.5rem;     // buttons, inputs
+$radius-lg: 0.75rem;    // cards, containers
+$radius-xl: 1rem;       // large cards, modals
+$radius-2xl: 1.25rem;   // hero cards, dialogs
+$radius-pill: 9999px;   // fully rounded
+$radius-full: 50%;      // circles
+
+// ── Spacing — page-level padding ──
+$page-padding: 1.5rem 1.25rem 2rem;
+$page-padding-mobile: 1rem 0.75rem;
+$page-max-width: 920px;
+$page-max-width-narrow: 800px;
+$page-max-width-wide: 1200px;
 
 // ── Transitions ──
 $transition-fast: all 0.15s ease;
 $transition-normal: all 0.2s ease;
+$transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
 // ── Shadows ──
 $shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
 $shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
 $shadow-primary: 0 2px 12px rgba(66, 85, 255, 0.25);
 $shadow-primary-hover: 0 4px 20px rgba(66, 85, 255, 0.35);
+
+// ── Breakpoints ──
+$bp-mobile: 480px;
+$bp-tablet: 640px;
+$bp-desktop: 768px;

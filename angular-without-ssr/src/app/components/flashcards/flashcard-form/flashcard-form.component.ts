@@ -1,6 +1,5 @@
 import { Component, OnInit, WritableSignal, signal, effect, inject, input, output, InputSignal, OutputEmitterRef, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { SelectModule } from 'primeng/select';
@@ -33,7 +32,6 @@ export interface FlashcardFormData {
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    ButtonModule,
     InputTextModule,
     TextareaModule,
     SelectModule,
