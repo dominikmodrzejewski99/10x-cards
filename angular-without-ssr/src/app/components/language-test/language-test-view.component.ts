@@ -83,7 +83,7 @@ export class LanguageTestViewComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    // cleanup if needed
+    // Subscriptions in this component complete on their own (HTTP single-emission)
   }
 
   public selectOption(index: number): void {

@@ -1,4 +1,5 @@
-import {ChangeDetectionStrategy, Component, computed, inject, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit, signal} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {FormsModule} from '@angular/forms';
 import {Router, RouterModule} from '@angular/router';
 import {GenerationApiService} from '../../services/generation-api.service';
@@ -46,6 +47,7 @@ export class GenerateViewComponent implements OnInit {
   private logger: LoggerService = inject(LoggerService);
   private messageService = inject(MessageService);
   private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
 
   proposals = signal<FlashcardProposalViewModel[]>([]);
   generationResult = signal<GenerationDTO | null>(null);
@@ -79,7 +81,7 @@ export class GenerateViewComponent implements OnInit {
   }
 
   private loadSets(): void {
-    this.flashcardSetApi.getSets().subscribe({
+    this.flashcardSetApi.getSets().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (sets) => this.sets.set(sets),
       error: (err: unknown) => this.logger.error('GenerateViewComponent.loadSets', err)
     });
@@ -97,7 +99,7 @@ export class GenerateViewComponent implements OnInit {
     const name = this.newSetName().trim();
     if (!name) return;
     this.isCreatingSet.set(true);
-    this.flashcardSetApi.createSet({ name }).subscribe({
+    this.flashcardSetApi.createSet({ name }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (created) => {
         this.sets.update(s => [created, ...s]);
         this.selectedSetId.set(created.id);
@@ -123,7 +125,7 @@ export class GenerateViewComponent implements OnInit {
 
     const command: GenerateFlashcardsCommand = { text: this.sourceText() };
 
-    this.generationApi.generateFlashcards(command).subscribe({
+    this.generationApi.generateFlashcards(command).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         this.proposals.set(response.flashcards.map((f, i) => ({
           ...f,
@@ -149,7 +151,7 @@ export class GenerateViewComponent implements OnInit {
       .filter(p => p.accepted)
       .map(({ accepted, _id, ...dto }) => dto);
 
-    this.flashcardApi.createFlashcards(flashcardsToSave, this.selectedSetId()!).subscribe({
+    this.flashcardApi.createFlashcards(flashcardsToSave, this.selectedSetId()!).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (savedFlashcards) => {
         this.messageService.add({
           severity: 'success',

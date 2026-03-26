@@ -1,4 +1,5 @@
-import { Component, OnInit, inject, signal, WritableSignal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, inject, signal, WritableSignal, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
@@ -19,6 +20,7 @@ interface QuizSetItem {
 export class QuizListComponent implements OnInit {
   private router: Router = inject(Router);
   private flashcardSetApiService: FlashcardSetApiService = inject(FlashcardSetApiService);
+  private destroyRef: DestroyRef = inject(DestroyRef);
 
   public setsSignal: WritableSignal<QuizSetItem[]> = signal<QuizSetItem[]>([]);
   public loadingSignal: WritableSignal<boolean> = signal<boolean>(true);
@@ -40,7 +42,7 @@ export class QuizListComponent implements OnInit {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
-    this.flashcardSetApiService.getSetsWithCardCount().subscribe({
+    this.flashcardSetApiService.getSetsWithCardCount().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (items) => {
         this.setsSignal.set(items);
         this.loadingSignal.set(false);

@@ -235,7 +235,9 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setApi.getSets().subscribe({
       next: (sets) => {
         this.setsSignal.set(sets);
-
+      },
+      error: () => {
+        // Sets list is non-critical — study can proceed without it
       }
     });
   }

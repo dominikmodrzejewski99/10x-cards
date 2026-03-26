@@ -274,6 +274,8 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
           } else {
             this.expiredSignal.set(true);
           }
+        }).catch(() => {
+          this.expiredSignal.set(true);
         });
       }
     }, 5000);

@@ -4,8 +4,10 @@ import {
   OnInit,
   inject,
   signal,
-  computed
+  computed,
+  DestroyRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule, Router } from '@angular/router';
 import { StreakService } from '../../shared/services/streak.service';
 import { ReviewReminderService } from '../../shared/services/review-reminder.service';
@@ -41,6 +43,7 @@ export class DashboardComponent implements OnInit {
   private reminderService = inject(ReviewReminderService);
   private router = inject(Router);
   private authStore = inject(AuthStore);
+  private destroyRef = inject(DestroyRef);
 
   isAnonymous = this.authStore.isAnonymous;
   loading = signal(true);
@@ -89,7 +92,7 @@ export class DashboardComponent implements OnInit {
       allCards: this.reviewApi.getAllCardsWithReviews(),
       sets: this.setApi.getSets(),
       nextReview: this.reviewApi.getNextReviewDate()
-    }).subscribe({
+    }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: ({ allCards, sets, nextReview }) => {
         this.breakdown.set(this.computeBreakdown(allCards));
         this.sets.set(sets);
@@ -167,7 +170,7 @@ export class DashboardComponent implements OnInit {
   }
 
   private checkReminder(): void {
-    this.reminderService.checkDueCards().subscribe({
+    this.reminderService.checkDueCards().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (count) => {
         if (count > 0) {
           this.reminderDueCount.set(count);
