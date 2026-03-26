@@ -473,7 +473,7 @@
 .cta {
   text-align: center;
   padding: 5rem 0;
-  background: linear-gradient(160deg, #4255ff 0%, #5c6bff 35%, #7c8aff 65%, #4255ff 100%);
+  background: radial-gradient(circle at 50% 50%, #4255ff 0%, #4255ff 50%, #5c6bff 100%);
   color: #fff;
 }
 
