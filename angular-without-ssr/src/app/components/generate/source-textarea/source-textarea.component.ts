@@ -1,11 +1,9 @@
 import { Component, OnInit, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TextareaModule } from 'primeng/textarea';
 
 @Component({
   selector: 'app-source-textarea',
-  imports: [CommonModule, FormsModule, TextareaModule],
+  imports: [FormsModule],
   templateUrl: './source-textarea.component.html',
   styleUrls: ['./source-textarea.component.scss']
 })
@@ -18,6 +16,7 @@ export class SourceTextareaComponent implements OnInit {
 
   text: string = '';
   currentLength: number = 0;
+  touched: boolean = false;
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -36,6 +35,12 @@ export class SourceTextareaComponent implements OnInit {
 
     const isValid = value.length >= this.minLengthSignal() && value.length <= this.maxLengthSignal() && value.trim() !== '';
     this.validityChange.emit(isValid);
+  }
+
+  onBlur(): void {
+    if (this.currentLength > 0) {
+      this.touched = true;
+    }
   }
 
   isTextEmpty(): boolean {

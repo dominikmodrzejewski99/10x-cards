@@ -139,7 +139,9 @@
           <app-sync-status />
         </div>
         <p class="study__hint">
-          @if (!isFlippedSignal()) {
+          @if (currentSetNameSignal()) {
+            Uczysz się z zestawu „{{ currentSetNameSignal() }}"
+          } @else if (!isFlippedSignal()) {
             Kliknij kartę lub naciśnij spację
           } @else {
             Oceń swoją odpowiedź
@@ -217,7 +219,6 @@
               </button>
               <span class="study__tooltip">Odwróć kartę</span>
             </div>
-            <span class="study__counter">{{ currentIndexSignal() + 1 }} / {{ dueCardsSignal().length }}</span>
           </div>
 
           <div class="study__controls-side study__controls-side--end">
@@ -262,10 +263,10 @@
 
           <div class="study__controls-center">
             <div class="study__tooltip-wrap">
-              <button (click)="answer(1)" [disabled]="savingSignal()" class="study__ctrl study__ctrl--wrong">
-                <i class="pi pi-times"></i>
+              <button (click)="answer(4)" [disabled]="savingSignal()" class="study__ctrl study__ctrl--right">
+                <i class="pi pi-check"></i>
               </button>
-              <span class="study__tooltip">Nie wiem</span>
+              <span class="study__tooltip">Wiem</span>
             </div>
             <div class="study__tooltip-wrap">
               <button (click)="answer(3)" [disabled]="savingSignal()" class="study__ctrl study__ctrl--hard">
@@ -273,12 +274,11 @@
               </button>
               <span class="study__tooltip">Trudne</span>
             </div>
-            <span class="study__counter">{{ currentIndexSignal() + 1 }} / {{ dueCardsSignal().length }}</span>
             <div class="study__tooltip-wrap">
-              <button (click)="answer(4)" [disabled]="savingSignal()" class="study__ctrl study__ctrl--right">
-                <i class="pi pi-check"></i>
+              <button (click)="answer(1)" [disabled]="savingSignal()" class="study__ctrl study__ctrl--wrong">
+                <i class="pi pi-times"></i>
               </button>
-              <span class="study__tooltip">Wiem</span>
+              <span class="study__tooltip">Nie wiem</span>
             </div>
           </div>
 
@@ -310,22 +310,25 @@
         }
       </div>
 
-      <div class="study__progress-bar" role="progressbar" [attr.aria-valuenow]="progressPercentSignal()" aria-valuemin="0" aria-valuemax="100" aria-label="Postęp sesji">
-        <div class="study__progress-fill" [style.width.%]="progressPercentSignal()"></div>
+      <div class="study__progress-row">
+        <div class="study__progress-bar" role="progressbar" [attr.aria-valuenow]="progressPercentSignal()" aria-valuemin="0" aria-valuemax="100" aria-label="Postęp sesji">
+          <div class="study__progress-fill" [style.width.%]="progressPercentSignal()"></div>
+        </div>
+        <span class="study__counter">{{ currentIndexSignal() + 1 }} / {{ dueCardsSignal().length }}</span>
       </div>
 
       <p class="study__kbd study__kbd--desktop">
         @if (!isFlippedSignal()) {
           spacja = odwróć
         } @else {
-          1 = Nie wiem &nbsp;|&nbsp; 2 = Trudne &nbsp;|&nbsp; 3 = Wiem
+          1 = Wiem &nbsp;|&nbsp; 2 = Trudne &nbsp;|&nbsp; 3 = Nie wiem
         }
       </p>
       <p class="study__kbd study__kbd--mobile">
         @if (!isFlippedSignal()) {
           Dotknij kartę, aby odwrócić
         } @else {
-          ← Nie wiem &nbsp;|&nbsp; ↑ Trudne &nbsp;|&nbsp; → Wiem
+          → Wiem &nbsp;|&nbsp; ↑ Trudne &nbsp;|&nbsp; ← Nie wiem
         }
       </p>
     </div>

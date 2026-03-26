@@ -52,15 +52,15 @@ import { LanguageTestResultDTO } from '../../../types';
     /* Language Test Widget */
     .dash__card--test-widget {
       padding: 1.25rem 1.5rem;
-      background: var(--app-white, #ffffff);
-      border: 1.5px solid var(--app-border, #d9dbe9);
+      background: linear-gradient(135deg, #edefff, #dce5ff);
+      border: 1.5px solid #b4bcff;
       border-radius: 1.25rem;
       margin-bottom: 2rem;
       transition: border-color 0.2s;
     }
 
     .dash__card--test-widget:hover {
-      border-color: var(--app-primary, #8b5cf6);
+      border-color: #4255ff;
     }
 
     .dash__test-result {

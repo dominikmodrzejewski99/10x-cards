@@ -1,29 +1,103 @@
-/* Style dla textarea */
-textarea,
-.p-inputtextarea,
-.p-textarea,
-p-inputtextarea textarea,
-p-textarea textarea {
-  background-color: white;
-  color: #333;
-  /* Ustawienie minimalnej wysokości dla desktopu */
-  min-height: 270px;
-  /* Wyłączenie resize i włączenie scrolla */
-  resize: none;
-  overflow: auto; /* Upewnij się, że scrollbar jest widoczny */
+@use 'variables' as *;
+
+.source {
+  margin-bottom: 1rem;
 }
 
-/* Style dla kontenera */
-.textarea-container {
+.source__label {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: $color-primary;
+  margin-bottom: 0.5rem;
+}
+
+.source__wrap {
   position: relative;
-  background-color: white;
+  background: $color-white;
 }
 
-/* Dodatkowe style dla focus */
-textarea:focus {
-  background-color: white;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
-  /* Upewnij się, że kolor tekstu jest ciemny na focus */
-  color: #1f2937;
+.source__textarea {
+  width: 100%;
+  min-height: 270px;
+  padding: 1rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: $color-text;
+  background: $color-white;
+  border: 2px solid $color-border;
+  border-radius: $radius-lg;
+  resize: none;
+  overflow: auto;
+  box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &::placeholder {
+    color: #b0b5c4;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.12);
+  }
+}
+
+.source__textarea--error {
+  border-color: $color-danger;
+
+  &:focus {
+    border-color: $color-danger;
+    box-shadow: 0 0 0 3px rgba(255, 98, 64, 0.12);
+  }
+}
+
+.source__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 0.65rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.source__errors {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.source__error {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: $color-danger;
+  font-size: 0.88rem;
+  font-weight: 500;
+
+  i {
+    font-size: 0.85rem;
+  }
+}
+
+.source__counter {
+  padding: 0.2rem 0.65rem;
+  border-radius: $radius-pill;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: $color-bg;
+  color: $color-text-secondary;
+  white-space: nowrap;
+  margin-left: auto;
+  transition: background 0.2s, color 0.2s;
+}
+
+.source__counter--error {
+  background: $color-danger-light;
+  color: $color-danger;
+}
+
+.source__counter--valid {
+  background: $color-primary-light;
+  color: $color-primary;
 }

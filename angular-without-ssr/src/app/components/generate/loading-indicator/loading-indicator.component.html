@@ -1,18 +1,8 @@
 @if (isLoadingSignal()) {
 <div class="overlay" [attr.data-test-id]="'loading-indicator'">
   <div class="dialog">
-    <div class="dialog__progress">
-      <div class="dialog__bar">
-        <div class="dialog__bar-fill"></div>
-      </div>
-      <p class="dialog__status">
-        <i class="pi pi-sparkles"></i>
-        {{ statusText() }}
-      </p>
-    </div>
-
     <div class="dialog__content">
-      <h3 class="dialog__title">Czy wiesz, że...</h3>
+      <h3 class="dialog__title">{{ factTitle() }}</h3>
 
       <div class="dialog__chart">
         <svg viewBox="0 0 360 180" class="chart" aria-label="Krzywa zapominania Ebbinghausa">
@@ -43,24 +33,24 @@
       </div>
 
       <div class="dialog__facts">
+        @for (fact of displayedFacts(); track fact.icon) {
         <div class="dialog__fact">
           <span class="dialog__fact-icon">
-            <i class="pi pi-chart-line"></i>
+            <i [class]="'pi ' + fact.icon"></i>
           </span>
-          <p>Bez powtórek <strong>zapominamy 70% materiału</strong> w ciągu 24 godzin — to odkrycie Hermanna Ebbinghausa z 1885 roku.</p>
+          <p [innerHTML]="fact.text"></p>
         </div>
-        <div class="dialog__fact">
-          <span class="dialog__fact-icon">
-            <i class="pi pi-replay"></i>
-          </span>
-          <p>Powtórki w rosnących odstępach czasu <strong>(spaced repetition)</strong> pozwalają zapamiętać materiał nawet na lata.</p>
-        </div>
-        <div class="dialog__fact">
-          <span class="dialog__fact-icon">
-            <i class="pi pi-bolt"></i>
-          </span>
-          <p>Już <strong>4–5 powtórek</strong> w odpowiednich momentach wystarczy, by przenieść wiedzę do pamięci długotrwałej.</p>
-        </div>
+        }
+      </div>
+    </div>
+
+    <div class="dialog__progress">
+      <p class="dialog__status">
+        <i class="pi pi-sparkles"></i>
+        {{ statusText() }}
+      </p>
+      <div class="dialog__bar">
+        <div class="dialog__bar-fill"></div>
       </div>
     </div>
   </div>

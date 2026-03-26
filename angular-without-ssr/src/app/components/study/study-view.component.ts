@@ -260,7 +260,7 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
         break;
       case '1':
         if (this.isFlippedSignal()) {
-          this.answer(1);
+          this.answer(4);
         }
         break;
       case '2':
@@ -270,7 +270,7 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
         break;
       case '3':
         if (this.isFlippedSignal()) {
-          this.answer(4);
+          this.answer(1);
         }
         break;
     }
