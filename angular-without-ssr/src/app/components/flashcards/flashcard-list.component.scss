@@ -42,27 +42,27 @@
 }
 
 .flist__btn {
-  @include btn-base;
+  @include btn-ghost;
   @include btn-md;
 }
 
 .flist__btn--study {
-  @include btn-success;
-  @include btn-md;
-}
-
-.flist__btn--quiz {
-  @include btn-warning;
-  @include btn-md;
-}
-
-.flist__btn--add {
   @include btn-primary;
   @include btn-md;
 }
 
+.flist__btn--quiz {
+  @include btn-outline;
+  @include btn-md;
+}
+
+.flist__btn--add {
+  @include btn-ghost;
+  @include btn-md;
+}
+
 .flist__btn--import {
-  @include btn-purple;
+  @include btn-ghost;
   @include btn-md;
 }
 
@@ -74,13 +74,6 @@
 .flist__btn--generate {
   @include btn-ghost;
   @include btn-md;
-  color: $color-purple;
-  border-color: $color-purple;
-
-  &:hover:not(:disabled) {
-    background: $color-purple-light;
-    color: $color-purple-hover;
-  }
 }
 
 /* Saved banner */
