@@ -1,4 +1,4 @@
-import { Injectable, inject, signal, WritableSignal, Signal, computed } from '@angular/core';
+import { Injectable, inject, signal, WritableSignal, Signal, computed, OnDestroy } from '@angular/core';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from './supabase-client.factory';
 import { ConnectivityService } from './connectivity.service';
@@ -21,7 +21,7 @@ const MAX_RETRIES: number = 5;
 const RETRY_INTERVAL_MS: number = 30_000;
 
 @Injectable({ providedIn: 'root' })
-export class OfflineQueueService {
+export class OfflineQueueService implements OnDestroy {
   private supabase: SupabaseClient = inject(SupabaseClientFactory).getClient();
   private connectivity: ConnectivityService = inject(ConnectivityService);
   private logger: LoggerService = inject(LoggerService);
@@ -33,11 +33,14 @@ export class OfflineQueueService {
   private db: IDBDatabase | null = null;
   private retryTimer: ReturnType<typeof setInterval> | null = null;
   private syncInProgress: boolean = false;
+  private onOnlineHandler: (() => void) | null = null;
 
   constructor() {
     this.initDb().then(() => {
       this.refreshCount();
       this.processQueue();
+    }).catch((err: unknown) => {
+      this.logger.error('OfflineQueueService.init', err);
     });
 
     // Watch connectivity changes — sync when back online
@@ -282,11 +285,19 @@ export class OfflineQueueService {
   }
 
   private startConnectivityWatch(): void {
-    const onOnline: () => void = () => {
+    this.onOnlineHandler = () => {
       if (this.pendingCountSignal() > 0) {
         this.processQueue();
       }
     };
-    window.addEventListener('online', onOnline);
+    window.addEventListener('online', this.onOnlineHandler);
+  }
+
+  ngOnDestroy(): void {
+    this.stopRetryTimer();
+    if (this.onOnlineHandler) {
+      window.removeEventListener('online', this.onOnlineHandler);
+      this.onOnlineHandler = null;
+    }
   }
 }

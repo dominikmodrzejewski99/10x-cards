@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../environments/environments';
+import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SupabaseClientFactory {
+  private logger: LoggerService = inject(LoggerService);
   private supabaseClient: SupabaseClient | null = null;
 
   /**
@@ -30,7 +32,7 @@ export class SupabaseClientFactory {
                 try {
                   return localStorage.getItem(key);
                 } catch (error) {
-                  console.error('Error accessing localStorage:', error);
+                  this.logger.error('SupabaseClientFactory.localStorage.getItem', error);
                   return null;
                 }
               },
@@ -38,14 +40,14 @@ export class SupabaseClientFactory {
                 try {
                   localStorage.setItem(key, value);
                 } catch (error) {
-                  console.error('Error setting localStorage:', error);
+                  this.logger.error('SupabaseClientFactory.localStorage.setItem', error);
                 }
               },
               removeItem: (key) => {
                 try {
                   localStorage.removeItem(key);
                 } catch (error) {
-                  console.error('Error removing from localStorage:', error);
+                  this.logger.error('SupabaseClientFactory.localStorage.removeItem', error);
                 }
               }
             }

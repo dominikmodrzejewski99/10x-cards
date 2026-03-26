@@ -7,6 +7,7 @@ import { FlashcardDTO, FlashcardLanguage } from '../../../../types';
 import { ImageUploadService } from '../../../services/image-upload.service';
 import { OpenRouterService } from '../../../services/openrouter.service';
 import { AudioUploadService } from '../../../services/audio-upload.service';
+import { LoggerService } from '../../../services/logger.service';
 import { AudioRecorderComponent } from '../../../shared/components/audio-recorder/audio-recorder.component';
 import { AudioPlayerComponent } from '../../../shared/components/audio-player/audio-player.component';
 
@@ -53,6 +54,7 @@ export class FlashcardFormComponent implements OnInit {
   private imageUploadService: ImageUploadService = inject(ImageUploadService);
   private openRouterService: OpenRouterService = inject(OpenRouterService);
   private audioUploadService: AudioUploadService = inject(AudioUploadService);
+  private logger: LoggerService = inject(LoggerService);
 
   public imagePreviewSignal: WritableSignal<string | null> = signal<string | null>(null);
   public uploadingSignal: WritableSignal<boolean> = signal<boolean>(false);
@@ -226,7 +228,7 @@ export class FlashcardFormComponent implements OnInit {
     const currentUrl: string | null = this.pendingImageUrl;
     if (currentUrl) {
       this.imageUploadService.deleteImage(currentUrl).subscribe({
-        error: () => console.error('Failed to delete image from storage:', currentUrl)
+        error: (err: unknown) => this.logger.error('FlashcardForm.removeImage', err)
       });
     }
     this.pendingImageUrl = null;
@@ -252,7 +254,7 @@ export class FlashcardFormComponent implements OnInit {
     const currentUrl: string | null = this.pendingAudioUrl;
     if (currentUrl) {
       this.audioUploadService.deleteAudio(currentUrl).subscribe({
-        error: () => console.error('Failed to delete audio from storage:', currentUrl)
+        error: (err: unknown) => this.logger.error('FlashcardForm.removeAudio', err)
       });
     }
     this.pendingAudioUrl = null;

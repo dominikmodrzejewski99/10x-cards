@@ -297,10 +297,9 @@ export class AuthService {
 
     const err = error as { message?: string; status?: number };
     if (err.message) {
-      // Ignorujemy błąd potwierdzenia email - użytkownik może się zalogować bez potwierdzania
       if (err.message.includes('Email not confirmed') ||
           err.message.includes('Email verification required')) {
-        return new Error('');
+        return new Error('Email nie został potwierdzony. Sprawdź swoją skrzynkę pocztową.');
       }
 
       // Sprawdzamy, czy błąd dotyczy nieprawidłowego adresu email

@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Session, Message } from '../interfaces/openrouter.interface';
 
+const MAX_SESSIONS: number = 20;
+const SESSION_TTL_MS: number = 60 * 60 * 1000; // 1 hour
+
 @Injectable({
   providedIn: 'root'
 })
@@ -8,13 +11,14 @@ export class SessionManager {
   private sessions: Map<string, Session> = new Map();
   private activeSessionId: string | null = null;
 
-  constructor() {}
-
-  /**
-   * Tworzy nową sesję
-   * @returns Nowo utworzona sesja
-   */
   createSession(): Session {
+    this.evictExpired();
+
+    if (this.sessions.size >= MAX_SESSIONS) {
+      const oldestKey: string = this.sessions.keys().next().value!;
+      this.sessions.delete(oldestKey);
+    }
+
     const sessionId = this.generateSessionId();
     const session: Session = {
       id: sessionId,
@@ -28,25 +32,21 @@ export class SessionManager {
     return session;
   }
 
-  /**
-   * Pobiera sesję o podanym identyfikatorze
-   * @param sessionId Opcjonalny identyfikator sesji. Jeśli nie podano, zwraca aktywną sesję
-   * @returns Sesja lub null, jeśli nie znaleziono
-   */
   getSession(sessionId?: string): Session | null {
-    // Jeśli nie podano sessionId, użyj aktywnej sesji
     const idToUse = sessionId || this.activeSessionId;
-
     if (!idToUse) return null;
-    return this.sessions.get(idToUse) || null;
+
+    const session = this.sessions.get(idToUse) || null;
+    if (session && this.isExpired(session)) {
+      this.sessions.delete(idToUse);
+      if (idToUse === this.activeSessionId) {
+        this.activeSessionId = null;
+      }
+      return null;
+    }
+    return session;
   }
 
-  /**
-   * Dodaje wiadomość do sesji
-   * @param sessionId Identyfikator sesji
-   * @param message Wiadomość do dodania
-   * @returns Zaktualizowana sesja lub null, jeśli nie znaleziono sesji
-   */
   addMessage(sessionId: string, message: Message): Session | null {
     const session = this.getSession(sessionId);
     if (!session) return null;
@@ -56,26 +56,29 @@ export class SessionManager {
     return session;
   }
 
-  /**
-   * Usuwa sesję
-   * @param sessionId Identyfikator sesji
-   * @returns true, jeśli sesja została usunięta, false w przeciwnym razie
-   */
   removeSession(sessionId: string): boolean {
     const result = this.sessions.delete(sessionId);
-
-    // Jeśli usunięto aktywną sesję, zresetuj activeSessionId
     if (result && sessionId === this.activeSessionId) {
       this.activeSessionId = null;
     }
-
     return result;
   }
 
-  /**
-   * Generuje unikalny identyfikator sesji
-   * @returns Unikalny identyfikator sesji
-   */
+  private isExpired(session: Session): boolean {
+    return Date.now() - session.updatedAt.getTime() > SESSION_TTL_MS;
+  }
+
+  private evictExpired(): void {
+    for (const [id, session] of this.sessions) {
+      if (this.isExpired(session)) {
+        this.sessions.delete(id);
+        if (id === this.activeSessionId) {
+          this.activeSessionId = null;
+        }
+      }
+    }
+  }
+
   private generateSessionId(): string {
     return Date.now().toString(36) + Math.random().toString(36).substring(2);
   }

@@ -1,11 +1,12 @@
-import { inject, Injectable, ApplicationRef } from '@angular/core';
+import { inject, Injectable, ApplicationRef, OnDestroy } from '@angular/core';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
-import { Observable, concat, interval, filter, first } from 'rxjs';
+import { Observable, Subscription, concat, interval, filter, first } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class UpdateService {
+export class UpdateService implements OnDestroy {
   private readonly swUpdate: SwUpdate = inject(SwUpdate);
   private readonly appRef: ApplicationRef = inject(ApplicationRef);
+  private readonly subscriptions: Subscription[] = [];
 
   public checkForUpdates(): void {
     if (!this.swUpdate.isEnabled) {
@@ -22,20 +23,28 @@ export class UpdateService {
       everySixHours$
     );
 
-    everySixHoursOnceAppIsStable$.subscribe((): void => {
-      this.swUpdate.checkForUpdate();
-    });
+    this.subscriptions.push(
+      everySixHoursOnceAppIsStable$.subscribe((): void => {
+        this.swUpdate.checkForUpdate();
+      })
+    );
 
     // Listen for new versions and prompt user to reload
-    this.swUpdate.versionUpdates
-      .pipe(filter((event: { type: string }): event is VersionReadyEvent => event.type === 'VERSION_READY'))
-      .subscribe((): void => {
-        const shouldUpdate: boolean = confirm(
-          'Dostępna jest nowa wersja aplikacji. Czy chcesz ją załadować?'
-        );
-        if (shouldUpdate) {
-          document.location.reload();
-        }
-      });
+    this.subscriptions.push(
+      this.swUpdate.versionUpdates
+        .pipe(filter((event: { type: string }): event is VersionReadyEvent => event.type === 'VERSION_READY'))
+        .subscribe((): void => {
+          const shouldUpdate: boolean = confirm(
+            'Dostępna jest nowa wersja aplikacji. Czy chcesz ją załadować?'
+          );
+          if (shouldUpdate) {
+            document.location.reload();
+          }
+        })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }
