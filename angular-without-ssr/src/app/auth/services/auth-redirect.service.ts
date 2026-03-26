@@ -17,8 +17,14 @@ export class AuthRedirectService {
    * @param url URL, do którego użytkownik próbował uzyskać dostęp
    */
   setRedirectUrl(url: string): void {
-    // Zapisujemy tylko URL-e, które nie są związane z autentykacją
-    if (!url.includes('/login') && !url.includes('/register')) {
+    // Only save internal, non-auth URLs — reject anything that could redirect externally
+    if (
+      url.startsWith('/') &&
+      !url.startsWith('//') &&
+      !url.includes('://') &&
+      !url.includes('/login') &&
+      !url.includes('/register')
+    ) {
       this.redirectUrl = url;
     }
   }

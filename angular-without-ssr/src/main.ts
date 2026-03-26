@@ -9,7 +9,7 @@ import { appConfig } from './app/app.config';
 if (environment.sentryDsn) {
   Sentry.init({
     dsn: environment.sentryDsn,
-    sendDefaultPii: true,
+    sendDefaultPii: false,
     tracesSampleRate: 0.1,
     replaysSessionSampleRate: 0,
   });
