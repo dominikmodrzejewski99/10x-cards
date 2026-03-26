@@ -245,7 +245,7 @@ body .p-toast .p-toast-summary { font-weight: 600; color: #282e3e; }
 body .p-toast .p-toast-detail { margin-top: 0.25rem; font-size: 0.875rem; color: #586380; }
 
 @media (max-width: 480px) {
-  body .p-toast { width: calc(100vw - 1.5rem); max-width: none; left: 0.75rem; right: 0.75rem; top: calc(0.75rem + env(safe-area-inset-top, 0px)); }
+  body .p-toast { width: calc(100% - 1.5rem); max-width: none; left: 0.75rem; right: 0.75rem; bottom: calc(4rem + env(safe-area-inset-bottom, 0px)); top: auto; }
   body .p-toast .p-toast-message { border-radius: 0.5rem; }
   body .p-toast .p-toast-message-content { padding: 0.65rem 0.85rem; }
   body .p-toast .p-toast-summary { font-size: 0.8rem; }

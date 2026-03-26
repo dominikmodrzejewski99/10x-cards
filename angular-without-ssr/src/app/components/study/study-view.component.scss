@@ -637,15 +637,13 @@
   .study__toggle-switch {
     width: 2.25rem;
     height: 1.25rem;
-    min-height: 44px;
-    min-width: 44px;
-    display: flex;
-    align-items: center;
-  }
-
-  .study__toggle-knob {
-    width: 0.85rem;
-    height: 0.85rem;
+    position: relative;
+    // Expand touch target without affecting visual size
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -10px;
+    }
   }
 
   .study__toggle-switch--on .study__toggle-knob {

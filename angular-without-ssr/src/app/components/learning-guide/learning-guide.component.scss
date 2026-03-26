@@ -140,7 +140,7 @@
 .chart__dk-stage-label { white-space: nowrap; }
 .chart__dk-tooltip { margin-top: 0.6rem; padding: 0.75rem 1rem; background: var(--app-white); border: 1.5px solid #ff6240; border-radius: 0.65rem; font-size: 0.82rem; color: var(--app-text); line-height: 1.5; animation: guide-expand 0.2s ease-out; }
 
-.chart__tl { display: flex; align-items: center; padding: 0.5rem 0; overflow-x: auto; }
+.chart__tl { display: flex; align-items: center; padding: 0.5rem 0; overflow-x: auto; max-width: 100%; }
 .chart__tl-point { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; z-index: 1; }
 .chart__tl-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--app-primary); border: 3px solid var(--app-white); box-shadow: 0 0 0 2px var(--app-primary); animation: dot-appear 0.3s ease forwards; }
 .chart__tl-point--start .chart__tl-dot { width: 18px; height: 18px; background: linear-gradient(135deg, #4255ff, #7c3aed); box-shadow: 0 0 0 2px #7c3aed; }
