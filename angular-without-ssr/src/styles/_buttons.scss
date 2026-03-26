@@ -47,11 +47,9 @@
   @include btn-base;
   background: $color-primary;
   color: $color-white;
-  box-shadow: $shadow-primary;
 
   &:hover:not(:disabled) {
     background: $color-primary-hover;
-    box-shadow: $shadow-primary-hover;
   }
 }
 
