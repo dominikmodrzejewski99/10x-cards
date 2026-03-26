@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnDestroy, ElementRef, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, ElementRef, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
 import { AuthStore } from '../../auth/store';
@@ -15,12 +15,19 @@ import { AuthStore } from '../../auth/store';
 })
 export class LandingPageComponent implements AfterViewInit, OnDestroy {
   private observer: IntersectionObserver | null = null;
+  private demoObserver: IntersectionObserver | null = null;
   private authStore = inject(AuthStore);
+
+  demoFlipped = signal(false);
 
   constructor(private el: ElementRef<HTMLElement>) {}
 
   tryAnonymously(): void {
     this.authStore.loginAnonymously();
+  }
+
+  toggleDemoFlip(): void {
+    this.demoFlipped.update(v => !v);
   }
 
   ngAfterViewInit(): void {
@@ -38,9 +45,25 @@ export class LandingPageComponent implements AfterViewInit, OnDestroy {
 
     const animatedEls: NodeListOf<Element> = this.el.nativeElement.querySelectorAll('[data-animate]');
     animatedEls.forEach((el: Element) => this.observer?.observe(el));
+
+    // Flip demo card once on first scroll into view
+    const demoCard: HTMLElement | null = this.el.nativeElement.querySelector('.demo__flipcard');
+    if (demoCard) {
+      this.demoObserver = new IntersectionObserver(
+        (entries: IntersectionObserverEntry[]) => {
+          if (entries[0].isIntersecting) {
+            setTimeout(() => this.demoFlipped.set(true), 800);
+            this.demoObserver?.disconnect();
+          }
+        },
+        { threshold: 0.5 }
+      );
+      this.demoObserver.observe(demoCard);
+    }
   }
 
   ngOnDestroy(): void {
     this.observer?.disconnect();
+    this.demoObserver?.disconnect();
   }
 }

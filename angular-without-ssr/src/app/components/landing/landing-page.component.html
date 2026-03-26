@@ -55,17 +55,17 @@
     <p class="section__subtitle" data-animate="fade-up">Odwracasz kartę, oceniasz się, idziesz dalej. Resztą zajmuje się algorytm.</p>
 
     <div class="demo" data-animate="fade-up">
-      <div class="demo__cards">
-        <div class="demo__card demo__card--q">
-          <span class="demo__label">Pytanie</span>
-          <p class="demo__text">Jaki protokół odpowiada za niezawodne dostarczanie pakietów w modelu TCP/IP?</p>
-        </div>
-        <div class="demo__flip-hint">
-          <i class="pi pi-arrow-down"></i> odwróć kartę
-        </div>
-        <div class="demo__card demo__card--a">
-          <span class="demo__label">Odpowiedź</span>
-          <p class="demo__text">TCP (Transmission Control Protocol) — zapewnia kontrolę przepływu, retransmisję i porządkowanie segmentów.</p>
+      <div class="demo__flipcard" (click)="toggleDemoFlip()" [class.demo__flipcard--flipped]="demoFlipped()">
+        <div class="demo__flipcard-inner">
+          <div class="demo__flipcard-face demo__flipcard-face--front">
+            <span class="demo__label">Pytanie</span>
+            <p class="demo__text">Jaki protokół odpowiada za niezawodne dostarczanie pakietów w modelu TCP/IP?</p>
+            <span class="demo__tap-hint"><i class="pi pi-sync"></i> kliknij aby odwrócić</span>
+          </div>
+          <div class="demo__flipcard-face demo__flipcard-face--back">
+            <span class="demo__label">Odpowiedź</span>
+            <p class="demo__text">TCP (Transmission Control Protocol) — zapewnia kontrolę przepływu, retransmisję i porządkowanie segmentów.</p>
+          </div>
         </div>
       </div>
 
