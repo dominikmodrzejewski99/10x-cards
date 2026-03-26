@@ -3,7 +3,7 @@
     <span class="quiz-question__progress-text">
       Pytanie {{ currentIndexSignal() + 1 }} / {{ totalQuestionsSignal() }}
     </span>
-    <button class="quiz-question__quit" (click)="quitQuiz.emit()" title="Zakończ quiz">
+    <button class="quiz-question__quit" (click)="onQuit()" title="Zakończ quiz">
       <i class="pi pi-times"></i> Zakończ
     </button>
   </div>

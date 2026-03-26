@@ -62,6 +62,7 @@
         <app-quiz-results
           [result]="result"
           [gradeText]="gradeTextSignal()"
+          [setId]="setIdSignal()"
           (retry)="onRetry()"
           (retryWrong)="onRetryWrong()"
           (retryStarred)="onRetryStarred($event)"

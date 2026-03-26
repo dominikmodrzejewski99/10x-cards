@@ -84,6 +84,17 @@
           <i class="pi pi-chevron-right"></i>
         </button>
 
+        <a class="quiz-results__action-card" [routerLink]="['/study']" [queryParams]="{setId: setIdSignal()}">
+          <div class="quiz-results__action-card-icon quiz-results__action-card-icon--study">
+            <i class="pi pi-book"></i>
+          </div>
+          <div class="quiz-results__action-card-text">
+            <strong>Ucz się tych fiszek</strong>
+            <span>Powtarzaj z algorytmem inteligentnych powtórek</span>
+          </div>
+          <i class="pi pi-chevron-right"></i>
+        </a>
+
         <button class="quiz-results__action-card" (click)="onGoBack()">
           <div class="quiz-results__action-card-icon quiz-results__action-card-icon--back">
             <i class="pi pi-arrow-left"></i>

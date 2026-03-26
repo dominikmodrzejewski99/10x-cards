@@ -206,6 +206,8 @@
 @media (max-width: 640px) {
   .flist { padding: 1rem 0.75rem; }
   .flist__header { flex-direction: column; align-items: flex-start; }
-  .flist__actions { width: 100%; }
-  .flist__btn { flex: 1; justify-content: center; font-size: 0.8rem; padding: 0.5rem 0.75rem; }
+  .flist__actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+  .flist__btn { justify-content: center; font-size: 0.78rem; padding: 0.5rem 0.6rem; }
+  .flist__btn--export { display: none; }
+  .flist__btn--import { display: none; }
 }

@@ -95,6 +95,12 @@ export class QuizQuestionComponent {
     this.isCorrectSignal.set(null);
   }
 
+  public onQuit(): void {
+    if (confirm('Czy na pewno chcesz zakończyć quiz? Postęp nie zostanie zapisany.')) {
+      this.quitQuiz.emit();
+    }
+  }
+
   public onKeydown(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
       if (this.isAnsweredSignal()) {

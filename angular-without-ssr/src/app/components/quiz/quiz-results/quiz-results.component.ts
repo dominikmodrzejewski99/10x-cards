@@ -1,10 +1,11 @@
 import { Component, ChangeDetectionStrategy, input, output, InputSignal, OutputEmitterRef, signal, WritableSignal, computed, Signal } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { QuizResult, QuizAnswer } from '../../../../types';
 
 @Component({
   selector: 'app-quiz-results',
-  imports: [ButtonModule],
+  imports: [ButtonModule, RouterModule],
   templateUrl: './quiz-results.component.html',
   styleUrls: ['./quiz-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -12,6 +13,7 @@ import { QuizResult, QuizAnswer } from '../../../../types';
 export class QuizResultsComponent {
   public resultSignal: InputSignal<QuizResult> = input.required<QuizResult>({ alias: 'result' });
   public gradeTextSignal: InputSignal<string> = input.required<string>({ alias: 'gradeText' });
+  public setIdSignal: InputSignal<number> = input.required<number>({ alias: 'setId' });
 
   public retry: OutputEmitterRef<void> = output<void>();
   public retryWrong: OutputEmitterRef<void> = output<void>();

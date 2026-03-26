@@ -214,6 +214,11 @@
     background: $color-purple-light;
     color: $color-purple;
   }
+
+  &--study {
+    background: $color-primary-light;
+    color: $color-primary;
+  }
 }
 
 .quiz-results__action-card-text {
