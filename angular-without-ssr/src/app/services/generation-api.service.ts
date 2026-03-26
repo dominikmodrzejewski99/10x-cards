@@ -4,9 +4,8 @@ import { GenerateFlashcardsCommand, GenerationDTO, FlashcardProposalDTO } from '
 import { OpenRouterService } from './openrouter.service';
 import { LoggerService } from './logger.service';
 
-const DEFAULT_AI_MODEL = 'stepfun/step-3.5-flash:free';
 const MAX_FLASHCARDS = 15;
-const MAX_TOKENS = 8000;
+const MAX_TOKENS = 4000;
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +48,6 @@ PRZYKŁAD POPRAWNEJ ODPOWIEDZI:
       systemMessage: `Jesteś asystentem tworzącym fiszki edukacyjne. Zawsze odpowiadaj WYŁĄCZNIE obiektem JSON w formacie: {"flashcards": [{"front": "pytanie", "back": "odpowiedź"}, ...]}. Wygeneruj dokładnie ${MAX_FLASHCARDS} fiszek. Nie dodawaj żadnego tekstu poza JSON.`,
       temperature: 0.5,
       max_tokens: MAX_TOKENS,
-      model: command.model || DEFAULT_AI_MODEL,
       useJsonFormat: true
     })).pipe(
       map((response: string) => {
@@ -114,7 +112,7 @@ PRZYKŁAD POPRAWNEJ ODPOWIEDZI:
           id: Date.now(),
           generated_count: flashcards.length,
           generation_duration: generationDuration,
-          model: command.model || DEFAULT_AI_MODEL,
+          model: this.openRouterService.defaultModel,
           source_text_hash: this.hashString(command.text),
           source_text_length: command.text.length,
           accepted_edited_count: null,

@@ -18,7 +18,7 @@ export class OpenRouterService {
   private logger: LoggerService = inject(LoggerService);
   private apiUrl: string;
   private sessionManager: SessionManager;
-  private defaultModel = 'stepfun/step-3.5-flash:free';
+  public readonly defaultModel = 'google/gemini-2.5-flash';
 
   constructor(
     private http: HttpClient,
