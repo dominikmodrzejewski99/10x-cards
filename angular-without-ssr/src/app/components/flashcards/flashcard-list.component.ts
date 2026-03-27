@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, signal, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, inject, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -56,6 +57,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
   private confirmationService: ConfirmationService = inject(ConfirmationService);
   private router: Router = inject(Router);
   private route: ActivatedRoute = inject(ActivatedRoute);
+  private destroyRef: DestroyRef = inject(DestroyRef);
 
   state = signal<FlashcardListState>({
     flashcards: [],
@@ -105,10 +107,15 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.routeSub?.unsubscribe();
+    if (this.undoTimer) {
+      clearTimeout(this.undoTimer);
+    }
   }
 
   private loadSetName(setId: number): void {
-    this.flashcardSetApiService.getSet(setId).subscribe({
+    this.flashcardSetApiService.getSet(setId).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next: (set) => {
         this.state.update(s => ({ ...s, setName: set.name }));
       },
@@ -146,7 +153,9 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
       sortField: this.state().sortField,
       sortOrder: this.state().sortOrder,
       setId: this.state().setId
-    }).subscribe({
+    }).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next: (response) => {
         this.state.update(state => ({
           ...state,
@@ -379,6 +388,15 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
     }));
 
     this.loadFlashcards(event);
+  }
+
+  onRowsChange(rows: number): void {
+    this.state.update(state => ({
+      ...state,
+      rows,
+      first: 0
+    }));
+    this.loadFlashcards();
   }
 
   // Obsługa wyszukiwania

@@ -1,4 +1,4 @@
-import { Component, OnInit, WritableSignal, signal, effect, inject, input, output, InputSignal, OutputEmitterRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, WritableSignal, signal, effect, inject, input, output, InputSignal, OutputEmitterRef, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
@@ -43,7 +43,7 @@ export interface FlashcardFormData {
   styleUrls: ['./flashcard-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FlashcardFormComponent implements OnInit {
+export class FlashcardFormComponent implements OnInit, OnDestroy {
   public flashcardToEditSignal: InputSignal<FlashcardDTO | null> = input<FlashcardDTO | null>(null, { alias: 'flashcardToEdit' });
   public isVisibleSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'isVisible' });
 
@@ -103,6 +103,12 @@ export class FlashcardFormComponent implements OnInit {
 
   public ngOnInit(): void {
     this.initializeForm();
+  }
+
+  public ngOnDestroy(): void {
+    if (this.translationTimeout) {
+      clearTimeout(this.translationTimeout);
+    }
   }
 
   public get frontControl() {
