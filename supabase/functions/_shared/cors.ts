@@ -2,9 +2,15 @@
 const ALLOWED_ORIGINS = [
   'https://memlo.app',
   'https://www.memlo.app',
-  'http://localhost:4200',
-  'http://127.0.0.1:4200',
+  'https://10x-cards-70n.pages.dev',
 ]
+
+function isAllowedOrigin(origin: string): boolean {
+  if (ALLOWED_ORIGINS.includes(origin)) return true
+  // Pozwól na localhost/127.0.0.1 z dowolnym portem
+  if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return true
+  return false
+}
 
 /**
  * Zwraca nagłówki CORS dopasowane do originu żądania.
@@ -12,7 +18,7 @@ const ALLOWED_ORIGINS = [
  */
 export function getCorsHeaders(req: Request): Record<string, string> {
   const origin = req.headers.get('Origin') ?? ''
-  const isAllowed = ALLOWED_ORIGINS.includes(origin)
+  const isAllowed = isAllowedOrigin(origin)
 
   return {
     ...(isAllowed ? { 'Access-Control-Allow-Origin': origin } : {}),
