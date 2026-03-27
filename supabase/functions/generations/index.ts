@@ -1,33 +1,41 @@
-// URL z dokumentacji Supabase Functions
-import { serve } from "https://deno.land/std@0.131.0/http/server.ts"
-
-const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { getCorsHeaders } from '../_shared/cors.ts'
+import { requireAuth, AuthError } from '../_shared/auth.ts'
 
 serve(async (req) => {
+    const cors = getCorsHeaders(req)
+
     // Obsługa CORS
     if (req.method === 'OPTIONS') {
-        return new Response('ok', { headers: corsHeaders })
+        return new Response('ok', { headers: cors })
+    }
+
+    // Sprawdzenie metody HTTP
+    if (req.method !== 'POST') {
+        return new Response(
+            JSON.stringify({
+                error: 'METHOD_NOT_ALLOWED',
+                message: 'Endpoint akceptuje tylko metodę POST',
+            }),
+            {
+                status: 405,
+                headers: { ...cors, 'Content-Type': 'application/json' }
+            }
+        )
+    }
+
+    // Autoryzacja
+    try {
+        await requireAuth(req)
+    } catch (e) {
+        const authError = e as AuthError
+        return new Response(authError.body, {
+            status: authError.status,
+            headers: { ...cors, 'Content-Type': 'application/json' },
+        })
     }
 
     try {
-        // Sprawdzenie metody HTTP
-        if (req.method !== 'POST') {
-            return new Response(
-                JSON.stringify({
-                    error: 'METHOD_NOT_ALLOWED',
-                    message: 'Endpoint akceptuje tylko metodę POST',
-                    details: `Otrzymano: ${req.method}`
-                }),
-                {
-                    status: 405,
-                    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-                }
-            )
-        }
-
         // Parsowanie body
         const requestData = await req.json()
         const { text, model } = requestData
@@ -41,7 +49,7 @@ serve(async (req) => {
                 }),
                 {
                     status: 400,
-                    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+                    headers: { ...cors, 'Content-Type': 'application/json' }
                 }
             )
         }
@@ -56,31 +64,28 @@ serve(async (req) => {
                 }),
                 {
                     status: 400,
-                    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+                    headers: { ...cors, 'Content-Type': 'application/json' }
                 }
             )
         }
 
-        // Zwrócenie odpowiedzi bezpośrednio po walidacji (omija resztę logiki try...catch)
         return new Response(
             JSON.stringify({ message: "Walidacja poprawna (generations)", textLength: textLength, model: model }),
             {
                 status: 200,
-                headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+                headers: { ...cors, 'Content-Type': 'application/json' }
             }
         );
 
     } catch (error) {
-        // Obsługa błędów
         return new Response(
             JSON.stringify({
                 error: 'UNKNOWN_ERROR',
                 message: 'Wystąpił nieoczekiwany błąd',
-                details: error instanceof Error ? error.message : 'Nieznany błąd'
             }),
             {
                 status: 500,
-                headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+                headers: { ...cors, 'Content-Type': 'application/json' }
             }
         )
     }
