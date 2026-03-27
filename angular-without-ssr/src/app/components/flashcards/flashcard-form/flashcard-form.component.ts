@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, WritableSignal, signal, effect, inject, input, output, InputSignal, OutputEmitterRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, WritableSignal, signal, effect, inject, input, output, InputSignal, OutputEmitterRef, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
@@ -55,6 +56,7 @@ export class FlashcardFormComponent implements OnInit, OnDestroy {
   private openRouterService: OpenRouterService = inject(OpenRouterService);
   private audioUploadService: AudioUploadService = inject(AudioUploadService);
   private logger: LoggerService = inject(LoggerService);
+  private destroyRef: DestroyRef = inject(DestroyRef);
 
   public imagePreviewSignal: WritableSignal<string | null> = signal<string | null>(null);
   public uploadingSignal: WritableSignal<boolean> = signal<boolean>(false);
@@ -215,7 +217,7 @@ export class FlashcardFormComponent implements OnInit, OnDestroy {
     }
 
     this.uploadingSignal.set(true);
-    this.imageUploadService.uploadImage(file).subscribe({
+    this.imageUploadService.uploadImage(file).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (url: string) => {
         this.pendingImageUrl = url;
         this.imagePreviewSignal.set(url);
@@ -233,7 +235,7 @@ export class FlashcardFormComponent implements OnInit, OnDestroy {
   public removeImage(): void {
     const currentUrl: string | null = this.pendingImageUrl;
     if (currentUrl) {
-      this.imageUploadService.deleteImage(currentUrl).subscribe({
+      this.imageUploadService.deleteImage(currentUrl).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         error: (err: unknown) => this.logger.error('FlashcardForm.removeImage', err)
       });
     }
@@ -259,7 +261,7 @@ export class FlashcardFormComponent implements OnInit, OnDestroy {
   public removeAudio(): void {
     const currentUrl: string | null = this.pendingAudioUrl;
     if (currentUrl) {
-      this.audioUploadService.deleteAudio(currentUrl).subscribe({
+      this.audioUploadService.deleteAudio(currentUrl).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         error: (err: unknown) => this.logger.error('FlashcardForm.removeAudio', err)
       });
     }
@@ -282,7 +284,7 @@ export class FlashcardFormComponent implements OnInit, OnDestroy {
     }
 
     this.audioUploadingSignal.set(true);
-    this.audioUploadService.uploadAudio(file).subscribe({
+    this.audioUploadService.uploadAudio(file).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (url: string) => {
         this.pendingAudioUrl = url;
         this.audioPreviewSignal.set(url);

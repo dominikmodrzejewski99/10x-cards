@@ -7,9 +7,7 @@ const ALLOWED_ORIGINS = [
 ]
 
 function isAllowedOrigin(origin: string): boolean {
-  if (ALLOWED_ORIGINS.includes(origin)) return true
-  if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return true
-  return false
+  return ALLOWED_ORIGINS.includes(origin) || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
 }
 
 function getCorsHeaders(req: Request): Record<string, string> {
@@ -123,8 +121,7 @@ Deno.serve(async (req: Request) => {
       status: response.status,
       headers: { ...cors, 'Content-Type': 'application/json' },
     })
-  } catch (error) {
-    console.error('OpenRouter proxy error:', error)
+  } catch {
     return new Response(JSON.stringify({ error: 'AI service unavailable' }), {
       status: 502,
       headers: { ...cors, 'Content-Type': 'application/json' },

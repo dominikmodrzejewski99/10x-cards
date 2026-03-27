@@ -54,7 +54,8 @@ serve(async (req) => {
             )
         }
 
-        const textLength = text.length
+        const sanitizedText = text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '')
+        const textLength = sanitizedText.length
         if (textLength < 1000 || textLength > 10000) {
             return new Response(
                 JSON.stringify({
@@ -70,7 +71,7 @@ serve(async (req) => {
         }
 
         return new Response(
-            JSON.stringify({ message: "Walidacja poprawna (generations)", textLength: textLength, model: model }),
+            JSON.stringify({ message: "Walidacja poprawna (generations)", textLength: textLength, model: model, text: sanitizedText }),
             {
                 status: 200,
                 headers: { ...cors, 'Content-Type': 'application/json' }

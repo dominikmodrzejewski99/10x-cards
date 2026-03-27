@@ -1,30 +1,32 @@
 import {
-  Component,
+  AfterViewInit,
   ChangeDetectionStrategy,
-  OnInit,
-  OnDestroy,
-  signal,
+  Component,
   computed,
-  inject,
-  WritableSignal,
-  Signal,
+  DestroyRef,
   ElementRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+  Signal,
   ViewChild,
-  AfterViewInit
+  WritableSignal
 } from '@angular/core';
-import { RouterModule, ActivatedRoute } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { ReviewApiService } from '../../services/review-api.service';
-import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
-import { SpacedRepetitionService, Sm2Result } from '../../services/spaced-repetition.service';
-import { StreakService } from '../../shared/services/streak.service';
-import { StudyCardDTO, ReviewQuality, SessionResultDTO, FlashcardSetDTO } from '../../../types';
-import { FlashcardFlipComponent } from './flashcard-flip/flashcard-flip.component';
-import { SyncStatusComponent } from '../../shared/components/sync-status/sync-status.component';
-import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { launchConfetti } from '../../shared/utils/confetti';
-import { classifyError, ClassifiedError } from '../../shared/utils/error-classifier';
-import { Subscription } from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {ActivatedRoute, RouterModule} from '@angular/router';
+import {FormsModule} from '@angular/forms';
+import {ReviewApiService} from '../../services/review-api.service';
+import {FlashcardSetApiService} from '../../services/flashcard-set-api.service';
+import {Sm2Result, SpacedRepetitionService} from '../../services/spaced-repetition.service';
+import {StreakService} from '../../shared/services/streak.service';
+import {FlashcardSetDTO, ReviewQuality, SessionResultDTO, StudyCardDTO} from '../../../types';
+import {FlashcardFlipComponent} from './flashcard-flip/flashcard-flip.component';
+import {SyncStatusComponent} from '../../shared/components/sync-status/sync-status.component';
+import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
+import {launchConfetti} from '../../shared/utils/confetti';
+import {ClassifiedError, classifyError} from '../../shared/utils/error-classifier';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-study-view',
@@ -42,6 +44,7 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
   private sm2: SpacedRepetitionService = inject(SpacedRepetitionService);
   private streakService: StreakService = inject(StreakService);
   private route: ActivatedRoute = inject(ActivatedRoute);
+  private destroyRef: DestroyRef = inject(DestroyRef);
   private loadSubscription: Subscription | null = null;
   private answerSubscription: Subscription | null = null;
   private routeSub: Subscription | null = null;
@@ -107,9 +110,7 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
     const card: StudyCardDTO | null = this.currentCardSignal();
     if (!card) return '';
     if (this.isReversedSignal()) {
-      const back: string = card.flashcard.back;
-      const firstMeaning: string = back.split(';')[0].trim();
-      return firstMeaning;
+      return card.flashcard.back.split(';')[0].trim();
     }
     return card.flashcard.front;
   });
@@ -232,7 +233,7 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private loadSets(): void {
-    this.setApi.getSets().subscribe({
+    this.setApi.getSets().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (sets) => {
         this.setsSignal.set(sets);
       },

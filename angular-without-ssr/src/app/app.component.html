@@ -9,7 +9,7 @@
 <div class="app">
   <app-auth-navbar></app-auth-navbar>
 
-  <main class="app__main">
+  <main class="app__main" id="main-content">
     <div class="app__route-container" [class.app__route-container--navigating]="navigatingSignal()">
       <router-outlet></router-outlet>
     </div>

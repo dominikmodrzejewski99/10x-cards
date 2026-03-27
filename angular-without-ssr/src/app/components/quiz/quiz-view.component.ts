@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, inject, signal, WritableSignal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal, WritableSignal, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -31,6 +32,7 @@ export class QuizViewComponent implements OnInit, OnDestroy {
   private flashcardApiService: FlashcardApiService = inject(FlashcardApiService);
   private flashcardSetApiService: FlashcardSetApiService = inject(FlashcardSetApiService);
   private quizService: QuizService = inject(QuizService);
+  private destroyRef: DestroyRef = inject(DestroyRef);
 
   public phaseSignal: WritableSignal<QuizPhase> = signal<QuizPhase>('loading');
   public errorMessageSignal: WritableSignal<string> = signal<string>('');
@@ -195,7 +197,7 @@ export class QuizViewComponent implements OnInit, OnDestroy {
   private loadSetData(setId: number): void {
     this.phaseSignal.set('loading');
 
-    this.flashcardSetApiService.getSet(setId).subscribe({
+    this.flashcardSetApiService.getSet(setId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (set) => {
         this.setNameSignal.set(set.name);
         this.loadFlashcards(setId);
@@ -208,7 +210,7 @@ export class QuizViewComponent implements OnInit, OnDestroy {
   }
 
   private loadFlashcards(setId: number): void {
-    this.flashcardApiService.getAllFlashcardsForSet(setId).subscribe({
+    this.flashcardApiService.getAllFlashcardsForSet(setId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (flashcards: FlashcardDTO[]) => {
         if (flashcards.length < 4) {
           this.errorMessageSignal.set('Zestaw musi mieć minimum 4 fiszki, aby uruchomić test.');

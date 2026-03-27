@@ -105,7 +105,6 @@ serve(async (req) => {
       .select();
 
     if (error) {
-      console.error('Błąd zapisu do bazy danych:', error);
       return new Response(JSON.stringify({ error: 'Database Error', message: 'Nie udało się zapisać fiszek.' }), {
         status: 500,
         headers: { ...cors, 'Content-Type': 'application/json' },
@@ -118,7 +117,6 @@ serve(async (req) => {
     });
 
   } catch (error) {
-    console.error('Internal Server Error:', error);
     return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
       status: 500,
       headers: { ...cors, 'Content-Type': 'application/json' },

@@ -237,7 +237,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
           back_language: formData.back_language,
           back_audio_url: formData.back_audio_url,
         }
-      ).subscribe({
+      ).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: (updatedFlashcard) => {
           this.state.update(state => ({
             ...state,
@@ -265,8 +265,8 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
         back_audio_url: formData.back_audio_url,
         source: 'manual',
         set_id: this.state().setId
-      }).subscribe({
-        next: (newFlashcard) => {
+      }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+        next: () => {
           this.loadFlashcards();
           this.state.update(state => ({
             ...state,
@@ -298,7 +298,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
           loading: true
         }));
 
-        this.flashcardApiService.deleteFlashcard(flashcard.id).subscribe({
+        this.flashcardApiService.deleteFlashcard(flashcard.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
           next: () => {
             this.state.update(state => ({
               ...state,
@@ -334,7 +334,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
             catchError(() => of({ error: true, id }))
           )
         );
-        forkJoin(deleteObservables).subscribe({
+        forkJoin(deleteObservables).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
           next: (results) => {
             const failed = results.filter((r): r is { error: true; id: number } => typeof r === 'object' && r !== null && 'error' in r);
             const successCount = ids.length - failed.length;
@@ -436,7 +436,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
   onImportSaved(proposals: FlashcardProposalDTO[]): void {
     this.state.update(s => ({ ...s, loading: true }));
 
-    this.flashcardApiService.createFlashcards(proposals, this.state().setId).subscribe({
+    this.flashcardApiService.createFlashcards(proposals, this.state().setId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (savedFlashcards) => {
         this.state.update(s => ({ ...s, isImportModalVisible: false, loading: false }));
         this.messageService.add({
@@ -474,7 +474,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
       sortField: 'id',
       sortOrder: -1,
       setId: this.state().setId
-    }).subscribe({
+    }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response: { flashcards: FlashcardDTO[]; totalRecords: number }) => {
         this.state.update(s => ({ ...s, loading: false }));
         callback(response.flashcards);
@@ -511,7 +511,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
       back_language: flashcard.back_language,
       source: flashcard.source,
       set_id: flashcard.set_id
-    }).subscribe({
+    }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: () => {
         this.loadFlashcards();
         this.messageService.add({

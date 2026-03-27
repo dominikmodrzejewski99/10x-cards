@@ -1,6 +1,24 @@
 /* Google Fonts loaded via <link preload> in index.html */
 @import "primeicons/primeicons.css";
 
+/* Skip-to-content link (a11y) */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 9999;
+  padding: 0.5rem 1rem;
+  background: #4255ff;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  border-radius: 0 0 0.5rem 0;
+}
+.skip-link:focus {
+  left: 0;
+}
+
 :root {
   --app-primary: #4255ff;
   --app-primary-hover: #3b4ce3;

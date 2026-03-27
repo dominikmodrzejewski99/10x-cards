@@ -244,7 +244,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
 
   public form: FormGroup = this.fb.group({
     password: ['', [Validators.required, Validators.minLength(6)]],
-    confirmPassword: ['', [Validators.required]]
+    confirmPassword: ['', [Validators.required, Validators.minLength(6)]]
   });
 
   private formSub: Subscription = this.form.valueChanges.subscribe(() => {
