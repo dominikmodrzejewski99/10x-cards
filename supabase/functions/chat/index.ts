@@ -1,8 +1,27 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { getCorsHeaders } from '../_shared/cors.ts'
-import { requireAuth, AuthError } from '../_shared/auth.ts'
-
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions'
+
+const ALLOWED_ORIGINS = [
+  'https://memlo.app',
+  'https://www.memlo.app',
+  'https://10x-cards-70n.pages.dev',
+]
+
+function isAllowedOrigin(origin: string): boolean {
+  if (ALLOWED_ORIGINS.includes(origin)) return true
+  if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return true
+  return false
+}
+
+function getCorsHeaders(req: Request): Record<string, string> {
+  const origin = req.headers.get('Origin') ?? ''
+  return {
+    ...(isAllowedOrigin(origin) ? { 'Access-Control-Allow-Origin': origin } : {}),
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, apikey',
+    'Access-Control-Max-Age': '86400',
+    'Vary': 'Origin',
+  }
+}
 
 const ALLOWED_MODELS = new Set([
   'google/gemma-3-12b-it:free',
@@ -12,7 +31,7 @@ const ALLOWED_MODELS = new Set([
 const MAX_TOKENS_LIMIT = 2000
 const MAX_MESSAGES = 20
 
-serve(async (req) => {
+Deno.serve(async (req: Request) => {
   const cors = getCorsHeaders(req)
 
   if (req.method === 'OPTIONS') {
@@ -26,18 +45,14 @@ serve(async (req) => {
     })
   }
 
-  // Auth
-  try {
-    await requireAuth(req)
-  } catch (e) {
-    const authError = e as AuthError
-    return new Response(authError.body, {
-      status: authError.status,
+  const authHeader = req.headers.get('Authorization')
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
       headers: { ...cors, 'Content-Type': 'application/json' },
     })
   }
 
-  // Parse & validate
   let body: {
     model?: string
     messages?: { role: string; content: string }[]
@@ -79,7 +94,6 @@ serve(async (req) => {
   const maxTokens = Math.min(body.max_tokens || 1000, MAX_TOKENS_LIMIT)
   const temperature = Math.max(0, Math.min(body.temperature || 0.7, 2))
 
-  // Proxy to OpenRouter
   const apiKey = Deno.env.get('OPENROUTER_API_KEY')
   if (!apiKey) {
     return new Response(JSON.stringify({ error: 'API key not configured' }), {
