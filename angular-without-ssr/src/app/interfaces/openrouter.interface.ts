@@ -19,19 +19,6 @@ export interface OpenRouterRequestPayload {
   }[];
   temperature?: number;
   max_tokens?: number;
-  response_format?: {
-    type: string;
-    json_schema?: {
-      name: string;
-      strict: boolean;
-      schema: {
-        type: string;
-        properties: {
-          [key: string]: unknown;
-        };
-      };
-    };
-  };
 }
 
 export interface OpenRouterResponse {
