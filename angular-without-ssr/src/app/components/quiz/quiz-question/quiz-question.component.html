@@ -18,7 +18,8 @@
       <img
         [src]="questionSignal().questionImageUrl"
         alt="Obrazek pytania"
-        class="quiz-question__image" />
+        class="quiz-question__image"
+        loading="lazy" />
     }
 
     <h2 class="quiz-question__text">{{ questionSignal().questionText }}</h2>

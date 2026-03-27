@@ -17,7 +17,7 @@
         <i class="pi pi-plus"></i> Dodaj
       </button>
       <div class="flist__more">
-        <button class="flist__btn flist__btn--more" (click)="moreMenuOpen.set(!moreMenuOpen())">
+        <button class="flist__btn flist__btn--more" (click)="moreMenuOpen.set(!moreMenuOpen())" aria-label="Więcej opcji" title="Więcej opcji">
           <i class="pi pi-ellipsis-h"></i>
         </button>
         @if (moreMenuOpen()) {
@@ -50,7 +50,7 @@
         <a [routerLink]="['/study']" [queryParams]="{setId: state().setId}" class="flist__saved-cta">
           <i class="pi pi-play-circle"></i> Rozpocznij naukę
         </a>
-        <button class="flist__saved-dismiss" (click)="dismissSavedBanner()">
+        <button class="flist__saved-dismiss" (click)="dismissSavedBanner()" aria-label="Zamknij">
           <i class="pi pi-times"></i>
         </button>
       </div>
