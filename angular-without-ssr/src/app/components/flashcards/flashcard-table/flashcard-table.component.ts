@@ -1,4 +1,4 @@
-import { Component, computed, input, output, signal, InputSignal, OutputEmitterRef, Signal, WritableSignal } from '@angular/core';
+import { Component, computed, input, output, signal, InputSignal, OutputEmitterRef, Signal, WritableSignal, OnDestroy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -21,7 +21,7 @@ export interface TableLazyLoadEvent {
   templateUrl: './flashcard-table.component.html',
   styleUrls: ['./flashcard-table.component.scss']
 })
-export class FlashcardTableComponent {
+export class FlashcardTableComponent implements OnDestroy {
   public flashcardsSignal: InputSignal<FlashcardDTO[]> = input<FlashcardDTO[]>([], { alias: 'flashcards' });
   public loadingSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'loading' });
   public totalRecordsSignal: InputSignal<number> = input<number>(0, { alias: 'totalRecords' });
@@ -35,8 +35,10 @@ export class FlashcardTableComponent {
   public lazyLoad: OutputEmitterRef<TableLazyLoadEvent> = output<TableLazyLoadEvent>();
   public search: OutputEmitterRef<string> = output<string>();
   public bulkDelete: OutputEmitterRef<number[]> = output<number[]>();
+  public rowsChange: OutputEmitterRef<number> = output<number>();
 
   public searchTerm: string = '';
+  public readonly pageSizeOptions: number[] = [5, 10, 20, 40, 100];
   private selectedIds: WritableSignal<Set<number>> = signal<Set<number>>(new Set());
   private searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -106,6 +108,10 @@ export class FlashcardTableComponent {
     });
   }
 
+  public onPageSizeChange(size: number): void {
+    this.rowsChange.emit(size);
+  }
+
   public onSearch(): void {
     this.search.emit(this.searchTerm);
   }
@@ -122,5 +128,11 @@ export class FlashcardTableComponent {
     this.searchTimeout = setTimeout(() => {
       this.onSearch();
     }, 300);
+  }
+
+  public ngOnDestroy(): void {
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
   }
 }
