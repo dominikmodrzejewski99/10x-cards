@@ -32,9 +32,11 @@
 
   @if (!state().loading && state().sets.length === 0 && !state().error) {
     <div class="sets__empty">
-      <i class="pi pi-folder-open sets__empty-icon"></i>
-      <h2>Brak zestawów</h2>
-      <p>Utwórz swój pierwszy zestaw, aby organizować fiszki.</p>
+      <div class="sets__empty-icon-wrap">
+        <i class="pi pi-folder-open"></i>
+      </div>
+      <h2 class="sets__empty-title">Brak zestawów</h2>
+      <p class="sets__empty-desc">Utwórz swój pierwszy zestaw, aby organizować fiszki i rozpocząć naukę.</p>
       <button (click)="openCreateDialog()" class="sets__btn sets__btn--create">
         <i class="pi pi-plus"></i> Utwórz zestaw
       </button>

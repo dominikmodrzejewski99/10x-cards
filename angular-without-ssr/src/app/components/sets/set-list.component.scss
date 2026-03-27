@@ -41,13 +41,47 @@
 }
 
 .sets__loading,
-.sets__error,
-.sets__empty {
+.sets__error {
   @include empty-state;
 }
 
-.sets__empty-icon {
-  @include empty-icon;
+.sets__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  border: 2px dashed $color-border;
+  border-radius: $radius-2xl;
+  background: linear-gradient(135deg, $color-bg 0%, $color-white 100%);
+}
+
+.sets__empty-icon-wrap {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  background: $color-primary-light;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  color: $color-primary;
+  margin-bottom: 1rem;
+}
+
+.sets__empty-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: $color-text;
+  margin: 0 0 0.5rem;
+}
+
+.sets__empty-desc {
+  font-size: 0.9rem;
+  color: $color-text-secondary;
+  margin: 0 0 1.5rem;
+  max-width: 320px;
+  line-height: 1.5;
 }
 
 .sets__error i {
