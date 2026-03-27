@@ -43,7 +43,7 @@
     <!-- Multiple Choice Cloze -->
     @if (q.type === 'multiple-choice-cloze') {
       <div class="test-view__question">
-        <p class="test-view__sentence" [innerHTML]="q.text.replace('___', '<span class=\'test-view__gap\'>______</span>')"></p>
+        <p class="test-view__sentence">{{ splitByGap(q.text).before }}<span class="test-view__gap">______</span>{{ splitByGap(q.text).after }}</p>
       </div>
       <div class="test-view__options">
         @for (option of q.options; track $index) {
@@ -63,7 +63,7 @@
     <!-- Word Formation -->
     @if (q.type === 'word-formation') {
       <div class="test-view__question">
-        <p class="test-view__sentence" [innerHTML]="q.text.replace('___', '<span class=\'test-view__gap test-view__gap--dashed\'>______</span>')"></p>
+        <p class="test-view__sentence">{{ splitByGap(q.text).before }}<span class="test-view__gap test-view__gap--dashed">______</span>{{ splitByGap(q.text).after }}</p>
       </div>
       <div class="test-view__base-word">
         <span class="test-view__base-word-label">Słowo bazowe:</span>

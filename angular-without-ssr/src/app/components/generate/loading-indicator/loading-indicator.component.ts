@@ -2,7 +2,9 @@ import { Component, input, InputSignal, signal, OnInit, OnDestroy, effect } from
 
 interface Fact {
   icon: string;
-  text: string;
+  before: string;
+  bold: string;
+  after: string;
 }
 
 interface FactSet {
@@ -30,25 +32,25 @@ export class LoadingIndicatorComponent implements OnInit, OnDestroy {
     {
       title: 'Czy wiesz, że...',
       facts: [
-        { icon: 'pi-chart-line', text: 'Bez powtórek <strong>zapominamy 70% materiału</strong> w ciągu 24 godzin — to odkrycie Hermanna Ebbinghausa z 1885 roku.' },
-        { icon: 'pi-replay', text: 'Powtórki w rosnących odstępach czasu <strong>(spaced repetition)</strong> pozwalają zapamiętać materiał nawet na lata.' },
-        { icon: 'pi-bolt', text: 'Już <strong>4–5 powtórek</strong> w odpowiednich momentach wystarczy, by przenieść wiedzę do pamięci długotrwałej.' }
+        { icon: 'pi-chart-line', before: 'Bez powtórek ', bold: 'zapominamy 70% materiału', after: ' w ciągu 24 godzin — to odkrycie Hermanna Ebbinghausa z 1885 roku.' },
+        { icon: 'pi-replay', before: 'Powtórki w rosnących odstępach czasu ', bold: '(spaced repetition)', after: ' pozwalają zapamiętać materiał nawet na lata.' },
+        { icon: 'pi-bolt', before: 'Już ', bold: '4–5 powtórek', after: ' w odpowiednich momentach wystarczy, by przenieść wiedzę do pamięci długotrwałej.' }
       ]
     },
     {
       title: 'Czy wiesz, że...',
       facts: [
-        { icon: 'pi-brain', text: 'Aktywne przywoływanie informacji <strong>(active recall)</strong> jest 2-3x skuteczniejsze niż ponowne czytanie notatek.' },
-        { icon: 'pi-clock', text: 'Najlepszy czas na pierwszą powtórkę to <strong>24 godziny</strong> po pierwszym kontakcie z materiałem.' },
-        { icon: 'pi-star', text: 'Uczenie się w <strong>krótkich, regularnych sesjach</strong> jest skuteczniejsze niż długie maratony nauki.' }
+        { icon: 'pi-brain', before: 'Aktywne przywoływanie informacji ', bold: '(active recall)', after: ' jest 2-3x skuteczniejsze niż ponowne czytanie notatek.' },
+        { icon: 'pi-clock', before: 'Najlepszy czas na pierwszą powtórkę to ', bold: '24 godziny', after: ' po pierwszym kontakcie z materiałem.' },
+        { icon: 'pi-star', before: 'Uczenie się w ', bold: 'krótkich, regularnych sesjach', after: ' jest skuteczniejsze niż długie maratony nauki.' }
       ]
     },
     {
       title: 'Czy wiesz, że...',
       facts: [
-        { icon: 'pi-book', text: '<strong>Technika Feynmana</strong> — wyjaśnianie tematu własnymi słowami — to jeden z najlepszych sposobów na głębokie zrozumienie.' },
-        { icon: 'pi-sync', text: 'Przeplatanie różnych tematów <strong>(interleaving)</strong> sprawia, że nauka jest trudniejsza, ale efekty są trwalsze.' },
-        { icon: 'pi-heart', text: 'Sen odgrywa kluczową rolę w <strong>konsolidacji pamięci</strong> — ucz się przed snem, a zapamiętasz więcej!' }
+        { icon: 'pi-book', before: '', bold: 'Technika Feynmana', after: ' — wyjaśnianie tematu własnymi słowami — to jeden z najlepszych sposobów na głębokie zrozumienie.' },
+        { icon: 'pi-sync', before: 'Przeplatanie różnych tematów ', bold: '(interleaving)', after: ' sprawia, że nauka jest trudniejsza, ale efekty są trwalsze.' },
+        { icon: 'pi-heart', before: 'Sen odgrywa kluczową rolę w ', bold: 'konsolidacji pamięci', after: ' — ucz się przed snem, a zapamiętasz więcej!' }
       ]
     }
   ];

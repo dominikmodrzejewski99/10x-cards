@@ -82,6 +82,11 @@ export class LanguageTestViewComponent implements OnInit, OnDestroy {
     });
   }
 
+  public splitByGap(text: string): { before: string; after: string } {
+    const parts = text.split('___');
+    return { before: parts[0] || '', after: parts[1] || '' };
+  }
+
   public ngOnDestroy(): void {
     // Subscriptions in this component complete on their own (HTTP single-emission)
   }

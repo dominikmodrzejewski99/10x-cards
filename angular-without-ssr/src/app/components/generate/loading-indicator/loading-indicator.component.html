@@ -38,7 +38,7 @@
           <span class="dialog__fact-icon">
             <i [class]="'pi ' + fact.icon"></i>
           </span>
-          <p [innerHTML]="fact.text"></p>
+          <p>{{ fact.before }}<strong>{{ fact.bold }}</strong>{{ fact.after }}</p>
         </div>
         }
       </div>
