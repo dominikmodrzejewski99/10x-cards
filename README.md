@@ -1,4 +1,4 @@
-# 10xCards
+# Memlo (10xCards)
 
 Aplikacja do tworzenia i zarządzania fiszkami edukacyjnymi wspierana przez AI. Wklej tekst z wykładu, podręcznika lub artykułu — sztuczna inteligencja wygeneruje gotowe fiszki, a algorytm SM-2 zaplanuje powtórki dopasowane do Twojego tempa nauki.
 
@@ -18,28 +18,60 @@ Można też kliknąć „Wypróbuj bez rejestracji" aby korzystać anonimowo.
 
 ## Funkcje
 
-- **Generowanie fiszek z AI** — wklej tekst (1000–10000 znaków), a model LLM (stepfun/step-3.5-flash) wygeneruje do 15 fiszek
-- **Tryb bez rejestracji** — kliknij „Wypróbuj bez rejestracji" na stronie logowania lub landing page, aby korzystać z aplikacji anonimowo, bez podawania emaila i hasła
-- **Zestawy tematyczne** — grupuj fiszki w zestawy (np. osobny na każdy przedmiot)
-- **Inteligentne powtórki** — algorytm SM-2 z oceną 1 (nie wiem) / 3 (trudne) / 4 (wiem) planuje, kiedy powtórzyć pytanie
-- **Edycja propozycji** — akceptuj, odrzucaj i edytuj fiszki zaproponowane przez AI
-- **Dashboard** — statystyki: seria nauki, fiszki do powtórki, liczba sesji
-- **Tryb testu (Quiz)** — test z fiszek z trzema typami pytań: wielokrotny wybór, wpisywanie odpowiedzi, prawda/fałsz
-- **Panel wyników testu** — podsumowanie z wynikiem procentowym, czasem odpowiedzi, najwolniejszymi odpowiedziami i ring chart
-- **Wyróżnianie fiszek** — po teście oznacz fiszki „do powtórki" i powtórz tylko wyróżnione
-- **Testy językowe** — gotowe banki pytań B1, B2-FCE, C1-CAE do nauki języka angielskiego
+### Generowanie fiszek z AI
+- Wklej tekst (1000–10000 znaków), a model LLM automatycznie wyodrębni kluczowe pojęcia i wygeneruje fiszki
+- Akceptuj, odrzucaj i edytuj propozycje przed zapisem
+- Zapis do istniejącego lub nowego zestawu
+
+### Nauka z powtórkami (SM-2)
+- Algorytm SM-2 z oceną 1 (nie wiem) / 3 (trudne) / 4 (wiem) planuje optymalne powtórki
+- Nauka w obu kierunkach (przód/tył)
+- Tasowanie kart, tryb dodatkowej praktyki
+- Sterowanie klawiaturą (Space — odwróć, 1/2/3 — ocena) i gestami (swipe)
+- Konfetti po ukończeniu sesji
+
+### Quiz
+- Trzy typy pytań: wielokrotny wybór, wpisywanie odpowiedzi, prawda/fałsz
+- Konfiguracja: liczba pytań, limit czasu, filtr źródła (AI/ręczne)
+- Wyniki z procentem poprawności, analizą czasu odpowiedzi i ring chart
+- Powtórka: wszystkie, tylko błędne, tylko oznaczone gwiazdką
+
+### Testy językowe
+- Gotowe banki pytań: B1 Preliminary, B2 First (FCE), C1 Advanced (CAE)
+- 30 pytań na test, śledzenie czasu odpowiedzi, analiza wyników
+
+### Zestawy i fiszki
+- Grupowanie fiszek w zestawy tematyczne
+- Import: wklejanie tekstu (klucz-wartość, tabulatory), podgląd i edycja przed zapisem
+- Eksport: CSV (z BOM dla Excela) i JSON
+- Obrazek na przodzie (JPEG, PNG, WebP, GIF — max 2 MB)
+- Notatka głosowa na tyle (MP3, WAV, OGG, WebM — max 2 MB) z nagrywaniem w przeglądarce
+- Automatyczne tłumaczenie (5 języków: PL, EN, DE, ES, FR)
+- Konfigurowalna liczba fiszek na stronę (5, 10, 20, 40, 100)
+
+### Dashboard
+- Seria nauki (bieżąca i najdłuższa), ukończone sesje, fiszki powtórzone dziś
+- Podział fiszek: nowe / w nauce / powtarzane / opanowane
+- Fiszki do powtórki z datą kolejnej sesji
+
+### Tryb bez rejestracji
+- Pełna funkcjonalność bez podawania emaila — anonimowe konto tworzone jednym kliknięciem
+
+### Poradnik nauki
+- 8 artykułów: Spaced Repetition, Active Recall, krzywa zapominania, efekt Dunninga-Krugera, technika Feynmana, Pomodoro, interleaving, growth mindset
 
 ## Stack technologiczny
 
 | Warstwa | Technologia |
 |---------|-------------|
 | Frontend | Angular 21 (standalone, OnPush, signals, zoneless) |
-| State management | NgRx Signals (auth store) |
-| UI | PrimeNG 21, Tailwind CSS 4 |
-| Backend / Auth | Supabase (PostgreSQL, Auth, RLS) |
-| AI | OpenRouter API (stepfun/step-3.5-flash:free) |
+| State management | NgRx Signals |
+| UI | PrimeNG 21, SCSS |
+| Backend / Auth | Supabase (PostgreSQL, Auth, RLS, Storage, Edge Functions) |
+| AI | OpenRouter API (Google Gemma 3) |
+| Monitoring | Sentry |
 | Testing | Karma/Jasmine (unit), Playwright (E2E) |
-| Hosting | Cloudflare Pages |
+| Hosting | Cloudflare Pages (PWA) |
 
 ## Uruchomienie
 
@@ -83,6 +115,16 @@ Aplikacja będzie dostępna pod `http://localhost:4200/`.
 npm run build:prod
 ```
 
+### Testy
+
+```bash
+npm test                # unit testy
+npm run e2e             # Playwright E2E
+npm run test:quiz       # testy modułu quiz
+npm run lint            # ESLint
+npm run format          # Prettier
+```
+
 ## Struktura projektu
 
 ```
@@ -91,14 +133,21 @@ angular-without-ssr/src/app/
 ├── components/
 │   ├── dashboard/      # Panel główny ze statystykami
 │   ├── generate/       # Generator fiszek AI
-│   ├── flashcards/     # Lista fiszek w zestawie
+│   ├── flashcards/     # Lista fiszek, formularz, import, tabela
 │   ├── sets/           # Zarządzanie zestawami
 │   ├── study/          # Sesja nauki (SM-2)
 │   ├── quiz/           # Tryb testu (konfiguracja, pytania, wyniki)
 │   ├── language-test/  # Testy językowe (B1, B2-FCE, C1-CAE)
 │   ├── landing/        # Strona główna
+│   ├── learning-guide/ # Poradnik nauki (8 artykułów)
 │   └── onboarding/     # Onboarding po rejestracji
-├── services/           # Serwisy API (flashcard, generation, review, quiz, openrouter)
-├── shared/             # Współdzielone komponenty i serwisy
+├── services/           # Serwisy API i biznesowe
+├── shared/             # Współdzielone komponenty (navbar, audio player/recorder)
 └── interfaces/         # Interfejsy TypeScript
+
+supabase/functions/
+├── chat/               # Proxy do OpenRouter (tłumaczenia, chat)
+├── flashcards/         # Zapis fiszek
+├── flashcards-create/  # Tworzenie fiszek (walidacja Zod)
+└── generations/        # Walidacja tekstu wejściowego
 ```
