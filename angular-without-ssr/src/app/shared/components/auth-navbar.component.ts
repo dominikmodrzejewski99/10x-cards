@@ -164,7 +164,7 @@ export class AuthNavbarComponent {
     this.cancelCloseLearn();
     this.learnCloseTimer = setTimeout(() => {
       this.learnOpenSignal.set(false);
-    }, 150);
+    }, 250);
   }
 
   private cancelCloseLearn(): void {

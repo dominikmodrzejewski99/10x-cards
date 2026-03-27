@@ -143,7 +143,7 @@
 
 .navbar__dropdown-menu {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 0.25rem);
   left: 0;
   min-width: 200px;
   background: $color-white;
@@ -151,7 +151,6 @@
   border: 1px solid $color-border;
   box-shadow: $shadow-md;
   padding: 0.375rem 0;
-  margin-top: 0.4rem;
   z-index: 50;
   animation: dropdown-fade 0.15s ease-out;
 
@@ -159,10 +158,10 @@
   &::before {
     content: '';
     position: absolute;
-    top: -0.5rem;
-    left: 0;
-    right: 0;
-    height: 0.5rem;
+    top: -0.75rem;
+    left: -1rem;
+    right: -1rem;
+    height: 1rem;
   }
 }
 
