@@ -16,15 +16,25 @@ import { AuthStore } from '../../auth/store';
       <div class="navbar__inner">
         <a routerLink="/" class="navbar__logo">
           <svg class="navbar__logo-svg" width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="4" y="4" width="56" height="56" rx="14" fill="#4255ff"/>
-            <rect x="12" y="18" width="24" height="30" rx="4" fill="#fff" opacity="0.2" transform="rotate(-6 12 18)"/>
-            <rect x="20" y="14" width="24" height="30" rx="4" fill="#fff" opacity="0.2"/>
-            <rect x="28" y="10" width="24" height="30" rx="4" fill="#fff"/>
-            <path d="M34 20 L46 20" stroke="#4255ff" stroke-width="2" stroke-linecap="round"/>
-            <path d="M34 26 L42 26" stroke="#4255ff" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
-            <circle cx="48" cy="36" r="7" fill="#4255ff"/>
-            <circle cx="48" cy="36" r="6" fill="#fff"/>
-            <path d="M45.5 36 L47 37.5 L50.5 34" stroke="#4255ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="nav-bg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#5b6bff"/>
+                <stop offset="100%" stop-color="#3344ee"/>
+              </linearGradient>
+              <linearGradient id="nav-badge" x1="42" y1="30" x2="54" y2="42" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#22d67a"/>
+                <stop offset="100%" stop-color="#17b865"/>
+              </linearGradient>
+            </defs>
+            <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#nav-bg)"/>
+            <rect x="10" y="16" width="28" height="36" rx="5" fill="#fff" opacity="0.2" transform="rotate(-8 24 34)"/>
+            <rect x="18" y="12" width="28" height="36" rx="5" fill="#fff" opacity="0.35"/>
+            <rect x="24" y="8" width="28" height="36" rx="5" fill="#fff"/>
+            <rect x="30" y="16" width="16" height="3" rx="1.5" fill="#4255ff" opacity="0.7"/>
+            <rect x="30" y="23" width="12" height="3" rx="1.5" fill="#4255ff" opacity="0.35"/>
+            <rect x="30" y="30" width="14" height="3" rx="1.5" fill="#4255ff" opacity="0.2"/>
+            <circle cx="48" cy="40" r="10" fill="url(#nav-badge)"/>
+            <path d="M43 40 L46 43 L53 36" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           <span class="navbar__logo-text">mem<span class="navbar__logo-accent">lo</span></span>
         </a>

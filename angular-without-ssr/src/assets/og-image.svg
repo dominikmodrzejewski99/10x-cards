@@ -1,30 +1,86 @@
 <svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1200" height="630" fill="#f6f7fb"/>
+  <defs>
+    <linearGradient id="bg-grad" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f8f9ff"/>
+      <stop offset="100%" stop-color="#eef0fb"/>
+    </linearGradient>
+    <linearGradient id="card-shine" x1="100" y1="0" x2="340" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fff"/>
+      <stop offset="100%" stop-color="#f0f1ff"/>
+    </linearGradient>
+    <linearGradient id="badge" x1="280" y1="260" x2="340" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#22d67a"/>
+      <stop offset="100%" stop-color="#17b865"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#5b6bff"/>
+      <stop offset="100%" stop-color="#3344ee"/>
+    </linearGradient>
+    <linearGradient id="bar" x1="0" y1="0" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#5b6bff"/>
+      <stop offset="50%" stop-color="#4255ff"/>
+      <stop offset="100%" stop-color="#22d67a"/>
+    </linearGradient>
+    <filter id="card-shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#1a2066" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg-grad)"/>
+
+  <!-- Subtle grid pattern -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <circle cx="20" cy="20" r="0.5" fill="#4255ff" opacity="0.06"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#grid)"/>
 
   <!-- Right side: card stack -->
-  <g transform="translate(680, 100)">
-    <rect x="0" y="60" width="240" height="320" rx="24" fill="#d9dbe9" transform="rotate(-7 120 220)"/>
-    <rect x="50" y="30" width="240" height="320" rx="24" fill="#edefff" stroke="#d9dbe9" stroke-width="1.5" transform="rotate(-3 170 190)"/>
-    <rect x="100" y="0" width="240" height="320" rx="24" fill="#fff" stroke="#d9dbe9" stroke-width="2"/>
-    <path d="M140 55 L300 55" stroke="#282e3e" stroke-width="7" stroke-linecap="round"/>
-    <path d="M140 90 L290 90" stroke="#d9dbe9" stroke-width="5" stroke-linecap="round"/>
-    <path d="M140 115 L270 115" stroke="#d9dbe9" stroke-width="5" stroke-linecap="round"/>
-    <path d="M140 140 L240 140" stroke="#d9dbe9" stroke-width="5" stroke-linecap="round"/>
-    <rect x="130" y="175" width="180" height="105" rx="16" fill="#edefff"/>
-    <path d="M160 210 L280 210" stroke="#4255ff" stroke-width="5" stroke-linecap="round" opacity="0.4"/>
-    <path d="M160 238 L255 238" stroke="#4255ff" stroke-width="5" stroke-linecap="round" opacity="0.25"/>
-    <circle cx="310" cy="290" r="34" fill="#4255ff"/>
-    <path d="M292 290 L304 302 L328 278" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(680, 80)">
+    <rect x="0" y="70" width="260" height="340" rx="24" fill="#d0d3e6" opacity="0.5" transform="rotate(-7 130 240)"/>
+    <rect x="55" y="35" width="260" height="340" rx="24" fill="#e8eaff" opacity="0.7" transform="rotate(-3 185 205)"/>
+    <g filter="url(#card-shadow)">
+      <rect x="110" y="0" width="260" height="340" rx="24" fill="url(#card-shine)" stroke="#e0e3f0" stroke-width="1"/>
+    </g>
+
+    <!-- Card content -->
+    <rect x="145" y="48" width="140" height="10" rx="5" fill="#282e3e" opacity="0.7"/>
+    <rect x="145" y="78" width="180" height="8" rx="4" fill="#4255ff" opacity="0.2"/>
+    <rect x="145" y="100" width="150" height="8" rx="4" fill="#4255ff" opacity="0.14"/>
+    <rect x="145" y="122" width="120" height="8" rx="4" fill="#4255ff" opacity="0.08"/>
+
+    <!-- Divider -->
+    <line x1="145" y1="155" x2="335" y2="155" stroke="#4255ff" stroke-width="1.5" stroke-opacity="0.1"/>
+
+    <!-- Answer area -->
+    <rect x="145" y="180" width="190" height="110" rx="16" fill="#f4f5ff"/>
+    <rect x="170" y="210" width="120" height="6" rx="3" fill="#4255ff" opacity="0.18"/>
+    <rect x="170" y="230" width="90" height="6" rx="3" fill="#4255ff" opacity="0.12"/>
+    <rect x="170" y="250" width="100" height="6" rx="3" fill="#4255ff" opacity="0.08"/>
+
+    <!-- Success badge -->
+    <circle cx="340" cy="305" r="36" fill="url(#badge)"/>
+    <path d="M322 305 L334 317 L358 293" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 
   <!-- Left side: wordmark -->
-  <text x="100" y="300" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="900" font-size="96" letter-spacing="-2">
-    <tspan fill="#282e3e">mem</tspan><tspan fill="#4255ff">lo</tspan>
+  <text x="100" y="290" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="900" font-size="96" letter-spacing="-3">
+    <tspan fill="#282e3e">mem</tspan><tspan fill="url(#accent)">lo</tspan>
   </text>
 
   <!-- Tagline -->
-  <text x="104" y="375" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="500" font-size="32" fill="#586380">Ucz się mądrzej z fiszkami.</text>
+  <text x="104" y="365" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="500" font-size="32" fill="#586380">Ucz si&#x119; m&#x105;drzej z fiszkami.</text>
 
-  <!-- Bottom accent -->
-  <rect x="0" y="612" width="1200" height="18" fill="#4255ff"/>
+  <!-- Pill badges -->
+  <g transform="translate(100, 400)">
+    <rect width="80" height="32" rx="16" fill="#4255ff" opacity="0.08"/>
+    <text x="40" y="21" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="600" font-size="13" fill="#4255ff">AI</text>
+    <rect x="92" width="140" height="32" rx="16" fill="#17b865" opacity="0.08"/>
+    <text x="162" y="21" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="600" font-size="13" fill="#17b865">Spaced Rep</text>
+    <rect x="244" width="100" height="32" rx="16" fill="#4255ff" opacity="0.08"/>
+    <text x="294" y="21" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="600" font-size="13" fill="#4255ff">Fiszki</text>
+  </g>
+
+  <!-- Bottom gradient bar -->
+  <rect x="0" y="612" width="1200" height="18" rx="0" fill="url(#bar)"/>
 </svg>

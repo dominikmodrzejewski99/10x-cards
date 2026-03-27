@@ -1,11 +1,55 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="512" height="512" rx="112" fill="#4255ff"/>
-  <rect x="96" y="144" width="192" height="240" rx="32" fill="#fff" opacity="0.2" transform="rotate(-6 96 144)"/>
-  <rect x="160" y="112" width="192" height="240" rx="32" fill="#fff" opacity="0.2"/>
-  <rect x="224" y="80" width="192" height="240" rx="32" fill="#fff"/>
-  <path d="M272 160 L368 160" stroke="#4255ff" stroke-width="16" stroke-linecap="round"/>
-  <path d="M272 208 L336 208" stroke="#4255ff" stroke-width="16" stroke-linecap="round" opacity="0.4"/>
-  <circle cx="384" cy="288" r="56" fill="#4255ff"/>
-  <circle cx="384" cy="288" r="48" fill="#fff"/>
-  <path d="M364 288 L376 300 L404 272" stroke="#4255ff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#5b6bff"/>
+      <stop offset="100%" stop-color="#3344ee"/>
+    </linearGradient>
+    <linearGradient id="card-shine" x1="200" y1="80" x2="400" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fff"/>
+      <stop offset="100%" stop-color="#eef0ff"/>
+    </linearGradient>
+    <linearGradient id="badge" x1="340" y1="260" x2="420" y2="340" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#22d67a"/>
+      <stop offset="100%" stop-color="#17b865"/>
+    </linearGradient>
+    <filter id="card-shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#1a2066" flood-opacity="0.25"/>
+    </filter>
+    <filter id="badge-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0d8040" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+
+  <!-- Card 1 (back, rotated) -->
+  <rect x="120" y="140" width="200" height="256" rx="24" fill="#fff" opacity="0.15" transform="rotate(-8 220 268)"/>
+
+  <!-- Card 2 (middle) -->
+  <rect x="168" y="112" width="200" height="256" rx="24" fill="#fff" opacity="0.25"/>
+
+  <!-- Card 3 (front) with shadow -->
+  <g filter="url(#card-shadow)">
+    <rect x="216" y="84" width="200" height="256" rx="24" fill="url(#card-shine)"/>
+  </g>
+
+  <!-- Card content lines -->
+  <rect x="252" y="132" width="128" height="12" rx="6" fill="#4255ff" opacity="0.8"/>
+  <rect x="252" y="164" width="96" height="10" rx="5" fill="#4255ff" opacity="0.3"/>
+  <rect x="252" y="192" width="112" height="10" rx="5" fill="#4255ff" opacity="0.18"/>
+  <rect x="252" y="220" width="72" height="10" rx="5" fill="#4255ff" opacity="0.1"/>
+
+  <!-- Divider -->
+  <line x1="252" y1="252" x2="380" y2="252" stroke="#4255ff" stroke-width="2" stroke-opacity="0.12"/>
+
+  <!-- Answer preview -->
+  <rect x="252" y="272" width="88" height="8" rx="4" fill="#4255ff" opacity="0.12"/>
+  <rect x="252" y="292" width="64" height="8" rx="4" fill="#4255ff" opacity="0.08"/>
+
+  <!-- Success badge -->
+  <g filter="url(#badge-shadow)">
+    <circle cx="388" cy="312" r="48" fill="url(#badge)"/>
+  </g>
+  <path d="M364 312 L380 328 L412 296" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

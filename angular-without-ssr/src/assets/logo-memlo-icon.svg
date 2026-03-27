@@ -1,11 +1,28 @@
 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="4" y="4" width="56" height="56" rx="14" fill="#4255ff"/>
-  <rect x="12" y="18" width="24" height="30" rx="4" fill="#fff" opacity="0.2" transform="rotate(-6 12 18)"/>
-  <rect x="20" y="14" width="24" height="30" rx="4" fill="#fff" opacity="0.2"/>
-  <rect x="28" y="10" width="24" height="30" rx="4" fill="#fff"/>
-  <path d="M34 20 L46 20" stroke="#4255ff" stroke-width="2" stroke-linecap="round"/>
-  <path d="M34 26 L42 26" stroke="#4255ff" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
-  <circle cx="48" cy="36" r="7" fill="#4255ff"/>
-  <circle cx="48" cy="36" r="6" fill="#fff"/>
-  <path d="M45.5 36 L47 37.5 L50.5 34" stroke="#4255ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#5b6bff"/>
+      <stop offset="100%" stop-color="#3344ee"/>
+    </linearGradient>
+    <linearGradient id="badge" x1="42" y1="32" x2="52" y2="42" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#22d67a"/>
+      <stop offset="100%" stop-color="#17b865"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#bg)"/>
+
+  <!-- Card stack -->
+  <rect x="14" y="18" width="25" height="32" rx="4" fill="#fff" opacity="0.15" transform="rotate(-8 26 34)"/>
+  <rect x="20" y="14" width="25" height="32" rx="4" fill="#fff" opacity="0.25"/>
+  <rect x="27" y="10" width="25" height="32" rx="4" fill="#fff"/>
+
+  <!-- Card lines -->
+  <rect x="32" y="17" width="15" height="2" rx="1" fill="#4255ff" opacity="0.75"/>
+  <rect x="32" y="22" width="11" height="1.5" rx="0.75" fill="#4255ff" opacity="0.3"/>
+  <rect x="32" y="26" width="13" height="1.5" rx="0.75" fill="#4255ff" opacity="0.18"/>
+
+  <!-- Badge -->
+  <circle cx="48" cy="38" r="7" fill="url(#badge)"/>
+  <path d="M45 38 L47 40 L51 36" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
