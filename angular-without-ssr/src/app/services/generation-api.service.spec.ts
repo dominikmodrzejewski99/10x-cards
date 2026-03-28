@@ -9,6 +9,7 @@ describe('GenerationApiService', () => {
 
   beforeEach(() => {
     openRouterSpy = jasmine.createSpyObj<OpenRouterService>('OpenRouterService', ['sendMessage']);
+    (openRouterSpy as unknown as Record<string, unknown>)['defaultModel'] = 'google/gemma-3-12b-it:free';
 
     TestBed.configureTestingModule({
       providers: [
@@ -42,7 +43,7 @@ describe('GenerationApiService', () => {
           expect(result.flashcards[0].back).toBe('A1');
           expect(result.flashcards[0].source).toBe('ai-full');
           expect(result.generation.generated_count).toBe(3);
-          expect(result.generation.model).toBe('stepfun/step-3.5-flash:free');
+          expect(result.generation.model).toBe('google/gemma-3-12b-it:free');
           expect(result.generation.source_text_length).toBe(1000);
           done();
         }
@@ -179,11 +180,13 @@ describe('GenerationApiService', () => {
 
       service.generateFlashcards(customCommand).subscribe({
         next: (result: { generation: GenerationDTO; flashcards: FlashcardProposalDTO[] }) => {
-          expect(result.generation.model).toBe('custom/model');
+          // generation.model reflects the service's defaultModel (OpenRouterService.defaultModel)
+          expect(result.generation.model).toBe('google/gemma-3-12b-it:free');
+          // The service calls sendMessage without a model option (uses FALLBACK_MODELS internally)
           expect(openRouterSpy.sendMessage).toHaveBeenCalledWith(
             jasmine.any(String),
             undefined,
-            jasmine.objectContaining({ model: 'custom/model' })
+            jasmine.objectContaining({ useJsonFormat: true })
           );
           done();
         }

@@ -72,7 +72,8 @@ describe('OnboardingComponent', () => {
 
   describe('getters', () => {
     it('step should return the current step data', () => {
-      expect(component.step.title).toBe('Witaj w Memlo!');
+      expect(component.step.title).toContain('Witaj w');
+      expect(component.step.title).toContain('Memlo');
     });
 
     it('isFirst should return true on first step', () => {

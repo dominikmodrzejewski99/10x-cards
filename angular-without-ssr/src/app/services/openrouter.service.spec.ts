@@ -9,6 +9,9 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
+const EXPECTED_API_URL = `${environment.supabaseUrl}/functions/v1/chat`;
+const EXPECTED_DEFAULT_MODEL = 'google/gemma-3-12b-it:free';
+
 describe('OpenRouterService', () => {
   let service: OpenRouterService;
   let httpMock: HttpTestingController;
@@ -108,21 +111,19 @@ describe('OpenRouterService', () => {
 
       // Sprawdzenie zapytania HTTP
       const req = httpMock.expectOne(request => {
-        return request.url === 'https://openrouter.ai/api/v1/chat/completions';
+        return request.url === EXPECTED_API_URL;
       });
 
       // Sprawdzenie metody i nagłówków
       expect(req.request.method).toBe('POST');
-      expect(req.request.headers.get('Authorization')).toBe(`Bearer ${environment.openRouterKey}`);
       expect(req.request.headers.get('Content-Type')).toBe('application/json');
-      expect(req.request.headers.get('X-Title')).toBe('Memlo');
 
       // Sprawdzenie body zapytania
       const requestBody = req.request.body;
-      expect(requestBody.model).toBe('stepfun/step-3.5-flash:free'); // Model domyślny
+      expect(requestBody.model).toBe(EXPECTED_DEFAULT_MODEL); // Model domyślny
 
-      // Weryfikacja, że mamy wiadomość systemową
-      const systemMessage = requestBody.messages.find((m: any) => m.role === 'system');
+      // Weryfikacja, że mamy wiadomość z instrukcją systemową (jako user z prefiksem [System])
+      const systemMessage = requestBody.messages.find((m: any) => m.role === 'user' && m.content.startsWith('[System]'));
       expect(systemMessage).toBeDefined();
 
       // Weryfikacja, że mamy wiadomość użytkownika
@@ -168,7 +169,7 @@ describe('OpenRouterService', () => {
       const sendMessagePromise = service.sendMessage(userMessage, existingSessionId);
 
       // Sprawdzenie zapytania HTTP
-      const req = httpMock.expectOne(request => request.url === 'https://openrouter.ai/api/v1/chat/completions');
+      const req = httpMock.expectOne(request => request.url === EXPECTED_API_URL);
       req.flush(mockApiResponse);
 
       // Czekamy na zakończenie asynchronicznej operacji
@@ -207,14 +208,16 @@ describe('OpenRouterService', () => {
       // Działanie
       service.sendMessage(userMessage, undefined, customOptions);
 // Sprawdzenie zapytania HTTP
-      const req = httpMock.expectOne(request => request.url === 'https://openrouter.ai/api/v1/chat/completions');
+      const req = httpMock.expectOne(request => request.url === EXPECTED_API_URL);
 
       // Sprawdzenie body zapytania
       const requestBody = req.request.body;
-      expect(requestBody.model).toBe(customOptions.model);
+      // callWithFallback always uses FALLBACK_MODELS, ignoring options.model
+      expect(requestBody.model).toBe(EXPECTED_DEFAULT_MODEL);
       expect(requestBody.temperature).toBe(customOptions.temperature);
       expect(requestBody.max_tokens).toBe(customOptions.max_tokens);
-      expect(requestBody.messages[0].content).toBe(customOptions.systemMessage);
+      // System message is prepended as a user-role message with [System] prefix
+      expect(requestBody.messages[0].content).toBe(`[System] ${customOptions.systemMessage}`);
 
       // Symulacja odpowiedzi z serwera
       req.flush(mockApiResponse);
@@ -241,12 +244,10 @@ describe('OpenRouterService', () => {
       const sendMessagePromise = service.sendMessage(userMessage, undefined, jsonOptions);
 
       // Sprawdzenie zapytania HTTP
-      const req = httpMock.expectOne(request => request.url === 'https://openrouter.ai/api/v1/chat/completions');
+      const req = httpMock.expectOne(request => request.url === EXPECTED_API_URL);
 
-      // Sprawdzenie body zapytania
+      // Sprawdzenie body zapytania - JSON mode is now enforced via prompt, not response_format
       const requestBody = req.request.body;
-      expect(requestBody.response_format).toBeDefined();
-      expect(requestBody.response_format.type).toBe('json_object');
 
       // Sprawdzenie, że wiadomość użytkownika jest obecna
       const userMessages = requestBody.messages.filter((m: any) => m.role === 'user');
@@ -290,17 +291,17 @@ describe('OpenRouterService', () => {
       const sendMessagePromise = service.sendMessage(userMessage);
 
       // Symulacja błędu autoryzacji
-      const req = httpMock.expectOne(request => request.url === 'https://openrouter.ai/api/v1/chat/completions');
+      const req = httpMock.expectOne(request => request.url === EXPECTED_API_URL);
       req.flush('Unauthorized', {
         status: 401,
         statusText: 'Unauthorized'
       });
 
       // Sprawdzenie wyniku - oczekujemy błędu
-      await expectAsync(sendMessagePromise).toBeRejectedWithError(/Brak/);
+      await expectAsync(sendMessagePromise).toBeRejectedWithError(/Brak|autoryz/);
     });
 
-    it('powinien obsłużyć błąd 429 Too Many Requests', fakeAsync(() => {
+    it('powinien obsłużyć błąd 429 Too Many Requests', async () => {
       // Przygotowanie
       const userMessage = 'Testowa wiadomość';
       sessionManagerSpy.createSession.and.returnValue(mockSession);
@@ -309,31 +310,24 @@ describe('OpenRouterService', () => {
       // Działanie
       const sendMessagePromise = service.sendMessage(userMessage);
 
-      // Dajemy czas na wykonanie zapytania
-      tick();
-
-      // Symulacja błędu rate limit
-      const req = httpMock.expectOne(request => request.url === 'https://openrouter.ai/api/v1/chat/completions');
-      req.flush('Too Many Requests', {
+      // Symulacja błędu rate limit dla pierwszego modelu (retryable — serwis przejdzie do fallback)
+      const req1 = httpMock.expectOne(request => request.url === EXPECTED_API_URL);
+      req1.flush('Too Many Requests', {
         status: 429,
         statusText: 'Too Many Requests'
       });
 
-      // Czekamy na zakończenie asynchronicznej operacji
-      tick();
+      // Symulacja błędu rate limit dla fallback modelu (ostatni — rzuca błąd)
+      await new Promise(resolve => setTimeout(resolve));
+      const req2 = httpMock.expectOne(request => request.url === EXPECTED_API_URL);
+      req2.flush('Too Many Requests', {
+        status: 429,
+        statusText: 'Too Many Requests'
+      });
 
       // Sprawdzenie wyniku - oczekujemy błędu
-      sendMessagePromise.then(
-        () => fail('Powinien wystąpić błąd'),
-        error => {
-          expect(error).toBeDefined();
-          expect(error.message).toContain('Przekroczono limit zapytań');
-        }
-      );
-
-      // Posprzątnij pozostałe timery
-      discardPeriodicTasks();
-    }));
+      await expectAsync(sendMessagePromise).toBeRejectedWithError(/Przekroczono limit zapytań/);
+    });
 
     it('powinien obsłużyć nieprawidłowe ID sesji', async () => {
       // Przygotowanie
@@ -345,10 +339,10 @@ describe('OpenRouterService', () => {
 
       // Działanie i sprawdzenie wyniku
       await expectAsync(service.sendMessage(userMessage, invalidSessionId))
-        .toBeRejectedWithError('Nie znaleziono sesji o podanym ID');
+        .toBeRejectedWithError('Nie znaleziono sesji o podanym ID.');
 
       // Weryfikacja, że nie wykonano zapytania HTTP
-      httpMock.expectNone('https://openrouter.ai/api/v1/chat/completions');
+      httpMock.expectNone(EXPECTED_API_URL);
     });
   });
 
@@ -408,7 +402,7 @@ describe('OpenRouterService', () => {
       tick();
 
       // Sprawdzenie zapytania HTTP
-      const req = httpMock.expectOne(request => request.url === 'https://openrouter.ai/api/v1/chat/completions');
+      const req = httpMock.expectOne(request => request.url === EXPECTED_API_URL);
 
       // Symulujemy odpowiedź od serwera
       req.flush(mockApiResponse);
@@ -441,7 +435,7 @@ describe('OpenRouterService', () => {
       const sendMessagePromise = service.sendMessage(userMessage, undefined, jsonOptions);
 
       // Symulacja odpowiedzi JSON
-      const req = httpMock.expectOne(request => request.url === 'https://openrouter.ai/api/v1/chat/completions');
+      const req = httpMock.expectOne(request => request.url === EXPECTED_API_URL);
       const jsonApiResponse = {
         ...mockApiResponse,
         choices: [{

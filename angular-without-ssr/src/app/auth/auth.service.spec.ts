@@ -354,7 +354,7 @@ describe('AuthService', () => {
       service.login({ email: 'a@b.com', password: 'pass123' }).subscribe({
         next: () => done.fail('Expected error'),
         error: (err: Error) => {
-          expect(err.message).toBe('');
+          expect(err.message).toContain('potwierdzony');
           done();
         },
       });

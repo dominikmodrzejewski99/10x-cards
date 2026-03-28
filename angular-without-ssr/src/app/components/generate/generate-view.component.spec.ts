@@ -248,7 +248,10 @@ describe('GenerateViewComponent', () => {
       expect(messageServiceMock.add).toHaveBeenCalledWith(
         jasmine.objectContaining({ severity: 'success' })
       );
-      expect(routerMock.navigate).toHaveBeenCalledWith(['/sets', 10]);
+      expect(routerMock.navigate).toHaveBeenCalledWith(
+        ['/sets', 10],
+        jasmine.objectContaining({ queryParams: jasmine.objectContaining({ saved: 2 }) })
+      );
       expect(component.proposals().length).toBe(0);
       expect(component.isSaving()).toBeFalse();
     });

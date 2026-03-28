@@ -406,13 +406,13 @@ describe('StudyViewComponent', () => {
       expect(sm2Mock.calculateNextReview).not.toHaveBeenCalled();
     });
 
-    it('should answer with quality 1 on key "1" when flipped', () => {
+    it('should answer with quality 4 on key "1" when flipped', () => {
       component.isFlippedSignal.set(true);
       const event: KeyboardEvent = new KeyboardEvent('keydown', { key: '1' });
 
       component.handleKeyboard(event);
 
-      expect(sm2Mock.calculateNextReview).toHaveBeenCalledWith(mockCards[0].review, 1);
+      expect(sm2Mock.calculateNextReview).toHaveBeenCalledWith(mockCards[0].review, 4);
     });
 
     it('should answer with quality 3 on key "2" when flipped', () => {
@@ -424,13 +424,13 @@ describe('StudyViewComponent', () => {
       expect(sm2Mock.calculateNextReview).toHaveBeenCalledWith(mockCards[0].review, 3);
     });
 
-    it('should answer with quality 4 on key "3" when flipped', () => {
+    it('should answer with quality 1 on key "3" when flipped', () => {
       component.isFlippedSignal.set(true);
       const event: KeyboardEvent = new KeyboardEvent('keydown', { key: '3' });
 
       component.handleKeyboard(event);
 
-      expect(sm2Mock.calculateNextReview).toHaveBeenCalledWith(mockCards[0].review, 4);
+      expect(sm2Mock.calculateNextReview).toHaveBeenCalledWith(mockCards[0].review, 1);
     });
 
     it('should ignore keyboard when session is complete', () => {

@@ -341,7 +341,10 @@ describe('LanguageTestViewComponent', () => {
 
       expect(testServiceMock.evaluateTest).toHaveBeenCalled();
       expect(resultsServiceMock.saveResult).toHaveBeenCalled();
-      expect(routerMock.navigate).toHaveBeenCalledWith(['/language-test', 'b2-fce', 'results']);
+      expect(routerMock.navigate).toHaveBeenCalledWith(
+        ['/language-test', 'b2-fce', 'results'],
+        jasmine.objectContaining({ state: jasmine.objectContaining({ result: jasmine.anything() }) })
+      );
     });
 
     it('should navigate to results even on save error', () => {

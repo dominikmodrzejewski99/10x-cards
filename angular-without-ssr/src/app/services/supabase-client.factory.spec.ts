@@ -52,12 +52,11 @@ describe('SupabaseClientFactory', () => {
     });
 
     it('powinien obsłużyć błąd localStorage.getItem gracefully', () => {
-      const originalGetItem: (key: string) => string | null = localStorage.getItem.bind(localStorage);
       spyOn(localStorage, 'getItem').and.throwError('QuotaExceededError');
       spyOn(console, 'error');
 
-      // Create a new service to test with broken localStorage
-      const freshService: SupabaseClientFactory = new SupabaseClientFactory();
+      // Use TestBed to get a new instance with Angular DI (inject(LoggerService) requires DI context)
+      const freshService: SupabaseClientFactory = TestBed.inject(SupabaseClientFactory);
       const client: SupabaseClient = freshService.createClient();
 
       expect(client).toBeTruthy();
@@ -67,7 +66,7 @@ describe('SupabaseClientFactory', () => {
       spyOn(localStorage, 'setItem').and.throwError('QuotaExceededError');
       spyOn(console, 'error');
 
-      const freshService: SupabaseClientFactory = new SupabaseClientFactory();
+      const freshService: SupabaseClientFactory = TestBed.inject(SupabaseClientFactory);
       const client: SupabaseClient = freshService.createClient();
 
       expect(client).toBeTruthy();
@@ -77,7 +76,7 @@ describe('SupabaseClientFactory', () => {
       spyOn(localStorage, 'removeItem').and.throwError('StorageError');
       spyOn(console, 'error');
 
-      const freshService: SupabaseClientFactory = new SupabaseClientFactory();
+      const freshService: SupabaseClientFactory = TestBed.inject(SupabaseClientFactory);
       const client: SupabaseClient = freshService.createClient();
 
       expect(client).toBeTruthy();
