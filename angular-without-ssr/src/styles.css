@@ -318,6 +318,23 @@ body .p-connected-overlay .p-dropdown-panel {
   background: #ffffff;
 }
 
+/* Fullscreen mode — hide chrome */
+:fullscreen app-auth-navbar,
+:fullscreen app-bottom-nav,
+:fullscreen .app__footer {
+  display: none !important;
+}
+
+:fullscreen .app {
+  min-height: 100vh;
+}
+
+:fullscreen .app__main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 /* Modern dialog overrides */
 body .modern-dialog {
   --p-dialog-background: #ffffff;
