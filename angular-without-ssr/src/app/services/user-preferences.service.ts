@@ -47,7 +47,16 @@ export class UserPreferencesService {
     return this.cache$;
   }
 
-  updatePreferences(updates: Partial<Pick<UserPreferencesDTO, 'onboarding_completed'>>): Observable<UserPreferencesDTO> {
+  updatePreferences(updates: Partial<Pick<UserPreferencesDTO,
+  | 'onboarding_completed'
+  | 'pomodoro_work_duration'
+  | 'pomodoro_break_duration'
+  | 'pomodoro_long_break_duration'
+  | 'pomodoro_sessions_before_long_break'
+  | 'pomodoro_sound_enabled'
+  | 'pomodoro_notifications_enabled'
+  | 'pomodoro_focus_reminder_dismissed'
+>>): Observable<UserPreferencesDTO> {
     this.cache$ = null; // Invalidate cache
 
     return this.getCurrentUserId().pipe(
@@ -120,6 +129,13 @@ export class UserPreferencesService {
       last_study_date: null,
       total_sessions: 0,
       total_cards_reviewed: 0,
+      pomodoro_work_duration: 25,
+      pomodoro_break_duration: 5,
+      pomodoro_long_break_duration: 15,
+      pomodoro_sessions_before_long_break: 4,
+      pomodoro_sound_enabled: true,
+      pomodoro_notifications_enabled: true,
+      pomodoro_focus_reminder_dismissed: false,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     };

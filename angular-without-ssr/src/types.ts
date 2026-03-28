@@ -178,6 +178,13 @@ export interface UserPreferencesDTO {
   last_study_date: string | null;
   total_sessions: number;
   total_cards_reviewed: number;
+  pomodoro_work_duration: number;
+  pomodoro_break_duration: number;
+  pomodoro_long_break_duration: number;
+  pomodoro_sessions_before_long_break: number;
+  pomodoro_sound_enabled: boolean;
+  pomodoro_notifications_enabled: boolean;
+  pomodoro_focus_reminder_dismissed: boolean;
   created_at: string;
   updated_at: string;
 }
