@@ -1,10 +1,12 @@
 <!-- Hero -->
 <section class="hero">
   <div class="landing__inner">
-    <span class="hero__pill" data-animate="fade-up">
-      <i class="pi pi-sparkles"></i> Fiszki wspierane przez AI
-    </span>
-    <h1 class="hero__title" data-animate="fade-up">Zamień notatki w wiedzę.<br/><span class="hero__accent">Bez ślęczenia nad kartkami.</span></h1>
+    <div class="hero__badges" data-animate="fade-up">
+      <span class="hero__pill hero__pill--blue"><i class="pi pi-sparkles"></i> AI</span>
+      <span class="hero__pill hero__pill--violet"><i class="pi pi-replay"></i> Spaced repetition</span>
+      <span class="hero__pill hero__pill--green"><i class="pi pi-bolt"></i> SM-2</span>
+    </div>
+    <h1 class="hero__title" data-animate="fade-up">Zamień notatki w <strong class="hero__accent">fiszki</strong>.<br/><span class="hero__accent">Bez ślęczenia nad kartkami.</span></h1>
     <p class="hero__desc" data-animate="fade-up">
       Wrzuć tekst z wykładu, podręcznika albo artykułu.
       Dostaniesz gotowe fiszki, pogrupowane w zestawy, z planem powtórek dopasowanym do Twojego tempa.
@@ -40,7 +42,7 @@
       </div>
       <div class="step__arrow" data-animate="fade-up"><i class="pi pi-chevron-right"></i></div>
       <div class="step" data-animate="slide-right">
-        <div class="step__icon"><i class="pi pi-replay"></i></div>
+        <div class="step__icon step__icon--violet"><i class="pi pi-replay"></i></div>
         <h3 class="step__title">Zapamiętaj na dłużej</h3>
         <p class="step__desc">Algorytm sam ustali, kiedy warto wrócić do danego pytania — uczysz się mniej, a pamiętasz więcej.</p>
       </div>
@@ -127,8 +129,8 @@
 <!-- CTA -->
 <section class="cta" data-animate="fade-up">
   <div class="landing__inner">
-    <h2 class="cta__title">Spróbuj, to nic nie kosztuje</h2>
-    <p class="cta__desc">Załóż konto albo przetestuj od razu bez rejestracji.</p>
+    <h2 class="cta__title">Zacznij uczyć się mądrzej</h2>
+    <p class="cta__desc">Załóż konto albo przetestuj od razu bez rejestracji — to nic nie kosztuje.</p>
     <div class="cta__buttons">
       <a routerLink="/register" class="btn btn--white">Załóż darmowe konto</a>
       <button class="btn btn--white-outline" (click)="tryAnonymously()">Wypróbuj bez konta</button>

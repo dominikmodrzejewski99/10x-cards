@@ -58,17 +58,37 @@
   background: #ffffff;
 }
 
+.hero__badges {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
 .hero__pill {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #4255ff;
-  background: #edefff;
   padding: 0.35rem 0.9rem;
   border-radius: 999px;
-  margin-bottom: 1.5rem;
+}
+
+.hero__pill--blue {
+  color: #4255ff;
+  background: #edefff;
+}
+
+.hero__pill--violet {
+  color: #7c3aed;
+  background: #f3eeff;
+}
+
+.hero__pill--green {
+  color: #23b26d;
+  background: #e8f8f0;
 }
 
 .hero__title {
@@ -273,6 +293,11 @@
   margin-bottom: 1rem;
 }
 
+.step__icon--violet {
+  background: #f3eeff;
+  color: #7c3aed;
+}
+
 .step__arrow {
   display: flex;
   align-items: center;
@@ -404,6 +429,15 @@
   transform: translateY(-2px);
 }
 
+@keyframes pulse-border {
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  50% { box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06); }
+}
+
+.demo__action {
+  animation: pulse-border 2.5s ease-in-out infinite;
+}
+
 .demo__action i { font-size: 1.3rem; margin-bottom: 0.15rem; }
 .demo__action strong { font-size: 0.9rem; }
 .demo__action span { font-size: 0.7rem; opacity: 0.7; }
@@ -474,8 +508,19 @@
 .cta {
   text-align: center;
   padding: 5rem 0;
-  background: radial-gradient(circle at 50% 50%, #4255ff 0%, #4255ff 50%, #5c6bff 100%);
+  background: linear-gradient(135deg, #4255ff 0%, #5c6bff 40%, #7c3aed 100%);
   color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(255,255,255,0.08) 0%, transparent 40%);
+  pointer-events: none;
 }
 
 .cta__title {
