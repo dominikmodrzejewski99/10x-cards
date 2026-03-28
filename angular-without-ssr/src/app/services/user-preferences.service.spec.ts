@@ -30,6 +30,13 @@ function createMockPreferences(userId: string): UserPreferencesDTO {
     last_study_date: '2026-03-23',
     total_sessions: 25,
     total_cards_reviewed: 150,
+    pomodoro_work_duration: 25,
+    pomodoro_break_duration: 5,
+    pomodoro_long_break_duration: 15,
+    pomodoro_sessions_before_long_break: 4,
+    pomodoro_sound_enabled: true,
+    pomodoro_notifications_enabled: true,
+    pomodoro_focus_reminder_dismissed: false,
     created_at: '2026-01-01T00:00:00Z',
     updated_at: '2026-03-23T00:00:00Z'
   };

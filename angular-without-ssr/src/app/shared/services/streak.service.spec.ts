@@ -15,6 +15,13 @@ function createMockPrefs(overrides: Partial<UserPreferencesDTO> = {}): UserPrefe
     last_study_date: new Date().toISOString().slice(0, 10), // today
     total_sessions: 50,
     total_cards_reviewed: 300,
+    pomodoro_work_duration: 25,
+    pomodoro_break_duration: 5,
+    pomodoro_long_break_duration: 15,
+    pomodoro_sessions_before_long_break: 4,
+    pomodoro_sound_enabled: true,
+    pomodoro_notifications_enabled: true,
+    pomodoro_focus_reminder_dismissed: false,
     created_at: '2026-01-01T00:00:00Z',
     updated_at: '2026-03-24T00:00:00Z',
     ...overrides
