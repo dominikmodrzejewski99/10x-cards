@@ -42,7 +42,6 @@ export class PomodoroService {
   public readonly sessionsCompleted = this._sessionsCompleted.asReadonly();
 
   private startedAt: number = 0;
-  private audio: HTMLAudioElement | null = null;
 
   constructor() {
     this.destroyRef.onDestroy(() => this.clearInterval());
@@ -201,11 +200,18 @@ export class PomodoroService {
   private playSound(): void {
     if (!this.soundEnabled) return;
     try {
-      if (!this.audio) {
-        this.audio = new Audio('assets/sounds/pomodoro-bell.mp3');
-      }
-      this.audio.currentTime = 0;
-      this.audio.play().catch(() => {});
+      const ctx = new AudioContext();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.setValueAtTime(830, ctx.currentTime);
+      osc.frequency.setValueAtTime(660, ctx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.8);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.8);
+      osc.onended = () => ctx.close();
     } catch { /* ignore audio errors */ }
   }
 
