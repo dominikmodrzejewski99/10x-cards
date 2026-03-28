@@ -4,7 +4,7 @@
   Referrer-Policy: no-referrer-when-downgrade
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://*.supabase.co; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://*.openrouter.ai https://openrouter.ai https://cloudflareinsights.com https://*.ingest.de.sentry.io; frame-ancestors 'none';
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://*.supabase.co; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://*.openrouter.ai https://openrouter.ai https://cloudflareinsights.com https://*.ingest.de.sentry.io https://fonts.googleapis.com https://fonts.gstatic.com; frame-ancestors 'none';
 
 /*.js
   Cache-Control: public, max-age=31536000, immutable
