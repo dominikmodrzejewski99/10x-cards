@@ -1,12 +1,13 @@
 import { Component, ChangeDetectionStrategy, inject, signal, WritableSignal, Signal, ElementRef } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { UserMenuComponent } from '../../auth/components/user-menu.component';
+import { PomodoroTimerComponent } from './pomodoro-timer/pomodoro-timer.component';
 import { AuthStore } from '../../auth/store';
 
 @Component({
   selector: 'app-auth-navbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, UserMenuComponent],
+  imports: [RouterModule, UserMenuComponent, PomodoroTimerComponent],
   host: {
     '(document:keydown.escape)': 'onEscape()',
     '(document:click)': 'onDocumentClick($event)'
@@ -81,6 +82,7 @@ import { AuthStore } from '../../auth/store';
 
         <div class="navbar__right">
           @if (authCheckedSignal() && isAuthenticatedSignal()) {
+            <app-pomodoro-timer></app-pomodoro-timer>
             <app-user-menu></app-user-menu>
             <button class="navbar__burger" (click)="toggleMobile()" [attr.aria-expanded]="mobileOpenSignal()">
               <span class="navbar__burger-line"></span>
