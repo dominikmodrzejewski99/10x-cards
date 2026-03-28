@@ -129,6 +129,37 @@
   @include btn-sm;
 }
 
+/* Drag handle */
+.ftable__drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  cursor: grab;
+  color: $color-text-secondary;
+  opacity: 0.4;
+  transition: opacity 0.15s, color 0.15s;
+  flex-shrink: 0;
+  user-select: none;
+
+  &:hover {
+    opacity: 1;
+    color: $color-primary;
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.ftable__card--dragging {
+  opacity: 0.4;
+}
+
+.ftable__card--drag-over {
+  border-top: 2px solid $color-primary;
+}
+
 /* Card checkbox */
 .ftable__card-check {
   display: flex;

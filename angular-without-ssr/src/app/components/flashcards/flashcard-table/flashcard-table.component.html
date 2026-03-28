@@ -100,7 +100,24 @@
     </div>
     <div class="ftable__list fade-in">
       @for (flashcard of flashcardsSignal(); track flashcard.id; let i = $index) {
-        <div class="ftable__card" [class.ftable__card--loading]="loadingSignal()" [class.ftable__card--selected]="isSelected(flashcard.id)">
+        <div
+          class="ftable__card"
+          [class.ftable__card--loading]="loadingSignal()"
+          [class.ftable__card--selected]="isSelected(flashcard.id)"
+          [class.ftable__card--dragging]="draggedIndex() === i"
+          [class.ftable__card--drag-over]="dragOverIndex() === i"
+          draggable="false"
+          (dragover)="onDragOver(i, $event)"
+          (dragleave)="onDragLeave()"
+          (drop)="onDrop(i, $event)"
+          (dragend)="onDragEnd()">
+          <div
+            class="ftable__drag-handle"
+            draggable="true"
+            (dragstart)="onDragStart(i, $event)"
+            title="Przeciągnij aby zmienić kolejność">
+            <i class="pi pi-bars"></i>
+          </div>
           <label class="ftable__card-check">
             <input type="checkbox" [checked]="isSelected(flashcard.id)" (change)="toggleSelect(flashcard.id)" class="ftable__checkbox" />
           </label>

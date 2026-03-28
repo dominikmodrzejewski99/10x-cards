@@ -12,6 +12,11 @@ export interface TableLazyLoadEvent {
   sortOrder: number;
 }
 
+export interface ReorderEvent {
+  id: number;
+  newIndex: number;
+}
+
 @Component({
   selector: 'app-flashcard-table',
   imports: [
@@ -36,8 +41,11 @@ export class FlashcardTableComponent implements OnDestroy {
   public search: OutputEmitterRef<string> = output<string>();
   public bulkDelete: OutputEmitterRef<number[]> = output<number[]>();
   public rowsChange: OutputEmitterRef<number> = output<number>();
+  public reorder: OutputEmitterRef<ReorderEvent[]> = output<ReorderEvent[]>();
 
   public searchTerm: string = '';
+  public draggedIndex: WritableSignal<number | null> = signal<number | null>(null);
+  public dragOverIndex: WritableSignal<number | null> = signal<number | null>(null);
   public readonly pageSizeOptions: number[] = [5, 10, 20, 40, 100];
   private selectedIds: WritableSignal<Set<number>> = signal<Set<number>>(new Set());
   private searchTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -128,6 +136,57 @@ export class FlashcardTableComponent implements OnDestroy {
     this.searchTimeout = setTimeout(() => {
       this.onSearch();
     }, 300);
+  }
+
+  public onDragStart(index: number, event: DragEvent): void {
+    this.draggedIndex.set(index);
+    if (event.dataTransfer) {
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/plain', String(index));
+    }
+  }
+
+  public onDragOver(index: number, event: DragEvent): void {
+    event.preventDefault();
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = 'move';
+    }
+    if (this.draggedIndex() !== index) {
+      this.dragOverIndex.set(index);
+    }
+  }
+
+  public onDragLeave(): void {
+    this.dragOverIndex.set(null);
+  }
+
+  public onDrop(index: number, event: DragEvent): void {
+    event.preventDefault();
+    const fromIndex: number | null = this.draggedIndex();
+    if (fromIndex === null || fromIndex === index) {
+      this.resetDragState();
+      return;
+    }
+
+    const items: FlashcardDTO[] = [...this.flashcardsSignal()];
+    const [movedItem] = items.splice(fromIndex, 1);
+    items.splice(index, 0, movedItem);
+
+    const newOrder: ReorderEvent[] = items.map((item: FlashcardDTO, i: number) => ({
+      id: item.id,
+      newIndex: i
+    }));
+    this.reorder.emit(newOrder);
+    this.resetDragState();
+  }
+
+  public onDragEnd(): void {
+    this.resetDragState();
+  }
+
+  private resetDragState(): void {
+    this.draggedIndex.set(null);
+    this.dragOverIndex.set(null);
   }
 
   public ngOnDestroy(): void {
