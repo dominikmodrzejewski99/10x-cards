@@ -76,7 +76,8 @@ describe('LanguageTestResultsComponent', () => {
       updated_at: '',
       user_id: 'user-1',
       generation_id: null,
-      set_id: 50
+      set_id: 50,
+      position: 0
     }
   ];
 

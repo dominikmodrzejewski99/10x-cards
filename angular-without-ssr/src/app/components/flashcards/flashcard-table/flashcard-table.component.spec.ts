@@ -18,7 +18,8 @@ const MOCK_FLASHCARD: FlashcardDTO = {
   updated_at: '2026-01-01',
   user_id: 'user-1',
   generation_id: null,
-  set_id: 1
+  set_id: 1,
+  position: 0
 };
 
 const MOCK_FLASHCARD_2: FlashcardDTO = {

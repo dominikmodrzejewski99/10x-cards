@@ -30,7 +30,8 @@ describe('FlashcardFormComponent', () => {
     updated_at: '2026-01-01T00:00:00Z',
     user_id: 'user-1',
     generation_id: null,
-    set_id: 5
+    set_id: 5,
+    position: 0
   };
 
   beforeEach(async () => {

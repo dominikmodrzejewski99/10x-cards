@@ -57,12 +57,12 @@ describe('GenerateViewComponent', () => {
     {
       id: 100, front: 'What is Angular?', back: 'A web framework',
       front_image_url: null, back_audio_url: null, front_language: null, back_language: null,
-      source: 'ai-full', created_at: '', updated_at: '', user_id: 'user-1', generation_id: 1, set_id: 10
+      source: 'ai-full', created_at: '', updated_at: '', user_id: 'user-1', generation_id: 1, set_id: 10, position: 0
     },
     {
       id: 101, front: 'What is RxJS?', back: 'Reactive Extensions for JS',
       front_image_url: null, back_audio_url: null, front_language: null, back_language: null,
-      source: 'ai-full', created_at: '', updated_at: '', user_id: 'user-1', generation_id: 1, set_id: 10
+      source: 'ai-full', created_at: '', updated_at: '', user_id: 'user-1', generation_id: 1, set_id: 10, position: 0
     }
   ];
 

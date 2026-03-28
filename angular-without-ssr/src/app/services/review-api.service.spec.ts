@@ -66,6 +66,7 @@ function makeMockFlashcard(overrides: Partial<FlashcardDTO> = {}): FlashcardDTO 
     user_id: MOCK_USER_ID,
     generation_id: null,
     set_id: 10,
+    position: 0,
     ...overrides
   };
 }

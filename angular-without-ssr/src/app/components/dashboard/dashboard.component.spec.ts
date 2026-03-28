@@ -44,7 +44,7 @@ describe('DashboardComponent', () => {
       flashcard: {
         id: 1, front: 'Hello', back: 'Cześć', front_image_url: null, back_audio_url: null,
         front_language: 'en', back_language: 'pl', source: 'manual',
-        created_at: '', updated_at: '', user_id: 'user-1', generation_id: null, set_id: 1
+        created_at: '', updated_at: '', user_id: 'user-1', generation_id: null, set_id: 1, position: 0
       },
       review: null
     },
@@ -52,7 +52,7 @@ describe('DashboardComponent', () => {
       flashcard: {
         id: 2, front: 'World', back: 'Świat', front_image_url: null, back_audio_url: null,
         front_language: 'en', back_language: 'pl', source: 'manual',
-        created_at: '', updated_at: '', user_id: 'user-1', generation_id: null, set_id: 1
+        created_at: '', updated_at: '', user_id: 'user-1', generation_id: null, set_id: 1, position: 0
       },
       review: {
         id: 1, flashcard_id: 2, user_id: 'user-1', ease_factor: 2.5,

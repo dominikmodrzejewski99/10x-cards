@@ -27,11 +27,11 @@ describe('QuizViewComponent', () => {
   let routeParamsSubject: BehaviorSubject<Record<string, string>>;
 
   const mockFlashcards: FlashcardDTO[] = [
-    { id: 1, front: 'word', back: 'slowo', front_image_url: null, back_audio_url: null, front_language: 'en', back_language: 'pl', source: 'manual', created_at: '', updated_at: '', user_id: '', generation_id: null, set_id: 14 },
-    { id: 2, front: 'house', back: 'dom', front_image_url: null, back_audio_url: null, front_language: 'en', back_language: 'pl', source: 'manual', created_at: '', updated_at: '', user_id: '', generation_id: null, set_id: 14 },
-    { id: 3, front: 'cat', back: 'kot', front_image_url: null, back_audio_url: null, front_language: 'en', back_language: 'pl', source: 'manual', created_at: '', updated_at: '', user_id: '', generation_id: null, set_id: 14 },
-    { id: 4, front: 'dog', back: 'pies', front_image_url: null, back_audio_url: null, front_language: 'en', back_language: 'pl', source: 'manual', created_at: '', updated_at: '', user_id: '', generation_id: null, set_id: 14 },
-    { id: 5, front: 'tree', back: 'drzewo', front_image_url: null, back_audio_url: null, front_language: 'en', back_language: 'pl', source: 'manual', created_at: '', updated_at: '', user_id: '', generation_id: null, set_id: 14 }
+    { id: 1, front: 'word', back: 'slowo', front_image_url: null, back_audio_url: null, front_language: 'en', back_language: 'pl', source: 'manual', created_at: '', updated_at: '', user_id: '', generation_id: null, set_id: 14, position: 0 },
+    { id: 2, front: 'house', back: 'dom', front_image_url: null, back_audio_url: null, front_language: 'en', back_language: 'pl', source: 'manual', created_at: '', updated_at: '', user_id: '', generation_id: null, set_id: 14, position: 0 },
+    { id: 3, front: 'cat', back: 'kot', front_image_url: null, back_audio_url: null, front_language: 'en', back_language: 'pl', source: 'manual', created_at: '', updated_at: '', user_id: '', generation_id: null, set_id: 14, position: 0 },
+    { id: 4, front: 'dog', back: 'pies', front_image_url: null, back_audio_url: null, front_language: 'en', back_language: 'pl', source: 'manual', created_at: '', updated_at: '', user_id: '', generation_id: null, set_id: 14, position: 0 },
+    { id: 5, front: 'tree', back: 'drzewo', front_image_url: null, back_audio_url: null, front_language: 'en', back_language: 'pl', source: 'manual', created_at: '', updated_at: '', user_id: '', generation_id: null, set_id: 14, position: 0 }
   ];
 
   const mockSet: FlashcardSetDTO = {

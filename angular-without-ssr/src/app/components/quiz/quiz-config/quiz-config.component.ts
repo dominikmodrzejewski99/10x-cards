@@ -23,6 +23,21 @@ export class QuizConfigComponent {
   public trueFalseEnabledSignal: WritableSignal<boolean> = signal<boolean>(true);
   public reversedSignal: WritableSignal<boolean> = signal<boolean>(false);
 
+  public readonly countSteps: { label: string; value: number | 'all' }[] = [
+    { label: '5', value: 5 },
+    { label: '10', value: 10 },
+    { label: '15', value: 15 },
+    { label: '20', value: 20 },
+    { label: 'Wszystkie', value: 'all' }
+  ];
+
+  public get availableCountOptions(): { label: string; value: number | 'all' }[] {
+    const count: number = this.cardCountSignal();
+    return this.countSteps.filter(
+      (opt: { label: string; value: number | 'all' }) => opt.value === 'all' || (opt.value as number) < count
+    );
+  }
+
   public get isValid(): boolean {
     return this.writtenEnabledSignal() || this.multipleChoiceEnabledSignal() || this.trueFalseEnabledSignal();
   }

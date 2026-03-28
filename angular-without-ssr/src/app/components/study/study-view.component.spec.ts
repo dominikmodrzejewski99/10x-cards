@@ -34,7 +34,8 @@ describe('StudyViewComponent', () => {
     updated_at: '2026-01-01T00:00:00Z',
     user_id: 'user-1',
     generation_id: null,
-    set_id: 10
+    set_id: 10,
+    position: 0
   };
 
   const mockReview: FlashcardReviewDTO = {
