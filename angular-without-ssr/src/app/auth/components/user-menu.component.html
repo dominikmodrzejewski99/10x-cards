@@ -24,6 +24,12 @@
               <span class="user-email-small">{{ userSignal()?.email }}</span>
             </div>
           </div>
+          <div class="dropdown-body">
+            <a routerLink="/settings" class="dropdown-item" (click)="closeMenu()">
+              <i class="pi pi-cog"></i>
+              Ustawienia
+            </a>
+          </div>
           <div class="dropdown-footer">
             <button class="dropdown-item dropdown-item--delete" (click)="onDeleteAccount()">
               <i class="pi pi-trash"></i>

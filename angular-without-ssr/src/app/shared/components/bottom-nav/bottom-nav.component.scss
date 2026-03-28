@@ -121,3 +121,28 @@ $bottom-nav-height: 3.5rem;
 .bottom-nav__item--study.bottom-nav__item--active .bottom-nav__study-ring {
   box-shadow: $shadow-primary-hover;
 }
+
+.bottom-nav__pomodoro {
+  position: absolute;
+  top: -1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.15rem 0.6rem;
+  border-radius: $radius-pill;
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  z-index: 51;
+}
+
+.bottom-nav__pomodoro--work {
+  background: $color-success-light;
+  color: $color-success;
+  border: 1px solid $color-success;
+}
+
+.bottom-nav__pomodoro--break {
+  background: $color-primary-light;
+  color: $color-primary;
+  border: 1px solid $color-primary;
+}
