@@ -13,8 +13,8 @@ interface OnboardingStep {
 
 const STEPS: OnboardingStep[] = [
   {
-    title: 'Witaj w Memlo!',
-    description: 'Naucz się szybciej dzięki fiszkom i algorytmowi spaced repetition.',
+    title: 'Witaj w <span class="ob__brand">Memlo</span>!',
+    description: 'Naucz się szybciej dzięki fiszkom i algorytmowi <strong class="ob__highlight">spaced repetition</strong>.',
     icon: 'pi-bolt',
     iconColor: '#4255ff',
     details: [

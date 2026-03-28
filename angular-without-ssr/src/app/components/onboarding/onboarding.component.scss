@@ -24,11 +24,11 @@
 .ob__dot--active {
   width: 1.5rem;
   border-radius: 0.25rem;
-  background: #4255ff;
+  background: var(--dot-color, #4255ff);
 }
 
 .ob__dot--done {
-  background: #4255ff;
+  background: var(--dot-color, #4255ff);
 }
 
 /* Icon */
@@ -52,6 +52,16 @@
   font-weight: 800;
   color: var(--app-text, #282e3e);
   margin: 0 0 0.5rem;
+}
+
+:host ::ng-deep .ob__brand {
+  color: #7c3aed;
+  font-weight: 800;
+}
+
+:host ::ng-deep .ob__highlight {
+  color: #4255ff;
+  font-weight: 700;
 }
 
 .ob__desc {

@@ -17,7 +17,8 @@
         <span
           class="ob__dot"
           [class.ob__dot--active]="$index === currentStep()"
-          [class.ob__dot--done]="$index < currentStep()">
+          [class.ob__dot--done]="$index < currentStep()"
+          [style.--dot-color]="s.iconColor">
         </span>
       }
     </div>
@@ -28,8 +29,8 @@
     </div>
 
     <!-- Content -->
-    <h2 class="ob__title">{{ step.title }}</h2>
-    <p class="ob__desc">{{ step.description }}</p>
+    <h2 class="ob__title" [innerHTML]="step.title"></h2>
+    <p class="ob__desc" [innerHTML]="step.description"></p>
 
     <ul class="ob__details">
       @for (detail of step.details; track $index) {
