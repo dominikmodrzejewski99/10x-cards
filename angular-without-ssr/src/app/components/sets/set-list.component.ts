@@ -7,6 +7,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
+import { ShareService } from '../../services/share.service';
 import { FlashcardSetDTO, CreateFlashcardSetCommand, UpdateFlashcardSetCommand } from '../../../types';
 
 interface SetListState {
@@ -37,6 +38,7 @@ interface SetListState {
 })
 export class SetListComponent implements OnInit {
   private setApi = inject(FlashcardSetApiService);
+  private shareService = inject(ShareService);
   private messageService = inject(MessageService);
   private confirmationService = inject(ConfirmationService);
   private router = inject(Router);
@@ -230,6 +232,25 @@ export class SetListComponent implements OnInit {
 
   quizSet(set: FlashcardSetDTO): void {
     this.router.navigate(['/quiz', set.id]);
+  }
+
+  async shareSet(set: FlashcardSetDTO): Promise<void> {
+    try {
+      const link = await this.shareService.createShareLink(set.id);
+      const url = this.shareService.buildShareUrl(link.id);
+      await navigator.clipboard.writeText(url);
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Skopiowano',
+        detail: 'Link do udostępnienia skopiowany do schowka (ważny 7 dni)',
+      });
+    } catch {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Błąd',
+        detail: 'Nie udało się wygenerować linku',
+      });
+    }
   }
 
   formatDate(dateStr: string): string {

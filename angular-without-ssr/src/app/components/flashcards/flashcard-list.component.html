@@ -16,15 +16,15 @@
       <button (click)="openAddModal()" class="flist__btn flist__btn--add" data-test-id="add-flashcard-button">
         <i class="pi pi-plus"></i> Dodaj
       </button>
+      <button (click)="openShareDialog()" class="flist__btn flist__btn--share" data-test-id="share-button" title="Udostępnij zestaw">
+        <i class="pi pi-share-alt"></i>
+      </button>
       <div class="flist__more">
         <button class="flist__btn flist__btn--more" (click)="moreMenuOpen.set(!moreMenuOpen())" aria-label="Więcej opcji" title="Więcej opcji">
           <i class="pi pi-ellipsis-h"></i>
         </button>
         @if (moreMenuOpen()) {
           <div class="flist__more-menu" (click)="moreMenuOpen.set(false)">
-            <button (click)="openShareDialog()" class="flist__more-item" data-test-id="share-button">
-              <i class="pi pi-share-alt"></i> Udostępnij
-            </button>
             <button (click)="openImportModal()" class="flist__more-item" data-test-id="import-flashcards-button">
               <i class="pi pi-upload"></i> Importuj
             </button>
