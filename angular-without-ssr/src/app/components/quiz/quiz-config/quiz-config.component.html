@@ -1,17 +1,34 @@
 <div class="quiz-config">
-  <h1 class="quiz-config__title">Test: {{ setNameSignal() }}</h1>
-  <p class="quiz-config__subtitle">{{ cardCountSignal() }} fiszek w zestawie</p>
+  <div class="quiz-config__top-bar">
+    <button class="quiz-config__back-btn" (click)="onGoBack()" title="Wróć" aria-label="Wróć do zestawu">
+      <i class="pi pi-arrow-left"></i>
+    </button>
+    <div>
+      <h1 class="quiz-config__title">Test: {{ setNameSignal() }}</h1>
+      <p class="quiz-config__subtitle">{{ cardCountSignal() }} fiszek w zestawie</p>
+    </div>
+  </div>
 
   <div class="quiz-config__section">
     <label class="quiz-config__label">Liczba pytań</label>
-    <p-select
-      [options]="availableCountOptions"
-      optionLabel="label"
-      optionValue="value"
-      [ngModel]="selectedCountSignal()"
-      (ngModelChange)="selectedCountSignal.set($event)"
-      [style]="{ width: '100%' }">
-    </p-select>
+    <div class="quiz-config__count-row">
+      <input
+        type="number"
+        class="quiz-config__count-input"
+        [ngModel]="selectedCountSignal() === 'all' ? cardCountSignal() : selectedCountSignal()"
+        (ngModelChange)="onCountChange($event)"
+        [min]="1"
+        [max]="cardCountSignal()"
+        [disabled]="selectedCountSignal() === 'all'" />
+      <label class="quiz-config__check-item quiz-config__all-toggle">
+        <input
+          type="checkbox"
+          class="quiz-config__check-input"
+          [checked]="selectedCountSignal() === 'all'"
+          (change)="toggleAll()" />
+        <span class="quiz-config__check-text">Wszystkie</span>
+      </label>
+    </div>
   </div>
 
   <div class="quiz-config__section">
@@ -77,11 +94,6 @@
       [disabled]="!isValid"
       (click)="onStart()">
       <i class="pi pi-play"></i> Rozpocznij test
-    </button>
-    <button
-      class="quiz-config__btn quiz-config__btn--ghost"
-      (click)="onGoBack()">
-      <i class="pi pi-arrow-left"></i> Wróć
     </button>
   </div>
 </div>

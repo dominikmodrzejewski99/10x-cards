@@ -1,16 +1,10 @@
 import { Component, ChangeDetectionStrategy, input, output, InputSignal, OutputEmitterRef, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SelectModule } from 'primeng/select';
 import { QuizConfig, QuizQuestionType } from '../../../../types';
-
-interface QuestionCountOption {
-  label: string;
-  value: number | 'all';
-}
 
 @Component({
   selector: 'app-quiz-config',
-  imports: [FormsModule, SelectModule],
+  imports: [FormsModule],
   templateUrl: './quiz-config.component.html',
   styleUrls: ['./quiz-config.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -29,23 +23,21 @@ export class QuizConfigComponent {
   public trueFalseEnabledSignal: WritableSignal<boolean> = signal<boolean>(true);
   public reversedSignal: WritableSignal<boolean> = signal<boolean>(false);
 
-  public readonly COUNT_OPTIONS: QuestionCountOption[] = [
-    { label: '5 pytań', value: 5 },
-    { label: '10 pytań', value: 10 },
-    { label: '15 pytań', value: 15 },
-    { label: '20 pytań', value: 20 },
-    { label: 'Wszystkie', value: 'all' }
-  ];
-
-  public get availableCountOptions(): QuestionCountOption[] {
-    const count: number = this.cardCountSignal();
-    return this.COUNT_OPTIONS.filter((opt: QuestionCountOption) =>
-      opt.value === 'all' || opt.value <= count
-    );
-  }
-
   public get isValid(): boolean {
     return this.writtenEnabledSignal() || this.multipleChoiceEnabledSignal() || this.trueFalseEnabledSignal();
+  }
+
+  public onCountChange(value: number): void {
+    const clamped: number = Math.max(1, Math.min(value, this.cardCountSignal()));
+    this.selectedCountSignal.set(clamped);
+  }
+
+  public toggleAll(): void {
+    if (this.selectedCountSignal() === 'all') {
+      this.selectedCountSignal.set(this.cardCountSignal());
+    } else {
+      this.selectedCountSignal.set('all');
+    }
   }
 
   public onStart(): void {
