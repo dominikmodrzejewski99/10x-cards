@@ -7,6 +7,7 @@ import { MessageService, ConfirmationService, Confirmation } from 'primeng/api';
 import { FlashcardListComponent } from './flashcard-list.component';
 import { FlashcardApiService } from '../../services/flashcard-api.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
+import { ShareService } from '../../services/share.service';
 import { FlashcardDTO, FlashcardSetDTO } from '../../../types';
 import { FlashcardFormData } from './flashcard-form/flashcard-form.component';
 
@@ -16,6 +17,7 @@ describe('FlashcardListComponent', () => {
 
   let flashcardApiMock: jasmine.SpyObj<FlashcardApiService>;
   let flashcardSetApiMock: jasmine.SpyObj<FlashcardSetApiService>;
+  let shareServiceMock: jasmine.SpyObj<ShareService>;
   let messageServiceMock: jasmine.SpyObj<MessageService>;
   let confirmationServiceMock: jasmine.SpyObj<ConfirmationService>;
   let routerMock: jasmine.SpyObj<Router>;
@@ -70,6 +72,10 @@ describe('FlashcardListComponent', () => {
       'FlashcardSetApiService',
       ['getSet']
     );
+    shareServiceMock = jasmine.createSpyObj<ShareService>(
+      'ShareService',
+      ['createShareLink', 'buildShareUrl']
+    );
     messageServiceMock = jasmine.createSpyObj<MessageService>('MessageService', ['add', 'clear']);
     // Toast component needs messageObserver and clearObserver
     (messageServiceMock as unknown as Record<string, unknown>)['messageObserver'] = new Subject<unknown>();
@@ -89,8 +95,15 @@ describe('FlashcardListComponent', () => {
       providers: [
         { provide: FlashcardApiService, useValue: flashcardApiMock },
         { provide: FlashcardSetApiService, useValue: flashcardSetApiMock },
+        { provide: ShareService, useValue: shareServiceMock },
         { provide: Router, useValue: routerMock },
-        { provide: ActivatedRoute, useValue: { params: routeParamsSubject.asObservable() } }
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: routeParamsSubject.asObservable(),
+            snapshot: { queryParams: {}, paramMap: { get: () => '5' } }
+          }
+        }
       ]
     })
     .overrideComponent(FlashcardListComponent, {
