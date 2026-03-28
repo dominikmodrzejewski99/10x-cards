@@ -29,9 +29,8 @@
     <link rel="preconnect" href="https://zlfntdnltdnuvrnraqak.supabase.co" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Google Fonts (non-blocking) -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" /></noscript>
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" />
     <!-- Runtime configuration -->
     <script src="assets/runtime-config.js" defer></script>
   </head>
@@ -58,14 +57,6 @@
       </div>
     </app-root>
     <!-- Cloudflare Web Analytics (no-op when token is empty) -->
-    <script>
-      if (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.cfAnalyticsToken) {
-        var s = document.createElement('script');
-        s.defer = true;
-        s.src = 'https://static.cloudflareinsights.com/beacon.min.js';
-        s.dataset.cfBeacon = '{"token":"' + window.RUNTIME_CONFIG.cfAnalyticsToken + '"}';
-        document.body.appendChild(s);
-      }
-    </script>
+    <script src="assets/cf-analytics.js" defer></script>
   </body>
 </html>
