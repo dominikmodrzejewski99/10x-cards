@@ -213,26 +213,6 @@ form {
   text-decoration: underline;
 }
 
-.auth-form__footer {
-  margin-top: 0.75rem;
-  text-align: center;
-  color: #586380;
-  font-size: 0.8125rem;
-}
-
-.auth-form__footer-link {
-  color: #4255ff;
-  font-weight: 600;
-  text-decoration: none;
-  margin-left: 0.25rem;
-  transition: all 0.15s;
-}
-
-.auth-form__footer-link:hover {
-  text-decoration: underline;
-  color: #3b4ce3;
-}
-
 @media (min-width: 480px) {
   form {
     gap: 1.25rem;
@@ -260,10 +240,6 @@ form {
     font-size: 0.875rem;
   }
 
-  .auth-form__footer {
-    margin-top: 1rem;
-    font-size: 0.875rem;
-  }
 }
 
 @media (max-width: 359px) {
@@ -277,7 +253,4 @@ form {
     font-size: 0.875rem;
   }
 
-  .auth-form__footer {
-    font-size: 0.75rem;
-  }
 }

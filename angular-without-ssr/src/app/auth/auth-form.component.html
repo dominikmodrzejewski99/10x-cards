@@ -118,15 +118,6 @@
     </div>
   }
 
-  @if (!isLoginMode()) {
-    <p class="auth-form__terms">
-      Rejestrując się, akceptujesz
-      <a routerLink="/terms" class="auth-form__terms-link">Regulamin</a>
-      oraz
-      <a routerLink="/privacy" class="auth-form__terms-link">Politykę prywatności</a>.
-    </p>
-  }
-
   <div class="auth-form__divider">
     <span>lub</span>
   </div>
@@ -141,15 +132,12 @@
     Wypróbuj bez rejestracji
   </button>
 
-  <div class="auth-form__footer">
-    <p>
-      {{ isLoginMode() ? 'Nie masz jeszcze konta?' : 'Masz już konto?' }}
-      <a
-        [routerLink]="isLoginMode() ? '/register' : '/login'"
-        class="auth-form__footer-link"
-        (click)="toggleAuthMode()">
-        {{ isLoginMode() ? 'Zarejestruj się' : 'Zaloguj się' }}
-      </a>
+  @if (!isLoginMode()) {
+    <p class="auth-form__terms">
+      Rejestrując się, akceptujesz
+      <a routerLink="/terms" class="auth-form__terms-link">Regulamin</a>
+      oraz
+      <a routerLink="/privacy" class="auth-form__terms-link">Politykę prywatności</a>.
     </p>
-  </div>
+  }
 </form>

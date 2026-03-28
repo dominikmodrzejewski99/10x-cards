@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject, signal, InputSignal, OutputEmitterRef, WritableSignal, Signal, effect } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { input, output } from '@angular/core';
 import { AuthStore } from './store';
 import { AuthService } from './auth.service';
@@ -20,8 +20,6 @@ export class AuthFormComponent {
   private fb: FormBuilder = inject(FormBuilder);
   private authStore = inject(AuthStore);
   private authService: AuthService = inject(AuthService);
-  private router: Router = inject(Router);
-
   public loadingSignal: Signal<boolean> = this.authStore.loading;
   public errorSignal: Signal<string | null> = this.authStore.error;
   public submittedSignal: WritableSignal<boolean> = signal<boolean>(false);
@@ -60,16 +58,6 @@ export class AuthFormComponent {
 
   public get f(): Record<string, import('@angular/forms').AbstractControl> {
     return this.authForm.controls;
-  }
-
-  public toggleAuthMode(): void {
-    const newMode: boolean = !this.isLoginMode();
-    this.modeChange.emit(newMode);
-    this.submittedSignal.set(false);
-    this.authForm.reset();
-
-    const targetPath: string = newMode ? '/login' : '/register';
-    this.router.navigate([targetPath]);
   }
 
   public onSubmit(): void {
