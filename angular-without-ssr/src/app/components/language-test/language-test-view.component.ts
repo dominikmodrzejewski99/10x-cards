@@ -203,8 +203,8 @@ export class LanguageTestViewComponent implements OnInit, OnDestroy {
       categoryBreakdown: result.categoryBreakdown,
       wrongAnswers: result.wrongAnswers
     }).subscribe({
-      next: () => {
-        this.router.navigate(['/language-test', test.level, 'results']);
+      next: (savedResult) => {
+        this.router.navigate(['/language-test', test.level, 'results'], { state: { result: savedResult } });
       },
       error: () => {
         this.router.navigate(['/language-test', test.level, 'results']);

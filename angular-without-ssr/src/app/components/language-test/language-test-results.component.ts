@@ -45,6 +45,14 @@ export class LanguageTestResultsComponent implements OnInit {
       return;
     }
 
+    const stateResult: LanguageTestResultDTO | undefined = history.state?.result;
+    if (stateResult && stateResult.level === level) {
+      this.result.set(stateResult);
+      this.flashcardsGenerated.set(stateResult.generated_set_id !== null);
+      this.loading.set(false);
+      return;
+    }
+
     this.resultsService.getLatestResult(level).subscribe({
       next: result => {
         if (result) {
