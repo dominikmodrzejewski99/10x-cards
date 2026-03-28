@@ -26,9 +26,12 @@ CREATE TABLE public.share_links (
 
 ALTER TABLE public.share_links ENABLE ROW LEVEL SECURITY;
 
+-- No UPDATE policy — share links are immutable once created
 CREATE POLICY share_links_insert ON public.share_links FOR INSERT WITH CHECK (auth.uid() = created_by);
 CREATE POLICY share_links_select ON public.share_links FOR SELECT USING (auth.uid() = created_by);
 CREATE POLICY share_links_delete ON public.share_links FOR DELETE USING (auth.uid() = created_by);
+
+CREATE INDEX share_links_created_by_idx ON public.share_links(created_by);
 ```
 
 ### RPC: `accept_share_link(link_id uuid)` — SECURITY DEFINER
@@ -40,11 +43,21 @@ CREATE POLICY share_links_delete ON public.share_links FOR DELETE USING (auth.ui
 - Set to NULL/default: `generation_id` = NULL, `source` = `'manual'`
 - NOT copied: `flashcard_reviews` (recipient starts fresh)
 - Returns: new set ID
+- If zero flashcards found for the set, returns error instead of creating an empty copy
+- Set `description` is copied as-is from the original
+- `source` set to `'manual'` regardless of original — the copy has no generation lineage
 - Security: `SET search_path = public, pg_temp`, validates `auth.uid()` internally
+
+### Security: SECURITY DEFINER and RLS bypass
+
+The RPC must read `share_links`, `flashcard_sets`, and `flashcards` owned by another user. This is the core reason it uses `SECURITY DEFINER`. Supabase migration-created functions run as the `postgres` superuser, which bypasses RLS. This is the only code path that allows cross-user data access.
 
 ### Cleanup: pg_cron job
 
-Daily: `DELETE FROM share_links WHERE expires_at < now()`
+```sql
+SELECT cron.schedule('cleanup-expired-share-links', '0 3 * * *',
+  $$DELETE FROM public.share_links WHERE expires_at < now()$$);
+```
 
 ## Application Flow
 
@@ -64,11 +77,25 @@ Daily: `DELETE FROM share_links WHERE expires_at < now()`
 5. Success → redirect to `/sets/:newSetId` with toast "Set copied successfully"
 6. Error (expired/invalid) → message "Link expired or invalid"
 
+## New Types (`types.ts`)
+
+```typescript
+export interface ShareLinkDTO {
+  id: string;
+  set_id: number;
+  created_by: string;
+  expires_at: string;
+  created_at: string;
+}
+```
+
 ## New Angular Components & Services
 
-- `ShareAcceptComponent` — handles accept flow (lazy loaded)
+- `ShareAcceptComponent` — handles accept flow (lazy loaded, OnPush, signals)
 - `ShareService` — generate links + accept RPC
 - Extended `FlashcardListComponent` — "Share" button + dialog
+
+All new components use OnPush change detection and signal-based state management per project conventions.
 
 ## No Changes To
 
