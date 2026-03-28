@@ -64,6 +64,14 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'share/:token',
+    loadComponent: () =>
+      import('./components/share/share-accept.component').then(
+        (m) => m.ShareAcceptComponent
+      ),
+    canActivate: [authGuard],
+  },
+  {
     path: 'login',
     loadComponent: () => import('./auth/auth-page.component').then(m => m.AuthPageComponent),
     canActivate: [nonAuthGuard]
