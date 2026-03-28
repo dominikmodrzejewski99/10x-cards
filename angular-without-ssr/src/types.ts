@@ -99,6 +99,16 @@ export interface CreateFlashcardSetCommand {
 
 export type UpdateFlashcardSetCommand = Partial<CreateFlashcardSetCommand>;
 
+/** ---------- Sharing ---------- */
+
+export interface ShareLinkDTO {
+  id: string;
+  set_id: number;
+  created_by: string;
+  expires_at: string;
+  created_at: string;
+}
+
 /** ---------- Generations ---------- */
 
 // Generation DTO represents a record from the generation table: metadata about AI-generated flashcards
