@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, from, map, catchError, throwError, switchMap, of, expand, reduce, EMPTY } from 'rxjs';
+import { Observable, from, map, catchError, throwError, switchMap, of, expand, reduce, forkJoin, EMPTY } from 'rxjs';
 import { FlashcardProposalDTO, FlashcardDTO, CreateFlashcardCommand, UpdateFlashcardCommand } from '../../types';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from './supabase-client.factory';
 
-const FLASHCARD_COLUMNS = 'id, front, back, front_image_url, back_audio_url, front_language, back_language, source, set_id, generation_id, user_id, created_at, updated_at';
-const ALLOWED_SORT_FIELDS = ['front', 'back', 'created_at', 'updated_at', 'source', 'id'];
+const FLASHCARD_COLUMNS = 'id, front, back, front_image_url, back_audio_url, front_language, back_language, source, position, set_id, generation_id, user_id, created_at, updated_at';
+const ALLOWED_SORT_FIELDS = ['front', 'back', 'created_at', 'updated_at', 'source', 'id', 'position'];
 
 function sanitizeSearchParam(search: string): string {
   return search.replace(/[,()\\]/g, '');
@@ -225,6 +225,29 @@ export class FlashcardApiService {
           catchError(error => throwError(() => error))
         )
       )
+    );
+  }
+
+  reorderFlashcards(updates: { id: number; position: number }[]): Observable<void> {
+    return this.getAuthenticatedUserId().pipe(
+      switchMap(userId => {
+        const updateObservables = updates.map(item =>
+          from(this.supabase
+            .from('flashcards')
+            .update({ position: item.position, updated_at: new Date().toISOString() })
+            .eq('id', item.id)
+            .eq('user_id', userId)
+          ).pipe(
+            map(response => {
+              if (response.error) throw new Error(`Błąd Supabase: ${response.error.message}`);
+            })
+          )
+        );
+        return forkJoin(updateObservables).pipe(
+          map(() => undefined),
+          catchError(error => throwError(() => error))
+        );
+      })
     );
   }
 }

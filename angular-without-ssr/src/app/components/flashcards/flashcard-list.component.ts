@@ -11,7 +11,7 @@ import { catchError } from 'rxjs/operators';
 import { FlashcardApiService } from '../../services/flashcard-api.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { FlashcardExportService } from '../../services/flashcard-export.service';
-import { FlashcardTableComponent } from './flashcard-table/flashcard-table.component';
+import { FlashcardTableComponent, ReorderEvent } from './flashcard-table/flashcard-table.component';
 import { FlashcardFormComponent, FlashcardFormData } from './flashcard-form/flashcard-form.component';
 import { ImportModalComponent } from './import-modal/import-modal.component';
 import { FlashcardDTO, FlashcardProposalDTO } from '../../../types';
@@ -70,8 +70,8 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
     isImportModalVisible: false,
     flashcardBeingEdited: null,
     searchTerm: '',
-    sortField: 'id',
-    sortOrder: -1,
+    sortField: 'position',
+    sortOrder: 1,
     setId: 0,
     setName: ''
   });
@@ -397,6 +397,40 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
       first: 0
     }));
     this.loadFlashcards();
+  }
+
+  onReorder(events: ReorderEvent[]): void {
+    // Calculate new positions based on current page offset
+    const offset: number = this.state().first;
+    const updates = events.map(e => ({ id: e.id, position: offset + e.newIndex + 1 }));
+
+    // Optimistically update local state
+    const reordered = events
+      .sort((a, b) => a.newIndex - b.newIndex)
+      .map(e => this.state().flashcards.find(f => f.id === e.id)!)
+      .filter(Boolean);
+    this.state.update(s => ({ ...s, flashcards: reordered }));
+
+    this.flashcardApiService.reorderFlashcards(updates).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sukces',
+          detail: 'Kolejność fiszek została zmieniona.'
+        });
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Błąd',
+          detail: 'Nie udało się zapisać kolejności. Odświeżam...',
+          life: 3000
+        });
+        this.loadFlashcards();
+      }
+    });
   }
 
   // Obsługa wyszukiwania
