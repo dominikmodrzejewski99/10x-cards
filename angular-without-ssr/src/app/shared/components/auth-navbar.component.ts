@@ -74,7 +74,7 @@ import { AuthStore } from '../../auth/store';
               }
             </div>
             <a routerLink="/generate" routerLinkActive="navbar__link--active" class="navbar__link">
-              <i class="pi pi-sparkles"></i> Generuj
+              <i class="pi pi-microchip-ai"></i> Generuj
             </a>
           }
         </div>
@@ -119,7 +119,7 @@ import { AuthStore } from '../../auth/store';
             </a>
           </div>
           <a routerLink="/generate" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
-            <i class="pi pi-sparkles"></i> Generuj
+            <i class="pi pi-microchip-ai"></i> Generuj
           </a>
         </div>
       }

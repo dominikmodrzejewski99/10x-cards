@@ -26,7 +26,7 @@ const STEPS: OnboardingStep[] = [
   {
     title: 'Twórz fiszki z AI',
     description: 'Wklej dowolny tekst, a sztuczna inteligencja wygeneruje fiszki za Ciebie.',
-    icon: 'pi-sparkles',
+    icon: 'pi-microchip-ai',
     iconColor: '#a855f7',
     details: [
       'Przejdź do zakładki „Generuj" i wklej fragment tekstu (1000–10 000 znaków).',

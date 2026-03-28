@@ -15,7 +15,7 @@ import { AuthStore } from '../../../auth/store';
           <span class="bottom-nav__label">Start</span>
         </a>
         <a routerLink="/generate" routerLinkActive="bottom-nav__item--active" class="bottom-nav__item">
-          <i class="pi pi-sparkles bottom-nav__icon"></i>
+          <i class="pi pi-microchip-ai bottom-nav__icon"></i>
           <span class="bottom-nav__label">Generuj</span>
         </a>
         <a routerLink="/study" routerLinkActive="bottom-nav__item--active" class="bottom-nav__item bottom-nav__item--study">

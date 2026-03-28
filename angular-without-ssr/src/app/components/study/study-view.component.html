@@ -105,7 +105,7 @@
             <i class="pi pi-refresh"></i> Dodatkowa powtórka
           </button>
           <a routerLink="/sets" class="study__link study__link--ghost"><i class="pi pi-folder"></i> Moje zestawy</a>
-          <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-sparkles"></i> Generuj fiszki</a>
+          <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-microchip-ai"></i> Generuj fiszki</a>
         </div>
       } @else if (setsSignal().length === 0) {
         <i class="pi pi-folder-open study__state-icon study__state-icon--primary"></i>
@@ -113,7 +113,7 @@
         <p class="study__state-text">Utwórz swój pierwszy zestaw fiszek, aby rozpocząć naukę.</p>
         <div class="study__links">
           <a routerLink="/sets" class="study__link study__link--primary"><i class="pi pi-plus"></i> Utwórz zestaw</a>
-          <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-sparkles"></i> Generuj z AI</a>
+          <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-microchip-ai"></i> Generuj z AI</a>
         </div>
       } @else {
         <i class="pi pi-inbox study__state-icon study__state-icon--primary"></i>
@@ -121,7 +121,7 @@
         <p class="study__state-text">Dodaj fiszki do swoich zestawów, aby rozpocząć naukę.</p>
         <div class="study__links">
           <a routerLink="/sets" class="study__link study__link--primary">Moje zestawy</a>
-          <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-sparkles"></i> Generuj z AI</a>
+          <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-microchip-ai"></i> Generuj z AI</a>
         </div>
       }
     </div>
@@ -158,7 +158,7 @@
         }
         <button (click)="restartSession()" class="study__link" [class.study__link--primary]="failedCountSignal() === 0" [class.study__link--ghost]="failedCountSignal() > 0">Powtórz wszystkie</button>
         <a routerLink="/sets" class="study__link study__link--ghost"><i class="pi pi-folder"></i> Moje zestawy</a>
-        <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-sparkles"></i> Generuj fiszki</a>
+        <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-microchip-ai"></i> Generuj fiszki</a>
       </div>
     </div>
   }
