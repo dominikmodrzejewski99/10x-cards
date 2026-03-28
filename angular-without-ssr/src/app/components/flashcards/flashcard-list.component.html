@@ -22,6 +22,9 @@
         </button>
         @if (moreMenuOpen()) {
           <div class="flist__more-menu" (click)="moreMenuOpen.set(false)">
+            <button (click)="openShareDialog()" class="flist__more-item" data-test-id="share-button">
+              <i class="pi pi-share-alt"></i> Udostępnij
+            </button>
             <button (click)="openImportModal()" class="flist__more-item" data-test-id="import-flashcards-button">
               <i class="pi pi-upload"></i> Importuj
             </button>
@@ -124,3 +127,43 @@
     data-test-id="import-modal">
   </app-import-modal>
 </div>
+
+<p-dialog
+  header="Udostępnij zestaw"
+  [visible]="shareDialogVisible()"
+  (visibleChange)="shareDialogVisible.set($event)"
+  [modal]="true"
+  [closeOnEscape]="true"
+  [dismissableMask]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{width: '95vw', maxWidth: '500px'}"
+  styleClass="modern-dialog">
+
+  @if (shareLoading()) {
+    <div style="text-align: center; padding: 2rem;">
+      <p-progressSpinner />
+    </div>
+  } @else if (shareLink()) {
+    <div class="flist__share-dialog">
+      <p class="flist__share-info">
+        Link ważny przez 7 dni. Każdy z linkiem może skopiować zestaw na swoje konto.
+      </p>
+      <div class="flist__share-link-row">
+        <input
+          type="text"
+          pInputText
+          [value]="shareLink()"
+          readonly
+          class="flist__share-input"
+        />
+        <p-button
+          icon="pi pi-copy"
+          (onClick)="copyShareLink()"
+          [outlined]="true"
+          pTooltip="Kopiuj link"
+        />
+      </div>
+    </div>
+  }
+</p-dialog>

@@ -3,6 +3,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { InputTextModule } from 'primeng/inputtext';
+import { TooltipModule } from 'primeng/tooltip';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { Subscription, forkJoin, of } from 'rxjs';
@@ -11,6 +14,7 @@ import { catchError } from 'rxjs/operators';
 import { FlashcardApiService } from '../../services/flashcard-api.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { FlashcardExportService } from '../../services/flashcard-export.service';
+import { ShareService } from '../../services/share.service';
 import { FlashcardTableComponent, ReorderEvent } from './flashcard-table/flashcard-table.component';
 import { FlashcardFormComponent, FlashcardFormData } from './flashcard-form/flashcard-form.component';
 import { ImportModalComponent } from './import-modal/import-modal.component';
@@ -39,6 +43,9 @@ interface FlashcardListState {
     DialogModule,
     ToastModule,
     ConfirmDialogModule,
+    ProgressSpinnerModule,
+    InputTextModule,
+    TooltipModule,
     FlashcardTableComponent,
     FlashcardFormComponent,
     ImportModalComponent,
@@ -58,6 +65,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
   private router: Router = inject(Router);
   private route: ActivatedRoute = inject(ActivatedRoute);
   private destroyRef: DestroyRef = inject(DestroyRef);
+  private readonly shareService = inject(ShareService);
 
   state = signal<FlashcardListState>({
     flashcards: [],
@@ -79,6 +87,9 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
   public lastDeletedSignal = signal<FlashcardDTO | null>(null);
   public savedCountSignal = signal<number>(0);
   public moreMenuOpen = signal(false);
+  readonly shareDialogVisible = signal(false);
+  readonly shareLink = signal<string | null>(null);
+  readonly shareLoading = signal(false);
   private undoTimer: ReturnType<typeof setTimeout> | null = null;
   private routeSub: Subscription | null = null;
 
@@ -97,6 +108,16 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
     const saved = this.route.snapshot.queryParams['saved'];
     if (saved) {
       this.savedCountSignal.set(Number(saved));
+      this.router.navigate([], { queryParams: {}, replaceUrl: true });
+    }
+
+    const shared = this.route.snapshot.queryParams['shared'];
+    if (shared) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Skopiowano',
+        detail: 'Zestaw został skopiowany na Twoje konto',
+      });
       this.router.navigate([], { queryParams: {}, replaceUrl: true });
     }
   }
@@ -496,6 +517,45 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
       const filename: string = `${this.state().setName || 'flashcards'}.json`;
       this.flashcardExportService.exportToJson(flashcards, filename);
     });
+  }
+
+  async openShareDialog(): Promise<void> {
+    this.shareDialogVisible.set(true);
+    this.shareLink.set(null);
+    this.shareLoading.set(true);
+    try {
+      const setId = Number(this.route.snapshot.paramMap.get('id'));
+      const link = await this.shareService.createShareLink(setId);
+      this.shareLink.set(this.shareService.buildShareUrl(link.id));
+    } catch {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Błąd',
+        detail: 'Nie udało się wygenerować linku',
+      });
+      this.shareDialogVisible.set(false);
+    } finally {
+      this.shareLoading.set(false);
+    }
+  }
+
+  async copyShareLink(): Promise<void> {
+    const link = this.shareLink();
+    if (!link) return;
+    try {
+      await navigator.clipboard.writeText(link);
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Skopiowano',
+        detail: 'Link skopiowany do schowka',
+      });
+    } catch {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Błąd',
+        detail: 'Nie udało się skopiować linku',
+      });
+    }
   }
 
   private fetchAllFlashcardsForExport(callback: (flashcards: FlashcardDTO[]) => void): void {
