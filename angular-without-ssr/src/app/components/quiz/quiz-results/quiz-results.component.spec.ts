@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentRef } from '@angular/core';
+import { provideRouter } from '@angular/router';
 import { QuizResultsComponent } from './quiz-results.component';
 import { QuizResult, QuizAnswer } from '../../../../types';
 
@@ -34,6 +35,7 @@ describe('QuizResultsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [QuizResultsComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(QuizResultsComponent);
@@ -41,9 +43,10 @@ describe('QuizResultsComponent', () => {
     componentRef = fixture.componentRef;
   });
 
-  function setDefaultInputs(result?: QuizResult, gradeText?: string): void {
+  function setDefaultInputs(result?: QuizResult, gradeText?: string, setId?: number): void {
     componentRef.setInput('result', result ?? createMockResult());
     componentRef.setInput('gradeText', gradeText ?? 'Dobrze');
+    componentRef.setInput('setId', setId ?? 1);
     fixture.detectChanges();
   }
 
