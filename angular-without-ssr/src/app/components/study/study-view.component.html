@@ -1,18 +1,50 @@
 <div class="study" [attr.aria-busy]="loadingSignal()">
 
-  @if (setsSignal().length > 0) {
-    <div class="study__set-filter">
-      <label class="study__set-label" for="studySet">Ucz się z zestawu:</label>
-      <select
-        id="studySet"
-        class="study__set-select"
-        [ngModel]="selectedSetIdSignal()"
-        (ngModelChange)="onSetChange($event)">
-        <option [ngValue]="null">Wszystkie fiszki</option>
-        @for (set of setsSignal(); track set.id) {
-          <option [ngValue]="set.id">{{ set.name }}</option>
+  @if (showSetModalSignal()) {
+    <div class="study__modal-overlay" (click)="showSetModalSignal.set(false)">
+      <div class="study__modal" (click)="$event.stopPropagation()">
+        <div class="study__modal-header">
+          <h2 class="study__modal-title">Wybierz zestaw</h2>
+          <button class="study__modal-close" (click)="showSetModalSignal.set(false)" aria-label="Zamknij">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+        @if (setsSignal().length > 5) {
+          <div class="study__modal-search">
+            <i class="pi pi-search"></i>
+            <input
+              type="text"
+              class="study__modal-search-input"
+              placeholder="Szukaj zestawu..."
+              [ngModel]="setSearchSignal()"
+              (ngModelChange)="setSearchSignal.set($event)" />
+          </div>
         }
-      </select>
+        <div class="study__modal-list">
+          <button
+            class="study__modal-option"
+            [class.study__modal-option--active]="selectedSetIdSignal() === null"
+            (click)="selectSetFromModal(null)">
+            <i class="pi pi-list"></i>
+            <span>Wszystkie fiszki</span>
+          </button>
+          @for (set of filteredSetsSignal(); track set.id) {
+            <button
+              class="study__modal-option"
+              [class.study__modal-option--active]="selectedSetIdSignal() === set.id"
+              (click)="selectSetFromModal(set.id)">
+              <i class="pi pi-folder"></i>
+              <span>{{ set.name }}</span>
+            </button>
+          }
+          @if (filteredSetsSignal().length === 0 && setSearchSignal()) {
+            <div class="study__modal-empty">
+              <i class="pi pi-search"></i>
+              <span>Brak wyników dla „{{ setSearchSignal() }}"</span>
+            </div>
+          }
+        </div>
+      </div>
     </div>
   }
 
@@ -139,11 +171,15 @@
           <h1 class="study__title">Nauka</h1>
           <app-sync-status />
         </div>
+        @if (setsSignal().length > 0) {
+          <button class="study__set-btn" (click)="openSetModal()" title="Zmień zestaw">
+            <i class="pi pi-folder"></i>
+            <span>{{ currentSetNameSignal() || 'Wszystkie fiszki' }}</span>
+            <i class="pi pi-chevron-down study__set-btn-arrow"></i>
+          </button>
+        }
         <p class="study__hint">
-          @if (currentSetNameSignal()) {
-            Uczysz się z zestawu
-            <a [routerLink]="['/sets', selectedSetIdSignal()]" class="study__set-link">„{{ currentSetNameSignal() }}"</a>
-          } @else if (!isFlippedSignal()) {
+          @if (!isFlippedSignal()) {
             Kliknij kartę lub naciśnij spację
           } @else {
             Oceń swoją odpowiedź
@@ -247,6 +283,12 @@
                 <span class="study__tooltip">Tasowanie</span>
               }
             </div>
+            <div class="study__tooltip-wrap">
+              <button class="study__ctrl" [class.study__ctrl--active]="isFullscreenSignal()" (click)="toggleFullscreen()">
+                <i [class]="isFullscreenSignal() ? 'pi pi-window-minimize' : 'pi pi-window-maximize'"></i>
+              </button>
+              <span class="study__tooltip">{{ isFullscreenSignal() ? 'Zamknij pełny ekran' : 'Pełny ekran' }}</span>
+            </div>
           </div>
         } @else {
           <div class="study__controls-side">
@@ -308,6 +350,12 @@
                 <span class="study__tooltip">Tasowanie</span>
               }
             </div>
+            <div class="study__tooltip-wrap">
+              <button class="study__ctrl" [class.study__ctrl--active]="isFullscreenSignal()" (click)="toggleFullscreen()">
+                <i [class]="isFullscreenSignal() ? 'pi pi-window-minimize' : 'pi pi-window-maximize'"></i>
+              </button>
+              <span class="study__tooltip">{{ isFullscreenSignal() ? 'Zamknij pełny ekran' : 'Pełny ekran' }}</span>
+            </div>
           </div>
         }
       </div>
@@ -325,6 +373,7 @@
         } @else {
           1 = Wiem &nbsp;|&nbsp; 2 = Trudne &nbsp;|&nbsp; 3 = Nie wiem
         }
+        &nbsp;|&nbsp; F = pełny ekran
       </p>
       <p class="study__kbd study__kbd--mobile">
         @if (!isFlippedSignal()) {

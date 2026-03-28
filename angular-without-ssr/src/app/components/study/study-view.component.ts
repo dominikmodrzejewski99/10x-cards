@@ -35,7 +35,8 @@ import {Subscription} from 'rxjs';
   templateUrl: './study-view.component.html',
   styleUrls: ['./study-view.component.scss'],
   host: {
-    '(window:keydown)': 'handleKeyboard($event)'
+    '(window:keydown)': 'handleKeyboard($event)',
+    '(document:fullscreenchange)': 'onFullscreenChange()'
   }
 })
 export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -50,6 +51,14 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
   private routeSub: Subscription | null = null;
 
   public isReversedSignal: WritableSignal<boolean> = signal<boolean>(false);
+  public isFullscreenSignal: WritableSignal<boolean> = signal<boolean>(false);
+  public showSetModalSignal: WritableSignal<boolean> = signal<boolean>(false);
+  public setSearchSignal: WritableSignal<string> = signal<string>('');
+  public filteredSetsSignal: Signal<FlashcardSetDTO[]> = computed(() => {
+    const search = this.setSearchSignal().toLowerCase().trim();
+    if (!search) return this.setsSignal();
+    return this.setsSignal().filter(s => s.name.toLowerCase().includes(search));
+  });
   public dueCardsSignal: WritableSignal<StudyCardDTO[]> = signal<StudyCardDTO[]>([]);
   private originalCardsSignal: WritableSignal<StudyCardDTO[]> = signal<StudyCardDTO[]>([]);
   public isShuffledSignal: WritableSignal<boolean> = signal<boolean>(false);
@@ -151,6 +160,10 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public ngAfterViewInit(): void {
     // Touch listeners are bound via template (touchstart), (touchmove), (touchend)
+  }
+
+  public onFullscreenChange(): void {
+    this.isFullscreenSignal.set(!!document.fullscreenElement);
   }
 
   public onTouchStart(event: TouchEvent): void {
@@ -280,6 +293,17 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
           this.answer(1);
         }
         break;
+      case 'f':
+      case 'F':
+        if (!this.showSetModalSignal()) {
+          this.toggleFullscreen();
+        }
+        break;
+      case 'Escape':
+        if (this.showSetModalSignal()) {
+          this.showSetModalSignal.set(false);
+        }
+        break;
     }
   }
 
@@ -380,6 +404,30 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
   public toggleDirection(): void {
     this.isReversedSignal.update((v: boolean) => !v);
   }
+
+  public openSetModal(): void {
+    this.setSearchSignal.set('');
+    this.showSetModalSignal.set(true);
+  }
+
+  public selectSetFromModal(setId: number | null): void {
+    this.showSetModalSignal.set(false);
+    if (setId !== this.selectedSetIdSignal()) {
+      this.selectedSetIdSignal.set(setId);
+      this.loadDueCards();
+    }
+  }
+
+  public toggleFullscreen(): void {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+      this.isFullscreenSignal.set(true);
+    } else {
+      document.exitFullscreen().catch(() => {});
+      this.isFullscreenSignal.set(false);
+    }
+  }
+
 
   public restartWithFailedCards(): void {
     const failed: StudyCardDTO[] = [...this.failedCardsSignal()];
