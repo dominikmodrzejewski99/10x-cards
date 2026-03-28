@@ -43,6 +43,10 @@ export class QuizResultsComponent {
     this.resultSignal().totalQuestions - this.resultSignal().correctCount
   );
 
+  public readonly skippedCountSignal: Signal<number> = computed<number>(() =>
+    this.resultSignal().answers.filter((a: QuizAnswer) => !a.userAnswer || a.userAnswer.trim() === '' || a.userAnswer === '(brak)').length
+  );
+
   public readonly scoreColorSignal: Signal<string> = computed<string>(() => {
     const pct: number = this.resultSignal().percentage;
     if (pct >= 90) return '#23b26d';

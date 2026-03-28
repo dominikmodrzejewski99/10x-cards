@@ -113,6 +113,10 @@
   &--wrong {
     color: $color-danger;
   }
+
+  &--skipped {
+    color: $color-warning;
+  }
 }
 
 .quiz-results__count-badge {
@@ -133,6 +137,11 @@
   &--wrong {
     border: 2px solid $color-danger;
     color: $color-danger;
+  }
+
+  &--skipped {
+    border: 2px solid $color-warning;
+    color: $color-warning;
   }
 }
 
@@ -321,14 +330,17 @@
 
 .quiz-results__answers-list {
   border-top: 1px solid $color-border;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .quiz-results__answer-item {
   padding: 0.85rem 1rem;
   background: $color-white;
+  border-bottom: 1px solid $color-border;
 
-  & + & {
-    border-top: 1px solid $color-border;
+  &:nth-child(odd) {
+    border-right: 1px solid $color-border;
   }
 
   &--wrong {
@@ -453,5 +465,13 @@
 
   .quiz-results__ring-score {
     font-size: 1.25rem;
+  }
+
+  .quiz-results__answers-list {
+    grid-template-columns: 1fr;
+  }
+
+  .quiz-results__answer-item:nth-child(odd) {
+    border-right: none;
   }
 }

@@ -39,6 +39,10 @@
             <span class="quiz-results__count-label quiz-results__count-label--wrong">Błędne</span>
             <span class="quiz-results__count-badge quiz-results__count-badge--wrong">{{ incorrectCountSignal() }}</span>
           </div>
+          <div class="quiz-results__count-row">
+            <span class="quiz-results__count-label quiz-results__count-label--skipped">Pominięte</span>
+            <span class="quiz-results__count-badge quiz-results__count-badge--skipped">{{ skippedCountSignal() }}</span>
+          </div>
         </div>
       </div>
     </div>
