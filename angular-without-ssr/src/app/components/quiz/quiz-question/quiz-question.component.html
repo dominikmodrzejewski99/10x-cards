@@ -1,4 +1,4 @@
-<div class="quiz-question" (keydown)="onKeydown($event)">
+<div class="quiz-question">
   <div class="quiz-question__top-bar">
     <span class="quiz-question__progress-text">
       Pytanie {{ currentIndexSignal() + 1 }} / {{ totalQuestionsSignal() }}
@@ -38,7 +38,7 @@
           (ngModelChange)="writtenAnswerSignal.set($event)"
           [disabled]="isAnsweredSignal()"
           placeholder="Wpisz odpowiedź..."
-          (keydown)="onKeydown($event)" />
+          />
 
         @if (!isAnsweredSignal()) {
           <button
@@ -59,12 +59,13 @@
 
     @case ('multiple-choice') {
       <div class="quiz-question__options">
-        @for (option of questionSignal().options; track option) {
+        @for (option of questionSignal().options; track option; let i = $index) {
           <button
             class="quiz-question__option"
             [class]="getOptionClass(option)"
             [disabled]="isAnsweredSignal()"
             (click)="onSelectOption(option)">
+            <span class="quiz-question__option-key">{{ i + 1 }}</span>
             {{ option }}
           </button>
         }
@@ -88,7 +89,7 @@
             [class.quiz-question__tf-btn--wrong-result]="isAnsweredSignal() && selectedTrueFalseSignal() === true && !questionSignal().trueFalsePairing?.isCorrect"
             [disabled]="isAnsweredSignal()"
             (click)="onSelectTrueFalse(true)">
-            <i class="pi pi-check"></i> Prawda
+            <i class="pi pi-check"></i> Prawda <span class="quiz-question__key-hint">(P)</span>
           </button>
           <button
             class="quiz-question__tf-btn quiz-question__tf-btn--false"
@@ -97,7 +98,7 @@
             [class.quiz-question__tf-btn--wrong-result]="isAnsweredSignal() && selectedTrueFalseSignal() === false && questionSignal().trueFalsePairing?.isCorrect"
             [disabled]="isAnsweredSignal()"
             (click)="onSelectTrueFalse(false)">
-            <i class="pi pi-times"></i> Fałsz
+            <i class="pi pi-times"></i> Fałsz <span class="quiz-question__key-hint">(F)</span>
           </button>
         </div>
 
@@ -126,7 +127,7 @@
     <button
       class="quiz-question__btn quiz-question__btn--primary quiz-question__next"
       (click)="onNext()">
-      Dalej <i class="pi pi-arrow-right"></i>
+      Dalej <span class="quiz-question__key-hint">&#x21B5;</span>
     </button>
   }
 </div>

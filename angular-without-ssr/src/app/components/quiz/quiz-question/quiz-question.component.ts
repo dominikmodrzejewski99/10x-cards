@@ -8,7 +8,10 @@ import { QuizQuestion, QuizAnswer } from '../../../../types';
   imports: [FormsModule, InputTextModule],
   templateUrl: './quiz-question.component.html',
   styleUrls: ['./quiz-question.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '(document:keydown)': 'onKeydown($event)'
+  }
 })
 export class QuizQuestionComponent {
   public questionSignal: InputSignal<QuizQuestion> = input.required<QuizQuestion>({ alias: 'question' });
@@ -106,6 +109,27 @@ export class QuizQuestionComponent {
         this.onNext();
       } else if (this.questionSignal().type === 'written') {
         this.onCheckWritten();
+      }
+      return;
+    }
+
+    // Number keys for multiple-choice
+    if (!this.isAnsweredSignal() && this.questionSignal().type === 'multiple-choice') {
+      const options: string[] | undefined = this.questionSignal().options;
+      if (options) {
+        const keyIndex: number = parseInt(event.key, 10) - 1;
+        if (keyIndex >= 0 && keyIndex < options.length) {
+          this.onSelectOption(options[keyIndex]);
+        }
+      }
+    }
+
+    // T/F keys for true-false
+    if (!this.isAnsweredSignal() && this.questionSignal().type === 'true-false') {
+      if (event.key === 't' || event.key === 'T' || event.key === 'p' || event.key === 'P') {
+        this.onSelectTrueFalse(true);
+      } else if (event.key === 'f' || event.key === 'F' || event.key === 'n' || event.key === 'N') {
+        this.onSelectTrueFalse(false);
       }
     }
   }
