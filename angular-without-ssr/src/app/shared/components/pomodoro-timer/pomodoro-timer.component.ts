@@ -211,6 +211,29 @@ import { UserPreferencesService } from '../../../services/user-preferences.servi
     }
     .focus-reminder__btn:hover { background: #3b4ce3; box-shadow: 0 2px 12px rgba(66,85,255,0.25); }
     @media (max-width: 640px) { .pomodoro-trigger__text { display: none; } }
+    @media (max-width: 992px) {
+      .pomodoro-dropdown {
+        position: fixed;
+        top: auto;
+        bottom: 4.5rem;
+        right: 0.75rem;
+        left: 0.75rem;
+        width: auto;
+        animation: dropdown-enter-mobile 0.18s ease-out;
+      }
+      @keyframes dropdown-enter-mobile {
+        from { opacity: 0; transform: translateY(8px) scale(0.97); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      .pomodoro-trigger {
+        padding: 0.3rem 0.55rem;
+        font-size: 0.8rem;
+      }
+      .pomodoro-badge {
+        padding: 0.25rem 0.55rem;
+        font-size: 0.75rem;
+      }
+    }
   `]
 })
 export class PomodoroTimerComponent implements OnInit {
