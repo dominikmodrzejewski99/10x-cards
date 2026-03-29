@@ -233,8 +233,8 @@ export class PomodoroTimerComponent implements OnInit {
     });
 
     this.prefsService.getPreferences().subscribe(prefs => {
-      this.focusReminderDismissedSignal.set(prefs.pomodoro_focus_reminder_dismissed);
-      this.sessionsBeforeLongBreakSignal.set(prefs.pomodoro_sessions_before_long_break);
+      this.focusReminderDismissedSignal.set(prefs.pomodoro_focus_reminder_dismissed ?? false);
+      this.sessionsBeforeLongBreakSignal.set(prefs.pomodoro_sessions_before_long_break ?? 4);
     });
   }
 

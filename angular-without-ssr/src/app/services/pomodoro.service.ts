@@ -54,12 +54,12 @@ export class PomodoroService {
   loadSettings(): Observable<UserPreferencesDTO> {
     return this.prefsService.getPreferences().pipe(
       tap(prefs => {
-        this.workDuration = prefs.pomodoro_work_duration * 60;
-        this.breakDuration = prefs.pomodoro_break_duration * 60;
-        this.longBreakDuration = prefs.pomodoro_long_break_duration * 60;
-        this.sessionsBeforeLongBreak = prefs.pomodoro_sessions_before_long_break;
-        this.soundEnabled = prefs.pomodoro_sound_enabled;
-        this.notificationsEnabled = prefs.pomodoro_notifications_enabled;
+        this.workDuration = (prefs.pomodoro_work_duration ?? 25) * 60;
+        this.breakDuration = (prefs.pomodoro_break_duration ?? 5) * 60;
+        this.longBreakDuration = (prefs.pomodoro_long_break_duration ?? 15) * 60;
+        this.sessionsBeforeLongBreak = prefs.pomodoro_sessions_before_long_break ?? 4;
+        this.soundEnabled = prefs.pomodoro_sound_enabled ?? true;
+        this.notificationsEnabled = prefs.pomodoro_notifications_enabled ?? true;
         this.settingsLoaded = true;
       })
     );
