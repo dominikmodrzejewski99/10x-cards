@@ -23,14 +23,18 @@
   --app-primary: #4255ff;
   --app-primary-hover: #3b4ce3;
   --app-primary-light: #edefff;
-  --app-bg: #f6f7fb;
+  --app-bg: #F8FAFC;
+  --app-bg-alt: #f6f7fb;
   --app-white: #ffffff;
-  --app-text: #282e3e;
-  --app-text-secondary: #586380;
-  --app-border: #d9dbe9;
+  --app-text: #1E293B;
+  --app-text-heading: #0F172A;
+  --app-text-secondary: #475569;
+  --app-border: #E2E8F0;
+  --app-border-light: #edeff5;
   --app-success: #23b26d;
   --app-error: #ff6240;
   --app-yellow: #ffcd1f;
+  --app-purple: #7c3aed;
   --app-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
@@ -96,7 +100,7 @@ h1, h2, h3, h4, h5, h6, p, span, label, div {
 
 /* === PrimeNG global text/background fixes === */
 body .p-component {
-  color: #282e3e;
+  color: var(--app-text);
 }
 
 /* Table */

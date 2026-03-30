@@ -1,19 +1,40 @@
 <!-- Hero -->
 <section class="hero">
-  <div class="landing__inner">
-    <div class="hero__badges" data-animate="fade-up">
-      <span class="hero__pill hero__pill--blue"><i class="pi pi-graduation-cap"></i> Skuteczna nauka</span>
-      <span class="hero__pill hero__pill--violet"><i class="pi pi-replay"></i> Spaced repetition</span>
-      <span class="hero__pill hero__pill--green"><i class="pi pi-bolt"></i> SM-2</span>
+  <div class="landing__inner hero__grid">
+    <div class="hero__content">
+      <div class="hero__badges" data-animate="fade-up">
+        <span class="hero__pill"><i class="pi pi-graduation-cap"></i> Skuteczna nauka</span>
+        <span class="hero__pill"><i class="pi pi-replay"></i> Spaced repetition</span>
+        <span class="hero__pill"><i class="pi pi-bolt"></i> SM-2</span>
+      </div>
+      <h1 class="hero__title" data-animate="fade-up">Zamień notatki w wiedzę.<br/><span class="hero__accent">Bez ślęczenia nad kartkami.</span></h1>
+      <p class="hero__desc" data-animate="fade-up">
+        Wrzuć tekst z wykładu, podręcznika albo artykułu.
+        Dostaniesz gotowe <strong>fiszki</strong>, pogrupowane w zestawy, z planem powtórek dopasowanym do Twojego tempa.
+      </p>
+      <div class="hero__cta" data-animate="fade-up">
+        <a routerLink="/register" class="btn btn--primary">Zacznij za darmo</a>
+        <button class="btn btn--secondary" (click)="tryAnonymously()">Wypróbuj bez rejestracji</button>
+      </div>
     </div>
-    <h1 class="hero__title" data-animate="fade-up">Zamień notatki w wiedzę.<br/><span class="hero__accent">Bez ślęczenia nad kartkami.</span></h1>
-    <p class="hero__desc" data-animate="fade-up">
-      Wrzuć tekst z wykładu, podręcznika albo artykułu.
-      Dostaniesz gotowe <strong class="hero__accent">fiszki</strong>, pogrupowane w zestawy, z planem powtórek dopasowanym do Twojego tempa.
-    </p>
-    <div class="hero__cta" data-animate="fade-up">
-      <a routerLink="/register" class="btn btn--primary">Zacznij za darmo</a>
-      <button class="btn btn--outline" (click)="tryAnonymously()">Wypróbuj bez rejestracji</button>
+
+    <div class="hero__visual" data-animate="fade-up">
+      <div class="hero__cards">
+        <div class="hero__card hero__card--back" aria-hidden="true">
+          <div class="hero__card-line"></div>
+          <div class="hero__card-line hero__card-line--short"></div>
+        </div>
+        <div class="hero__card hero__card--front" aria-hidden="true">
+          <span class="hero__card-label">Pytanie</span>
+          <span class="hero__card-text">Jaki protokół zapewnia niezawodność w TCP/IP?</span>
+          <span class="hero__card-flip"><i class="pi pi-sync"></i></span>
+        </div>
+      </div>
+      <div class="hero__methods" aria-hidden="true">
+        <div class="hero__method hero__method--1"><i class="pi pi-clone"></i> Fiszki</div>
+        <div class="hero__method hero__method--2"><i class="pi pi-question-circle"></i> Quiz</div>
+        <div class="hero__method hero__method--3"><i class="pi pi-calendar"></i> Powtórki</div>
+      </div>
     </div>
   </div>
 </section>
@@ -23,24 +44,24 @@
   <div class="landing__inner">
     <h2 class="section__title" data-animate="fade-up">Cztery kroki do <span class="section__accent">skutecznej</span> nauki</h2>
     <div class="steps">
-      <div class="step" data-animate="slide-left">
+      <div class="step" data-animate="slide-right">
         <div class="step__icon"><i class="pi pi-folder"></i></div>
         <h3 class="step__title">Utwórz zestaw</h3>
         <p class="step__desc">Pogrupuj materiał tematycznie — osobny zestaw na każdy przedmiot czy rozdział.</p>
       </div>
-      <div class="step__arrow" data-animate="fade-up"><i class="pi pi-chevron-right"></i></div>
+      <div class="step__arrow" data-animate="slide-right" aria-hidden="true"><i class="pi pi-chevron-right"></i></div>
       <div class="step" data-animate="slide-right">
         <div class="step__icon"><i class="pi pi-plus"></i></div>
         <h3 class="step__title">Dodaj fiszki</h3>
         <p class="step__desc">Twórz fiszki ręcznie albo skorzystaj z generatora AI jako pomocy.</p>
       </div>
-      <div class="step__arrow" data-animate="fade-up"><i class="pi pi-chevron-right"></i></div>
-      <div class="step" data-animate="slide-left">
+      <div class="step__arrow" data-animate="slide-right" aria-hidden="true"><i class="pi pi-chevron-right"></i></div>
+      <div class="step" data-animate="slide-right">
         <div class="step__icon"><i class="pi pi-sync"></i></div>
         <h3 class="step__title">Ucz się i powtarzaj</h3>
         <p class="step__desc">Odwracaj karty, oceniaj swoją wiedzę — algorytm zaplanuje powtórki.</p>
       </div>
-      <div class="step__arrow" data-animate="fade-up"><i class="pi pi-chevron-right"></i></div>
+      <div class="step__arrow" data-animate="slide-right" aria-hidden="true"><i class="pi pi-chevron-right"></i></div>
       <div class="step" data-animate="slide-right">
         <div class="step__icon step__icon--violet"><i class="pi pi-replay"></i></div>
         <h3 class="step__title">Zapamiętaj na dłużej</h3>
@@ -51,36 +72,46 @@
 </section>
 
 <!-- Tryb nauki demo -->
-<section class="section section--white">
+<section class="section">
   <div class="landing__inner">
+    <span class="section__label" data-animate="fade-up">Demo</span>
     <h2 class="section__title" data-animate="fade-up">Prosta sesja, konkretne efekty</h2>
     <p class="section__subtitle" data-animate="fade-up">Odwracasz kartę, oceniasz się, idziesz dalej. Resztą zajmuje się algorytm.</p>
 
     <div class="demo" data-animate="fade-up">
-      <div class="demo__flipcard" (click)="toggleDemoFlip()" [class.demo__flipcard--flipped]="demoFlipped()">
-        <div class="demo__flipcard-inner">
-          <div class="demo__flipcard-face demo__flipcard-face--front">
-            <span class="demo__label">Pytanie</span>
-            <p class="demo__text">Jaki protokół odpowiada za niezawodne dostarczanie pakietów w modelu TCP/IP?</p>
-            <span class="demo__tap-hint"><i class="pi pi-sync"></i> kliknij aby odwrócić</span>
-          </div>
-          <div class="demo__flipcard-face demo__flipcard-face--back">
-            <span class="demo__label">Odpowiedź</span>
-            <p class="demo__text">TCP (Transmission Control Protocol) — zapewnia kontrolę przepływu, retransmisję i porządkowanie segmentów.</p>
-          </div>
+      <div class="demo__window">
+        <div class="demo__toolbar" aria-hidden="true">
+          <span class="demo__dot"></span>
+          <span class="demo__dot"></span>
+          <span class="demo__dot"></span>
         </div>
-      </div>
+        <div class="demo__body">
+          <div class="demo__flipcard" (click)="toggleDemoFlip()" [class.demo__flipcard--flipped]="demoFlipped()">
+            <div class="demo__flipcard-inner">
+              <div class="demo__flipcard-face demo__flipcard-face--front">
+                <span class="demo__label">Pytanie</span>
+                <p class="demo__text">Jaki protokół odpowiada za niezawodne dostarczanie pakietów w modelu TCP/IP?</p>
+                <span class="demo__tap-hint"><i class="pi pi-sync"></i> kliknij aby odwrócić</span>
+              </div>
+              <div class="demo__flipcard-face demo__flipcard-face--back">
+                <span class="demo__label">Odpowiedź</span>
+                <p class="demo__text">TCP (Transmission Control Protocol) — zapewnia kontrolę przepływu, retransmisję i porządkowanie segmentów.</p>
+              </div>
+            </div>
+          </div>
 
-      <div class="demo__actions">
-        <div class="demo__action demo__action--wrong" data-animate="slide-left">
-          <i class="pi pi-times"></i>
-          <strong>Nie wiem</strong>
-          <span>Wróci jutro</span>
-        </div>
-        <div class="demo__action demo__action--right" data-animate="slide-right">
-          <i class="pi pi-check"></i>
-          <strong>Wiem</strong>
-          <span>Następna za 4 dni</span>
+          <div class="demo__actions">
+            <div class="demo__action demo__action--wrong" data-animate="fade-up">
+              <i class="pi pi-times"></i>
+              <strong>Nie wiem</strong>
+              <span>Wróci jutro</span>
+            </div>
+            <div class="demo__action demo__action--right" data-animate="fade-up">
+              <i class="pi pi-check"></i>
+              <strong>Wiem</strong>
+              <span>Następna za 4 dni</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -90,35 +121,108 @@
 <!-- Funkcje -->
 <section class="section section--alt">
   <div class="landing__inner">
-    <h2 class="section__title" data-animate="fade-up">Wszystko, czego <span class="section__accent">potrzebujesz</span></h2>
+    <span class="section__label" data-animate="fade-up">Funkcje</span>
+    <h2 class="section__title" data-animate="fade-up">Wszystko, czego potrzebujesz</h2>
     <div class="features">
-      <div class="fcard" data-animate="slide-left">
-        <i class="pi pi-bolt fcard__icon fcard__icon--blue"></i>
+      <div class="fcard fcard--featured" data-animate="fade-up">
+        <div class="fcard__icon-wrap fcard__icon-wrap--blue">
+          <i class="pi pi-bolt"></i>
+        </div>
         <h3 class="fcard__title">Fiszki z tekstu w sekundy</h3>
         <p class="fcard__desc">Wklejasz materiał, klikasz raz — AI robi resztę.</p>
+        <div class="fcard__visual" aria-hidden="true">
+          <!-- Source text -->
+          <div class="fcard__source">
+            <div class="fcard__source-header">
+              <i class="pi pi-file-edit"></i>
+              <span>Notatki z wykładu</span>
+            </div>
+            <div class="fcard__source-body">
+              <div class="fcard__source-line"></div>
+              <div class="fcard__source-line"></div>
+              <div class="fcard__source-line fcard__source-line--med"></div>
+              <div class="fcard__source-line"></div>
+              <div class="fcard__source-line fcard__source-line--short"></div>
+            </div>
+          </div>
+
+          <!-- AI processing -->
+          <div class="fcard__ai-divider">
+            <div class="fcard__ai-line-h"></div>
+            <span class="fcard__ai-badge"><i class="pi pi-bolt"></i> Generuj fiszki</span>
+            <div class="fcard__ai-line-h"></div>
+          </div>
+
+          <!-- Generated cards -->
+          <div class="fcard__gen-cards">
+            <div class="fcard__gen-card">
+              <div class="fcard__gen-side fcard__gen-side--q">
+                <span class="fcard__gen-label">P</span>
+                <div class="fcard__gen-text"></div>
+              </div>
+              <div class="fcard__gen-sep"></div>
+              <div class="fcard__gen-side fcard__gen-side--a">
+                <span class="fcard__gen-label fcard__gen-label--a">O</span>
+                <div class="fcard__gen-text"></div>
+              </div>
+            </div>
+            <div class="fcard__gen-card">
+              <div class="fcard__gen-side fcard__gen-side--q">
+                <span class="fcard__gen-label">P</span>
+                <div class="fcard__gen-text"></div>
+              </div>
+              <div class="fcard__gen-sep"></div>
+              <div class="fcard__gen-side fcard__gen-side--a">
+                <span class="fcard__gen-label fcard__gen-label--a">O</span>
+                <div class="fcard__gen-text"></div>
+              </div>
+            </div>
+            <div class="fcard__gen-card">
+              <div class="fcard__gen-side fcard__gen-side--q">
+                <span class="fcard__gen-label">P</span>
+                <div class="fcard__gen-text"></div>
+              </div>
+              <div class="fcard__gen-sep"></div>
+              <div class="fcard__gen-side fcard__gen-side--a">
+                <span class="fcard__gen-label fcard__gen-label--a">O</span>
+                <div class="fcard__gen-text"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="fcard" data-animate="fade-up">
-        <i class="pi pi-replay fcard__icon fcard__icon--green"></i>
+        <div class="fcard__icon-wrap fcard__icon-wrap--green">
+          <i class="pi pi-replay"></i>
+        </div>
         <h3 class="fcard__title">Inteligentne powtórki</h3>
         <p class="fcard__desc">Algorytm SM-2 planuje, kiedy warto wrócić do pytania, żebyś nie zapomniał.</p>
       </div>
-      <div class="fcard" data-animate="slide-right">
-        <i class="pi pi-pencil fcard__icon fcard__icon--violet"></i>
+      <div class="fcard" data-animate="fade-up">
+        <div class="fcard__icon-wrap fcard__icon-wrap--violet">
+          <i class="pi pi-pencil"></i>
+        </div>
         <h3 class="fcard__title">Twoje fiszki, Twoje zasady</h3>
         <p class="fcard__desc">Edytuj propozycje AI, twórz własne od zera, usuwaj niepotrzebne.</p>
       </div>
-      <div class="fcard" data-animate="slide-left">
-        <i class="pi pi-folder fcard__icon fcard__icon--orange"></i>
+      <div class="fcard" data-animate="fade-up">
+        <div class="fcard__icon-wrap fcard__icon-wrap--orange">
+          <i class="pi pi-folder"></i>
+        </div>
         <h3 class="fcard__title">Zestawy tematyczne</h3>
         <p class="fcard__desc">Organizuj materiał z różnych przedmiotów i rozdziałów — każdy zestaw to oddzielna paczka wiedzy.</p>
       </div>
       <div class="fcard" data-animate="fade-up">
-        <i class="pi pi-book fcard__icon fcard__icon--teal"></i>
+        <div class="fcard__icon-wrap fcard__icon-wrap--teal">
+          <i class="pi pi-book"></i>
+        </div>
         <h3 class="fcard__title">Sesje nauki</h3>
         <p class="fcard__desc">Odwracaj karty, oceniaj wiedzę — wyniki widać od razu.</p>
       </div>
-      <div class="fcard" data-animate="slide-left">
-        <i class="pi pi-cloud fcard__icon fcard__icon--blue"></i>
+      <div class="fcard" data-animate="fade-up">
+        <div class="fcard__icon-wrap fcard__icon-wrap--blue">
+          <i class="pi pi-cloud"></i>
+        </div>
         <h3 class="fcard__title">Zawsze pod ręką</h3>
         <p class="fcard__desc">Laptop, telefon, tablet — Twoje fiszki czekają w chmurze.</p>
       </div>
