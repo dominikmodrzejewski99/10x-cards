@@ -201,8 +201,12 @@ export class LoginPage extends BasePage {
    * Czeka na przekierowanie po zalogowaniu
    */
   async waitForRedirectAfterLogin() {
-    console.log('Oczekiwanie na przekierowanie do /generate...');
-    await this.page.waitForURL('**/generate', { timeout: 60000 });
+    console.log('Oczekiwanie na przekierowanie po logowaniu...');
+    // Po logowaniu redirect idzie na /dashboard (domyslnie) lub /sets
+    await this.page.waitForURL(url => {
+      const path = url.pathname;
+      return path.includes('/dashboard') || path.includes('/sets') || path.includes('/generate');
+    }, { timeout: 60000 });
     console.log('Przekierowano do:', this.page.url());
   }
 

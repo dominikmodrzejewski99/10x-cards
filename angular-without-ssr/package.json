@@ -13,6 +13,9 @@
     "test:quiz": "ng test --no-watch --browsers=ChromeHeadless --include=src/app/services/quiz.service.spec.ts --include=src/app/components/quiz/**/*.spec.ts",
     "e2e": "npx playwright test",
     "e2e:quiz": "npx playwright test tests/e2e/tests/quiz.spec.ts",
+    "e2e:flow": "npx playwright test tests/e2e/tests/full-flow.spec.ts",
+    "e2e:study": "npx playwright test tests/e2e/tests/study-session.spec.ts",
+    "e2e:ai": "npx playwright test tests/e2e/tests/ai-generation.spec.ts",
     "lint": "eslint . --ext .ts,.html",
     "format": "prettier --write \"src/**/*.{ts,html,scss,json}\""
   },
