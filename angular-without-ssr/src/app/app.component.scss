@@ -77,9 +77,16 @@
   color: #4255ff;
 }
 
-/* Mobile: hide footer (bottom-nav replaces it) */
+/* Mobile: hide footer only when bottom-nav is present (authenticated) */
 @media (max-width: 640px) {
-  .app__footer {
+  .app__footer--has-bottom-nav {
     display: none;
+  }
+
+  .app__footer {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    padding: 1rem 0.75rem;
+    font-size: 0.75rem;
   }
 }

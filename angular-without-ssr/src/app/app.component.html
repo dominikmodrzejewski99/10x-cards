@@ -15,7 +15,7 @@
     </div>
   </main>
 
-  <footer class="app__footer">
+  <footer class="app__footer" [class.app__footer--has-bottom-nav]="isAuthenticatedSignal()">
     <span class="app__footer-brand">Memlo</span>
     <span class="app__footer-copy">&copy; {{ currentYear }}</span>
     <span class="app__footer-sep">·</span>
