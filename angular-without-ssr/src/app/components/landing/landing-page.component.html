@@ -1,39 +1,29 @@
 <!-- Hero -->
 <section class="hero">
-  <div class="landing__inner hero__grid">
-    <div class="hero__content">
-      <div class="hero__badges" data-animate="fade-up">
-        <span class="hero__pill"><i class="pi pi-graduation-cap"></i> Skuteczna nauka</span>
-        <span class="hero__pill"><i class="pi pi-replay"></i> Spaced repetition</span>
-        <span class="hero__pill"><i class="pi pi-bolt"></i> SM-2</span>
-      </div>
-      <h1 class="hero__title" data-animate="fade-up">Zamień notatki w wiedzę.<br/><span class="hero__accent">Bez ślęczenia nad kartkami.</span></h1>
-      <p class="hero__desc" data-animate="fade-up">
-        Wrzuć tekst z wykładu, podręcznika albo artykułu.
-        Dostaniesz gotowe <strong>fiszki</strong>, pogrupowane w zestawy, z planem powtórek dopasowanym do Twojego tempa.
+  <div class="landing__inner hero__layout">
+    <div class="hero__content" data-animate="fade-up">
+      <p class="hero__proof">
+        <i class="pi pi-replay"></i>
+        Algorytm SM-2 &middot; sprawdzona nauka o pamięci
       </p>
-      <div class="hero__cta" data-animate="fade-up">
-        <a routerLink="/register" class="btn btn--primary">Zacznij za darmo</a>
-        <button class="btn btn--secondary" (click)="tryAnonymously()">Wypróbuj bez rejestracji</button>
+      <h1 class="hero__title">Przestań zapominać.<br/><span class="hero__accent">Zacznij pamiętać.</span></h1>
+      <p class="hero__desc">
+        Algorytm SM-2 planuje Twoje powtórki — ta sama metoda, którą stosują <strong>poligloci</strong> i <strong>lekarze</strong>. Ty odwracasz karty. Reszta działa sama.
+      </p>
+      <div class="hero__cta">
+        <a routerLink="/register" class="btn btn--primary btn--lg">Zacznij za darmo</a>
+        <button class="btn btn--ghost" (click)="tryAnonymously()">
+          Wypróbuj bez rejestracji <i class="pi pi-arrow-right"></i>
+        </button>
       </div>
     </div>
 
     <div class="hero__visual" data-animate="fade-up">
-      <div class="hero__cards">
-        <div class="hero__card hero__card--back" aria-hidden="true">
-          <div class="hero__card-line"></div>
-          <div class="hero__card-line hero__card-line--short"></div>
-        </div>
-        <div class="hero__card hero__card--front" aria-hidden="true">
-          <span class="hero__card-label">Pytanie</span>
-          <span class="hero__card-text">Jaki protokół zapewnia niezawodność w TCP/IP?</span>
-          <span class="hero__card-flip"><i class="pi pi-sync"></i></span>
-        </div>
-      </div>
-      <div class="hero__methods" aria-hidden="true">
-        <div class="hero__method hero__method--1"><i class="pi pi-clone"></i> Fiszki</div>
-        <div class="hero__method hero__method--2"><i class="pi pi-question-circle"></i> Quiz</div>
-        <div class="hero__method hero__method--3"><i class="pi pi-calendar"></i> Powtórki</div>
+      <div class="hero__screenshot">
+        <img src="assets/screenshots/learning.png"
+             alt="Widok sesji nauki w Memlo — fiszka z odpowiedzią i przyciski oceny"
+             width="800" height="720"
+             loading="eager" />
       </div>
     </div>
   </div>
@@ -44,74 +34,67 @@
   <div class="landing__inner">
     <h2 class="section__title" data-animate="fade-up">Cztery kroki do <span class="section__accent">skutecznej</span> nauki</h2>
     <div class="steps">
-      <div class="step" data-animate="slide-right">
+      <div class="step" data-animate="fade-up">
         <div class="step__icon"><i class="pi pi-folder"></i></div>
         <h3 class="step__title">Utwórz zestaw</h3>
-        <p class="step__desc">Pogrupuj materiał tematycznie — osobny zestaw na każdy przedmiot czy rozdział.</p>
+        <p class="step__desc">Pogrupuj materiał tematycznie — osobny zestaw na każdy przedmiot, język czy rozdział.</p>
       </div>
-      <div class="step__arrow" data-animate="slide-right" aria-hidden="true"><i class="pi pi-chevron-right"></i></div>
-      <div class="step" data-animate="slide-right">
+      <div class="step__arrow" data-animate="fade-up" aria-hidden="true"><i class="pi pi-chevron-right"></i></div>
+      <div class="step" data-animate="fade-up">
         <div class="step__icon"><i class="pi pi-plus"></i></div>
         <h3 class="step__title">Dodaj fiszki</h3>
-        <p class="step__desc">Twórz fiszki ręcznie albo skorzystaj z generatora AI jako pomocy.</p>
+        <p class="step__desc">Twórz ręcznie albo wklej tekst, a AI pomoże wygenerować pytania.</p>
       </div>
-      <div class="step__arrow" data-animate="slide-right" aria-hidden="true"><i class="pi pi-chevron-right"></i></div>
-      <div class="step" data-animate="slide-right">
+      <div class="step__arrow" data-animate="fade-up" aria-hidden="true"><i class="pi pi-chevron-right"></i></div>
+      <div class="step" data-animate="fade-up">
         <div class="step__icon"><i class="pi pi-sync"></i></div>
-        <h3 class="step__title">Ucz się i powtarzaj</h3>
-        <p class="step__desc">Odwracaj karty, oceniaj swoją wiedzę — algorytm zaplanuje powtórki.</p>
+        <h3 class="step__title">Ucz się w skupieniu</h3>
+        <p class="step__desc">Odwracaj karty, oceniaj swoją wiedzę. Timer Pomodoro pomoże utrzymać koncentrację.</p>
       </div>
-      <div class="step__arrow" data-animate="slide-right" aria-hidden="true"><i class="pi pi-chevron-right"></i></div>
-      <div class="step" data-animate="slide-right">
+      <div class="step__arrow" data-animate="fade-up" aria-hidden="true"><i class="pi pi-chevron-right"></i></div>
+      <div class="step" data-animate="fade-up">
         <div class="step__icon step__icon--violet"><i class="pi pi-replay"></i></div>
-        <h3 class="step__title">Zapamiętaj na dłużej</h3>
-        <p class="step__desc">Algorytm sam ustali, kiedy warto wrócić do danego pytania — uczysz się mniej, a pamiętasz więcej.</p>
+        <h3 class="step__title">Pamiętaj na dłużej</h3>
+        <p class="step__desc">Algorytm SM-2 ustali, kiedy wrócić do pytania. Ta sama metoda, którą stosują poligloci uczący po 6 języków.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Tryb nauki demo -->
+<!-- Demo -->
 <section class="section">
   <div class="landing__inner">
-    <span class="section__label" data-animate="fade-up">Demo</span>
-    <h2 class="section__title" data-animate="fade-up">Prosta sesja, konkretne efekty</h2>
-    <p class="section__subtitle" data-animate="fade-up">Odwracasz kartę, oceniasz się, idziesz dalej. Resztą zajmuje się algorytm.</p>
+    <div class="demo__header" data-animate="fade-up">
+      <span class="section__label">Jak wygląda nauka?</span>
+      <h2 class="section__title">Odwracasz kartę, oceniasz się, idziesz dalej</h2>
+      <p class="section__subtitle">Resztą zajmuje się algorytm SM-2. Sam ustali, kiedy wrócić do pytania — żebyś nie zapomniał.</p>
+    </div>
 
     <div class="demo" data-animate="fade-up">
-      <div class="demo__window">
-        <div class="demo__toolbar" aria-hidden="true">
-          <span class="demo__dot"></span>
-          <span class="demo__dot"></span>
-          <span class="demo__dot"></span>
+      <div class="demo__flipcard" (click)="toggleDemoFlip()" [class.demo__flipcard--flipped]="demoFlipped()">
+        <div class="demo__flipcard-inner">
+          <div class="demo__flipcard-face demo__flipcard-face--front">
+            <span class="demo__label">Pytanie</span>
+            <p class="demo__text">Jaki protokół odpowiada za niezawodne dostarczanie pakietów w modelu TCP/IP?</p>
+            <span class="demo__tap-hint"><i class="pi pi-sync"></i> kliknij aby odwrócić</span>
+          </div>
+          <div class="demo__flipcard-face demo__flipcard-face--back">
+            <span class="demo__label">Odpowiedź</span>
+            <p class="demo__text">TCP (Transmission Control Protocol) — zapewnia kontrolę przepływu, retransmisję i porządkowanie segmentów.</p>
+          </div>
         </div>
-        <div class="demo__body">
-          <div class="demo__flipcard" (click)="toggleDemoFlip()" [class.demo__flipcard--flipped]="demoFlipped()">
-            <div class="demo__flipcard-inner">
-              <div class="demo__flipcard-face demo__flipcard-face--front">
-                <span class="demo__label">Pytanie</span>
-                <p class="demo__text">Jaki protokół odpowiada za niezawodne dostarczanie pakietów w modelu TCP/IP?</p>
-                <span class="demo__tap-hint"><i class="pi pi-sync"></i> kliknij aby odwrócić</span>
-              </div>
-              <div class="demo__flipcard-face demo__flipcard-face--back">
-                <span class="demo__label">Odpowiedź</span>
-                <p class="demo__text">TCP (Transmission Control Protocol) — zapewnia kontrolę przepływu, retransmisję i porządkowanie segmentów.</p>
-              </div>
-            </div>
-          </div>
+      </div>
 
-          <div class="demo__actions">
-            <div class="demo__action demo__action--wrong" data-animate="fade-up">
-              <i class="pi pi-times"></i>
-              <strong>Nie wiem</strong>
-              <span>Wróci jutro</span>
-            </div>
-            <div class="demo__action demo__action--right" data-animate="fade-up">
-              <i class="pi pi-check"></i>
-              <strong>Wiem</strong>
-              <span>Następna za 4 dni</span>
-            </div>
-          </div>
+      <div class="demo__actions">
+        <div class="demo__action demo__action--wrong">
+          <i class="pi pi-times"></i>
+          <strong>Nie wiem</strong>
+          <span>Wróci jutro</span>
+        </div>
+        <div class="demo__action demo__action--right">
+          <i class="pi pi-check"></i>
+          <strong>Wiem</strong>
+          <span>Następna za 4 dni</span>
         </div>
       </div>
     </div>
@@ -121,110 +104,63 @@
 <!-- Funkcje -->
 <section class="section section--alt">
   <div class="landing__inner">
-    <span class="section__label" data-animate="fade-up">Funkcje</span>
-    <h2 class="section__title" data-animate="fade-up">Wszystko, czego potrzebujesz</h2>
-    <div class="features">
-      <div class="fcard fcard--featured" data-animate="fade-up">
-        <div class="fcard__icon-wrap fcard__icon-wrap--blue">
-          <i class="pi pi-bolt"></i>
-        </div>
-        <h3 class="fcard__title">Fiszki z tekstu w sekundy</h3>
-        <p class="fcard__desc">Wklejasz materiał, klikasz raz — AI robi resztę.</p>
-        <div class="fcard__visual" aria-hidden="true">
-          <!-- Source text -->
-          <div class="fcard__source">
-            <div class="fcard__source-header">
-              <i class="pi pi-file-edit"></i>
-              <span>Notatki z wykładu</span>
-            </div>
-            <div class="fcard__source-body">
-              <div class="fcard__source-line"></div>
-              <div class="fcard__source-line"></div>
-              <div class="fcard__source-line fcard__source-line--med"></div>
-              <div class="fcard__source-line"></div>
-              <div class="fcard__source-line fcard__source-line--short"></div>
-            </div>
-          </div>
+    <span class="section__label" data-animate="fade-up">Co dostajesz</span>
+    <h2 class="section__title" data-animate="fade-up">Metody, które mają badania za sobą</h2>
 
-          <!-- AI processing -->
-          <div class="fcard__ai-divider">
-            <div class="fcard__ai-line-h"></div>
-            <span class="fcard__ai-badge"><i class="pi pi-bolt"></i> Generuj fiszki</span>
-            <div class="fcard__ai-line-h"></div>
-          </div>
-
-          <!-- Generated cards -->
-          <div class="fcard__gen-cards">
-            <div class="fcard__gen-card">
-              <div class="fcard__gen-side fcard__gen-side--q">
-                <span class="fcard__gen-label">P</span>
-                <div class="fcard__gen-text"></div>
-              </div>
-              <div class="fcard__gen-sep"></div>
-              <div class="fcard__gen-side fcard__gen-side--a">
-                <span class="fcard__gen-label fcard__gen-label--a">O</span>
-                <div class="fcard__gen-text"></div>
-              </div>
-            </div>
-            <div class="fcard__gen-card">
-              <div class="fcard__gen-side fcard__gen-side--q">
-                <span class="fcard__gen-label">P</span>
-                <div class="fcard__gen-text"></div>
-              </div>
-              <div class="fcard__gen-sep"></div>
-              <div class="fcard__gen-side fcard__gen-side--a">
-                <span class="fcard__gen-label fcard__gen-label--a">O</span>
-                <div class="fcard__gen-text"></div>
-              </div>
-            </div>
-            <div class="fcard__gen-card">
-              <div class="fcard__gen-side fcard__gen-side--q">
-                <span class="fcard__gen-label">P</span>
-                <div class="fcard__gen-text"></div>
-              </div>
-              <div class="fcard__gen-sep"></div>
-              <div class="fcard__gen-side fcard__gen-side--a">
-                <span class="fcard__gen-label fcard__gen-label--a">O</span>
-                <div class="fcard__gen-text"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="fcard" data-animate="fade-up">
-        <div class="fcard__icon-wrap fcard__icon-wrap--green">
+    <!-- Primary feature — full width -->
+    <div class="feature-primary" data-animate="fade-up">
+      <div class="feature-primary__content">
+        <div class="feature-primary__icon">
           <i class="pi pi-replay"></i>
         </div>
-        <h3 class="fcard__title">Inteligentne powtórki</h3>
-        <p class="fcard__desc">Algorytm SM-2 planuje, kiedy warto wrócić do pytania, żebyś nie zapomniał.</p>
+        <h3 class="feature-primary__title">Powtórki w idealnym momencie</h3>
+        <p class="feature-primary__desc">Ebbinghaus udowodnił, że po 24 godzinach pamiętasz 30% materiału. Algorytm SM-2 — stosowany przez lekarzy, tłumaczy i badaczy — planuje powtórki w rosnących odstępach. Powtarzasz dokładnie wtedy, kiedy zaczynasz zapominać.</p>
       </div>
-      <div class="fcard" data-animate="fade-up">
-        <div class="fcard__icon-wrap fcard__icon-wrap--violet">
+      <div class="feature-primary__visual">
+        <img src="assets/screenshots/sets.png"
+             alt="Widok zestawów fiszek w Memlo"
+             width="838" height="210"
+             loading="lazy"
+             class="feature-primary__img" />
+      </div>
+    </div>
+
+    <!-- Secondary features — grid -->
+    <div class="features-grid" data-animate="fade-up">
+      <div class="fcard">
+        <div class="fcard__icon fcard__icon--green">
+          <i class="pi pi-clock"></i>
+        </div>
+        <h3 class="fcard__title">Timer Pomodoro</h3>
+        <p class="fcard__desc">25 minut nauki, 5 minut przerwy. Zero rozpraszaczy — tylko Ty i materiał.</p>
+      </div>
+      <div class="fcard">
+        <div class="fcard__icon fcard__icon--violet">
+          <i class="pi pi-question-circle"></i>
+        </div>
+        <h3 class="fcard__title">Active recall</h3>
+        <p class="fcard__desc">Nie czytasz notatek. Przypominasz sobie. Badania pokazują, że to działa 3x lepiej.</p>
+      </div>
+      <div class="fcard">
+        <div class="fcard__icon fcard__icon--orange">
           <i class="pi pi-pencil"></i>
         </div>
         <h3 class="fcard__title">Twoje fiszki, Twoje zasady</h3>
-        <p class="fcard__desc">Edytuj propozycje AI, twórz własne od zera, usuwaj niepotrzebne.</p>
+        <p class="fcard__desc">Edytuj, twórz od zera, usuwaj. Albo wklej tekst i pozwól AI pomóc.</p>
       </div>
-      <div class="fcard" data-animate="fade-up">
-        <div class="fcard__icon-wrap fcard__icon-wrap--orange">
+      <div class="fcard">
+        <div class="fcard__icon fcard__icon--teal">
           <i class="pi pi-folder"></i>
         </div>
         <h3 class="fcard__title">Zestawy tematyczne</h3>
-        <p class="fcard__desc">Organizuj materiał z różnych przedmiotów i rozdziałów — każdy zestaw to oddzielna paczka wiedzy.</p>
+        <p class="fcard__desc">Angielski, biologia, prawo jazdy — każdy zestaw to osobna paczka wiedzy.</p>
       </div>
-      <div class="fcard" data-animate="fade-up">
-        <div class="fcard__icon-wrap fcard__icon-wrap--teal">
-          <i class="pi pi-book"></i>
-        </div>
-        <h3 class="fcard__title">Sesje nauki</h3>
-        <p class="fcard__desc">Odwracaj karty, oceniaj wiedzę — wyniki widać od razu.</p>
-      </div>
-      <div class="fcard" data-animate="fade-up">
-        <div class="fcard__icon-wrap fcard__icon-wrap--blue">
+      <div class="fcard">
+        <div class="fcard__icon fcard__icon--blue">
           <i class="pi pi-cloud"></i>
         </div>
         <h3 class="fcard__title">Zawsze pod ręką</h3>
-        <p class="fcard__desc">Laptop, telefon, tablet — Twoje fiszki czekają w chmurze.</p>
+        <p class="fcard__desc">Laptop, telefon, tablet. Twoje fiszki czekają w chmurze.</p>
       </div>
     </div>
   </div>
@@ -233,11 +169,14 @@
 <!-- CTA -->
 <section class="cta" data-animate="fade-up">
   <div class="landing__inner">
-    <h2 class="cta__title">Zacznij uczyć się mądrzej</h2>
-    <p class="cta__desc">Załóż konto albo przetestuj od razu bez rejestracji — to nic nie kosztuje.</p>
+    <h2 class="cta__title">Twoja pamięć potrzebuje systemu, nie więcej godzin</h2>
+    <p class="cta__desc">Dołącz za darmo. Bez karty kredytowej, bez limitu zestawów.</p>
     <div class="cta__buttons">
-      <a routerLink="/register" class="btn btn--white">Załóż darmowe konto</a>
-      <button class="btn btn--white-outline" (click)="tryAnonymously()">Wypróbuj bez konta</button>
+      <a routerLink="/register" class="btn btn--primary btn--lg">Załóż darmowe konto</a>
     </div>
+    <p class="cta__hint">
+      lub
+      <button class="cta__link" (click)="tryAnonymously()">wypróbuj bez rejestracji</button>
+    </p>
   </div>
 </section>

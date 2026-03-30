@@ -40,19 +40,20 @@
       <!-- Critical inline content for instant FCP (replaced by Angular on bootstrap) -->
       <style>
         .shell{display:block;background:#fff;border-bottom:1px solid #E2E8F0}
-        .shell__inner{max-width:1080px;margin:0 auto;padding:5.5rem 1.5rem 5rem;text-align:center}
-        .shell__pill{display:inline-flex;align-items:center;gap:.35rem;font-size:.8rem;font-weight:600;color:#475569;background:#F8FAFC;border:1px solid #E2E8F0;padding:.3rem .85rem;border-radius:999px;margin-bottom:2rem}
-        .shell__title{font-size:3.25rem;font-weight:800;line-height:1.1;color:#0F172A;letter-spacing:-.03em;margin:0 auto 1.25rem;max-width:680px}
+        .shell__inner{max-width:1080px;margin:0 auto;padding:4.5rem 1.5rem 4rem}
+        .shell__proof{font-size:.875rem;color:#475569;margin:0 0 1.5rem}
+        .shell__proof strong{color:#1E293B;font-weight:700}
+        .shell__title{font-size:3.25rem;font-weight:800;line-height:1.1;color:#0F172A;letter-spacing:-.03em;margin:0 0 1.25rem;max-width:540px}
         .shell__accent{color:#4255ff}
-        .shell__desc{font-size:1.125rem;color:#475569;max-width:520px;margin:0 auto;line-height:1.7}
-        @media(max-width:768px){.shell__inner{padding:4rem 1.25rem 3.5rem}.shell__title{font-size:2.25rem}}
-        @media(max-width:480px){.shell__inner{padding:3rem 1.25rem 2.5rem}.shell__title{font-size:1.875rem}.shell__desc{font-size:.95rem}}
+        .shell__desc{font-size:1.125rem;color:#475569;max-width:460px;margin:0 0 2rem;line-height:1.7}
+        @media(max-width:768px){.shell__inner{padding:3.5rem 1.25rem 3rem;text-align:center}.shell__title{font-size:2.25rem;max-width:100%;margin:0 auto 1.25rem}.shell__desc{margin:0 auto 2rem}}
+        @media(max-width:480px){.shell__inner{padding:2.5rem 1rem 2rem}.shell__title{font-size:1.875rem}}
       </style>
       <div class="shell">
         <div class="shell__inner">
-          <span class="shell__pill">Fiszki wspierane przez AI</span>
-          <h1 class="shell__title">Zamień notatki w wiedzę.<br/><span class="shell__accent">Bez ślęczenia nad kartkami.</span></h1>
-          <p class="shell__desc">Wrzuć tekst z wykładu, podręcznika albo artykułu. Dostaniesz gotowe fiszki, pogrupowane w zestawy, z planem powtórek dopasowanym do Twojego tempa.</p>
+          <p class="shell__proof">Algorytm SM-2 · sprawdzona nauka o pamięci</p>
+          <h1 class="shell__title">Przestań zapominać.<br/><span class="shell__accent">Zacznij pamiętać.</span></h1>
+          <p class="shell__desc">Algorytm SM-2 planuje Twoje powtórki — ta sama metoda, którą stosują poligloci i lekarze. Ty odwracasz karty. Reszta działa sama.</p>
         </div>
       </div>
     </app-root>
