@@ -1,0 +1,122 @@
+@use 'variables' as *;
+
+// ══════════════════════════════════════
+//  TYPOGRAPHY SYSTEM — Plus Jakarta Sans
+// ══════════════════════════════════════
+
+// ── Heading styles ──
+@mixin heading-display {
+  font-family: $font-family-heading;
+  font-size: $font-size-4xl;
+  font-weight: $font-weight-extrabold;
+  line-height: $line-height-tight;
+  letter-spacing: $letter-spacing-tight;
+  color: $color-text-heading;
+
+  @media (max-width: $bp-desktop) {
+    font-size: $font-size-3xl;
+  }
+
+  @media (max-width: $bp-mobile) {
+    font-size: $font-size-2xl;
+  }
+}
+
+@mixin heading-1 {
+  font-family: $font-family-heading;
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-extrabold;
+  line-height: $line-height-snug;
+  letter-spacing: $letter-spacing-snug;
+  color: $color-text-heading;
+
+  @media (max-width: $bp-mobile) {
+    font-size: $font-size-xl;
+  }
+}
+
+@mixin heading-2 {
+  font-family: $font-family-heading;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-snug;
+  letter-spacing: $letter-spacing-snug;
+  color: $color-text-heading;
+}
+
+@mixin heading-3 {
+  font-family: $font-family-heading;
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-normal;
+  color: $color-text-heading;
+}
+
+// ── Body styles ──
+@mixin body-large {
+  font-family: $font-family-body;
+  font-size: $font-size-md;
+  font-weight: $font-weight-regular;
+  line-height: $line-height-relaxed;
+  color: $color-text-secondary;
+}
+
+@mixin body-base {
+  font-family: $font-family-body;
+  font-size: $font-size-base;
+  font-weight: $font-weight-regular;
+  line-height: $line-height-normal;
+  color: $color-text-secondary;
+}
+
+@mixin body-small {
+  font-family: $font-family-body;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-regular;
+  line-height: $line-height-normal;
+  color: $color-text-secondary;
+}
+
+// ── Label / UI text ──
+@mixin label {
+  font-family: $font-family-body;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-normal;
+  color: $color-text;
+}
+
+@mixin label-small {
+  font-family: $font-family-body;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-normal;
+  color: $color-text-secondary;
+}
+
+@mixin pill-text {
+  font-family: $font-family-body;
+  font-size: 0.8rem;
+  font-weight: $font-weight-semibold;
+}
+
+@mixin overline {
+  font-family: $font-family-body;
+  font-size: 0.65rem;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  letter-spacing: $letter-spacing-wider;
+}
+
+// ── Button text ──
+@mixin button-text {
+  font-family: $font-family-body;
+  font-size: 0.95rem;
+  font-weight: $font-weight-bold;
+}
+
+@mixin button-text-small {
+  font-family: $font-family-body;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+}
