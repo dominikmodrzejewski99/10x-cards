@@ -154,7 +154,7 @@
   }
 
   &--active:hover {
-    background: #dde0ff;
+    background: $color-primary-light;
   }
 }
 
@@ -208,9 +208,9 @@
   }
 }
 
-.image-upload__icon { font-size: 1.5rem; color: #939bb4; }
+.image-upload__icon { font-size: 1.5rem; color: $color-text-secondary; }
 .image-upload__text { font-size: 0.9rem; color: $color-text; font-weight: 500; }
-.image-upload__hint { font-size: 0.75rem; color: #939bb4; }
+.image-upload__hint { font-size: 0.75rem; color: $color-text-secondary; }
 .image-upload__input { display: none; }
 
 .image-preview {
@@ -239,7 +239,7 @@
   padding: 1.5rem;
   border: 2px dashed $color-border;
   border-radius: $radius-md;
-  color: #939bb4;
+  color: $color-text-secondary;
   font-size: 0.9rem;
 }
 

@@ -53,7 +53,7 @@ import { AuthFormComponent } from './auth-form.component';
     .auth-container {
       display: flex;
       justify-content: center;
-      background-color: #f6f7fb;
+      background-color: var(--app-bg-alt);
       padding: 4rem 1rem 1rem 1rem;
     }
 
@@ -62,9 +62,9 @@ import { AuthFormComponent } from './auth-form.component';
       max-width: 420px;
       padding: 1.5rem 1.5rem 1rem 1.5rem;
       border-radius: 0.75rem;
-      border: 1px solid #d9dbe9;
+      border: 1px solid var(--app-border);
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-      background-color: #ffffff;
+      background-color: var(--app-white);
     }
 
     .auth-header {
@@ -73,7 +73,7 @@ import { AuthFormComponent } from './auth-form.component';
 
     .auth-title {
       text-align: center;
-      color: #282e3e;
+      color: var(--app-text);
       font-size: 1.5rem;
       font-weight: 800;
       margin-bottom: 1.25rem;
@@ -81,7 +81,7 @@ import { AuthFormComponent } from './auth-form.component';
 
     .auth-tabs {
       display: flex;
-      border-bottom: 1px solid #d9dbe9;
+      border-bottom: 1px solid var(--app-border);
       margin-bottom: 1.5rem;
       justify-content: center;
       gap: 1rem;
@@ -91,7 +91,7 @@ import { AuthFormComponent } from './auth-form.component';
       padding: 0.5rem 0.75rem;
       background: none;
       border: none;
-      color: #586380;
+      color: var(--app-text-secondary);
       font-weight: 500;
       cursor: pointer;
       transition: all 0.15s;
@@ -111,11 +111,11 @@ import { AuthFormComponent } from './auth-form.component';
     }
 
     .auth-tabs__link:hover {
-      color: #4255ff;
+      color: var(--app-primary);
     }
 
     .auth-tabs__link--active {
-      color: #4255ff;
+      color: var(--app-primary);
       font-weight: 600;
     }
 
@@ -126,7 +126,7 @@ import { AuthFormComponent } from './auth-form.component';
       left: 0;
       width: 100%;
       height: 2px;
-      background-color: #4255ff;
+      background-color: var(--app-primary);
       transition: all 0.2s;
     }
 

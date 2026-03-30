@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 // ===== Layout =====
 .test-view {
   max-width: 700px;
@@ -22,7 +24,7 @@
 
   i {
     font-size: 2rem;
-    color: #8b5cf6;
+    color: $color-purple;
   }
 }
 
@@ -86,8 +88,8 @@
 .test-view__type {
   font-size: 1rem;
   font-weight: 700;
-  color: #8b5cf6;
-  background: #f5f3ff;
+  color: $color-purple;
+  background: $color-purple-light;
   padding: 0.25rem 0.85rem;
   border-radius: 9999px;
 }
@@ -109,7 +111,7 @@
 
 .test-view__progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #7c3aed, #8b5cf6);
+  background: linear-gradient(90deg, #{$color-purple}, #{$color-purple});
   border-radius: 9999px;
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -146,7 +148,7 @@
 :host ::ng-deep .test-view__gap--dashed {
   background: transparent;
   color: var(--app-text, #282e3e);
-  border-bottom: 2px dashed #8b5cf6;
+  border-bottom: 2px dashed $color-purple;
   border-radius: 0;
   padding: 0 0.25rem;
 }
@@ -176,13 +178,13 @@
   transition: all 0.15s ease;
 
   &:hover {
-    border-color: #8b5cf6;
-    background: #f5f3ff;
+    border-color: $color-purple;
+    background: $color-purple-light;
   }
 
   &--selected {
-    border-color: #8b5cf6;
-    background: #f5f3ff;
+    border-color: $color-purple;
+    background: $color-purple-light;
     color: var(--app-text, #282e3e);
   }
 }
@@ -203,8 +205,8 @@
   transition: all 0.15s ease;
 
   .test-view__option--selected & {
-    background: #8b5cf6;
-    border-color: #8b5cf6;
+    background: $color-purple;
+    border-color: $color-purple;
     color: #ffffff;
   }
 }
@@ -274,8 +276,8 @@
 
   &:focus {
     outline: none;
-    border-color: #8b5cf6;
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+    border-color: $color-purple;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
   }
 }
 
@@ -310,8 +312,8 @@
   transition: all 0.15s ease;
 
   &:hover:not(:disabled) {
-    border-color: #8b5cf6;
-    color: #8b5cf6;
+    border-color: $color-purple;
+    color: $color-purple;
   }
 
   &:disabled {
@@ -346,7 +348,7 @@
   align-items: center;
   gap: 0.35rem;
   padding: 0.65rem 1.25rem;
-  background: #8b5cf6;
+  background: $color-purple;
   color: #ffffff;
   border: none;
   border-radius: 0.65rem;
@@ -355,12 +357,12 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
 
   &:hover:not(:disabled) {
-    background: #7c3aed;
+    background: $color-purple-hover;
     transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(139, 92, 246, 0.4);
+    box-shadow: 0 6px 18px rgba(124, 58, 237, 0.4);
   }
 
   &:disabled {

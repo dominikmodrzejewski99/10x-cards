@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 /* Overlay */
 .overlay {
   position: fixed;
@@ -6,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(40, 46, 62, 0.45);
+  background: rgba($color-text, 0.45);
   backdrop-filter: blur(4px);
   animation: fadeIn 0.2s ease-out;
 }
@@ -18,7 +20,7 @@
 
 /* Dialog */
 .dialog {
-  background: #ffffff;
+  background: $color-white;
   border-radius: 1rem;
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
   width: 92%;
@@ -35,19 +37,19 @@
 /* Progress bar */
 .dialog__progress {
   padding: 1rem 1.5rem 1.25rem;
-  border-top: 1px solid #edeff5;
+  border-top: 1px solid $color-border-light;
 }
 
 .dialog__bar {
   height: 6px;
-  background: #edeff5;
+  background: $color-border-light;
   border-radius: 3px;
   overflow: hidden;
 }
 
 .dialog__bar-fill {
   height: 100%;
-  background: #4255ff;
+  background: $color-primary;
   border-radius: 3px;
   animation: progress 30s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
 }
@@ -68,7 +70,7 @@
   margin: 0 0 0.65rem;
   font-size: 0.85rem;
   font-weight: 600;
-  color: #4255ff;
+  color: $color-primary;
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -93,12 +95,12 @@
   margin: 0 0 0.75rem;
   font-size: 1rem;
   font-weight: 700;
-  color: #282e3e;
+  color: $color-text;
 }
 
 /* Chart */
 .dialog__chart {
-  background: #f6f7fb;
+  background: $color-bg-alt;
   border-radius: 0.625rem;
   padding: 0.75rem 0.5rem 0.25rem;
   margin-bottom: 1rem;
@@ -112,7 +114,7 @@
 
 .chart__label {
   font-size: 9px;
-  fill: #9ca3b8;
+  fill: $color-text-secondary;
   font-family: 'Inter', sans-serif;
 }
 
@@ -122,8 +124,8 @@
   font-weight: 600;
 }
 
-.chart__legend--red { fill: #ff6240; }
-.chart__legend--green { fill: #23b26d; }
+.chart__legend--red { fill: $color-danger; }
+.chart__legend--green { fill: $color-success; }
 
 .chart__line--no-review {
   stroke-dashoffset: 400;
@@ -161,8 +163,8 @@
   width: 2rem;
   height: 2rem;
   border-radius: 0.5rem;
-  background: #edefff;
-  color: #4255ff;
+  background: $color-primary-light;
+  color: $color-primary;
   font-size: 0.85rem;
 }
 
@@ -170,10 +172,10 @@
   margin: 0;
   font-size: 0.82rem;
   line-height: 1.45;
-  color: #586380;
+  color: $color-text-secondary;
 }
 
 .dialog__fact p strong {
-  color: #282e3e;
+  color: $color-text;
   font-weight: 600;
 }

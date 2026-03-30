@@ -52,15 +52,15 @@ import { LanguageTestResultDTO } from '../../../types';
     /* Language Test Widget */
     .dash__card--test-widget {
       padding: 1.25rem 1.5rem;
-      background: linear-gradient(135deg, #edefff, #dce5ff);
-      border: 1.5px solid #b4bcff;
+      background: var(--app-primary-light);
+      border: 1.5px solid var(--app-border);
       border-radius: 1.25rem;
       margin-bottom: 2rem;
       transition: border-color 0.2s;
     }
 
     .dash__card--test-widget:hover {
-      border-color: #4255ff;
+      border-color: var(--app-primary);
     }
 
     .dash__test-result {
@@ -152,12 +152,12 @@ import { LanguageTestResultDTO } from '../../../types';
       width: 3rem;
       height: 3rem;
       border-radius: 0.85rem;
-      background: linear-gradient(135deg, #f3f0ff, #ede5ff);
+      background: var(--app-purple-light);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.25rem;
-      color: var(--app-primary, #8b5cf6);
+      color: var(--app-purple);
       flex-shrink: 0;
     }
 

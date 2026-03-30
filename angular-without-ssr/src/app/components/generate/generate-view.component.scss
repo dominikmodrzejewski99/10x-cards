@@ -1,4 +1,5 @@
 @use 'layout' as *;
+@use 'variables' as *;
 
 .gen {
   @include page-narrow;
@@ -16,13 +17,13 @@
 .gen__title {
   font-size: 1.75rem;
   font-weight: 800;
-  color: #282e3e;
+  color: $color-text;
   margin: 0;
 }
 
 .gen__card {
-  background: #ffffff;
-  border: 1px solid #d9dbe9;
+  background: $color-white;
+  border: 1px solid $color-border;
   border-radius: 0.75rem;
   padding: 1.5rem;
   margin-bottom: 1.25rem;
@@ -45,7 +46,7 @@
   justify-content: space-between;
   margin-bottom: 1rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid #edeff5;
+  border-bottom: 1px solid $color-border-light;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
@@ -53,7 +54,7 @@
 .gen__proposals-title {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #282e3e;
+  color: $color-text;
   margin: 0;
   display: flex;
   align-items: center;
@@ -61,7 +62,7 @@
 }
 
 .gen__proposals-title i {
-  color: #4255ff;
+  color: $color-primary;
   font-size: 1rem;
 }
 
@@ -81,20 +82,20 @@
 }
 
 .gen__stat--total {
-  background: #f6f7fb;
-  color: #586380;
+  background: $color-bg-alt;
+  color: $color-text-secondary;
 }
 
 .gen__stat--accepted {
-  background: #e8f8f0;
-  color: #23b26d;
+  background: $color-success-light;
+  color: $color-success;
 }
 
 /* Save section */
 .gen__save-section {
   margin-top: 1.25rem;
   padding-top: 1.25rem;
-  border-top: 2px solid #edeff5;
+  border-top: 2px solid $color-border-light;
 }
 
 .gen__save-set {
@@ -105,7 +106,7 @@
   display: block;
   font-size: 0.85rem;
   font-weight: 700;
-  color: #282e3e;
+  color: $color-text;
   margin-bottom: 0.6rem;
 }
 
@@ -118,7 +119,7 @@
 
 .gen__save-or {
   font-size: 0.75rem;
-  color: #b0b5c4;
+  color: $color-text-secondary;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -139,40 +140,40 @@
 
 .gen__set-select {
   padding: 0.45rem 0.65rem;
-  border: 1.5px solid #d9dbe9;
+  border: 1.5px solid $color-border;
   border-radius: 0.5rem;
   font-family: inherit;
   font-size: 0.85rem;
-  color: #282e3e;
-  background: #fff;
+  color: $color-text;
+  background: $color-white;
   cursor: pointer;
   min-width: 180px;
 }
 
 .gen__set-select:focus {
   outline: none;
-  border-color: #4255ff;
+  border-color: $color-primary;
 }
 
 .gen__set-input {
   padding: 0.45rem 0.65rem;
-  border: 1.5px solid #d9dbe9;
+  border: 1.5px solid $color-border;
   border-radius: 0.5rem;
   font-family: inherit;
   font-size: 0.85rem;
-  color: #282e3e;
-  background: #fff;
+  color: $color-text;
+  background: $color-white;
   min-width: 140px;
 }
 
 .gen__set-input:focus {
   outline: none;
-  border-color: #4255ff;
+  border-color: $color-primary;
 }
 
 .gen__set-warn {
   font-size: 0.8rem;
-  color: #ff6240;
+  color: $color-danger;
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
@@ -194,7 +195,7 @@
 .gen__btn--small {
   padding: 0.4rem 0.75rem;
   font-size: 0.8rem;
-  background: #4255ff;
+  background: $color-primary;
   color: #fff;
   border: none;
   cursor: pointer;
@@ -203,13 +204,13 @@
   font-weight: 600;
 }
 
-.gen__btn--small:hover { background: #3b4ce3; }
+.gen__btn--small:hover { background: $color-primary-hover; }
 .gen__btn--small:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .gen__empty {
   text-align: center;
   padding: 2rem 0;
-  color: #b0b5c4;
+  color: $color-text-secondary;
 }
 
 .gen__empty i {
@@ -219,15 +220,15 @@
 }
 
 textarea {
-  border: 1.5px solid #d9dbe9;
+  border: 1.5px solid $color-border;
   border-radius: 0.5rem;
   transition: border-color 0.15s;
   font-size: 0.95rem;
 }
 
 textarea:focus {
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+  border-color: $color-purple;
+  box-shadow: 0 0 0 3px rgba($color-purple, 0.12);
   outline: none;
 }
 

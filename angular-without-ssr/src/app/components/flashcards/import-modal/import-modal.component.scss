@@ -75,8 +75,8 @@
 .import__stat--accepted { color: $color-success; }
 
 .import__errors {
-  background: #fff8f0;
-  border: 1px solid #ffcca7;
+  background: $color-warning-light;
+  border: 1px solid $color-warning;
   border-radius: $radius-md;
   padding: 0.6rem 0.75rem;
   margin-bottom: 0.75rem;
@@ -84,17 +84,17 @@
 .import__errors-title {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #c9590a;
+  color: $color-warning;
   margin: 0 0 0.35rem;
 }
 .import__error-item {
   font-size: 0.75rem;
-  color: #7a5230;
+  color: $color-text-secondary;
   margin-bottom: 0.2rem;
 }
 .import__error-content {
   font-family: 'Courier New', monospace;
-  background: #ffeedd;
+  background: $color-warning-light;
   padding: 0.1rem 0.3rem;
   border-radius: 0.2rem;
 }
@@ -141,7 +141,7 @@
   white-space: nowrap;
 }
 .import__card-sep {
-  color: #b0b5c9;
+  color: $color-text-secondary;
   flex-shrink: 0;
 }
 .import__card-back {

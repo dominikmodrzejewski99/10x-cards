@@ -10,7 +10,7 @@
 }
 
 .reminder__icon {
-  @include icon-circle(3.5rem, linear-gradient(135deg, $color-danger-light, #ffe4dd), $color-danger, 1.5rem);
+  @include icon-circle(3.5rem, linear-gradient(135deg, $color-danger-light, $color-danger-light), $color-danger, 1.5rem);
 }
 
 .reminder__message {

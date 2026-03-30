@@ -1,22 +1,24 @@
+@use 'variables' as *;
+
 /* Empty state */
 .proposals__empty {
   text-align: center;
   padding: 2rem 0;
-  color: #586380;
+  color: $color-text-secondary;
 }
 
 .proposals__empty-hint {
   font-size: 0.85rem;
-  color: #b0b5c4;
+  color: $color-text-secondary;
   margin-top: 0.25rem;
 }
 
 /* Proposal card */
 .proposal {
   display: flex;
-  border: 1.5px solid #edeff5;
+  border: 1.5px solid $color-border-light;
   border-radius: 0.625rem;
-  background: #fff;
+  background: $color-white;
   transition: border-color 0.15s, box-shadow 0.15s;
   overflow: hidden;
 }
@@ -26,13 +28,13 @@
 }
 
 .proposal:hover {
-  border-color: #d9dbe9;
+  border-color: $color-border;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .proposal--accepted {
-  border-color: #23b26d;
-  background: #fafffe;
+  border-color: $color-success;
+  background: $color-success-light;
 }
 
 .proposal--accepted:hover {
@@ -45,16 +47,16 @@
   align-items: center;
   justify-content: center;
   min-width: 2.5rem;
-  background: #f6f7fb;
-  color: #586380;
+  background: $color-bg-alt;
+  color: $color-text-secondary;
   font-weight: 700;
   font-size: 0.8rem;
   flex-shrink: 0;
-  border-right: 1px solid #edeff5;
+  border-right: 1px solid $color-border-light;
 }
 
 .proposal--accepted .proposal__number {
-  background: #23b26d;
+  background: $color-success;
   color: #fff;
   border-right-color: #1e9c5e;
 }
@@ -88,33 +90,33 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #4255ff;
-  background: #edefff;
+  color: $color-primary;
+  background: $color-primary-light;
   padding: 0.1rem 0.35rem;
   border-radius: 0.25rem;
   line-height: 1.4;
 }
 
 .proposal__label--back {
-  color: #23b26d;
-  background: #e8f8f0;
+  color: $color-success;
+  background: $color-success-light;
 }
 
 .proposal__text {
   font-size: 0.85rem;
-  color: #282e3e;
+  color: $color-text;
   line-height: 1.45;
   word-break: break-word;
 }
 
 .proposal__side--back .proposal__text {
-  color: #586380;
+  color: $color-text-secondary;
 }
 
 /* Actions row under content */
 .proposal__actions {
   display: flex;
-  border-top: 1px solid #edeff5;
+  border-top: 1px solid $color-border-light;
 }
 
 .proposal__btn {
@@ -127,7 +129,7 @@
   border: none;
   background: transparent;
   cursor: pointer;
-  color: #9ca3b8;
+  color: $color-text-secondary;
   font-family: inherit;
   font-size: 0.75rem;
   font-weight: 600;
@@ -135,7 +137,7 @@
 }
 
 .proposal__btn + .proposal__btn {
-  border-left: 1px solid #edeff5;
+  border-left: 1px solid $color-border-light;
 }
 
 .proposal__btn i {
@@ -144,12 +146,12 @@
 
 /* Accept */
 .proposal__btn--accept:hover {
-  background: #e8f8f0;
-  color: #23b26d;
+  background: $color-success-light;
+  color: $color-success;
 }
 
 .proposal__btn--accepted {
-  background: #23b26d;
+  background: $color-success;
   color: #fff;
 }
 
@@ -160,14 +162,14 @@
 
 /* Edit */
 .proposal__btn--edit:hover {
-  background: #edefff;
-  color: #4255ff;
+  background: $color-primary-light;
+  color: $color-primary;
 }
 
 /* Reject */
 .proposal__btn--reject:hover {
-  background: #fff0ed;
-  color: #ff6240;
+  background: $color-danger-light;
+  color: $color-danger;
 }
 
 /* Edit dialog */
@@ -183,28 +185,28 @@
   display: block;
   font-size: 0.8rem;
   font-weight: 700;
-  color: #282e3e;
+  color: $color-text;
   margin-bottom: 0.4rem;
 }
 
 .edit-form__textarea {
   width: 100%;
   padding: 0.65rem 0.75rem;
-  border: 1.5px solid #d9dbe9;
+  border: 1.5px solid $color-border;
   border-radius: 0.5rem;
   font-family: inherit;
   font-size: 0.9rem;
-  color: #282e3e;
-  background: #f6f7fb;
+  color: $color-text;
+  background: $color-bg-alt;
   resize: none;
   line-height: 1.5;
 }
 
 .edit-form__textarea:focus {
   outline: none;
-  border-color: #4255ff;
-  box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.12);
-  background: #fff;
+  border-color: $color-primary;
+  box-shadow: 0 0 0 3px rgba($color-primary, 0.12);
+  background: $color-white;
 }
 
 .edit-form__footer {
@@ -212,7 +214,7 @@
   justify-content: flex-end;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  border-top: 1px solid #edeff5;
+  border-top: 1px solid $color-border-light;
 }
 
 .edit-form__btn {
@@ -231,22 +233,22 @@
 
 .edit-form__btn--cancel {
   background: transparent;
-  color: #586380;
-  border: 1.5px solid #d9dbe9;
+  color: $color-text-secondary;
+  border: 1.5px solid $color-border;
 }
 
 .edit-form__btn--cancel:hover {
-  border-color: #ff6240;
-  color: #ff6240;
+  border-color: $color-danger;
+  color: $color-danger;
 }
 
 .edit-form__btn--save {
-  background: #4255ff;
+  background: $color-primary;
   color: #fff;
 }
 
 .edit-form__btn--save:hover {
-  background: #3b4ce3;
+  background: $color-primary-hover;
 }
 
 /* Dialog overrides */

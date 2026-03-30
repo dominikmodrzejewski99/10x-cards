@@ -20,14 +20,14 @@ const LightThemePreset = definePreset(Aura, {
             colorScheme: {
                 light: {
                     root: {
-                        background: '#ffffff',
-                        color: '#374151'
+                        background: 'var(--app-white)',
+                        color: 'var(--app-text)'
                     }
                 },
                 dark: {
                     root: {
-                        background: '#ffffff',
-                        color: '#374151'
+                        background: 'var(--app-white)',
+                        color: 'var(--app-text)'
                     }
                 }
             }
@@ -36,46 +36,46 @@ const LightThemePreset = definePreset(Aura, {
             colorScheme: {
                 light: {
                     success: {
-                        background: '#f0f8f0',
-                        color: '#2c5f2d',
-                        detailColor: '#2c5f2d'
+                        background: 'var(--app-success-light)',
+                        color: 'var(--app-success)',
+                        detailColor: 'var(--app-success)'
                     },
                     info: {
-                        background: '#e8f4fd',
-                        color: '#234e70',
-                        detailColor: '#234e70'
+                        background: 'var(--app-primary-light)',
+                        color: 'var(--app-primary)',
+                        detailColor: 'var(--app-primary)'
                     },
                     warn: {
-                        background: '#fff8e6',
-                        color: '#664d03',
-                        detailColor: '#664d03'
+                        background: 'var(--app-warning-light)',
+                        color: 'var(--app-yellow)',
+                        detailColor: 'var(--app-yellow)'
                     },
                     error: {
-                        background: '#feeceb',
-                        color: '#5f2120',
-                        detailColor: '#5f2120'
+                        background: 'var(--app-danger-light)',
+                        color: 'var(--app-error)',
+                        detailColor: 'var(--app-error)'
                     }
                 },
                 dark: {
                     success: {
-                        background: '#f0f8f0',
-                        color: '#2c5f2d',
-                        detailColor: '#2c5f2d'
+                        background: 'var(--app-success-light)',
+                        color: 'var(--app-success)',
+                        detailColor: 'var(--app-success)'
                     },
                     info: {
-                        background: '#e8f4fd',
-                        color: '#234e70',
-                        detailColor: '#234e70'
+                        background: 'var(--app-primary-light)',
+                        color: 'var(--app-primary)',
+                        detailColor: 'var(--app-primary)'
                     },
                     warn: {
-                        background: '#fff8e6',
-                        color: '#664d03',
-                        detailColor: '#664d03'
+                        background: 'var(--app-warning-light)',
+                        color: 'var(--app-yellow)',
+                        detailColor: 'var(--app-yellow)'
                     },
                     error: {
-                        background: '#feeceb',
-                        color: '#5f2120',
-                        detailColor: '#5f2120'
+                        background: 'var(--app-danger-light)',
+                        color: 'var(--app-error)',
+                        detailColor: 'var(--app-error)'
                     }
                 }
             }

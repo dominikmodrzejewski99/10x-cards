@@ -17,13 +17,13 @@
   padding: 0.35rem 0.75rem;
   margin-top: 0.25rem;
   margin-bottom: 0.5rem;
-  border: 1.5px solid var(--app-border, #d9dbe9);
+  border: 1.5px solid $color-border;
   border-radius: $radius-pill;
-  background: #f6f7fb;
+  background: $color-bg-alt;
   font-family: inherit;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--app-text, #282e3e);
+  color: $color-text;
   cursor: pointer;
   transition: all 0.15s;
 
@@ -40,7 +40,7 @@
 
 .study__set-btn-arrow {
   font-size: 0.65rem !important;
-  color: var(--app-text-secondary, #586380) !important;
+  color: $color-text-secondary !important;
 }
 
 /* Set selector modal */
@@ -62,7 +62,7 @@
 }
 
 .study__modal {
-  background: #ffffff;
+  background: $color-white;
   border-radius: 0.75rem;
   width: 100%;
   max-width: 400px;
@@ -83,14 +83,14 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid #edeff5;
+  border-bottom: 1px solid $color-border-light;
   flex-shrink: 0;
 }
 
 .study__modal-title {
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--app-text, #282e3e);
+  color: $color-text;
   margin: 0;
 }
 
@@ -103,11 +103,11 @@
   border: none;
   border-radius: $radius-sm;
   background: transparent;
-  color: var(--app-text-secondary, #586380);
+  color: $color-text-secondary;
   cursor: pointer;
   font-size: 0.9rem;
 
-  &:hover { background: #f6f7fb; }
+  &:hover { background: $color-bg-alt; }
 }
 
 .study__modal-search {
@@ -115,11 +115,11 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid #edeff5;
+  border-bottom: 1px solid $color-border-light;
   flex-shrink: 0;
 
   i {
-    color: var(--app-text-secondary, #586380);
+    color: $color-text-secondary;
     font-size: 0.9rem;
   }
 }
@@ -130,11 +130,11 @@
   outline: none;
   font-family: inherit;
   font-size: 0.9rem;
-  color: var(--app-text, #282e3e);
+  color: $color-text;
   background: transparent;
 
   &::placeholder {
-    color: #b0b5c4;
+    color: $color-text-secondary;
   }
 }
 
@@ -157,14 +157,14 @@
   background: transparent;
   font-family: inherit;
   font-size: 0.9rem;
-  color: var(--app-text, #282e3e);
+  color: $color-text;
   cursor: pointer;
   transition: background 0.1s;
   text-align: left;
 
-  i { color: var(--app-text-secondary, #586380); font-size: 1rem; }
+  i { color: $color-text-secondary; font-size: 1rem; }
 
-  &:hover { background: #f6f7fb; }
+  &:hover { background: $color-bg-alt; }
 
   &--active {
     background: rgba(66, 85, 255, 0.08);
@@ -180,7 +180,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 1.25rem;
-  color: var(--app-text-secondary, #586380);
+  color: $color-text-secondary;
   font-size: 0.85rem;
   justify-content: center;
 }
@@ -241,7 +241,7 @@
 
 .study__trophy-icon {
   font-size: 2.5rem;
-  color: #ffffff;
+  color: $color-white;
 }
 
 @keyframes trophy-bounce {
@@ -253,12 +253,12 @@
 .study__state-title {
   font-size: 1.5rem;
   font-weight: 800;
-  color: var(--app-text, #282e3e);
+  color: $color-text;
   margin: 0;
 }
 
 .study__state-text {
-  color: var(--app-text-secondary, #586380);
+  color: $color-text-secondary;
   font-size: 0.95rem;
   margin: 0;
 }
@@ -287,13 +287,13 @@
 .study__title {
   font-size: 1.5rem;
   font-weight: 800;
-  color: var(--app-text, #282e3e);
+  color: $color-text;
   margin: 0 0 0.25rem;
 }
 
 .study__hint {
   font-size: 0.85rem;
-  color: var(--app-text-secondary, #586380);
+  color: $color-text-secondary;
   margin: 0;
 }
 
@@ -552,8 +552,8 @@
   align-items: center;
   padding: 0.75rem 1.25rem;
   border-radius: 0.75rem;
-  border: 1px solid var(--app-border, #d9dbe9);
-  background: var(--app-white, #ffffff);
+  border: 1px solid $color-border;
+  background: $color-white;
 }
 
 .study__stat-value {
@@ -568,7 +568,7 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-top: 0.2rem;
-  color: var(--app-text-secondary, #586380);
+  color: $color-text-secondary;
 }
 
 .study__stat--right .study__stat-value {
@@ -608,29 +608,29 @@
 }
 
 .study__link--primary {
-  background: #4255ff;
-  color: #ffffff;
+  background: $color-primary;
+  color: $color-white;
 }
 
 .study__link--primary:hover {
-  background: #3b4ce3;
+  background: $color-primary-hover;
 }
 
 .study__link--ghost {
   background: transparent;
-  color: var(--app-text-secondary, #586380);
-  border: 1.5px solid var(--app-border, #d9dbe9);
+  color: $color-text-secondary;
+  border: 1.5px solid $color-border;
 }
 
 .study__link--ghost:hover {
-  border-color: #4255ff;
-  color: #4255ff;
+  border-color: $color-primary;
+  color: $color-primary;
 }
 
 /* Keyboard hint */
 .study__kbd {
   font-size: 0.75rem;
-  color: #b0b5c4;
+  color: $color-text-secondary;
   margin-top: 0.5rem;
   display: none;
 }
@@ -837,7 +837,7 @@
     min-height: 100vh;
     padding: 1.5rem 2rem;
     justify-content: center;
-    background: var(--app-bg, #f6f7fb);
+    background: $color-bg-alt;
   }
 
   .study__set-btn {

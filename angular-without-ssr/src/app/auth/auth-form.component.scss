@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 form {
   display: flex;
   flex-direction: column;
@@ -13,17 +15,17 @@ form {
 .auth-form__label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #282e3e;
+  color: $color-text;
 }
 
 .auth-form__input {
   padding: 0.75rem 0.875rem;
-  border: 1.5px solid #d9dbe9;
+  border: 1.5px solid $color-border;
   border-radius: 0.5rem;
   font-size: 0.9375rem;
-  color: #282e3e;
+  color: $color-text;
   transition: all 0.15s;
-  background-color: #ffffff;
+  background-color: $color-white;
   width: 100%;
   box-sizing: border-box;
 }
@@ -32,21 +34,21 @@ form {
 .auth-form__input:-webkit-autofill:hover,
 .auth-form__input:-webkit-autofill:focus,
 .auth-form__input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
-  -webkit-text-fill-color: #282e3e;
-  background-color: #ffffff;
+  -webkit-box-shadow: 0 0 0 1000px var(--app-white) inset;
+  -webkit-text-fill-color: var(--app-text);
+  background-color: $color-white;
 }
 
 .auth-form__input::placeholder {
-  color: #b0b5c4;
+  color: $color-text-secondary;
   font-size: 0.875rem;
 }
 
 .auth-form__input:focus {
   outline: none;
-  border-color: #4255ff;
-  box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.12);
-  color: #282e3e;
+  border-color: $color-primary;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--app-primary) 12%, transparent);
+  color: $color-text;
 }
 
 .auth-form__input-wrap {
@@ -66,20 +68,20 @@ form {
   border: none;
   cursor: pointer;
   padding: 0.25rem;
-  color: #b0b5c4;
+  color: $color-text-secondary;
   font-size: 1rem;
   line-height: 1;
   transition: color 0.15s;
 }
 
 .auth-form__toggle-password:hover {
-  color: #586380;
+  color: $color-text-secondary;
 }
 
 .auth-form__submit {
   margin-top: 0.75rem;
   padding: 0.75rem;
-  background-color: #4255ff;
+  background-color: $color-primary;
   color: #ffffff;
   border: none;
   border-radius: 0.5rem;
@@ -91,7 +93,7 @@ form {
 }
 
 .auth-form__submit:hover {
-  background-color: #3b4ce3;
+  background-color: $color-primary-hover;
 }
 
 .auth-form__submit:disabled {
@@ -100,13 +102,13 @@ form {
 }
 
 .auth-form__error {
-  color: #ff6240;
+  color: $color-danger;
   font-size: 0.8125rem;
   font-weight: 500;
 }
 
 .auth-form__hint {
-  color: #586380;
+  color: $color-text-secondary;
   font-size: 0.8125rem;
   font-style: italic;
 }
@@ -115,11 +117,11 @@ form {
   margin-top: 1rem;
   text-align: center;
   padding: 0.75rem;
-  background-color: #fff0ed;
+  background-color: $color-danger-light;
   border-radius: 0.5rem;
-  border: 1px solid #ffcfc5;
+  border: 1px solid $color-danger-border;
   font-size: 0.875rem;
-  color: #ff6240;
+  color: $color-danger;
 }
 
 .auth-form__divider {
@@ -134,12 +136,12 @@ form {
   content: '';
   flex: 1;
   height: 1px;
-  background: #d9dbe9;
+  background: $color-border;
 }
 
 .auth-form__divider span {
   font-size: 0.75rem;
-  color: #b0b5c4;
+  color: $color-text-secondary;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -148,9 +150,9 @@ form {
 .auth-form__anon-btn {
   width: 100%;
   padding: 0.75rem;
-  background: #ffffff;
-  color: #586380;
-  border: 1.5px solid #d9dbe9;
+  background: $color-white;
+  color: $color-text-secondary;
+  border: 1.5px solid $color-border;
   border-radius: 0.5rem;
   font-weight: 600;
   font-size: 0.9375rem;
@@ -164,9 +166,9 @@ form {
 }
 
 .auth-form__anon-btn:hover {
-  background: #f6f7fb;
-  border-color: #4255ff;
-  color: #4255ff;
+  background: $color-bg-alt;
+  border-color: $color-primary;
+  color: $color-primary;
 }
 
 .auth-form__anon-btn:disabled {
@@ -184,7 +186,7 @@ form {
 }
 
 .auth-form__forgot-link {
-  color: #586380;
+  color: $color-text-secondary;
   font-size: 0.8rem;
   font-weight: 500;
   text-decoration: none;
@@ -192,19 +194,19 @@ form {
 }
 
 .auth-form__forgot-link:hover {
-  color: #4255ff;
+  color: $color-primary;
 }
 
 .auth-form__terms {
   font-size: 0.75rem;
-  color: #586380;
+  color: $color-text-secondary;
   text-align: center;
   line-height: 1.5;
   margin: 0;
 }
 
 .auth-form__terms-link {
-  color: #4255ff;
+  color: $color-primary;
   text-decoration: none;
   font-weight: 600;
 }

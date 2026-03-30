@@ -11,7 +11,7 @@
 
 .app__nav-progress-bar {
   height: 100%;
-  background: #4255ff;
+  background: var(--app-primary);
   animation: nav-progress 1.5s ease-in-out infinite;
 }
 
@@ -59,7 +59,7 @@
 
 .app__footer-brand {
   font-weight: 700;
-  color: #4255ff;
+  color: var(--app-primary);
 }
 
 .app__footer-sep {
@@ -74,7 +74,7 @@
 }
 
 .app__footer-link:hover {
-  color: #4255ff;
+  color: var(--app-primary);
 }
 
 /* Mobile: hide footer only when bottom-nav is present (authenticated) */

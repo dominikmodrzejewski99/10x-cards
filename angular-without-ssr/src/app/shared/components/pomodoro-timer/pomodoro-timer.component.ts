@@ -141,24 +141,24 @@ import { UserPreferencesService } from '../../../services/user-preferences.servi
     .pomodoro { position: relative; }
     .pomodoro-trigger {
       display: flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.85rem;
-      background: #fff; border: 1.5px solid #d9dbe9; border-radius: 9999px;
+      background: var(--app-white); border: 1.5px solid var(--app-border); border-radius: 9999px;
       cursor: pointer; font-family: inherit; font-size: 0.85rem; font-weight: 600;
-      color: #282e3e; transition: all 0.15s ease;
+      color: var(--app-text); transition: all 0.15s ease;
     }
-    .pomodoro-trigger:hover { border-color: #4255ff; background: #edefff; }
+    .pomodoro-trigger:hover { border-color: var(--app-primary); background: var(--app-primary-light); }
     .pomodoro-badge {
       display: flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.75rem;
       border-radius: 9999px; font-family: inherit; font-size: 0.8rem; font-weight: 700;
       font-variant-numeric: tabular-nums; cursor: pointer; transition: all 0.15s ease;
     }
-    .pomodoro-badge--work { background: #e8f8f0; color: #23b26d; border: 1.5px solid #23b26d; }
-    .pomodoro-badge--break { background: #edefff; color: #4255ff; border: 1.5px solid #4255ff; }
+    .pomodoro-badge--work { background: var(--app-success-light); color: var(--app-success); border: 1.5px solid var(--app-success); }
+    .pomodoro-badge--break { background: var(--app-primary-light); color: var(--app-primary); border: 1.5px solid var(--app-primary); }
     .pomodoro-badge__session { font-weight: 500; font-size: 0.75rem; opacity: 0.8; }
     .pomodoro-backdrop { position: fixed; inset: 0; z-index: 50; }
     .pomodoro-dropdown {
       position: absolute; top: calc(100% + 0.5rem); right: 0; width: 280px;
-      background: #fff; border-radius: 1rem; border: 1px solid #d9dbe9;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08); z-index: 51; padding: 1.25rem;
+      background: var(--app-white); border-radius: 1rem; border: 1px solid var(--app-border);
+      box-shadow: var(--app-card-shadow); z-index: 51; padding: 1.25rem;
       display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
       animation: dropdown-enter 0.18s ease-out;
     }
@@ -168,48 +168,48 @@ import { UserPreferencesService } from '../../../services/user-preferences.servi
     }
     .pomodoro-dropdown__timer {
       font-size: 2.5rem; font-weight: 700; font-variant-numeric: tabular-nums;
-      text-align: center; color: #282e3e; line-height: 1;
+      text-align: center; color: var(--app-text); line-height: 1;
     }
     .pomodoro-dropdown__phase {
       font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 0.08em; color: #586380; text-align: center;
+      letter-spacing: 0.08em; color: var(--app-text-secondary); text-align: center;
     }
     .pomodoro-dropdown__controls { display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
     .pomodoro-dropdown__control-btn {
       display: flex; align-items: center; justify-content: center;
-      width: 2.5rem; height: 2.5rem; border-radius: 50%; background: #f6f7fb;
-      border: none; cursor: pointer; font-size: 1.1rem; color: #282e3e; transition: all 0.15s ease;
+      width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--app-bg);
+      border: none; cursor: pointer; font-size: 1.1rem; color: var(--app-text); transition: all 0.15s ease;
     }
-    .pomodoro-dropdown__control-btn:hover { background: #edefff; color: #4255ff; }
+    .pomodoro-dropdown__control-btn:hover { background: var(--app-primary-light); color: var(--app-primary); }
     .pomodoro-dropdown__dots { display: flex; align-items: center; justify-content: center; gap: 0.35rem; }
-    .pomodoro-dropdown__dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: #d9dbe9; transition: background 0.2s ease; }
-    .pomodoro-dropdown__dot--filled { background: #23b26d; }
+    .pomodoro-dropdown__dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--app-border); transition: background 0.2s ease; }
+    .pomodoro-dropdown__dot--filled { background: var(--app-success); }
     .pomodoro-dropdown__end {
-      font-size: 0.75rem; color: #586380; background: none; border: none;
+      font-size: 0.75rem; color: var(--app-text-secondary); background: none; border: none;
       cursor: pointer; font-family: inherit; text-decoration: underline;
       text-underline-offset: 2px; transition: all 0.15s ease;
     }
-    .pomodoro-dropdown__end:hover { color: #ff6240; }
+    .pomodoro-dropdown__end:hover { color: var(--app-error); }
     .pomodoro-dropdown__start-btn {
-      width: 100%; padding: 0.65rem 1rem; background: #4255ff; color: #fff;
+      width: 100%; padding: 0.65rem 1rem; background: var(--app-primary); color: #fff;
       border: none; border-radius: 0.5rem; font-family: inherit; font-size: 0.9rem;
       font-weight: 600; cursor: pointer; transition: all 0.15s ease;
     }
-    .pomodoro-dropdown__start-btn:hover { background: #3b4ce3; box-shadow: 0 2px 12px rgba(66,85,255,0.25); }
+    .pomodoro-dropdown__start-btn:hover { background: var(--app-primary-hover); box-shadow: 0 2px 12px rgba(66,85,255,0.25); }
     .focus-reminder { display: flex; flex-direction: column; gap: 0.75rem; }
-    .focus-reminder__text { font-size: 0.9rem; color: #282e3e; line-height: 1.5; margin: 0; }
-    .focus-reminder__list { font-size: 0.85rem; color: #586380; line-height: 1.7; margin: 0; padding-left: 1.25rem; }
+    .focus-reminder__text { font-size: 0.9rem; color: var(--app-text); line-height: 1.5; margin: 0; }
+    .focus-reminder__list { font-size: 0.85rem; color: var(--app-text-secondary); line-height: 1.7; margin: 0; padding-left: 1.25rem; }
     .focus-reminder__checkbox {
       display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;
-      color: #586380; cursor: pointer;
+      color: var(--app-text-secondary); cursor: pointer;
     }
     .focus-reminder__checkbox input[type='checkbox'] { width: 1rem; height: 1rem; cursor: pointer; }
     .focus-reminder__btn {
-      width: 100%; padding: 0.65rem 1rem; background: #4255ff; color: #fff;
+      width: 100%; padding: 0.65rem 1rem; background: var(--app-primary); color: #fff;
       border: none; border-radius: 0.5rem; font-family: inherit; font-size: 0.9rem;
       font-weight: 600; cursor: pointer; transition: all 0.15s ease; margin-top: 0.25rem;
     }
-    .focus-reminder__btn:hover { background: #3b4ce3; box-shadow: 0 2px 12px rgba(66,85,255,0.25); }
+    .focus-reminder__btn:hover { background: var(--app-primary-hover); box-shadow: 0 2px 12px rgba(66,85,255,0.25); }
     @media (max-width: 640px) { .pomodoro-trigger__text { display: none; } }
     @media (max-width: 992px) {
       .pomodoro-dropdown {

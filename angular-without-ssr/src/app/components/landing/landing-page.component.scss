@@ -161,7 +161,7 @@
 
 .btn--secondary:hover {
   background: $color-bg;
-  border-color: #cbd5e1;
+  border-color: $color-border;
 }
 
 /* ── Hero visual — product screenshot ── */
@@ -408,7 +408,7 @@
 .demo__action--right {
   background: $color-success-light;
   color: $color-success;
-  border-color: #a8e6c9;
+  border-color: $color-success-light;
 }
 
 /* ══════════════════════════════════════ */
@@ -496,7 +496,7 @@
   &--green  { background: $color-success-light; color: $color-success; }
   &--violet { background: $color-purple-light;  color: $color-purple; }
   &--orange { background: $color-warning-light;  color: $color-orange; }
-  &--teal   { background: #e6f7f5;              color: $color-teal; }
+  &--teal   { background: $color-success-light;  color: $color-teal; }
 }
 
 .fcard__title {

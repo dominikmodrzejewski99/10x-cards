@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 .flip-card {
   perspective: 1000px;
   cursor: pointer;
@@ -9,7 +11,7 @@
 }
 
 .flip-card:focus-visible {
-  outline: 3px solid #4255ff;
+  outline: 3px solid $color-primary;
   outline-offset: 4px;
   border-radius: 1rem;
 }
@@ -40,8 +42,8 @@
   align-items: center;
   justify-content: safe center;
   padding: 2rem 1.5rem;
-  background: var(--app-white, #ffffff);
-  border: 2px solid var(--app-border, #d9dbe9);
+  background: $color-white;
+  border: 2px solid $color-border;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
   transition: border-color 0.3s, box-shadow 0.3s;
   overflow-y: auto;
@@ -53,7 +55,7 @@
 
 .flip-card__face--back {
   transform: rotateX(180deg);
-  border-color: #7c3aed;
+  border-color: $color-purple;
 }
 
 .flip-card__label {
@@ -66,11 +68,11 @@
 }
 
 .flip-card__face:not(.flip-card__face--back) .flip-card__label {
-  color: #4255ff;
+  color: $color-primary;
 }
 
 .flip-card__face--back .flip-card__label {
-  color: #7c3aed;
+  color: $color-purple;
 }
 
 .flip-card__image {
@@ -87,7 +89,7 @@
   line-height: 1.6;
   text-align: center;
   word-break: break-word;
-  color: var(--app-text, #282e3e);
+  color: $color-text;
   white-space: pre-line;
 }
 

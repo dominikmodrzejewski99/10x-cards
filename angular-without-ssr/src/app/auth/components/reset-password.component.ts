@@ -121,7 +121,7 @@ import { AuthStore } from '../store';
     .auth-container {
       display: flex;
       justify-content: center;
-      background-color: #f6f7fb;
+      background-color: var(--app-bg-alt);
       padding: 4rem 1rem 1rem;
     }
     .auth-card {
@@ -129,47 +129,47 @@ import { AuthStore } from '../store';
       max-width: 420px;
       padding: 2rem;
       border-radius: 0.75rem;
-      border: 1px solid #d9dbe9;
+      border: 1px solid var(--app-border);
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-      background-color: #ffffff;
+      background-color: var(--app-white);
     }
     .auth-header { margin-bottom: 1.5rem; }
     .auth-title {
       text-align: center;
-      color: #282e3e;
+      color: var(--app-text);
       font-size: 1.5rem;
       font-weight: 800;
       margin: 0 0 0.5rem;
     }
     .auth-desc {
       text-align: center;
-      color: #586380;
+      color: var(--app-text-secondary);
       font-size: 0.9rem;
       margin: 0;
       line-height: 1.5;
     }
     form { display: flex; flex-direction: column; gap: 1rem; }
     .auth-field { display: flex; flex-direction: column; gap: 0.375rem; }
-    .auth-label { font-size: 0.875rem; font-weight: 600; color: #282e3e; }
+    .auth-label { font-size: 0.875rem; font-weight: 600; color: var(--app-text); }
     .auth-input {
       padding: 0.75rem 1rem;
-      border: 1.5px solid #d9dbe9;
+      border: 1.5px solid var(--app-border);
       border-radius: 0.5rem;
       font-size: 1rem;
-      color: #282e3e;
+      color: var(--app-text);
       transition: all 0.15s;
-      background: #fff;
+      background: var(--app-white);
       width: 100%;
       box-sizing: border-box;
     }
     .auth-input:focus {
       outline: none;
-      border-color: #4255ff;
-      box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.12);
+      border-color: var(--app-primary);
+      box-shadow: 0 0 0 3px var(--app-primary-light);
     }
     .auth-submit {
       padding: 0.875rem;
-      background: #4255ff;
+      background: var(--app-primary);
       color: #fff;
       border: none;
       border-radius: 0.5rem;
@@ -179,15 +179,15 @@ import { AuthStore } from '../store';
       transition: background 0.15s;
       width: 100%;
     }
-    .auth-submit:hover { background: #3b4ce3; }
+    .auth-submit:hover { background: var(--app-primary-hover); }
     .auth-submit:disabled { opacity: 0.5; cursor: not-allowed; }
-    .auth-error { color: #ff6240; font-size: 0.8125rem; font-weight: 500; }
+    .auth-error { color: var(--app-error); font-size: 0.8125rem; font-weight: 500; }
     .auth-error--global {
       text-align: center;
       padding: 0.75rem;
-      background: #fff0ed;
+      background: var(--app-danger-light);
       border-radius: 0.5rem;
-      border: 1px solid #ffcfc5;
+      border: 1px solid var(--app-danger-border);
       font-size: 0.875rem;
     }
     .auth-footer { margin-top: 1.25rem; text-align: center; }
@@ -195,7 +195,7 @@ import { AuthStore } from '../store';
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      color: #4255ff;
+      color: var(--app-primary);
       font-weight: 600;
       font-size: 0.875rem;
       text-decoration: none;
@@ -215,7 +215,7 @@ import { AuthStore } from '../store';
       transform: translateY(-50%);
       background: none;
       border: none;
-      color: #586380;
+      color: var(--app-text-secondary);
       cursor: pointer;
       padding: 0.35rem;
       font-size: 0.95rem;
@@ -223,7 +223,7 @@ import { AuthStore } from '../store';
       transition: color 0.15s;
     }
     .auth-toggle-password:hover {
-      color: #4255ff;
+      color: var(--app-primary);
     }
   `]
 })

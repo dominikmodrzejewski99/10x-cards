@@ -221,7 +221,7 @@
   gap: 0.25rem;
   margin-top: 0.25rem;
   padding-top: 0.5rem;
-  border-top: 1px solid #edeff5;
+  border-top: 1px solid $color-border-light;
 }
 
 .navbar__drawer-heading {
@@ -281,7 +281,7 @@
   gap: 0.25rem;
   padding: 0.75rem 1rem 1rem;
   background: $color-white;
-  border-top: 1px solid #edeff5;
+  border-top: 1px solid $color-border-light;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   animation: drawer-slide 0.2s ease-out;
 }
