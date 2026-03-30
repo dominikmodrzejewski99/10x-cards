@@ -48,6 +48,7 @@ export class UserPreferencesService {
   }
 
   updatePreferences(updates: Partial<Pick<UserPreferencesDTO,
+  | 'theme'
   | 'onboarding_completed'
   | 'pomodoro_work_duration'
   | 'pomodoro_break_duration'

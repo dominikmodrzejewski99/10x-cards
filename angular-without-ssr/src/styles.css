@@ -32,10 +32,43 @@
   --app-border: #E2E8F0;
   --app-border-light: #edeff5;
   --app-success: #23b26d;
+  --app-success-light: #e8f8f0;
   --app-error: #ff6240;
+  --app-danger-light: #fff0ed;
+  --app-danger-border: #ffcfc5;
+  --app-warning-light: #fff8e6;
   --app-yellow: #ffcd1f;
   --app-purple: #7c3aed;
+  --app-purple-light: #f3eeff;
   --app-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* ══════════════════════════════════════ */
+/*  DARK THEME                            */
+/* ══════════════════════════════════════ */
+:root[data-theme="dark"] {
+  --app-primary: #818cf8;
+  --app-primary-hover: #6366f1;
+  --app-primary-light: rgba(66, 85, 255, 0.12);
+  --app-bg: #0b1120;
+  --app-bg-alt: #0f1629;
+  --app-white: #141c2e;
+  --app-text: #f1f5f9;
+  --app-text-heading: #f1f5f9;
+  --app-text-secondary: #94a3b8;
+  --app-border: #1e293b;
+  --app-border-light: #1e293b;
+  --app-success: #34d399;
+  --app-success-light: rgba(35, 178, 109, 0.12);
+  --app-error: #fb7c64;
+  --app-danger-light: rgba(255, 98, 64, 0.1);
+  --app-danger-border: rgba(255, 98, 64, 0.2);
+  --app-warning-light: rgba(245, 158, 11, 0.12);
+  --app-yellow: #fbbf24;
+  --app-purple: #a78bfa;
+  --app-purple-light: rgba(124, 58, 237, 0.12);
+  --app-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  color-scheme: dark;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -347,14 +380,59 @@ body .p-connected-overlay .p-dropdown-panel {
 
 /* Modern dialog overrides */
 body .modern-dialog {
-  --p-dialog-background: #ffffff;
-  --p-dialog-border-color: #d9dbe9;
-  --p-dialog-text-color: #282e3e;
-  --p-dialog-header-background: #ffffff;
-  --p-dialog-header-text-color: #282e3e;
-  --p-dialog-content-background: #ffffff;
-  --p-dialog-content-text-color: #282e3e;
-  background-color: #ffffff;
-  color: #282e3e;
-  border: 1px solid #d9dbe9;
+  --p-dialog-background: var(--app-white);
+  --p-dialog-border-color: var(--app-border);
+  --p-dialog-text-color: var(--app-text);
+  --p-dialog-header-background: var(--app-white);
+  --p-dialog-header-text-color: var(--app-text);
+  --p-dialog-content-background: var(--app-white);
+  --p-dialog-content-text-color: var(--app-text);
+  background-color: var(--app-white);
+  color: var(--app-text);
+  border: 1px solid var(--app-border);
 }
+
+/* ══════════════════════════════════════ */
+/*  DARK THEME — PrimeNG overrides        */
+/* ══════════════════════════════════════ */
+:root[data-theme="dark"] body .p-component { color: var(--app-text); }
+
+:root[data-theme="dark"] body .p-datatable .p-datatable-thead > tr > th { color: var(--app-text); background: var(--app-bg-alt); border-color: var(--app-border); }
+:root[data-theme="dark"] body .p-datatable .p-datatable-tbody > tr { color: var(--app-text); background: var(--app-white); }
+:root[data-theme="dark"] body .p-datatable .p-datatable-tbody > tr > td { color: var(--app-text); border-color: var(--app-border); }
+:root[data-theme="dark"] body .p-datatable .p-datatable-tbody > tr:hover { background: var(--app-bg-alt); }
+
+:root[data-theme="dark"] body .p-paginator { background: var(--app-white); color: var(--app-text-secondary); border-color: var(--app-border); }
+:root[data-theme="dark"] body .p-paginator .p-paginator-pages .p-paginator-page { color: var(--app-text-secondary); }
+
+:root[data-theme="dark"] body .p-inputtext,
+:root[data-theme="dark"] body .p-textarea,
+:root[data-theme="dark"] body .p-inputtextarea,
+:root[data-theme="dark"] body textarea.p-inputtextarea { color: var(--app-text); background: var(--app-bg-alt); border-color: var(--app-border); }
+
+:root[data-theme="dark"] body .p-dropdown { background: var(--app-bg-alt); color: var(--app-text); border-color: var(--app-border); }
+:root[data-theme="dark"] body .p-dropdown .p-dropdown-label { color: var(--app-text); background: var(--app-bg-alt); }
+:root[data-theme="dark"] body .p-dropdown .p-dropdown-trigger { color: var(--app-text-secondary); background: var(--app-bg-alt); }
+:root[data-theme="dark"] body .p-dropdown-panel { background: var(--app-white); border-color: var(--app-border); }
+:root[data-theme="dark"] body .p-dropdown-panel .p-dropdown-items .p-dropdown-item { color: var(--app-text); background: var(--app-white); }
+:root[data-theme="dark"] body .p-dropdown-panel .p-dropdown-items .p-dropdown-item:hover { background: var(--app-bg-alt); }
+
+:root[data-theme="dark"] body .p-dialog { border-color: var(--app-border); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); }
+:root[data-theme="dark"] body .p-dialog .p-dialog-header { background: var(--app-white); color: var(--app-text); border-bottom-color: var(--app-border); }
+:root[data-theme="dark"] body .p-dialog .p-dialog-header .p-dialog-title { color: var(--app-text); }
+:root[data-theme="dark"] body .p-dialog .p-dialog-content { background: var(--app-white); color: var(--app-text); }
+:root[data-theme="dark"] body .p-dialog .p-dialog-footer { background: var(--app-white); border-top-color: var(--app-border); }
+:root[data-theme="dark"] body .p-dialog .p-dialog-header .p-dialog-header-icon { color: var(--app-text-secondary); }
+:root[data-theme="dark"] body .p-dialog .p-dialog-header .p-dialog-header-icon:hover { color: var(--app-text); background: var(--app-bg-alt); }
+
+:root[data-theme="dark"] body .p-toast .p-toast-summary { color: var(--app-text); }
+:root[data-theme="dark"] body .p-toast .p-toast-detail { color: var(--app-text-secondary); }
+
+:root[data-theme="dark"] html body .p-button { color: var(--app-text); }
+:root[data-theme="dark"] html body .p-button.p-button-outlined { color: var(--app-primary); border-color: var(--app-border); }
+:root[data-theme="dark"] html body .p-button.p-button-text { color: var(--app-primary); }
+
+:root[data-theme="dark"] body .p-confirm-dialog .p-confirm-dialog-message { color: var(--app-text); }
+:root[data-theme="dark"] body .p-connected-overlay .p-dropdown-panel { background: var(--app-white); }
+:root[data-theme="dark"] body .p-overlay-mask { background-color: rgba(0, 0, 0, 0.6); }
+:root[data-theme="dark"] body .p-dialog-mask.p-overlay-mask { background-color: rgba(0, 0, 0, 0.6); }

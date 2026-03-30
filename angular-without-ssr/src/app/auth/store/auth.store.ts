@@ -9,6 +9,7 @@ import { AuthService } from '../auth.service';
 import { AuthRedirectService } from '../services/auth-redirect.service';
 import { UserPreferencesService } from '../../services/user-preferences.service';
 import { StreakService } from '../../shared/services/streak.service';
+import { ThemeService } from '../../services/theme.service';
 
 export interface AuthState {
   user: UserDTO | null;
@@ -41,6 +42,7 @@ export const AuthStore = signalStore(
     const authRedirectService: AuthRedirectService = inject(AuthRedirectService);
     const userPreferencesService: UserPreferencesService = inject(UserPreferencesService);
     const streakService: StreakService = inject(StreakService);
+    const themeService: ThemeService = inject(ThemeService);
 
     return {
       clearError(): void {
@@ -55,6 +57,7 @@ export const AuthStore = signalStore(
               timeout(15000),
               tap((user: UserDTO) => {
                 patchState(store, { user, loading: false, error: null });
+                themeService.loadTheme();
                 authRedirectService.redirectToSavedUrlOrDefault('/dashboard');
               }),
               catchError((error: unknown) => {
@@ -86,6 +89,7 @@ export const AuthStore = signalStore(
                   error: null,
                   onboardingTrigger: store.onboardingTrigger() + 1,
                 });
+                themeService.loadTheme();
                 authRedirectService.redirectToSavedUrlOrDefault('/dashboard');
               }),
               catchError((error: unknown) => {
@@ -109,6 +113,7 @@ export const AuthStore = signalStore(
                   error: null,
                   onboardingTrigger: store.onboardingTrigger() + 1,
                 });
+                themeService.loadTheme();
                 authRedirectService.redirectToSavedUrlOrDefault('/dashboard');
               }),
               catchError((error: unknown) => {
@@ -129,6 +134,7 @@ export const AuthStore = signalStore(
                 patchState(store, { user: null, loading: false, error: null });
                 userPreferencesService.clearCache();
                 streakService.reset();
+                themeService.resetTheme();
                 router.navigate(['/login']);
               }),
               catchError((error: unknown) => {
@@ -202,6 +208,7 @@ export const AuthStore = signalStore(
               timeout(10000),
               tap((user: UserDTO | null) => {
                 patchState(store, { user, authChecked: true });
+                if (user) { themeService.loadTheme(); }
               }),
               catchError(() => {
                 patchState(store, { user: null, authChecked: true });

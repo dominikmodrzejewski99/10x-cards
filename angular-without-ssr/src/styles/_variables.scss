@@ -2,39 +2,39 @@
 //  DESIGN TOKENS — single source of truth
 // ══════════════════════════════════════
 
-// ── Colors ──
-$color-primary: #4255ff;
-$color-primary-hover: #3b4ce3;
-$color-primary-light: #edefff;
+// ── Colors (mapped to CSS custom properties for dark mode support) ──
+$color-primary: var(--app-primary);
+$color-primary-hover: var(--app-primary-hover);
+$color-primary-light: var(--app-primary-light);
 
-$color-success: #23b26d;
+$color-success: var(--app-success);
 $color-success-hover: #1e9c5e;
-$color-success-light: #e8f8f0;
+$color-success-light: var(--app-success-light);
 
-$color-danger: #ff6240;
+$color-danger: var(--app-error);
 $color-danger-hover: #e5573a;
-$color-danger-light: #fff0ed;
-$color-danger-border: #ffcfc5;
+$color-danger-light: var(--app-danger-light);
+$color-danger-border: var(--app-danger-border);
 
 $color-warning: #f5a623;
 $color-warning-hover: #e09515;
-$color-warning-light: #fff8e6;
+$color-warning-light: var(--app-warning-light);
 
-$color-purple: #7c3aed;
+$color-purple: var(--app-purple);
 $color-purple-hover: #6d28d9;
-$color-purple-light: #f3eeff;
+$color-purple-light: var(--app-purple-light);
 
 $color-teal: #0d9488;
 $color-orange: #f59e0b;
 
-$color-text: #1E293B;
-$color-text-secondary: #475569;
-$color-text-heading: #0F172A;
-$color-border: #E2E8F0;
-$color-border-light: #edeff5;
-$color-bg: #F8FAFC;
-$color-bg-alt: #f6f7fb;
-$color-white: #ffffff;
+$color-text: var(--app-text);
+$color-text-secondary: var(--app-text-secondary);
+$color-text-heading: var(--app-text-heading);
+$color-border: var(--app-border);
+$color-border-light: var(--app-border-light);
+$color-bg: var(--app-bg);
+$color-bg-alt: var(--app-bg-alt);
+$color-white: var(--app-white);
 
 // ── Radii ──
 $radius-sm: 0.375rem;   // small badges, pills
