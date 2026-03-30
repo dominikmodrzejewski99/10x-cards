@@ -29,6 +29,7 @@ export class FlashcardListPage extends BasePage {
   }
 
   async expectPageLoaded(): Promise<void> {
+    await this.page.waitForLoadState('networkidle', { timeout: 15000 });
     await expect(this.title).toBeVisible({ timeout: 15000 });
   }
 

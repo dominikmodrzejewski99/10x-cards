@@ -73,5 +73,7 @@ export class SetsPage extends BasePage {
   async clickSet(name: string): Promise<void> {
     const card: Locator = this.setCards.filter({ hasText: name });
     await card.locator('.set-card__name').click();
+    // Czekamy na nawigacje do /sets/:id
+    await this.page.waitForURL(/\/sets\//, { timeout: 15000 });
   }
 }
