@@ -89,9 +89,15 @@ ngx-skeleton-loader {
 }
 ngx-skeleton-loader > .skeleton-loader {
   margin-bottom: 0;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
 }
 ngx-skeleton-loader > .skeleton-loader.circle {
   margin: 0;
+}
+
+@keyframes skeleton-shimmer {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
 h1, h2, h3, h4, h5, h6, p, span, label, div {

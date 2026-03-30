@@ -1,6 +1,6 @@
 import { Component, OnInit, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -42,6 +42,7 @@ export class SetListComponent implements OnInit {
   private messageService = inject(MessageService);
   private confirmationService = inject(ConfirmationService);
   private router = inject(Router);
+  private route: ActivatedRoute = inject(ActivatedRoute);
 
   state = signal<SetListState>({
     sets: [],
@@ -56,6 +57,12 @@ export class SetListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadSets();
+
+    const shouldCreate: string | null = this.route.snapshot.queryParams['create'];
+    if (shouldCreate) {
+      this.openCreateDialog();
+      this.router.navigate([], { queryParams: {}, replaceUrl: true });
+    }
   }
 
   loadSets(): void {

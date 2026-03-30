@@ -218,20 +218,20 @@
 }
 
 .dropdown-item--logout {
-  color: #dc3545;
+  color: $color-text-secondary;
 }
 
 .dropdown-item--logout i {
-  color: #dc3545;
+  color: #8b92a5;
 }
 
 .dropdown-item--logout:hover {
-  background: #fef2f2;
-  color: #b91c1c;
+  background: $color-bg;
+  color: $color-text;
 }
 
 .dropdown-item--logout:hover i {
-  color: #b91c1c;
+  color: $color-text;
 }
 
 /* ---- Mobile ---- */

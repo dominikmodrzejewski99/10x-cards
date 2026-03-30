@@ -174,7 +174,8 @@
 
     <div class="audio-section">
       <div class="audio-preview"
-           [class.audio-section--hidden]="!audioPreviewSignal() || audioUploadingSignal()">
+           [class.audio-section--hidden]="!audioPreviewSignal() || audioUploadingSignal()"
+           [attr.aria-hidden]="!audioPreviewSignal() || audioUploadingSignal()">
         @if (audioPreviewSignal()) {
           <app-audio-player [audioUrl]="audioPreviewSignal()!" />
         }
@@ -189,6 +190,7 @@
 
       <div class="audio-upload"
            [class.audio-section--hidden]="audioPreviewSignal() || audioUploadingSignal() || showRecorderSignal()"
+           [attr.aria-hidden]="audioPreviewSignal() || audioUploadingSignal() || showRecorderSignal()"
            data-test-id="audio-upload">
         <div class="audio-upload__actions">
           <button
@@ -219,7 +221,8 @@
       }
 
       <div class="audio-uploading"
-           [class.audio-section--hidden]="!audioUploadingSignal()">
+           [class.audio-section--hidden]="!audioUploadingSignal()"
+           [attr.aria-hidden]="!audioUploadingSignal()">
         <i class="pi pi-spin pi-spinner"></i>
         <span>Przesyłanie audio...</span>
       </div>

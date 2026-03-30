@@ -126,7 +126,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  padding: 0.35rem 0.75rem;
+  padding: 0.5rem 0.85rem;
+  min-height: 2.75rem;
   border-radius: $radius-pill;
   border: 1.5px solid $color-border;
   background: $color-white;

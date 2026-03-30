@@ -13,13 +13,13 @@
     @if ((submittedSignal() || f['email'].touched) && f['email'].errors) {
       <div class="auth-form__error">
         @if (f['email'].errors['required']) {
-          <span>Email jest wymagany</span>
+          <span><i class="pi pi-exclamation-circle"></i> Email jest wymagany</span>
         }
         @if (f['email'].errors['email']) {
-          <span>Niepoprawny format email</span>
+          <span><i class="pi pi-exclamation-circle"></i> Niepoprawny format email</span>
         }
         @if (f['email'].errors['emailExists']) {
-          <span>Ten adres email jest już zarejestrowany</span>
+          <span><i class="pi pi-exclamation-circle"></i> Ten adres email jest już zarejestrowany</span>
         }
       </div>
     }
@@ -54,10 +54,10 @@
     @if ((submittedSignal() || f['password'].touched) && f['password'].errors) {
       <div class="auth-form__error">
         @if (f['password'].errors['required']) {
-          <span>Hasło jest wymagane</span>
+          <span><i class="pi pi-exclamation-circle"></i> Hasło jest wymagane</span>
         }
         @if (f['password'].errors['minlength']) {
-          <span>Hasło musi mieć co najmniej 6 znaków</span>
+          <span><i class="pi pi-exclamation-circle"></i> Hasło musi mieć co najmniej 6 znaków</span>
         }
       </div>
     }
@@ -87,10 +87,10 @@
       @if ((submittedSignal() || f['confirmPassword']?.touched) && f['confirmPassword']?.errors) {
         <div class="auth-form__error">
           @if (f['confirmPassword']?.errors?.['required']) {
-            <span>Potwierdzenie hasła jest wymagane</span>
+            <span><i class="pi pi-exclamation-circle"></i> Potwierdzenie hasła jest wymagane</span>
           }
           @if (f['confirmPassword']?.errors?.['passwordMismatch']) {
-            <span>Hasła nie są zgodne</span>
+            <span><i class="pi pi-exclamation-circle"></i> Hasła nie są zgodne</span>
           }
         </div>
       }
