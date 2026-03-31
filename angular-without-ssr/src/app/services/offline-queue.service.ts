@@ -183,7 +183,11 @@ export class OfflineQueueService implements OnDestroy {
 
   private async getDb(): Promise<IDBDatabase> {
     if (this.db) return this.db;
-    return this.initDb();
+    try {
+      return await this.initDb();
+    } catch {
+      throw new Error('Baza offline niedostępna. Operacje zostaną zapisane po odświeżeniu strony.');
+    }
   }
 
   private async getAllPending(db: IDBDatabase): Promise<QueuedReviewOperation[]> {

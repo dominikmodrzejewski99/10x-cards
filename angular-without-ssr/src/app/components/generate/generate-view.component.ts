@@ -135,6 +135,8 @@ export class GenerateViewComponent implements OnInit {
         this.isGenerating.set(false);
       },
       error: (error) => {
+        this.proposals.set([]);
+        this.generationResult.set(null);
         this.handleApiError(error, 'generowania');
         this.isGenerating.set(false);
       }

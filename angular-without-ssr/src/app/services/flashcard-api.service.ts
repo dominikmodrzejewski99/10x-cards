@@ -178,6 +178,9 @@ export class FlashcardApiService {
           }),
           map(response => {
             if (response.error) throw new Error(`Błąd Supabase: ${response.error.message}`);
+            if (!response.data || response.data.length === 0) {
+              throw new Error('Nie znaleziono fiszki');
+            }
             return response.data[0] as FlashcardDTO;
           }),
           catchError(error => throwError(() => error))

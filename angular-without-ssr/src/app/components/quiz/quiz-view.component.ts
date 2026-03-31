@@ -107,9 +107,10 @@ export class QuizViewComponent implements OnInit, OnDestroy {
   }
 
   public onRetryWrong(): void {
-    if (!this.lastConfig || !this.resultSignal()) return;
+    const result = this.resultSignal();
+    if (!this.lastConfig || !result) return;
 
-    const wrongAnswers: QuizAnswer[] = this.quizService.getWrongAnswers(this.resultSignal()!.answers);
+    const wrongAnswers: QuizAnswer[] = this.quizService.getWrongAnswers(result.answers);
     const wrongFlashcards: FlashcardDTO[] = wrongAnswers
       .map((a: QuizAnswer) => {
         const question: QuizQuestion | undefined = this.questionsSignal().find((q: QuizQuestion) => q.id === a.questionId);
