@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError, Subject } from 'rxjs';
 import { MessageService, ConfirmationService, Confirmation } from 'primeng/api';
 
@@ -56,7 +56,13 @@ describe('SetListComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: FlashcardSetApiService, useValue: setApiMock },
-        { provide: Router, useValue: routerMock }
+        { provide: Router, useValue: routerMock },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: { queryParams: {} }
+          }
+        }
       ]
     })
     .overrideComponent(SetListComponent, {
