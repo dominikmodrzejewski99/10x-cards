@@ -10,6 +10,7 @@ import { AuthRedirectService } from '../services/auth-redirect.service';
 import { UserPreferencesService } from '../../services/user-preferences.service';
 import { StreakService } from '../../shared/services/streak.service';
 import { ThemeService } from '../../services/theme.service';
+import { LanguageService } from '../../services/language.service';
 
 export interface AuthState {
   user: UserDTO | null;
@@ -43,6 +44,7 @@ export const AuthStore = signalStore(
     const userPreferencesService: UserPreferencesService = inject(UserPreferencesService);
     const streakService: StreakService = inject(StreakService);
     const themeService: ThemeService = inject(ThemeService);
+    const languageService: LanguageService = inject(LanguageService);
 
     return {
       clearError(): void {
@@ -58,6 +60,7 @@ export const AuthStore = signalStore(
               tap((user: UserDTO) => {
                 patchState(store, { user, loading: false, error: null });
                 themeService.loadTheme();
+                languageService.loadLanguage();
                 authRedirectService.redirectToSavedUrlOrDefault('/dashboard');
               }),
               catchError((error: unknown) => {
@@ -90,6 +93,7 @@ export const AuthStore = signalStore(
                   onboardingTrigger: store.onboardingTrigger() + 1,
                 });
                 themeService.loadTheme();
+                languageService.loadLanguage();
                 authRedirectService.redirectToSavedUrlOrDefault('/dashboard');
               }),
               catchError((error: unknown) => {
@@ -114,6 +118,7 @@ export const AuthStore = signalStore(
                   onboardingTrigger: store.onboardingTrigger() + 1,
                 });
                 themeService.loadTheme();
+                languageService.loadLanguage();
                 authRedirectService.redirectToSavedUrlOrDefault('/dashboard');
               }),
               catchError((error: unknown) => {
@@ -135,6 +140,7 @@ export const AuthStore = signalStore(
                 userPreferencesService.clearCache();
                 streakService.reset();
                 themeService.resetTheme();
+                languageService.resetLanguage();
                 router.navigate(['/login']);
               }),
               catchError((error: unknown) => {
@@ -208,7 +214,10 @@ export const AuthStore = signalStore(
               timeout(10000),
               tap((user: UserDTO | null) => {
                 patchState(store, { user, authChecked: true });
-                if (user) { themeService.loadTheme(); }
+                if (user) {
+                  themeService.loadTheme();
+                  languageService.loadLanguage();
+                }
               }),
               catchError(() => {
                 patchState(store, { user: null, authChecked: true });

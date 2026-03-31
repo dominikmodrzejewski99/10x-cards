@@ -6,12 +6,14 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { providePrimeNG } from 'primeng/config';
 import { provideRouter, withEnabledBlockingInitialNavigation } from '@angular/router';
 import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
+import { provideTransloco } from '@jsverse/transloco';
 import { MessageService } from 'primeng/api';
 import { routes } from './app.routes';
 import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 import { authInterceptor } from './services/auth.interceptor';
 import { GlobalErrorHandler } from './services/global-error-handler';
+import { TranslocoHttpLoader } from './transloco-loader';
 
 // Definiujemy własny preset bazujący na Aura z jasnymi kolorami dla dialogów i toastów
 const LightThemePreset = definePreset(Aura, {
@@ -111,6 +113,16 @@ export const appConfig: ApplicationConfig = {
         provideServiceWorker('ngsw-worker.js', {
             enabled: !isDevMode(),
             registrationStrategy: 'registerWhenStable:30000'
+        }),
+        provideTransloco({
+            config: {
+                availableLangs: ['pl', 'en'],
+                defaultLang: typeof navigator !== 'undefined' && navigator.language?.startsWith('en') ? 'en' : 'pl',
+                reRenderOnLangChange: true,
+                prodMode: !isDevMode(),
+                fallbackLang: 'pl',
+            },
+            loader: TranslocoHttpLoader,
         }),
         providePrimeNG({
             theme: {

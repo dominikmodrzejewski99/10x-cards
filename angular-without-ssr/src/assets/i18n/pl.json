@@ -1,0 +1,88 @@
+{
+  "landing": {
+    "hero": {
+      "proof": "Algorytm SM-2 \u00b7 sprawdzona nauka o pami\u0119ci",
+      "title": "Przesta\u0144 zapomina\u0107.",
+      "titleAccent": "Zacznij pami\u0119ta\u0107.",
+      "desc": "Algorytm SM-2 planuje Twoje powt\u00f3rki \u2014 ta sama metoda, kt\u00f3r\u0105 stosuj\u0105 <strong>poligloci</strong> i <strong>lekarze</strong>. Ty odwracasz karty. Reszta dzia\u0142a sama.",
+      "cta": "Zacznij za darmo",
+      "tryAnonymous": "Wypr\u00f3buj bez rejestracji",
+      "imgAlt": "Widok sesji nauki w Memlo \u2014 fiszka z odpowiedzi\u0105 i przyciski oceny"
+    },
+    "steps": {
+      "title": "Cztery kroki do <span class=\"section__accent\">skutecznej</span> nauki",
+      "createSet": "Utw\u00f3rz zestaw",
+      "createSetDesc": "Pogrupuj materia\u0142 tematycznie \u2014 osobny zestaw na ka\u017cdy przedmiot, j\u0119zyk czy rozdzia\u0142.",
+      "addCards": "Dodaj fiszki",
+      "addCardsDesc": "Tw\u00f3rz r\u0119cznie albo wklej tekst, a AI pomo\u017ce wygenerowa\u0107 pytania.",
+      "study": "Ucz si\u0119 w skupieniu",
+      "studyDesc": "Odwracaj karty, oceniaj swoj\u0105 wiedz\u0119. Timer Pomodoro pomo\u017ce utrzyma\u0107 koncentracj\u0119.",
+      "remember": "Pami\u0119taj na d\u0142u\u017cej",
+      "rememberDesc": "Algorytm SM-2 ustali, kiedy wr\u00f3ci\u0107 do pytania. Ta sama metoda, kt\u00f3r\u0105 stosuj\u0105 poligloci ucz\u0105cy po 6 j\u0119zyk\u00f3w."
+    },
+    "demo": {
+      "label": "Jak wygl\u0105da nauka?",
+      "title": "Odwracasz kart\u0119, oceniasz si\u0119, idziesz dalej",
+      "subtitle": "Reszt\u0105 zajmuje si\u0119 algorytm SM-2. Sam ustali, kiedy wr\u00f3ci\u0107 do pytania \u2014 \u017ceby\u015b nie zapomnia\u0142.",
+      "question": "Pytanie",
+      "answer": "Odpowied\u017a",
+      "questionText": "Jaki protok\u00f3\u0142 odpowiada za niezawodne dostarczanie pakiet\u00f3w w modelu TCP/IP?",
+      "answerText": "TCP (Transmission Control Protocol) \u2014 zapewnia kontrol\u0119 przep\u0142ywu, retransmisj\u0119 i porz\u0105dkowanie segment\u00f3w.",
+      "tapHint": "kliknij aby odwr\u00f3ci\u0107",
+      "dontKnow": "Nie wiem",
+      "dontKnowHint": "Wr\u00f3ci jutro",
+      "know": "Wiem",
+      "knowHint": "Nast\u0119pna za 4 dni"
+    },
+    "features": {
+      "label": "Co dostajesz",
+      "title": "Metody, kt\u00f3re maj\u0105 badania za sob\u0105",
+      "primaryTitle": "Powt\u00f3rki w idealnym momencie",
+      "primaryDesc": "Ebbinghaus udowodni\u0142, \u017ce po 24 godzinach pami\u0119tasz 30% materia\u0142u. Algorytm SM-2 \u2014 stosowany przez lekarzy, t\u0142umaczy i badaczy \u2014 planuje powt\u00f3rki w rosn\u0105cych odst\u0119pach. Powtarzasz dok\u0142adnie wtedy, kiedy zaczynasz zapomina\u0107.",
+      "primaryImgAlt": "Widok zestaw\u00f3w fiszek w Memlo",
+      "pomodoroTitle": "Timer Pomodoro",
+      "pomodoroDesc": "25 minut nauki, 5 minut przerwy. Zero rozpraszaczy \u2014 tylko Ty i materia\u0142.",
+      "recallTitle": "Active recall",
+      "recallDesc": "Nie czytasz notatek. Przypominasz sobie. Badania pokazuj\u0105, \u017ce to dzia\u0142a 3x lepiej.",
+      "customTitle": "Twoje fiszki, Twoje zasady",
+      "customDesc": "Edytuj, tw\u00f3rz od zera, usuwaj. Albo wklej tekst i pozw\u00f3l AI pom\u00f3c.",
+      "setsTitle": "Zestawy tematyczne",
+      "setsDesc": "Angielski, biologia, prawo jazdy \u2014 ka\u017cdy zestaw to osobna paczka wiedzy.",
+      "cloudTitle": "Zawsze pod r\u0119k\u0105",
+      "cloudDesc": "Laptop, telefon, tablet. Twoje fiszki czekaj\u0105 w chmurze."
+    },
+    "cta": {
+      "title": "Twoja pami\u0119\u0107 potrzebuje systemu, nie wi\u0119cej godzin",
+      "desc": "Do\u0142\u0105cz za darmo. Bez karty kredytowej, bez limitu zestaw\u00f3w.",
+      "button": "Za\u0142\u00f3\u017c darmowe konto",
+      "or": "lub",
+      "tryAnonymous": "wypr\u00f3buj bez rejestracji"
+    }
+  },
+  "settings": {
+    "title": "Ustawienia",
+    "subtitle": "Zarz\u0105dzaj swoimi preferencjami",
+    "pomodoro": {
+      "title": "Pomodoro",
+      "workDuration": "Czas nauki (min)",
+      "breakDuration": "Przerwa (min)",
+      "longBreakDuration": "D\u0142uga przerwa (min)",
+      "sessionsBeforeLongBreak": "Sesje do d\u0142ugiej przerwy",
+      "sound": "D\u017awi\u0119k powiadomienia",
+      "soundDesc": "Odtw\u00f3rz d\u017awi\u0119k po zako\u0144czeniu sesji",
+      "notifications": "Notyfikacje przegl\u0105darki",
+      "notificationsDesc": "Poka\u017c powiadomienie gdy timer si\u0119 sko\u0144czy"
+    },
+    "theme": {
+      "title": "Motyw",
+      "light": "Jasny",
+      "dark": "Ciemny"
+    },
+    "language": {
+      "title": "J\u0119zyk"
+    },
+    "save": "Zapisz",
+    "saving": "Zapisywanie...",
+    "saved": "Zapisano"
+  }
+}

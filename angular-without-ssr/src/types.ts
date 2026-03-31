@@ -168,10 +168,13 @@ export interface SessionResultDTO {
 
 /** ---------- User Preferences ---------- */
 
+export type AppLanguage = 'pl' | 'en';
+
 export interface UserPreferencesDTO {
   id: number;
   user_id: string;
   theme: 'light' | 'dark';
+  language: AppLanguage;
   onboarding_completed: boolean;
   current_streak: number;
   longest_streak: number;

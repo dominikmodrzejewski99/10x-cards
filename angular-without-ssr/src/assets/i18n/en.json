@@ -1,0 +1,88 @@
+{
+  "landing": {
+    "hero": {
+      "proof": "SM-2 Algorithm \u00b7 science-backed learning",
+      "title": "Stop forgetting.",
+      "titleAccent": "Start remembering.",
+      "desc": "The SM-2 algorithm schedules your reviews \u2014 the same method used by <strong>polyglots</strong> and <strong>doctors</strong>. You flip the cards. The rest works on its own.",
+      "cta": "Get started for free",
+      "tryAnonymous": "Try without signing up",
+      "imgAlt": "Memlo study session view \u2014 flashcard with answer and rating buttons"
+    },
+    "steps": {
+      "title": "Four steps to <span class=\"section__accent\">effective</span> learning",
+      "createSet": "Create a set",
+      "createSetDesc": "Group your material by topic \u2014 a separate set for each subject, language, or chapter.",
+      "addCards": "Add flashcards",
+      "addCardsDesc": "Create them manually or paste text and let AI generate questions.",
+      "study": "Study with focus",
+      "studyDesc": "Flip cards, rate your knowledge. The Pomodoro timer helps you stay focused.",
+      "remember": "Remember longer",
+      "rememberDesc": "The SM-2 algorithm decides when to revisit a question. The same method used by polyglots learning 6+ languages."
+    },
+    "demo": {
+      "label": "What does studying look like?",
+      "title": "Flip the card, rate yourself, move on",
+      "subtitle": "The SM-2 algorithm handles the rest. It decides when to revisit each question \u2014 so you don\u2019t forget.",
+      "question": "Question",
+      "answer": "Answer",
+      "questionText": "Which protocol is responsible for reliable packet delivery in the TCP/IP model?",
+      "answerText": "TCP (Transmission Control Protocol) \u2014 provides flow control, retransmission, and segment ordering.",
+      "tapHint": "click to flip",
+      "dontKnow": "Don\u2019t know",
+      "dontKnowHint": "Returns tomorrow",
+      "know": "I know",
+      "knowHint": "Next in 4 days"
+    },
+    "features": {
+      "label": "What you get",
+      "title": "Methods backed by research",
+      "primaryTitle": "Reviews at the perfect moment",
+      "primaryDesc": "Ebbinghaus proved that after 24 hours you remember only 30% of the material. The SM-2 algorithm \u2014 used by doctors, translators, and researchers \u2014 schedules reviews at increasing intervals. You review exactly when you\u2019re about to forget.",
+      "primaryImgAlt": "Memlo flashcard sets view",
+      "pomodoroTitle": "Pomodoro Timer",
+      "pomodoroDesc": "25 minutes of study, 5 minutes of break. Zero distractions \u2014 just you and the material.",
+      "recallTitle": "Active recall",
+      "recallDesc": "You don\u2019t read notes. You recall. Research shows it works 3x better.",
+      "customTitle": "Your cards, your rules",
+      "customDesc": "Edit, create from scratch, delete. Or paste text and let AI help.",
+      "setsTitle": "Themed sets",
+      "setsDesc": "English, biology, driving test \u2014 each set is a separate knowledge pack.",
+      "cloudTitle": "Always at hand",
+      "cloudDesc": "Laptop, phone, tablet. Your flashcards are waiting in the cloud."
+    },
+    "cta": {
+      "title": "Your memory needs a system, not more hours",
+      "desc": "Join for free. No credit card, no set limits.",
+      "button": "Create a free account",
+      "or": "or",
+      "tryAnonymous": "try without signing up"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your preferences",
+    "pomodoro": {
+      "title": "Pomodoro",
+      "workDuration": "Study time (min)",
+      "breakDuration": "Break (min)",
+      "longBreakDuration": "Long break (min)",
+      "sessionsBeforeLongBreak": "Sessions before long break",
+      "sound": "Notification sound",
+      "soundDesc": "Play sound when session ends",
+      "notifications": "Browser notifications",
+      "notificationsDesc": "Show notification when timer finishes"
+    },
+    "theme": {
+      "title": "Theme",
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "language": {
+      "title": "Language"
+    },
+    "save": "Save",
+    "saving": "Saving...",
+    "saved": "Saved"
+  }
+}

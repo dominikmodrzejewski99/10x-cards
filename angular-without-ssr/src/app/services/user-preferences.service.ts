@@ -49,6 +49,7 @@ export class UserPreferencesService {
 
   updatePreferences(updates: Partial<Pick<UserPreferencesDTO,
   | 'theme'
+  | 'language'
   | 'onboarding_completed'
   | 'pomodoro_work_duration'
   | 'pomodoro_break_duration'
@@ -123,7 +124,8 @@ export class UserPreferencesService {
     return {
       id: 0,
       user_id: userId,
-      theme: 'light',  // kept for DB compatibility
+      theme: 'light',
+      language: 'pl',
       onboarding_completed: false,
       current_streak: 0,
       longest_streak: 0,
