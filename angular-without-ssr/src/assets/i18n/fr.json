@@ -1,0 +1,88 @@
+{
+  "landing": {
+    "hero": {
+      "proof": "Algorithme SM-2 · apprentissage fondé sur la science",
+      "title": "Arrête d'oublier.",
+      "titleAccent": "Commence à retenir.",
+      "desc": "L'algorithme SM-2 planifie tes révisions — la même méthode utilisée par les <strong>polyglottes</strong> et les <strong>médecins</strong>. Tu retournes les cartes. Le reste se fait tout seul.",
+      "cta": "Commence gratuitement",
+      "tryAnonymous": "Essaie sans créer de compte",
+      "imgAlt": "Vue d'une session d'étude Memlo — carte avec réponse et boutons d'évaluation"
+    },
+    "steps": {
+      "title": "Quatre étapes pour un apprentissage <span class=\"section__accent\">efficace</span>",
+      "createSet": "Crée un set",
+      "createSetDesc": "Regroupe tes contenus par thème — un set pour chaque matière, langue ou chapitre.",
+      "addCards": "Ajoute des cartes",
+      "addCardsDesc": "Crée-les à la main ou colle du texte et laisse l'IA générer les questions.",
+      "study": "Étudie avec concentration",
+      "studyDesc": "Retourne les cartes, évalue tes connaissances. Le minuteur Pomodoro t'aide à rester concentré.",
+      "remember": "Retiens plus longtemps",
+      "rememberDesc": "L'algorithme SM-2 décide quand revenir sur chaque question. La même méthode utilisée par les polyglottes qui apprennent 6+ langues."
+    },
+    "demo": {
+      "label": "À quoi ressemble une session d'étude ?",
+      "title": "Retourne la carte, évalue-toi, passe à la suite",
+      "subtitle": "L'algorithme SM-2 s'occupe du reste. Il décide quand revoir chaque question — pour que tu n'oublies rien.",
+      "question": "Question",
+      "answer": "Réponse",
+      "questionText": "Quel protocole assure la livraison fiable des paquets dans le modèle TCP/IP ?",
+      "answerText": "TCP (Transmission Control Protocol) — assure le contrôle de flux, la retransmission et l'ordonnancement des segments.",
+      "tapHint": "clique pour retourner",
+      "dontKnow": "Je ne sais pas",
+      "dontKnowHint": "Revient demain",
+      "know": "Je sais",
+      "knowHint": "Prochaine révision dans 4 jours"
+    },
+    "features": {
+      "label": "Ce que tu obtiens",
+      "title": "Des méthodes validées par la recherche",
+      "primaryTitle": "Des révisions au moment idéal",
+      "primaryDesc": "Ebbinghaus a prouvé qu'après 24 heures, tu ne retiens que 30 % du contenu. L'algorithme SM-2 — utilisé par des médecins, traducteurs et chercheurs — planifie des révisions à intervalles croissants. Tu révises pile au moment où tu es sur le point d'oublier.",
+      "primaryImgAlt": "Vue des sets de cartes Memlo",
+      "pomodoroTitle": "Minuteur Pomodoro",
+      "pomodoroDesc": "25 minutes d'étude, 5 minutes de pause. Zéro distraction — juste toi et le contenu.",
+      "recallTitle": "Active recall",
+      "recallDesc": "Tu ne relis pas tes notes. Tu te rappelles activement. Les études montrent que c'est 3 fois plus efficace.",
+      "customTitle": "Tes cartes, tes règles",
+      "customDesc": "Modifie, crée de zéro, supprime. Ou colle du texte et laisse l'IA s'en charger.",
+      "setsTitle": "Sets thématiques",
+      "setsDesc": "Anglais, biologie, code de la route — chaque set est un pack de connaissances à part.",
+      "cloudTitle": "Toujours sous la main",
+      "cloudDesc": "Ordi, téléphone, tablette. Tes cartes t'attendent dans le cloud."
+    },
+    "cta": {
+      "title": "Ta mémoire a besoin d'un système, pas de plus d'heures",
+      "desc": "Inscris-toi gratuitement. Pas de carte bancaire, pas de limites.",
+      "button": "Créer un compte gratuit",
+      "or": "ou",
+      "tryAnonymous": "essaie sans créer de compte"
+    }
+  },
+  "settings": {
+    "title": "Paramètres",
+    "subtitle": "Gère tes préférences",
+    "pomodoro": {
+      "title": "Pomodoro",
+      "workDuration": "Temps d'étude (min)",
+      "breakDuration": "Pause (min)",
+      "longBreakDuration": "Pause longue (min)",
+      "sessionsBeforeLongBreak": "Sessions avant la pause longue",
+      "sound": "Son de notification",
+      "soundDesc": "Jouer un son à la fin de la session",
+      "notifications": "Notifications navigateur",
+      "notificationsDesc": "Afficher une notification quand le minuteur se termine"
+    },
+    "theme": {
+      "title": "Thème",
+      "light": "Clair",
+      "dark": "Sombre"
+    },
+    "language": {
+      "title": "Langue"
+    },
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "saved": "Enregistré"
+  }
+}

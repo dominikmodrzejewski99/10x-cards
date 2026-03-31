@@ -1,0 +1,88 @@
+{
+  "landing": {
+    "hero": {
+      "proof": "SM-2 Algorithmus · wissenschaftlich fundiertes Lernen",
+      "title": "Schluss mit Vergessen.",
+      "titleAccent": "Ab jetzt merkst du dir alles.",
+      "desc": "Der SM-2 Algorithmus plant deine Wiederholungen — dieselbe Methode, die <strong>Polyglotte</strong> und <strong>Ärzte</strong> nutzen. Du drehst die Karten um. Den Rest erledigt das System.",
+      "cta": "Kostenlos starten",
+      "tryAnonymous": "Ohne Anmeldung ausprobieren",
+      "imgAlt": "Memlo Lernsitzung — Karteikarte mit Antwort und Bewertungsknöpfen"
+    },
+    "steps": {
+      "title": "Vier Schritte zu <span class=\"section__accent\">effektivem</span> Lernen",
+      "createSet": "Set erstellen",
+      "createSetDesc": "Ordne dein Material nach Themen — ein eigenes Set für jedes Fach, jede Sprache oder jedes Kapitel.",
+      "addCards": "Karteikarten hinzufügen",
+      "addCardsDesc": "Erstelle sie manuell oder füge einen Text ein und lass die KI Fragen daraus generieren.",
+      "study": "Konzentriert lernen",
+      "studyDesc": "Karten umdrehen, Wissen einschätzen. Der Pomodoro-Timer hilft dir, fokussiert zu bleiben.",
+      "remember": "Länger behalten",
+      "rememberDesc": "Der SM-2 Algorithmus entscheidet, wann du eine Frage wiederholen sollst. Dieselbe Methode, die Polyglotte mit 6+ Sprachen verwenden."
+    },
+    "demo": {
+      "label": "Wie sieht eine Lernsitzung aus?",
+      "title": "Karte umdrehen, selbst bewerten, weiter geht's",
+      "subtitle": "Den Rest übernimmt der SM-2 Algorithmus. Er entscheidet, wann du welche Frage wiederholst — damit du nichts vergisst.",
+      "question": "Frage",
+      "answer": "Antwort",
+      "questionText": "Welches Protokoll ist im TCP/IP-Modell für die zuverlässige Paketübertragung zuständig?",
+      "answerText": "TCP (Transmission Control Protocol) — sorgt für Flusskontrolle, Neuübertragung und Segmentreihenfolge.",
+      "tapHint": "Klicken zum Umdrehen",
+      "dontKnow": "Weiß ich nicht",
+      "dontKnowHint": "Kommt morgen wieder",
+      "know": "Weiß ich",
+      "knowHint": "Nächste Wiederholung in 4 Tagen"
+    },
+    "features": {
+      "label": "Das bekommst du",
+      "title": "Methoden, die wissenschaftlich belegt sind",
+      "primaryTitle": "Wiederholungen zum perfekten Zeitpunkt",
+      "primaryDesc": "Ebbinghaus hat bewiesen: Nach 24 Stunden erinnerst du dich nur noch an 30 % des Stoffs. Der SM-2 Algorithmus — genutzt von Ärzten, Übersetzern und Forschern — plant Wiederholungen in wachsenden Abständen. Du wiederholst genau dann, wenn du kurz davor bist, etwas zu vergessen.",
+      "primaryImgAlt": "Memlo Karteikarten-Sets Ansicht",
+      "pomodoroTitle": "Pomodoro Timer",
+      "pomodoroDesc": "25 Minuten lernen, 5 Minuten Pause. Null Ablenkung — nur du und der Stoff.",
+      "recallTitle": "Active recall",
+      "recallDesc": "Du liest keine Notizen. Du rufst ab. Studien zeigen: Das wirkt 3x besser.",
+      "customTitle": "Deine Karten, deine Regeln",
+      "customDesc": "Bearbeiten, neu erstellen, löschen. Oder Text einfügen und die KI machen lassen.",
+      "setsTitle": "Thematische Sets",
+      "setsDesc": "Englisch, Biologie, Führerschein — jedes Set ist ein eigenes Wissenspaket.",
+      "cloudTitle": "Immer griffbereit",
+      "cloudDesc": "Laptop, Handy, Tablet. Deine Karteikarten warten in der Cloud."
+    },
+    "cta": {
+      "title": "Dein Gedächtnis braucht ein System, nicht mehr Stunden",
+      "desc": "Melde dich kostenlos an. Keine Kreditkarte, keine Limits.",
+      "button": "Kostenloses Konto erstellen",
+      "or": "oder",
+      "tryAnonymous": "ohne Anmeldung ausprobieren"
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "subtitle": "Verwalte deine Präferenzen",
+    "pomodoro": {
+      "title": "Pomodoro",
+      "workDuration": "Lernzeit (Min.)",
+      "breakDuration": "Pause (Min.)",
+      "longBreakDuration": "Lange Pause (Min.)",
+      "sessionsBeforeLongBreak": "Sitzungen bis zur langen Pause",
+      "sound": "Benachrichtigungston",
+      "soundDesc": "Ton abspielen, wenn die Sitzung endet",
+      "notifications": "Browser-Benachrichtigungen",
+      "notificationsDesc": "Benachrichtigung anzeigen, wenn der Timer abläuft"
+    },
+    "theme": {
+      "title": "Design",
+      "light": "Hell",
+      "dark": "Dunkel"
+    },
+    "language": {
+      "title": "Sprache"
+    },
+    "save": "Speichern",
+    "saving": "Wird gespeichert...",
+    "saved": "Gespeichert"
+  }
+}

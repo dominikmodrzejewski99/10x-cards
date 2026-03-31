@@ -168,7 +168,7 @@ export interface SessionResultDTO {
 
 /** ---------- User Preferences ---------- */
 
-export type AppLanguage = 'pl' | 'en';
+export type AppLanguage = 'pl' | 'en' | 'de' | 'es' | 'fr' | 'uk';
 
 export interface UserPreferencesDTO {
   id: number;

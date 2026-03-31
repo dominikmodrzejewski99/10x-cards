@@ -64,6 +64,7 @@ import { AppLanguage } from '../../../types';
     .settings__card-icon--theme { color: var(--app-purple); }
     .settings__card-icon--lang { color: var(--app-teal, #10b981); }
     .settings__theme-options { display: flex; gap: 0.75rem; }
+    .settings__lang-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
     .settings__theme-btn {
       flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
       padding: 0.85rem 1rem; border: 1.5px solid var(--app-border); border-radius: 0.75rem;
@@ -79,6 +80,7 @@ import { AppLanguage } from '../../../types';
     @media (max-width: 640px) {
       .settings { padding: 1rem 0.75rem; }
       .settings__grid { grid-template-columns: 1fr; }
+      .settings__lang-grid { grid-template-columns: repeat(2, 1fr); }
       .settings__card { padding: 1.25rem; }
     }
   `],
@@ -186,7 +188,7 @@ import { AppLanguage } from '../../../types';
           <h2 class="settings__card-title">{{ t('language.title') }}</h2>
         </div>
 
-        <div class="settings__theme-options">
+        <div class="settings__lang-grid">
           <button class="settings__theme-btn"
                   [class.settings__theme-btn--active]="languageSignal() === 'pl'"
                   (click)="setLanguage('pl')">
@@ -196,6 +198,26 @@ import { AppLanguage } from '../../../types';
                   [class.settings__theme-btn--active]="languageSignal() === 'en'"
                   (click)="setLanguage('en')">
             <span>English</span>
+          </button>
+          <button class="settings__theme-btn"
+                  [class.settings__theme-btn--active]="languageSignal() === 'de'"
+                  (click)="setLanguage('de')">
+            <span>Deutsch</span>
+          </button>
+          <button class="settings__theme-btn"
+                  [class.settings__theme-btn--active]="languageSignal() === 'es'"
+                  (click)="setLanguage('es')">
+            <span>Español</span>
+          </button>
+          <button class="settings__theme-btn"
+                  [class.settings__theme-btn--active]="languageSignal() === 'fr'"
+                  (click)="setLanguage('fr')">
+            <span>Français</span>
+          </button>
+          <button class="settings__theme-btn"
+                  [class.settings__theme-btn--active]="languageSignal() === 'uk'"
+                  (click)="setLanguage('uk')">
+            <span>Українська</span>
           </button>
         </div>
       </div>

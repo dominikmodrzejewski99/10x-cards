@@ -116,7 +116,7 @@ export const appConfig: ApplicationConfig = {
         }),
         provideTransloco({
             config: {
-                availableLangs: ['pl', 'en'],
+                availableLangs: ['pl', 'en', 'de', 'es', 'fr', 'uk'],
                 defaultLang: typeof navigator !== 'undefined' && navigator.language?.startsWith('en') ? 'en' : 'pl',
                 reRenderOnLangChange: true,
                 prodMode: !isDevMode(),

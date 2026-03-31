@@ -1,0 +1,88 @@
+{
+  "landing": {
+    "hero": {
+      "proof": "Algoritmo SM-2 · aprendizaje respaldado por la ciencia",
+      "title": "Deja de olvidar.",
+      "titleAccent": "Empieza a recordar.",
+      "desc": "El algoritmo SM-2 programa tus repasos — el mismo método que usan <strong>políglotas</strong> y <strong>médicos</strong>. Tú das vuelta a las tarjetas. El resto funciona solo.",
+      "cta": "Empieza gratis",
+      "tryAnonymous": "Prueba sin registrarte",
+      "imgAlt": "Vista de sesión de estudio en Memlo — tarjeta con respuesta y botones de calificación"
+    },
+    "steps": {
+      "title": "Cuatro pasos para un aprendizaje <span class=\"section__accent\">efectivo</span>",
+      "createSet": "Crea un set",
+      "createSetDesc": "Agrupa tu material por tema — un set para cada materia, idioma o capítulo.",
+      "addCards": "Añade tarjetas",
+      "addCardsDesc": "Créalas a mano o pega un texto y deja que la IA genere las preguntas.",
+      "study": "Estudia con concentración",
+      "studyDesc": "Da vuelta las tarjetas, evalúa tu conocimiento. El temporizador Pomodoro te ayuda a mantener el foco.",
+      "remember": "Recuerda por más tiempo",
+      "rememberDesc": "El algoritmo SM-2 decide cuándo volver a cada pregunta. El mismo método que usan los políglotas que aprenden 6+ idiomas."
+    },
+    "demo": {
+      "label": "¿Cómo se ve una sesión de estudio?",
+      "title": "Da vuelta la tarjeta, califícate y sigue",
+      "subtitle": "El algoritmo SM-2 se encarga del resto. Decide cuándo repetir cada pregunta — para que no se te olvide nada.",
+      "question": "Pregunta",
+      "answer": "Respuesta",
+      "questionText": "¿Qué protocolo es responsable de la entrega fiable de paquetes en el modelo TCP/IP?",
+      "answerText": "TCP (Transmission Control Protocol) — proporciona control de flujo, retransmisión y ordenación de segmentos.",
+      "tapHint": "haz clic para voltear",
+      "dontKnow": "No lo sé",
+      "dontKnowHint": "Vuelve mañana",
+      "know": "Lo sé",
+      "knowHint": "Siguiente en 4 días"
+    },
+    "features": {
+      "label": "Qué incluye",
+      "title": "Métodos respaldados por la investigación",
+      "primaryTitle": "Repasos en el momento justo",
+      "primaryDesc": "Ebbinghaus demostró que después de 24 horas solo recuerdas el 30 % del material. El algoritmo SM-2 — usado por médicos, traductores e investigadores — programa repasos a intervalos crecientes. Repasas justo cuando estás a punto de olvidar.",
+      "primaryImgAlt": "Vista de sets de tarjetas en Memlo",
+      "pomodoroTitle": "Temporizador Pomodoro",
+      "pomodoroDesc": "25 minutos de estudio, 5 de descanso. Cero distracciones — solo tú y el material.",
+      "recallTitle": "Active recall",
+      "recallDesc": "No relees apuntes. Recuerdas activamente. Los estudios muestran que funciona 3 veces mejor.",
+      "customTitle": "Tus tarjetas, tus reglas",
+      "customDesc": "Edita, crea desde cero, elimina. O pega un texto y deja que la IA te ayude.",
+      "setsTitle": "Sets temáticos",
+      "setsDesc": "Inglés, biología, examen de conducir — cada set es un paquete de conocimiento independiente.",
+      "cloudTitle": "Siempre a la mano",
+      "cloudDesc": "Portátil, celular, tablet. Tus tarjetas te esperan en la nube."
+    },
+    "cta": {
+      "title": "Tu memoria necesita un sistema, no más horas",
+      "desc": "Regístrate gratis. Sin tarjeta de crédito, sin límites.",
+      "button": "Crear cuenta gratis",
+      "or": "o",
+      "tryAnonymous": "prueba sin registrarte"
+    }
+  },
+  "settings": {
+    "title": "Ajustes",
+    "subtitle": "Gestiona tus preferencias",
+    "pomodoro": {
+      "title": "Pomodoro",
+      "workDuration": "Tiempo de estudio (min)",
+      "breakDuration": "Descanso (min)",
+      "longBreakDuration": "Descanso largo (min)",
+      "sessionsBeforeLongBreak": "Sesiones antes del descanso largo",
+      "sound": "Sonido de notificación",
+      "soundDesc": "Reproducir sonido al terminar la sesión",
+      "notifications": "Notificaciones del navegador",
+      "notificationsDesc": "Mostrar notificación cuando termine el temporizador"
+    },
+    "theme": {
+      "title": "Tema",
+      "light": "Claro",
+      "dark": "Oscuro"
+    },
+    "language": {
+      "title": "Idioma"
+    },
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "saved": "Guardado"
+  }
+}
