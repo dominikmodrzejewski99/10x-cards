@@ -1,3 +1,4 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, computed, input, output, signal, InputSignal, OutputEmitterRef, Signal, WritableSignal, OnDestroy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
@@ -22,7 +23,7 @@ export interface ReorderEvent {
   imports: [
     FormsModule,
     NgxSkeletonLoaderModule
-  ],
+  , TranslocoDirective],
   templateUrl: './flashcard-table.component.html',
   styleUrls: ['./flashcard-table.component.scss']
 })

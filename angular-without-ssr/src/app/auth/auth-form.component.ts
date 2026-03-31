@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, signal, InputSignal, OutputEmitterRef, WritableSignal, Signal, effect } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { input, output } from '@angular/core';
 import { AuthStore } from './store';
 import { AuthService } from './auth.service';
@@ -9,7 +10,7 @@ import { emailExistsValidator } from './validators/email-exists.validator';
 @Component({
   selector: 'app-auth-form',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, RouterModule],
+  imports: [ReactiveFormsModule, RouterModule, TranslocoDirective],
   templateUrl: './auth-form.component.html',
   styleUrls: ['./auth-form.component.scss']
 })

@@ -1,16 +1,17 @@
+<ng-container *transloco="let t; prefix: 'quiz.config'">
 <div class="quiz-config">
   <div class="quiz-config__top-bar">
-    <button class="quiz-config__back-btn" (click)="onGoBack()" title="Wróć" aria-label="Wróć do zestawu">
+    <button class="quiz-config__back-btn" (click)="onGoBack()" [title]="t('back')" [attr.aria-label]="t('backAriaLabel')">
       <i class="pi pi-arrow-left"></i>
     </button>
     <div>
-      <h1 class="quiz-config__title">Test: {{ setNameSignal() }}</h1>
-      <p class="quiz-config__subtitle">{{ cardCountSignal() }} fiszek w zestawie</p>
+      <h1 class="quiz-config__title">{{ t('title', { setName: setNameSignal() }) }}</h1>
+      <p class="quiz-config__subtitle">{{ t('subtitle', { count: cardCountSignal() }) }}</p>
     </div>
   </div>
 
   <div class="quiz-config__section">
-    <label class="quiz-config__label">Liczba pytań</label>
+    <label class="quiz-config__label">{{ t('questionCount') }}</label>
     <div class="quiz-config__count-row">
       <input
         type="number"
@@ -26,13 +27,13 @@
           class="quiz-config__check-input"
           [checked]="selectedCountSignal() === 'all'"
           (change)="toggleAll()" />
-        <span class="quiz-config__check-text">Wszystkie</span>
+        <span class="quiz-config__check-text">{{ t('all') }}</span>
       </label>
     </div>
   </div>
 
   <div class="quiz-config__section">
-    <label class="quiz-config__label">Typy pytań</label>
+    <label class="quiz-config__label">{{ t('questionTypes') }}</label>
     <div class="quiz-config__checkboxes">
       <label class="quiz-config__check-item">
         <input
@@ -40,7 +41,7 @@
           class="quiz-config__check-input"
           [checked]="writtenEnabledSignal()"
           (change)="writtenEnabledSignal.set(!writtenEnabledSignal())" />
-        <span class="quiz-config__check-text">Wpisywanie odpowiedzi</span>
+        <span class="quiz-config__check-text">{{ t('written') }}</span>
       </label>
       <label class="quiz-config__check-item">
         <input
@@ -48,7 +49,7 @@
           class="quiz-config__check-input"
           [checked]="multipleChoiceEnabledSignal()"
           (change)="multipleChoiceEnabledSignal.set(!multipleChoiceEnabledSignal())" />
-        <span class="quiz-config__check-text">Wielokrotny wybór</span>
+        <span class="quiz-config__check-text">{{ t('multipleChoice') }}</span>
       </label>
       <label class="quiz-config__check-item">
         <input
@@ -56,16 +57,16 @@
           class="quiz-config__check-input"
           [checked]="trueFalseEnabledSignal()"
           (change)="trueFalseEnabledSignal.set(!trueFalseEnabledSignal())" />
-        <span class="quiz-config__check-text">Prawda / Fałsz</span>
+        <span class="quiz-config__check-text">{{ t('trueFalse') }}</span>
       </label>
     </div>
     @if (!isValid) {
-      <small class="quiz-config__error">Wybierz co najmniej jeden typ pytania</small>
+      <small class="quiz-config__error">{{ t('validationError') }}</small>
     }
   </div>
 
   <div class="quiz-config__section">
-    <label class="quiz-config__label">Kierunek</label>
+    <label class="quiz-config__label">{{ t('direction') }}</label>
     <div class="quiz-config__radios">
       <label class="quiz-config__check-item">
         <input
@@ -74,7 +75,7 @@
           class="quiz-config__check-input"
           [checked]="!reversedSignal()"
           (change)="reversedSignal.set(false)" />
-        <span class="quiz-config__check-text">Przód → Tył</span>
+        <span class="quiz-config__check-text">{{ t('frontToBack') }}</span>
       </label>
       <label class="quiz-config__check-item">
         <input
@@ -83,7 +84,7 @@
           class="quiz-config__check-input"
           [checked]="reversedSignal()"
           (change)="reversedSignal.set(true)" />
-        <span class="quiz-config__check-text">Tył → Przód</span>
+        <span class="quiz-config__check-text">{{ t('backToFront') }}</span>
       </label>
     </div>
   </div>
@@ -93,7 +94,9 @@
       class="quiz-config__btn quiz-config__btn--primary"
       [disabled]="!isValid"
       (click)="onStart()">
-      <i class="pi pi-play"></i> Rozpocznij test
+      <i class="pi pi-play"></i> {{ t('start') }}
     </button>
   </div>
 </div>
+
+</ng-container>

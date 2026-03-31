@@ -1,3 +1,4 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, ChangeDetectionStrategy, signal, computed, WritableSignal, Signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -141,7 +142,7 @@ const ARTICLES: LearningArticle[] = [
 
 @Component({
   selector: 'app-learning-guide',
-  imports: [RouterModule],
+  imports: [RouterModule, TranslocoDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './learning-guide.component.html',
   styleUrls: ['./learning-guide.component.scss']

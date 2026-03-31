@@ -1,9 +1,10 @@
 import { Component, ChangeDetectionStrategy, input, output, signal, effect } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-review-reminder',
-  imports: [DialogModule],
+  imports: [DialogModule, TranslocoDirective],
   templateUrl: './review-reminder.component.html',
   styleUrls: ['./review-reminder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

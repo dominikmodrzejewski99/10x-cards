@@ -1,3 +1,4 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, OnInit, OnDestroy, signal, inject, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogModule } from 'primeng/dialog';
@@ -50,7 +51,7 @@ interface FlashcardListState {
     FlashcardFormComponent,
     ImportModalComponent,
     RouterModule
-  ],
+  , TranslocoDirective],
   providers: [MessageService, ConfirmationService],
   templateUrl: './flashcard-list.component.html',
   styleUrls: ['./flashcard-list.component.scss'],

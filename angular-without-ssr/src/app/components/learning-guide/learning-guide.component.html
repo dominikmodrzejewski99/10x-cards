@@ -1,13 +1,13 @@
+<ng-container *transloco="let t; prefix: 'learningGuide'">
 <div class="guide">
   <!-- Header -->
   <header class="guide__header">
     <div class="guide__header-icon">
       <i class="pi pi-lightbulb"></i>
     </div>
-    <h1 class="guide__title">Poradnik uczenia się</h1>
+    <h1 class="guide__title">{{ t('title') }}</h1>
     <p class="guide__subtitle">
-      Poznaj sprawdzone, naukowo potwierdzone techniki skutecznej nauki.
-      Wykorzystaj je razem z fiszkami, żeby uczyć się szybciej i zapamiętywać na dłużej.
+      {{ t('subtitle') }}
     </p>
   </header>
 
@@ -15,12 +15,12 @@
   <div class="guide__actions">
     @if (expandedCountSignal() < articles.length) {
       <button class="guide__action-btn" (click)="expandAll()">
-        <i class="pi pi-angle-double-down"></i> Rozwiń wszystkie
+        <i class="pi pi-angle-double-down"></i> {{ t('expandAll') }}
       </button>
     }
     @if (expandedCountSignal() > 0) {
       <button class="guide__action-btn" (click)="collapseAll()">
-        <i class="pi pi-angle-double-up"></i> Zwiń wszystkie
+        <i class="pi pi-angle-double-up"></i> {{ t('collapseAll') }}
       </button>
     }
   </div>
@@ -60,11 +60,11 @@
             <!-- ============ CHART: Spaced Repetition Timeline ============ -->
             @if (article.id === 'spaced-repetition') {
               <div class="chart chart--timeline" aria-label="Rosnące odstępy między powtórkami">
-                <div class="chart__label">Jak rosną odstępy między powtórkami:</div>
+                <div class="chart__label">{{ t('charts.spacedRepetitionLabel') }}</div>
                 <div class="chart__repetition-img">
                   <img
                     src="assets/images/spaced-repetition-chart.jpg"
-                    alt="Wykres pokazujący jak powtórki pomagają utrzymać zapamiętane informacje na wysokim poziomie"
+                    [alt]="t('charts.spacedRepetitionImgAlt')"
                     class="chart__repetition-img-el"
                     loading="lazy"
                   />
@@ -75,31 +75,31 @@
             <!-- ============ CHART: Active Recall Comparison Bars ============ -->
             @if (article.id === 'active-recall') {
               <div class="chart chart--bars" aria-label="Porównanie skuteczności metod nauki">
-                <div class="chart__label">Skuteczność metod nauki (% zapamiętanego materiału po tygodniu):</div>
+                <div class="chart__label">{{ t('charts.activeRecallLabel') }}</div>
                 <div class="chart__bars">
                   <div class="chart__bar-row">
-                    <div class="chart__bar-name">Ponowne czytanie</div>
+                    <div class="chart__bar-name">{{ t('charts.reReading') }}</div>
                     <div class="chart__bar-track">
                       <div class="chart__bar-fill chart__bar-fill--gray" style="--bar-target:25%"></div>
                     </div>
                     <div class="chart__bar-val">25%</div>
                   </div>
                   <div class="chart__bar-row">
-                    <div class="chart__bar-name">Podkreślanie</div>
+                    <div class="chart__bar-name">{{ t('charts.highlighting') }}</div>
                     <div class="chart__bar-track">
                       <div class="chart__bar-fill chart__bar-fill--orange" style="--bar-target:35%"></div>
                     </div>
                     <div class="chart__bar-val">35%</div>
                   </div>
                   <div class="chart__bar-row">
-                    <div class="chart__bar-name">Aktywne przywoływanie</div>
+                    <div class="chart__bar-name">{{ t('charts.activeRecalling') }}</div>
                     <div class="chart__bar-track">
                       <div class="chart__bar-fill chart__bar-fill--purple" style="--bar-target:68%"></div>
                     </div>
                     <div class="chart__bar-val">68%</div>
                   </div>
                   <div class="chart__bar-row">
-                    <div class="chart__bar-name">Przywoływanie + powtórki</div>
+                    <div class="chart__bar-name">{{ t('charts.recallAndRepetition') }}</div>
                     <div class="chart__bar-track">
                       <div class="chart__bar-fill chart__bar-fill--green" style="--bar-target:92%"></div>
                     </div>
@@ -113,14 +113,14 @@
             @if (article.id === 'forgetting-curve') {
               <div class="chart chart--forgetting" aria-label="Krzywa zapominania Ebbinghausa">
                 <div class="chart__toggle-row">
-                  <div class="chart__label">Retencja pamięci w czasie:</div>
+                  <div class="chart__label">{{ t('charts.forgettingCurveLabel') }}</div>
                   <button
                     class="chart__toggle-btn"
                     [class.chart__toggle-btn--active]="showRepetitionsSignal()"
                     (click)="toggleRepetitions()"
                   >
                     <i class="pi" [class.pi-eye]="!showRepetitionsSignal()" [class.pi-eye-slash]="showRepetitionsSignal()"></i>
-                    {{ showRepetitionsSignal() ? 'Ukryj powtórki' : 'Pokaż z powtórkami' }}
+                    {{ showRepetitionsSignal() ? t('charts.hideRepetitions') : t('charts.showRepetitions') }}
                   </button>
                 </div>
                 <svg viewBox="0 0 520 290" class="chart__svg" role="img" aria-label="Wykres krzywej zapominania">
@@ -147,7 +147,7 @@
                   <text x="353" y="265" text-anchor="middle" class="chart__axis-text">20</text>
                   <text x="427" y="265" text-anchor="middle" class="chart__axis-text">25</text>
                   <text x="500" y="265" text-anchor="middle" class="chart__axis-text">30</text>
-                  <text x="280" y="284" text-anchor="middle" class="chart__axis-label">Dni</text>
+                  <text x="280" y="284" text-anchor="middle" class="chart__axis-label">{{ t('charts.days') }}</text>
 
                   <!-- Without review curve -->
                   <path
@@ -224,12 +224,12 @@
                 </svg>
                 <div class="chart__legend">
                   <span class="chart__legend-item">
-                    <span class="chart__legend-dot chart__legend-dot--red"></span> Bez powtórek
+                    <span class="chart__legend-dot chart__legend-dot--red"></span> {{ t('charts.withoutReviews') }}
                   </span>
                   @if (showRepetitionsSignal()) {
                     <span class="chart__legend-item">
-                      <span class="chart__legend-dot chart__legend-dot--green"></span> Z powtórkami
-                      <span class="chart__legend-dot chart__legend-dot--green-circle"></span> Moment powtórki
+                      <span class="chart__legend-dot chart__legend-dot--green"></span> {{ t('charts.withReviews') }}
+                      <span class="chart__legend-dot chart__legend-dot--green-circle"></span> {{ t('charts.reviewMoment') }}
                     </span>
                   }
                 </div>
@@ -239,13 +239,13 @@
             <!-- ============ CHART: Feynman Technique Steps ============ -->
             @if (article.id === 'feynman-technique') {
               <div class="chart chart--feynman" aria-label="4 kroki techniki Feynmana">
-                <div class="chart__label">4 kroki techniki Feynmana:</div>
+                <div class="chart__label">{{ t('charts.feynmanLabel') }}</div>
                 <div class="chart__feynman-steps">
                   <div class="chart__feynman-step">
                     <div class="chart__feynman-num">1</div>
                     <div class="chart__feynman-content">
-                      <div class="chart__feynman-title">Wybierz temat</div>
-                      <div class="chart__feynman-desc">Zapisz wszystko, co wiesz</div>
+                      <div class="chart__feynman-title">{{ t('charts.feynmanStep1') }}</div>
+                      <div class="chart__feynman-desc">{{ t('charts.feynmanStep1Desc') }}</div>
                     </div>
                   </div>
                   <div class="chart__feynman-arrow">
@@ -254,8 +254,8 @@
                   <div class="chart__feynman-step">
                     <div class="chart__feynman-num">2</div>
                     <div class="chart__feynman-content">
-                      <div class="chart__feynman-title">Wyjaśnij prosto</div>
-                      <div class="chart__feynman-desc">Jakbyś tłumaczył to dziecku</div>
+                      <div class="chart__feynman-title">{{ t('charts.feynmanStep2') }}</div>
+                      <div class="chart__feynman-desc">{{ t('charts.feynmanStep2Desc') }}</div>
                     </div>
                   </div>
                   <div class="chart__feynman-arrow">
@@ -264,8 +264,8 @@
                   <div class="chart__feynman-step">
                     <div class="chart__feynman-num">3</div>
                     <div class="chart__feynman-content">
-                      <div class="chart__feynman-title">Znajdź luki</div>
-                      <div class="chart__feynman-desc">Wróć do źródeł i uzupełnij braki</div>
+                      <div class="chart__feynman-title">{{ t('charts.feynmanStep3') }}</div>
+                      <div class="chart__feynman-desc">{{ t('charts.feynmanStep3Desc') }}</div>
                     </div>
                   </div>
                   <div class="chart__feynman-arrow chart__feynman-arrow--loop">
@@ -274,8 +274,8 @@
                   <div class="chart__feynman-step">
                     <div class="chart__feynman-num">4</div>
                     <div class="chart__feynman-content">
-                      <div class="chart__feynman-title">Uprość</div>
-                      <div class="chart__feynman-desc">Udoskonal wyjaśnienie i powtórz</div>
+                      <div class="chart__feynman-title">{{ t('charts.feynmanStep4') }}</div>
+                      <div class="chart__feynman-desc">{{ t('charts.feynmanStep4Desc') }}</div>
                     </div>
                   </div>
                 </div>
@@ -285,13 +285,13 @@
             <!-- ============ CHART: Dunning-Kruger Curve ============ -->
             @if (article.id === 'dunning-kruger') {
               <div class="chart chart--dk" aria-label="Wykres efektu Dunninga-Krugera">
-                <div class="chart__label">Pewność siebie vs. kompetencja:</div>
+                <div class="chart__label">{{ t('charts.dkLabel') }}</div>
                 <svg viewBox="0 0 520 310" class="chart__svg" role="img" aria-label="Krzywa Dunninga-Krugera">
                   <!-- Axes -->
                   <line x1="50" y1="20" x2="50" y2="250" stroke="#e5e7eb" stroke-width="1"/>
                   <line x1="50" y1="250" x2="500" y2="250" stroke="#e5e7eb" stroke-width="1"/>
-                  <text x="25" y="140" text-anchor="middle" class="chart__axis-label" transform="rotate(-90,25,140)">Pewność siebie</text>
-                  <text x="280" y="278" text-anchor="middle" class="chart__axis-label">Doświadczenie / Wiedza</text>
+                  <text x="25" y="140" text-anchor="middle" class="chart__axis-label" transform="rotate(-90,25,140)">{{ t('charts.dkConfidence') }}</text>
+                  <text x="280" y="278" text-anchor="middle" class="chart__axis-label">{{ t('charts.dkExperience') }}</text>
 
                   <!-- Area under curve -->
                   <path
@@ -323,9 +323,9 @@
                   <circle cx="490" cy="70" r="6" class="chart__dk-dot" [class.chart__dk-dot--active]="dkActiveStageSignal() === 4" (mouseenter)="setDkStage(4)" (mouseleave)="setDkStage(null)" (click)="setDkStage(dkActiveStageSignal() === 4 ? null : 4)"/>
 
                   <!-- Stage labels on curve -->
-                  <text x="140" y="22" text-anchor="middle" class="chart__dk-label">"Szczyt pewności"</text>
-                  <text x="260" y="240" text-anchor="middle" class="chart__dk-label">Dolina rozpaczy</text>
-                  <text x="490" y="60" text-anchor="middle" class="chart__dk-label">Ekspert</text>
+                  <text x="140" y="22" text-anchor="middle" class="chart__dk-label">{{ t('charts.dkPeak') }}</text>
+                  <text x="260" y="240" text-anchor="middle" class="chart__dk-label">{{ t('charts.dkValley') }}</text>
+                  <text x="490" y="60" text-anchor="middle" class="chart__dk-label">{{ t('charts.dkExpert') }}</text>
 
                   <defs>
                     <linearGradient id="dk-gradient" x1="0" y1="0" x2="0" y2="1">
@@ -360,13 +360,13 @@
             <!-- ============ CHART: Pomodoro Blocks ============ -->
             @if (article.id === 'pomodoro') {
               <div class="chart chart--pomo" aria-label="Cykl Pomodoro">
-                <div class="chart__label">Jeden cykl Pomodoro (ok. 2,5 godziny):</div>
+                <div class="chart__label">{{ t('charts.pomodoroLabel') }}</div>
                 <div class="chart__pomo-cycle">
                   @for (block of [1,2,3,4]; track block) {
                     <div class="chart__pomo-group">
                       <div class="chart__pomo-block chart__pomo-block--work">
                         <span class="chart__pomo-time">25 min</span>
-                        <span class="chart__pomo-type">Nauka</span>
+                        <span class="chart__pomo-type">{{ t('charts.studyLabel') }}</span>
                       </div>
                       @if (block < 4) {
                         <div class="chart__pomo-block chart__pomo-block--break">
@@ -377,21 +377,21 @@
                   }
                   <div class="chart__pomo-block chart__pomo-block--long">
                     <span class="chart__pomo-time">15-30 min</span>
-                    <span class="chart__pomo-type">Długa przerwa</span>
+                    <span class="chart__pomo-type">{{ t('charts.longBreak') }}</span>
                   </div>
                 </div>
                 <div class="chart__pomo-summary">
                   <div class="chart__pomo-stat">
                     <span class="chart__pomo-stat-value">100 min</span>
-                    <span class="chart__pomo-stat-label">Skupionej nauki</span>
+                    <span class="chart__pomo-stat-label">{{ t('charts.focusedStudy') }}</span>
                   </div>
                   <div class="chart__pomo-stat">
                     <span class="chart__pomo-stat-value">4</span>
-                    <span class="chart__pomo-stat-label">Sesje</span>
+                    <span class="chart__pomo-stat-label">{{ t('charts.sessions') }}</span>
                   </div>
                   <div class="chart__pomo-stat">
                     <span class="chart__pomo-stat-value">30-45 min</span>
-                    <span class="chart__pomo-stat-label">Przerw</span>
+                    <span class="chart__pomo-stat-label">{{ t('charts.breaks') }}</span>
                   </div>
                 </div>
               </div>
@@ -400,11 +400,11 @@
             <!-- ============ CHART: Interleaving Comparison ============ -->
             @if (article.id === 'interleaving') {
               <div class="chart chart--interleaving" aria-label="Porównanie blokowania i przeplatania">
-                <div class="chart__label">Blokowanie vs. przeplatanie tematów:</div>
+                <div class="chart__label">{{ t('charts.interleavingLabel') }}</div>
                 <div class="chart__interleaving-compare">
                   <div class="chart__interleaving-col">
                     <div class="chart__interleaving-heading chart__interleaving-heading--block">
-                      <i class="pi pi-minus"></i> Blokowanie
+                      <i class="pi pi-minus"></i> {{ t('charts.blocking') }}
                     </div>
                     <div class="chart__interleaving-blocks">
                       <div class="chart__interleaving-block" style="--il-color: #3b82f6">A</div>
@@ -417,12 +417,12 @@
                       <div class="chart__interleaving-block" style="--il-color: #f59e0b">C</div>
                       <div class="chart__interleaving-block" style="--il-color: #f59e0b">C</div>
                     </div>
-                    <div class="chart__interleaving-verdict chart__interleaving-verdict--weak">Łatwiejsze, ale słabsze zapamiętywanie</div>
+                    <div class="chart__interleaving-verdict chart__interleaving-verdict--weak">{{ t('charts.blockingVerdict') }}</div>
                   </div>
                   <div class="chart__interleaving-vs">vs</div>
                   <div class="chart__interleaving-col">
                     <div class="chart__interleaving-heading chart__interleaving-heading--inter">
-                      <i class="pi pi-arrows-h"></i> Przeplatanie
+                      <i class="pi pi-arrows-h"></i> {{ t('charts.interleaving') }}
                     </div>
                     <div class="chart__interleaving-blocks">
                       <div class="chart__interleaving-block" style="--il-color: #3b82f6">A</div>
@@ -435,7 +435,7 @@
                       <div class="chart__interleaving-block" style="--il-color: #3b82f6">A</div>
                       <div class="chart__interleaving-block" style="--il-color: #8b5cf6">B</div>
                     </div>
-                    <div class="chart__interleaving-verdict chart__interleaving-verdict--strong">Trudniejsze, ale trwalsze efekty</div>
+                    <div class="chart__interleaving-verdict chart__interleaving-verdict--strong">{{ t('charts.interleavingVerdict') }}</div>
                   </div>
                 </div>
               </div>
@@ -444,28 +444,28 @@
             <!-- ============ CHART: Growth Mindset ============ -->
             @if (article.id === 'growth-mindset') {
               <div class="chart chart--mindset" aria-label="Nastawienie stałe vs. na rozwój">
-                <div class="chart__label">Dwa typy nastawienia:</div>
+                <div class="chart__label">{{ t('charts.mindsetLabel') }}</div>
                 <div class="chart__mindset-compare">
                   <div class="chart__mindset-col chart__mindset-col--fixed">
                     <div class="chart__mindset-heading">
-                      <i class="pi pi-lock"></i> Stałe nastawienie
+                      <i class="pi pi-lock"></i> {{ t('charts.fixedMindset') }}
                     </div>
                     <ul class="chart__mindset-list">
-                      <li><i class="pi pi-times"></i> „Nie jestem w stanie tego zrozumieć"</li>
-                      <li><i class="pi pi-times"></i> Błąd = porażka</li>
-                      <li><i class="pi pi-times"></i> Unikam wyzwań</li>
-                      <li><i class="pi pi-times"></i> Wysiłek jest bezcelowy</li>
+                      <li><i class="pi pi-times"></i> {{ t('charts.fixedItem1') }}</li>
+                      <li><i class="pi pi-times"></i> {{ t('charts.fixedItem2') }}</li>
+                      <li><i class="pi pi-times"></i> {{ t('charts.fixedItem3') }}</li>
+                      <li><i class="pi pi-times"></i> {{ t('charts.fixedItem4') }}</li>
                     </ul>
                   </div>
                   <div class="chart__mindset-col chart__mindset-col--growth">
                     <div class="chart__mindset-heading">
-                      <i class="pi pi-expand"></i> Nastawienie na rozwój
+                      <i class="pi pi-expand"></i> {{ t('charts.growthMindset') }}
                     </div>
                     <ul class="chart__mindset-list">
-                      <li><i class="pi pi-check"></i> „Jeszcze się tego nie nauczyłem"</li>
-                      <li><i class="pi pi-check"></i> Błąd = lekcja</li>
-                      <li><i class="pi pi-check"></i> Szukam wyzwań</li>
-                      <li><i class="pi pi-check"></i> Wysiłek wzmacnia mózg</li>
+                      <li><i class="pi pi-check"></i> {{ t('charts.growthItem1') }}</li>
+                      <li><i class="pi pi-check"></i> {{ t('charts.growthItem2') }}</li>
+                      <li><i class="pi pi-check"></i> {{ t('charts.growthItem3') }}</li>
+                      <li><i class="pi pi-check"></i> {{ t('charts.growthItem4') }}</li>
                     </ul>
                   </div>
                 </div>
@@ -477,7 +477,7 @@
                 <i class="pi pi-star-fill"></i>
               </div>
               <div class="guide__card-takeaway-content">
-                <div class="guide__card-takeaway-label">Kluczowy wniosek</div>
+                <div class="guide__card-takeaway-label">{{ t('keyTakeaway') }}</div>
                 <p class="guide__card-takeaway-text">{{ article.keyTakeaway }}</p>
               </div>
             </div>
@@ -489,14 +489,16 @@
 
   <!-- Footer CTA -->
   <div class="guide__footer">
-    <p class="guide__footer-text">Gotowy, żeby wykorzystać te techniki w praktyce?</p>
+    <p class="guide__footer-text">{{ t('footerText') }}</p>
     <div class="guide__footer-actions">
       <a routerLink="/study" class="guide__footer-cta">
-        <i class="pi pi-play-circle"></i> Rozpocznij naukę
+        <i class="pi pi-play-circle"></i> {{ t('startStudy') }}
       </a>
       <a routerLink="/generate" class="guide__footer-cta guide__footer-cta--secondary">
-        <i class="pi pi-microchip-ai"></i> Generuj fiszki z AI
+        <i class="pi pi-microchip-ai"></i> {{ t('generateAi') }}
       </a>
     </div>
   </div>
 </div>
+
+</ng-container>

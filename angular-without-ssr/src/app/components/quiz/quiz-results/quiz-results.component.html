@@ -1,3 +1,4 @@
+<ng-container *transloco="let t; prefix: 'quiz.results'">
 <div class="quiz-results">
   <!-- Header: Grade text -->
   <div class="quiz-results__header">
@@ -9,7 +10,7 @@
   <!-- Stats row: Ring + Correct/Incorrect + Time -->
   <div class="quiz-results__stats">
     <div class="quiz-results__ring-section">
-      <div class="quiz-results__time-label">Twój czas: {{ totalTimeTextSignal() }}</div>
+      <div class="quiz-results__time-label">{{ t('yourTime', { time: totalTimeTextSignal() }) }}</div>
       <div class="quiz-results__ring-row">
         <div class="quiz-results__ring">
           <svg viewBox="0 0 120 120" class="quiz-results__ring-svg">
@@ -32,15 +33,15 @@
 
         <div class="quiz-results__counts">
           <div class="quiz-results__count-row">
-            <span class="quiz-results__count-label quiz-results__count-label--correct">Poprawne</span>
+            <span class="quiz-results__count-label quiz-results__count-label--correct">{{ t('correct') }}</span>
             <span class="quiz-results__count-badge quiz-results__count-badge--correct">{{ correctCountSignal() }}</span>
           </div>
           <div class="quiz-results__count-row">
-            <span class="quiz-results__count-label quiz-results__count-label--wrong">Błędne</span>
+            <span class="quiz-results__count-label quiz-results__count-label--wrong">{{ t('wrong') }}</span>
             <span class="quiz-results__count-badge quiz-results__count-badge--wrong">{{ incorrectCountSignal() }}</span>
           </div>
           <div class="quiz-results__count-row">
-            <span class="quiz-results__count-label quiz-results__count-label--skipped">Pominięte</span>
+            <span class="quiz-results__count-label quiz-results__count-label--skipped">{{ t('skipped') }}</span>
             <span class="quiz-results__count-badge quiz-results__count-badge--skipped">{{ skippedCountSignal() }}</span>
           </div>
         </div>
@@ -49,7 +50,7 @@
 
     <!-- Next steps -->
     <div class="quiz-results__next-steps">
-      <h3 class="quiz-results__section-title">Co dalej?</h3>
+      <h3 class="quiz-results__section-title">{{ t('whatNext') }}</h3>
       <div class="quiz-results__action-cards">
         @if (hasWrongAnswersSignal()) {
           <button class="quiz-results__action-card" (click)="onRetryWrong()">
@@ -57,8 +58,8 @@
               <i class="pi pi-refresh"></i>
             </div>
             <div class="quiz-results__action-card-text">
-              <strong>Powtórz błędne</strong>
-              <span>Przećwicz {{ incorrectCountSignal() }} pytań, w których się pomyliłeś</span>
+              <strong>{{ t('retryWrong') }}</strong>
+              <span>{{ t('retryWrongDesc', { count: incorrectCountSignal() }) }}</span>
             </div>
             <i class="pi pi-chevron-right"></i>
           </button>
@@ -70,8 +71,8 @@
               <i class="pi pi-star-fill"></i>
             </div>
             <div class="quiz-results__action-card-text">
-              <strong>Powtórz wyróżnione</strong>
-              <span>Przećwicz {{ starredCountSignal() }} wyróżnionych pytań</span>
+              <strong>{{ t('retryStarred') }}</strong>
+              <span>{{ t('retryStarredDesc', { count: starredCountSignal() }) }}</span>
             </div>
             <i class="pi pi-chevron-right"></i>
           </button>
@@ -82,8 +83,8 @@
             <i class="pi pi-replay"></i>
           </div>
           <div class="quiz-results__action-card-text">
-            <strong>Powtórz cały test</strong>
-            <span>Rozwiąż test jeszcze raz z losowymi pytaniami</span>
+            <strong>{{ t('retryAll') }}</strong>
+            <span>{{ t('retryAllDesc') }}</span>
           </div>
           <i class="pi pi-chevron-right"></i>
         </button>
@@ -93,8 +94,8 @@
             <i class="pi pi-book"></i>
           </div>
           <div class="quiz-results__action-card-text">
-            <strong>Ucz się tych fiszek</strong>
-            <span>Powtarzaj z algorytmem inteligentnych powtórek</span>
+            <strong>{{ t('studyCards') }}</strong>
+            <span>{{ t('studyCardsDesc') }}</span>
           </div>
           <i class="pi pi-chevron-right"></i>
         </a>
@@ -104,8 +105,8 @@
             <i class="pi pi-arrow-left"></i>
           </div>
           <div class="quiz-results__action-card-text">
-            <strong>Wróć do zestawu</strong>
-            <span>Przejrzyj fiszki lub naucz się nowych</span>
+            <strong>{{ t('backToSet') }}</strong>
+            <span>{{ t('backToSetDesc') }}</span>
           </div>
           <i class="pi pi-chevron-right"></i>
         </button>
@@ -117,7 +118,7 @@
   @if (slowestAnswersSignal().length > 0) {
     <div class="quiz-results__slowest">
       <h3 class="quiz-results__section-title">
-        <i class="pi pi-clock"></i> Najdłużej zastanawiałeś się nad
+        <i class="pi pi-clock"></i> {{ t('slowest') }}
       </h3>
       <div class="quiz-results__slowest-list">
         @for (answer of slowestAnswersSignal(); track answer.questionId) {
@@ -136,7 +137,7 @@
       class="quiz-results__answers-toggle"
       (click)="toggleAllAnswersExpanded()">
       <span class="quiz-results__answers-toggle-text">
-        Twoje odpowiedzi
+        {{ t('yourAnswers') }}
       </span>
       <i class="pi" [class.pi-chevron-down]="!allAnswersExpandedSignal()" [class.pi-chevron-up]="allAnswersExpandedSignal()"></i>
     </button>
@@ -160,7 +161,7 @@
                 </span>
               } @else {
                 <span class="quiz-results__answer-badge quiz-results__answer-badge--wrong">
-                  <i class="pi pi-times"></i> {{ answer.userAnswer || '(brak)' }}
+                  <i class="pi pi-times"></i> {{ answer.userAnswer || t('noAnswer') }}
                 </span>
                 <span class="quiz-results__answer-correct">
                   <i class="pi pi-check"></i> {{ answer.correctAnswer }}
@@ -172,9 +173,9 @@
               [class.quiz-results__mark-btn--active]="isStarred(answer.questionId)"
               (click)="toggleStarred(answer.questionId)">
               @if (isStarred(answer.questionId)) {
-                <i class="pi pi-star-fill"></i> Wyróżnione
+                <i class="pi pi-star-fill"></i> {{ t('starred') }}
               } @else {
-                <i class="pi pi-star"></i> Do powtórki
+                <i class="pi pi-star"></i> {{ t('toReview') }}
               }
             </button>
           </div>
@@ -183,3 +184,5 @@
     }
   </div>
 </div>
+
+</ng-container>

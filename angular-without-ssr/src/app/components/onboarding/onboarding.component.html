@@ -1,3 +1,4 @@
+<ng-container *transloco="let t; prefix: 'onboarding'">
 <p-dialog
   [visible]="visible()"
   (visibleChange)="skip()"
@@ -48,23 +49,25 @@
     <div class="ob__actions">
       @if (isFirst) {
         <button class="ob__btn ob__btn--ghost" (click)="skip()">
-          Pomiń
+          {{ t('skip') }}
         </button>
       } @else {
         <button class="ob__btn ob__btn--ghost" (click)="prev()">
-          <i class="pi pi-arrow-left"></i> Wstecz
+          <i class="pi pi-arrow-left"></i> {{ t('back') }}
         </button>
       }
 
       @if (isLast) {
         <button class="ob__btn ob__btn--primary" (click)="finish()">
-          Zacznij naukę <i class="pi pi-arrow-right"></i>
+          {{ t('start') }} <i class="pi pi-arrow-right"></i>
         </button>
       } @else {
         <button class="ob__btn ob__btn--primary" (click)="next()">
-          Dalej <i class="pi pi-arrow-right"></i>
+          {{ t('next') }} <i class="pi pi-arrow-right"></i>
         </button>
       }
     </div>
   </div>
 </p-dialog>
+
+</ng-container>

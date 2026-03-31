@@ -1,3 +1,4 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, ChangeDetectionStrategy, ViewEncapsulation, inject, signal, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -7,10 +8,10 @@ import { LanguageTestResultDTO } from '../../../types';
 @Component({
   selector: 'app-language-test-widget',
   standalone: true,
-  imports: [RouterModule, NgxSkeletonLoaderModule],
+  imports: [RouterModule, NgxSkeletonLoaderModule, TranslocoDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.Emulated,
-  template: `
+  template: `<ng-container *transloco="let t; prefix: 'languageTest.widget'">
     <div class="dash__card dash__card--test-widget">
       @if (loading()) {
         <div class="dash__test-cta">
@@ -26,12 +27,12 @@ import { LanguageTestResultDTO } from '../../../types';
             {{ r.percentage }}%
           </div>
           <div class="dash__test-info">
-            <strong>{{ getLevelLabel(r.level) }} — {{ r.percentage >= 60 ? 'Zdane!' : 'Nie zdane' }}</strong>
+            <strong>{{ getLevelLabel(r.level) }} — {{ r.percentage >= 60 ? t('passed') : t('failed') }}</strong>
             <span class="dash__test-date">{{ getRelativeDate(r.completed_at) }}</span>
           </div>
           <div class="dash__test-actions">
-            <a [routerLink]="['/language-test', r.level]" class="dash__test-btn">Powtórz</a>
-            <a routerLink="/language-test" class="dash__test-btn dash__test-btn--secondary">Inny test</a>
+            <a [routerLink]="['/language-test', r.level]" class="dash__test-btn">{{ t('retry') }}</a>
+            <a routerLink="/language-test" class="dash__test-btn dash__test-btn--secondary">{{ t('otherTest') }}</a>
           </div>
         </div>
       } @else {
@@ -40,14 +41,14 @@ import { LanguageTestResultDTO } from '../../../types';
             <i class="pi pi-check-square"></i>
           </div>
           <div class="dash__test-cta-body">
-            <div class="dash__test-cta-title">Nie znasz jeszcze swojego poziomu?</div>
-            <div class="dash__test-cta-desc">Sprawdź znajomość angielskiego na poziomie B1, B2 lub C1</div>
+            <div class="dash__test-cta-title">{{ t('dontKnowLevel') }}</div>
+            <div class="dash__test-cta-desc">{{ t('checkEnglish') }}</div>
           </div>
           <i class="pi pi-arrow-right dash__test-cta-arrow"></i>
         </a>
       }
     </div>
-  `,
+  </ng-container>`,
   styles: [`
     /* Language Test Widget */
     .dash__card--test-widget {

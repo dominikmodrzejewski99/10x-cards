@@ -1,3 +1,4 @@
+<ng-container *transloco="let t; prefix: 'dashboard'">
 <div class="dash" [attr.aria-busy]="loading()">
   @if (loading()) {
     <!-- Header: greeting + subtitle -->
@@ -67,7 +68,7 @@
       <i class="pi pi-exclamation-triangle dash__error-icon"></i>
       <p class="dash__error-text">{{ errorMessage() }}</p>
       <button class="dash__error-btn" (click)="loadData()">
-        <i class="pi pi-refresh"></i> Spróbuj ponownie
+        <i class="pi pi-refresh"></i> {{ t('retryButton') }}
       </button>
     </div>
   } @else {
@@ -77,10 +78,10 @@
       <div class="dash__anon-banner">
         <div class="dash__anon-icon"><i class="pi pi-info-circle"></i></div>
         <div class="dash__anon-body">
-          <strong>Tryb testowy</strong>
-          <span>Twoje dane nie zostaną zapisane. Załóż konto, aby zachować postępy.</span>
+          <strong>{{ t('anonBanner.title') }}</strong>
+          <span>{{ t('anonBanner.desc') }}</span>
         </div>
-        <a routerLink="/register" class="dash__anon-cta">Załóż konto</a>
+        <a routerLink="/register" class="dash__anon-cta">{{ t('anonBanner.cta') }}</a>
       </div>
     }
 
@@ -90,11 +91,15 @@
         <h1 class="dash__greeting">{{ greeting() }}</h1>
         <p class="dash__subtitle">
           @if (dueCount() > 0) {
-            Masz <strong>{{ dueCount() }}</strong> {{ dueCount() === 1 ? 'fiszkę' : 'fiszek' }} do powtórki
+            @if (dueCount() === 1) {
+              <span [innerHTML]="t('dueCardsSingular')"></span>
+            } @else {
+              <span [innerHTML]="t('dueCards', { count: dueCount() })"></span>
+            }
           } @else if (totalCards() > 0) {
-            Wszystko powtórzone — świetna robota!
+            {{ t('allReviewed') }}
           } @else {
-            Zacznij od stworzenia swoich pierwszych fiszek
+            {{ t('startCreating') }}
           }
         </p>
       </div>
@@ -103,30 +108,30 @@
     <!-- Onboarding (no sets yet) -->
     @if (sets().length === 0) {
       <section class="dash__empty">
-        <h3 class="dash__empty-title">Trzy kroki do efektywnej nauki</h3>
+        <h3 class="dash__empty-title">{{ t('onboarding.title') }}</h3>
 
         <div class="dash__onboarding">
           <a routerLink="/sets" [queryParams]="{create: 1}" class="dash__onboarding-step">
             <div class="dash__onboarding-num">1</div>
             <div class="dash__onboarding-body">
-              <strong>Utwórz zestaw</strong>
-              <span>Pogrupuj fiszki tematycznie — osobny zestaw na każdy przedmiot</span>
+              <strong>{{ t('onboarding.step1Title') }}</strong>
+              <span>{{ t('onboarding.step1Desc') }}</span>
             </div>
             <i class="pi pi-arrow-right dash__onboarding-arrow"></i>
           </a>
           <a routerLink="/sets" class="dash__onboarding-step">
             <div class="dash__onboarding-num">2</div>
             <div class="dash__onboarding-body">
-              <strong>Dodaj fiszki</strong>
-              <span>Twórz fiszki ręcznie lub skorzystaj z generatora AI</span>
+              <strong>{{ t('onboarding.step2Title') }}</strong>
+              <span>{{ t('onboarding.step2Desc') }}</span>
             </div>
             <i class="pi pi-arrow-right dash__onboarding-arrow"></i>
           </a>
           <a routerLink="/study" class="dash__onboarding-step">
             <div class="dash__onboarding-num">3</div>
             <div class="dash__onboarding-body">
-              <strong>Rozpocznij naukę</strong>
-              <span>Odwracaj karty, oceniaj się — algorytm zaplanuje powtórki</span>
+              <strong>{{ t('onboarding.step3Title') }}</strong>
+              <span>{{ t('onboarding.step3Desc') }}</span>
             </div>
             <i class="pi pi-arrow-right dash__onboarding-arrow"></i>
           </a>
@@ -140,16 +145,16 @@
         <a routerLink="/sets" class="dash__action">
           <div class="dash__action-icon dash__action-icon--blue"><i class="pi pi-folder"></i></div>
           <div class="dash__action-body">
-            <div class="dash__action-title">Moje zestawy</div>
-            <div class="dash__action-desc">{{ totalSets() }} {{ totalSets() === 1 ? 'zestaw' : 'zestawów' }}</div>
+            <div class="dash__action-title">{{ t('actions.mySets') }}</div>
+            <div class="dash__action-desc">{{ totalSets() === 1 ? t('actions.setsCountSingular') : t('actions.setsCount', { count: totalSets() }) }}</div>
           </div>
           <i class="pi pi-arrow-right dash__action-arrow"></i>
         </a>
         <a routerLink="/generate" class="dash__action">
           <div class="dash__action-icon dash__action-icon--purple"><i class="pi pi-microchip-ai"></i></div>
           <div class="dash__action-body">
-            <div class="dash__action-title">Generuj z AI</div>
-            <div class="dash__action-desc">Tekst → fiszki w sekundę</div>
+            <div class="dash__action-title">{{ t('actions.generateAi') }}</div>
+            <div class="dash__action-desc">{{ t('actions.generateAiDesc') }}</div>
           </div>
           <i class="pi pi-arrow-right dash__action-arrow"></i>
         </a>
@@ -157,8 +162,8 @@
           <a routerLink="/study" class="dash__action">
             <div class="dash__action-icon dash__action-icon--green"><i class="pi pi-graduation-cap"></i></div>
             <div class="dash__action-body">
-              <div class="dash__action-title">Nauka</div>
-              <div class="dash__action-desc">Następna powtórka: {{ formatDate(nextReviewDate()!) }}</div>
+              <div class="dash__action-title">{{ t('actions.study') }}</div>
+              <div class="dash__action-desc">{{ t('actions.nextReview', { date: formatDate(nextReviewDate()!) }) }}</div>
             </div>
             <i class="pi pi-arrow-right dash__action-arrow"></i>
           </a>
@@ -174,8 +179,8 @@
           <span class="dash__study-cta-badge">{{ dueCount() }}</span>
         </div>
         <div class="dash__study-cta-content">
-          <div class="dash__study-cta-title">Rozpocznij naukę</div>
-          <div class="dash__study-cta-desc">{{ dueCount() }} {{ dueCount() === 1 ? 'fiszka czeka' : 'fiszek czeka' }} na powtórkę</div>
+          <div class="dash__study-cta-title">{{ t('studyCta.title') }}</div>
+          <div class="dash__study-cta-desc">{{ dueCount() === 1 ? t('studyCta.descSingular') : t('studyCta.desc', { count: dueCount() }) }}</div>
         </div>
         <i class="pi pi-arrow-right dash__study-cta-arrow"></i>
       </a>
@@ -185,39 +190,39 @@
       <!-- Streak -->
       @if (currentStreak() > 0 || studiedToday()) {
         <!-- Active streak -->
-        <div class="dash__streak dash__streak--active" role="region" aria-label="Seria nauki">
+        <div class="dash__streak dash__streak--active" role="region" [attr.aria-label]="t('streak.ariaLabel')">
           <div class="dash__streak-icon">
             <i class="pi pi-bolt"></i>
           </div>
           <div class="dash__streak-main">
             <div class="dash__streak-count">{{ currentStreak() }}</div>
-            <div class="dash__streak-label">{{ currentStreak() === 1 ? 'dzień z rzędu' : 'dni z rzędu' }}</div>
+            <div class="dash__streak-label">{{ currentStreak() === 1 ? t('streak.dayInRow') : t('streak.daysInRow') }}</div>
           </div>
           @if (studiedToday()) {
             <span class="dash__streak-badge dash__streak-badge--done">
-              <i class="pi pi-check"></i> Dziś zaliczone!
+              <i class="pi pi-check"></i> {{ t('streak.doneToday') }}
             </span>
           } @else {
             <span class="dash__streak-badge dash__streak-badge--warn">
-              Ucz się dziś, żeby nie stracić serii!
+              {{ t('streak.keepStreak') }}
             </span>
           }
           @if (longestStreak() > currentStreak()) {
             <div class="dash__streak-best">
-              <span class="dash__streak-best-label">Rekord</span>
-              <span class="dash__streak-best-value">{{ longestStreak() }}<small> dni</small></span>
+              <span class="dash__streak-best-label">{{ t('streak.record') }}</span>
+              <span class="dash__streak-best-value">{{ longestStreak() }}<small> {{ t('streak.days') }}</small></span>
             </div>
           }
         </div>
       } @else {
         <!-- No streak — motivational prompt -->
-        <a routerLink="/study" class="dash__streak-start" role="region" aria-label="Rozpocznij serię">
+        <a routerLink="/study" class="dash__streak-start" role="region" [attr.aria-label]="t('streak.startAriaLabel')">
           <div class="dash__streak-start-icon">
             <i class="pi pi-bolt"></i>
           </div>
           <div class="dash__streak-start-body">
-            <div class="dash__streak-start-title">Rozpocznij swoją serię nauki</div>
-            <div class="dash__streak-start-desc">Ucz się codziennie i obserwuj, jak rośnie Twoja seria</div>
+            <div class="dash__streak-start-title">{{ t('streak.startTitle') }}</div>
+            <div class="dash__streak-start-desc">{{ t('streak.startDesc') }}</div>
           </div>
           <i class="pi pi-arrow-right dash__streak-start-arrow"></i>
         </a>
@@ -229,7 +234,7 @@
           <div class="dash__stat-icon dash__stat-icon--blue"><i class="pi pi-calendar-clock"></i></div>
           <div class="dash__stat-body">
             <div class="dash__stat-value">{{ dueCount() }}</div>
-            <div class="dash__stat-label">Do powtórki</div>
+            <div class="dash__stat-label">{{ t('stats.dueReview') }}</div>
           </div>
           <i class="pi pi-arrow-right dash__stat-arrow"></i>
         </a>
@@ -237,7 +242,7 @@
           <div class="dash__stat-icon dash__stat-icon--purple"><i class="pi pi-clone"></i></div>
           <div class="dash__stat-body">
             <div class="dash__stat-value">{{ totalCards() }}</div>
-            <div class="dash__stat-label">Fiszek</div>
+            <div class="dash__stat-label">{{ t('stats.cards') }}</div>
           </div>
           <i class="pi pi-arrow-right dash__stat-arrow"></i>
         </a>
@@ -246,35 +251,35 @@
 
     <!-- Card Status Breakdown -->
     @if (totalCards() > 0) {
-      <section class="dash__breakdown" role="region" aria-label="Status fiszek">
+      <section class="dash__breakdown" role="region" [attr.aria-label]="t('breakdown.ariaLabel')">
         <div class="dash__breakdown-header">
-          <h2 class="dash__section-title">Status fiszek</h2>
+          <h2 class="dash__section-title">{{ t('breakdown.title') }}</h2>
         </div>
 
         <!-- Stacked bar -->
-        <div class="dash__breakdown-bar" role="progressbar" aria-label="Rozkład statusów fiszek">
+        <div class="dash__breakdown-bar" role="progressbar" [attr.aria-label]="t('breakdown.barAriaLabel')">
           @if (breakdown().mastered > 0) {
             <div class="dash__bar-seg dash__bar-seg--mastered"
               [style.width.%]="barWidth(breakdown().mastered)"
-              [attr.title]="'Opanowane: ' + breakdown().mastered">
+              [attr.title]="t('breakdown.mastered') + ': ' + breakdown().mastered">
             </div>
           }
           @if (breakdown().reviewing > 0) {
             <div class="dash__bar-seg dash__bar-seg--reviewing"
               [style.width.%]="barWidth(breakdown().reviewing)"
-              [attr.title]="'Powtarzane: ' + breakdown().reviewing">
+              [attr.title]="t('breakdown.reviewing') + ': ' + breakdown().reviewing">
             </div>
           }
           @if (breakdown().learning > 0) {
             <div class="dash__bar-seg dash__bar-seg--learning"
               [style.width.%]="barWidth(breakdown().learning)"
-              [attr.title]="'Uczone: ' + breakdown().learning">
+              [attr.title]="t('breakdown.learning') + ': ' + breakdown().learning">
             </div>
           }
           @if (breakdown().newCards > 0) {
             <div class="dash__bar-seg dash__bar-seg--new"
               [style.width.%]="barWidth(breakdown().newCards)"
-              [attr.title]="'Nowe: ' + breakdown().newCards">
+              [attr.title]="t('breakdown.new') + ': ' + breakdown().newCards">
             </div>
           }
         </div>
@@ -283,22 +288,22 @@
         <div class="dash__breakdown-legend">
           <div class="dash__legend-item">
             <span class="dash__legend-dot dash__legend-dot--mastered"></span>
-            <span class="dash__legend-label">Opanowane</span>
+            <span class="dash__legend-label">{{ t('breakdown.mastered') }}</span>
             <span class="dash__legend-count">{{ breakdown().mastered }}</span>
           </div>
           <div class="dash__legend-item">
             <span class="dash__legend-dot dash__legend-dot--reviewing"></span>
-            <span class="dash__legend-label">Powtarzane</span>
+            <span class="dash__legend-label">{{ t('breakdown.reviewing') }}</span>
             <span class="dash__legend-count">{{ breakdown().reviewing }}</span>
           </div>
           <div class="dash__legend-item">
             <span class="dash__legend-dot dash__legend-dot--learning"></span>
-            <span class="dash__legend-label">Uczone</span>
+            <span class="dash__legend-label">{{ t('breakdown.learning') }}</span>
             <span class="dash__legend-count">{{ breakdown().learning }}</span>
           </div>
           <div class="dash__legend-item">
             <span class="dash__legend-dot dash__legend-dot--new"></span>
-            <span class="dash__legend-label">Nowe</span>
+            <span class="dash__legend-label">{{ t('breakdown.new') }}</span>
             <span class="dash__legend-count">{{ breakdown().newCards }}</span>
           </div>
         </div>
@@ -309,8 +314,8 @@
     @if (sets().length > 0) {
       <section class="dash__sets">
         <div class="dash__sets-header">
-          <h2 class="dash__section-title">Twoje zestawy</h2>
-          <a routerLink="/sets" class="dash__sets-link">Zobacz wszystkie <i class="pi pi-arrow-right"></i></a>
+          <h2 class="dash__section-title">{{ t('sets.title') }}</h2>
+          <a routerLink="/sets" class="dash__sets-link">{{ t('sets.viewAll') }} <i class="pi pi-arrow-right"></i></a>
         </div>
         <div class="dash__sets-grid">
           @for (set of sets(); track set.id) {
@@ -340,3 +345,4 @@
     (dismiss)="onReminderDismiss()"
   />
 </div>
+</ng-container>

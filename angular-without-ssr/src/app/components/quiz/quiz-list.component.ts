@@ -1,3 +1,4 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, OnInit, inject, signal, WritableSignal, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
@@ -12,7 +13,7 @@ interface QuizSetItem {
 
 @Component({
   selector: 'app-quiz-list',
-  imports: [NgxSkeletonLoaderModule],
+  imports: [NgxSkeletonLoaderModule, TranslocoDirective],
   templateUrl: './quiz-list.component.html',
   styleUrls: ['./quiz-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -1,3 +1,4 @@
+<ng-container *transloco="let t; prefix: 'flashcards.table'">
 <div class="ftable">
   <div class="ftable__toolbar">
     <div class="ftable__search-wrap">
@@ -5,33 +6,33 @@
       <input
         type="text"
         [(ngModel)]="searchTerm"
-        placeholder="Szukaj wśród fiszek..."
+        [placeholder]="t('search')"
         (keyup.enter)="onSearch()"
         (keyup.escape)="onResetFilter()"
         (ngModelChange)="onSearchTermChange()"
         class="ftable__search-input"
         data-test-id="search-input" />
       @if (searchTerm) {
-        <button class="ftable__search-clear" (click)="onResetFilter()" title="Wyczyść" aria-label="Wyczyść wyszukiwanie">
+        <button class="ftable__search-clear" (click)="onResetFilter()" [title]="t('clearSearch')" [attr.aria-label]="t('clearSearch')">
           <i class="pi pi-times"></i>
         </button>
       }
     </div>
-    <span class="ftable__count">{{ totalRecordsSignal() }} {{ totalRecordsSignal() === 1 ? 'fiszka' : (totalRecordsSignal() < 5 ? 'fiszki' : 'fiszek') }}</span>
+    <span class="ftable__count">{{ totalRecordsSignal() }} {{ totalRecordsSignal() === 1 ? t('cardSingular') : (totalRecordsSignal() < 5 ? t('cardPlural') : t('cardPluralMany')) }}</span>
   </div>
 
   @if (hasSelectionSignal()) {
     <div class="ftable__bulk-bar">
       <label class="ftable__checkbox-label">
         <input type="checkbox" [checked]="allSelectedSignal()" (change)="toggleSelectAll()" class="ftable__checkbox" />
-        <span>Zaznacz wszystkie</span>
+        <span>{{ t('selectAll') }}</span>
       </label>
-      <span class="ftable__bulk-count">{{ selectedCountSignal() }} zaznaczonych</span>
+      <span class="ftable__bulk-count">{{ t('selected', { count: selectedCountSignal() }) }}</span>
       <button class="ftable__bulk-btn ftable__bulk-btn--delete" (click)="onBulkDelete()">
-        <i class="pi pi-trash"></i> Usuń zaznaczone
+        <i class="pi pi-trash"></i> {{ t('deleteSelected') }}
       </button>
       <button class="ftable__bulk-btn ftable__bulk-btn--clear" (click)="clearSelection()">
-        <i class="pi pi-times"></i> Odznacz
+        <i class="pi pi-times"></i> {{ t('deselect') }}
       </button>
     </div>
   }
@@ -53,12 +54,12 @@
     <div class="ftable__empty" data-test-id="empty-message">
       @if (searchTerm) {
         <i class="pi pi-search"></i>
-        <p>Brak wyników dla „{{ searchTerm }}"</p>
-        <span><button class="ftable__empty-link" (click)="onResetFilter()">Wyczyść wyszukiwanie</button></span>
+        <p>{{ t('noResults', { term: searchTerm }) }}</p>
+        <span><button class="ftable__empty-link" (click)="onResetFilter()">{{ t('clearSearchAction') }}</button></span>
       } @else {
         <i class="pi pi-inbox"></i>
-        <p>Brak fiszek w tym zestawie.</p>
-        <span>Dodaj pierwszą fiszkę przyciskiem powyżej.</span>
+        <p>{{ t('empty') }}</p>
+        <span>{{ t('emptyHint') }}</span>
       }
     </div>
   }
@@ -74,7 +75,7 @@
             <option [ngValue]="size">{{ size }}</option>
           }
         </select>
-        <span class="ftable__page-size-label">na stronę</span>
+        <span class="ftable__page-size-label">{{ t('perPage') }}</span>
       </label>
       @if (totalRecordsSignal() > rowsSignal()) {
         <div class="ftable__page-nav">
@@ -115,7 +116,7 @@
             class="ftable__drag-handle"
             draggable="true"
             (dragstart)="onDragStart(i, $event)"
-            title="Przeciągnij aby zmienić kolejność">
+            [title]="t('dragHandle')">
             <i class="pi pi-bars"></i>
           </div>
           <label class="ftable__card-check">
@@ -124,18 +125,18 @@
           <div class="ftable__card-num">{{ firstSignal() + i + 1 }}</div>
           <div class="ftable__card-body">
             <div class="ftable__card-side">
-              <span class="ftable__card-label">Przód</span>
+              <span class="ftable__card-label">{{ t('front') }}</span>
               @if (flashcard.front_image_url) {
-                <img [src]="flashcard.front_image_url" [alt]="'Obrazek do: ' + flashcard.front" class="ftable__card-thumb" loading="lazy" />
+                <img [src]="flashcard.front_image_url" [alt]="t('imageAlt', { text: flashcard.front })" class="ftable__card-thumb" loading="lazy" />
               }
               <p class="ftable__card-text">{{ flashcard.front }}</p>
             </div>
             <div class="ftable__card-divider"></div>
             <div class="ftable__card-side">
-              <span class="ftable__card-label">Tył</span>
+              <span class="ftable__card-label">{{ t('back') }}</span>
               <p class="ftable__card-text">{{ flashcard.back }}</p>
               @if (flashcard.back_audio_url) {
-                <span class="ftable__card-audio" title="Ma notatkę głosową">
+                <span class="ftable__card-audio" [title]="t('hasAudio')">
                   <i class="pi pi-volume-up"></i>
                 </span>
               }
@@ -146,8 +147,8 @@
               class="ftable__action ftable__action--edit"
               (click)="editFlashcard.emit(flashcard)"
               [disabled]="loadingSignal()"
-              title="Edytuj"
-              aria-label="Edytuj fiszkę"
+              [title]="t('editBtn')"
+              [attr.aria-label]="t('editBtn')"
               data-test-id="edit-button">
               <i class="pi pi-pencil"></i>
             </button>
@@ -155,8 +156,8 @@
               class="ftable__action ftable__action--delete"
               (click)="deleteFlashcard.emit(flashcard)"
               [disabled]="loadingSignal()"
-              title="Usuń"
-              aria-label="Usuń fiszkę"
+              [title]="t('deleteBtn')"
+              [attr.aria-label]="t('deleteBtn')"
               data-test-id="delete-button">
               <i class="pi pi-trash"></i>
             </button>
@@ -167,3 +168,5 @@
 
   }
 </div>
+
+</ng-container>

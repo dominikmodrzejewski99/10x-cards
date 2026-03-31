@@ -21,7 +21,7 @@ describe('BottomNavComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [BottomNavComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
+      imports: [BottomNavComponent, TranslocoTestingModule.forRoot({ langs: { pl: { nav: { dashboard: 'Start', sets: 'Zestawy', study: 'Nauka', quiz: 'Quiz', generate: 'Generuj', mobileNav: 'Nawigacja mobilna' } } }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       providers: [
         provideRouter([]),
         { provide: AuthStore, useValue: mockAuthStore },

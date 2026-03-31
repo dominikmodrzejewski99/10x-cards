@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError, Subject } from 'rxjs';
 import { MessageService, ConfirmationService, Confirmation } from 'primeng/api';
 
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { SetListComponent } from './set-list.component';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { FlashcardSetDTO } from '../../../types';
@@ -52,7 +53,7 @@ describe('SetListComponent', () => {
     setApiMock.getSets.and.returnValue(of([mockSet, mockSet2]));
 
     await TestBed.configureTestingModule({
-      imports: [SetListComponent],
+      imports: [SetListComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: FlashcardSetApiService, useValue: setApiMock },

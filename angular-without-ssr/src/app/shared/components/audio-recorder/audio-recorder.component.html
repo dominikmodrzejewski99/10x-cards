@@ -1,3 +1,4 @@
+<ng-container *transloco="let t; prefix: 'audioRecorder'">
 @if (errorSignal()) {
   <div class="audio-recorder__error">
     <i class="pi pi-exclamation-circle"></i>
@@ -6,7 +7,7 @@
       class="audio-recorder__cancel"
       (click)="cancelled.emit()"
       type="button">
-      Anuluj
+      {{ t('cancel') }}
     </button>
   </div>
 }
@@ -18,13 +19,13 @@
       (click)="startRecording()"
       [disabled]="disabledSignal()"
       type="button">
-      <i class="pi pi-microphone"></i> Nagraj
+      <i class="pi pi-microphone"></i> {{ t('record') }}
     </button>
     <button
       class="audio-recorder__cancel"
       (click)="cancelled.emit()"
       type="button">
-      Anuluj
+      {{ t('cancel') }}
     </button>
   </div>
 }
@@ -42,7 +43,7 @@
       class="audio-recorder__stop"
       (click)="stopRecording()"
       type="button">
-      <i class="pi pi-stop-circle"></i> Stop
+      <i class="pi pi-stop-circle"></i> {{ t('stop') }}
     </button>
   </div>
 }
@@ -54,8 +55,10 @@
       class="audio-recorder__discard"
       (click)="discardRecording()"
       type="button"
-      title="Odrzuć nagranie">
+      [title]="t('discardTitle')">
       <i class="pi pi-trash"></i>
     </button>
   </div>
 }
+
+</ng-container>

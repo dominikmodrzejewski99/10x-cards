@@ -48,7 +48,7 @@ describe('ResetPasswordComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, ResetPasswordComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
+      imports: [ReactiveFormsModule, ResetPasswordComponent, TranslocoTestingModule.forRoot({ langs: { pl: { auth: { resetPassword: { title: 'Nowe hasło', description: 'Wprowadź swoje nowe hasło poniżej.', newPassword: 'Nowe hasło', passwordPlaceholder: 'Minimum 6 znaków', passwordRequired: 'Hasło jest wymagane', passwordMinLength: 'Hasło musi mieć co najmniej 6 znaków', confirmPassword: 'Potwierdź hasło', confirmPasswordPlaceholder: 'Powtórz nowe hasło', passwordMismatch: 'Hasła nie są zgodne', hidePassword: 'Ukryj hasło', showPassword: 'Pokaż hasło', submitButton: 'Ustaw nowe hasło', backToLogin: 'Wróć do logowania', linkExpired: 'Link wygasł', linkExpiredDescription: 'Link do resetowania hasła wygasł lub jest nieprawidłowy. Spróbuj ponownie.', sendNewLink: 'Wyślij nowy link', verifying: 'Weryfikacja...', verifyingDescription: 'Trwa weryfikacja linku resetującego.' } } } }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       providers: [
         provideRouter([]),
         { provide: AuthStore, useValue: mockAuthStore },

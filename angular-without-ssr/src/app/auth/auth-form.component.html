@@ -1,143 +1,140 @@
-<form [formGroup]="authForm" (ngSubmit)="onSubmit()">
-  <div class="auth-form__field">
-    <label for="email" class="auth-form__label">Email</label>
-    <input
-      type="email"
-      id="email"
-      class="auth-form__input"
-      formControlName="email"
-      placeholder="Wprowadź swój adres email"
-      autocomplete="email"
-      data-testid="login-email-input"
-    />
-    @if ((submittedSignal() || f['email'].touched) && f['email'].errors) {
-      <div class="auth-form__error">
-        @if (f['email'].errors['required']) {
-          <span><i class="pi pi-exclamation-circle"></i> Email jest wymagany</span>
-        }
-        @if (f['email'].errors['email']) {
-          <span><i class="pi pi-exclamation-circle"></i> Niepoprawny format email</span>
-        }
-        @if (f['email'].errors['emailExists']) {
-          <span><i class="pi pi-exclamation-circle"></i> Ten adres email jest już zarejestrowany</span>
-        }
-      </div>
-    }
-    @if (f['email'].pending) {
-      <div class="auth-form__hint">
-        <span>Sprawdzanie dostępności...</span>
-      </div>
-    }
-  </div>
-
-  <div class="auth-form__field">
-    <label for="password" class="auth-form__label">Hasło</label>
-    <div class="auth-form__input-wrap">
-      <input
-        [type]="showPasswordSignal() ? 'text' : 'password'"
-        id="password"
-        class="auth-form__input auth-form__input--password"
-        formControlName="password"
-        placeholder="Minimum 6 znaków"
-        [attr.autocomplete]="isLoginMode() ? 'current-password' : 'new-password'"
-        data-testid="login-password-input"
-      />
-      <button
-        type="button"
-        class="auth-form__toggle-password"
-        (click)="showPasswordSignal.set(!showPasswordSignal())"
-        [attr.aria-label]="showPasswordSignal() ? 'Ukryj hasło' : 'Pokaż hasło'"
-        tabindex="-1">
-        <i [class]="showPasswordSignal() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
-      </button>
-    </div>
-    @if ((submittedSignal() || f['password'].touched) && f['password'].errors) {
-      <div class="auth-form__error">
-        @if (f['password'].errors['required']) {
-          <span><i class="pi pi-exclamation-circle"></i> Hasło jest wymagane</span>
-        }
-        @if (f['password'].errors['minlength']) {
-          <span><i class="pi pi-exclamation-circle"></i> Hasło musi mieć co najmniej 6 znaków</span>
-        }
-      </div>
-    }
-  </div>
-
-  @if (!isLoginMode()) {
+<ng-container *transloco="let t; prefix: 'auth'">
+  <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
     <div class="auth-form__field">
-      <label for="confirmPassword" class="auth-form__label">Potwierdź hasło</label>
+      <label for="email" class="auth-form__label">{{ t('email') }}</label>
+      <input
+        type="email"
+        id="email"
+        class="auth-form__input"
+        formControlName="email"
+        [placeholder]="t('emailPlaceholder')"
+        autocomplete="email"
+        data-testid="login-email-input"
+      />
+      @if ((submittedSignal() || f['email'].touched) && f['email'].errors) {
+        <div class="auth-form__error">
+          @if (f['email'].errors['required']) {
+            <span><i class="pi pi-exclamation-circle"></i> {{ t('emailRequired') }}</span>
+          }
+          @if (f['email'].errors['email']) {
+            <span><i class="pi pi-exclamation-circle"></i> {{ t('emailInvalid') }}</span>
+          }
+          @if (f['email'].errors['emailExists']) {
+            <span><i class="pi pi-exclamation-circle"></i> {{ t('emailExists') }}</span>
+          }
+        </div>
+      }
+      @if (f['email'].pending) {
+        <div class="auth-form__hint">
+          <span>{{ t('checkingAvailability') }}</span>
+        </div>
+      }
+    </div>
+
+    <div class="auth-form__field">
+      <label for="password" class="auth-form__label">{{ t('password') }}</label>
       <div class="auth-form__input-wrap">
         <input
-          [type]="showConfirmPasswordSignal() ? 'text' : 'password'"
-          id="confirmPassword"
+          [type]="showPasswordSignal() ? 'text' : 'password'"
+          id="password"
           class="auth-form__input auth-form__input--password"
-          formControlName="confirmPassword"
-          placeholder="Powtórz hasło"
-          autocomplete="new-password"
+          formControlName="password"
+          [placeholder]="t('passwordPlaceholder')"
+          [attr.autocomplete]="isLoginMode() ? 'current-password' : 'new-password'"
+          data-testid="login-password-input"
         />
         <button
           type="button"
           class="auth-form__toggle-password"
-          (click)="showConfirmPasswordSignal.set(!showConfirmPasswordSignal())"
-          [attr.aria-label]="showConfirmPasswordSignal() ? 'Ukryj hasło' : 'Pokaż hasło'"
+          (click)="showPasswordSignal.set(!showPasswordSignal())"
+          [attr.aria-label]="showPasswordSignal() ? t('hidePassword') : t('showPassword')"
           tabindex="-1">
-          <i [class]="showConfirmPasswordSignal() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+          <i [class]="showPasswordSignal() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
         </button>
       </div>
-      @if ((submittedSignal() || f['confirmPassword']?.touched) && f['confirmPassword']?.errors) {
+      @if ((submittedSignal() || f['password'].touched) && f['password'].errors) {
         <div class="auth-form__error">
-          @if (f['confirmPassword']?.errors?.['required']) {
-            <span><i class="pi pi-exclamation-circle"></i> Potwierdzenie hasła jest wymagane</span>
+          @if (f['password'].errors['required']) {
+            <span><i class="pi pi-exclamation-circle"></i> {{ t('passwordRequired') }}</span>
           }
-          @if (f['confirmPassword']?.errors?.['passwordMismatch']) {
-            <span><i class="pi pi-exclamation-circle"></i> Hasła nie są zgodne</span>
+          @if (f['password'].errors['minlength']) {
+            <span><i class="pi pi-exclamation-circle"></i> {{ t('passwordMinLength') }}</span>
           }
         </div>
       }
     </div>
-  }
 
-  @if (isLoginMode()) {
-    <div class="auth-form__forgot">
-      <a routerLink="/forgot-password" class="auth-form__forgot-link">Zapomniałeś hasła?</a>
+    @if (!isLoginMode()) {
+      <div class="auth-form__field">
+        <label for="confirmPassword" class="auth-form__label">{{ t('confirmPassword') }}</label>
+        <div class="auth-form__input-wrap">
+          <input
+            [type]="showConfirmPasswordSignal() ? 'text' : 'password'"
+            id="confirmPassword"
+            class="auth-form__input auth-form__input--password"
+            formControlName="confirmPassword"
+            [placeholder]="t('confirmPasswordPlaceholder')"
+            autocomplete="new-password"
+          />
+          <button
+            type="button"
+            class="auth-form__toggle-password"
+            (click)="showConfirmPasswordSignal.set(!showConfirmPasswordSignal())"
+            [attr.aria-label]="showConfirmPasswordSignal() ? t('hidePassword') : t('showPassword')"
+            tabindex="-1">
+            <i [class]="showConfirmPasswordSignal() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+          </button>
+        </div>
+        @if ((submittedSignal() || f['confirmPassword']?.touched) && f['confirmPassword']?.errors) {
+          <div class="auth-form__error">
+            @if (f['confirmPassword']?.errors?.['required']) {
+              <span><i class="pi pi-exclamation-circle"></i> {{ t('confirmPasswordRequired') }}</span>
+            }
+            @if (f['confirmPassword']?.errors?.['passwordMismatch']) {
+              <span><i class="pi pi-exclamation-circle"></i> {{ t('passwordMismatch') }}</span>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    @if (isLoginMode()) {
+      <div class="auth-form__forgot">
+        <a routerLink="/forgot-password" class="auth-form__forgot-link">{{ t('forgotPasswordLink') }}</a>
+      </div>
+    }
+
+    <button
+      type="submit"
+      class="auth-form__submit"
+      [disabled]="loadingSignal()"
+      data-testid="login-submit-button">
+      {{ isLoginMode() ? t('loginButton') : t('registerButton') }}
+      @if (loadingSignal()) { <span>...</span> }
+    </button>
+
+    @if (errorSignal()) {
+      <div class="auth-form__error auth-form__error--global" role="alert" aria-live="assertive">
+        {{ errorSignal() }}
+      </div>
+    }
+
+    <div class="auth-form__divider">
+      <span>{{ t('or') }}</span>
     </div>
-  }
 
-  <button
-    type="submit"
-    class="auth-form__submit"
-    [disabled]="loadingSignal()"
-    data-testid="login-submit-button">
-    {{ isLoginMode() ? 'Zaloguj się' : 'Zarejestruj się' }}
-    @if (loadingSignal()) { <span>...</span> }
-  </button>
+    <button
+      type="button"
+      class="auth-form__anon-btn"
+      [disabled]="loadingSignal()"
+      (click)="onAnonymousLogin()"
+      data-testid="anonymous-login-button">
+      <i class="pi pi-user"></i>
+      {{ t('tryWithoutRegistration') }}
+    </button>
 
-  @if (errorSignal()) {
-    <div class="auth-form__error auth-form__error--global" role="alert" aria-live="assertive">
-      {{ errorSignal() }}
-    </div>
-  }
-
-  <div class="auth-form__divider">
-    <span>lub</span>
-  </div>
-
-  <button
-    type="button"
-    class="auth-form__anon-btn"
-    [disabled]="loadingSignal()"
-    (click)="onAnonymousLogin()"
-    data-testid="anonymous-login-button">
-    <i class="pi pi-user"></i>
-    Wypróbuj bez rejestracji
-  </button>
-
-  @if (!isLoginMode()) {
-    <p class="auth-form__terms">
-      Rejestrując się, akceptujesz
-      <a routerLink="/terms" class="auth-form__terms-link">Regulamin</a>
-      oraz
-      <a routerLink="/privacy" class="auth-form__terms-link">Politykę prywatności</a>.
-    </p>
-  }
-</form>
+    @if (!isLoginMode()) {
+      <p class="auth-form__terms" [innerHTML]="t('termsText')"></p>
+    }
+  </form>
+</ng-container>

@@ -1,3 +1,4 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, ChangeDetectionStrategy, input, output, signal, computed, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
@@ -11,7 +12,7 @@ interface ImportProposal extends FlashcardProposalDTO {
 
 @Component({
   selector: 'app-import-modal',
-  imports: [FormsModule, DialogModule],
+  imports: [FormsModule, DialogModule, TranslocoDirective],
   templateUrl: './import-modal.component.html',
   styleUrls: ['./import-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

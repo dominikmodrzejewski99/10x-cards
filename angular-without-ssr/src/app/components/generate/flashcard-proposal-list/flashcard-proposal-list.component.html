@@ -1,8 +1,9 @@
+<ng-container *transloco="let t; prefix: 'generate.proposalList'">
 <div class="proposals">
   @if (proposalsSignal().length === 0) {
   <div class="proposals__empty">
-    <p>Brak propozycji fiszek do wyświetlenia</p>
-    <p class="proposals__empty-hint">Wygeneruj fiszki, aby zobaczyć propozycje</p>
+    <p>{{ t('empty') }}</p>
+    <p class="proposals__empty-hint">{{ t('emptyHint') }}</p>
   </div>
   }
 
@@ -23,11 +24,11 @@
     <div class="proposal__body">
       <div class="proposal__content">
         <div class="proposal__side">
-          <span class="proposal__label">P</span>
+          <span class="proposal__label">{{ t('frontLabel') }}</span>
           <span class="proposal__text">{{ proposal.front }}</span>
         </div>
         <div class="proposal__side proposal__side--back">
-          <span class="proposal__label proposal__label--back">O</span>
+          <span class="proposal__label proposal__label--back">{{ t('backLabel') }}</span>
           <span class="proposal__text">{{ proposal.back }}</span>
         </div>
       </div>
@@ -37,25 +38,25 @@
           class="proposal__btn proposal__btn--accept"
           [class.proposal__btn--accepted]="proposal.accepted"
           (click)="onAccept(proposal)"
-          [attr.aria-label]="proposal.accepted ? 'Cofnij akceptację' : 'Akceptuj'"
+          [attr.aria-label]="proposal.accepted ? t('undoAccept') : t('accept')"
           [attr.data-test-id]="'accept-flashcard-button-' + $index">
           <i class="pi" [class.pi-check-circle]="proposal.accepted" [class.pi-check]="!proposal.accepted"></i>
-          {{ proposal.accepted ? 'Zaakceptowano' : 'Akceptuj' }}
+          {{ proposal.accepted ? t('accepted') : t('accept') }}
         </button>
         <button
           class="proposal__btn proposal__btn--edit"
           (click)="openEditDialog(proposal)"
-          aria-label="Edytuj">
+          [attr.aria-label]="t('edit')">
           <i class="pi pi-pencil"></i>
-          Edytuj
+          {{ t('edit') }}
         </button>
         <button
           class="proposal__btn proposal__btn--reject"
           (click)="onReject(proposal)"
-          aria-label="Odrzuć"
+          [attr.aria-label]="t('reject')"
           [attr.data-test-id]="'reject-flashcard-button-' + $index">
           <i class="pi pi-trash"></i>
-          Odrzuć
+          {{ t('reject') }}
         </button>
       </div>
     </div>
@@ -73,11 +74,11 @@
   [dismissableMask]="true"
   [baseZIndex]="1000"
   styleClass="edit-dialog-custom"
-  header="Edytuj fiszkę">
+  [header]="t('editDialog')">
 
   <div class="edit-form">
     <div class="edit-form__field">
-      <label for="front" class="edit-form__label">Przód (pytanie)</label>
+      <label for="front" class="edit-form__label">{{ t('frontQuestion') }}</label>
       <textarea
         id="front"
         pTextarea
@@ -85,11 +86,11 @@
         [autoResize]="true"
         rows="3"
         class="edit-form__textarea"
-        placeholder="Wpisz pytanie lub pojęcie...">
+        [placeholder]="t('frontPlaceholder')">
       </textarea>
     </div>
     <div class="edit-form__field">
-      <label for="back" class="edit-form__label">Tył (odpowiedź)</label>
+      <label for="back" class="edit-form__label">{{ t('backAnswer') }}</label>
       <textarea
         id="back"
         pTextarea
@@ -97,7 +98,7 @@
         [autoResize]="true"
         rows="3"
         class="edit-form__textarea"
-        placeholder="Wpisz odpowiedź lub definicję...">
+        [placeholder]="t('backPlaceholder')">
       </textarea>
     </div>
   </div>
@@ -105,11 +106,13 @@
   <ng-template pTemplate="footer">
     <div class="edit-form__footer">
       <button class="edit-form__btn edit-form__btn--cancel" (click)="closeEditDialog()">
-        Anuluj
+        {{ t('cancel') }}
       </button>
       <button class="edit-form__btn edit-form__btn--save" (click)="saveEdit()">
-        <i class="pi pi-check"></i> Zapisz
+        <i class="pi pi-check"></i> {{ t('save') }}
       </button>
     </div>
   </ng-template>
 </p-dialog>
+
+</ng-container>

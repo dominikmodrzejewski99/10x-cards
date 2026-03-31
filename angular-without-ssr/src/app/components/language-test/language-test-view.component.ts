@@ -1,3 +1,4 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit, OnDestroy, Signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -9,7 +10,7 @@ import { TestDefinition, TestLevel, TestQuestion } from '../../../types';
 
 @Component({
   selector: 'app-language-test-view',
-  imports: [FormsModule, RouterModule, NgxSkeletonLoaderModule],
+  imports: [FormsModule, RouterModule, NgxSkeletonLoaderModule, TranslocoDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './language-test-view.component.html',
   styleUrl: './language-test-view.component.scss',

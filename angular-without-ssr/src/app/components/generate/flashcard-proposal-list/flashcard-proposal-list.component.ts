@@ -1,3 +1,4 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, computed, input, output, InputSignal, OutputEmitterRef, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
@@ -10,7 +11,7 @@ import { FlashcardProposalDTO } from '../../../../types';
     DialogModule,
     FormsModule,
     TextareaModule
-  ],
+  , TranslocoDirective],
   templateUrl: './flashcard-proposal-list.component.html',
   styleUrls: ['./flashcard-proposal-list.component.scss']
 })

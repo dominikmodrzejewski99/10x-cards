@@ -290,8 +290,8 @@
 }
 
 .dash__streak-badge--warn {
-  background: var(--app-danger-light);
-  color: var(--app-yellow);
+  background: var(--app-warning-light, #fff7ed);
+  color: var(--app-warning, #c2410c);
   animation: shimmer 2.5s ease-in-out infinite;
 }
 

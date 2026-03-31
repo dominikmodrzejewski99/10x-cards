@@ -1,3 +1,4 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { LanguageTestResultsService } from '../../services/language-test-results.service';
@@ -9,7 +10,7 @@ import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-language-test-results',
-  imports: [RouterModule, NgxSkeletonLoaderModule],
+  imports: [RouterModule, NgxSkeletonLoaderModule, TranslocoDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './language-test-results.component.html',
   styleUrl: './language-test-results.component.scss'

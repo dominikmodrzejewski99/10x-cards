@@ -24,13 +24,14 @@ import {FlashcardSetDTO, ReviewQuality, SessionResultDTO, StudyCardDTO} from '..
 import {FlashcardFlipComponent} from './flashcard-flip/flashcard-flip.component';
 import {SyncStatusComponent} from '../../shared/components/sync-status/sync-status.component';
 import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
+import {TranslocoDirective} from '@jsverse/transloco';
 import {launchConfetti} from '../../shared/utils/confetti';
 import {ClassifiedError, classifyError} from '../../shared/utils/error-classifier';
 import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-study-view',
-  imports: [RouterModule, FormsModule, FlashcardFlipComponent, SyncStatusComponent, NgxSkeletonLoaderModule],
+  imports: [RouterModule, FormsModule, FlashcardFlipComponent, SyncStatusComponent, NgxSkeletonLoaderModule, TranslocoDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './study-view.component.html',
   styleUrls: ['./study-view.component.scss'],

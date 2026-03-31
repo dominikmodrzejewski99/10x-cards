@@ -1,10 +1,11 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, ChangeDetectionStrategy, input, output, InputSignal, OutputEmitterRef, signal, WritableSignal, computed, Signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { QuizResult, QuizAnswer } from '../../../../types';
 
 @Component({
   selector: 'app-quiz-results',
-  imports: [RouterModule],
+  imports: [RouterModule, TranslocoDirective],
   templateUrl: './quiz-results.component.html',
   styleUrls: ['./quiz-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -1,9 +1,10 @@
 import { Component, ChangeDetectionStrategy, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { AudioPlayerComponent } from '../../../shared/components/audio-player/audio-player.component';
 
 @Component({
   selector: 'app-flashcard-flip',
-  imports: [AudioPlayerComponent],
+  imports: [AudioPlayerComponent, TranslocoDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './flashcard-flip.component.html',
   styleUrls: ['./flashcard-flip.component.scss']

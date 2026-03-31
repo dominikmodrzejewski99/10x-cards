@@ -1,8 +1,9 @@
+<ng-container *transloco="let t; prefix: 'sets'">
 <div class="sets">
   <div class="sets__header">
-    <h1 class="sets__title">Moje zestawy</h1>
+    <h1 class="sets__title">{{ t('title') }}</h1>
     <button (click)="openCreateDialog()" class="sets__btn sets__btn--create">
-      <i class="pi pi-plus"></i> Nowy zestaw
+      <i class="pi pi-plus"></i> {{ t('newSet') }}
     </button>
   </div>
 
@@ -26,7 +27,7 @@
     <div class="sets__error">
       <i class="pi pi-exclamation-circle"></i>
       <p>{{ state().error }}</p>
-      <button (click)="loadSets()" class="sets__btn sets__btn--outline">Spróbuj ponownie</button>
+      <button (click)="loadSets()" class="sets__btn sets__btn--outline">{{ t('retryButton') }}</button>
     </div>
   }
 
@@ -35,10 +36,10 @@
       <div class="sets__empty-icon-wrap">
         <i class="pi pi-folder-open"></i>
       </div>
-      <h2 class="sets__empty-title">Brak zestawów</h2>
-      <p class="sets__empty-desc">Utwórz swój pierwszy zestaw, aby organizować fiszki i rozpocząć naukę.</p>
+      <h2 class="sets__empty-title">{{ t('emptyTitle') }}</h2>
+      <p class="sets__empty-desc">{{ t('emptyDesc') }}</p>
       <button (click)="openCreateDialog()" class="sets__btn sets__btn--create">
-        <i class="pi pi-plus"></i> Utwórz zestaw
+        <i class="pi pi-plus"></i> {{ t('createSet') }}
       </button>
     </div>
   }
@@ -50,19 +51,19 @@
           <div class="set-card__header">
             <h2 class="set-card__name">{{ set.name }}</h2>
             <div class="set-card__actions" (click)="$event.stopPropagation()">
-              <button class="set-card__action" title="Nauka" (click)="studySet(set)">
+              <button class="set-card__action" [title]="t('studyAction')" (click)="studySet(set)">
                 <i class="pi pi-book"></i>
               </button>
-              <button class="set-card__action" title="Test" (click)="quizSet(set)">
+              <button class="set-card__action" [title]="t('quizAction')" (click)="quizSet(set)">
                 <i class="pi pi-file-edit"></i>
               </button>
-              <button class="set-card__action" title="Udostępnij" (click)="shareSet(set)" data-test-id="share-set-button">
+              <button class="set-card__action" [title]="t('shareAction')" (click)="shareSet(set)" data-test-id="share-set-button">
                 <i class="pi pi-share-alt"></i>
               </button>
-              <button class="set-card__action" title="Edytuj" (click)="openEditDialog(set)">
+              <button class="set-card__action" [title]="t('editAction')" (click)="openEditDialog(set)">
                 <i class="pi pi-pencil"></i>
               </button>
-              <button class="set-card__action set-card__action--danger" title="Usuń" (click)="deleteSet(set)">
+              <button class="set-card__action set-card__action--danger" [title]="t('deleteAction')" (click)="deleteSet(set)">
                 <i class="pi pi-trash"></i>
               </button>
             </div>
@@ -81,7 +82,7 @@
   }
 
   <p-dialog
-    [header]="state().editingSet ? 'Edytuj zestaw' : 'Nowy zestaw'"
+    [header]="state().editingSet ? t('dialogEditTitle') : t('dialogNewTitle')"
     [visible]="state().dialogVisible"
     (visibleChange)="closeDialog()"
     [modal]="true"
@@ -94,28 +95,28 @@
     (onHide)="closeDialog()">
     <div class="set-form">
       <div class="set-form__field">
-        <label class="set-form__label" for="setName">Nazwa zestawu</label>
+        <label class="set-form__label" for="setName">{{ t('nameLabel') }}</label>
         <input
           id="setName"
           type="text"
           class="set-form__input"
           [ngModel]="state().formName"
           (ngModelChange)="onFormNameChange($event)"
-          placeholder="np. Biologia – rozdział 5"
+          [placeholder]="t('namePlaceholder')"
           maxlength="100"
           autofocus />
         @if (!state().formName.trim() && state().formName !== '') {
-          <small class="set-form__hint">Nazwa nie może być pusta</small>
+          <small class="set-form__hint">{{ t('nameRequired') }}</small>
         }
       </div>
       <div class="set-form__field">
-        <label class="set-form__label" for="setDesc">Opis (opcjonalnie)</label>
+        <label class="set-form__label" for="setDesc">{{ t('descLabel') }}</label>
         <textarea
           id="setDesc"
           class="set-form__textarea"
           [ngModel]="state().formDescription"
           (ngModelChange)="onFormDescriptionChange($event)"
-          placeholder="Krótki opis zestawu..."
+          [placeholder]="t('descPlaceholder')"
           maxlength="500"
           rows="3"></textarea>
       </div>
@@ -123,7 +124,7 @@
         <button
           class="sets__btn sets__btn--outline"
           (click)="closeDialog()">
-          Anuluj
+          {{ t('cancel') }}
         </button>
         <button
           class="sets__btn sets__btn--create"
@@ -132,7 +133,7 @@
           @if (state().formSaving) {
             <i class="pi pi-spin pi-spinner"></i>
           }
-          {{ state().editingSet ? 'Zapisz' : 'Utwórz' }}
+          {{ state().editingSet ? t('save') : t('create') }}
         </button>
       </div>
     </div>
@@ -145,3 +146,4 @@
     icon="pi pi-exclamation-triangle">
   </p-confirmDialog>
 </div>
+</ng-container>

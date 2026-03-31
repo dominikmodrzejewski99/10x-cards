@@ -1,41 +1,42 @@
+<ng-container *transloco="let t; prefix: 'flashcards.list'">
 <div class="flist">
   <div class="flist__header">
     <div class="flist__title-row">
-      <button class="flist__back" (click)="goBackToSets()" title="Wróć do zestawów">
+      <button class="flist__back" (click)="goBackToSets()" [title]="t('backToSets')">
         <i class="pi pi-arrow-left"></i>
       </button>
-      <h1 class="flist__title" data-test-id="flashcards-title">{{ state().setName || 'Fiszki' }}</h1>
+      <h1 class="flist__title" data-test-id="flashcards-title">{{ state().setName || t('defaultTitle') }}</h1>
     </div>
     <div class="flist__actions">
       <a [routerLink]="['/study']" [queryParams]="{setId: state().setId}" class="flist__btn--study" data-test-id="start-study-button">
-        <i class="pi pi-book"></i> Nauka
+        <i class="pi pi-book"></i> {{ t('study') }}
       </a>
       <a [routerLink]="['/quiz', state().setId]" class="flist__btn--quiz" data-test-id="start-quiz-button">
-        <i class="pi pi-file-edit"></i> Test
+        <i class="pi pi-file-edit"></i> {{ t('test') }}
       </a>
       <button (click)="openAddModal()" class="flist__btn flist__btn--add" data-test-id="add-flashcard-button">
-        <i class="pi pi-plus"></i> Dodaj
+        <i class="pi pi-plus"></i> {{ t('add') }}
       </button>
-      <button (click)="openShareDialog()" class="flist__btn flist__btn--share" data-test-id="share-button" title="Udostępnij zestaw">
+      <button (click)="openShareDialog()" class="flist__btn flist__btn--share" data-test-id="share-button" [title]="t('shareTitle')">
         <i class="pi pi-share-alt"></i>
       </button>
       <div class="flist__more">
-        <button class="flist__btn flist__btn--more" (click)="moreMenuOpen.set(!moreMenuOpen())" aria-label="Więcej opcji" title="Więcej opcji">
+        <button class="flist__btn flist__btn--more" (click)="moreMenuOpen.set(!moreMenuOpen())" [attr.aria-label]="t('moreOptions')" [title]="t('moreOptions')">
           <i class="pi pi-ellipsis-h"></i>
         </button>
         @if (moreMenuOpen()) {
           <div class="flist__more-menu" (click)="moreMenuOpen.set(false)">
             <button (click)="openImportModal()" class="flist__more-item" data-test-id="import-flashcards-button">
-              <i class="pi pi-upload"></i> Importuj
+              <i class="pi pi-upload"></i> {{ t('import') }}
             </button>
             <button (click)="exportCsv()" class="flist__more-item" data-test-id="export-csv-button">
-              <i class="pi pi-download"></i> Eksport CSV
+              <i class="pi pi-download"></i> {{ t('exportCsv') }}
             </button>
             <button (click)="exportJson()" class="flist__more-item" data-test-id="export-json-button">
-              <i class="pi pi-download"></i> Eksport JSON
+              <i class="pi pi-download"></i> {{ t('exportJson') }}
             </button>
             <a routerLink="/generate" class="flist__more-item">
-              <i class="pi pi-microchip-ai"></i> Generuj z AI
+              <i class="pi pi-microchip-ai"></i> {{ t('generateAi') }}
             </a>
           </div>
         }
@@ -47,11 +48,11 @@
     <div class="flist__saved-banner fade-in">
       <div class="flist__saved-body">
         <i class="pi pi-check-circle"></i>
-        <span>Zapisano <strong>{{ savedCountSignal() }}</strong> fiszek. Gotowy, żeby się ich nauczyć?</span>
+        <span [innerHTML]="t('savedBanner', { count: savedCountSignal() })"></span>
       </div>
       <div class="flist__saved-actions">
         <a [routerLink]="['/study']" [queryParams]="{setId: state().setId}" class="flist__saved-cta">
-          <i class="pi pi-play-circle"></i> Rozpocznij naukę
+          <i class="pi pi-play-circle"></i> {{ t('startLearning') }}
         </a>
         <button class="flist__saved-dismiss" (click)="dismissSavedBanner()" aria-label="Zamknij">
           <i class="pi pi-times"></i>
@@ -80,7 +81,7 @@
   </div>
 
   <p-dialog
-    [header]="state().flashcardBeingEdited ? 'Edytuj fiszkę' : 'Dodaj nową fiszkę'"
+    [header]="state().flashcardBeingEdited ? t('editDialog') : t('addDialog')"
     [visible]="state().isFormModalVisible"
     (visibleChange)="onCloseFormModal()"
     [modal]="true"
@@ -102,8 +103,8 @@
 
   @if (lastDeletedSignal()) {
     <div class="flist__undo">
-      <span class="flist__undo-text">Fiszka usunięta</span>
-      <button class="flist__undo-btn" (click)="undoDelete()">Cofnij</button>
+      <span class="flist__undo-text">{{ t('deleted') }}</span>
+      <button class="flist__undo-btn" (click)="undoDelete()">{{ t('undo') }}</button>
       <button class="flist__undo-close" (click)="dismissUndo()" aria-label="Zamknij">
         <i class="pi pi-times"></i>
       </button>
@@ -129,7 +130,7 @@
 </div>
 
 <p-dialog
-  header="Udostępnij zestaw"
+  [header]="t('shareTitle')"
   [visible]="shareDialogVisible()"
   (visibleChange)="shareDialogVisible.set($event)"
   [modal]="true"
@@ -147,7 +148,7 @@
   } @else if (shareLink()) {
     <div class="flist__share-dialog">
       <p class="flist__share-info">
-        Link ważny przez 7 dni. Każdy z linkiem może skopiować zestaw na swoje konto.
+        {{ t('shareInfo') }}
       </p>
       <div class="flist__share-link-row">
         <input
@@ -161,9 +162,11 @@
           icon="pi pi-copy"
           (onClick)="copyShareLink()"
           styleClass="p-button-outlined"
-          pTooltip="Kopiuj link"
+          [pTooltip]="t('copyLink')"
         />
       </div>
     </div>
   }
 </p-dialog>
+
+</ng-container>

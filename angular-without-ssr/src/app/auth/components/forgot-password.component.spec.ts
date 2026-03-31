@@ -26,7 +26,7 @@ describe('ForgotPasswordComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, ForgotPasswordComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
+      imports: [ReactiveFormsModule, ForgotPasswordComponent, TranslocoTestingModule.forRoot({ langs: { pl: { auth: { forgotPassword: { title: 'Resetuj hasło', description: 'Podaj swój adres email, a wyślemy Ci link do zresetowania hasła.', emailLabel: 'Email', emailPlaceholder: 'Wprowadź swój adres email', emailRequired: 'Email jest wymagany', emailInvalid: 'Niepoprawny format email', submitButton: 'Wyślij link resetujący', emailSent: 'Link do resetowania hasła został wysłany na <strong>{{email}}</strong>.', checkInbox: 'Sprawdź skrzynkę (i folder spam).', backToLogin: 'Wróć do logowania' } } } }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       providers: [
         provideRouter([]),
         { provide: AuthStore, useValue: mockAuthStore },

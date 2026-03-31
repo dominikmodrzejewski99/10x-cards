@@ -1,3 +1,4 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LanguageTestBankService } from '../../services/language-test-bank.service';
@@ -5,7 +6,7 @@ import { LanguageTestBankService } from '../../services/language-test-bank.servi
 @Component({
   selector: 'app-language-test-list',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, TranslocoDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './language-test-list.component.html',
   styleUrl: './language-test-list.component.scss'

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { FlashcardFlipComponent } from './flashcard-flip.component';
 
 describe('FlashcardFlipComponent', () => {
@@ -9,7 +10,7 @@ describe('FlashcardFlipComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FlashcardFlipComponent],
+      imports: [FlashcardFlipComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
 

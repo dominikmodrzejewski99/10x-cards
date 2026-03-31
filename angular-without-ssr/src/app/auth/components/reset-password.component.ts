@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, signal, OnInit, OnDestroy, WritableSignal, Signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Subscription } from 'rxjs';
 import { SupabaseClientFactory } from '../../services/supabase-client.factory';
 import { AuthStore } from '../store';
@@ -8,114 +9,116 @@ import { AuthStore } from '../store';
 @Component({
   selector: 'app-reset-password',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, RouterModule],
+  imports: [ReactiveFormsModule, RouterModule, TranslocoDirective],
   template: `
-    <div class="auth-container">
-      <div class="auth-card">
-        @if (readySignal()) {
-          <div class="auth-header">
-            <h1 class="auth-title">Nowe hasło</h1>
-            <p class="auth-desc">Wprowadź swoje nowe hasło poniżej.</p>
-          </div>
-
-          <form [formGroup]="form" (ngSubmit)="onSubmit()">
-            <div class="auth-field">
-              <label for="password" class="auth-label">Nowe hasło</label>
-              <div class="auth-input-wrap">
-                <input
-                  [type]="showPasswordSignal() ? 'text' : 'password'"
-                  id="password"
-                  class="auth-input auth-input--password"
-                  formControlName="password"
-                  placeholder="Minimum 6 znaków"
-                  autocomplete="new-password"
-                />
-                <button
-                  type="button"
-                  class="auth-toggle-password"
-                  (click)="showPasswordSignal.set(!showPasswordSignal())"
-                  [attr.aria-label]="showPasswordSignal() ? 'Ukryj hasło' : 'Pokaż hasło'"
-                  tabindex="-1">
-                  <i [class]="showPasswordSignal() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
-                </button>
-              </div>
-              @if ((submittedSignal() || form.controls['password'].touched) && form.controls['password'].errors) {
-                <div class="auth-error">
-                  @if (form.controls['password'].errors['required']) {
-                    <span>Hasło jest wymagane</span>
-                  }
-                  @if (form.controls['password'].errors['minlength']) {
-                    <span>Hasło musi mieć co najmniej 6 znaków</span>
-                  }
-                </div>
-              }
+    <ng-container *transloco="let t; prefix: 'auth.resetPassword'">
+      <div class="auth-container">
+        <div class="auth-card">
+          @if (readySignal()) {
+            <div class="auth-header">
+              <h1 class="auth-title">{{ t('title') }}</h1>
+              <p class="auth-desc">{{ t('description') }}</p>
             </div>
 
-            <div class="auth-field">
-              <label for="confirmPassword" class="auth-label">Potwierdź hasło</label>
-              <div class="auth-input-wrap">
-                <input
-                  [type]="showConfirmPasswordSignal() ? 'text' : 'password'"
-                  id="confirmPassword"
-                  class="auth-input auth-input--password"
-                  formControlName="confirmPassword"
-                  placeholder="Powtórz nowe hasło"
-                  autocomplete="new-password"
-                />
-                <button
-                  type="button"
-                  class="auth-toggle-password"
-                  (click)="showConfirmPasswordSignal.set(!showConfirmPasswordSignal())"
-                  [attr.aria-label]="showConfirmPasswordSignal() ? 'Ukryj hasło' : 'Pokaż hasło'"
-                  tabindex="-1">
-                  <i [class]="showConfirmPasswordSignal() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
-                </button>
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+              <div class="auth-field">
+                <label for="password" class="auth-label">{{ t('newPassword') }}</label>
+                <div class="auth-input-wrap">
+                  <input
+                    [type]="showPasswordSignal() ? 'text' : 'password'"
+                    id="password"
+                    class="auth-input auth-input--password"
+                    formControlName="password"
+                    [placeholder]="t('passwordPlaceholder')"
+                    autocomplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    class="auth-toggle-password"
+                    (click)="showPasswordSignal.set(!showPasswordSignal())"
+                    [attr.aria-label]="showPasswordSignal() ? t('hidePassword') : t('showPassword')"
+                    tabindex="-1">
+                    <i [class]="showPasswordSignal() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+                  </button>
+                </div>
+                @if ((submittedSignal() || form.controls['password'].touched) && form.controls['password'].errors) {
+                  <div class="auth-error">
+                    @if (form.controls['password'].errors['required']) {
+                      <span>{{ t('passwordRequired') }}</span>
+                    }
+                    @if (form.controls['password'].errors['minlength']) {
+                      <span>{{ t('passwordMinLength') }}</span>
+                    }
+                  </div>
+                }
               </div>
-              @if ((submittedSignal() || form.controls['confirmPassword'].touched) && mismatchSignal()) {
-                <div class="auth-error">
-                  <span>Hasła nie są zgodne</span>
+
+              <div class="auth-field">
+                <label for="confirmPassword" class="auth-label">{{ t('confirmPassword') }}</label>
+                <div class="auth-input-wrap">
+                  <input
+                    [type]="showConfirmPasswordSignal() ? 'text' : 'password'"
+                    id="confirmPassword"
+                    class="auth-input auth-input--password"
+                    formControlName="confirmPassword"
+                    [placeholder]="t('confirmPasswordPlaceholder')"
+                    autocomplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    class="auth-toggle-password"
+                    (click)="showConfirmPasswordSignal.set(!showConfirmPasswordSignal())"
+                    [attr.aria-label]="showConfirmPasswordSignal() ? t('hidePassword') : t('showPassword')"
+                    tabindex="-1">
+                    <i [class]="showConfirmPasswordSignal() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+                  </button>
+                </div>
+                @if ((submittedSignal() || form.controls['confirmPassword'].touched) && mismatchSignal()) {
+                  <div class="auth-error">
+                    <span>{{ t('passwordMismatch') }}</span>
+                  </div>
+                }
+              </div>
+
+              <button
+                type="submit"
+                class="auth-submit"
+                [disabled]="loadingSignal()">
+                {{ t('submitButton') }}
+                @if (loadingSignal()) { <span>...</span> }
+              </button>
+
+              @if (errorSignal()) {
+                <div class="auth-error auth-error--global">
+                  {{ errorSignal() }}
                 </div>
               }
+            </form>
+
+            <div class="auth-footer">
+              <a routerLink="/login" class="auth-back-link">
+                <i class="pi pi-arrow-left"></i> {{ t('backToLogin') }}
+              </a>
             </div>
-
-            <button
-              type="submit"
-              class="auth-submit"
-              [disabled]="loadingSignal()">
-              Ustaw nowe hasło
-              @if (loadingSignal()) { <span>...</span> }
-            </button>
-
-            @if (errorSignal()) {
-              <div class="auth-error auth-error--global">
-                {{ errorSignal() }}
-              </div>
-            }
-          </form>
-
-          <div class="auth-footer">
-            <a routerLink="/login" class="auth-back-link">
-              <i class="pi pi-arrow-left"></i> Wróć do logowania
-            </a>
-          </div>
-        } @else if (expiredSignal()) {
-          <div class="auth-header">
-            <h1 class="auth-title">Link wygasł</h1>
-            <p class="auth-desc">Link do resetowania hasła wygasł lub jest nieprawidłowy. Spróbuj ponownie.</p>
-          </div>
-          <div class="auth-footer">
-            <a routerLink="/forgot-password" class="auth-back-link">
-              Wyślij nowy link
-            </a>
-          </div>
-        } @else {
-          <div class="auth-header">
-            <h1 class="auth-title">Weryfikacja...</h1>
-            <p class="auth-desc">Trwa weryfikacja linku resetującego.</p>
-          </div>
-        }
+          } @else if (expiredSignal()) {
+            <div class="auth-header">
+              <h1 class="auth-title">{{ t('linkExpired') }}</h1>
+              <p class="auth-desc">{{ t('linkExpiredDescription') }}</p>
+            </div>
+            <div class="auth-footer">
+              <a routerLink="/forgot-password" class="auth-back-link">
+                {{ t('sendNewLink') }}
+              </a>
+            </div>
+          } @else {
+            <div class="auth-header">
+              <h1 class="auth-title">{{ t('verifying') }}</h1>
+              <p class="auth-desc">{{ t('verifyingDescription') }}</p>
+            </div>
+          }
+        </div>
       </div>
-    </div>
+    </ng-container>
   `,
   styles: [`
     .auth-container {

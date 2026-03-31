@@ -1,5 +1,6 @@
+<ng-container *transloco="let t; prefix: 'reviewReminder'">
 <p-dialog
-  header="Czas na powtórkę!"
+  [header]="t('title')"
   [visible]="dialogVisible()"
   (visibleChange)="onHide()"
   [modal]="true"
@@ -13,21 +14,18 @@
     <div class="reminder__icon">
       <i class="pi pi-clock"></i>
     </div>
-    <p class="reminder__message">
-      Masz <strong>{{ dueCount() }}</strong>
-      {{ dueCount() === 1 ? 'przeterminowaną fiszkę' : 'przeterminowanych fiszek' }}
-      do powtórki. Nie odkładaj nauki na później!
-    </p>
+    <p class="reminder__message" [innerHTML]="dueCount() === 1 ? t('dueCountSingular') : t('dueCount', { count: dueCount() })"></p>
   </div>
   <ng-template #footer>
     <div class="reminder__actions">
       <button class="reminder__btn--secondary" (click)="onDismiss()">
-        Nie teraz
+        {{ t('dismiss') }}
       </button>
       <button class="reminder__btn--primary" (click)="onStudy()">
         <i class="pi pi-play-circle"></i>
-        Przejdź do nauki
+        {{ t('study') }}
       </button>
     </div>
   </ng-template>
 </p-dialog>
+</ng-container>

@@ -1,3 +1,4 @@
+<ng-container *transloco="let t; prefix: 'study.flip'">
 <div
   class="flip-card"
   [class.flipped]="isFlippedSignal()"
@@ -5,17 +6,17 @@
   (click)="onFlip()"
   tabindex="0"
   role="button"
-  [attr.aria-label]="isFlippedSignal() ? 'Kliknij aby zobaczyć pytanie' : 'Kliknij aby zobaczyć odpowiedź'">
+  [attr.aria-label]="isFlippedSignal() ? t('ariaFlipped') : t('ariaNotFlipped')">
   <div class="flip-card__inner">
     <div class="flip-card__face">
-      <div class="flip-card__label">Pytanie</div>
+      <div class="flip-card__label">{{ t('question') }}</div>
       @if (frontImageUrlSignal()) {
-        <img [src]="frontImageUrlSignal()" [alt]="'Obrazek do: ' + frontSignal()" class="flip-card__image" loading="lazy" />
+        <img [src]="frontImageUrlSignal()" [alt]="t('imageAlt', { text: frontSignal() })" class="flip-card__image" loading="lazy" />
       }
       <div class="flip-card__content">{{ frontSignal() }}</div>
     </div>
     <div class="flip-card__face flip-card__face--back">
-      <div class="flip-card__label">Odpowiedź</div>
+      <div class="flip-card__label">{{ t('answer') }}</div>
       <div class="flip-card__content">{{ backSignal() }}</div>
       @if (backAudioUrlSignal()) {
         <div class="flip-card__audio">
@@ -25,3 +26,4 @@
     </div>
   </div>
 </div>
+</ng-container>

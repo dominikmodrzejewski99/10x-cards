@@ -1,10 +1,11 @@
+<ng-container *transloco="let t; prefix: 'quiz.question'">
 <div class="quiz-question">
   <div class="quiz-question__top-bar">
     <span class="quiz-question__progress-text">
-      Pytanie {{ currentIndexSignal() + 1 }} / {{ totalQuestionsSignal() }}
+      {{ t('progress', { current: currentIndexSignal() + 1, total: totalQuestionsSignal() }) }}
     </span>
-    <button class="quiz-question__quit" (click)="onQuit()" title="Zakończ quiz">
-      <i class="pi pi-times"></i> Zakończ
+    <button class="quiz-question__quit" (click)="onQuit()" [title]="t('quitTitle')">
+      <i class="pi pi-times"></i> {{ t('quit') }}
     </button>
   </div>
   <div class="quiz-question__progress">
@@ -17,7 +18,7 @@
     @if (questionSignal().questionImageUrl) {
       <img
         [src]="questionSignal().questionImageUrl"
-        alt="Obrazek pytania"
+        [alt]="t('questionImageAlt')"
         class="quiz-question__image"
         loading="lazy" />
     }
@@ -37,7 +38,7 @@
           [ngModel]="writtenAnswerSignal()"
           (ngModelChange)="writtenAnswerSignal.set($event)"
           [disabled]="isAnsweredSignal()"
-          placeholder="Wpisz odpowiedź..."
+          [placeholder]="t('placeholder')"
           />
 
         @if (!isAnsweredSignal()) {
@@ -45,13 +46,13 @@
             class="quiz-question__btn quiz-question__btn--primary"
             [disabled]="!writtenAnswerSignal().trim()"
             (click)="onCheckWritten()">
-            <i class="pi pi-check"></i> Sprawdź
+            <i class="pi pi-check"></i> {{ t('check') }}
           </button>
         }
 
         @if (isAnsweredSignal() && !isCorrectSignal()) {
           <p class="quiz-question__correct-answer">
-            Poprawna odpowiedź: <strong>{{ questionSignal().correctAnswer }}</strong>
+            {{ t('correctAnswer') }} <strong>{{ questionSignal().correctAnswer }}</strong>
           </p>
         }
       </div>
@@ -74,13 +75,13 @@
 
     @case ('true-false') {
       <div class="quiz-question__true-false">
-        <p class="quiz-question__tf-label">Proponowana odpowiedź:</p>
+        <p class="quiz-question__tf-label">{{ t('proposedAnswer') }}</p>
         <div class="quiz-question__tf-answer"
           [class.quiz-question__tf-answer--correct]="isAnsweredSignal() && questionSignal().trueFalsePairing?.isCorrect"
           [class.quiz-question__tf-answer--wrong]="isAnsweredSignal() && !questionSignal().trueFalsePairing?.isCorrect">
           {{ questionSignal().trueFalsePairing?.shown }}
         </div>
-        <p class="quiz-question__tf-prompt">Czy ta odpowiedź jest poprawna?</p>
+        <p class="quiz-question__tf-prompt">{{ t('isCorrectPrompt') }}</p>
         <div class="quiz-question__tf-buttons">
           <button
             class="quiz-question__tf-btn quiz-question__tf-btn--true"
@@ -89,7 +90,7 @@
             [class.quiz-question__tf-btn--wrong-result]="isAnsweredSignal() && selectedTrueFalseSignal() === true && !questionSignal().trueFalsePairing?.isCorrect"
             [disabled]="isAnsweredSignal()"
             (click)="onSelectTrueFalse(true)">
-            <i class="pi pi-check"></i> Prawda <span class="quiz-question__key-hint">(P)</span>
+            <i class="pi pi-check"></i> {{ t('true') }} <span class="quiz-question__key-hint">{{ t('trueHint') }}</span>
           </button>
           <button
             class="quiz-question__tf-btn quiz-question__tf-btn--false"
@@ -98,13 +99,13 @@
             [class.quiz-question__tf-btn--wrong-result]="isAnsweredSignal() && selectedTrueFalseSignal() === false && questionSignal().trueFalsePairing?.isCorrect"
             [disabled]="isAnsweredSignal()"
             (click)="onSelectTrueFalse(false)">
-            <i class="pi pi-times"></i> Fałsz <span class="quiz-question__key-hint">(F)</span>
+            <i class="pi pi-times"></i> {{ t('false') }} <span class="quiz-question__key-hint">{{ t('falseHint') }}</span>
           </button>
         </div>
 
         @if (isAnsweredSignal() && !isCorrectSignal()) {
           <p class="quiz-question__correct-answer">
-            Poprawna odpowiedź: <strong>{{ questionSignal().correctAnswer }}</strong>
+            {{ t('correctAnswer') }} <strong>{{ questionSignal().correctAnswer }}</strong>
           </p>
         }
       </div>
@@ -115,11 +116,11 @@
     <div class="quiz-question__feedback">
       @if (isCorrectSignal()) {
         <span class="quiz-question__feedback--correct">
-          <i class="pi pi-check-circle"></i> Dobrze!
+          <i class="pi pi-check-circle"></i> {{ t('correct') }}
         </span>
       } @else {
         <span class="quiz-question__feedback--wrong">
-          <i class="pi pi-times-circle"></i> Źle
+          <i class="pi pi-times-circle"></i> {{ t('wrong') }}
         </span>
       }
     </div>
@@ -127,7 +128,9 @@
     <button
       class="quiz-question__btn quiz-question__btn--primary quiz-question__next"
       (click)="onNext()">
-      Dalej <span class="quiz-question__key-hint">&#x21B5;</span>
+      {{ t('next') }} <span class="quiz-question__key-hint">&#x21B5;</span>
     </button>
   }
 </div>
+
+</ng-container>

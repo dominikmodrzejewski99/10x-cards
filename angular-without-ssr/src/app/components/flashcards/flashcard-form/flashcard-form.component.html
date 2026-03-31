@@ -1,6 +1,7 @@
+<ng-container *transloco="let t; prefix: 'flashcards.form'">
 <form [formGroup]="flashcardForm" (ngSubmit)="onSubmit()" class="fc-form" data-test-id="flashcard-form">
   <div class="fc-form__field">
-    <label for="front" class="fc-form__label">Przód fiszki <span class="fc-form__required">*</span></label>
+    <label for="front" class="fc-form__label">{{ t('frontLabel') }} <span class="fc-form__required">*</span></label>
     <input
       id="front"
       type="text"
@@ -8,7 +9,7 @@
       formControlName="front"
       [class.ng-invalid]="hasError('front', 'required') || hasError('front', 'maxlength') || hasError('front', 'whitespace')"
       class="fc-form__input"
-      placeholder="Wpisz pytanie lub pojęcie (max. 200 znaków)"
+      [placeholder]="t('frontPlaceholder')"
       data-test-id="front-input"
     />
 
@@ -16,17 +17,17 @@
       <div class="fc-form__errors">
         @if (hasError('front', 'required')) {
         <small class="fc-form__error" data-test-id="front-required-error">
-          Przód fiszki jest wymagany.
+          {{ t('frontRequired') }}
         </small>
         }
         @if (hasError('front', 'maxlength')) {
         <small class="fc-form__error" data-test-id="front-maxlength-error">
-          Przód fiszki nie może być dłuższy niż {{ FRONT_MAX_LENGTH }} znaków.
+          {{ t('frontMaxLength', { max: FRONT_MAX_LENGTH }) }}
         </small>
         }
         @if (hasError('front', 'whitespace')) {
         <small class="fc-form__error" data-test-id="front-whitespace-error">
-          Przód fiszki nie może zawierać tylko białych znaków.
+          {{ t('frontWhitespace') }}
         </small>
         }
       </div>
@@ -37,7 +38,7 @@
   </div>
 
   <div class="fc-form__field">
-    <label for="back" class="fc-form__label">Tył fiszki <span class="fc-form__required">*</span></label>
+    <label for="back" class="fc-form__label">{{ t('backLabel') }} <span class="fc-form__required">*</span></label>
     <textarea
       id="back"
       rows="4"
@@ -45,7 +46,7 @@
       formControlName="back"
       [class.ng-invalid]="hasError('back', 'required') || hasError('back', 'maxlength') || hasError('back', 'whitespace')"
       class="fc-form__textarea"
-      [placeholder]="frontLanguageSignal() && backLanguageSignal() ? 'Wpisz tłumaczenie, np. dom; budynek; rodzina' : 'Wpisz odpowiedź lub definicję (max. 1000 znaków)'"
+      [placeholder]="frontLanguageSignal() && backLanguageSignal() ? t('backTranslationPlaceholder') : t('backPlaceholder')"
       data-test-id="back-input"
     ></textarea>
 
@@ -53,17 +54,17 @@
       <div class="fc-form__errors">
         @if (hasError('back', 'required')) {
         <small class="fc-form__error" data-test-id="back-required-error">
-          Tył fiszki jest wymagany.
+          {{ t('backRequired') }}
         </small>
         }
         @if (hasError('back', 'maxlength')) {
         <small class="fc-form__error" data-test-id="back-maxlength-error">
-          Tył fiszki nie może być dłuższy niż {{ BACK_MAX_LENGTH }} znaków.
+          {{ t('backMaxLength', { max: BACK_MAX_LENGTH }) }}
         </small>
         }
         @if (hasError('back', 'whitespace')) {
         <small class="fc-form__error" data-test-id="back-whitespace-error">
-          Tył fiszki nie może zawierać tylko białych znaków.
+          {{ t('backWhitespace') }}
         </small>
         }
       </div>
@@ -75,22 +76,22 @@
 
   <!-- Optional sections -->
   <div class="form-extras">
-    <span class="form-extras__label">Opcjonalne:</span>
+    <span class="form-extras__label">{{ t('optional') }}</span>
     <button type="button" class="form-chip" [class.form-chip--active]="showLanguageSignal()" (click)="showLanguageSignal.set(!showLanguageSignal())">
-      <i class="pi pi-language"></i> Język
+      <i class="pi pi-language"></i> {{ t('language') }}
     </button>
     <button type="button" class="form-chip" [class.form-chip--active]="showImageSignal()" (click)="showImageSignal.set(!showImageSignal())">
-      <i class="pi pi-image"></i> Obrazek
+      <i class="pi pi-image"></i> {{ t('image') }}
     </button>
     <button type="button" class="form-chip" [class.form-chip--active]="showAudioSignal()" (click)="showAudioSignal.set(!showAudioSignal())">
-      <i class="pi pi-microphone"></i> Audio
+      <i class="pi pi-microphone"></i> {{ t('audio') }}
     </button>
   </div>
 
   @if (showLanguageSignal()) {
   <div class="fc-form__row">
     <div class="fc-form__col">
-      <label class="fc-form__label fc-form__label--sm">Język pytania</label>
+      <label class="fc-form__label fc-form__label--sm">{{ t('questionLanguage') }}</label>
       <p-select
         [options]="LANGUAGES"
         optionLabel="label"
@@ -100,12 +101,12 @@
         (ngModelChange)="frontLanguageSignal.set($event)"
         [style]="{ width: '100%' }"
         [showClear]="!!frontLanguageSignal()"
-        placeholder="Brak"
+        [placeholder]="t('noLanguage')"
         data-test-id="front-language-select">
       </p-select>
     </div>
     <div class="fc-form__col">
-      <label class="fc-form__label fc-form__label--sm">Język odpowiedzi</label>
+      <label class="fc-form__label fc-form__label--sm">{{ t('answerLanguage') }}</label>
       <p-select
         [options]="LANGUAGES"
         optionLabel="label"
@@ -115,7 +116,7 @@
         (ngModelChange)="backLanguageSignal.set($event)"
         [style]="{ width: '100%' }"
         [showClear]="!!backLanguageSignal()"
-        placeholder="Brak"
+        [placeholder]="t('noLanguage')"
         data-test-id="back-language-select">
       </p-select>
     </div>
@@ -124,17 +125,17 @@
 
   @if (showImageSignal()) {
   <div class="fc-form__field">
-    <label class="fc-form__label">Obrazek</label>
+    <label class="fc-form__label">{{ t('imageLabel') }}</label>
 
     @if (imagePreviewSignal()) {
       <div class="image-preview">
-        <img [src]="imagePreviewSignal()" alt="Podgląd obrazka" class="image-preview__img" loading="lazy" />
+        <img [src]="imagePreviewSignal()" [alt]="t('imagePreviewAlt')" class="image-preview__img" loading="lazy" />
         <button
           type="button"
           class="fc-form__btn fc-form__btn--danger-outline"
           (click)="removeImage()"
           [disabled]="uploadingSignal()">
-          <i class="pi pi-trash"></i> Usuń obrazek
+          <i class="pi pi-trash"></i> {{ t('removeImage') }}
         </button>
       </div>
     }
@@ -142,8 +143,8 @@
     @if (!imagePreviewSignal() && !uploadingSignal()) {
       <label class="image-upload" data-test-id="image-upload">
         <i class="pi pi-image image-upload__icon"></i>
-        <span class="image-upload__text">Kliknij aby dodać obrazek</span>
-        <small class="image-upload__hint">JPEG, PNG, WebP, GIF — max. 2MB</small>
+        <span class="image-upload__text">{{ t('clickToAddImage') }}</span>
+        <small class="image-upload__hint">{{ t('imageHint') }}</small>
         <input
           type="file"
           accept="image/jpeg,image/png,image/webp,image/gif"
@@ -156,7 +157,7 @@
     @if (uploadingSignal()) {
       <div class="image-uploading">
         <i class="pi pi-spin pi-spinner"></i>
-        <span>Przesyłanie obrazka...</span>
+        <span>{{ t('uploadingImage') }}</span>
       </div>
     }
 
@@ -170,7 +171,7 @@
 
   @if (showAudioSignal()) {
   <div class="fc-form__field">
-    <label class="fc-form__label">Notatka głosowa — tył</label>
+    <label class="fc-form__label">{{ t('audioLabel') }}</label>
 
     <div class="audio-section">
       <div class="audio-preview"
@@ -184,7 +185,7 @@
           class="fc-form__btn fc-form__btn--danger-outline"
           (click)="removeAudio()"
           [disabled]="audioUploadingSignal()">
-          <i class="pi pi-trash"></i> Usuń audio
+          <i class="pi pi-trash"></i> {{ t('removeAudio') }}
         </button>
       </div>
 
@@ -198,11 +199,11 @@
             class="audio-upload__btn audio-upload__btn--record"
             aria-label="Nagraj notatkę głosową"
             (click)="toggleRecorder()">
-            <i class="pi pi-microphone"></i> Nagraj
+            <i class="pi pi-microphone"></i> {{ t('record') }}
           </button>
-          <span class="audio-upload__divider">lub</span>
+          <span class="audio-upload__divider">{{ t('orDivider') }}</span>
           <label class="audio-upload__btn audio-upload__btn--file" aria-label="Wybierz plik audio">
-            <i class="pi pi-upload"></i> Wybierz plik
+            <i class="pi pi-upload"></i> {{ t('selectFile') }}
             <input
               type="file"
               accept="audio/mpeg,audio/wav,audio/ogg,audio/webm"
@@ -210,7 +211,7 @@
               class="audio-upload__input" />
           </label>
         </div>
-        <small class="audio-upload__hint">MP3, WAV, OGG, WebM — max. 30s / 2MB</small>
+        <small class="audio-upload__hint">{{ t('audioHint') }}</small>
       </div>
 
       @if (showRecorderSignal() && !audioPreviewSignal()) {
@@ -224,7 +225,7 @@
            [class.audio-section--hidden]="!audioUploadingSignal()"
            [attr.aria-hidden]="!audioUploadingSignal()">
         <i class="pi pi-spin pi-spinner"></i>
-        <span>Przesyłanie audio...</span>
+        <span>{{ t('uploadingAudio') }}</span>
       </div>
     </div>
 
@@ -243,7 +244,7 @@
       (click)="onCancel()"
       [disabled]="submitting || uploadingSignal()"
       data-test-id="cancel-button">
-      Anuluj
+      {{ t('cancel') }}
     </button>
     <button
       type="submit"
@@ -255,7 +256,9 @@
       } @else {
         <i class="pi pi-save"></i>
       }
-      Zapisz
+      {{ t('save') }}
     </button>
   </div>
 </form>
+
+</ng-container>

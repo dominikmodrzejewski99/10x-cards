@@ -1,3 +1,4 @@
+<ng-container *transloco="let t; prefix: 'languageTest.results'">
 <div class="test-results">
   @if (loading()) {
     <!-- Score skeleton -->
@@ -17,16 +18,16 @@
         {{ r.percentage }}%
       </div>
       <div class="test-results__score-label" [class.test-results__score-label--pass]="r.percentage >= 60" [class.test-results__score-label--fail]="r.percentage < 60">
-        {{ r.percentage >= 60 ? 'Zdane!' : 'Nie zdane' }}
+        {{ r.percentage >= 60 ? t('passed') : t('failed') }}
       </div>
       <div class="test-results__score-detail">
-        {{ r.total_score }}/{{ r.max_score }} poprawnych · {{ getLevelLabel() }} · Próg: 60%
+        {{ t('correctOf', { score: r.total_score, max: r.max_score }) }} · {{ getLevelLabel() }} · {{ t('threshold') }}
       </div>
     </div>
 
     <!-- Category Breakdown -->
     <div class="test-results__breakdown">
-      <h3 class="test-results__breakdown-title">Analiza kategorii</h3>
+      <h3 class="test-results__breakdown-title">{{ t('categoryBreakdown') }}</h3>
       @for (cat of categories(); track cat.name) {
         <div class="test-results__category">
           <span class="test-results__category-name">{{ cat.name }}</span>
@@ -53,19 +54,19 @@
           (click)="generateFlashcards()"
         >
           @if (generatingFlashcards()) {
-            <i class="pi pi-spin pi-spinner"></i> Tworzenie fiszek...
+            <i class="pi pi-spin pi-spinner"></i> {{ t('creatingFlashcards') }}
           } @else if (flashcardsGenerated()) {
-            <i class="pi pi-check"></i> Fiszki utworzone
+            <i class="pi pi-check"></i> {{ t('flashcardsCreated') }}
           } @else {
-            <i class="pi pi-clone"></i> Utwórz fiszki z błędów ({{ r.wrong_answers.length }})
+            <i class="pi pi-clone"></i> {{ t('createFlashcards', { count: r.wrong_answers.length }) }}
           }
         </button>
       }
       <a [routerLink]="['/language-test', r.level]" class="test-results__btn test-results__btn--secondary">
-        <i class="pi pi-replay"></i> Powtórz test
+        <i class="pi pi-replay"></i> {{ t('retryTest') }}
       </a>
       <a routerLink="/language-test" class="test-results__btn test-results__btn--secondary">
-        <i class="pi pi-list"></i> Inny test
+        <i class="pi pi-list"></i> {{ t('otherTest') }}
       </a>
     </div>
 
@@ -78,16 +79,18 @@
     <div class="test-results__empty fade-in">
       @if (error()) {
         <i class="pi pi-exclamation-triangle test-results__empty-icon test-results__empty-icon--error"></i>
-        <h2 class="test-results__empty-title">Błąd ładowania</h2>
+        <h2 class="test-results__empty-title">{{ t('loadingError') }}</h2>
         <p class="test-results__empty-text">{{ error() }}</p>
       } @else {
         <i class="pi pi-inbox test-results__empty-icon"></i>
-        <h2 class="test-results__empty-title">Brak wyników</h2>
-        <p class="test-results__empty-text">Nie znaleziono wyników dla tego testu. Wykonaj test, aby zobaczyć wyniki.</p>
+        <h2 class="test-results__empty-title">{{ t('noResults') }}</h2>
+        <p class="test-results__empty-text">{{ t('noResultsText') }}</p>
       }
       <a routerLink="/language-test" class="test-results__btn test-results__btn--primary">
-        <i class="pi pi-arrow-left"></i> Wróć do testów
+        <i class="pi pi-arrow-left"></i> {{ t('backToTests') }}
       </a>
     </div>
   }
 </div>
+
+</ng-container>

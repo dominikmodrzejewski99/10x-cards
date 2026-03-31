@@ -1,3 +1,4 @@
+<ng-container *transloco="let t; prefix: 'languageTest.view'">
 <div class="test-view">
   @if (loadingSignal()) {
     <!-- Progress skeleton -->
@@ -22,14 +23,14 @@
     <div class="test-view__error">
       <i class="pi pi-exclamation-triangle"></i>
       <p>{{ errorSignal() }}</p>
-      <a routerLink="/language-test" class="test-view__back">← Wróć do wyboru testu</a>
+      <a routerLink="/language-test" class="test-view__back">← {{ t('backToTests') }}</a>
     </div>
   } @else if (currentQuestionSignal(); as q) {
     <!-- Progress header -->
     <div class="test-view__header fade-in">
       <span class="test-view__counter">{{ currentIndexSignal() + 1 }}/{{ testDefinitionSignal()!.questions.length }}</span>
       <span class="test-view__type">
-        {{ q.type === 'multiple-choice-cloze' ? 'Multiple Choice' : 'Word Formation' }}
+        {{ q.type === 'multiple-choice-cloze' ? t('multipleChoice') : t('wordFormation') }}
       </span>
     </div>
 
@@ -66,7 +67,7 @@
         <p class="test-view__sentence">{{ splitByGap(q.text).before }}<span class="test-view__gap test-view__gap--dashed">______</span>{{ splitByGap(q.text).after }}</p>
       </div>
       <div class="test-view__base-word">
-        <span class="test-view__base-word-label">Słowo bazowe:</span>
+        <span class="test-view__base-word-label">{{ t('baseWord') }}</span>
         <span class="test-view__base-word-value">{{ q.baseWord }}</span>
       </div>
       <input
@@ -74,7 +75,7 @@
         class="test-view__input"
         [ngModel]="wordFormationInputSignal()"
         (ngModelChange)="wordFormationInputSignal.set($event)"
-        placeholder="Wpisz odpowiedź..."
+        [placeholder]="t('inputPlaceholder')"
         (keydown.enter)="canProceedSignal() && next()"
       />
     }
@@ -86,7 +87,7 @@
         [disabled]="isFirstQuestionSignal()"
         (click)="previous()"
       >
-        ← Poprzednie
+        {{ t('previous') }}
       </button>
 
       <div class="test-view__actions-right">
@@ -95,7 +96,7 @@
             class="test-view__skip"
             (click)="skip()"
           >
-            Pomiń →
+            {{ t('skip') }}
           </button>
         }
         <button
@@ -104,14 +105,16 @@
           (click)="next()"
         >
           @if (submittingSignal()) {
-            <i class="pi pi-spin pi-spinner"></i> Zapisywanie...
+            <i class="pi pi-spin pi-spinner"></i> {{ t('saving') }}
           } @else if (isLastQuestionSignal()) {
-            Zakończ test
+            {{ t('finish') }}
           } @else {
-            Następne →
+            {{ t('next') }}
           }
         </button>
       </div>
     </div>
   }
 </div>
+
+</ng-container>

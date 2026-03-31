@@ -19,9 +19,9 @@
     <span class="app__footer-brand">Memlo</span>
     <span class="app__footer-copy">&copy; {{ currentYear }}</span>
     <span class="app__footer-sep">·</span>
-    <a routerLink="/terms" class="app__footer-link">Regulamin</a>
+    <a routerLink="/terms" class="app__footer-link">{{ 'footer.terms' | transloco }}</a>
     <span class="app__footer-sep">·</span>
-    <a routerLink="/privacy" class="app__footer-link">Prywatność</a>
+    <a routerLink="/privacy" class="app__footer-link">{{ 'footer.privacy' | transloco }}</a>
   </footer>
 
   <app-bottom-nav></app-bottom-nav>

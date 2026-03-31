@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { SyncStatusComponent } from './sync-status.component';
 import { ConnectivityService } from '../../../services/connectivity.service';
 import { OfflineQueueService } from '../../../services/offline-queue.service';
@@ -26,7 +27,7 @@ describe('SyncStatusComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [SyncStatusComponent],
+      imports: [SyncStatusComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       providers: [
         { provide: ConnectivityService, useValue: mockConnectivity },
         { provide: OfflineQueueService, useValue: mockOfflineQueue }
@@ -54,7 +55,7 @@ describe('SyncStatusComponent', () => {
     const el: HTMLElement = fixture.nativeElement;
     const status: HTMLElement | null = el.querySelector('.sync-status');
     expect(status).toBeTruthy();
-    expect(status!.textContent).toContain('Offline');
+    expect(status!.textContent).toContain('syncStatus.offline');
   });
 
   it('should show pending count when items are queued', () => {
@@ -65,8 +66,7 @@ describe('SyncStatusComponent', () => {
     const el: HTMLElement = fixture.nativeElement;
     const status: HTMLElement | null = el.querySelector('.sync-status');
     expect(status).toBeTruthy();
-    expect(status!.textContent).toContain('3');
-    expect(status!.textContent).toContain('w kolejce');
+    expect(status!.textContent).toContain('syncStatus.pending');
   });
 
   it('should show syncing indicator when syncing', () => {
@@ -78,6 +78,6 @@ describe('SyncStatusComponent', () => {
     const el: HTMLElement = fixture.nativeElement;
     const status: HTMLElement | null = el.querySelector('.sync-status');
     expect(status).toBeTruthy();
-    expect(status!.textContent).toContain('Synchronizacja');
+    expect(status!.textContent).toContain('syncStatus.syncing');
   });
 });

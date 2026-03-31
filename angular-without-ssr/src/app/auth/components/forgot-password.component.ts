@@ -1,78 +1,81 @@
 import { Component, ChangeDetectionStrategy, inject, signal, WritableSignal, Signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { AuthStore } from '../store';
 
 @Component({
   selector: 'app-forgot-password',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, RouterModule],
+  imports: [ReactiveFormsModule, RouterModule, TranslocoDirective],
   template: `
-    <div class="auth-container">
-      <div class="auth-card">
-        <div class="auth-header">
-          <h1 class="auth-title">Resetuj hasło</h1>
-          <p class="auth-desc">Podaj swój adres email, a wyślemy Ci link do zresetowania hasła.</p>
-        </div>
+    <ng-container *transloco="let t; prefix: 'auth.forgotPassword'">
+      <div class="auth-container">
+        <div class="auth-card">
+          <div class="auth-header">
+            <h1 class="auth-title">{{ t('title') }}</h1>
+            <p class="auth-desc">{{ t('description') }}</p>
+          </div>
 
-        @if (sentSignal()) {
-          <div class="auth-success">
-            <i class="pi pi-check-circle"></i>
-            <p>Link do resetowania hasła został wysłany na <strong>{{ sentEmailSignal() }}</strong>.</p>
-            <p class="auth-success__hint">Sprawdź skrzynkę (i folder spam).</p>
-          </div>
-          <div class="auth-footer">
-            <a routerLink="/login" class="auth-back-link">
-              <i class="pi pi-arrow-left"></i> Wróć do logowania
-            </a>
-          </div>
-        } @else {
-          <form [formGroup]="form" (ngSubmit)="onSubmit()">
-            <div class="auth-field">
-              <label for="email" class="auth-label">Email</label>
-              <input
-                type="email"
-                id="email"
-                class="auth-input"
-                formControlName="email"
-                placeholder="Wprowadź swój adres email"
-                autocomplete="email"
-              />
-              @if ((submittedSignal() || form.controls['email'].touched) && form.controls['email'].errors) {
-                <div class="auth-error">
-                  @if (form.controls['email'].errors['required']) {
-                    <span>Email jest wymagany</span>
-                  }
-                  @if (form.controls['email'].errors['email']) {
-                    <span>Niepoprawny format email</span>
-                  }
+          @if (sentSignal()) {
+            <div class="auth-success">
+              <i class="pi pi-check-circle"></i>
+              <p [innerHTML]="t('emailSent', { email: sentEmailSignal() })"></p>
+              <p class="auth-success__hint">{{ t('checkInbox') }}</p>
+            </div>
+            <div class="auth-footer">
+              <a routerLink="/login" class="auth-back-link">
+                <i class="pi pi-arrow-left"></i> {{ t('backToLogin') }}
+              </a>
+            </div>
+          } @else {
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+              <div class="auth-field">
+                <label for="email" class="auth-label">{{ t('emailLabel') }}</label>
+                <input
+                  type="email"
+                  id="email"
+                  class="auth-input"
+                  formControlName="email"
+                  [placeholder]="t('emailPlaceholder')"
+                  autocomplete="email"
+                />
+                @if ((submittedSignal() || form.controls['email'].touched) && form.controls['email'].errors) {
+                  <div class="auth-error">
+                    @if (form.controls['email'].errors['required']) {
+                      <span>{{ t('emailRequired') }}</span>
+                    }
+                    @if (form.controls['email'].errors['email']) {
+                      <span>{{ t('emailInvalid') }}</span>
+                    }
+                  </div>
+                }
+              </div>
+
+              <button
+                type="submit"
+                class="auth-submit"
+                [disabled]="loadingSignal()">
+                {{ t('submitButton') }}
+                @if (loadingSignal()) { <span>...</span> }
+              </button>
+
+              @if (errorSignal()) {
+                <div class="auth-error auth-error--global">
+                  {{ errorSignal() }}
                 </div>
               }
+            </form>
+
+            <div class="auth-footer">
+              <a routerLink="/login" class="auth-back-link">
+                <i class="pi pi-arrow-left"></i> {{ t('backToLogin') }}
+              </a>
             </div>
-
-            <button
-              type="submit"
-              class="auth-submit"
-              [disabled]="loadingSignal()">
-              Wyślij link resetujący
-              @if (loadingSignal()) { <span>...</span> }
-            </button>
-
-            @if (errorSignal()) {
-              <div class="auth-error auth-error--global">
-                {{ errorSignal() }}
-              </div>
-            }
-          </form>
-
-          <div class="auth-footer">
-            <a routerLink="/login" class="auth-back-link">
-              <i class="pi pi-arrow-left"></i> Wróć do logowania
-            </a>
-          </div>
-        }
+          }
+        </div>
       </div>
-    </div>
+    </ng-container>
   `,
   styles: [`
     .auth-container {

@@ -1,3 +1,4 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import {ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit, signal} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {FormsModule} from '@angular/forms';
@@ -34,7 +35,7 @@ interface FlashcardProposalViewModel extends FlashcardProposalDTO {
     BulkSaveButtonComponent,
     GenerateButtonComponent,
     SourceTextareaComponent
-  ],
+  , TranslocoDirective],
   providers: [MessageService],
   templateUrl: './generate-view.component.html',
   styleUrls: ['./generate-view.component.scss'],

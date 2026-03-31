@@ -1,5 +1,6 @@
+<ng-container *transloco="let t; prefix: 'flashcards.import'">
 <p-dialog
-  header="Importuj fiszki"
+  [header]="t('title')"
   [visible]="isVisible()"
   (visibleChange)="onClose()"
   [modal]="true"
@@ -14,8 +15,8 @@
   @if (!isParsed()) {
     <div class="import__input">
       <p class="import__hint">
-        Wklej tekst z fiszkami. Jedna fiszka na linię.<br>
-        Separator: <strong>TAB</strong>, <strong>średnik (;)</strong> lub <strong>przecinek</strong>
+        {{ t('hint') }}<br>
+        <span [innerHTML]="t('separatorHint')"></span>
       </p>
       <textarea
         class="import__textarea"
@@ -31,7 +32,7 @@
           class="import__btn import__btn--primary"
           [disabled]="!hasContent()"
           (click)="onParse()">
-          <i class="pi pi-list"></i> Parsuj
+          <i class="pi pi-list"></i> {{ t('parse') }}
         </button>
       </div>
     </div>
@@ -39,13 +40,13 @@
     <div class="import__preview">
       <div class="import__stats">
         <span class="import__stat import__stat--total">
-          {{ totalCount() }} fiszek
+          {{ t('totalCards', { count: totalCount() }) }}
         </span>
         <span class="import__stat import__stat--accepted">
-          <i class="pi pi-check"></i> {{ acceptedCount() }} zaakceptowanych
+          <i class="pi pi-check"></i> {{ t('acceptedCards', { count: acceptedCount() }) }}
         </span>
         <button class="import__btn-link" (click)="resetToInput()">
-          <i class="pi pi-arrow-left"></i> Wróć do edycji tekstu
+          <i class="pi pi-arrow-left"></i> {{ t('backToEdit') }}
         </button>
       </div>
 
@@ -53,11 +54,11 @@
         <div class="import__errors">
           <p class="import__errors-title">
             <i class="pi pi-exclamation-triangle"></i>
-            Pominięte linie ({{ parseErrors().length }}):
+            {{ t('skippedLines', { count: parseErrors().length }) }}
           </p>
           @for (err of parseErrors(); track err.line) {
             <div class="import__error-item">
-              Linia {{ err.line }}: <span class="import__error-content">{{ err.content }}</span>
+              {{ t('lineError', { line: err.line }) }} <span class="import__error-content">{{ err.content }}</span>
               — {{ err.reason }}
             </div>
           }
@@ -73,12 +74,12 @@
                   class="import__edit-input"
                   #frontInput
                   [value]="proposal.front"
-                  placeholder="Przód" />
+                  [placeholder]="t('frontPlaceholder')" />
                 <input
                   class="import__edit-input"
                   #backInput
                   [value]="proposal.back"
-                  placeholder="Tył" />
+                  [placeholder]="t('backPlaceholder')" />
                 <div class="import__edit-actions">
                   <button class="import__btn import__btn--small import__btn--primary"
                     aria-label="Zapisz zmiany"
@@ -120,12 +121,14 @@
           [disabled]="!canSave()"
           (click)="onSave()">
           @if (isSaving()) {
-            <i class="pi pi-spin pi-spinner"></i> Zapisywanie...
+            <i class="pi pi-spin pi-spinner"></i> {{ t('saving') }}
           } @else {
-            <i class="pi pi-save"></i> Zapisz ({{ acceptedCount() }})
+            <i class="pi pi-save"></i> {{ t('saveCount', { count: acceptedCount() }) }}
           }
         </button>
       </div>
     </div>
   }
 </p-dialog>
+
+</ng-container>

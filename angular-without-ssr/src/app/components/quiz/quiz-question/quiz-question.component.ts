@@ -1,3 +1,4 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, ChangeDetectionStrategy, input, output, InputSignal, OutputEmitterRef, signal, WritableSignal, computed, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -5,7 +6,7 @@ import { QuizQuestion, QuizAnswer } from '../../../../types';
 
 @Component({
   selector: 'app-quiz-question',
-  imports: [FormsModule, InputTextModule],
+  imports: [FormsModule, InputTextModule, TranslocoDirective],
   templateUrl: './quiz-question.component.html',
   styleUrls: ['./quiz-question.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

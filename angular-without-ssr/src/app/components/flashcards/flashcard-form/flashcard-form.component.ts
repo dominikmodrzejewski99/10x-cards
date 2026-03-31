@@ -1,3 +1,4 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, OnInit, OnDestroy, WritableSignal, signal, effect, inject, input, output, InputSignal, OutputEmitterRef, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -39,7 +40,7 @@ export interface FlashcardFormData {
     SelectModule,
     AudioRecorderComponent,
     AudioPlayerComponent
-  ],
+  , TranslocoDirective],
   templateUrl: './flashcard-form.component.html',
   styleUrls: ['./flashcard-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

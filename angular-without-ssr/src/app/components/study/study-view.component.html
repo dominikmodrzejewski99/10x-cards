@@ -1,11 +1,12 @@
+<ng-container *transloco="let t; prefix: 'study'">
 <div class="study" [attr.aria-busy]="loadingSignal()">
 
   @if (showSetModalSignal()) {
     <div class="study__modal-overlay" (click)="showSetModalSignal.set(false)">
       <div class="study__modal" (click)="$event.stopPropagation()">
         <div class="study__modal-header">
-          <h2 class="study__modal-title">Wybierz zestaw</h2>
-          <button class="study__modal-close" (click)="showSetModalSignal.set(false)" aria-label="Zamknij">
+          <h2 class="study__modal-title">{{ t('selectSet') }}</h2>
+          <button class="study__modal-close" (click)="showSetModalSignal.set(false)" [attr.aria-label]="t('close')">
             <i class="pi pi-times"></i>
           </button>
         </div>
@@ -15,7 +16,7 @@
             <input
               type="text"
               class="study__modal-search-input"
-              placeholder="Szukaj zestawu..."
+              [placeholder]="t('searchSet')"
               [ngModel]="setSearchSignal()"
               (ngModelChange)="setSearchSignal.set($event)" />
           </div>
@@ -26,7 +27,7 @@
             [class.study__modal-option--active]="selectedSetIdSignal() === null"
             (click)="selectSetFromModal(null)">
             <i class="pi pi-list"></i>
-            <span>Wszystkie fiszki</span>
+            <span>{{ t('allCards') }}</span>
           </button>
           @for (set of filteredSetsSignal(); track set.id) {
             <button
@@ -40,7 +41,7 @@
           @if (filteredSetsSignal().length === 0 && setSearchSignal()) {
             <div class="study__modal-empty">
               <i class="pi pi-search"></i>
-              <span>Brak wyników dla „{{ setSearchSignal() }}"</span>
+              <span>{{ t('noResults', { query: setSearchSignal() }) }}</span>
             </div>
           }
         </div>
@@ -90,7 +91,7 @@
     <div class="study__state">
       <i class="pi pi-exclamation-triangle study__state-icon study__state-icon--error"></i>
       <p class="study__state-text">{{ errorSignal() }}</p>
-      <button (click)="loadDueCards()" class="study__link study__link--primary">Spróbuj ponownie</button>
+      <button (click)="loadDueCards()" class="study__link study__link--primary">{{ t('retryButton') }}</button>
     </div>
   }
 
@@ -98,30 +99,30 @@
     <div class="study__state fade-in">
       @if (nextReviewDateSignal()) {
         <i class="pi pi-check-circle study__state-icon study__state-icon--success"></i>
-        <h2 class="study__state-title">Wszystko powtórzone!</h2>
-        <p class="study__state-text">Następna powtórka: <strong>{{ formatDate(nextReviewDateSignal()!) }}</strong></p>
+        <h2 class="study__state-title">{{ t('allReviewed') }}</h2>
+        <p class="study__state-text" [innerHTML]="t('nextReview', { date: formatDate(nextReviewDateSignal()!) })"></p>
         <div class="study__links">
           <button (click)="loadExtraPractice()" class="study__link study__link--primary">
-            <i class="pi pi-refresh"></i> Dodatkowa powtórka
+            <i class="pi pi-refresh"></i> {{ t('extraPractice') }}
           </button>
-          <a routerLink="/sets" class="study__link study__link--ghost"><i class="pi pi-folder"></i> Moje zestawy</a>
-          <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-microchip-ai"></i> Generuj fiszki</a>
+          <a routerLink="/sets" class="study__link study__link--ghost"><i class="pi pi-folder"></i> {{ t('mySets') }}</a>
+          <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-microchip-ai"></i> {{ t('generateCards') }}</a>
         </div>
       } @else if (setsSignal().length === 0) {
         <i class="pi pi-folder-open study__state-icon study__state-icon--primary"></i>
-        <h2 class="study__state-title">Nie masz jeszcze zestawów</h2>
-        <p class="study__state-text">Utwórz swój pierwszy zestaw fiszek, aby rozpocząć naukę.</p>
+        <h2 class="study__state-title">{{ t('noSetsTitle') }}</h2>
+        <p class="study__state-text">{{ t('noSetsDesc') }}</p>
         <div class="study__links">
-          <a routerLink="/sets" class="study__link study__link--primary"><i class="pi pi-plus"></i> Utwórz zestaw</a>
-          <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-microchip-ai"></i> Generuj z AI</a>
+          <a routerLink="/sets" class="study__link study__link--primary"><i class="pi pi-plus"></i> {{ t('createSet') }}</a>
+          <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-microchip-ai"></i> {{ t('generateAi') }}</a>
         </div>
       } @else {
         <i class="pi pi-inbox study__state-icon study__state-icon--primary"></i>
-        <h2 class="study__state-title">Brak fiszek do nauki</h2>
-        <p class="study__state-text">Dodaj fiszki do swoich zestawów, aby rozpocząć naukę.</p>
+        <h2 class="study__state-title">{{ t('noCardsTitle') }}</h2>
+        <p class="study__state-text">{{ t('noCardsDesc') }}</p>
         <div class="study__links">
-          <a routerLink="/sets" class="study__link study__link--primary">Moje zestawy</a>
-          <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-microchip-ai"></i> Generuj z AI</a>
+          <a routerLink="/sets" class="study__link study__link--primary">{{ t('mySets') }}</a>
+          <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-microchip-ai"></i> {{ t('generateAi') }}</a>
         </div>
       }
     </div>
@@ -132,33 +133,33 @@
       <div class="study__trophy-wrap">
         <i class="pi pi-trophy study__trophy-icon"></i>
       </div>
-      <h2 class="study__state-title">Świetna robota!</h2>
-      <p class="study__state-text">Sesja zakończona</p>
+      <h2 class="study__state-title">{{ t('sessionComplete.title') }}</h2>
+      <p class="study__state-text">{{ t('sessionComplete.subtitle') }}</p>
 
       <div class="study__stats">
         <div class="study__stat study__stat--right">
           <span class="study__stat-value">{{ sessionResultsSignal().known }}</span>
-          <span class="study__stat-label">Wiem</span>
+          <span class="study__stat-label">{{ t('sessionComplete.know') }}</span>
         </div>
         <div class="study__stat study__stat--hard">
           <span class="study__stat-value">{{ sessionResultsSignal().hard }}</span>
-          <span class="study__stat-label">Trudne</span>
+          <span class="study__stat-label">{{ t('sessionComplete.hard') }}</span>
         </div>
         <div class="study__stat study__stat--wrong">
           <span class="study__stat-value">{{ sessionResultsSignal().unknown }}</span>
-          <span class="study__stat-label">Nie wiem</span>
+          <span class="study__stat-label">{{ t('sessionComplete.dontKnow') }}</span>
         </div>
       </div>
 
       <div class="study__links">
         @if (trackProgressSignal() && failedCountSignal() > 0) {
           <button (click)="restartWithFailedCards()" class="study__link study__link--primary">
-            Powtórz trudne ({{ failedCountSignal() }})
+            {{ t('sessionComplete.repeatHard', { count: failedCountSignal() }) }}
           </button>
         }
-        <button (click)="restartSession()" class="study__link" [class.study__link--primary]="failedCountSignal() === 0" [class.study__link--ghost]="failedCountSignal() > 0">Powtórz wszystkie</button>
-        <a routerLink="/sets" class="study__link study__link--ghost"><i class="pi pi-folder"></i> Moje zestawy</a>
-        <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-microchip-ai"></i> Generuj fiszki</a>
+        <button (click)="restartSession()" class="study__link" [class.study__link--primary]="failedCountSignal() === 0" [class.study__link--ghost]="failedCountSignal() > 0">{{ t('sessionComplete.repeatAll') }}</button>
+        <a routerLink="/sets" class="study__link study__link--ghost"><i class="pi pi-folder"></i> {{ t('mySets') }}</a>
+        <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-microchip-ai"></i> {{ t('generateCards') }}</a>
       </div>
     </div>
   }
@@ -168,21 +169,21 @@
 
       <div class="study__header">
         <div class="study__header-row">
-          <h1 class="study__title">Nauka</h1>
+          <h1 class="study__title">{{ t('title') }}</h1>
           <app-sync-status />
         </div>
         @if (setsSignal().length > 0) {
-          <button class="study__set-btn" (click)="openSetModal()" title="Zmień zestaw">
+          <button class="study__set-btn" (click)="openSetModal()" [title]="t('changeSet')">
             <i class="pi pi-folder"></i>
-            <span>{{ currentSetNameSignal() || 'Wszystkie fiszki' }}</span>
+            <span>{{ currentSetNameSignal() || t('allCards') }}</span>
             <i class="pi pi-chevron-down study__set-btn-arrow"></i>
           </button>
         }
         <p class="study__hint">
           @if (!isFlippedSignal()) {
-            Kliknij kartę lub naciśnij spację
+            {{ t('hintFlip') }}
           } @else {
-            Oceń swoją odpowiedź
+            {{ t('hintRate') }}
           }
         </p>
       </div>
@@ -219,15 +220,15 @@
             @switch (swipeDirectionSignal()) {
               @case ('left') {
                 <i class="pi pi-times"></i>
-                <span>Nie wiem</span>
+                <span>{{ t('swipeDontKnow') }}</span>
               }
               @case ('right') {
                 <i class="pi pi-check"></i>
-                <span>Wiem</span>
+                <span>{{ t('swipeKnow') }}</span>
               }
               @case ('up') {
                 <i class="pi pi-minus"></i>
-                <span>Trudne</span>
+                <span>{{ t('swipeHard') }}</span>
               }
             }
           </div>
@@ -238,7 +239,7 @@
         @if (!isFlippedSignal()) {
           <div class="study__controls-side">
             <label class="study__toggle">
-              <span class="study__toggle-label">Śledź postępy</span>
+              <span class="study__toggle-label">{{ t('trackProgress') }}</span>
               <button
                 class="study__toggle-switch"
                 [class.study__toggle-switch--on]="trackProgressSignal()"
@@ -255,7 +256,7 @@
               <button (click)="flip()" class="study__ctrl study__ctrl--flip">
                 <i class="pi pi-sync"></i>
               </button>
-              <span class="study__tooltip">Odwróć kartę</span>
+              <span class="study__tooltip">{{ t('flipCard') }}</span>
             </div>
           </div>
 
@@ -265,35 +266,35 @@
                 class="study__ctrl"
                 [class.study__ctrl--active]="isReversedSignal()"
                 (click)="toggleDirection()"
-                [attr.aria-label]="isReversedSignal() ? 'Tryb normalny' : 'Odwróć kierunek'">
+                [attr.aria-label]="isReversedSignal() ? t('normalMode') : t('reverseDirection')">
                 <i class="pi pi-arrow-right-arrow-left"></i>
               </button>
-              <span class="study__tooltip">{{ isReversedSignal() ? 'Tryb normalny' : 'Odwróć kierunek' }}</span>
+              <span class="study__tooltip">{{ isReversedSignal() ? t('normalMode') : t('reverseDirection') }}</span>
             </div>
             <div class="study__tooltip-wrap">
               @if (isShuffledSignal()) {
                 <button class="study__ctrl study__ctrl--active" (click)="restoreOrder()">
                   <i class="pi pi-sort-alt"></i>
                 </button>
-                <span class="study__tooltip">Wyłącz tasowanie</span>
+                <span class="study__tooltip">{{ t('disableShuffle') }}</span>
               } @else {
                 <button class="study__ctrl" (click)="shuffleCards()">
                   <i class="pi pi-sort-alt-slash"></i>
                 </button>
-                <span class="study__tooltip">Tasowanie</span>
+                <span class="study__tooltip">{{ t('shuffle') }}</span>
               }
             </div>
             <div class="study__tooltip-wrap">
               <button class="study__ctrl" [class.study__ctrl--active]="isFullscreenSignal()" (click)="toggleFullscreen()">
                 <i [class]="isFullscreenSignal() ? 'pi pi-window-minimize' : 'pi pi-window-maximize'"></i>
               </button>
-              <span class="study__tooltip">{{ isFullscreenSignal() ? 'Zamknij pełny ekran' : 'Pełny ekran' }}</span>
+              <span class="study__tooltip">{{ isFullscreenSignal() ? t('exitFullscreen') : t('fullscreen') }}</span>
             </div>
           </div>
         } @else {
           <div class="study__controls-side">
             <label class="study__toggle">
-              <span class="study__toggle-label">Śledź postępy</span>
+              <span class="study__toggle-label">{{ t('trackProgress') }}</span>
               <button
                 class="study__toggle-switch"
                 [class.study__toggle-switch--on]="trackProgressSignal()"
@@ -310,19 +311,19 @@
               <button (click)="answer(4)" [disabled]="savingSignal()" class="study__ctrl study__ctrl--right">
                 <i class="pi pi-check"></i>
               </button>
-              <span class="study__tooltip">Wiem</span>
+              <span class="study__tooltip">{{ t('know') }}</span>
             </div>
             <div class="study__tooltip-wrap">
               <button (click)="answer(3)" [disabled]="savingSignal()" class="study__ctrl study__ctrl--hard">
                 <i class="pi pi-minus"></i>
               </button>
-              <span class="study__tooltip">Trudne</span>
+              <span class="study__tooltip">{{ t('hard') }}</span>
             </div>
             <div class="study__tooltip-wrap">
               <button (click)="answer(1)" [disabled]="savingSignal()" class="study__ctrl study__ctrl--wrong">
                 <i class="pi pi-times"></i>
               </button>
-              <span class="study__tooltip">Nie wiem</span>
+              <span class="study__tooltip">{{ t('dontKnow') }}</span>
             </div>
           </div>
 
@@ -332,36 +333,36 @@
                 class="study__ctrl"
                 [class.study__ctrl--active]="isReversedSignal()"
                 (click)="toggleDirection()"
-                [attr.aria-label]="isReversedSignal() ? 'Tryb normalny' : 'Odwróć kierunek'">
+                [attr.aria-label]="isReversedSignal() ? t('normalMode') : t('reverseDirection')">
                 <i class="pi pi-arrow-right-arrow-left"></i>
               </button>
-              <span class="study__tooltip">{{ isReversedSignal() ? 'Tryb normalny' : 'Odwróć kierunek' }}</span>
+              <span class="study__tooltip">{{ isReversedSignal() ? t('normalMode') : t('reverseDirection') }}</span>
             </div>
             <div class="study__tooltip-wrap">
               @if (isShuffledSignal()) {
                 <button class="study__ctrl study__ctrl--active" (click)="restoreOrder()">
                   <i class="pi pi-sort-alt"></i>
                 </button>
-                <span class="study__tooltip">Wyłącz tasowanie</span>
+                <span class="study__tooltip">{{ t('disableShuffle') }}</span>
               } @else {
                 <button class="study__ctrl" (click)="shuffleCards()">
                   <i class="pi pi-sort-alt-slash"></i>
                 </button>
-                <span class="study__tooltip">Tasowanie</span>
+                <span class="study__tooltip">{{ t('shuffle') }}</span>
               }
             </div>
             <div class="study__tooltip-wrap">
               <button class="study__ctrl" [class.study__ctrl--active]="isFullscreenSignal()" (click)="toggleFullscreen()">
                 <i [class]="isFullscreenSignal() ? 'pi pi-window-minimize' : 'pi pi-window-maximize'"></i>
               </button>
-              <span class="study__tooltip">{{ isFullscreenSignal() ? 'Zamknij pełny ekran' : 'Pełny ekran' }}</span>
+              <span class="study__tooltip">{{ isFullscreenSignal() ? t('exitFullscreen') : t('fullscreen') }}</span>
             </div>
           </div>
         }
       </div>
 
       <div class="study__progress-row">
-        <div class="study__progress-bar" role="progressbar" [attr.aria-valuenow]="progressPercentSignal()" aria-valuemin="0" aria-valuemax="100" aria-label="Postęp sesji">
+        <div class="study__progress-bar" role="progressbar" [attr.aria-valuenow]="progressPercentSignal()" aria-valuemin="0" aria-valuemax="100" [attr.aria-label]="t('sessionProgress')">
           <div class="study__progress-fill" [style.width.%]="progressPercentSignal()"></div>
         </div>
         <span class="study__counter">{{ currentIndexSignal() + 1 }} / {{ dueCardsSignal().length }}</span>
@@ -369,19 +370,20 @@
 
       <p class="study__kbd study__kbd--desktop">
         @if (!isFlippedSignal()) {
-          spacja = odwróć
+          {{ t('kbdFlip') }}
         } @else {
-          1 = Wiem &nbsp;|&nbsp; 2 = Trudne &nbsp;|&nbsp; 3 = Nie wiem
+          {{ t('kbdRate') }}
         }
-        &nbsp;|&nbsp; F = pełny ekran
+        &nbsp;|&nbsp; {{ t('kbdFullscreen') }}
       </p>
       <p class="study__kbd study__kbd--mobile">
         @if (!isFlippedSignal()) {
-          Dotknij kartę, aby odwrócić
+          {{ t('kbdMobileFlip') }}
         } @else {
-          → Wiem &nbsp;|&nbsp; ↑ Trudne &nbsp;|&nbsp; ← Nie wiem
+          {{ t('kbdMobileRate') }}
         }
       </p>
     </div>
   }
 </div>
+</ng-container>

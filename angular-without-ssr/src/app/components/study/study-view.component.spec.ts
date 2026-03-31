@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, of, throwError, EMPTY } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { StudyViewComponent } from './study-view.component';
 import { ReviewApiService } from '../../services/review-api.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
@@ -86,7 +87,7 @@ describe('StudyViewComponent', () => {
     sm2Mock.calculateNextReview.and.returnValue(mockSm2Result);
 
     await TestBed.configureTestingModule({
-      imports: [StudyViewComponent],
+      imports: [StudyViewComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: ReviewApiService, useValue: reviewApiMock },

@@ -44,7 +44,7 @@ describe('AuthFormComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, AuthFormComponent, TestHostComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
+      imports: [ReactiveFormsModule, AuthFormComponent, TestHostComponent, TranslocoTestingModule.forRoot({ langs: { pl: { auth: { email: 'Email', emailPlaceholder: 'Wprowadź swój adres email', emailRequired: 'Email jest wymagany', emailInvalid: 'Niepoprawny format email', emailExists: 'Ten adres email jest już zarejestrowany', checkingAvailability: 'Sprawdzanie dostępności...', password: 'Hasło', passwordPlaceholder: 'Minimum 6 znaków', passwordRequired: 'Hasło jest wymagane', passwordMinLength: 'Hasło musi mieć co najmniej 6 znaków', passwordMismatch: 'Hasła nie są zgodne', confirmPassword: 'Potwierdź hasło', confirmPasswordPlaceholder: 'Powtórz hasło', confirmPasswordRequired: 'Potwierdzenie hasła jest wymagane', hidePassword: 'Ukryj hasło', showPassword: 'Pokaż hasło', forgotPasswordLink: 'Zapomniałeś hasła?', loginButton: 'Zaloguj się', registerButton: 'Zarejestruj się', or: 'lub', tryWithoutRegistration: 'Wypróbuj bez rejestracji', termsText: 'Rejestrując się, akceptujesz Regulamin oraz Politykę prywatności.' } } }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       providers: [
         provideRouter([]),
         { provide: AuthStore, useValue: mockAuthStore },

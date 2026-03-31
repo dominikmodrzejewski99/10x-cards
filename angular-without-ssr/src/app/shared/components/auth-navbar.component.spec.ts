@@ -29,7 +29,7 @@ describe('AuthNavbarComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [AuthNavbarComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
+      imports: [AuthNavbarComponent, TranslocoTestingModule.forRoot({ langs: { pl: { nav: { dashboard: 'Start', sets: 'Zestawy', learn: 'Ucz się', study: 'Nauka', quiz: 'Quiz', languageTests: 'Testy językowe', guide: 'Poradnik', generate: 'Generuj', login: 'Zaloguj się', register: 'Zarejestruj się', mobileNav: 'Nawigacja mobilna' } } }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       providers: [
         provideRouter([]),
         { provide: AuthStore, useValue: mockAuthStore },

@@ -6,6 +6,7 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { ShareService } from '../../services/share.service';
 import { FlashcardSetDTO, CreateFlashcardSetCommand, UpdateFlashcardSetCommand } from '../../../types';
@@ -29,7 +30,8 @@ interface SetListState {
     DialogModule,
     ToastModule,
     ConfirmDialogModule,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    TranslocoDirective
   ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './set-list.component.html',

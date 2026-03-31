@@ -1,3 +1,4 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
@@ -75,7 +76,7 @@ const STEPS: OnboardingStep[] = [
 
 @Component({
   selector: 'app-onboarding',
-  imports: [DialogModule],
+  imports: [DialogModule, TranslocoDirective],
   templateUrl: './onboarding.component.html',
   styleUrls: ['./onboarding.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -1,10 +1,11 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, ChangeDetectionStrategy, input, output, InputSignal, OutputEmitterRef, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { QuizConfig, QuizQuestionType } from '../../../../types';
 
 @Component({
   selector: 'app-quiz-config',
-  imports: [FormsModule],
+  imports: [FormsModule, TranslocoDirective],
   templateUrl: './quiz-config.component.html',
   styleUrls: ['./quiz-config.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

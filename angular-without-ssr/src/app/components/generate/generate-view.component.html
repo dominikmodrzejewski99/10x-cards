@@ -1,7 +1,8 @@
+<ng-container *transloco="let t; prefix: 'generate'">
 <div class="gen">
   <div class="gen__inner">
     <div class="gen__header">
-      <h1 class="gen__title">Generator fiszek</h1>
+      <h1 class="gen__title">{{ t('title') }}</h1>
     </div>
 
     <div class="gen__card">
@@ -30,15 +31,15 @@
       <div class="gen__proposals-header">
         <h2 class="gen__proposals-title">
           <i class="pi pi-microchip-ai"></i>
-          Wygenerowane fiszki
+          {{ t('generated') }}
         </h2>
         <div class="gen__proposals-stats">
           <span class="gen__stat gen__stat--total">
-            {{ proposals().length }} propozycji
+            {{ t('proposals', { count: proposals().length }) }}
           </span>
           <span class="gen__stat gen__stat--accepted">
             <i class="pi pi-check"></i>
-            {{ acceptedCount() }} zaakceptowanych
+            {{ t('accepted', { count: acceptedCount() }) }}
           </span>
         </div>
       </div>
@@ -52,25 +53,25 @@
 
       <div class="gen__save-section">
         <div class="gen__save-set">
-          <label class="gen__save-label">Zapisz do zestawu:</label>
+          <label class="gen__save-label">{{ t('saveToSet') }}</label>
           <div class="gen__save-controls">
             <select
               class="gen__set-select"
               [ngModel]="selectedSetId()"
               (ngModelChange)="selectedSetId.set($event)">
-              <option [ngValue]="null" disabled>— Wybierz zestaw —</option>
+              <option [ngValue]="null" disabled>{{ t('selectSet') }}</option>
               @for (set of sets(); track set.id) {
                 <option [ngValue]="set.id">{{ set.name }}</option>
               }
             </select>
-            <span class="gen__save-or">lub</span>
+            <span class="gen__save-or">{{ t('or') }}</span>
             <div class="gen__save-new">
               <input
                 type="text"
                 class="gen__set-input"
                 [ngModel]="newSetName()"
                 (ngModelChange)="newSetName.set($event)"
-                placeholder="Nowy zestaw..."
+                [placeholder]="t('newSetPlaceholder')"
                 maxlength="100"
                 (keydown.enter)="createNewSet()" />
               <button
@@ -82,7 +83,7 @@
                 } @else {
                   <i class="pi pi-plus"></i>
                 }
-                Utwórz
+                {{ t('createSet') }}
               </button>
             </div>
           </div>
@@ -91,7 +92,7 @@
         <div class="gen__save-action">
           @if (!selectedSetId() && acceptedCount() > 0) {
             <span class="gen__set-warn">
-              <i class="pi pi-info-circle"></i> Wybierz lub utwórz zestaw
+              <i class="pi pi-info-circle"></i> {{ t('selectOrCreateWarn') }}
             </span>
           }
           <app-bulk-save-button
@@ -108,7 +109,7 @@
     @if (!isGenerating() && !proposals().length && sourceText().length > 0 && isSourceValid()) {
     <div class="gen__empty">
       <i class="pi pi-arrow-up"></i>
-      <p>Kliknij „Generuj" aby stworzyć propozycje fiszek</p>
+      <p>{{ t('clickGenerate') }}</p>
     </div>
     }
   </div>
@@ -116,3 +117,5 @@
 
 <app-loading-indicator [isLoading]="isGenerating()"></app-loading-indicator>
 <p-toast position="bottom-center"></p-toast>
+
+</ng-container>

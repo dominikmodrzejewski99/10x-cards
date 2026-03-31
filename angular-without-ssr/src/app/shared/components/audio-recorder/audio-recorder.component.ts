@@ -1,3 +1,4 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import {
   Component, ChangeDetectionStrategy, input, output, InputSignal,
   OutputEmitterRef, WritableSignal, signal, OnDestroy, OnInit
@@ -6,7 +7,7 @@ import { AudioPlayerComponent } from '../audio-player/audio-player.component';
 
 @Component({
   selector: 'app-audio-recorder',
-  imports: [AudioPlayerComponent],
+  imports: [AudioPlayerComponent, TranslocoDirective],
   templateUrl: './audio-recorder.component.html',
   styleUrls: ['./audio-recorder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -1,3 +1,4 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ShareService } from '../../services/share.service';
@@ -7,23 +8,23 @@ import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-share-accept',
   standalone: true,
-  imports: [ProgressSpinnerModule, ButtonModule],
+  imports: [ProgressSpinnerModule, ButtonModule, TranslocoDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
+  template: `<ng-container *transloco="let t; prefix: 'share'">
     @if (loading()) {
       <div class="share-accept">
         <p-progressSpinner />
-        <p>Kopiowanie zestawu...</p>
+        <p>{{ t('loading') }}</p>
       </div>
     } @else if (error()) {
       <div class="share-accept share-accept--error">
         <i class="pi pi-exclamation-triangle share-accept__icon"></i>
-        <h2>Nie można skopiować zestawu</h2>
+        <h2>{{ t('errorTitle') }}</h2>
         <p>{{ error() }}</p>
-        <p-button label="Przejdź do panelu" (onClick)="goToDashboard()" />
+        <p-button [label]="t('goToDashboard')" (onClick)="goToDashboard()" />
       </div>
     }
-  `,
+  </ng-container>`,
   styles: [`
     .share-accept {
       display: flex;

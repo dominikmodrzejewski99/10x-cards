@@ -1,5 +1,6 @@
+<ng-container *transloco="let t; prefix: 'quiz.list'">
 <div class="quiz-list">
-  <h1 class="quiz-list__title">Wybierz zestaw do testu</h1>
+  <h1 class="quiz-list__title">{{ t('title') }}</h1>
 
   @if (loadingSignal()) {
     <div class="quiz-list__grid">
@@ -28,9 +29,9 @@
   @if (!loadingSignal() && !errorSignal() && setsSignal().length === 0) {
     <div class="quiz-list__state fade-in">
       <i class="pi pi-folder-open quiz-list__state-icon"></i>
-      <p class="quiz-list__state-text">Nie masz jeszcze zestawów fiszek.</p>
+      <p class="quiz-list__state-text">{{ t('noSets') }}</p>
       <button class="quiz-list__btn quiz-list__btn--primary" (click)="onGoToSets()">
-        <i class="pi pi-arrow-right"></i> Przejdź do zestawów
+        <i class="pi pi-arrow-right"></i> {{ t('goToSets') }}
       </button>
     </div>
   }
@@ -41,17 +42,19 @@
         <div class="quiz-list__card">
           <div class="quiz-list__card-body">
             <h3 class="quiz-list__card-name">{{ item.set.name }}</h3>
-            <p class="quiz-list__card-count">{{ item.cardCount }} fiszek</p>
+            <p class="quiz-list__card-count">{{ item.cardCount }} {{ t('cards') }}</p>
           </div>
           @if (item.cardCount >= 4) {
             <button class="quiz-list__btn quiz-list__btn--primary quiz-list__btn--sm" (click)="onStartQuiz(item.set.id)">
-              <i class="pi pi-play"></i> Rozpocznij test
+              <i class="pi pi-play"></i> {{ t('startQuiz') }}
             </button>
           } @else {
-            <span class="quiz-list__card-hint">Min. 4 fiszki</span>
+            <span class="quiz-list__card-hint">{{ t('minCards') }}</span>
           }
         </div>
       }
     </div>
   }
 </div>
+
+</ng-container>
