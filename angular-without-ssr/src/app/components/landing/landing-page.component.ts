@@ -32,6 +32,12 @@ export class LandingPageComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+    // Delay observer setup to ensure Transloco has rendered translated content
+    // (the *transloco structural directive may not have projected DOM elements yet)
+    setTimeout(() => this.setupObservers());
+  }
+
+  private setupObservers(): void {
     this.observer = new IntersectionObserver(
       (entries: IntersectionObserverEntry[]) => {
         entries.forEach((entry: IntersectionObserverEntry) => {
