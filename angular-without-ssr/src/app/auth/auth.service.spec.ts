@@ -224,7 +224,7 @@ describe('AuthService', () => {
       service.deleteAccount().subscribe({
         next: () => done.fail('Expected error'),
         error: (err: Error) => {
-          expect(err.message).toBe('RPC error');
+          expect(err.message).toBe('Wystąpił błąd. Spróbuj ponownie później.');
           done();
         },
       });

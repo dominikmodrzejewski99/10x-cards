@@ -333,7 +333,12 @@ export class AuthService {
             message = 'Nieprawidłowy format adresu email.';
             break;
           default:
-            message = err.message;
+            // Don't expose raw error messages from Supabase
+            if (err.message.includes('fetch') || err.message.includes('network') || err.message.includes('Failed to fetch')) {
+              message = 'Brak połączenia z serwerem. Sprawdź połączenie internetowe.';
+            } else {
+              message = 'Wystąpił błąd. Spróbuj ponownie później.';
+            }
         }
       }
     }
