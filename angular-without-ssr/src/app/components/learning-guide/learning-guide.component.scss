@@ -4,7 +4,7 @@
 .guide__header { text-align: center; margin-bottom: 2rem; }
 .guide__header-icon {
   width: clamp(3.25rem, 8vw, 4rem); height: clamp(3.25rem, 8vw, 4rem);
-  border-radius: 1.25rem; background: linear-gradient(135deg, $color-warning-light, $color-warning-light);
+  border-radius: 1.25rem; background: $color-warning-light;
   display: inline-flex; align-items: center; justify-content: center;
   font-size: clamp(1.35rem, 4vw, 1.75rem); color: $color-warning; margin-bottom: 1rem;
 }
@@ -35,10 +35,10 @@
   font-size: clamp(1rem, 2vw, 1.15rem); flex-shrink: 0; align-self: center;
 }
 
-.guide__card-icon[data-color="blue"]   { background: linear-gradient(135deg, $color-primary-light, $color-primary-light); color: $color-primary; }
-.guide__card-icon[data-color="purple"] { background: linear-gradient(135deg, $color-purple-light, $color-purple-light); color: $color-purple; }
-.guide__card-icon[data-color="green"]  { background: linear-gradient(135deg, $color-success-light, $color-success-light); color: $color-success; }
-.guide__card-icon[data-color="orange"] { background: linear-gradient(135deg, $color-warning-light, $color-warning-light); color: $color-warning; }
+.guide__card-icon[data-color="blue"]   { background: $color-primary-light; color: $color-primary; }
+.guide__card-icon[data-color="purple"] { background: $color-purple-light; color: $color-purple; }
+.guide__card-icon[data-color="green"]  { background: $color-success-light; color: $color-success; }
+.guide__card-icon[data-color="orange"] { background: $color-warning-light; color: $color-warning; }
 .guide__card-icon[data-color="red"]    { background: linear-gradient(135deg, $color-danger-light, #fecaca); color: $color-danger; }
 .guide__card-icon[data-color="teal"]   { background: linear-gradient(135deg, $color-success-light, #ccfbf1); color: $color-teal; }
 
@@ -53,7 +53,7 @@
 @keyframes guide-expand { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
 .guide__card-paragraph { font-size: clamp(0.85rem, 2vw, 0.9rem); color: var(--app-text); line-height: 1.7; margin: 0 0 1rem; }
 .guide__card-paragraph:last-of-type { margin-bottom: 1.25rem; }
-.guide__card-takeaway { display: flex; align-items: flex-start; gap: 0.75rem; padding: clamp(0.75rem, 2vw, 1rem) clamp(0.85rem, 2vw, 1.25rem); background: linear-gradient(135deg, $color-warning-light, $color-warning-light); border: 1px solid $color-warning; border-radius: 0.75rem; }
+.guide__card-takeaway { display: flex; align-items: flex-start; gap: 0.75rem; padding: clamp(0.75rem, 2vw, 1rem) clamp(0.85rem, 2vw, 1.25rem); background: $color-warning-light; border: 1px solid $color-warning; border-radius: 0.75rem; }
 .guide__card-takeaway-icon { width: 1.75rem; height: 1.75rem; border-radius: 50%; background: $color-warning; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.75rem; flex-shrink: 0; }
 .guide__card-takeaway-content { flex: 1; min-width: 0; }
 .guide__card-takeaway-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: $color-warning; margin-bottom: 0.25rem; }
@@ -75,7 +75,7 @@
   transition: border-color 0.2s, box-shadow 0.2s;
   &:hover { border-color: $color-teal; box-shadow: 0 2px 8px rgba(20, 184, 166, 0.1); }
 }
-.chart__feynman-num { flex-shrink: 0; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: linear-gradient(135deg, $color-teal, $color-teal); color: #fff; font-size: 0.85rem; font-weight: 700; }
+.chart__feynman-num { flex-shrink: 0; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: $color-teal; color: #fff; font-size: 0.85rem; font-weight: 700; }
 
 .chart__feynman-content { min-width: 0; }
 .chart__feynman-title { font-size: 0.82rem; font-weight: 700; color: var(--app-text); }
@@ -142,15 +142,6 @@
 .chart__dk-stage-label { white-space: nowrap; }
 .chart__dk-tooltip { margin-top: 0.6rem; padding: 0.75rem 1rem; background: var(--app-white); border: 1.5px solid $color-danger; border-radius: 0.65rem; font-size: 0.82rem; color: var(--app-text); line-height: 1.5; animation: guide-expand 0.2s ease-out; }
 
-.chart__tl { display: flex; align-items: center; padding: 0.5rem 0; overflow-x: auto; max-width: 100%; }
-.chart__tl-point { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; z-index: 1; }
-.chart__tl-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--app-primary); border: 3px solid var(--app-white); box-shadow: 0 0 0 2px var(--app-primary); animation: dot-appear 0.3s ease forwards; }
-.chart__tl-point--start .chart__tl-dot { width: 18px; height: 18px; background: linear-gradient(135deg, $color-primary, $color-purple); box-shadow: 0 0 0 2px $color-purple; }
-.chart__tl-point--end .chart__tl-dot { background: $color-success; box-shadow: 0 0 0 2px $color-success; }
-.chart__tl-text { font-size: 0.65rem; font-weight: 700; color: var(--app-text); margin-top: 0.35rem; white-space: nowrap; }
-.chart__tl-gap { height: 3px; background: linear-gradient(90deg, var(--app-primary), rgba(66, 85, 255, 0.3)); border-radius: 2px; position: relative; min-width: 20px; }
-.chart__tl-gap-label { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; font-weight: 700; color: var(--app-text-secondary); white-space: nowrap; background: var(--app-bg); padding: 0 0.25rem; }
-.chart__tl-caption { font-size: 0.7rem; color: var(--app-text-secondary); text-align: center; margin-top: 0.75rem; font-style: italic; }
 .chart__pomo-cycle { display: flex; align-items: center; gap: clamp(0.2rem, 0.5vw, 0.35rem); flex-wrap: wrap; }
 .chart__pomo-group { display: flex; align-items: center; gap: clamp(0.2rem, 0.5vw, 0.35rem); animation: guide-expand 0.3s ease-out backwards; }
 .chart__pomo-group:nth-child(2) { animation-delay: .15s; }
@@ -158,8 +149,8 @@
 .chart__pomo-group:nth-child(4) { animation-delay: .45s; }
 .chart__pomo-block { display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 0.5rem; padding: clamp(0.3rem, 0.8vw, 0.5rem) clamp(0.35rem, 1vw, 0.6rem); min-width: 0; }
 .chart__pomo-block--work { background: linear-gradient(135deg, $color-danger, $color-danger-hover); color: #fff; min-height: clamp(2.5rem, 6vw, 3.5rem); flex: 1; min-width: clamp(38px, 10vw, 60px); }
-.chart__pomo-block--break { background: linear-gradient(135deg, $color-success-light, $color-success-light); color: $color-success; min-height: 2.25rem; min-width: clamp(24px, 5vw, 32px); }
-.chart__pomo-block--long { background: linear-gradient(135deg, $color-primary-light, $color-primary-light); color: $color-primary; min-height: 3rem; min-width: 70px; animation: guide-expand 0.3s ease-out backwards; animation-delay: 0.6s; }
+.chart__pomo-block--break { background: $color-success-light; color: $color-success; min-height: 2.25rem; min-width: clamp(24px, 5vw, 32px); }
+.chart__pomo-block--long { background: $color-primary-light; color: $color-primary; min-height: 3rem; min-width: 70px; animation: guide-expand 0.3s ease-out backwards; animation-delay: 0.6s; }
 .chart__pomo-time { font-size: clamp(0.6rem, 1.2vw, 0.7rem); font-weight: 800; line-height: 1; }
 .chart__pomo-type { font-size: 0.55rem; font-weight: 600; opacity: 0.8; margin-top: 0.15rem; text-transform: uppercase; letter-spacing: 0.04em; }
 .chart__pomo-summary { display: flex; gap: clamp(1rem, 3vw, 1.5rem); margin-top: 1rem; padding-top: 0.85rem; border-top: 1px solid var(--app-border); }
