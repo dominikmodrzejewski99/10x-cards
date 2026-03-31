@@ -1,18 +1,17 @@
-<ng-container *transloco="let t; prefix: 'landing'">
 <!-- Hero -->
 <section class="hero">
   <div class="landing__inner hero__layout">
     <div class="hero__content" data-animate="fade-up">
       <p class="hero__proof">
         <i class="pi pi-replay"></i>
-        {{ t('hero.proof') }}
+        {{ 'landing.hero.proof' | transloco }}
       </p>
-      <h1 class="hero__title">{{ t('hero.title') }}<br/><span class="hero__accent">{{ t('hero.titleAccent') }}</span></h1>
-      <p class="hero__desc" [innerHTML]="t('hero.desc')"></p>
+      <h1 class="hero__title">{{ 'landing.hero.title' | transloco }}<br/><span class="hero__accent">{{ 'landing.hero.titleAccent' | transloco }}</span></h1>
+      <p class="hero__desc" [innerHTML]="'landing.hero.desc' | transloco"></p>
       <div class="hero__cta">
-        <a routerLink="/register" class="btn btn--primary btn--lg">{{ t('hero.cta') }}</a>
+        <a routerLink="/register" class="btn btn--primary btn--lg">{{ 'landing.hero.cta' | transloco }}</a>
         <button class="btn btn--ghost" (click)="tryAnonymously()">
-          {{ t('hero.tryAnonymous') }} <i class="pi pi-arrow-right"></i>
+          {{ 'landing.hero.tryAnonymous' | transloco }} <i class="pi pi-arrow-right"></i>
         </button>
       </div>
     </div>
@@ -20,7 +19,7 @@
     <div class="hero__visual" data-animate="fade-up">
       <div class="hero__screenshot">
         <img src="assets/screenshots/learning.png"
-             [alt]="t('hero.imgAlt')"
+             [alt]="'landing.hero.imgAlt' | transloco"
              width="800" height="720"
              loading="eager" />
       </div>
@@ -31,30 +30,30 @@
 <!-- Steps -->
 <section class="section section--alt">
   <div class="landing__inner">
-    <h2 class="section__title" data-animate="fade-up" [innerHTML]="t('steps.title')"></h2>
+    <h2 class="section__title" data-animate="fade-up" [innerHTML]="'landing.steps.title' | transloco"></h2>
     <div class="steps">
       <div class="step" data-animate="fade-up">
         <div class="step__icon"><i class="pi pi-folder"></i></div>
-        <h3 class="step__title">{{ t('steps.createSet') }}</h3>
-        <p class="step__desc">{{ t('steps.createSetDesc') }}</p>
+        <h3 class="step__title">{{ 'landing.steps.createSet' | transloco }}</h3>
+        <p class="step__desc">{{ 'landing.steps.createSetDesc' | transloco }}</p>
       </div>
       <div class="step__arrow" data-animate="fade-up" aria-hidden="true"><i class="pi pi-chevron-right"></i></div>
       <div class="step" data-animate="fade-up">
         <div class="step__icon"><i class="pi pi-plus"></i></div>
-        <h3 class="step__title">{{ t('steps.addCards') }}</h3>
-        <p class="step__desc">{{ t('steps.addCardsDesc') }}</p>
+        <h3 class="step__title">{{ 'landing.steps.addCards' | transloco }}</h3>
+        <p class="step__desc">{{ 'landing.steps.addCardsDesc' | transloco }}</p>
       </div>
       <div class="step__arrow" data-animate="fade-up" aria-hidden="true"><i class="pi pi-chevron-right"></i></div>
       <div class="step" data-animate="fade-up">
         <div class="step__icon"><i class="pi pi-sync"></i></div>
-        <h3 class="step__title">{{ t('steps.study') }}</h3>
-        <p class="step__desc">{{ t('steps.studyDesc') }}</p>
+        <h3 class="step__title">{{ 'landing.steps.study' | transloco }}</h3>
+        <p class="step__desc">{{ 'landing.steps.studyDesc' | transloco }}</p>
       </div>
       <div class="step__arrow" data-animate="fade-up" aria-hidden="true"><i class="pi pi-chevron-right"></i></div>
       <div class="step" data-animate="fade-up">
         <div class="step__icon step__icon--violet"><i class="pi pi-replay"></i></div>
-        <h3 class="step__title">{{ t('steps.remember') }}</h3>
-        <p class="step__desc">{{ t('steps.rememberDesc') }}</p>
+        <h3 class="step__title">{{ 'landing.steps.remember' | transloco }}</h3>
+        <p class="step__desc">{{ 'landing.steps.rememberDesc' | transloco }}</p>
       </div>
     </div>
   </div>
@@ -64,22 +63,22 @@
 <section class="section">
   <div class="landing__inner">
     <div class="demo__header" data-animate="fade-up">
-      <span class="section__label">{{ t('demo.label') }}</span>
-      <h2 class="section__title">{{ t('demo.title') }}</h2>
-      <p class="section__subtitle">{{ t('demo.subtitle') }}</p>
+      <span class="section__label">{{ 'landing.demo.label' | transloco }}</span>
+      <h2 class="section__title">{{ 'landing.demo.title' | transloco }}</h2>
+      <p class="section__subtitle">{{ 'landing.demo.subtitle' | transloco }}</p>
     </div>
 
     <div class="demo" data-animate="fade-up">
       <div class="demo__flipcard" (click)="toggleDemoFlip()" [class.demo__flipcard--flipped]="demoFlipped()">
         <div class="demo__flipcard-inner">
           <div class="demo__flipcard-face demo__flipcard-face--front">
-            <span class="demo__label">{{ t('demo.question') }}</span>
-            <p class="demo__text">{{ t('demo.questionText') }}</p>
-            <span class="demo__tap-hint"><i class="pi pi-sync"></i> {{ t('demo.tapHint') }}</span>
+            <span class="demo__label">{{ 'landing.demo.question' | transloco }}</span>
+            <p class="demo__text">{{ 'landing.demo.questionText' | transloco }}</p>
+            <span class="demo__tap-hint"><i class="pi pi-sync"></i> {{ 'landing.demo.tapHint' | transloco }}</span>
           </div>
           <div class="demo__flipcard-face demo__flipcard-face--back">
-            <span class="demo__label">{{ t('demo.answer') }}</span>
-            <p class="demo__text">{{ t('demo.answerText') }}</p>
+            <span class="demo__label">{{ 'landing.demo.answer' | transloco }}</span>
+            <p class="demo__text">{{ 'landing.demo.answerText' | transloco }}</p>
           </div>
         </div>
       </div>
@@ -87,13 +86,13 @@
       <div class="demo__actions">
         <div class="demo__action demo__action--wrong">
           <i class="pi pi-times"></i>
-          <strong>{{ t('demo.dontKnow') }}</strong>
-          <span>{{ t('demo.dontKnowHint') }}</span>
+          <strong>{{ 'landing.demo.dontKnow' | transloco }}</strong>
+          <span>{{ 'landing.demo.dontKnowHint' | transloco }}</span>
         </div>
         <div class="demo__action demo__action--right">
           <i class="pi pi-check"></i>
-          <strong>{{ t('demo.know') }}</strong>
-          <span>{{ t('demo.knowHint') }}</span>
+          <strong>{{ 'landing.demo.know' | transloco }}</strong>
+          <span>{{ 'landing.demo.knowHint' | transloco }}</span>
         </div>
       </div>
     </div>
@@ -103,8 +102,8 @@
 <!-- Features -->
 <section class="section section--alt">
   <div class="landing__inner">
-    <span class="section__label" data-animate="fade-up">{{ t('features.label') }}</span>
-    <h2 class="section__title" data-animate="fade-up">{{ t('features.title') }}</h2>
+    <span class="section__label" data-animate="fade-up">{{ 'landing.features.label' | transloco }}</span>
+    <h2 class="section__title" data-animate="fade-up">{{ 'landing.features.title' | transloco }}</h2>
 
     <!-- Primary feature — full width -->
     <div class="feature-primary" data-animate="fade-up">
@@ -112,12 +111,12 @@
         <div class="feature-primary__icon">
           <i class="pi pi-replay"></i>
         </div>
-        <h3 class="feature-primary__title">{{ t('features.primaryTitle') }}</h3>
-        <p class="feature-primary__desc">{{ t('features.primaryDesc') }}</p>
+        <h3 class="feature-primary__title">{{ 'landing.features.primaryTitle' | transloco }}</h3>
+        <p class="feature-primary__desc">{{ 'landing.features.primaryDesc' | transloco }}</p>
       </div>
       <div class="feature-primary__visual">
         <img src="assets/screenshots/sets.png"
-             [alt]="t('features.primaryImgAlt')"
+             [alt]="'landing.features.primaryImgAlt' | transloco"
              width="838" height="210"
              loading="lazy"
              class="feature-primary__img" />
@@ -130,36 +129,36 @@
         <div class="fcard__icon fcard__icon--green">
           <i class="pi pi-clock"></i>
         </div>
-        <h3 class="fcard__title">{{ t('features.pomodoroTitle') }}</h3>
-        <p class="fcard__desc">{{ t('features.pomodoroDesc') }}</p>
+        <h3 class="fcard__title">{{ 'landing.features.pomodoroTitle' | transloco }}</h3>
+        <p class="fcard__desc">{{ 'landing.features.pomodoroDesc' | transloco }}</p>
       </div>
       <div class="fcard">
         <div class="fcard__icon fcard__icon--violet">
           <i class="pi pi-question-circle"></i>
         </div>
-        <h3 class="fcard__title">{{ t('features.recallTitle') }}</h3>
-        <p class="fcard__desc">{{ t('features.recallDesc') }}</p>
+        <h3 class="fcard__title">{{ 'landing.features.recallTitle' | transloco }}</h3>
+        <p class="fcard__desc">{{ 'landing.features.recallDesc' | transloco }}</p>
       </div>
       <div class="fcard">
         <div class="fcard__icon fcard__icon--orange">
           <i class="pi pi-pencil"></i>
         </div>
-        <h3 class="fcard__title">{{ t('features.customTitle') }}</h3>
-        <p class="fcard__desc">{{ t('features.customDesc') }}</p>
+        <h3 class="fcard__title">{{ 'landing.features.customTitle' | transloco }}</h3>
+        <p class="fcard__desc">{{ 'landing.features.customDesc' | transloco }}</p>
       </div>
       <div class="fcard">
         <div class="fcard__icon fcard__icon--teal">
           <i class="pi pi-folder"></i>
         </div>
-        <h3 class="fcard__title">{{ t('features.setsTitle') }}</h3>
-        <p class="fcard__desc">{{ t('features.setsDesc') }}</p>
+        <h3 class="fcard__title">{{ 'landing.features.setsTitle' | transloco }}</h3>
+        <p class="fcard__desc">{{ 'landing.features.setsDesc' | transloco }}</p>
       </div>
       <div class="fcard">
         <div class="fcard__icon fcard__icon--blue">
           <i class="pi pi-cloud"></i>
         </div>
-        <h3 class="fcard__title">{{ t('features.cloudTitle') }}</h3>
-        <p class="fcard__desc">{{ t('features.cloudDesc') }}</p>
+        <h3 class="fcard__title">{{ 'landing.features.cloudTitle' | transloco }}</h3>
+        <p class="fcard__desc">{{ 'landing.features.cloudDesc' | transloco }}</p>
       </div>
     </div>
   </div>
@@ -168,15 +167,14 @@
 <!-- CTA -->
 <section class="cta" data-animate="fade-up">
   <div class="landing__inner">
-    <h2 class="cta__title">{{ t('cta.title') }}</h2>
-    <p class="cta__desc">{{ t('cta.desc') }}</p>
+    <h2 class="cta__title">{{ 'landing.cta.title' | transloco }}</h2>
+    <p class="cta__desc">{{ 'landing.cta.desc' | transloco }}</p>
     <div class="cta__buttons">
-      <a routerLink="/register" class="btn btn--primary btn--lg">{{ t('cta.button') }}</a>
+      <a routerLink="/register" class="btn btn--primary btn--lg">{{ 'landing.cta.button' | transloco }}</a>
     </div>
     <p class="cta__hint">
-      {{ t('cta.or') }}
-      <button class="cta__link" (click)="tryAnonymously()">{{ t('cta.tryAnonymous') }}</button>
+      {{ 'landing.cta.or' | transloco }}
+      <button class="cta__link" (click)="tryAnonymously()">{{ 'landing.cta.tryAnonymous' | transloco }}</button>
     </p>
   </div>
 </section>
-</ng-container>

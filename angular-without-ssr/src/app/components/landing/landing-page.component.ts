@@ -1,12 +1,12 @@
 import { Component, AfterViewInit, OnDestroy, ElementRef, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { AuthStore } from '../../auth/store';
 
 @Component({
   selector: 'app-landing-page',
-  imports: [RouterModule, TranslocoDirective],
+  imports: [RouterModule, TranslocoPipe],
   templateUrl: './landing-page.component.html',
   styleUrls: ['./landing-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,9 +32,7 @@ export class LandingPageComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    // Delay observer setup to ensure Transloco has rendered translated content
-    // (the *transloco structural directive may not have projected DOM elements yet)
-    setTimeout(() => this.setupObservers());
+    this.setupObservers();
   }
 
   private setupObservers(): void {
