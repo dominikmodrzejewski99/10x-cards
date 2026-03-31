@@ -233,7 +233,11 @@ export class LanguageTestWidgetComponent implements OnInit {
   }
 
   getRelativeDate(dateStr: string): string {
-    const days = Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000);
+    const now = new Date();
+    const then = new Date(dateStr);
+    const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const thenMidnight = new Date(then.getFullYear(), then.getMonth(), then.getDate());
+    const days = Math.round((todayMidnight.getTime() - thenMidnight.getTime()) / 86400000);
     if (days === 0) return 'Dzisiaj';
     if (days === 1) return 'Wczoraj';
     return `${days} dni temu`;
