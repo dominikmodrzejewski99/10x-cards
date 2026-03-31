@@ -1,11 +1,12 @@
 import { Component, AfterViewInit, OnDestroy, ElementRef, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { AuthStore } from '../../auth/store';
 
 @Component({
   selector: 'app-landing-page',
-  imports: [RouterModule],
+  imports: [RouterModule, TranslocoDirective],
   templateUrl: './landing-page.component.html',
   styleUrls: ['./landing-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

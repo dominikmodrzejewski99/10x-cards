@@ -1,13 +1,16 @@
 import { Component, OnInit, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { UserPreferencesService } from '../../services/user-preferences.service';
 import { PomodoroService } from '../../services/pomodoro.service';
 import { ThemeService, Theme } from '../../services/theme.service';
+import { LanguageService } from '../../services/language.service';
+import { AppLanguage } from '../../../types';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, TranslocoDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [`
     .settings { max-width: 800px; margin: 0 auto; padding: 1.5rem 1.25rem 2rem; }
@@ -59,6 +62,7 @@ import { ThemeService, Theme } from '../../services/theme.service';
     @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
     .settings__card--theme { margin-top: 1.5rem; }
     .settings__card-icon--theme { color: var(--app-purple); }
+    .settings__card-icon--lang { color: var(--app-teal, #10b981); }
     .settings__theme-options { display: flex; gap: 0.75rem; }
     .settings__theme-btn {
       flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
@@ -79,31 +83,32 @@ import { ThemeService, Theme } from '../../services/theme.service';
     }
   `],
   template: `
+    <ng-container *transloco="let t; prefix: 'settings'">
     <div class="settings">
-      <h1 class="settings__title">Ustawienia</h1>
-      <p class="settings__subtitle">Zarządzaj swoimi preferencjami</p>
+      <h1 class="settings__title">{{ t('title') }}</h1>
+      <p class="settings__subtitle">{{ t('subtitle') }}</p>
 
       <!-- Pomodoro Section -->
       <div class="settings__card">
         <div class="settings__card-header">
           <span class="settings__card-icon">🍅</span>
-          <h2 class="settings__card-title">Pomodoro</h2>
+          <h2 class="settings__card-title">{{ t('pomodoro.title') }}</h2>
         </div>
 
         <!-- Duration inputs: 3-column grid -->
         <div class="settings__grid">
           <div class="settings__field">
-            <label class="settings__label">Czas nauki (min)</label>
+            <label class="settings__label">{{ t('pomodoro.workDuration') }}</label>
             <input type="number" class="settings__input" [min]="1" [max]="120"
                    [ngModel]="workDurationSignal()" (ngModelChange)="workDurationSignal.set($event)">
           </div>
           <div class="settings__field">
-            <label class="settings__label">Przerwa (min)</label>
+            <label class="settings__label">{{ t('pomodoro.breakDuration') }}</label>
             <input type="number" class="settings__input" [min]="1" [max]="60"
                    [ngModel]="breakDurationSignal()" (ngModelChange)="breakDurationSignal.set($event)">
           </div>
           <div class="settings__field">
-            <label class="settings__label">Długa przerwa (min)</label>
+            <label class="settings__label">{{ t('pomodoro.longBreakDuration') }}</label>
             <input type="number" class="settings__input" [min]="1" [max]="60"
                    [ngModel]="longBreakDurationSignal()" (ngModelChange)="longBreakDurationSignal.set($event)">
           </div>
@@ -111,7 +116,7 @@ import { ThemeService, Theme } from '../../services/theme.service';
 
         <!-- Sessions input -->
         <div class="settings__field settings__field--narrow">
-          <label class="settings__label">Sesje do długiej przerwy</label>
+          <label class="settings__label">{{ t('pomodoro.sessionsBeforeLongBreak') }}</label>
           <input type="number" class="settings__input" [min]="1" [max]="10"
                  [ngModel]="sessionsBeforeLongBreakSignal()" (ngModelChange)="sessionsBeforeLongBreakSignal.set($event)">
         </div>
@@ -120,8 +125,8 @@ import { ThemeService, Theme } from '../../services/theme.service';
         <div class="settings__toggles">
           <div class="settings__toggle-row">
             <div>
-              <div class="settings__toggle-label">Dźwięk powiadomienia</div>
-              <div class="settings__toggle-desc">Odtwórz dźwięk po zakończeniu sesji</div>
+              <div class="settings__toggle-label">{{ t('pomodoro.sound') }}</div>
+              <div class="settings__toggle-desc">{{ t('pomodoro.soundDesc') }}</div>
             </div>
             <label class="settings__switch">
               <input type="checkbox" [ngModel]="soundEnabledSignal()" (ngModelChange)="soundEnabledSignal.set($event)">
@@ -130,8 +135,8 @@ import { ThemeService, Theme } from '../../services/theme.service';
           </div>
           <div class="settings__toggle-row">
             <div>
-              <div class="settings__toggle-label">Notyfikacje przeglądarki</div>
-              <div class="settings__toggle-desc">Pokaż powiadomienie gdy timer się skończy</div>
+              <div class="settings__toggle-label">{{ t('pomodoro.notifications') }}</div>
+              <div class="settings__toggle-desc">{{ t('pomodoro.notificationsDesc') }}</div>
             </div>
             <label class="settings__switch">
               <input type="checkbox" [ngModel]="notificationsEnabledSignal()" (ngModelChange)="notificationsEnabledSignal.set($event)">
@@ -143,10 +148,10 @@ import { ThemeService, Theme } from '../../services/theme.service';
         <!-- Save button -->
         <div class="settings__actions">
           <button class="settings__save-btn" (click)="save()" [disabled]="isSavingSignal()">
-            {{ isSavingSignal() ? 'Zapisywanie...' : 'Zapisz' }}
+            {{ isSavingSignal() ? t('saving') : t('save') }}
           </button>
           @if (savedSignal()) {
-            <span class="settings__saved">✓ Zapisano</span>
+            <span class="settings__saved">✓ {{ t('saved') }}</span>
           }
         </div>
       </div>
@@ -155,7 +160,7 @@ import { ThemeService, Theme } from '../../services/theme.service';
       <div class="settings__card settings__card--theme">
         <div class="settings__card-header">
           <i class="pi pi-palette settings__card-icon settings__card-icon--theme"></i>
-          <h2 class="settings__card-title">Motyw</h2>
+          <h2 class="settings__card-title">{{ t('theme.title') }}</h2>
         </div>
 
         <div class="settings__theme-options">
@@ -163,23 +168,46 @@ import { ThemeService, Theme } from '../../services/theme.service';
                   [class.settings__theme-btn--active]="themeSignal() === 'light'"
                   (click)="setTheme('light')">
             <i class="pi pi-sun"></i>
-            <span>Jasny</span>
+            <span>{{ t('theme.light') }}</span>
           </button>
           <button class="settings__theme-btn"
                   [class.settings__theme-btn--active]="themeSignal() === 'dark'"
                   (click)="setTheme('dark')">
             <i class="pi pi-moon"></i>
-            <span>Ciemny</span>
+            <span>{{ t('theme.dark') }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Language Section -->
+      <div class="settings__card settings__card--theme">
+        <div class="settings__card-header">
+          <i class="pi pi-globe settings__card-icon settings__card-icon--lang"></i>
+          <h2 class="settings__card-title">{{ t('language.title') }}</h2>
+        </div>
+
+        <div class="settings__theme-options">
+          <button class="settings__theme-btn"
+                  [class.settings__theme-btn--active]="languageSignal() === 'pl'"
+                  (click)="setLanguage('pl')">
+            <span>Polski</span>
+          </button>
+          <button class="settings__theme-btn"
+                  [class.settings__theme-btn--active]="languageSignal() === 'en'"
+                  (click)="setLanguage('en')">
+            <span>English</span>
           </button>
         </div>
       </div>
     </div>
+    </ng-container>
   `
 })
 export class SettingsComponent implements OnInit {
-  private prefsService = inject(UserPreferencesService);
-  private pomodoroService = inject(PomodoroService);
-  private themeService = inject(ThemeService);
+  private prefsService: UserPreferencesService = inject(UserPreferencesService);
+  private pomodoroService: PomodoroService = inject(PomodoroService);
+  private themeService: ThemeService = inject(ThemeService);
+  private languageService: LanguageService = inject(LanguageService);
 
   readonly workDurationSignal = signal(25);
   readonly breakDurationSignal = signal(5);
@@ -190,6 +218,7 @@ export class SettingsComponent implements OnInit {
   readonly isSavingSignal = signal(false);
   readonly savedSignal = signal(false);
   readonly themeSignal = this.themeService.theme;
+  readonly languageSignal = this.languageService.language;
 
   ngOnInit(): void {
     this.prefsService.getPreferences().subscribe(prefs => {
@@ -204,6 +233,10 @@ export class SettingsComponent implements OnInit {
 
   setTheme(theme: Theme): void {
     this.themeService.setTheme(theme);
+  }
+
+  setLanguage(lang: AppLanguage): void {
+    this.languageService.setLanguage(lang);
   }
 
   save(): void {

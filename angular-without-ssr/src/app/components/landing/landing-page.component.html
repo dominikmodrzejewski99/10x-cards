@@ -1,19 +1,18 @@
+<ng-container *transloco="let t; prefix: 'landing'">
 <!-- Hero -->
 <section class="hero">
   <div class="landing__inner hero__layout">
     <div class="hero__content" data-animate="fade-up">
       <p class="hero__proof">
         <i class="pi pi-replay"></i>
-        Algorytm SM-2 &middot; sprawdzona nauka o pamięci
+        {{ t('hero.proof') }}
       </p>
-      <h1 class="hero__title">Przestań zapominać.<br/><span class="hero__accent">Zacznij pamiętać.</span></h1>
-      <p class="hero__desc">
-        Algorytm SM-2 planuje Twoje powtórki — ta sama metoda, którą stosują <strong>poligloci</strong> i <strong>lekarze</strong>. Ty odwracasz karty. Reszta działa sama.
-      </p>
+      <h1 class="hero__title">{{ t('hero.title') }}<br/><span class="hero__accent">{{ t('hero.titleAccent') }}</span></h1>
+      <p class="hero__desc" [innerHTML]="t('hero.desc')"></p>
       <div class="hero__cta">
-        <a routerLink="/register" class="btn btn--primary btn--lg">Zacznij za darmo</a>
+        <a routerLink="/register" class="btn btn--primary btn--lg">{{ t('hero.cta') }}</a>
         <button class="btn btn--ghost" (click)="tryAnonymously()">
-          Wypróbuj bez rejestracji <i class="pi pi-arrow-right"></i>
+          {{ t('hero.tryAnonymous') }} <i class="pi pi-arrow-right"></i>
         </button>
       </div>
     </div>
@@ -21,7 +20,7 @@
     <div class="hero__visual" data-animate="fade-up">
       <div class="hero__screenshot">
         <img src="assets/screenshots/learning.png"
-             alt="Widok sesji nauki w Memlo — fiszka z odpowiedzią i przyciski oceny"
+             [alt]="t('hero.imgAlt')"
              width="800" height="720"
              loading="eager" />
       </div>
@@ -29,33 +28,33 @@
   </div>
 </section>
 
-<!-- Jak to działa -->
+<!-- Steps -->
 <section class="section section--alt">
   <div class="landing__inner">
-    <h2 class="section__title" data-animate="fade-up">Cztery kroki do <span class="section__accent">skutecznej</span> nauki</h2>
+    <h2 class="section__title" data-animate="fade-up" [innerHTML]="t('steps.title')"></h2>
     <div class="steps">
       <div class="step" data-animate="fade-up">
         <div class="step__icon"><i class="pi pi-folder"></i></div>
-        <h3 class="step__title">Utwórz zestaw</h3>
-        <p class="step__desc">Pogrupuj materiał tematycznie — osobny zestaw na każdy przedmiot, język czy rozdział.</p>
+        <h3 class="step__title">{{ t('steps.createSet') }}</h3>
+        <p class="step__desc">{{ t('steps.createSetDesc') }}</p>
       </div>
       <div class="step__arrow" data-animate="fade-up" aria-hidden="true"><i class="pi pi-chevron-right"></i></div>
       <div class="step" data-animate="fade-up">
         <div class="step__icon"><i class="pi pi-plus"></i></div>
-        <h3 class="step__title">Dodaj fiszki</h3>
-        <p class="step__desc">Twórz ręcznie albo wklej tekst, a AI pomoże wygenerować pytania.</p>
+        <h3 class="step__title">{{ t('steps.addCards') }}</h3>
+        <p class="step__desc">{{ t('steps.addCardsDesc') }}</p>
       </div>
       <div class="step__arrow" data-animate="fade-up" aria-hidden="true"><i class="pi pi-chevron-right"></i></div>
       <div class="step" data-animate="fade-up">
         <div class="step__icon"><i class="pi pi-sync"></i></div>
-        <h3 class="step__title">Ucz się w skupieniu</h3>
-        <p class="step__desc">Odwracaj karty, oceniaj swoją wiedzę. Timer Pomodoro pomoże utrzymać koncentrację.</p>
+        <h3 class="step__title">{{ t('steps.study') }}</h3>
+        <p class="step__desc">{{ t('steps.studyDesc') }}</p>
       </div>
       <div class="step__arrow" data-animate="fade-up" aria-hidden="true"><i class="pi pi-chevron-right"></i></div>
       <div class="step" data-animate="fade-up">
         <div class="step__icon step__icon--violet"><i class="pi pi-replay"></i></div>
-        <h3 class="step__title">Pamiętaj na dłużej</h3>
-        <p class="step__desc">Algorytm SM-2 ustali, kiedy wrócić do pytania. Ta sama metoda, którą stosują poligloci uczący po 6 języków.</p>
+        <h3 class="step__title">{{ t('steps.remember') }}</h3>
+        <p class="step__desc">{{ t('steps.rememberDesc') }}</p>
       </div>
     </div>
   </div>
@@ -65,22 +64,22 @@
 <section class="section">
   <div class="landing__inner">
     <div class="demo__header" data-animate="fade-up">
-      <span class="section__label">Jak wygląda nauka?</span>
-      <h2 class="section__title">Odwracasz kartę, oceniasz się, idziesz dalej</h2>
-      <p class="section__subtitle">Resztą zajmuje się algorytm SM-2. Sam ustali, kiedy wrócić do pytania — żebyś nie zapomniał.</p>
+      <span class="section__label">{{ t('demo.label') }}</span>
+      <h2 class="section__title">{{ t('demo.title') }}</h2>
+      <p class="section__subtitle">{{ t('demo.subtitle') }}</p>
     </div>
 
     <div class="demo" data-animate="fade-up">
       <div class="demo__flipcard" (click)="toggleDemoFlip()" [class.demo__flipcard--flipped]="demoFlipped()">
         <div class="demo__flipcard-inner">
           <div class="demo__flipcard-face demo__flipcard-face--front">
-            <span class="demo__label">Pytanie</span>
-            <p class="demo__text">Jaki protokół odpowiada za niezawodne dostarczanie pakietów w modelu TCP/IP?</p>
-            <span class="demo__tap-hint"><i class="pi pi-sync"></i> kliknij aby odwrócić</span>
+            <span class="demo__label">{{ t('demo.question') }}</span>
+            <p class="demo__text">{{ t('demo.questionText') }}</p>
+            <span class="demo__tap-hint"><i class="pi pi-sync"></i> {{ t('demo.tapHint') }}</span>
           </div>
           <div class="demo__flipcard-face demo__flipcard-face--back">
-            <span class="demo__label">Odpowiedź</span>
-            <p class="demo__text">TCP (Transmission Control Protocol) — zapewnia kontrolę przepływu, retransmisję i porządkowanie segmentów.</p>
+            <span class="demo__label">{{ t('demo.answer') }}</span>
+            <p class="demo__text">{{ t('demo.answerText') }}</p>
           </div>
         </div>
       </div>
@@ -88,24 +87,24 @@
       <div class="demo__actions">
         <div class="demo__action demo__action--wrong">
           <i class="pi pi-times"></i>
-          <strong>Nie wiem</strong>
-          <span>Wróci jutro</span>
+          <strong>{{ t('demo.dontKnow') }}</strong>
+          <span>{{ t('demo.dontKnowHint') }}</span>
         </div>
         <div class="demo__action demo__action--right">
           <i class="pi pi-check"></i>
-          <strong>Wiem</strong>
-          <span>Następna za 4 dni</span>
+          <strong>{{ t('demo.know') }}</strong>
+          <span>{{ t('demo.knowHint') }}</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Funkcje -->
+<!-- Features -->
 <section class="section section--alt">
   <div class="landing__inner">
-    <span class="section__label" data-animate="fade-up">Co dostajesz</span>
-    <h2 class="section__title" data-animate="fade-up">Metody, które mają badania za sobą</h2>
+    <span class="section__label" data-animate="fade-up">{{ t('features.label') }}</span>
+    <h2 class="section__title" data-animate="fade-up">{{ t('features.title') }}</h2>
 
     <!-- Primary feature — full width -->
     <div class="feature-primary" data-animate="fade-up">
@@ -113,12 +112,12 @@
         <div class="feature-primary__icon">
           <i class="pi pi-replay"></i>
         </div>
-        <h3 class="feature-primary__title">Powtórki w idealnym momencie</h3>
-        <p class="feature-primary__desc">Ebbinghaus udowodnił, że po 24 godzinach pamiętasz 30% materiału. Algorytm SM-2 — stosowany przez lekarzy, tłumaczy i badaczy — planuje powtórki w rosnących odstępach. Powtarzasz dokładnie wtedy, kiedy zaczynasz zapominać.</p>
+        <h3 class="feature-primary__title">{{ t('features.primaryTitle') }}</h3>
+        <p class="feature-primary__desc">{{ t('features.primaryDesc') }}</p>
       </div>
       <div class="feature-primary__visual">
         <img src="assets/screenshots/sets.png"
-             alt="Widok zestawów fiszek w Memlo"
+             [alt]="t('features.primaryImgAlt')"
              width="838" height="210"
              loading="lazy"
              class="feature-primary__img" />
@@ -131,36 +130,36 @@
         <div class="fcard__icon fcard__icon--green">
           <i class="pi pi-clock"></i>
         </div>
-        <h3 class="fcard__title">Timer Pomodoro</h3>
-        <p class="fcard__desc">25 minut nauki, 5 minut przerwy. Zero rozpraszaczy — tylko Ty i materiał.</p>
+        <h3 class="fcard__title">{{ t('features.pomodoroTitle') }}</h3>
+        <p class="fcard__desc">{{ t('features.pomodoroDesc') }}</p>
       </div>
       <div class="fcard">
         <div class="fcard__icon fcard__icon--violet">
           <i class="pi pi-question-circle"></i>
         </div>
-        <h3 class="fcard__title">Active recall</h3>
-        <p class="fcard__desc">Nie czytasz notatek. Przypominasz sobie. Badania pokazują, że to działa 3x lepiej.</p>
+        <h3 class="fcard__title">{{ t('features.recallTitle') }}</h3>
+        <p class="fcard__desc">{{ t('features.recallDesc') }}</p>
       </div>
       <div class="fcard">
         <div class="fcard__icon fcard__icon--orange">
           <i class="pi pi-pencil"></i>
         </div>
-        <h3 class="fcard__title">Twoje fiszki, Twoje zasady</h3>
-        <p class="fcard__desc">Edytuj, twórz od zera, usuwaj. Albo wklej tekst i pozwól AI pomóc.</p>
+        <h3 class="fcard__title">{{ t('features.customTitle') }}</h3>
+        <p class="fcard__desc">{{ t('features.customDesc') }}</p>
       </div>
       <div class="fcard">
         <div class="fcard__icon fcard__icon--teal">
           <i class="pi pi-folder"></i>
         </div>
-        <h3 class="fcard__title">Zestawy tematyczne</h3>
-        <p class="fcard__desc">Angielski, biologia, prawo jazdy — każdy zestaw to osobna paczka wiedzy.</p>
+        <h3 class="fcard__title">{{ t('features.setsTitle') }}</h3>
+        <p class="fcard__desc">{{ t('features.setsDesc') }}</p>
       </div>
       <div class="fcard">
         <div class="fcard__icon fcard__icon--blue">
           <i class="pi pi-cloud"></i>
         </div>
-        <h3 class="fcard__title">Zawsze pod ręką</h3>
-        <p class="fcard__desc">Laptop, telefon, tablet. Twoje fiszki czekają w chmurze.</p>
+        <h3 class="fcard__title">{{ t('features.cloudTitle') }}</h3>
+        <p class="fcard__desc">{{ t('features.cloudDesc') }}</p>
       </div>
     </div>
   </div>
@@ -169,14 +168,15 @@
 <!-- CTA -->
 <section class="cta" data-animate="fade-up">
   <div class="landing__inner">
-    <h2 class="cta__title">Twoja pamięć potrzebuje systemu, nie więcej godzin</h2>
-    <p class="cta__desc">Dołącz za darmo. Bez karty kredytowej, bez limitu zestawów.</p>
+    <h2 class="cta__title">{{ t('cta.title') }}</h2>
+    <p class="cta__desc">{{ t('cta.desc') }}</p>
     <div class="cta__buttons">
-      <a routerLink="/register" class="btn btn--primary btn--lg">Załóż darmowe konto</a>
+      <a routerLink="/register" class="btn btn--primary btn--lg">{{ t('cta.button') }}</a>
     </div>
     <p class="cta__hint">
-      lub
-      <button class="cta__link" (click)="tryAnonymously()">wypróbuj bez rejestracji</button>
+      {{ t('cta.or') }}
+      <button class="cta__link" (click)="tryAnonymously()">{{ t('cta.tryAnonymous') }}</button>
     </p>
   </div>
 </section>
+</ng-container>
