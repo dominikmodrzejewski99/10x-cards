@@ -9,6 +9,7 @@ function createMockPrefs(overrides: Partial<UserPreferencesDTO> = {}): UserPrefe
     id: 1,
     user_id: 'user-123',
     theme: 'light',
+    language: 'pl',
     onboarding_completed: true,
     current_streak: 5,
     longest_streak: 10,

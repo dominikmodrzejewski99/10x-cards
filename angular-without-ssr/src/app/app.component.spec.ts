@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { signal, WritableSignal } from '@angular/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { MessageService } from 'primeng/api';
 import { AppComponent } from './app.component';
 import { AuthStore } from './auth/store';
@@ -33,7 +34,7 @@ describe('AppComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [AppComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       providers: [
         provideRouter([]),
         { provide: AuthStore, useValue: mockAuthStore },

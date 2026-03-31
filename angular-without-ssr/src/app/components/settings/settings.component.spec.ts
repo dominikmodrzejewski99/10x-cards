@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideTransloco, TranslocoTestingModule } from '@jsverse/transloco';
 import { SettingsComponent } from './settings.component';
 import { UserPreferencesService } from '../../services/user-preferences.service';
 import { PomodoroService } from '../../services/pomodoro.service';
+import { LanguageService } from '../../services/language.service';
 import { of } from 'rxjs';
 
 describe('SettingsComponent', () => {
@@ -9,6 +11,7 @@ describe('SettingsComponent', () => {
   let fixture: ComponentFixture<SettingsComponent>;
   let mockPrefsService: jasmine.SpyObj<UserPreferencesService>;
   let mockPomodoroService: jasmine.SpyObj<PomodoroService>;
+  let mockLanguageService: jasmine.SpyObj<LanguageService>;
 
   const mockPrefs = {
     pomodoro_work_duration: 25,
@@ -25,12 +28,20 @@ describe('SettingsComponent', () => {
     mockPrefsService.updatePreferences.and.returnValue(of(mockPrefs as any));
 
     mockPomodoroService = jasmine.createSpyObj('PomodoroService', ['reloadSettings']);
+    mockLanguageService = jasmine.createSpyObj('LanguageService', ['setLanguage'], { language: jasmine.createSpy().and.returnValue('pl') });
 
     TestBed.configureTestingModule({
-      imports: [SettingsComponent],
+      imports: [
+        SettingsComponent,
+        TranslocoTestingModule.forRoot({
+          langs: { pl: {} },
+          translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' },
+        }),
+      ],
       providers: [
         { provide: UserPreferencesService, useValue: mockPrefsService },
-        { provide: PomodoroService, useValue: mockPomodoroService }
+        { provide: PomodoroService, useValue: mockPomodoroService },
+        { provide: LanguageService, useValue: mockLanguageService },
       ]
     });
     fixture = TestBed.createComponent(SettingsComponent);

@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { signal, WritableSignal } from '@angular/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { BottomNavComponent } from './bottom-nav.component';
 import { AuthStore } from '../../../auth/store';
 
@@ -20,7 +21,7 @@ describe('BottomNavComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [BottomNavComponent],
+      imports: [BottomNavComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       providers: [
         provideRouter([]),
         { provide: AuthStore, useValue: mockAuthStore },

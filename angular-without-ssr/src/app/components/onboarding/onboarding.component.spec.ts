@@ -17,6 +17,7 @@ describe('OnboardingComponent', () => {
     id: 1,
     user_id: 'user-1',
     theme: 'light',
+    language: 'pl',
     onboarding_completed: false,
     current_streak: 0,
     longest_streak: 0,

@@ -9,6 +9,7 @@ function createMockPreferences(): UserPreferencesDTO {
     id: 1,
     user_id: 'user-123',
     theme: 'light',
+    language: 'pl',
     onboarding_completed: true,
     current_streak: 0,
     longest_streak: 0,

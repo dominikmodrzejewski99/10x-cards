@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router, provideRouter } from '@angular/router';
 import { signal, WritableSignal, Component } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { AuthFormComponent } from './auth-form.component';
 import { AuthStore } from './store';
 
@@ -43,7 +44,7 @@ describe('AuthFormComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, AuthFormComponent, TestHostComponent],
+      imports: [ReactiveFormsModule, AuthFormComponent, TestHostComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       providers: [
         provideRouter([]),
         { provide: AuthStore, useValue: mockAuthStore },

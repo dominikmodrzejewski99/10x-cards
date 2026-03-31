@@ -24,6 +24,7 @@ function createMockPreferences(userId: string): UserPreferencesDTO {
     id: 1,
     user_id: userId,
     theme: 'light',
+    language: 'pl',
     onboarding_completed: false,
     current_streak: 3,
     longest_streak: 10,

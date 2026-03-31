@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { signal, WritableSignal } from '@angular/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { AuthNavbarComponent } from './auth-navbar.component';
 import { AuthStore } from '../../auth/store';
 
@@ -28,7 +29,7 @@ describe('AuthNavbarComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [AuthNavbarComponent],
+      imports: [AuthNavbarComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       providers: [
         provideRouter([]),
         { provide: AuthStore, useValue: mockAuthStore },

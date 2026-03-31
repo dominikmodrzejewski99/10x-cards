@@ -1,5 +1,6 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { authGuard } from './auth.guard';
 import { AuthStore } from '../store';
 import { AuthRedirectService } from '../services/auth-redirect.service';
@@ -26,6 +27,7 @@ describe('authGuard', () => {
     authRedirectSpy = jasmine.createSpyObj<AuthRedirectService>('AuthRedirectService', ['setRedirectUrl']);
 
     TestBed.configureTestingModule({
+      imports: [TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       providers: [
         { provide: Router, useValue: routerSpy },
         { provide: AuthRedirectService, useValue: authRedirectSpy },

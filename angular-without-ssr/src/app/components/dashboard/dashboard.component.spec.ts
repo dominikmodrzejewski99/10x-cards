@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { DashboardComponent } from './dashboard.component';
 import { StreakService } from '../../shared/services/streak.service';
@@ -111,7 +112,7 @@ describe('DashboardComponent', () => {
     languageTestResultsServiceMock.getLatestResult.and.returnValue(of(null));
 
     await TestBed.configureTestingModule({
-      imports: [DashboardComponent],
+      imports: [DashboardComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: StreakService, useValue: streakServiceMock },

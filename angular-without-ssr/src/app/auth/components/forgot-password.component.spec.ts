@@ -3,6 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { provideRouter } from '@angular/router';
 import { signal, WritableSignal } from '@angular/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { ForgotPasswordComponent } from './forgot-password.component';
 import { AuthStore } from '../store';
 
@@ -25,7 +26,7 @@ describe('ForgotPasswordComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, ForgotPasswordComponent],
+      imports: [ReactiveFormsModule, ForgotPasswordComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       providers: [
         provideRouter([]),
         { provide: AuthStore, useValue: mockAuthStore },

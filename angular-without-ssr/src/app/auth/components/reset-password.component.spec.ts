@@ -3,6 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { provideRouter } from '@angular/router';
 import { signal, WritableSignal } from '@angular/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { ResetPasswordComponent } from './reset-password.component';
 import { AuthStore } from '../store';
 import { SupabaseClientFactory } from '../../services/supabase-client.factory';
@@ -47,7 +48,7 @@ describe('ResetPasswordComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, ResetPasswordComponent],
+      imports: [ReactiveFormsModule, ResetPasswordComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       providers: [
         provideRouter([]),
         { provide: AuthStore, useValue: mockAuthStore },

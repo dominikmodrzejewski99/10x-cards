@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { LandingPageComponent } from './landing-page.component';
 import { AuthStore } from '../../auth/store';
@@ -18,7 +19,13 @@ describe('LandingPageComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [LandingPageComponent],
+      imports: [
+        LandingPageComponent,
+        TranslocoTestingModule.forRoot({
+          langs: { pl: {} },
+          translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' },
+        }),
+      ],
       providers: [
         provideRouter([]),
         { provide: AuthStore, useValue: mockAuthStore }

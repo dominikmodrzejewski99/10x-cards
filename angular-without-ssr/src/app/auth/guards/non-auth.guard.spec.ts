@@ -1,5 +1,6 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { nonAuthGuard } from './non-auth.guard';
 import { AuthStore } from '../store';
 import { Observable } from 'rxjs';
@@ -24,6 +25,7 @@ describe('nonAuthGuard', () => {
     routerSpy.createUrlTree.and.returnValue(dashboardUrlTree);
 
     TestBed.configureTestingModule({
+      imports: [TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       providers: [
         { provide: Router, useValue: routerSpy },
         {
