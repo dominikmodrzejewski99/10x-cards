@@ -8,7 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
-import { Subscription, forkJoin, of } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { FlashcardApiService } from '../../services/flashcard-api.service';
@@ -91,10 +91,10 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
   readonly shareLink = signal<string | null>(null);
   readonly shareLoading = signal(false);
   private undoTimer: ReturnType<typeof setTimeout> | null = null;
-  private routeSub: Subscription | null = null;
+  private redirectTimer: ReturnType<typeof setTimeout> | null = null;
 
   ngOnInit(): void {
-    this.routeSub = this.route.params.subscribe(params => {
+    this.route.params.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
       const setId = Number(params['id']);
       if (!setId) {
         this.router.navigate(['/sets']);
@@ -127,9 +127,11 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.routeSub?.unsubscribe();
     if (this.undoTimer) {
       clearTimeout(this.undoTimer);
+    }
+    if (this.redirectTimer) {
+      clearTimeout(this.redirectTimer);
     }
   }
 
@@ -669,7 +671,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
 
     // Przekierowanie do strony logowania, jeśli to konieczne
     if (redirectToLogin) {
-      setTimeout(() => {
+      this.redirectTimer = setTimeout(() => {
         this.router.navigate(['/login']);
       }, 2000);
     }

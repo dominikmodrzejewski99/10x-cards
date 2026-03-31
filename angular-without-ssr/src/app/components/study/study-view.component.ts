@@ -48,7 +48,6 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
   private destroyRef: DestroyRef = inject(DestroyRef);
   private loadSubscription: Subscription | null = null;
   private answerSubscription: Subscription | null = null;
-  private routeSub: Subscription | null = null;
 
   public isReversedSignal: WritableSignal<boolean> = signal<boolean>(false);
   public isFullscreenSignal: WritableSignal<boolean> = signal<boolean>(false);
@@ -151,7 +150,7 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public ngOnInit(): void {
     this.loadSets();
-    this.routeSub = this.route.queryParams.subscribe(params => {
+    this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
       const setId = params['setId'] ? Number(params['setId']) : null;
       this.selectedSetIdSignal.set(setId);
       this.loadDueCards();
@@ -242,7 +241,6 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
   public ngOnDestroy(): void {
     this.loadSubscription?.unsubscribe();
     this.answerSubscription?.unsubscribe();
-    this.routeSub?.unsubscribe();
   }
 
   private loadSets(): void {

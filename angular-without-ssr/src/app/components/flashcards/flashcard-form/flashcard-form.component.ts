@@ -92,6 +92,7 @@ export class FlashcardFormComponent implements OnInit, OnDestroy {
   private pendingImageUrl: string | null = null;
   private pendingAudioUrl: string | null = null;
   private translationTimeout: ReturnType<typeof setTimeout> | null = null;
+  private destroyed = false;
 
   constructor() {
     effect(() => {
@@ -108,6 +109,7 @@ export class FlashcardFormComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    this.destroyed = true;
     if (this.translationTimeout) {
       clearTimeout(this.translationTimeout);
     }
@@ -176,10 +178,12 @@ export class FlashcardFormComponent implements OnInit, OnDestroy {
 
       this.openRouterService.translateText(frontValue, frontLang, backLang)
         .then((translation: string) => {
+          if (this.destroyed) return;
           this.translationSuggestionSignal.set(translation);
           this.translatingSignal.set(false);
         })
         .catch(() => {
+          if (this.destroyed) return;
           this.translatingSignal.set(false);
         });
     }, 500);
