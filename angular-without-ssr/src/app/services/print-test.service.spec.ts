@@ -332,12 +332,12 @@ describe('PrintTestService', () => {
   });
 
   describe('styl CSS', () => {
-    it('powinien zawierac import fontu Inter', () => {
+    it('powinien uzyc systemowego fontu sans-serif', () => {
       service.generateAndPrint(mockFlashcards, defaultConfig);
 
       const html: string = mockPrintWindow.document.write.calls.first().args[0];
-      expect(html).toContain('fonts.googleapis.com');
-      expect(html).toContain('Inter');
+      expect(html).toContain('font-family');
+      expect(html).not.toContain('fonts.googleapis.com');
     });
 
     it('powinien zawierac reguly @media print', () => {
