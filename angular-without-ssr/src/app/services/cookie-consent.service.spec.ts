@@ -5,13 +5,13 @@ describe('CookieConsentService', () => {
   let service: CookieConsentService;
 
   beforeEach(() => {
-    localStorage.removeItem('cookie-consent');
+    document.cookie = 'cookie_consent=; path=/; max-age=0';
     TestBed.configureTestingModule({ providers: [CookieConsentService] });
     service = TestBed.inject(CookieConsentService);
   });
 
   afterEach(() => {
-    localStorage.removeItem('cookie-consent');
+    document.cookie = 'cookie_consent=; path=/; max-age=0';
   });
 
   it('powinien zostac utworzony', () => {
@@ -29,7 +29,7 @@ describe('CookieConsentService', () => {
     expect(service.status()).toBe('accepted');
     expect(service.hasDecided).toBeTrue();
     expect(service.analyticsAllowed).toBeTrue();
-    expect(localStorage.getItem('cookie-consent')).toBe('accepted');
+    expect(document.cookie).toContain('cookie_consent=accepted');
   });
 
   it('powinien ustawic rejected po reject()', () => {
@@ -37,14 +37,11 @@ describe('CookieConsentService', () => {
     expect(service.status()).toBe('rejected');
     expect(service.hasDecided).toBeTrue();
     expect(service.analyticsAllowed).toBeFalse();
-    expect(localStorage.getItem('cookie-consent')).toBe('rejected');
+    expect(document.cookie).toContain('cookie_consent=rejected');
   });
 
-  it('powinien odczytac zapisany status z localStorage', () => {
-    localStorage.setItem('cookie-consent', 'accepted');
-    const freshService = TestBed.inject(CookieConsentService);
-    // Note: singleton so same instance, but loadStatus runs in constructor
-    // Test with fresh instance by re-creating
+  it('powinien odczytac zapisany status z cookie', () => {
+    document.cookie = 'cookie_consent=accepted; path=/';
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({ providers: [CookieConsentService] });
     const newService = TestBed.inject(CookieConsentService);

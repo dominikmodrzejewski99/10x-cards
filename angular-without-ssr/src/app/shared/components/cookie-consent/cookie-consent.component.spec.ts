@@ -10,7 +10,7 @@ describe('CookieConsentComponent', () => {
   let consentService: CookieConsentService;
 
   beforeEach(async () => {
-    localStorage.removeItem('cookie-consent');
+    document.cookie = 'cookie_consent=; path=/; max-age=0';
 
     await TestBed.configureTestingModule({
       imports: [
@@ -30,7 +30,7 @@ describe('CookieConsentComponent', () => {
   });
 
   afterEach(() => {
-    localStorage.removeItem('cookie-consent');
+    document.cookie = 'cookie_consent=; path=/; max-age=0';
   });
 
   it('powinien utworzyc komponent', () => {

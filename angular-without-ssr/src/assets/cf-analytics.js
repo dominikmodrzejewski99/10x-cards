@@ -1,7 +1,7 @@
 if (
   window.RUNTIME_CONFIG &&
   window.RUNTIME_CONFIG.cfAnalyticsToken &&
-  localStorage.getItem('cookie-consent') === 'accepted'
+  document.cookie.match(/(?:^|;\s*)cookie_consent=accepted/)
 ) {
   var s = document.createElement('script');
   s.defer = true;
