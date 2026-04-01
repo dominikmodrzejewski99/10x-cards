@@ -42,29 +42,45 @@ describe('CookieConsentComponent', () => {
     expect(banner).toBeTruthy();
   });
 
-  it('powinien ukryc banner po akceptacji', () => {
-    component.accept();
+  it('powinien ukryc banner po acceptAll', () => {
+    component.acceptAll();
     fixture.detectChanges();
-    const banner = fixture.nativeElement.querySelector('.consent');
-    expect(banner).toBeFalsy();
+    expect(fixture.nativeElement.querySelector('.consent')).toBeFalsy();
   });
 
-  it('powinien ukryc banner po odrzuceniu', () => {
-    component.reject();
+  it('powinien ukryc banner po rejectNonEssential', () => {
+    component.rejectNonEssential();
     fixture.detectChanges();
-    const banner = fixture.nativeElement.querySelector('.consent');
-    expect(banner).toBeFalsy();
+    expect(fixture.nativeElement.querySelector('.consent')).toBeFalsy();
   });
 
-  it('powinien wywolac consentService.accept', () => {
-    spyOn(consentService, 'accept');
-    component.accept();
-    expect(consentService.accept).toHaveBeenCalled();
+  it('powinien pokazac ustawienia po kliknieciu Dostosuj', () => {
+    expect(fixture.nativeElement.querySelector('.consent__settings')).toBeFalsy();
+    component.toggleSettings();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.consent__settings')).toBeTruthy();
   });
 
-  it('powinien wywolac consentService.reject', () => {
-    spyOn(consentService, 'reject');
-    component.reject();
-    expect(consentService.reject).toHaveBeenCalled();
+  it('powinien ukryc ustawienia po ponownym kliknieciu', () => {
+    component.toggleSettings();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.consent__settings')).toBeTruthy();
+
+    component.toggleSettings();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.consent__settings')).toBeFalsy();
+  });
+
+  it('powinien zapisac customowe preferencje', () => {
+    component.analyticsEnabled.set(false);
+    component.saveCustom();
+    fixture.detectChanges();
+
+    expect(consentService.analyticsAllowed()).toBeFalse();
+    expect(fixture.nativeElement.querySelector('.consent')).toBeFalsy();
+  });
+
+  it('powinien miec analytics domyslnie wlaczone', () => {
+    expect(component.analyticsEnabled()).toBeTrue();
   });
 });

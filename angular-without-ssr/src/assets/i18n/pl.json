@@ -447,7 +447,6 @@
       "copyLink": "Kopiuj link",
       "printTest": "Drukuj test",
       "printTestTitle": "Drukuj test"
-
     },
     "table": {
       "search": "Szukaj wśród fiszek...",
@@ -731,10 +730,19 @@
     "nudge": "{{ email }} przypomina Ci o nauce! Do roboty!"
   },
   "cookieConsent": {
-    "message": "Używamy plików cookie do analizy i poprawy jakości usługi.",
+    "title": "Ustawienia prywatności",
+    "message": "Używamy plików cookie, aby zapewnić działanie strony i analizować jej użytkowanie. Możesz dostosować swoje preferencje.",
     "privacyLink": "Polityka prywatności",
-    "acceptBtn": "Akceptuję",
-    "rejectBtn": "Tylko niezbędne"
+    "necessary": "Niezbędne",
+    "necessaryDesc": "Wymagane do działania aplikacji. Obejmują uwierzytelnianie, preferencje i bezpieczeństwo.",
+    "analytics": "Analityczne",
+    "analyticsDesc": "Pomagają nam zrozumieć jak korzystasz z aplikacji. Obejmują Sentry (błędy) i Cloudflare Analytics (statystyki).",
+    "alwaysOn": "Zawsze aktywne",
+    "showSettings": "Dostosuj",
+    "hideSettings": "Ukryj ustawienia",
+    "acceptBtn": "Akceptuję wszystkie",
+    "rejectBtn": "Tylko niezbędne",
+    "saveBtn": "Zapisz ustawienia"
   },
   "footer": {
     "terms": "Regulamin",

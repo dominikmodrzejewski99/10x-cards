@@ -730,10 +730,19 @@
     "nudge": "{{ email }} erinnert dich ans Lernen! Ran an die Arbeit!"
   },
   "cookieConsent": {
-    "message": "Wir verwenden Cookies für Analysen und zur Verbesserung unseres Dienstes.",
+    "title": "Datenschutzeinstellungen",
+    "message": "Wir verwenden Cookies, um die Website funktionsfähig zu halten und ihre Nutzung zu analysieren. Sie können Ihre Einstellungen anpassen.",
     "privacyLink": "Datenschutzrichtlinie",
-    "acceptBtn": "Akzeptieren",
-    "rejectBtn": "Nur notwendige"
+    "necessary": "Notwendig",
+    "necessaryDesc": "Erforderlich für die Funktion der Anwendung. Umfasst Authentifizierung, Einstellungen und Sicherheit.",
+    "analytics": "Analytisch",
+    "analyticsDesc": "Helfen uns zu verstehen, wie Sie die App nutzen. Umfasst Sentry (Fehler) und Cloudflare Analytics (Statistiken).",
+    "alwaysOn": "Immer aktiv",
+    "showSettings": "Anpassen",
+    "hideSettings": "Einstellungen ausblenden",
+    "acceptBtn": "Alle akzeptieren",
+    "rejectBtn": "Nur notwendige",
+    "saveBtn": "Einstellungen speichern"
   },
   "footer": {
     "terms": "AGB",

@@ -7,7 +7,9 @@ import { appConfig } from './app/app.config';
 
 // Initialize Sentry only if user has accepted analytics cookies
 const consentMatch = document.cookie.match(/(?:^|;\s*)cookie_consent=([^;]*)/);
-if (environment.sentryDsn && consentMatch?.[1] === 'accepted') {
+const consentValue = consentMatch?.[1] ? decodeURIComponent(consentMatch[1]) : '';
+const analyticsOk = consentValue === 'accepted' || (consentValue.includes('"analytics"') && consentValue.includes('true'));
+if (environment.sentryDsn && analyticsOk) {
   Sentry.init({
     dsn: environment.sentryDsn,
     sendDefaultPii: false,

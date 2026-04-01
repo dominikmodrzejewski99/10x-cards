@@ -1,40 +1,52 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { Injectable, signal, WritableSignal, computed } from '@angular/core';
 
-export type ConsentStatus = 'pending' | 'accepted' | 'rejected';
+export interface ConsentPreferences {
+  necessary: true;
+  analytics: boolean;
+}
 
 const COOKIE_NAME = 'cookie_consent';
 const MAX_AGE_DAYS = 365;
 
 @Injectable({ providedIn: 'root' })
 export class CookieConsentService {
-  readonly status: WritableSignal<ConsentStatus> = signal<ConsentStatus>(this.loadStatus());
+  readonly preferences: WritableSignal<ConsentPreferences | null> = signal<ConsentPreferences | null>(this.loadPreferences());
 
-  get hasDecided(): boolean {
-    return this.status() !== 'pending';
+  readonly hasDecided = computed(() => this.preferences() !== null);
+  readonly analyticsAllowed = computed(() => this.preferences()?.analytics === true);
+
+  acceptAll(): void {
+    this.save({ necessary: true, analytics: true });
   }
 
-  get analyticsAllowed(): boolean {
-    return this.status() === 'accepted';
+  rejectNonEssential(): void {
+    this.save({ necessary: true, analytics: false });
   }
 
-  accept(): void {
-    this.setStatus('accepted');
+  saveCustom(prefs: ConsentPreferences): void {
+    this.save(prefs);
   }
 
-  reject(): void {
-    this.setStatus('rejected');
-  }
-
-  private setStatus(status: ConsentStatus): void {
+  private save(prefs: ConsentPreferences): void {
     const maxAge = MAX_AGE_DAYS * 24 * 60 * 60;
-    document.cookie = `${COOKIE_NAME}=${status}; path=/; max-age=${maxAge}; SameSite=Strict; Secure`;
-    this.status.set(status);
+    const encoded = encodeURIComponent(JSON.stringify(prefs));
+    document.cookie = `${COOKIE_NAME}=${encoded}; path=/; max-age=${maxAge}; SameSite=Strict; Secure`;
+    this.preferences.set(prefs);
   }
 
-  private loadStatus(): ConsentStatus {
+  private loadPreferences(): ConsentPreferences | null {
     const match = document.cookie.match(new RegExp(`(?:^|;\\s*)${COOKIE_NAME}=([^;]*)`));
-    const value = match?.[1];
-    if (value === 'accepted' || value === 'rejected') return value;
-    return 'pending';
+    if (!match?.[1]) return null;
+    try {
+      const parsed = JSON.parse(decodeURIComponent(match[1]));
+      if (typeof parsed === 'object' && parsed !== null && 'necessary' in parsed) {
+        return parsed as ConsentPreferences;
+      }
+    } catch {
+      // Legacy string format migration
+      if (match[1] === 'accepted') return { necessary: true, analytics: true };
+      if (match[1] === 'rejected') return { necessary: true, analytics: false };
+    }
+    return null;
   }
 }

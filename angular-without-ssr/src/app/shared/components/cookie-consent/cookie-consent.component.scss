@@ -8,31 +8,45 @@
   right: 0;
   z-index: 9999;
   padding: 1rem;
-  animation: slideUp 0.3s ease-out;
+  animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .consent__inner {
-  max-width: 720px;
+  max-width: 580px;
   margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  padding: 1rem 1.5rem;
+  padding: 1.25rem 1.5rem;
   background: $color-white;
   border: 1.5px solid $color-border;
-  border-radius: $radius-xl;
-  box-shadow: $shadow-lg;
+  border-radius: $radius-2xl;
+  box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.consent__text {
-  flex: 1;
+// ── Header ──
+.consent__header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
 
-  p {
-    font-size: $font-size-sm;
-    color: $color-text;
-    line-height: $line-height-normal;
-    margin: 0;
-  }
+.consent__icon {
+  font-size: 1.1rem;
+  color: $color-primary;
+}
+
+.consent__title {
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  color: $color-text-heading;
+  margin: 0;
+}
+
+// ── Text ──
+.consent__text {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-normal;
+  margin: 0 0 1rem;
 }
 
 .consent__link {
@@ -45,15 +59,126 @@
   }
 }
 
+// ── Settings panel ──
+.consent__settings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: $color-bg-alt;
+  border-radius: $radius-lg;
+  border: 1px solid $color-border-light;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.consent__category {
+  padding: 0;
+}
+
+.consent__category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.consent__category-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.consent__category-name {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-text;
+}
+
+.consent__category-badge--always {
+  font-size: 0.65rem;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $color-success;
+  background: $color-success-light;
+  padding: 0.1rem 0.4rem;
+  border-radius: $radius-pill;
+}
+
+.consent__category-desc {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  line-height: $line-height-normal;
+  margin: 0.25rem 0 0;
+}
+
+// ── Toggle switch ──
+.consent__toggle {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+}
+
+.consent__toggle--disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.consent__toggle-slider {
+  width: 36px;
+  height: 20px;
+  background: $color-border;
+  border-radius: $radius-pill;
+  position: relative;
+  transition: background 0.2s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.consent__toggle input:checked + .consent__toggle-slider {
+  background: $color-primary;
+
+  &::after {
+    transform: translateX(16px);
+  }
+}
+
+// ── Actions ──
 .consent__actions {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 0.5rem;
-  flex-shrink: 0;
+}
+
+.consent__actions-main {
+  display: flex;
+  gap: 0.5rem;
 }
 
 .consent__btn {
   @include btn-base;
-  padding: 0.45rem 1rem;
+  padding: 0.45rem 0.9rem;
   font-size: $font-size-sm;
   border-radius: $radius-md;
   white-space: nowrap;
@@ -61,16 +186,32 @@
 
 .consent__btn--accept {
   @include btn-primary;
-  padding: 0.45rem 1rem;
+  padding: 0.45rem 0.9rem;
   font-size: $font-size-sm;
 }
 
-.consent__btn--reject {
+.consent__btn--reject,
+.consent__btn--save {
+  @include btn-outline;
+  padding: 0.45rem 0.9rem;
+  font-size: $font-size-sm;
+}
+
+.consent__btn--settings {
   @include btn-ghost;
-  padding: 0.45rem 1rem;
-  font-size: $font-size-sm;
+  padding: 0.45rem 0.6rem;
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  gap: 0.3rem;
+
+  i { font-size: 0.75rem; }
+
+  &:hover {
+    color: $color-text;
+  }
 }
 
+// ── Animations ──
 @keyframes slideUp {
   from {
     transform: translateY(100%);
@@ -82,14 +223,23 @@
   }
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+// ── Mobile ──
 @media (max-width: $bp-mobile) {
   .consent__inner {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.75rem;
+    padding: 1rem 1.15rem;
   }
 
   .consent__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .consent__actions-main {
     justify-content: flex-end;
   }
 }

@@ -1,17 +1,76 @@
 <ng-container *transloco="let t; prefix: 'cookieConsent'">
-  @if (!consentService.hasDecided) {
-    <div class="consent">
+  @if (!consentService.hasDecided()) {
+    <div class="consent" role="dialog" aria-label="Cookie consent">
       <div class="consent__inner">
-        <div class="consent__text">
-          <p>{{ t('message') }} <a routerLink="/privacy" class="consent__link">{{ t('privacyLink') }}</a></p>
+        <!-- Header -->
+        <div class="consent__header">
+          <i class="pi pi-shield consent__icon"></i>
+          <h2 class="consent__title">{{ t('title') }}</h2>
         </div>
+
+        <!-- Message -->
+        <p class="consent__text">
+          {{ t('message') }}
+          <a routerLink="/privacy" class="consent__link">{{ t('privacyLink') }}</a>
+        </p>
+
+        <!-- Expandable settings -->
+        @if (showSettings()) {
+          <div class="consent__settings">
+            <!-- Necessary -->
+            <div class="consent__category">
+              <div class="consent__category-header">
+                <div class="consent__category-info">
+                  <span class="consent__category-name">{{ t('necessary') }}</span>
+                  <span class="consent__category-badge consent__category-badge--always">{{ t('alwaysOn') }}</span>
+                </div>
+                <label class="consent__toggle consent__toggle--disabled">
+                  <input type="checkbox" checked disabled />
+                  <span class="consent__toggle-slider"></span>
+                </label>
+              </div>
+              <p class="consent__category-desc">{{ t('necessaryDesc') }}</p>
+            </div>
+
+            <!-- Analytics -->
+            <div class="consent__category">
+              <div class="consent__category-header">
+                <div class="consent__category-info">
+                  <span class="consent__category-name">{{ t('analytics') }}</span>
+                </div>
+                <label class="consent__toggle">
+                  <input
+                    type="checkbox"
+                    [checked]="analyticsEnabled()"
+                    (change)="analyticsEnabled.set(!analyticsEnabled())" />
+                  <span class="consent__toggle-slider"></span>
+                </label>
+              </div>
+              <p class="consent__category-desc">{{ t('analyticsDesc') }}</p>
+            </div>
+          </div>
+        }
+
+        <!-- Actions -->
         <div class="consent__actions">
-          <button class="consent__btn consent__btn--reject" (click)="reject()">
-            {{ t('rejectBtn') }}
+          <button class="consent__btn consent__btn--settings" (click)="toggleSettings()">
+            <i class="pi pi-cog"></i>
+            {{ showSettings() ? t('hideSettings') : t('showSettings') }}
           </button>
-          <button class="consent__btn consent__btn--accept" (click)="accept()">
-            {{ t('acceptBtn') }}
-          </button>
+          <div class="consent__actions-main">
+            @if (showSettings()) {
+              <button class="consent__btn consent__btn--save" (click)="saveCustom()">
+                {{ t('saveBtn') }}
+              </button>
+            } @else {
+              <button class="consent__btn consent__btn--reject" (click)="rejectNonEssential()">
+                {{ t('rejectBtn') }}
+              </button>
+            }
+            <button class="consent__btn consent__btn--accept" (click)="acceptAll()">
+              {{ t('acceptBtn') }}
+            </button>
+          </div>
         </div>
       </div>
     </div>

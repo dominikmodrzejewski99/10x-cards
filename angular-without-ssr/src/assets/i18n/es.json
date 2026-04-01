@@ -730,10 +730,19 @@
     "nudge": "{{ email }} te recuerda que debes estudiar. ¡Manos a la obra!"
   },
   "cookieConsent": {
-    "message": "Usamos cookies para análisis y mejorar nuestro servicio.",
+    "title": "Configuración de privacidad",
+    "message": "Usamos cookies para garantizar el funcionamiento del sitio y analizar su uso. Puedes personalizar tus preferencias.",
     "privacyLink": "Política de privacidad",
-    "acceptBtn": "Aceptar",
-    "rejectBtn": "Solo esenciales"
+    "necessary": "Necesarias",
+    "necessaryDesc": "Requeridas para el funcionamiento de la aplicación. Incluyen autenticación, preferencias y seguridad.",
+    "analytics": "Analíticas",
+    "analyticsDesc": "Nos ayudan a entender cómo usas la aplicación. Incluyen Sentry (errores) y Cloudflare Analytics (estadísticas).",
+    "alwaysOn": "Siempre activas",
+    "showSettings": "Personalizar",
+    "hideSettings": "Ocultar ajustes",
+    "acceptBtn": "Aceptar todas",
+    "rejectBtn": "Solo esenciales",
+    "saveBtn": "Guardar ajustes"
   },
   "footer": {
     "terms": "Términos",

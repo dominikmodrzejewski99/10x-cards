@@ -730,10 +730,19 @@
     "nudge": "{{ email }} vous rappelle de réviser ! Au travail !"
   },
   "cookieConsent": {
-    "message": "Nous utilisons des cookies pour l'analyse et l'amélioration de notre service.",
+    "title": "Paramètres de confidentialité",
+    "message": "Nous utilisons des cookies pour assurer le fonctionnement du site et analyser son utilisation. Vous pouvez personnaliser vos préférences.",
     "privacyLink": "Politique de confidentialité",
-    "acceptBtn": "Accepter",
-    "rejectBtn": "Essentiels uniquement"
+    "necessary": "Nécessaires",
+    "necessaryDesc": "Requises pour le fonctionnement de l'application. Comprennent l'authentification, les préférences et la sécurité.",
+    "analytics": "Analytiques",
+    "analyticsDesc": "Nous aident à comprendre comment vous utilisez l'application. Comprennent Sentry (erreurs) et Cloudflare Analytics (statistiques).",
+    "alwaysOn": "Toujours actifs",
+    "showSettings": "Personnaliser",
+    "hideSettings": "Masquer les paramètres",
+    "acceptBtn": "Tout accepter",
+    "rejectBtn": "Essentiels uniquement",
+    "saveBtn": "Enregistrer les paramètres"
   },
   "footer": {
     "terms": "Conditions",

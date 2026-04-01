@@ -730,10 +730,19 @@
     "nudge": "{{ email }} is reminding you to study! Get to work!"
   },
   "cookieConsent": {
-    "message": "We use cookies for analytics and to improve our service.",
+    "title": "Privacy settings",
+    "message": "We use cookies to ensure the site works properly and to analyze its usage. You can customize your preferences.",
     "privacyLink": "Privacy policy",
-    "acceptBtn": "Accept",
-    "rejectBtn": "Essential only"
+    "necessary": "Necessary",
+    "necessaryDesc": "Required for the application to function. Includes authentication, preferences, and security.",
+    "analytics": "Analytics",
+    "analyticsDesc": "Help us understand how you use the app. Includes Sentry (errors) and Cloudflare Analytics (statistics).",
+    "alwaysOn": "Always on",
+    "showSettings": "Customize",
+    "hideSettings": "Hide settings",
+    "acceptBtn": "Accept all",
+    "rejectBtn": "Essential only",
+    "saveBtn": "Save settings"
   },
   "footer": {
     "terms": "Terms",
