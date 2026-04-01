@@ -47,9 +47,12 @@
   @if (state().sets.length > 0) {
     <div class="sets__grid fade-in">
       @for (set of state().sets; track set.id) {
-        <div class="set-card" (click)="navigateToSet(set)">
+        <div class="set-card" [class.set-card--public]="set.is_public" (click)="navigateToSet(set)">
           <div class="set-card__header">
             <h2 class="set-card__name">{{ set.name }}</h2>
+            @if (set.is_public) {
+              <span class="set-card__public-badge">{{ t('publicBadge') }}</span>
+            }
             <div class="set-card__actions" (click)="$event.stopPropagation()">
               <button class="set-card__action" [title]="t('studyAction')" (click)="studySet(set)">
                 <i class="pi pi-book"></i>
@@ -57,6 +60,15 @@
               <button class="set-card__action" [title]="t('quizAction')" (click)="quizSet(set)">
                 <i class="pi pi-file-edit"></i>
               </button>
+              @if (set.is_public) {
+                <button class="set-card__action set-card__action--unpublish" [title]="t('unpublishAction')" (click)="unpublishSet(set)">
+                  <i class="pi pi-lock"></i>
+                </button>
+              } @else {
+                <button class="set-card__action set-card__action--publish" [title]="t('publishAction')" (click)="publishSet(set)">
+                  <i class="pi pi-globe"></i>
+                </button>
+              }
               <button class="set-card__action" [title]="t('shareAction')" (click)="shareSet(set)" data-test-id="share-set-button">
                 <i class="pi pi-share-alt"></i>
               </button>
@@ -75,6 +87,11 @@
             <span class="set-card__date">
               <i class="pi pi-calendar"></i> {{ formatDate(set.created_at) }}
             </span>
+            @if (set.is_public) {
+              <span class="set-card__copies">
+                <i class="pi pi-copy"></i> {{ set.copy_count }} {{ t('copyCount') }}
+              </span>
+            }
           </div>
         </div>
       }

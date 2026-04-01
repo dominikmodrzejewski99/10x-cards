@@ -9,6 +9,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { ShareService } from '../../services/share.service';
+import { ExploreService } from '../../services/explore.service';
 import { FlashcardSetDTO, CreateFlashcardSetCommand, UpdateFlashcardSetCommand } from '../../../types';
 
 interface SetListState {
@@ -45,6 +46,7 @@ export class SetListComponent implements OnInit {
   private confirmationService = inject(ConfirmationService);
   private router = inject(Router);
   private route: ActivatedRoute = inject(ActivatedRoute);
+  private exploreService = inject(ExploreService);
 
   state = signal<SetListState>({
     sets: [],
@@ -260,6 +262,76 @@ export class SetListComponent implements OnInit {
         detail: 'Nie udało się wygenerować linku',
       });
     }
+  }
+
+  publishSet(set: FlashcardSetDTO): void {
+    this.confirmationService.confirm({
+      message: `Czy na pewno chcesz opublikować zestaw „${set.name}"? Będzie widoczny dla wszystkich użytkowników.`,
+      header: 'Publikacja zestawu',
+      icon: 'pi pi-globe',
+      acceptLabel: 'Opublikuj',
+      rejectLabel: 'Anuluj',
+      accept: () => {
+        this.exploreService.publishSet(set.id).subscribe({
+          next: () => {
+            this.state.update(s => ({
+              ...s,
+              sets: s.sets.map(st => st.id === set.id
+                ? { ...st, is_public: true, published_at: new Date().toISOString(), copy_count: st.copy_count ?? 0 }
+                : st
+              )
+            }));
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Opublikowano',
+              detail: 'Zestaw jest teraz publiczny.'
+            });
+          },
+          error: () => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Błąd',
+              detail: 'Nie udało się opublikować zestawu.'
+            });
+          }
+        });
+      }
+    });
+  }
+
+  unpublishSet(set: FlashcardSetDTO): void {
+    this.confirmationService.confirm({
+      message: `Czy na pewno chcesz ukryć zestaw „${set.name}"? Nie będzie już widoczny publicznie.`,
+      header: 'Ukrycie zestawu',
+      icon: 'pi pi-lock',
+      acceptLabel: 'Ukryj',
+      rejectLabel: 'Anuluj',
+      accept: () => {
+        this.exploreService.unpublishSet(set.id).subscribe({
+          next: () => {
+            this.state.update(s => ({
+              ...s,
+              sets: s.sets.map(st => st.id === set.id
+                ? { ...st, is_public: false }
+                : st
+              )
+            }));
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Ukryto',
+              detail: 'Zestaw nie jest już publiczny.'
+            });
+          },
+          error: () => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Błąd',
+              detail: 'Nie udało się ukryć zestawu.'
+            });
+          }
+        });
+      }
+    });
   }
 
   formatDate(dateStr: string): string {
