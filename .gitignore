@@ -1,2 +1,8 @@
 settings.local.json
 .claude
+.idea/
+.mcp.json
+supabase/.env
+node_modules/
+angular-without-ssr/login-form-*.png
+angular-without-ssr/login-page.png
