@@ -321,6 +321,7 @@
     "languageTests": "Sprachtests",
     "guide": "Ratgeber",
     "generate": "Generieren",
+    "friends": "Freunde",
     "login": "Anmelden",
     "register": "Registrieren",
     "mobileNav": "Mobile Navigation"
@@ -685,6 +686,48 @@
       "false": "Falsch",
       "answerKey": "Lösungsschlüssel"
     }
+  },
+  "friends": {
+    "title": "Freunde",
+    "subtitle": "Lernt zusammen, tretet gegeneinander an und motiviert euch gegenseitig",
+    "addFriend": "Freund hinzufügen",
+    "emailPlaceholder": "E-Mail des Freundes eingeben",
+    "send": "Einladung senden",
+    "pendingRequests": "Ausstehende Einladungen",
+    "myFriends": "Meine Freunde",
+    "noFriends": "Noch keine Freunde. Füge jemanden hinzu, um loszulegen!",
+    "noPending": "Keine ausstehenden Einladungen",
+    "accept": "Annehmen",
+    "reject": "Ablehnen",
+    "remove": "Entfernen",
+    "nudge": "Erinnerung senden",
+    "nudgeSent": "Erinnerung gesendet!",
+    "nudgeCooldown": "Erinnerung wurde heute bereits gesendet",
+    "inactive": "Seit {{ days }} Tagen inaktiv",
+    "streak": "{{ count }} Tage in Folge",
+    "requestSent": "Einladung gesendet!",
+    "requestAccepted": "Einladung angenommen",
+    "alreadyFriends": "Ihr seid bereits befreundet",
+    "userNotFound": "Benutzer nicht gefunden",
+    "cannotAddAnonymous": "Anonyme Benutzer können keine Freunde hinzufügen",
+    "stats": {
+      "title": "Statistikvergleich",
+      "back": "Zurück",
+      "you": "Du",
+      "currentStreak": "Aktuelle Serie",
+      "longestStreak": "Längste Serie",
+      "totalSessions": "Sitzungen gesamt",
+      "totalCards": "Wiederholte Karten",
+      "errorLoading": "Statistiken konnten nicht geladen werden."
+    }
+  },
+  "notifications": {
+    "title": "Benachrichtigungen",
+    "markAllRead": "Alle als gelesen markieren",
+    "empty": "Keine Benachrichtigungen",
+    "friend_request": "{{ email }} möchte dein Freund sein",
+    "friend_accepted": "{{ email }} hat deine Einladung angenommen",
+    "nudge": "{{ email }} erinnert dich ans Lernen! Ran an die Arbeit!"
   },
   "footer": {
     "terms": "AGB",

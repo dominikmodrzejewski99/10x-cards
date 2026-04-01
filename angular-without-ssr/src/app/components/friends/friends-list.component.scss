@@ -1,0 +1,228 @@
+@use 'variables' as *;
+@use 'buttons' as *;
+@use 'config-form' as *;
+
+.friends {
+  max-width: $page-max-width;
+  margin: 0 auto;
+  padding: $page-padding;
+}
+
+.friends__header {
+  margin-bottom: 1.5rem;
+}
+
+.friends__title {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-extrabold;
+  color: $color-text-heading;
+  letter-spacing: $letter-spacing-tight;
+  margin: 0;
+}
+
+.friends__subtitle {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin: 0.25rem 0 0;
+}
+
+// ── Add friend ──
+.friends__add {
+  margin-bottom: 2rem;
+}
+
+.friends__add-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.friends__add-input {
+  @include config-input;
+  flex: 1;
+}
+
+.friends__add-btn {
+  @include btn-base;
+  @include btn-md;
+  @include btn-primary;
+  white-space: nowrap;
+}
+
+// ── Sections ──
+.friends__section {
+  margin-bottom: 2rem;
+}
+
+.friends__section-title {
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  color: $color-text;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+
+  i { color: $color-text-secondary; }
+}
+
+.friends__badge {
+  background: $color-primary;
+  color: #fff;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  padding: 0.1rem 0.5rem;
+  border-radius: $radius-pill;
+}
+
+// ── List & Cards ──
+.friends__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.friends__card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: $color-bg-alt;
+  border: 1.5px solid $color-border-light;
+  border-radius: $radius-lg;
+  transition: $transition-fast;
+
+  &:hover {
+    border-color: $color-border;
+  }
+}
+
+.friends__card--pending {
+  border-left: 3px solid $color-primary;
+}
+
+.friends__card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+  min-width: 0;
+}
+
+.friends__card-email {
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+  color: $color-text;
+}
+
+.friends__card-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.friends__stat {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+
+  i { font-size: 0.7rem; }
+}
+
+.friends__stat--streak {
+  color: $color-warning;
+  font-weight: $font-weight-semibold;
+}
+
+.friends__stat--inactive {
+  color: $color-danger;
+  font-size: $font-size-xs;
+}
+
+// ── Buttons ──
+.friends__card-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.friends__btn {
+  @include btn-base;
+  padding: 0.35rem 0.65rem;
+  font-size: $font-size-xs;
+  border-radius: $radius-md;
+}
+
+.friends__btn--accept {
+  @include btn-success;
+  padding: 0.35rem 0.65rem;
+  font-size: $font-size-xs;
+}
+
+.friends__btn--reject {
+  @include btn-ghost;
+  padding: 0.35rem 0.5rem;
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+}
+
+.friends__btn--nudge {
+  @include btn-ghost;
+  padding: 0.35rem 0.5rem;
+  font-size: $font-size-xs;
+  color: $color-warning;
+
+  &:hover { color: $color-warning-hover; }
+}
+
+.friends__btn--remove {
+  @include btn-ghost;
+  padding: 0.35rem 0.5rem;
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+
+  &:hover { color: $color-danger; }
+}
+
+// ── Empty state ──
+.friends__empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: $color-text-secondary;
+}
+
+.friends__empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.4;
+}
+
+.friends__loading {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 0;
+}
+
+@media (max-width: $bp-mobile) {
+  .friends {
+    padding: $page-padding-mobile;
+  }
+
+  .friends__add-row {
+    flex-direction: column;
+  }
+
+  .friends__card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .friends__card-actions {
+    justify-content: flex-end;
+  }
+}

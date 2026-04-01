@@ -321,6 +321,7 @@
     "languageTests": "Language tests",
     "guide": "Guide",
     "generate": "Generate",
+    "friends": "Friends",
     "login": "Log in",
     "register": "Sign up",
     "mobileNav": "Mobile navigation"
@@ -685,6 +686,48 @@
       "false": "False",
       "answerKey": "Answer key"
     }
+  },
+  "friends": {
+    "title": "Friends",
+    "subtitle": "Learn together, compete and motivate each other",
+    "addFriend": "Add friend",
+    "emailPlaceholder": "Enter friend's email",
+    "send": "Send invitation",
+    "pendingRequests": "Pending requests",
+    "myFriends": "My friends",
+    "noFriends": "No friends yet. Add someone to get started!",
+    "noPending": "No pending requests",
+    "accept": "Accept",
+    "reject": "Reject",
+    "remove": "Remove",
+    "nudge": "Send reminder",
+    "nudgeSent": "Reminder sent!",
+    "nudgeCooldown": "Reminder already sent today",
+    "inactive": "Inactive for {{ days }} days",
+    "streak": "{{ count }} day streak",
+    "requestSent": "Invitation sent!",
+    "requestAccepted": "Invitation accepted",
+    "alreadyFriends": "You are already friends",
+    "userNotFound": "User not found",
+    "cannotAddAnonymous": "Anonymous users cannot add friends",
+    "stats": {
+      "title": "Stats comparison",
+      "back": "Back",
+      "you": "You",
+      "currentStreak": "Current streak",
+      "longestStreak": "Longest streak",
+      "totalSessions": "Total sessions",
+      "totalCards": "Cards reviewed",
+      "errorLoading": "Failed to load stats."
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "empty": "No notifications",
+    "friend_request": "{{ email }} wants to be your friend",
+    "friend_accepted": "{{ email }} accepted your invitation",
+    "nudge": "{{ email }} is reminding you to study! Get to work!"
   },
   "footer": {
     "terms": "Terms",

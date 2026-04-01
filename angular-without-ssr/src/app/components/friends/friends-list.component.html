@@ -1,0 +1,110 @@
+<ng-container *transloco="let t; prefix: 'friends'">
+<div class="friends">
+  <div class="friends__header">
+    <h1 class="friends__title">{{ t('title') }}</h1>
+    <p class="friends__subtitle">{{ t('subtitle') }}</p>
+  </div>
+
+  <!-- Add Friend -->
+  <div class="friends__add">
+    <div class="friends__add-row">
+      <input
+        type="email"
+        class="friends__add-input"
+        [placeholder]="t('emailPlaceholder')"
+        [ngModel]="emailInput()"
+        (ngModelChange)="emailInput.set($event)"
+        (keydown.enter)="sendRequest()"
+        [disabled]="sending()" />
+      <button
+        class="friends__add-btn"
+        (click)="sendRequest()"
+        [disabled]="sending() || !emailInput().trim()">
+        <i class="pi pi-user-plus"></i> {{ t('send') }}
+      </button>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="friends__loading">
+      <p-progressSpinner [style]="{width: '40px', height: '40px'}" />
+    </div>
+  } @else {
+    <!-- Pending Requests -->
+    @if (pendingRequests().length > 0) {
+      <div class="friends__section">
+        <h2 class="friends__section-title">
+          <i class="pi pi-clock"></i> {{ t('pendingRequests') }}
+          <span class="friends__badge">{{ pendingRequests().length }}</span>
+        </h2>
+        <div class="friends__list">
+          @for (request of pendingRequests(); track request.friendship_id) {
+            <div class="friends__card friends__card--pending">
+              <div class="friends__card-info">
+                <span class="friends__card-email">{{ request.email_masked }}</span>
+              </div>
+              <div class="friends__card-actions">
+                <button class="friends__btn friends__btn--accept" (click)="acceptRequest(request.friendship_id)">
+                  <i class="pi pi-check"></i> {{ t('accept') }}
+                </button>
+                <button class="friends__btn friends__btn--reject" (click)="rejectRequest(request.friendship_id)">
+                  <i class="pi pi-times"></i>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- My Friends -->
+    <div class="friends__section">
+      <h2 class="friends__section-title">
+        <i class="pi pi-users"></i> {{ t('myFriends') }}
+      </h2>
+
+      @if (friends().length === 0) {
+        <div class="friends__empty">
+          <i class="pi pi-user-plus friends__empty-icon"></i>
+          <p>{{ t('noFriends') }}</p>
+        </div>
+      } @else {
+        <div class="friends__list">
+          @for (friend of friends(); track friend.friendship_id) {
+            <div class="friends__card">
+              <a [routerLink]="['/friends', friend.user_id]" class="friends__card-info">
+                <span class="friends__card-email">{{ friend.email_masked }}</span>
+                <div class="friends__card-stats">
+                  <span class="friends__stat friends__stat--streak" [title]="t('streak', { count: friend.current_streak })">
+                    <i class="pi pi-bolt"></i> {{ friend.current_streak }}
+                  </span>
+                  <span class="friends__stat">
+                    <i class="pi pi-book"></i> {{ friend.total_cards_reviewed }}
+                  </span>
+                  @if (getDaysInactive(friend.last_study_date) !== null && getDaysInactive(friend.last_study_date)! > 1) {
+                    <span class="friends__stat friends__stat--inactive">
+                      {{ t('inactive', { days: getDaysInactive(friend.last_study_date) }) }}
+                    </span>
+                  }
+                </div>
+              </a>
+              <div class="friends__card-actions">
+                @if (getDaysInactive(friend.last_study_date) !== null && getDaysInactive(friend.last_study_date)! > 1) {
+                  <button class="friends__btn friends__btn--nudge" (click)="sendNudge(friend.user_id)" [title]="t('nudge')">
+                    <i class="pi pi-bell"></i>
+                  </button>
+                }
+                <button class="friends__btn friends__btn--remove" (click)="removeFriend(friend.friendship_id)" [title]="t('remove')">
+                  <i class="pi pi-user-minus"></i>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>
+
+<p-toast position="bottom-center"></p-toast>
+</ng-container>

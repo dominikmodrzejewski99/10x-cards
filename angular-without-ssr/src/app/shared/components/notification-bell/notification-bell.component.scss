@@ -1,0 +1,160 @@
+@use 'variables' as *;
+
+.notif-bell {
+  position: relative;
+}
+
+.notif-bell__btn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1.5px solid $color-border;
+  border-radius: 50%;
+  color: $color-text;
+  cursor: pointer;
+  transition: $transition-fast;
+  font-size: 1rem;
+
+  &:hover {
+    border-color: $color-primary;
+    color: $color-primary;
+    background: $color-primary-light;
+  }
+}
+
+.notif-bell__badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $color-danger;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: $font-weight-bold;
+  border-radius: $radius-pill;
+  line-height: 1;
+}
+
+// ── Panel ──
+.notif-bell__panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 320px;
+  max-height: 400px;
+  background: $color-white;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-lg;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.notif-bell__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid $color-border-light;
+}
+
+.notif-bell__title {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: $color-text;
+}
+
+.notif-bell__mark-all {
+  background: none;
+  border: none;
+  color: $color-primary;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover { text-decoration: underline; }
+}
+
+// ── List ──
+.notif-bell__list {
+  overflow-y: auto;
+  max-height: 340px;
+}
+
+.notif-bell__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.65rem 1rem;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid $color-border-light;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.1s;
+
+  &:hover {
+    background: $color-bg-alt;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.notif-bell__item--unread {
+  background: $color-primary-light;
+
+  &:hover {
+    background: darken(#eef0ff, 3%);
+  }
+}
+
+.notif-bell__item-icon {
+  font-size: 1rem;
+  color: $color-primary;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.notif-bell__item-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.notif-bell__item-text {
+  font-size: $font-size-xs;
+  color: $color-text;
+  line-height: $line-height-normal;
+}
+
+// ── States ──
+.notif-bell__empty,
+.notif-bell__loading {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: $color-text-secondary;
+  font-size: $font-size-sm;
+}
+
+.notif-bell__loading i {
+  font-size: 1.25rem;
+}
+
+@media (max-width: $bp-mobile) {
+  .notif-bell__panel {
+    width: 280px;
+    right: -40px;
+  }
+}

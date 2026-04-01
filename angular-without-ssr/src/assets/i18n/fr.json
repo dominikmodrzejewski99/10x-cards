@@ -321,6 +321,7 @@
     "languageTests": "Tests de langues",
     "guide": "Guide",
     "generate": "Générer",
+    "friends": "Amis",
     "login": "Se connecter",
     "register": "S'inscrire",
     "mobileNav": "Navigation mobile"
@@ -685,6 +686,48 @@
       "false": "Faux",
       "answerKey": "Corrigé"
     }
+  },
+  "friends": {
+    "title": "Amis",
+    "subtitle": "Apprenez ensemble, rivalisez et motivez-vous mutuellement",
+    "addFriend": "Ajouter un ami",
+    "emailPlaceholder": "Entrez l'email de votre ami",
+    "send": "Envoyer l'invitation",
+    "pendingRequests": "Invitations en attente",
+    "myFriends": "Mes amis",
+    "noFriends": "Pas encore d'amis. Ajoutez quelqu'un pour commencer !",
+    "noPending": "Aucune invitation en attente",
+    "accept": "Accepter",
+    "reject": "Refuser",
+    "remove": "Supprimer",
+    "nudge": "Envoyer un rappel",
+    "nudgeSent": "Rappel envoyé !",
+    "nudgeCooldown": "Un rappel a déjà été envoyé aujourd'hui",
+    "inactive": "Inactif depuis {{ days }} jours",
+    "streak": "{{ count }} jours d'affilée",
+    "requestSent": "Invitation envoyée !",
+    "requestAccepted": "Invitation acceptée",
+    "alreadyFriends": "Vous êtes déjà amis",
+    "userNotFound": "Utilisateur introuvable",
+    "cannotAddAnonymous": "Les utilisateurs anonymes ne peuvent pas ajouter d'amis",
+    "stats": {
+      "title": "Comparaison des statistiques",
+      "back": "Retour",
+      "you": "Vous",
+      "currentStreak": "Série en cours",
+      "longestStreak": "Plus longue série",
+      "totalSessions": "Sessions totales",
+      "totalCards": "Cartes révisées",
+      "errorLoading": "Impossible de charger les statistiques."
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Tout marquer comme lu",
+    "empty": "Aucune notification",
+    "friend_request": "{{ email }} souhaite être votre ami",
+    "friend_accepted": "{{ email }} a accepté votre invitation",
+    "nudge": "{{ email }} vous rappelle de réviser ! Au travail !"
   },
   "footer": {
     "terms": "Conditions",

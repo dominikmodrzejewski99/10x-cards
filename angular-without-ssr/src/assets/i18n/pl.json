@@ -321,6 +321,7 @@
     "languageTests": "Testy językowe",
     "guide": "Poradnik",
     "generate": "Generuj",
+    "friends": "Znajomi",
     "login": "Zaloguj się",
     "register": "Zarejestruj się",
     "mobileNav": "Nawigacja mobilna"
@@ -686,6 +687,48 @@
       "false": "Fałsz",
       "answerKey": "Klucz odpowiedzi"
     }
+  },
+  "friends": {
+    "title": "Znajomi",
+    "subtitle": "Ucz się razem, rywalizuj i motywuj się nawzajem",
+    "addFriend": "Dodaj znajomego",
+    "emailPlaceholder": "Wpisz email znajomego",
+    "send": "Wyślij zaproszenie",
+    "pendingRequests": "Oczekujące zaproszenia",
+    "myFriends": "Moi znajomi",
+    "noFriends": "Brak znajomych. Dodaj kogoś, żeby zacząć!",
+    "noPending": "Brak oczekujących zaproszeń",
+    "accept": "Akceptuj",
+    "reject": "Odrzuć",
+    "remove": "Usuń",
+    "nudge": "Wyślij przypomnienie",
+    "nudgeSent": "Przypomnienie wysłane!",
+    "nudgeCooldown": "Już wysłano dziś przypomnienie",
+    "inactive": "Nieaktywny od {{ days }} dni",
+    "streak": "{{ count }} dni z rzędu",
+    "requestSent": "Zaproszenie wysłane!",
+    "requestAccepted": "Zaproszenie zaakceptowane",
+    "alreadyFriends": "Już jesteście znajomymi",
+    "userNotFound": "Nie znaleziono użytkownika",
+    "cannotAddAnonymous": "Anonimowi użytkownicy nie mogą dodawać znajomych",
+    "stats": {
+      "title": "Porównanie statystyk",
+      "back": "Wróć",
+      "you": "Ty",
+      "currentStreak": "Aktualna seria",
+      "longestStreak": "Najdłuższa seria",
+      "totalSessions": "Łączne sesje",
+      "totalCards": "Powtórzone karty",
+      "errorLoading": "Nie udało się załadować statystyk."
+    }
+  },
+  "notifications": {
+    "title": "Powiadomienia",
+    "markAllRead": "Oznacz wszystkie jako przeczytane",
+    "empty": "Brak powiadomień",
+    "friend_request": "{{ email }} chce być Twoim znajomym",
+    "friend_accepted": "{{ email }} zaakceptował Twoje zaproszenie",
+    "nudge": "{{ email }} przypomina Ci o nauce! Do roboty!"
   },
   "footer": {
     "terms": "Regulamin",

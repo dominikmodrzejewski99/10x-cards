@@ -321,3 +321,56 @@ export interface QuizResult {
   totalTimeMs: number;
   answers: QuizAnswer[];
 }
+
+// ============ Friendships ============
+
+export type FriendshipStatus = 'pending' | 'accepted' | 'rejected';
+
+export interface FriendshipDTO {
+  id: string;
+  requester_id: string;
+  addressee_id: string;
+  status: FriendshipStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FriendRequestDTO {
+  friendship_id: string;
+  user_id: string;
+  email_masked: string;
+  created_at: string;
+}
+
+export interface FriendDTO {
+  friendship_id: string;
+  user_id: string;
+  email_masked: string;
+  current_streak: number;
+  last_study_date: string | null;
+  total_cards_reviewed: number;
+}
+
+export interface FriendStatsDTO {
+  user_id: string;
+  email_masked: string;
+  current_streak: number;
+  longest_streak: number;
+  total_sessions: number;
+  total_cards_reviewed: number;
+  last_study_date: string | null;
+}
+
+// ============ Notifications ============
+
+export type NotificationType = 'friend_request' | 'friend_accepted' | 'nudge';
+
+export interface NotificationDTO {
+  id: string;
+  user_id: string;
+  type: NotificationType;
+  from_user_id: string | null;
+  data: Record<string, unknown>;
+  read: boolean;
+  created_at: string;
+}

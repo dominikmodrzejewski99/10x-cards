@@ -1,0 +1,10 @@
+@use 'config-form' as *;
+@use 'variables' as *;
+
+.cfg-label { @include config-label; }
+.cfg-count-row { @include config-count-row; }
+.cfg-count-input { @include config-input; flex: 1; min-width: 0; }
+.cfg-all-toggle { flex-shrink: 0; }
+.cfg-check-item { @include config-check-item; }
+.cfg-check-input { @include config-check-input; }
+.cfg-check-text { @include config-check-text; }

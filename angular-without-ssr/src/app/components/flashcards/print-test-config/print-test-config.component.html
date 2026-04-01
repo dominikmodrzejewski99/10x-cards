@@ -1,0 +1,62 @@
+<ng-container *transloco="let t; prefix: 'printTest.config'">
+<div class="ptc">
+  <div class="ptc__section">
+    <label class="ptc__label">{{ t('testTitle') }}</label>
+    <input
+      type="text"
+      class="ptc__text-input"
+      [placeholder]="setNameSignal()"
+      [ngModel]="titleSignal()"
+      (ngModelChange)="titleSignal.set($event)" />
+  </div>
+
+  <div class="ptc__section">
+    <app-question-count-picker
+      [cardCount]="cardCountSignal()"
+      [selectedCount]="config.selectedCountSignal()"
+      translationPrefix="printTest.config"
+      (countChange)="onCountChange($event)"
+      (toggleAll)="toggleAll()">
+    </app-question-count-picker>
+  </div>
+
+  <div class="ptc__section">
+    <app-question-type-selector
+      [options]="questionTypeOptions"
+      [showError]="!isValid"
+      translationPrefix="printTest.config">
+    </app-question-type-selector>
+  </div>
+
+  <div class="ptc__section">
+    <app-direction-picker
+      [reversed]="config.reversedSignal"
+      translationPrefix="printTest.config"
+      instanceId="print">
+    </app-direction-picker>
+  </div>
+
+  <div class="ptc__section">
+    <label class="ptc__check-item ptc__check-item--toggle">
+      <input
+        type="checkbox"
+        class="ptc__check-input"
+        [checked]="includeAnswerKeySignal()"
+        (change)="includeAnswerKeySignal.set(!includeAnswerKeySignal())" />
+      <span class="ptc__check-text">{{ t('includeAnswerKey') }}</span>
+    </label>
+  </div>
+
+  <div class="ptc__actions">
+    <button class="ptc__btn ptc__btn--secondary" (click)="onClose()">
+      {{ t('cancel') }}
+    </button>
+    <button
+      class="ptc__btn ptc__btn--primary"
+      [disabled]="!isValid"
+      (click)="onPrint()">
+      <i class="pi pi-print"></i> {{ t('print') }}
+    </button>
+  </div>
+</div>
+</ng-container>

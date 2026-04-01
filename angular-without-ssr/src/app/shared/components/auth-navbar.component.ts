@@ -3,12 +3,13 @@ import { Router, RouterModule } from '@angular/router';
 import { UserMenuComponent } from '../../auth/components/user-menu.component';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { PomodoroTimerComponent } from './pomodoro-timer/pomodoro-timer.component';
+import { NotificationBellComponent } from './notification-bell/notification-bell.component';
 import { AuthStore } from '../../auth/store';
 
 @Component({
   selector: 'app-auth-navbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, UserMenuComponent, PomodoroTimerComponent, TranslocoDirective],
+  imports: [RouterModule, UserMenuComponent, PomodoroTimerComponent, NotificationBellComponent, TranslocoDirective],
   host: {
     '(document:keydown.escape)': 'onEscape()',
     '(document:click)': 'onDocumentClick($event)'
@@ -79,12 +80,16 @@ import { AuthStore } from '../../auth/store';
               <a routerLink="/generate" routerLinkActive="navbar__link--active" class="navbar__link">
                 <i class="pi pi-microchip-ai"></i> {{ t('generate') }}
               </a>
+              <a routerLink="/friends" routerLinkActive="navbar__link--active" class="navbar__link">
+                <i class="pi pi-users"></i> {{ t('friends') }}
+              </a>
             }
           </div>
 
           <div class="navbar__right">
             @if (authCheckedSignal() && isAuthenticatedSignal()) {
               <app-pomodoro-timer></app-pomodoro-timer>
+              <app-notification-bell></app-notification-bell>
               <app-user-menu></app-user-menu>
               <button class="navbar__burger" (click)="toggleMobile()" [attr.aria-expanded]="mobileOpenSignal()">
                 <span class="navbar__burger-line"></span>
@@ -124,6 +129,9 @@ import { AuthStore } from '../../auth/store';
             </div>
             <a routerLink="/generate" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
               <i class="pi pi-microchip-ai"></i> {{ t('generate') }}
+            </a>
+            <a routerLink="/friends" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
+              <i class="pi pi-users"></i> {{ t('friends') }}
             </a>
           </div>
         }

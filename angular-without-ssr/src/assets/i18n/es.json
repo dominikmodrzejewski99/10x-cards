@@ -321,6 +321,7 @@
     "languageTests": "Tests de idiomas",
     "guide": "Guía",
     "generate": "Generar",
+    "friends": "Amigos",
     "login": "Iniciar sesión",
     "register": "Registrarse",
     "mobileNav": "Navegación móvil"
@@ -685,6 +686,48 @@
       "false": "Falso",
       "answerKey": "Clave de respuestas"
     }
+  },
+  "friends": {
+    "title": "Amigos",
+    "subtitle": "Aprende juntos, compite y motívense mutuamente",
+    "addFriend": "Agregar amigo",
+    "emailPlaceholder": "Ingresa el email de tu amigo",
+    "send": "Enviar invitación",
+    "pendingRequests": "Solicitudes pendientes",
+    "myFriends": "Mis amigos",
+    "noFriends": "No tienes amigos aún. ¡Agrega a alguien para empezar!",
+    "noPending": "No hay solicitudes pendientes",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "remove": "Eliminar",
+    "nudge": "Enviar recordatorio",
+    "nudgeSent": "¡Recordatorio enviado!",
+    "nudgeCooldown": "Ya se envió un recordatorio hoy",
+    "inactive": "Inactivo desde hace {{ days }} días",
+    "streak": "{{ count }} días seguidos",
+    "requestSent": "¡Invitación enviada!",
+    "requestAccepted": "Invitación aceptada",
+    "alreadyFriends": "Ya son amigos",
+    "userNotFound": "Usuario no encontrado",
+    "cannotAddAnonymous": "Los usuarios anónimos no pueden agregar amigos",
+    "stats": {
+      "title": "Comparación de estadísticas",
+      "back": "Volver",
+      "you": "Tú",
+      "currentStreak": "Racha actual",
+      "longestStreak": "Racha más larga",
+      "totalSessions": "Sesiones totales",
+      "totalCards": "Tarjetas repasadas",
+      "errorLoading": "No se pudieron cargar las estadísticas."
+    }
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "markAllRead": "Marcar todas como leídas",
+    "empty": "No hay notificaciones",
+    "friend_request": "{{ email }} quiere ser tu amigo",
+    "friend_accepted": "{{ email }} aceptó tu invitación",
+    "nudge": "{{ email }} te recuerda que debes estudiar. ¡Manos a la obra!"
   },
   "footer": {
     "terms": "Términos",

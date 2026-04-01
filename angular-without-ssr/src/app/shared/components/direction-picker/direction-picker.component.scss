@@ -1,0 +1,8 @@
+@use 'config-form' as *;
+@use 'variables' as *;
+
+.cfg-label { @include config-label; }
+.cfg-check-group { @include config-check-group; }
+.cfg-check-item { @include config-check-item; }
+.cfg-check-input { @include config-check-input; }
+.cfg-check-text { @include config-check-text; }

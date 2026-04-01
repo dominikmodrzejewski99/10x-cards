@@ -18,7 +18,7 @@ import { LanguageTestWidgetComponent } from '../language-test/language-test-widg
 import { AuthStore } from '../../auth/store';
 import { forkJoin } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { TranslocoPipe } from '@jsverse/transloco';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { FlashcardSetDTO, StudyCardDTO } from '../../../types';
 
 interface CardBreakdown {
@@ -32,7 +32,7 @@ interface CardBreakdown {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterModule, ReviewReminderComponent, LanguageTestWidgetComponent, NgxSkeletonLoaderModule, TranslocoPipe],
+  imports: [RouterModule, ReviewReminderComponent, LanguageTestWidgetComponent, NgxSkeletonLoaderModule, TranslocoDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
