@@ -443,7 +443,9 @@
       "deleted": "Flashcard deleted",
       "undo": "Undo",
       "shareInfo": "Link valid for 7 days. Anyone with the link can copy the set to their account.",
-      "copyLink": "Copy link"
+      "copyLink": "Copy link",
+      "printTest": "Print test",
+      "printTestTitle": "Print test: {{ setName }}"
     },
     "table": {
       "search": "Search flashcards...",
@@ -647,6 +649,41 @@
       "growthItem2": "Mistake = lesson",
       "growthItem3": "I seek challenges",
       "growthItem4": "Effort strengthens the brain"
+    }
+  },
+  "printTest": {
+    "config": {
+      "testTitle": "Test title",
+      "questionCount": "Number of questions",
+      "all": "All",
+      "questionTypes": "Question types",
+      "written": "Written answer",
+      "multipleChoice": "Multiple choice",
+      "trueFalse": "True / False",
+      "matching": "Matching",
+      "direction": "Direction",
+      "frontToBack": "Front → Back",
+      "backToFront": "Back → Front",
+      "includeAnswerKey": "Include answer key",
+      "validationError": "Select at least one question type",
+      "cancel": "Cancel",
+      "print": "Print test"
+    },
+    "document": {
+      "name": "Name",
+      "date": "Date",
+      "score": "Score",
+      "writtenSection": "Written answer",
+      "writtenDesc": "Write the correct answer to the given question.",
+      "mcSection": "Choose the correct answer",
+      "mcDesc": "Select one correct answer from the options provided.",
+      "tfSection": "True or false",
+      "tfDesc": "Determine whether the given match is correct.",
+      "matchingSection": "Match",
+      "matchingDesc": "Match the items in the left column with the answers on the right.",
+      "true": "True",
+      "false": "False",
+      "answerKey": "Answer key"
     }
   },
   "footer": {

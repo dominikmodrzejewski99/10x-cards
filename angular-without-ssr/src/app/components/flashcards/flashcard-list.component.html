@@ -35,6 +35,9 @@
             <button (click)="exportJson()" class="flist__more-item" data-test-id="export-json-button">
               <i class="pi pi-download"></i> {{ t('exportJson') }}
             </button>
+            <button (click)="openPrintTestDialog()" class="flist__more-item" data-test-id="print-test-button">
+              <i class="pi pi-print"></i> {{ t('printTest') }}
+            </button>
             <a routerLink="/generate" class="flist__more-item">
               <i class="pi pi-microchip-ai"></i> {{ t('generateAi') }}
             </a>
@@ -167,6 +170,25 @@
       </div>
     </div>
   }
+</p-dialog>
+
+<p-dialog
+  [header]="t('printTestTitle')"
+  [visible]="printTestDialogVisible()"
+  (visibleChange)="printTestDialogVisible.set($event)"
+  [modal]="true"
+  [closeOnEscape]="true"
+  [dismissableMask]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{width: '95vw', maxWidth: '500px'}"
+  styleClass="modern-dialog">
+  <app-print-test-config
+    [setName]="state().setName"
+    [cardCount]="state().totalRecords"
+    (print)="onPrintTest($event)"
+    (close)="printTestDialogVisible.set(false)">
+  </app-print-test-config>
 </p-dialog>
 
 </ng-container>

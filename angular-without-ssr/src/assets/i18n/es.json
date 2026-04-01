@@ -443,7 +443,9 @@
       "deleted": "Tarjeta eliminada",
       "undo": "Deshacer",
       "shareInfo": "Link válido por 7 días. Cualquiera con el link puede copiar el set.",
-      "copyLink": "Copiar link"
+      "copyLink": "Copiar link",
+      "printTest": "Imprimir test",
+      "printTestTitle": "Imprimir test: {{ setName }}"
     },
     "table": {
       "search": "Buscar tarjetas...",
@@ -647,6 +649,41 @@
       "growthItem2": "Error = lección",
       "growthItem3": "Busco desafíos",
       "growthItem4": "El esfuerzo fortalece el cerebro"
+    }
+  },
+  "printTest": {
+    "config": {
+      "testTitle": "Título del test",
+      "questionCount": "Número de preguntas",
+      "all": "Todas",
+      "questionTypes": "Tipos de preguntas",
+      "written": "Respuesta escrita",
+      "multipleChoice": "Opción múltiple",
+      "trueFalse": "Verdadero / Falso",
+      "matching": "Emparejamiento",
+      "direction": "Dirección",
+      "frontToBack": "Frente → Dorso",
+      "backToFront": "Dorso → Frente",
+      "includeAnswerKey": "Incluir clave de respuestas",
+      "validationError": "Selecciona al menos un tipo de pregunta",
+      "cancel": "Cancelar",
+      "print": "Imprimir test"
+    },
+    "document": {
+      "name": "Nombre",
+      "date": "Fecha",
+      "score": "Puntuación",
+      "writtenSection": "Respuesta escrita",
+      "writtenDesc": "Escribe la respuesta correcta a la pregunta dada.",
+      "mcSection": "Elige la respuesta correcta",
+      "mcDesc": "Selecciona una respuesta correcta de las opciones proporcionadas.",
+      "tfSection": "Verdadero o falso",
+      "tfDesc": "Determina si la asociación dada es correcta.",
+      "matchingSection": "Emparejamiento",
+      "matchingDesc": "Empareja los elementos de la columna izquierda con las respuestas de la derecha.",
+      "true": "Verdadero",
+      "false": "Falso",
+      "answerKey": "Clave de respuestas"
     }
   },
   "footer": {

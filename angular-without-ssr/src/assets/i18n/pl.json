@@ -443,7 +443,10 @@
       "deleted": "Fiszka usunięta",
       "undo": "Cofnij",
       "shareInfo": "Link ważny przez 7 dni. Każdy z linkiem może skopiować zestaw na swoje konto.",
-      "copyLink": "Kopiuj link"
+      "copyLink": "Kopiuj link",
+      "printTest": "Drukuj test",
+      "printTestTitle": "Drukuj test"
+
     },
     "table": {
       "search": "Szukaj wśród fiszek...",
@@ -647,6 +650,41 @@
       "growthItem2": "Błąd = lekcja",
       "growthItem3": "Szukam wyzwań",
       "growthItem4": "Wysiłek wzmacnia mózg"
+    }
+  },
+  "printTest": {
+    "config": {
+      "testTitle": "Tytuł testu",
+      "questionCount": "Liczba pytań",
+      "all": "Wszystkie",
+      "questionTypes": "Typy pytań",
+      "written": "Wpisywanie odpowiedzi",
+      "multipleChoice": "Wielokrotny wybór",
+      "trueFalse": "Prawda / Fałsz",
+      "matching": "Dopasowywanie",
+      "direction": "Kierunek",
+      "frontToBack": "Przód → Tył",
+      "backToFront": "Tył → Przód",
+      "includeAnswerKey": "Dołącz klucz odpowiedzi",
+      "validationError": "Wybierz co najmniej jeden typ pytania",
+      "cancel": "Anuluj",
+      "print": "Drukuj test"
+    },
+    "document": {
+      "name": "Imię i nazwisko",
+      "date": "Data",
+      "score": "Wynik",
+      "writtenSection": "Wpisz odpowiedź",
+      "writtenDesc": "Wpisz poprawną odpowiedź na podane pytanie.",
+      "mcSection": "Wybierz poprawną odpowiedź",
+      "mcDesc": "Zaznacz jedną poprawną odpowiedź spośród podanych.",
+      "tfSection": "Prawda lub fałsz",
+      "tfDesc": "Oceń, czy podane dopasowanie jest prawidłowe.",
+      "matchingSection": "Dopasuj",
+      "matchingDesc": "Dopasuj elementy z lewej kolumny do odpowiedzi z prawej.",
+      "true": "Prawda",
+      "false": "Fałsz",
+      "answerKey": "Klucz odpowiedzi"
     }
   },
   "footer": {

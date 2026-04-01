@@ -443,7 +443,9 @@
       "deleted": "Karteikarte gelöscht",
       "undo": "Rückgängig",
       "shareInfo": "Link 7 Tage gültig. Jeder mit dem Link kann das Set kopieren.",
-      "copyLink": "Link kopieren"
+      "copyLink": "Link kopieren",
+      "printTest": "Test drucken",
+      "printTestTitle": "Test drucken: {{ setName }}"
     },
     "table": {
       "search": "Karteikarten durchsuchen...",
@@ -647,6 +649,41 @@
       "growthItem2": "Fehler = Lektion",
       "growthItem3": "Ich suche Herausforderungen",
       "growthItem4": "Anstrengung stärkt das Gehirn"
+    }
+  },
+  "printTest": {
+    "config": {
+      "testTitle": "Testtitel",
+      "questionCount": "Anzahl der Fragen",
+      "all": "Alle",
+      "questionTypes": "Fragetypen",
+      "written": "Schriftliche Antwort",
+      "multipleChoice": "Multiple Choice",
+      "trueFalse": "Wahr / Falsch",
+      "matching": "Zuordnung",
+      "direction": "Richtung",
+      "frontToBack": "Vorne → Hinten",
+      "backToFront": "Hinten → Vorne",
+      "includeAnswerKey": "Lösungsschlüssel beifügen",
+      "validationError": "Wähle mindestens einen Fragetyp",
+      "cancel": "Abbrechen",
+      "print": "Test drucken"
+    },
+    "document": {
+      "name": "Name",
+      "date": "Datum",
+      "score": "Ergebnis",
+      "writtenSection": "Schriftliche Antwort",
+      "writtenDesc": "Schreibe die richtige Antwort auf die gestellte Frage.",
+      "mcSection": "Wähle die richtige Antwort",
+      "mcDesc": "Wähle eine richtige Antwort aus den angegebenen Möglichkeiten.",
+      "tfSection": "Wahr oder falsch",
+      "tfDesc": "Bestimme, ob die angegebene Zuordnung richtig ist.",
+      "matchingSection": "Zuordnung",
+      "matchingDesc": "Ordne die Begriffe in der linken Spalte den Antworten rechts zu.",
+      "true": "Wahr",
+      "false": "Falsch",
+      "answerKey": "Lösungsschlüssel"
     }
   },
   "footer": {

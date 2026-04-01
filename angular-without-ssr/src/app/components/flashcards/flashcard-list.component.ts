@@ -15,11 +15,14 @@ import { catchError } from 'rxjs/operators';
 import { FlashcardApiService } from '../../services/flashcard-api.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { FlashcardExportService } from '../../services/flashcard-export.service';
+import { PrintTestService, PrintTestConfig } from '../../services/print-test.service';
 import { ShareService } from '../../services/share.service';
 import { FlashcardTableComponent, ReorderEvent } from './flashcard-table/flashcard-table.component';
 import { FlashcardFormComponent, FlashcardFormData } from './flashcard-form/flashcard-form.component';
 import { ImportModalComponent } from './import-modal/import-modal.component';
+import { PrintTestConfigComponent } from './print-test-config/print-test-config.component';
 import { FlashcardDTO, FlashcardProposalDTO } from '../../../types';
+import {Button} from 'primeng/button';
 
 interface FlashcardListState {
   flashcards: FlashcardDTO[];
@@ -50,8 +53,11 @@ interface FlashcardListState {
     FlashcardTableComponent,
     FlashcardFormComponent,
     ImportModalComponent,
-    RouterModule
-  , TranslocoDirective],
+    PrintTestConfigComponent,
+    RouterModule,
+    TranslocoDirective,
+    Button
+  ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './flashcard-list.component.html',
   styleUrls: ['./flashcard-list.component.scss'],
@@ -67,6 +73,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
   private route: ActivatedRoute = inject(ActivatedRoute);
   private destroyRef: DestroyRef = inject(DestroyRef);
   private readonly shareService = inject(ShareService);
+  private readonly printTestService = inject(PrintTestService);
 
   state = signal<FlashcardListState>({
     flashcards: [],
@@ -91,6 +98,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
   readonly shareDialogVisible = signal(false);
   readonly shareLink = signal<string | null>(null);
   readonly shareLoading = signal(false);
+  readonly printTestDialogVisible = signal(false);
   private undoTimer: ReturnType<typeof setTimeout> | null = null;
   private redirectTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -509,17 +517,17 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
   }
 
   exportCsv(): void {
-    this.fetchAllFlashcardsForExport((flashcards: FlashcardDTO[]) => {
+    this.fetchAllFlashcards((flashcards: FlashcardDTO[]) => {
       const filename: string = `${this.state().setName || 'flashcards'}.csv`;
       this.flashcardExportService.exportToCsv(flashcards, filename);
-    });
+    }, 'eksportowania', `Wyeksportowano ${this.state().totalRecords} fiszek.`);
   }
 
   exportJson(): void {
-    this.fetchAllFlashcardsForExport((flashcards: FlashcardDTO[]) => {
+    this.fetchAllFlashcards((flashcards: FlashcardDTO[]) => {
       const filename: string = `${this.state().setName || 'flashcards'}.json`;
       this.flashcardExportService.exportToJson(flashcards, filename);
-    });
+    }, 'eksportowania', `Wyeksportowano ${this.state().totalRecords} fiszek.`);
   }
 
   async openShareDialog(): Promise<void> {
@@ -561,7 +569,30 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
     }
   }
 
-  private fetchAllFlashcardsForExport(callback: (flashcards: FlashcardDTO[]) => void): void {
+  openPrintTestDialog(): void {
+    this.printTestDialogVisible.set(true);
+  }
+
+  onPrintTest(config: PrintTestConfig): void {
+    this.printTestDialogVisible.set(false);
+    this.fetchAllFlashcards((flashcards: FlashcardDTO[]) => {
+      const opened: boolean = this.printTestService.generateAndPrint(flashcards, config);
+      if (!opened) {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Popup zablokowany',
+          detail: 'Odblokuj wyskakujące okienka w przeglądarce, aby wydrukować test.',
+          life: 5000
+        });
+      }
+    }, 'generowania testu');
+  }
+
+  private fetchAllFlashcards(
+    callback: (flashcards: FlashcardDTO[]) => void,
+    errorContext: string = 'eksportowania',
+    successMessage?: string
+  ): void {
     this.state.update(s => ({ ...s, loading: true }));
 
     this.flashcardApiService.getFlashcards({
@@ -575,13 +606,15 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
       next: (response: { flashcards: FlashcardDTO[]; totalRecords: number }) => {
         this.state.update(s => ({ ...s, loading: false }));
         callback(response.flashcards);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Sukces',
-          detail: `Wyeksportowano ${response.flashcards.length} fiszek.`
-        });
+        if (successMessage) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Sukces',
+            detail: successMessage
+          });
+        }
       },
-      error: (error: unknown) => this.handleApiError(error, 'eksportowania')
+      error: (error: unknown) => this.handleApiError(error, errorContext)
     });
   }
 

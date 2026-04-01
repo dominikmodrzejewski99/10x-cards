@@ -1,11 +1,15 @@
 import { TranslocoDirective } from '@jsverse/transloco';
-import { Component, ChangeDetectionStrategy, input, output, InputSignal, OutputEmitterRef, signal, WritableSignal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { QuizConfig, QuizQuestionType } from '../../../../types';
+import { QuizConfig } from '../../../../types';
+import { QuestionConfigState } from '../../../shared/utils/question-config';
+import { QuestionCountPickerComponent } from '../../../shared/components/question-count-picker/question-count-picker.component';
+import { QuestionTypeSelectorComponent, QuestionTypeOption } from '../../../shared/components/question-type-selector/question-type-selector.component';
+import { DirectionPickerComponent } from '../../../shared/components/direction-picker/direction-picker.component';
 
 @Component({
   selector: 'app-quiz-config',
-  imports: [FormsModule, TranslocoDirective],
+  imports: [FormsModule, TranslocoDirective, QuestionCountPickerComponent, QuestionTypeSelectorComponent, DirectionPickerComponent],
   templateUrl: './quiz-config.component.html',
   styleUrls: ['./quiz-config.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -18,11 +22,13 @@ export class QuizConfigComponent {
   public startQuiz: OutputEmitterRef<QuizConfig> = output<QuizConfig>();
   public goBack: OutputEmitterRef<void> = output<void>();
 
-  public selectedCountSignal: WritableSignal<number | 'all'> = signal<number | 'all'>(10);
-  public writtenEnabledSignal: WritableSignal<boolean> = signal<boolean>(true);
-  public multipleChoiceEnabledSignal: WritableSignal<boolean> = signal<boolean>(true);
-  public trueFalseEnabledSignal: WritableSignal<boolean> = signal<boolean>(true);
-  public reversedSignal: WritableSignal<boolean> = signal<boolean>(false);
+  public readonly config = new QuestionConfigState(10);
+
+  public readonly questionTypeOptions: QuestionTypeOption[] = [
+    { label: 'written', signal: this.config.writtenEnabledSignal },
+    { label: 'multipleChoice', signal: this.config.multipleChoiceEnabledSignal },
+    { label: 'trueFalse', signal: this.config.trueFalseEnabledSignal }
+  ];
 
   public readonly countSteps: { label: string; value: number | 'all' }[] = [
     { label: '5', value: 5 },
@@ -40,38 +46,28 @@ export class QuizConfigComponent {
   }
 
   public get isValid(): boolean {
-    return this.writtenEnabledSignal() || this.multipleChoiceEnabledSignal() || this.trueFalseEnabledSignal();
+    return this.config.isQuestionTypesValid;
   }
 
   public onCountChange(value: number): void {
-    const clamped: number = Math.max(1, Math.min(value, this.cardCountSignal()));
-    this.selectedCountSignal.set(clamped);
+    this.config.onCountChange(value, this.cardCountSignal());
   }
 
   public toggleAll(): void {
-    if (this.selectedCountSignal() === 'all') {
-      this.selectedCountSignal.set(this.cardCountSignal());
-    } else {
-      this.selectedCountSignal.set('all');
-    }
+    this.config.toggleAll(this.cardCountSignal(), 10);
   }
 
   public onStart(): void {
     if (!this.isValid) return;
 
-    const types: QuizQuestionType[] = [];
-    if (this.writtenEnabledSignal()) types.push('written');
-    if (this.multipleChoiceEnabledSignal()) types.push('multiple-choice');
-    if (this.trueFalseEnabledSignal()) types.push('true-false');
-
-    const config: QuizConfig = {
+    const quizConfig: QuizConfig = {
       setId: this.setIdSignal(),
-      questionCount: this.selectedCountSignal(),
-      questionTypes: types,
-      reversed: this.reversedSignal()
+      questionCount: this.config.selectedCountSignal(),
+      questionTypes: this.config.collectEnabledTypes(),
+      reversed: this.config.reversedSignal()
     };
 
-    this.startQuiz.emit(config);
+    this.startQuiz.emit(quizConfig);
   }
 
   public onGoBack(): void {

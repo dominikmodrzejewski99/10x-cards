@@ -1,5 +1,6 @@
 @use 'variables' as *;
 @use 'buttons' as *;
+@use 'config-form' as *;
 
 .quiz-config {
   max-width: 500px;
@@ -49,44 +50,21 @@
 }
 
 .quiz-config__section {
-  margin-bottom: 1.5rem;
+  @include config-section;
 }
 
 .quiz-config__label {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: $color-text;
-  margin-bottom: 0.5rem;
+  @include config-label;
 }
 
 .quiz-config__count-row {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  @include config-count-row;
 }
 
 .quiz-config__count-input {
-  width: 100%;
-  min-width: 0;
+  @include config-input;
   flex: 1;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.9rem;
-  color: $color-text;
-  border: 1.5px solid $color-border;
-  border-radius: $radius-md;
-  background: transparent;
-  transition: border-color 0.15s;
-
-  &:focus {
-    outline: none;
-    border-color: $color-primary;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+  min-width: 0;
 }
 
 .quiz-config__all-toggle {
@@ -95,46 +73,23 @@
 
 .quiz-config__checkboxes,
 .quiz-config__radios {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
+  @include config-check-group;
 }
 
 .quiz-config__check-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  padding: 0.5rem 0.75rem;
-  border: 1.5px solid $color-border;
-  border-radius: $radius-md;
-  transition: all 0.15s;
-
-  &:hover {
-    border-color: $color-primary;
-    background: $color-primary-light;
-  }
+  @include config-check-item;
 }
 
 .quiz-config__check-input {
-  width: 1.1rem;
-  height: 1.1rem;
-  accent-color: $color-primary;
-  cursor: pointer;
-  flex-shrink: 0;
+  @include config-check-input;
 }
 
 .quiz-config__check-text {
-  font-size: 0.9rem;
-  color: $color-text;
-  font-weight: 500;
+  @include config-check-text;
 }
 
 .quiz-config__error {
-  display: block;
-  color: $color-danger;
-  font-size: 0.8rem;
-  margin-top: 0.4rem;
+  @include config-error;
 }
 
 .quiz-config__actions {

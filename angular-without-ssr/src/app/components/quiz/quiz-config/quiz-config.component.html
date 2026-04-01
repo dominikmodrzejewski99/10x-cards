@@ -11,82 +11,29 @@
   </div>
 
   <div class="quiz-config__section">
-    <label class="quiz-config__label">{{ t('questionCount') }}</label>
-    <div class="quiz-config__count-row">
-      <input
-        type="number"
-        class="quiz-config__count-input"
-        [ngModel]="selectedCountSignal() === 'all' ? cardCountSignal() : selectedCountSignal()"
-        (ngModelChange)="onCountChange($event)"
-        [min]="1"
-        [max]="cardCountSignal()"
-        [disabled]="selectedCountSignal() === 'all'" />
-      <label class="quiz-config__check-item quiz-config__all-toggle">
-        <input
-          type="checkbox"
-          class="quiz-config__check-input"
-          [checked]="selectedCountSignal() === 'all'"
-          (change)="toggleAll()" />
-        <span class="quiz-config__check-text">{{ t('all') }}</span>
-      </label>
-    </div>
+    <app-question-count-picker
+      [cardCount]="cardCountSignal()"
+      [selectedCount]="config.selectedCountSignal()"
+      translationPrefix="quiz.config"
+      (countChange)="onCountChange($event)"
+      (toggleAll)="toggleAll()">
+    </app-question-count-picker>
   </div>
 
   <div class="quiz-config__section">
-    <label class="quiz-config__label">{{ t('questionTypes') }}</label>
-    <div class="quiz-config__checkboxes">
-      <label class="quiz-config__check-item">
-        <input
-          type="checkbox"
-          class="quiz-config__check-input"
-          [checked]="writtenEnabledSignal()"
-          (change)="writtenEnabledSignal.set(!writtenEnabledSignal())" />
-        <span class="quiz-config__check-text">{{ t('written') }}</span>
-      </label>
-      <label class="quiz-config__check-item">
-        <input
-          type="checkbox"
-          class="quiz-config__check-input"
-          [checked]="multipleChoiceEnabledSignal()"
-          (change)="multipleChoiceEnabledSignal.set(!multipleChoiceEnabledSignal())" />
-        <span class="quiz-config__check-text">{{ t('multipleChoice') }}</span>
-      </label>
-      <label class="quiz-config__check-item">
-        <input
-          type="checkbox"
-          class="quiz-config__check-input"
-          [checked]="trueFalseEnabledSignal()"
-          (change)="trueFalseEnabledSignal.set(!trueFalseEnabledSignal())" />
-        <span class="quiz-config__check-text">{{ t('trueFalse') }}</span>
-      </label>
-    </div>
-    @if (!isValid) {
-      <small class="quiz-config__error">{{ t('validationError') }}</small>
-    }
+    <app-question-type-selector
+      [options]="questionTypeOptions"
+      [showError]="!isValid"
+      translationPrefix="quiz.config">
+    </app-question-type-selector>
   </div>
 
   <div class="quiz-config__section">
-    <label class="quiz-config__label">{{ t('direction') }}</label>
-    <div class="quiz-config__radios">
-      <label class="quiz-config__check-item">
-        <input
-          type="radio"
-          name="direction"
-          class="quiz-config__check-input"
-          [checked]="!reversedSignal()"
-          (change)="reversedSignal.set(false)" />
-        <span class="quiz-config__check-text">{{ t('frontToBack') }}</span>
-      </label>
-      <label class="quiz-config__check-item">
-        <input
-          type="radio"
-          name="direction"
-          class="quiz-config__check-input"
-          [checked]="reversedSignal()"
-          (change)="reversedSignal.set(true)" />
-        <span class="quiz-config__check-text">{{ t('backToFront') }}</span>
-      </label>
-    </div>
+    <app-direction-picker
+      [reversed]="config.reversedSignal"
+      translationPrefix="quiz.config"
+      instanceId="quiz">
+    </app-direction-picker>
   </div>
 
   <div class="quiz-config__actions">

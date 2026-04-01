@@ -443,7 +443,9 @@
       "deleted": "Carte supprimée",
       "undo": "Annuler",
       "shareInfo": "Lien valide 7 jours. Toute personne ayant le lien peut copier le set.",
-      "copyLink": "Copier le lien"
+      "copyLink": "Copier le lien",
+      "printTest": "Imprimer le test",
+      "printTestTitle": "Imprimer le test : {{ setName }}"
     },
     "table": {
       "search": "Rechercher des cartes...",
@@ -647,6 +649,41 @@
       "growthItem2": "Erreur = leçon",
       "growthItem3": "Je cherche les défis",
       "growthItem4": "L'effort renforce le cerveau"
+    }
+  },
+  "printTest": {
+    "config": {
+      "testTitle": "Titre du test",
+      "questionCount": "Nombre de questions",
+      "all": "Toutes",
+      "questionTypes": "Types de questions",
+      "written": "Réponse écrite",
+      "multipleChoice": "Choix multiple",
+      "trueFalse": "Vrai / Faux",
+      "matching": "Appariement",
+      "direction": "Direction",
+      "frontToBack": "Recto → Verso",
+      "backToFront": "Verso → Recto",
+      "includeAnswerKey": "Inclure le corrigé",
+      "validationError": "Choisis au moins un type de question",
+      "cancel": "Annuler",
+      "print": "Imprimer le test"
+    },
+    "document": {
+      "name": "Nom",
+      "date": "Date",
+      "score": "Score",
+      "writtenSection": "Réponse écrite",
+      "writtenDesc": "Écris la bonne réponse à la question posée.",
+      "mcSection": "Choisis la bonne réponse",
+      "mcDesc": "Sélectionne une bonne réponse parmi les options proposées.",
+      "tfSection": "Vrai ou faux",
+      "tfDesc": "Détermine si l'association donnée est correcte.",
+      "matchingSection": "Appariement",
+      "matchingDesc": "Associe les éléments de la colonne de gauche aux réponses de droite.",
+      "true": "Vrai",
+      "false": "Faux",
+      "answerKey": "Corrigé"
     }
   },
   "footer": {

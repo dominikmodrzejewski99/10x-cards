@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentRef } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { QuizConfigComponent } from './quiz-config.component';
 import { QuizConfig } from '../../../../types';
 
@@ -10,7 +11,13 @@ describe('QuizConfigComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QuizConfigComponent]
+      imports: [
+        QuizConfigComponent,
+        TranslocoTestingModule.forRoot({
+          langs: { pl: {} },
+          translocoConfig: { availableLangs: ['pl'], defaultLang: 'pl' }
+        })
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(QuizConfigComponent);
@@ -30,27 +37,27 @@ describe('QuizConfigComponent', () => {
 
   describe('domyslne wartosci sygnalow', () => {
     it('powinien miec selectedCount ustawiony na 10', () => {
-      const selectedCount: number | 'all' = component.selectedCountSignal();
+      const selectedCount: number | 'all' = component.config.selectedCountSignal();
       expect(selectedCount).toBe(10);
     });
 
     it('powinien miec wlaczone wpisywanie odpowiedzi', () => {
-      const writtenEnabled: boolean = component.writtenEnabledSignal();
+      const writtenEnabled: boolean = component.config.writtenEnabledSignal();
       expect(writtenEnabled).toBeTrue();
     });
 
     it('powinien miec wlaczony wielokrotny wybor', () => {
-      const multipleChoiceEnabled: boolean = component.multipleChoiceEnabledSignal();
+      const multipleChoiceEnabled: boolean = component.config.multipleChoiceEnabledSignal();
       expect(multipleChoiceEnabled).toBeTrue();
     });
 
     it('powinien miec wlaczone prawda/falsz', () => {
-      const trueFalseEnabled: boolean = component.trueFalseEnabledSignal();
+      const trueFalseEnabled: boolean = component.config.trueFalseEnabledSignal();
       expect(trueFalseEnabled).toBeTrue();
     });
 
     it('powinien miec kierunek ustawiony na normalny (reversed=false)', () => {
-      const reversed: boolean = component.reversedSignal();
+      const reversed: boolean = component.config.reversedSignal();
       expect(reversed).toBeFalse();
     });
   });
@@ -99,9 +106,9 @@ describe('QuizConfigComponent', () => {
 
   describe('isValid', () => {
     it('powinien zwrocic false gdy zaden typ pytania nie jest zaznaczony', () => {
-      component.writtenEnabledSignal.set(false);
-      component.multipleChoiceEnabledSignal.set(false);
-      component.trueFalseEnabledSignal.set(false);
+      component.config.writtenEnabledSignal.set(false);
+      component.config.multipleChoiceEnabledSignal.set(false);
+      component.config.trueFalseEnabledSignal.set(false);
 
       const valid: boolean = component.isValid;
 
@@ -109,9 +116,9 @@ describe('QuizConfigComponent', () => {
     });
 
     it('powinien zwrocic true gdy przynajmniej jeden typ jest zaznaczony - wpisywanie', () => {
-      component.writtenEnabledSignal.set(true);
-      component.multipleChoiceEnabledSignal.set(false);
-      component.trueFalseEnabledSignal.set(false);
+      component.config.writtenEnabledSignal.set(true);
+      component.config.multipleChoiceEnabledSignal.set(false);
+      component.config.trueFalseEnabledSignal.set(false);
 
       const valid: boolean = component.isValid;
 
@@ -119,9 +126,9 @@ describe('QuizConfigComponent', () => {
     });
 
     it('powinien zwrocic true gdy przynajmniej jeden typ jest zaznaczony - wielokrotny wybor', () => {
-      component.writtenEnabledSignal.set(false);
-      component.multipleChoiceEnabledSignal.set(true);
-      component.trueFalseEnabledSignal.set(false);
+      component.config.writtenEnabledSignal.set(false);
+      component.config.multipleChoiceEnabledSignal.set(true);
+      component.config.trueFalseEnabledSignal.set(false);
 
       const valid: boolean = component.isValid;
 
@@ -129,9 +136,9 @@ describe('QuizConfigComponent', () => {
     });
 
     it('powinien zwrocic true gdy przynajmniej jeden typ jest zaznaczony - prawda/falsz', () => {
-      component.writtenEnabledSignal.set(false);
-      component.multipleChoiceEnabledSignal.set(false);
-      component.trueFalseEnabledSignal.set(true);
+      component.config.writtenEnabledSignal.set(false);
+      component.config.multipleChoiceEnabledSignal.set(false);
+      component.config.trueFalseEnabledSignal.set(true);
 
       const valid: boolean = component.isValid;
 
@@ -139,9 +146,9 @@ describe('QuizConfigComponent', () => {
     });
 
     it('powinien zwrocic true gdy wszystkie typy sa zaznaczone', () => {
-      component.writtenEnabledSignal.set(true);
-      component.multipleChoiceEnabledSignal.set(true);
-      component.trueFalseEnabledSignal.set(true);
+      component.config.writtenEnabledSignal.set(true);
+      component.config.multipleChoiceEnabledSignal.set(true);
+      component.config.trueFalseEnabledSignal.set(true);
 
       const valid: boolean = component.isValid;
 
@@ -166,8 +173,8 @@ describe('QuizConfigComponent', () => {
     });
 
     it('powinien emitowac QuizConfig z wybranymi typami pytan', () => {
-      component.multipleChoiceEnabledSignal.set(false);
-      component.trueFalseEnabledSignal.set(false);
+      component.config.multipleChoiceEnabledSignal.set(false);
+      component.config.trueFalseEnabledSignal.set(false);
 
       let emittedConfig: QuizConfig | undefined;
       component.startQuiz.subscribe((config: QuizConfig) => {
@@ -181,7 +188,7 @@ describe('QuizConfigComponent', () => {
     });
 
     it('powinien emitowac QuizConfig z odwroconym kierunkiem', () => {
-      component.reversedSignal.set(true);
+      component.config.reversedSignal.set(true);
 
       let emittedConfig: QuizConfig | undefined;
       component.startQuiz.subscribe((config: QuizConfig) => {
@@ -195,7 +202,7 @@ describe('QuizConfigComponent', () => {
     });
 
     it('powinien emitowac QuizConfig z opcja "all" jako questionCount', () => {
-      component.selectedCountSignal.set('all');
+      component.config.selectedCountSignal.set('all');
 
       let emittedConfig: QuizConfig | undefined;
       component.startQuiz.subscribe((config: QuizConfig) => {
@@ -209,9 +216,9 @@ describe('QuizConfigComponent', () => {
     });
 
     it('NIE powinien emitowac gdy formularz jest niepoprawny', () => {
-      component.writtenEnabledSignal.set(false);
-      component.multipleChoiceEnabledSignal.set(false);
-      component.trueFalseEnabledSignal.set(false);
+      component.config.writtenEnabledSignal.set(false);
+      component.config.multipleChoiceEnabledSignal.set(false);
+      component.config.trueFalseEnabledSignal.set(false);
 
       let emitted: boolean = false;
       component.startQuiz.subscribe(() => {
