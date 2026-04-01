@@ -88,6 +88,9 @@ export interface FlashcardSetDTO {
   user_id: string;
   name: string;
   description: string | null;
+  is_public: boolean;
+  copy_count: number;
+  published_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -107,6 +110,23 @@ export interface ShareLinkDTO {
   created_by: string;
   expires_at: string;
   created_at: string;
+}
+
+/** ---------- Public Sets (Explore) ---------- */
+
+export interface PublicSetDTO {
+  id: number;
+  name: string;
+  description: string | null;
+  card_count: number;
+  author_email_masked: string;
+  copy_count: number;
+  published_at: string;
+}
+
+export interface BrowsePublicSetsResponse {
+  sets: PublicSetDTO[];
+  total: number;
 }
 
 /** ---------- Generations ---------- */
