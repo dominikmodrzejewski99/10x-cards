@@ -729,6 +729,12 @@
     "friend_accepted": "{{ email }} aceptó tu invitación",
     "nudge": "{{ email }} te recuerda que debes estudiar. ¡Manos a la obra!"
   },
+  "cookieConsent": {
+    "message": "Usamos cookies para análisis y mejorar nuestro servicio.",
+    "privacyLink": "Política de privacidad",
+    "acceptBtn": "Aceptar",
+    "rejectBtn": "Solo esenciales"
+  },
   "footer": {
     "terms": "Términos",
     "privacy": "Privacidad"

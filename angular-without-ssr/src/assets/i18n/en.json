@@ -729,6 +729,12 @@
     "friend_accepted": "{{ email }} accepted your invitation",
     "nudge": "{{ email }} is reminding you to study! Get to work!"
   },
+  "cookieConsent": {
+    "message": "We use cookies for analytics and to improve our service.",
+    "privacyLink": "Privacy policy",
+    "acceptBtn": "Accept",
+    "rejectBtn": "Essential only"
+  },
   "footer": {
     "terms": "Terms",
     "privacy": "Privacy"

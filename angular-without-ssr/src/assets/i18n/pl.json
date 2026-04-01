@@ -730,6 +730,12 @@
     "friend_accepted": "{{ email }} zaakceptował Twoje zaproszenie",
     "nudge": "{{ email }} przypomina Ci o nauce! Do roboty!"
   },
+  "cookieConsent": {
+    "message": "Używamy plików cookie do analizy i poprawy jakości usługi.",
+    "privacyLink": "Polityka prywatności",
+    "acceptBtn": "Akceptuję",
+    "rejectBtn": "Tylko niezbędne"
+  },
   "footer": {
     "terms": "Regulamin",
     "privacy": "Prywatność"

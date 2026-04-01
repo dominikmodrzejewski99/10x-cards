@@ -1,0 +1,19 @@
+<ng-container *transloco="let t; prefix: 'cookieConsent'">
+  @if (!consentService.hasDecided) {
+    <div class="consent">
+      <div class="consent__inner">
+        <div class="consent__text">
+          <p>{{ t('message') }} <a routerLink="/privacy" class="consent__link">{{ t('privacyLink') }}</a></p>
+        </div>
+        <div class="consent__actions">
+          <button class="consent__btn consent__btn--reject" (click)="reject()">
+            {{ t('rejectBtn') }}
+          </button>
+          <button class="consent__btn consent__btn--accept" (click)="accept()">
+            {{ t('acceptBtn') }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</ng-container>

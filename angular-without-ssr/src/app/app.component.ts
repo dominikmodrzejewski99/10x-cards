@@ -6,6 +6,7 @@ import { filter } from 'rxjs/operators';
 import { AuthNavbarComponent } from './shared/components/auth-navbar.component';
 import { BottomNavComponent } from './shared/components/bottom-nav/bottom-nav.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
+import { CookieConsentComponent } from './shared/components/cookie-consent/cookie-consent.component';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AuthStore } from './auth/store';
 import { UpdateService } from './services/update.service';
@@ -15,7 +16,7 @@ import { UpdateService } from './services/update.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, ToastModule, AuthNavbarComponent, BottomNavComponent, OnboardingComponent, TranslocoPipe],
+  imports: [RouterModule, ToastModule, AuthNavbarComponent, BottomNavComponent, OnboardingComponent, CookieConsentComponent, TranslocoPipe],
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
   private readonly authStore = inject(AuthStore);

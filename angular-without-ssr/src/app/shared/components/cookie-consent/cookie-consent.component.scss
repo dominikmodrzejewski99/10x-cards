@@ -1,0 +1,95 @@
+@use 'variables' as *;
+@use 'buttons' as *;
+
+.consent {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  padding: 1rem;
+  animation: slideUp 0.3s ease-out;
+}
+
+.consent__inner {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem 1.5rem;
+  background: $color-white;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-lg;
+}
+
+.consent__text {
+  flex: 1;
+
+  p {
+    font-size: $font-size-sm;
+    color: $color-text;
+    line-height: $line-height-normal;
+    margin: 0;
+  }
+}
+
+.consent__link {
+  color: $color-primary;
+  font-weight: $font-weight-semibold;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.consent__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.consent__btn {
+  @include btn-base;
+  padding: 0.45rem 1rem;
+  font-size: $font-size-sm;
+  border-radius: $radius-md;
+  white-space: nowrap;
+}
+
+.consent__btn--accept {
+  @include btn-primary;
+  padding: 0.45rem 1rem;
+  font-size: $font-size-sm;
+}
+
+.consent__btn--reject {
+  @include btn-ghost;
+  padding: 0.45rem 1rem;
+  font-size: $font-size-sm;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: $bp-mobile) {
+  .consent__inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .consent__actions {
+    justify-content: flex-end;
+  }
+}

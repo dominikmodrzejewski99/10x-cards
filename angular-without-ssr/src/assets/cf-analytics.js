@@ -1,4 +1,8 @@
-if (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.cfAnalyticsToken) {
+if (
+  window.RUNTIME_CONFIG &&
+  window.RUNTIME_CONFIG.cfAnalyticsToken &&
+  localStorage.getItem('cookie-consent') === 'accepted'
+) {
   var s = document.createElement('script');
   s.defer = true;
   s.src = 'https://static.cloudflareinsights.com/beacon.min.js';
