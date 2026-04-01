@@ -203,7 +203,24 @@
     "descPlaceholder": "Короткий опис набору...",
     "cancel": "Скасувати",
     "save": "Зберегти",
-    "create": "Створити"
+    "create": "Створити",
+    "publishAction": "Опублікувати",
+    "unpublishAction": "Сховати",
+    "publicBadge": "Публічний",
+    "copyCount": "копій"
+  },
+  "explore": {
+    "title": "Публічні набори",
+    "searchPlaceholder": "Шукати набори...",
+    "sortPopular": "Найпопулярніші",
+    "sortNewest": "Найновіші",
+    "sortMostCards": "Найбільше карток",
+    "copyButton": "Копіювати до себе",
+    "copies": "копій",
+    "cards": "карток",
+    "retry": "Спробувати знову",
+    "emptyTitle": "Немає публічних наборів",
+    "emptyDesc": "Жоден набір не відповідає пошуку. Спробуйте інші ключові слова."
   },
   "reviewReminder": {
     "title": "Час на повторення!",
@@ -322,6 +339,7 @@
     "guide": "Посібник",
     "generate": "Генерувати",
     "friends": "Друзі",
+    "explore": "Огляд",
     "login": "Увійти",
     "register": "Зареєструватися",
     "mobileNav": "Мобільна навігація"
