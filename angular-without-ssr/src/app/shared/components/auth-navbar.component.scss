@@ -1,11 +1,19 @@
 @use 'variables' as *;
 
 .navbar {
-  background: $color-white;
-  border-bottom: 2px solid $color-border;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid $color-border;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
   position: sticky;
   top: 0;
   z-index: 40;
+}
+
+:host-context(:root[data-theme="dark"]) .navbar {
+  background: rgba(20, 28, 46, 0.82);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.15);
 }
 
 .navbar__inner {
@@ -14,7 +22,7 @@
   padding: 0 1.25rem;
   display: flex;
   align-items: center;
-  height: 3.5rem;
+  height: 3.75rem;
   gap: 2rem;
 }
 
@@ -29,16 +37,10 @@
   letter-spacing: -0.02em;
 }
 
-.navbar__logo-svg {
+.navbar__logo-img {
+  height: 29px;
+  width: auto;
   flex-shrink: 0;
-}
-
-.navbar__logo-text {
-  color: $color-text;
-}
-
-.navbar__logo-accent {
-  color: $color-primary;
 }
 
 /* Desktop links */
