@@ -348,6 +348,7 @@ export interface FriendDTO {
   email_masked: string;
   current_streak: number;
   last_study_date: string | null;
+  last_active_at: string | null;
   total_cards_reviewed: number;
 }
 
@@ -359,6 +360,7 @@ export interface FriendStatsDTO {
   total_sessions: number;
   total_cards_reviewed: number;
   last_study_date: string | null;
+  last_active_at: string | null;
 }
 
 // ============ Notifications ============

@@ -704,6 +704,7 @@
     "nudgeSent": "Reminder sent!",
     "nudgeCooldown": "Reminder already sent today",
     "inactive": "Inactive for {{ days }} days",
+    "lastReview": "Last review {{ days }}d ago",
     "streak": "{{ count }} day streak",
     "requestSent": "Invitation sent!",
     "requestAccepted": "Invitation accepted",

@@ -704,6 +704,7 @@
     "nudgeSent": "¡Recordatorio enviado!",
     "nudgeCooldown": "Ya se envió un recordatorio hoy",
     "inactive": "Inactivo desde hace {{ days }} días",
+    "lastReview": "Última revisión hace {{ days }} días",
     "streak": "{{ count }} días seguidos",
     "requestSent": "¡Invitación enviada!",
     "requestAccepted": "Invitación aceptada",

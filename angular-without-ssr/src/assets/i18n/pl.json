@@ -704,6 +704,7 @@
     "nudgeSent": "Przypomnienie wysłane!",
     "nudgeCooldown": "Już wysłano dziś przypomnienie",
     "inactive": "Nieaktywny od {{ days }} dni",
+    "lastReview": "Powtórka {{ days }} dni temu",
     "streak": "{{ count }} dni z rzędu",
     "requestSent": "Zaproszenie wysłane!",
     "requestAccepted": "Zaproszenie zaakceptowane",

@@ -81,15 +81,20 @@
                   <span class="friends__stat">
                     <i class="pi pi-book"></i> {{ friend.total_cards_reviewed }}
                   </span>
-                  @if (getDaysInactive(friend.last_study_date) !== null && getDaysInactive(friend.last_study_date)! > 1) {
+                  @if (getDaysInactive(friend.last_active_at) !== null && getDaysInactive(friend.last_active_at)! > 1) {
                     <span class="friends__stat friends__stat--inactive">
-                      {{ t('inactive', { days: getDaysInactive(friend.last_study_date) }) }}
+                      {{ t('inactive', { days: getDaysInactive(friend.last_active_at) }) }}
+                    </span>
+                  }
+                  @if (friend.last_study_date) {
+                    <span class="friends__stat friends__stat--review">
+                      <i class="pi pi-replay"></i> {{ t('lastReview', { days: getDaysInactive(friend.last_study_date) ?? 0 }) }}
                     </span>
                   }
                 </div>
               </a>
               <div class="friends__card-actions">
-                @if (getDaysInactive(friend.last_study_date) !== null && getDaysInactive(friend.last_study_date)! > 1) {
+                @if (getDaysInactive(friend.last_active_at) !== null && getDaysInactive(friend.last_active_at)! > 1) {
                   <button class="friends__btn friends__btn--nudge" (click)="sendNudge(friend.user_id)" [title]="t('nudge')">
                     <i class="pi pi-bell"></i>
                   </button>
