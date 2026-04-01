@@ -34,4 +34,11 @@ export class CookieConsentComponent {
   toggleSettings(): void {
     this.showSettings.update(v => !v);
   }
+
+  reopen(): void {
+    const current = this.consentService.preferences();
+    this.analyticsEnabled.set(current?.analytics ?? true);
+    this.showSettings.set(true);
+    this.consentService.reset();
+  }
 }

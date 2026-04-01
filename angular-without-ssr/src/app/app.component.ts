@@ -31,6 +31,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   private routerSub: Subscription;
 
   @ViewChild(OnboardingComponent) private onboarding!: OnboardingComponent;
+  @ViewChild(CookieConsentComponent) private cookieConsent!: CookieConsentComponent;
 
   private pendingOnboarding: boolean = false;
   private viewReady: boolean = false;
@@ -68,6 +69,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.routerSub.unsubscribe();
+  }
+
+  public openCookieSettings(): void {
+    this.cookieConsent?.reopen();
   }
 
   private triggerOnboarding(): void {

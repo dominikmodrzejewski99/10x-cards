@@ -27,6 +27,11 @@ export class CookieConsentService {
     this.save(prefs);
   }
 
+  reset(): void {
+    document.cookie = `${COOKIE_NAME}=; path=/; max-age=0`;
+    this.preferences.set(null);
+  }
+
   private save(prefs: ConsentPreferences): void {
     const maxAge = MAX_AGE_DAYS * 24 * 60 * 60;
     const encoded = encodeURIComponent(JSON.stringify(prefs));

@@ -22,6 +22,8 @@
     <a routerLink="/terms" class="app__footer-link">{{ 'footer.terms' | transloco }}</a>
     <span class="app__footer-sep">·</span>
     <a routerLink="/privacy" class="app__footer-link">{{ 'footer.privacy' | transloco }}</a>
+    <span class="app__footer-sep">·</span>
+    <button class="app__footer-link app__footer-btn" (click)="openCookieSettings()">{{ 'footer.cookies' | transloco }}</button>
   </footer>
 
   <app-bottom-nav></app-bottom-nav>
