@@ -14,6 +14,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'explore',
+    loadComponent: () => import('./components/explore/explore.component').then(m => m.ExploreComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'sets',
     loadComponent: () => import('./components/sets/set-list.component').then(m => m.SetListComponent),
     canActivate: [authGuard]

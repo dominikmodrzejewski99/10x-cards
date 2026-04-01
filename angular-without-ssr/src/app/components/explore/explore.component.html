@@ -1,0 +1,100 @@
+<ng-container *transloco="let t; prefix: 'explore'">
+<div class="explore">
+  <div class="explore__header">
+    <h1 class="explore__title">{{ t('title') }}</h1>
+  </div>
+
+  <div class="explore__toolbar">
+    <div class="explore__search">
+      <i class="pi pi-search explore__search-icon"></i>
+      <input
+        type="text"
+        class="explore__search-input"
+        [placeholder]="t('searchPlaceholder')"
+        [ngModel]="state().search"
+        (ngModelChange)="onSearchInput($event)" />
+    </div>
+    <select class="explore__sort" [ngModel]="state().sort" (ngModelChange)="onSortChange($event)">
+      <option value="popular">{{ t('sortPopular') }}</option>
+      <option value="newest">{{ t('sortNewest') }}</option>
+      <option value="most_cards">{{ t('sortMostCards') }}</option>
+    </select>
+  </div>
+
+  @if (state().loading && state().sets.length === 0) {
+    <div class="explore__grid">
+      @for (_ of [1,2,3,4,5,6]; track $index) {
+        <div class="explore-card">
+          <ngx-skeleton-loader [theme]="{ width: '70%', height: '1.1rem' }"></ngx-skeleton-loader>
+          <ngx-skeleton-loader [theme]="{ width: '90%', height: '0.8rem', marginTop: '0.5rem' }"></ngx-skeleton-loader>
+          <ngx-skeleton-loader [theme]="{ width: '50%', height: '0.7rem', marginTop: '0.75rem' }"></ngx-skeleton-loader>
+        </div>
+      }
+    </div>
+  }
+
+  @if (state().error && state().sets.length === 0) {
+    <div class="explore__empty">
+      <i class="pi pi-exclamation-circle"></i>
+      <p>{{ state().error }}</p>
+      <button (click)="loadSets()" class="explore__btn explore__btn--outline">{{ t('retry') }}</button>
+    </div>
+  }
+
+  @if (!state().loading && state().sets.length === 0 && !state().error) {
+    <div class="explore__empty">
+      <div class="explore__empty-icon-wrap">
+        <i class="pi pi-search"></i>
+      </div>
+      <h2 class="explore__empty-title">{{ t('emptyTitle') }}</h2>
+      <p class="explore__empty-desc">{{ t('emptyDesc') }}</p>
+    </div>
+  }
+
+  @if (state().sets.length > 0) {
+    <div class="explore__grid fade-in">
+      @for (set of state().sets; track set.id) {
+        <div class="explore-card">
+          <div class="explore-card__header">
+            <h2 class="explore-card__name">{{ set.name }}</h2>
+            <span class="explore-card__badge">{{ set.card_count }} {{ t('cards') }}</span>
+          </div>
+          @if (set.description) {
+            <p class="explore-card__desc">{{ set.description }}</p>
+          }
+          <div class="explore-card__footer">
+            <div class="explore-card__meta">
+              <span>{{ set.author_email_masked }}</span>
+              <span>·</span>
+              <span>{{ set.copy_count }} {{ t('copies') }}</span>
+            </div>
+            <button class="explore-card__copy" [title]="t('copyButton')" (click)="copySet(set.id)">
+              <i class="pi pi-copy"></i>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+
+    @if (totalPages > 1) {
+      <div class="explore__pagination">
+        <button
+          class="explore__page-btn"
+          [disabled]="state().page <= 1"
+          (click)="onPageChange(state().page - 1)">
+          <i class="pi pi-chevron-left"></i>
+        </button>
+        <span class="explore__page-info">{{ state().page }} / {{ totalPages }}</span>
+        <button
+          class="explore__page-btn"
+          [disabled]="state().page >= totalPages"
+          (click)="onPageChange(state().page + 1)">
+          <i class="pi pi-chevron-right"></i>
+        </button>
+      </div>
+    }
+  }
+
+  <p-toast position="bottom-center"></p-toast>
+</div>
+</ng-container>
