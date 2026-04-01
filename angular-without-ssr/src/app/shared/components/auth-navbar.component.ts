@@ -25,12 +25,28 @@ import { AuthStore } from '../../auth/store';
           <!-- Desktop links (authenticated) -->
           <div class="navbar__links navbar__links--desktop">
             @if (authCheckedSignal() && isAuthenticatedSignal()) {
-              <a routerLink="/dashboard" routerLinkActive="navbar__link--active" class="navbar__link">
-                <i class="pi pi-home"></i> {{ t('dashboard') }}
-              </a>
-              <a routerLink="/sets" routerLinkActive="navbar__link--active" class="navbar__link">
-                <i class="pi pi-folder"></i> {{ t('sets') }}
-              </a>
+              <div class="navbar__dropdown" (mouseenter)="openSets()" (mouseleave)="scheduleCloseSets()">
+                <button class="navbar__link navbar__link--trigger"
+                        [class.navbar__link--active]="isSetsRouteActive()"
+                        (click)="toggleSets()">
+                  <i class="pi pi-folder"></i> {{ t('sets') }}
+                  <i class="pi pi-chevron-down navbar__chevron" [class.navbar__chevron--open]="setsOpenSignal()"></i>
+                </button>
+                @if (setsOpenSignal()) {
+                  <div class="navbar__dropdown-menu" (mouseenter)="openSets()" (mouseleave)="scheduleCloseSets()">
+                    <a routerLink="/sets" routerLinkActive="navbar__dropdown-item--active" class="navbar__dropdown-item" (click)="closeSets()">
+                      <i class="pi pi-folder"></i> {{ t('mySets') }}
+                    </a>
+                    <a routerLink="/explore" routerLinkActive="navbar__dropdown-item--active" class="navbar__dropdown-item" (click)="closeSets()">
+                      <i class="pi pi-search"></i> {{ t('explore') }}
+                    </a>
+                    <div class="navbar__dropdown-divider"></div>
+                    <a routerLink="/generate" routerLinkActive="navbar__dropdown-item--active" class="navbar__dropdown-item" (click)="closeSets()">
+                      <i class="pi pi-microchip-ai"></i> {{ t('generate') }}
+                    </a>
+                  </div>
+                }
+              </div>
               <div class="navbar__dropdown" (mouseenter)="openLearn()" (mouseleave)="scheduleCloseLearn()">
                 <button class="navbar__link navbar__link--trigger"
                         [class.navbar__link--active]="isLearnRouteActive()"
@@ -56,12 +72,6 @@ import { AuthStore } from '../../auth/store';
                   </div>
                 }
               </div>
-              <a routerLink="/generate" routerLinkActive="navbar__link--active" class="navbar__link">
-                <i class="pi pi-microchip-ai"></i> {{ t('generate') }}
-              </a>
-              <a routerLink="/explore" routerLinkActive="navbar__link--active" class="navbar__link">
-                <i class="pi pi-search"></i> {{ t('explore') }}
-              </a>
               <a routerLink="/friends" routerLinkActive="navbar__link--active" class="navbar__link">
                 <i class="pi pi-users"></i> {{ t('friends') }}
               </a>
@@ -88,12 +98,18 @@ import { AuthStore } from '../../auth/store';
         <!-- Mobile drawer -->
         @if (authCheckedSignal() && isAuthenticatedSignal() && mobileOpenSignal()) {
           <div class="navbar__drawer">
-            <a routerLink="/dashboard" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
-              <i class="pi pi-home"></i> {{ t('dashboard') }}
-            </a>
-            <a routerLink="/sets" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
-              <i class="pi pi-folder"></i> {{ t('sets') }}
-            </a>
+            <div class="navbar__drawer-section">
+              <span class="navbar__drawer-heading">{{ t('sets') }}</span>
+              <a routerLink="/sets" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
+                <i class="pi pi-folder"></i> {{ t('mySets') }}
+              </a>
+              <a routerLink="/explore" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
+                <i class="pi pi-search"></i> {{ t('explore') }}
+              </a>
+              <a routerLink="/generate" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
+                <i class="pi pi-microchip-ai"></i> {{ t('generate') }}
+              </a>
+            </div>
             <div class="navbar__drawer-section">
               <span class="navbar__drawer-heading">{{ t('learn') }}</span>
               <a routerLink="/study" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
@@ -109,12 +125,6 @@ import { AuthStore } from '../../auth/store';
                 <i class="pi pi-lightbulb"></i> {{ t('guide') }}
               </a>
             </div>
-            <a routerLink="/generate" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
-              <i class="pi pi-microchip-ai"></i> {{ t('generate') }}
-            </a>
-            <a routerLink="/explore" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
-              <i class="pi pi-search"></i> {{ t('explore') }}
-            </a>
             <a routerLink="/friends" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
               <i class="pi pi-users"></i> {{ t('friends') }}
             </a>
@@ -134,13 +144,49 @@ export class AuthNavbarComponent {
   public isAuthenticatedSignal: Signal<boolean> = this.authStore.isAuthenticated;
   public isAnonymousSignal: Signal<boolean> = this.authStore.isAnonymous;
   public mobileOpenSignal: WritableSignal<boolean> = signal<boolean>(false);
+  public setsOpenSignal: WritableSignal<boolean> = signal<boolean>(false);
   public learnOpenSignal: WritableSignal<boolean> = signal<boolean>(false);
+  private setsCloseTimer: ReturnType<typeof setTimeout> | null = null;
   private learnCloseTimer: ReturnType<typeof setTimeout> | null = null;
 
+  private readonly setsRoutes: string[] = ['/sets', '/explore', '/generate'];
   private readonly learnRoutes: string[] = ['/study', '/quiz', '/language-test', '/learning-guide'];
+
+  public isSetsRouteActive(): boolean {
+    return this.setsRoutes.some((route: string) => this.router.url.startsWith(route));
+  }
 
   public isLearnRouteActive(): boolean {
     return this.learnRoutes.some((route: string) => this.router.url.startsWith(route));
+  }
+
+  public toggleSets(): void {
+    this.cancelCloseSets();
+    this.setsOpenSignal.update((v: boolean) => !v);
+  }
+
+  public openSets(): void {
+    this.cancelCloseSets();
+    this.setsOpenSignal.set(true);
+  }
+
+  public closeSets(): void {
+    this.cancelCloseSets();
+    this.setsOpenSignal.set(false);
+  }
+
+  public scheduleCloseSets(): void {
+    this.cancelCloseSets();
+    this.setsCloseTimer = setTimeout(() => {
+      this.setsOpenSignal.set(false);
+    }, 250);
+  }
+
+  private cancelCloseSets(): void {
+    if (this.setsCloseTimer) {
+      clearTimeout(this.setsCloseTimer);
+      this.setsCloseTimer = null;
+    }
   }
 
   public toggleLearn(): void {
@@ -182,12 +228,16 @@ export class AuthNavbarComponent {
 
   public onEscape(): void {
     this.closeMobile();
+    this.closeSets();
     this.closeLearn();
   }
 
   public onDocumentClick(event: MouseEvent): void {
     if (this.mobileOpenSignal() && !this.elementRef.nativeElement.contains(event.target)) {
       this.closeMobile();
+    }
+    if (this.setsOpenSignal() && !this.elementRef.nativeElement.contains(event.target)) {
+      this.closeSets();
     }
     if (this.learnOpenSignal() && !this.elementRef.nativeElement.contains(event.target)) {
       this.closeLearn();
