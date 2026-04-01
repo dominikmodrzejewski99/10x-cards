@@ -59,6 +59,9 @@ import { AuthStore } from '../../auth/store';
               <a routerLink="/generate" routerLinkActive="navbar__link--active" class="navbar__link">
                 <i class="pi pi-microchip-ai"></i> {{ t('generate') }}
               </a>
+              <a routerLink="/explore" routerLinkActive="navbar__link--active" class="navbar__link">
+                <i class="pi pi-search"></i> {{ t('explore') }}
+              </a>
               <a routerLink="/friends" routerLinkActive="navbar__link--active" class="navbar__link">
                 <i class="pi pi-users"></i> {{ t('friends') }}
               </a>
@@ -108,6 +111,9 @@ import { AuthStore } from '../../auth/store';
             </div>
             <a routerLink="/generate" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
               <i class="pi pi-microchip-ai"></i> {{ t('generate') }}
+            </a>
+            <a routerLink="/explore" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
+              <i class="pi pi-search"></i> {{ t('explore') }}
             </a>
             <a routerLink="/friends" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
               <i class="pi pi-users"></i> {{ t('friends') }}
