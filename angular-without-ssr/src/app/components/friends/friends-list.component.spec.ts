@@ -18,7 +18,8 @@ describe('FriendsListComponent', () => {
     email_masked: 'te...@test.com',
     current_streak: 5,
     last_study_date: '2026-03-30',
-    total_cards_reviewed: 100
+    total_cards_reviewed: 100,
+    last_active_at: null
   };
 
   const mockRequest: FriendRequestDTO = {

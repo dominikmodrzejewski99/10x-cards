@@ -54,6 +54,74 @@
   cursor: pointer;
 }
 
+.explore__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+  align-items: center;
+}
+
+.explore__tag-chip {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-pill;
+  background: $color-white;
+  color: $color-text-secondary;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: $color-primary;
+    color: $color-primary;
+  }
+}
+
+.explore__tag-chip--active {
+  background: $color-primary-light;
+  border-color: $color-primary;
+  color: $color-primary;
+}
+
+.explore__tag-clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.65rem;
+  border: none;
+  border-radius: $radius-pill;
+  background: none;
+  color: $color-text-secondary;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: $color-danger;
+  }
+}
+
+.explore-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.explore-card__tag {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  background: $color-primary-light;
+  color: $color-primary;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  border-radius: $radius-pill;
+  white-space: nowrap;
+}
+
 .explore__btn {
   @include btn-base;
   @include btn-md;

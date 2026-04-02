@@ -10,6 +10,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { ShareService } from '../../services/share.service';
 import { ExploreService } from '../../services/explore.service';
+import { TagInputComponent } from '../../shared/components/tag-input/tag-input.component';
 import { FlashcardSetDTO, CreateFlashcardSetCommand, UpdateFlashcardSetCommand } from '../../../types';
 
 interface SetListState {
@@ -20,6 +21,7 @@ interface SetListState {
   editingSet: FlashcardSetDTO | null;
   formName: string;
   formDescription: string;
+  formTags: string[];
   formSaving: boolean;
 }
 
@@ -32,7 +34,8 @@ interface SetListState {
     ToastModule,
     ConfirmDialogModule,
     NgxSkeletonLoaderModule,
-    TranslocoDirective
+    TranslocoDirective,
+    TagInputComponent
   ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './set-list.component.html',
@@ -56,6 +59,7 @@ export class SetListComponent implements OnInit {
     editingSet: null,
     formName: '',
     formDescription: '',
+    formTags: [],
     formSaving: false
   });
 
@@ -101,6 +105,7 @@ export class SetListComponent implements OnInit {
       editingSet: null,
       formName: '',
       formDescription: '',
+      formTags: [],
       dialogVisible: true
     }));
   }
@@ -111,6 +116,7 @@ export class SetListComponent implements OnInit {
       editingSet: set,
       formName: set.name,
       formDescription: set.description ?? '',
+      formTags: [...(set.tags ?? [])],
       dialogVisible: true
     }));
   }
@@ -121,7 +127,8 @@ export class SetListComponent implements OnInit {
       dialogVisible: false,
       editingSet: null,
       formName: '',
-      formDescription: ''
+      formDescription: '',
+      formTags: []
     }));
   }
 
@@ -133,8 +140,12 @@ export class SetListComponent implements OnInit {
     this.state.update(s => ({ ...s, formDescription: value }));
   }
 
+  onFormTagsChange(tags: string[]): void {
+    this.state.update(s => ({ ...s, formTags: tags }));
+  }
+
   saveSet(): void {
-    const { editingSet, formName, formDescription } = this.state();
+    const { editingSet, formName, formDescription, formTags } = this.state();
     if (!formName.trim()) return;
 
     this.state.update(s => ({ ...s, formSaving: true }));
@@ -142,7 +153,8 @@ export class SetListComponent implements OnInit {
     if (editingSet) {
       const data: UpdateFlashcardSetCommand = {
         name: formName.trim(),
-        description: formDescription.trim() || null
+        description: formDescription.trim() || null,
+        tags: formTags
       };
       this.setApi.updateSet(editingSet.id, data).subscribe({
         next: (updated) => {
@@ -170,7 +182,8 @@ export class SetListComponent implements OnInit {
     } else {
       const data: CreateFlashcardSetCommand = {
         name: formName.trim(),
-        description: formDescription.trim() || null
+        description: formDescription.trim() || null,
+        tags: formTags
       };
       this.setApi.createSet(data).subscribe({
         next: (created) => {

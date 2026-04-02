@@ -21,8 +21,7 @@ export class FeedbackApiService {
           throw new Error('Użytkownik nie jest zalogowany');
         }
         return response.data.session.user.id;
-      }),
-      catchError(() => throwError(() => new Error('Sesja wygasła. Zaloguj się ponownie.')))
+      })
     );
   }
 

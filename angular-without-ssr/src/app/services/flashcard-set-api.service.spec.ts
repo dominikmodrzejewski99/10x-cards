@@ -62,6 +62,10 @@ function makeMockSet(overrides: Partial<FlashcardSetDTO> = {}): FlashcardSetDTO 
     user_id: MOCK_USER_ID,
     name: 'Test Set',
     description: 'A test set',
+    tags: [],
+    is_public: false,
+    copy_count: 0,
+    published_at: null,
     created_at: '2026-01-01T00:00:00Z',
     updated_at: '2026-01-01T00:00:00Z',
     ...overrides

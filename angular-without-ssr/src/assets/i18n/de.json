@@ -207,7 +207,9 @@
     "publishAction": "Veröffentlichen",
     "unpublishAction": "Verbergen",
     "publicBadge": "Öffentlich",
-    "copyCount": "Kopien"
+    "copyCount": "Kopien",
+    "tagsLabel": "Tags (optional)",
+    "tagsPlaceholder": "Tags hinzufügen..."
   },
   "explore": {
     "title": "Öffentliche Sets durchsuchen",
@@ -220,7 +222,8 @@
     "cards": "Karten",
     "retry": "Erneut versuchen",
     "emptyTitle": "Keine öffentlichen Sets",
-    "emptyDesc": "Keine Sets entsprechen Ihrer Suche. Versuchen Sie andere Schlüsselwörter."
+    "emptyDesc": "Keine Sets entsprechen Ihrer Suche. Versuchen Sie andere Schlüsselwörter.",
+    "clearTags": "Löschen"
   },
   "reviewReminder": {
     "title": "Zeit für Wiederholung!",

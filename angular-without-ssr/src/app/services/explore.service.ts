@@ -8,18 +8,31 @@ import { BrowsePublicSetsResponse } from '../../types';
 export class ExploreService {
   private supabase: SupabaseClient = inject(SupabaseClientFactory).getClient();
 
-  browse(search: string, sort: string, page: number, pageSize: number): Observable<BrowsePublicSetsResponse> {
+  browse(search: string, sort: string, page: number, pageSize: number, tags: string[] = []): Observable<BrowsePublicSetsResponse> {
     return from(
       this.supabase.rpc('browse_public_sets', {
         p_search: search,
         p_sort: sort,
         p_page: page,
-        p_page_size: pageSize
+        p_page_size: pageSize,
+        p_tags: tags
       })
     ).pipe(
       map(response => {
         if (response.error) throw new Error(response.error.message);
         return response.data as BrowsePublicSetsResponse;
+      }),
+      catchError(error => throwError(() => error))
+    );
+  }
+
+  getPopularTags(limit: number = 20): Observable<string[]> {
+    return from(
+      this.supabase.rpc('get_popular_public_tags', { p_limit: limit })
+    ).pipe(
+      map(response => {
+        if (response.error) throw new Error(response.error.message);
+        return (response.data as string[]) ?? [];
       }),
       catchError(error => throwError(() => error))
     );

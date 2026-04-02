@@ -177,6 +177,23 @@
   gap: 0.3rem;
 }
 
+.set-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.set-card__tag {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  background: $color-primary-light;
+  color: $color-primary;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  border-radius: $radius-pill;
+  white-space: nowrap;
+}
+
 .set-card__desc {
   font-size: 0.85rem;
   color: $color-text-secondary;

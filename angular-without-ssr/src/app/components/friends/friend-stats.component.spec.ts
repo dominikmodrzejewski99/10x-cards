@@ -66,7 +66,8 @@ describe('FriendStatsComponent', () => {
       longest_streak: 15,
       total_sessions: 30,
       total_cards_reviewed: 300,
-      last_study_date: '2026-03-30'
+      last_study_date: '2026-03-30',
+      last_active_at: null
     }));
 
     component.ngOnInit();

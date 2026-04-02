@@ -21,6 +21,10 @@ describe('QuizListComponent', () => {
     user_id: 'user-1',
     name: 'English',
     description: null,
+    tags: [],
+    is_public: false,
+    copy_count: 0,
+    published_at: null,
     created_at: '2026-01-01T00:00:00Z',
     updated_at: '2026-01-01T00:00:00Z'
   };
@@ -30,6 +34,7 @@ describe('QuizListComponent', () => {
     {
       set: {
         id: 2, user_id: 'user-1', name: 'German', description: null,
+        tags: [], is_public: false, copy_count: 0, published_at: null,
         created_at: '2026-01-02T00:00:00Z', updated_at: '2026-01-02T00:00:00Z'
       },
       cardCount: 8

@@ -207,7 +207,9 @@
     "publishAction": "Publish",
     "unpublishAction": "Unpublish",
     "publicBadge": "Public",
-    "copyCount": "copies"
+    "copyCount": "copies",
+    "tagsLabel": "Tags (optional)",
+    "tagsPlaceholder": "Add tags..."
   },
   "explore": {
     "title": "Explore public sets",
@@ -220,7 +222,8 @@
     "cards": "cards",
     "retry": "Try again",
     "emptyTitle": "No public sets",
-    "emptyDesc": "No sets match your search. Try different keywords."
+    "emptyDesc": "No sets match your search. Try different keywords.",
+    "clearTags": "Clear"
   },
   "reviewReminder": {
     "title": "Time for review!",

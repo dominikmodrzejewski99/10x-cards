@@ -207,7 +207,9 @@
     "publishAction": "Opublikuj",
     "unpublishAction": "Ukryj",
     "publicBadge": "Publiczny",
-    "copyCount": "kopii"
+    "copyCount": "kopii",
+    "tagsLabel": "Tagi (opcjonalnie)",
+    "tagsPlaceholder": "Dodaj tagi..."
   },
   "explore": {
     "title": "Przeglądaj publiczne zestawy",
@@ -220,7 +222,8 @@
     "cards": "fiszek",
     "retry": "Spróbuj ponownie",
     "emptyTitle": "Brak publicznych zestawów",
-    "emptyDesc": "Żaden zestaw nie pasuje do wyszukiwania. Spróbuj innych słów kluczowych."
+    "emptyDesc": "Żaden zestaw nie pasuje do wyszukiwania. Spróbuj innych słów kluczowych.",
+    "clearTags": "Wyczyść"
   },
   "reviewReminder": {
     "title": "Czas na powtórkę!",

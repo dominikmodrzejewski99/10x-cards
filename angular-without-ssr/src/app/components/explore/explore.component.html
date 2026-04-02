@@ -21,6 +21,25 @@
     </select>
   </div>
 
+  @if (state().popularTags.length > 0) {
+    <div class="explore__tags">
+      @for (tag of state().popularTags; track tag) {
+        <button
+          type="button"
+          class="explore__tag-chip"
+          [class.explore__tag-chip--active]="state().selectedTags.includes(tag)"
+          (click)="toggleTag(tag)">
+          {{ tag }}
+        </button>
+      }
+      @if (state().selectedTags.length > 0) {
+        <button type="button" class="explore__tag-clear" (click)="clearTags()">
+          <i class="pi pi-times"></i> {{ t('clearTags') }}
+        </button>
+      }
+    </div>
+  }
+
   @if (state().loading && state().sets.length === 0) {
     <div class="explore__grid">
       @for (_ of [1,2,3,4,5,6]; track $index) {
@@ -61,6 +80,13 @@
           </div>
           @if (set.description) {
             <p class="explore-card__desc">{{ set.description }}</p>
+          }
+          @if (set.tags && set.tags.length > 0) {
+            <div class="explore-card__tags">
+              @for (tag of set.tags; track tag) {
+                <span class="explore-card__tag">{{ tag }}</span>
+              }
+            </div>
           }
           <div class="explore-card__footer">
             <div class="explore-card__meta">

@@ -1,0 +1,109 @@
+@use 'variables' as *;
+
+.tag-input {
+  position: relative;
+}
+
+.tag-input__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0.45rem 0.65rem;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-md;
+  background: $color-bg;
+  cursor: text;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  min-height: 2.5rem;
+  align-items: center;
+
+  &:focus-within {
+    border-color: $color-primary;
+    background: $color-white;
+  }
+}
+
+.tag-input--disabled .tag-input__tags {
+  background: $color-bg-alt;
+}
+
+.tag-input__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.5rem;
+  background: $color-primary-light;
+  color: $color-primary;
+  border-radius: $radius-pill;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  white-space: nowrap;
+  line-height: 1.5;
+}
+
+.tag-input__chip-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  padding: 0;
+  border: none;
+  background: none;
+  color: $color-primary;
+  cursor: pointer;
+  border-radius: $radius-full;
+  font-size: 0.55rem;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.08);
+  }
+}
+
+.tag-input__field {
+  flex: 1;
+  min-width: 80px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: $font-size-sm;
+  color: $color-text;
+  padding: 0.1rem 0;
+  font-family: inherit;
+
+  &::placeholder {
+    color: $color-text-secondary;
+  }
+}
+
+.tag-input__suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin: 0.25rem 0 0;
+  padding: 0.25rem;
+  list-style: none;
+  background: $color-white;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-md;
+  box-shadow: $shadow-md;
+  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.tag-input__suggestion {
+  padding: 0.4rem 0.65rem;
+  font-size: $font-size-sm;
+  color: $color-text;
+  cursor: pointer;
+  border-radius: $radius-sm;
+  transition: background 0.1s ease;
+
+  &:hover {
+    background: $color-primary-light;
+    color: $color-primary;
+  }
+}

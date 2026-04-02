@@ -23,6 +23,10 @@ describe('SetListComponent', () => {
     user_id: 'user-1',
     name: 'English Basics',
     description: 'Basic English words',
+    tags: ['english', 'basics'],
+    is_public: false,
+    copy_count: 0,
+    published_at: null,
     created_at: '2026-01-01T00:00:00Z',
     updated_at: '2026-01-01T00:00:00Z'
   };
@@ -32,6 +36,10 @@ describe('SetListComponent', () => {
     user_id: 'user-1',
     name: 'German Phrases',
     description: null,
+    tags: [],
+    is_public: false,
+    copy_count: 0,
+    published_at: null,
     created_at: '2026-01-02T00:00:00Z',
     updated_at: '2026-01-02T00:00:00Z'
   };
@@ -115,6 +123,10 @@ describe('SetListComponent', () => {
         user_id: 'user-1',
         name: 'New Set',
         description: null,
+        tags: [],
+        is_public: false,
+        copy_count: 0,
+        published_at: null,
         created_at: '2026-01-03T00:00:00Z',
         updated_at: '2026-01-03T00:00:00Z'
       };

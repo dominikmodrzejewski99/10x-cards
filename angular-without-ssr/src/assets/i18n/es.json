@@ -207,7 +207,9 @@
     "publishAction": "Publicar",
     "unpublishAction": "Ocultar",
     "publicBadge": "Público",
-    "copyCount": "copias"
+    "copyCount": "copias",
+    "tagsLabel": "Etiquetas (opcional)",
+    "tagsPlaceholder": "Agregar etiquetas..."
   },
   "explore": {
     "title": "Explorar sets públicos",
@@ -220,7 +222,8 @@
     "cards": "tarjetas",
     "retry": "Reintentar",
     "emptyTitle": "Sin sets públicos",
-    "emptyDesc": "Ningún set coincide con tu búsqueda. Prueba con otras palabras clave."
+    "emptyDesc": "Ningún set coincide con tu búsqueda. Prueba con otras palabras clave.",
+    "clearTags": "Borrar"
   },
   "reviewReminder": {
     "title": "¡Hora de repasar!",

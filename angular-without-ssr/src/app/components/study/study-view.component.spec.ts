@@ -58,8 +58,8 @@ describe('StudyViewComponent', () => {
   ];
 
   const mockSets: FlashcardSetDTO[] = [
-    { id: 10, user_id: 'user-1', name: 'English B2', description: null, created_at: '', updated_at: '' },
-    { id: 20, user_id: 'user-1', name: 'German A1', description: null, created_at: '', updated_at: '' }
+    { id: 10, user_id: 'user-1', name: 'English B2', description: null, tags: [], is_public: false, copy_count: 0, published_at: null, created_at: '', updated_at: '' },
+    { id: 20, user_id: 'user-1', name: 'German A1', description: null, tags: [], is_public: false, copy_count: 0, published_at: null, created_at: '', updated_at: '' }
   ];
 
   const mockSm2Result: Sm2Result = {

@@ -70,6 +70,7 @@ export class FlashcardSetApiService {
             .insert({
               name: data.name,
               description: data.description ?? null,
+              tags: data.tags ?? [],
               user_id: userId,
               created_at: new Date().toISOString(),
               updated_at: new Date().toISOString()
@@ -144,7 +145,7 @@ export class FlashcardSetApiService {
               flashcards: { count: number }[];
             }
             return (response.data as SetWithCount[]).map((row: SetWithCount) => ({
-              set: { id: row.id, name: row.name, description: row.description, user_id: row.user_id, created_at: row.created_at, updated_at: row.updated_at } as FlashcardSetDTO,
+              set: { id: row.id, name: row.name, description: row.description, tags: row.tags ?? [], user_id: row.user_id, created_at: row.created_at, updated_at: row.updated_at } as FlashcardSetDTO,
               cardCount: row.flashcards?.[0]?.count ?? 0
             }));
           })

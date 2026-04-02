@@ -18,6 +18,8 @@ interface ExploreState {
   page: number;
   pageSize: number;
   total: number;
+  selectedTags: string[];
+  popularTags: string[];
 }
 
 @Component({
@@ -40,7 +42,9 @@ export class ExploreComponent implements OnInit {
     sort: 'popular',
     page: 1,
     pageSize: 12,
-    total: 0
+    total: 0,
+    selectedTags: [],
+    popularTags: []
   });
 
   private searchSubject = new Subject<string>();
@@ -53,14 +57,24 @@ export class ExploreComponent implements OnInit {
       this.state.update(s => ({ ...s, search, page: 1 }));
       this.loadSets();
     });
+    this.loadPopularTags();
     this.loadSets();
   }
 
+  loadPopularTags(): void {
+    this.exploreService.getPopularTags().subscribe({
+      next: (tags: string[]) => {
+        this.state.update(s => ({ ...s, popularTags: tags }));
+      },
+      error: () => { /* silently ignore */ }
+    });
+  }
+
   loadSets(): void {
-    const { search, sort, page, pageSize } = this.state();
+    const { search, sort, page, pageSize, selectedTags } = this.state();
     this.state.update(s => ({ ...s, loading: true, error: null }));
 
-    this.exploreService.browse(search, sort, page, pageSize).subscribe({
+    this.exploreService.browse(search, sort, page, pageSize, selectedTags).subscribe({
       next: (response) => {
         this.state.update(s => ({
           ...s,
@@ -77,6 +91,21 @@ export class ExploreComponent implements OnInit {
 
   onSearchInput(value: string): void {
     this.searchSubject.next(value);
+  }
+
+  toggleTag(tag: string): void {
+    this.state.update(s => {
+      const selected: string[] = s.selectedTags.includes(tag)
+        ? s.selectedTags.filter((t: string) => t !== tag)
+        : [...s.selectedTags, tag];
+      return { ...s, selectedTags: selected, page: 1 };
+    });
+    this.loadSets();
+  }
+
+  clearTags(): void {
+    this.state.update(s => ({ ...s, selectedTags: [], page: 1 }));
+    this.loadSets();
   }
 
   onSortChange(sort: string): void {

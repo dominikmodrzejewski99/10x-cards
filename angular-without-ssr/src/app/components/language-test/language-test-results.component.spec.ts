@@ -59,6 +59,10 @@ describe('LanguageTestResultsComponent', () => {
     user_id: 'user-1',
     name: 'Błędy B2 FCE — 2026-03-24',
     description: 'Fiszki z błędnych odpowiedzi',
+    tags: [],
+    is_public: false,
+    copy_count: 0,
+    published_at: null,
     created_at: '',
     updated_at: ''
   };

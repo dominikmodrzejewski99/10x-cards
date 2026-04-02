@@ -1,0 +1,40 @@
+<div class="tag-input" [class.tag-input--disabled]="isMaxReachedSignal()">
+  <div class="tag-input__tags">
+    @for (tag of tagsSignal(); track tag; let i = $index) {
+      <span class="tag-input__chip">
+        {{ tag }}
+        <button
+          type="button"
+          class="tag-input__chip-remove"
+          [attr.aria-label]="'Remove tag ' + tag"
+          (click)="removeTag(i)">
+          <i class="pi pi-times"></i>
+        </button>
+      </span>
+    }
+    @if (!isMaxReachedSignal()) {
+      <input
+        type="text"
+        class="tag-input__field"
+        [placeholder]="tagsSignal().length === 0 ? placeholderSignal() : ''"
+        [ngModel]="inputValueSignal()"
+        (ngModelChange)="onInputChange($event)"
+        (keydown)="onKeydown($event)"
+        (blur)="onBlur()"
+        maxlength="30" />
+    }
+  </div>
+
+  @if (showSuggestionsSignal() && filteredSuggestionsSignal().length > 0) {
+    <ul class="tag-input__suggestions" role="listbox">
+      @for (suggestion of filteredSuggestionsSignal(); track suggestion) {
+        <li
+          class="tag-input__suggestion"
+          role="option"
+          (mousedown)="selectSuggestion(suggestion)">
+          {{ suggestion }}
+        </li>
+      }
+    </ul>
+  }
+</div>

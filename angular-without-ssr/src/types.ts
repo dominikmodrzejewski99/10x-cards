@@ -88,6 +88,7 @@ export interface FlashcardSetDTO {
   user_id: string;
   name: string;
   description: string | null;
+  tags: string[];
   is_public: boolean;
   copy_count: number;
   published_at: string | null;
@@ -98,6 +99,7 @@ export interface FlashcardSetDTO {
 export interface CreateFlashcardSetCommand {
   name: string;
   description?: string | null;
+  tags?: string[];
 }
 
 export type UpdateFlashcardSetCommand = Partial<CreateFlashcardSetCommand>;
@@ -118,6 +120,7 @@ export interface PublicSetDTO {
   id: number;
   name: string;
   description: string | null;
+  tags: string[];
   card_count: number;
   author_email_masked: string;
   copy_count: number;

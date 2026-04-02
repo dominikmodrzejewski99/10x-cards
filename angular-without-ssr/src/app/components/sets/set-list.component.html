@@ -83,6 +83,13 @@
           @if (set.description) {
             <p class="set-card__desc">{{ set.description }}</p>
           }
+          @if (set.tags && set.tags.length > 0) {
+            <div class="set-card__tags">
+              @for (tag of set.tags; track tag) {
+                <span class="set-card__tag">{{ tag }}</span>
+              }
+            </div>
+          }
           <div class="set-card__footer">
             <span class="set-card__date">
               <i class="pi pi-calendar"></i> {{ formatDate(set.created_at) }}
@@ -136,6 +143,15 @@
           [placeholder]="t('descPlaceholder')"
           maxlength="500"
           rows="3"></textarea>
+      </div>
+      <div class="set-form__field">
+        <label class="set-form__label">{{ t('tagsLabel') }}</label>
+        <app-tag-input
+          [tags]="state().formTags"
+          (tagsChange)="onFormTagsChange($event)"
+          [placeholder]="t('tagsPlaceholder')"
+          [maxTags]="10">
+        </app-tag-input>
       </div>
       <div class="set-form__actions">
         <button
