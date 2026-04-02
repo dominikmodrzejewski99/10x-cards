@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, of, throwError, Subject } from 'rxjs';
@@ -10,6 +10,7 @@ import { FlashcardSetApiService } from '../../services/flashcard-set-api.service
 import { ShareService } from '../../services/share.service';
 import { FlashcardDTO, FlashcardSetDTO } from '../../../types';
 import { FlashcardFormData } from './flashcard-form/flashcard-form.component';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 describe('FlashcardListComponent', () => {
   let component: FlashcardListComponent;
@@ -90,7 +91,7 @@ describe('FlashcardListComponent', () => {
     flashcardSetApiMock.getSet.and.returnValue(of(mockSet));
 
     await TestBed.configureTestingModule({
-      imports: [FlashcardListComponent],
+      imports: [FlashcardListComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: FlashcardApiService, useValue: flashcardApiMock },

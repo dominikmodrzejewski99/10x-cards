@@ -571,7 +571,20 @@
     "skip": "Skip",
     "back": "Back",
     "next": "Next",
-    "start": "Start learning"
+    "start": "Start learning",
+    "tour.welcome.title": "Welcome to <span class=\"tour__brand\">Memlo</span>!",
+    "tour.welcome.desc": "Let us guide you through the main features.<br>Ready? Let's go!",
+    "tour.createSet.title": "Create your first set",
+    "tour.createSet.desc": "This is where your flashcard sets live.<br>Click <span class=\"tour__highlight\">New set</span> and group your material by topic.",
+    "tour.generate.title": "Generate with AI",
+    "tour.generate.desc": "Paste any text and AI will generate flashcards for you.<br>Quick and effortless!",
+    "tour.learn.title": "Learn effectively",
+    "tour.learn.desc": "Study with <span class=\"tour__highlight\">spaced repetition</span>, quizzes, and language tests — all in one place.",
+    "tour.friends.title": "Learn with friends",
+    "tour.friends.desc": "Add friends, share sets, and track your progress against others.",
+    "tour.finish.title": "You're all set!",
+    "tour.finish.desc": "Start by creating your first flashcard set or generate them with AI.<br>Good luck!",
+    "tour.keyboardHint": "Navigate with ← → arrows · Esc to close"
   },
   "share": {
     "loading": "Copying set...",

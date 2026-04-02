@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentRef } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { QuizResultsComponent } from './quiz-results.component';
 import { QuizResult, QuizAnswer } from '../../../../types';
 
@@ -34,7 +35,7 @@ describe('QuizResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QuizResultsComponent],
+      imports: [QuizResultsComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       providers: [provideRouter([])],
     }).compileComponents();
 

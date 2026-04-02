@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
+import { TranslocoTestingModule } from '@jsverse/transloco';
+
 import { LanguageTestListComponent } from './language-test-list.component';
 import { LanguageTestBankService } from '../../services/language-test-bank.service';
 import { TestLevel } from '../../../types';
@@ -22,7 +24,10 @@ describe('LanguageTestListComponent', () => {
     bankServiceMock.getAvailableLevels.and.returnValue(mockLevels);
 
     await TestBed.configureTestingModule({
-      imports: [LanguageTestListComponent],
+      imports: [
+        LanguageTestListComponent,
+        TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })
+      ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         provideRouter([]),

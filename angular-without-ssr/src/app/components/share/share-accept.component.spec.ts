@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { TranslocoTestingModule } from '@jsverse/transloco';
+
 import { ShareAcceptComponent } from './share-accept.component';
 import { ShareService } from '../../services/share.service';
 
@@ -23,7 +25,10 @@ describe('ShareAcceptComponent', () => {
     routerMock = jasmine.createSpyObj<Router>('Router', ['navigate']);
 
     TestBed.configureTestingModule({
-      imports: [ShareAcceptComponent],
+      imports: [
+        ShareAcceptComponent,
+        TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })
+      ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: paramMapGetSpy } } } },

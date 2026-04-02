@@ -571,7 +571,20 @@
     "skip": "Überspringen",
     "back": "Zurück",
     "next": "Weiter",
-    "start": "Lernen starten"
+    "start": "Lernen starten",
+    "tour.welcome.title": "Willkommen bei <span class=\"tour__brand\">Memlo</span>!",
+    "tour.welcome.desc": "Wir führen dich durch die wichtigsten Funktionen.<br>Bereit? Los geht's!",
+    "tour.createSet.title": "Erstelle dein erstes Set",
+    "tour.createSet.desc": "Hier leben deine Karteikarten-Sets.<br>Klicke auf <span class=\"tour__highlight\">Neues Set</span> und gruppiere dein Material nach Themen.",
+    "tour.generate.title": "Mit KI generieren",
+    "tour.generate.desc": "Füge beliebigen Text ein und die KI erstellt Karteikarten für dich.<br>Schnell und mühelos!",
+    "tour.learn.title": "Effektiv lernen",
+    "tour.learn.desc": "Lerne mit <span class=\"tour__highlight\">Spaced Repetition</span>, Quiz und Sprachtests — alles an einem Ort.",
+    "tour.friends.title": "Mit Freunden lernen",
+    "tour.friends.desc": "Füge Freunde hinzu, teile Sets und vergleiche deinen Fortschritt.",
+    "tour.finish.title": "Alles bereit!",
+    "tour.finish.desc": "Erstelle dein erstes Karteikarten-Set oder generiere sie mit KI.<br>Viel Erfolg!",
+    "tour.keyboardHint": "Navigiere mit ← → Pfeilen · Esc zum Schließen"
   },
   "share": {
     "loading": "Set wird kopiert...",

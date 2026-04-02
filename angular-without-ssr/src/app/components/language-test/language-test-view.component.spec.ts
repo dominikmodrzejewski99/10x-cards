@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { LanguageTestViewComponent } from './language-test-view.component';
 import { LanguageTestBankService } from '../../services/language-test-bank.service';
@@ -106,7 +107,7 @@ describe('LanguageTestViewComponent', () => {
     resultsServiceMock.saveResult.and.returnValue(of(mockSavedResult));
 
     await TestBed.configureTestingModule({
-      imports: [LanguageTestViewComponent],
+      imports: [LanguageTestViewComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: LanguageTestBankService, useValue: bankServiceMock },

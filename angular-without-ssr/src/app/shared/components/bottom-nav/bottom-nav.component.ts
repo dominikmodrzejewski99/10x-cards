@@ -24,17 +24,17 @@ import { PomodoroService } from '../../../services/pomodoro.service';
             <i class="pi pi-home bottom-nav__icon"></i>
             <span class="bottom-nav__label">{{ t('dashboard') }}</span>
           </a>
-          <a routerLink="/generate" routerLinkActive="bottom-nav__item--active" class="bottom-nav__item">
+          <a routerLink="/generate" routerLinkActive="bottom-nav__item--active" class="bottom-nav__item" data-tour-mobile="generate">
             <i class="pi pi-microchip-ai bottom-nav__icon"></i>
             <span class="bottom-nav__label">{{ t('generate') }}</span>
           </a>
-          <a routerLink="/study" routerLinkActive="bottom-nav__item--active" class="bottom-nav__item bottom-nav__item--study">
+          <a routerLink="/study" routerLinkActive="bottom-nav__item--active" class="bottom-nav__item bottom-nav__item--study" data-tour-mobile="study">
             <span class="bottom-nav__study-ring">
               <i class="pi pi-book bottom-nav__icon"></i>
             </span>
             <span class="bottom-nav__label">{{ t('study') }}</span>
           </a>
-          <a routerLink="/sets" routerLinkActive="bottom-nav__item--active" class="bottom-nav__item">
+          <a routerLink="/sets" routerLinkActive="bottom-nav__item--active" class="bottom-nav__item" data-tour-mobile="sets">
             <i class="pi pi-folder bottom-nav__icon"></i>
             <span class="bottom-nav__label">{{ t('sets') }}</span>
           </a>

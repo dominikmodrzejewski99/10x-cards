@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentRef } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { QuizQuestionComponent } from './quiz-question.component';
 import { FlashcardDTO, QuizAnswer, QuizQuestion } from '../../../../types';
 
@@ -56,7 +57,7 @@ describe('QuizQuestionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QuizQuestionComponent]
+      imports: [QuizQuestionComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })]
     }).compileComponents();
 
     fixture = TestBed.createComponent(QuizQuestionComponent);

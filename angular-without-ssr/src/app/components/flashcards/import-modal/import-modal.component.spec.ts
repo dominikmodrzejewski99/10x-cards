@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { ImportModalComponent } from './import-modal.component';
 import { TextParserService, ParseResult } from '../../../services/text-parser.service';
@@ -23,7 +24,7 @@ describe('ImportModalComponent', () => {
     textParserSpy.parseKeyValue.and.returnValue(mockParseResult);
 
     await TestBed.configureTestingModule({
-      imports: [ImportModalComponent],
+      imports: [ImportModalComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       providers: [
         { provide: TextParserService, useValue: textParserSpy }
       ],

@@ -6,6 +6,7 @@ import { provideRouter } from '@angular/router';
 import { LanguageTestWidgetComponent } from './language-test-widget.component';
 import { LanguageTestResultsService } from '../../services/language-test-results.service';
 import { LanguageTestResultDTO } from '../../../types';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 describe('LanguageTestWidgetComponent', () => {
   let component: LanguageTestWidgetComponent;
@@ -32,7 +33,7 @@ describe('LanguageTestWidgetComponent', () => {
     resultsServiceMock.getLatestResult.and.returnValue(of(mockResult));
 
     await TestBed.configureTestingModule({
-      imports: [LanguageTestWidgetComponent],
+      imports: [LanguageTestWidgetComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         provideRouter([]),

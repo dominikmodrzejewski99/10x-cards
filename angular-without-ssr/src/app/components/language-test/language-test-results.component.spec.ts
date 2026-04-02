@@ -8,6 +8,7 @@ import { LanguageTestResultsService } from '../../services/language-test-results
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { FlashcardApiService } from '../../services/flashcard-api.service';
 import { LanguageTestResultDTO, FlashcardSetDTO, FlashcardDTO } from '../../../types';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 describe('LanguageTestResultsComponent', () => {
   let component: LanguageTestResultsComponent;
@@ -102,7 +103,7 @@ describe('LanguageTestResultsComponent', () => {
     flashcardApiMock.createFlashcards.and.returnValue(of(mockFlashcards));
 
     await TestBed.configureTestingModule({
-      imports: [LanguageTestResultsComponent],
+      imports: [LanguageTestResultsComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: LanguageTestResultsService, useValue: resultsServiceMock },

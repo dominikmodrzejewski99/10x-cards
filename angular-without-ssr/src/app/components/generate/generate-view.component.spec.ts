@@ -14,6 +14,7 @@ import {
   FlashcardSetDTO,
   GenerationDTO
 } from '../../../types';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 describe('GenerateViewComponent', () => {
   let component: GenerateViewComponent;
@@ -88,7 +89,7 @@ describe('GenerateViewComponent', () => {
     flashcardSetApiMock.getSets.and.returnValue(of([mockSet]));
 
     await TestBed.configureTestingModule({
-      imports: [GenerateViewComponent],
+      imports: [GenerateViewComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: GenerationApiService, useValue: generationApiMock },

@@ -571,7 +571,20 @@
     "skip": "Pomiń",
     "back": "Wstecz",
     "next": "Dalej",
-    "start": "Zacznij naukę"
+    "start": "Zacznij naukę",
+    "tour.welcome.title": "Witaj w <span class=\"tour__brand\">Memlo</span>!",
+    "tour.welcome.desc": "Przeprowadzimy Cię po najważniejszych funkcjach.<br>Gotowy? Zaczynamy!",
+    "tour.createSet.title": "Stwórz pierwszy zestaw",
+    "tour.createSet.desc": "Tutaj tworzysz zestawy fiszek.<br>Kliknij <span class=\"tour__highlight\">Nowy zestaw</span> i pogrupuj materiał tematycznie.",
+    "tour.generate.title": "Generuj fiszki z AI",
+    "tour.generate.desc": "Wklej dowolny tekst, a sztuczna inteligencja wygeneruje fiszki za Ciebie.<br>Szybko i bez wysiłku!",
+    "tour.learn.title": "Ucz się efektywnie",
+    "tour.learn.desc": "Nauka z algorytmem <span class=\"tour__highlight\">spaced repetition</span>, quizy i testy językowe — wszystko w jednym miejscu.",
+    "tour.friends.title": "Ucz się ze znajomymi",
+    "tour.friends.desc": "Dodawaj znajomych, udostępniaj zestawy i sprawdzaj swoje postępy na tle innych.",
+    "tour.finish.title": "Wszystko gotowe!",
+    "tour.finish.desc": "Zacznij od utworzenia pierwszego zestawu fiszek lub wygeneruj je z pomocą AI.<br>Powodzenia!",
+    "tour.keyboardHint": "Nawiguj strzałkami ← → · Esc aby zamknąć"
   },
   "share": {
     "loading": "Kopiowanie zestawu...",

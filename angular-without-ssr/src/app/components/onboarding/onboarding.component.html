@@ -1,73 +1,70 @@
 <ng-container *transloco="let t; prefix: 'onboarding'">
-<p-dialog
-  [visible]="visible()"
-  (visibleChange)="skip()"
-  [modal]="true"
-  [closeOnEscape]="true"
-  [dismissableMask]="false"
-  [draggable]="false"
-  [resizable]="false"
-  [style]="{width: '95vw', maxWidth: '560px'}"
-  [showHeader]="false"
-  styleClass="onboarding-dialog">
+  @if (visible()) {
+    <div class="tour" (click)="$event.stopPropagation()">
+      <!-- Overlay backdrop -->
+      <div class="tour__overlay" (click)="skip()"></div>
 
-  <div class="ob">
-    <!-- Progress dots -->
-    <div class="ob__dots">
-      @for (s of steps; track $index) {
-        <span
-          class="ob__dot"
-          [class.ob__dot--active]="$index === currentStep()"
-          [class.ob__dot--done]="$index < currentStep()"
-          [style.--dot-color]="s.iconColor">
-        </span>
+      <!-- Spotlight cutout (only when targeting an element) -->
+      @if (spotlightRect()) {
+        <div class="tour__spotlight" [style.top]="spotlightStyle().top"
+             [style.left]="spotlightStyle().left"
+             [style.width]="spotlightStyle().width"
+             [style.height]="spotlightStyle().height">
+        </div>
       }
+
+      <!-- Tooltip / Card -->
+      <div class="tour__card"
+           [class.tour__card--centered]="isCentered()"
+           [style]="tooltipStyle()"
+           role="dialog"
+           aria-modal="true">
+
+        <!-- Progress bar -->
+        <div class="tour__progress">
+          <div class="tour__progress-fill" [style.width.%]="progress()"></div>
+        </div>
+
+        <!-- Step icon -->
+        <div class="tour__icon-wrap" [style.background]="currentStep().iconColor + '14'">
+          <i [class]="'pi tour__icon ' + currentStep().icon" [style.color]="currentStep().iconColor"></i>
+        </div>
+
+        <!-- Content -->
+        <h2 class="tour__title" [innerHTML]="t(currentStep().titleKey)"></h2>
+        <p class="tour__desc" [innerHTML]="t(currentStep().descriptionKey)"></p>
+
+        <!-- Step counter -->
+        <p class="tour__counter">{{ currentStepIndex() + 1 }} / {{ steps.length }}</p>
+
+        <!-- Navigation -->
+        <div class="tour__actions">
+          @if (isFirst()) {
+            <button class="tour__btn tour__btn--ghost" (click)="skip()">
+              {{ t('skip') }}
+            </button>
+          } @else {
+            <button class="tour__btn tour__btn--ghost" (click)="prev()">
+              <i class="pi pi-arrow-left"></i> {{ t('back') }}
+            </button>
+          }
+
+          @if (isLast()) {
+            <button class="tour__btn tour__btn--primary" (click)="finish()">
+              {{ t('start') }} <i class="pi pi-arrow-right"></i>
+            </button>
+          } @else {
+            <button class="tour__btn tour__btn--primary" (click)="next()">
+              {{ t('next') }} <i class="pi pi-arrow-right"></i>
+            </button>
+          }
+        </div>
+
+        <!-- Keyboard hint (desktop only) -->
+        <p class="tour__hint">
+          {{ t('tour.keyboardHint') }}
+        </p>
+      </div>
     </div>
-
-    <!-- Icon -->
-    <div class="ob__icon-wrap" [style.background]="step.iconColor + '14'">
-      <i [class]="'pi ob__icon ' + step.icon" [style.color]="step.iconColor"></i>
-    </div>
-
-    <!-- Content -->
-    <h2 class="ob__title" [innerHTML]="step.title"></h2>
-    <p class="ob__desc" [innerHTML]="step.description"></p>
-
-    <ul class="ob__details">
-      @for (detail of step.details; track $index) {
-        <li class="ob__detail">
-          <i class="pi pi-check-circle ob__detail-icon" [style.color]="step.iconColor"></i>
-          <span>{{ detail }}</span>
-        </li>
-      }
-    </ul>
-
-    <!-- Step counter -->
-    <p class="ob__counter">{{ currentStep() + 1 }} / {{ steps.length }}</p>
-
-    <!-- Actions -->
-    <div class="ob__actions">
-      @if (isFirst) {
-        <button class="ob__btn ob__btn--ghost" (click)="skip()">
-          {{ t('skip') }}
-        </button>
-      } @else {
-        <button class="ob__btn ob__btn--ghost" (click)="prev()">
-          <i class="pi pi-arrow-left"></i> {{ t('back') }}
-        </button>
-      }
-
-      @if (isLast) {
-        <button class="ob__btn ob__btn--primary" (click)="finish()">
-          {{ t('start') }} <i class="pi pi-arrow-right"></i>
-        </button>
-      } @else {
-        <button class="ob__btn ob__btn--primary" (click)="next()">
-          {{ t('next') }} <i class="pi pi-arrow-right"></i>
-        </button>
-      }
-    </div>
-  </div>
-</p-dialog>
-
+  }
 </ng-container>

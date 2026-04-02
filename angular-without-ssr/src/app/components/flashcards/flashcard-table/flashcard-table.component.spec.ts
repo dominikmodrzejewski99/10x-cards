@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {Component, NO_ERRORS_SCHEMA} from '@angular/core';
+import {TranslocoTestingModule} from '@jsverse/transloco';
 
-import { FlashcardTableComponent, TableLazyLoadEvent } from './flashcard-table.component';
-import { FlashcardDTO } from '../../../../types';
+import {FlashcardTableComponent, TableLazyLoadEvent} from './flashcard-table.component';
+import {FlashcardDTO} from '../../../../types';
 
 const MOCK_FLASHCARD: FlashcardDTO = {
   id: 1,
@@ -87,7 +87,7 @@ describe('FlashcardTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TestHostComponent],
+      imports: [TestHostComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
 
@@ -95,8 +95,7 @@ describe('FlashcardTableComponent', () => {
     host = fixture.componentInstance;
     fixture.detectChanges();
 
-    const tableDebug: FlashcardTableComponent = fixture.debugElement.children[0].componentInstance as FlashcardTableComponent;
-    component = tableDebug;
+    component = fixture.debugElement.children[0].componentInstance as FlashcardTableComponent;
   });
 
   it('should create', () => {

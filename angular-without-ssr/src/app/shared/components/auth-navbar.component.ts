@@ -49,10 +49,10 @@ import { AuthStore } from '../../auth/store';
               <a routerLink="/dashboard" routerLinkActive="navbar__link--active" class="navbar__link">
                 <i class="pi pi-home"></i> {{ t('dashboard') }}
               </a>
-              <a routerLink="/sets" routerLinkActive="navbar__link--active" class="navbar__link">
+              <a routerLink="/sets" routerLinkActive="navbar__link--active" class="navbar__link" data-tour="sets">
                 <i class="pi pi-folder"></i> {{ t('sets') }}
               </a>
-              <div class="navbar__dropdown" (mouseenter)="openLearn()" (mouseleave)="scheduleCloseLearn()">
+              <div class="navbar__dropdown" data-tour="learn" (mouseenter)="openLearn()" (mouseleave)="scheduleCloseLearn()">
                 <button class="navbar__link navbar__link--trigger"
                         [class.navbar__link--active]="isLearnRouteActive()"
                         (click)="toggleLearn()">
@@ -77,10 +77,10 @@ import { AuthStore } from '../../auth/store';
                   </div>
                 }
               </div>
-              <a routerLink="/generate" routerLinkActive="navbar__link--active" class="navbar__link">
+              <a routerLink="/generate" routerLinkActive="navbar__link--active" class="navbar__link" data-tour="generate">
                 <i class="pi pi-microchip-ai"></i> {{ t('generate') }}
               </a>
-              <a routerLink="/friends" routerLinkActive="navbar__link--active" class="navbar__link">
+              <a routerLink="/friends" routerLinkActive="navbar__link--active" class="navbar__link" data-tour="friends">
                 <i class="pi pi-users"></i> {{ t('friends') }}
               </a>
             }

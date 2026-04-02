@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AudioRecorderComponent } from './audio-recorder.component';
 import { Component } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 @Component({
   template: '<app-audio-recorder (audioRecorded)="onRecorded($event)" />',
@@ -18,7 +19,10 @@ describe('AudioRecorderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TestHostComponent]
+      imports: [
+        TestHostComponent,
+        TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestHostComponent);
@@ -32,7 +36,7 @@ describe('AudioRecorderComponent', () => {
 
   it('should show record button in idle state', () => {
     const btn: HTMLElement = fixture.nativeElement.querySelector('.audio-recorder__btn');
-    expect(btn.textContent?.trim()).toContain('Nagraj');
+    expect(btn.textContent?.trim()).toContain('audioRecorder.record');
   });
 
   it('should not show recording UI in idle state', () => {

@@ -3,6 +3,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 
+import { TranslocoTestingModule } from '@jsverse/transloco';
+
 import { QuizListComponent } from './quiz-list.component';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { FlashcardSetDTO } from '../../../types';
@@ -44,7 +46,10 @@ describe('QuizListComponent', () => {
     flashcardSetApiMock.getSetsWithCardCount.and.returnValue(of(mockSetsWithCount));
 
     await TestBed.configureTestingModule({
-      imports: [QuizListComponent],
+      imports: [
+        QuizListComponent,
+        TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })
+      ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: FlashcardSetApiService, useValue: flashcardSetApiMock },

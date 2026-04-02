@@ -15,6 +15,7 @@ import {
   QuizAnswer,
   QuizResult
 } from '../../../types';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 describe('QuizViewComponent', () => {
   let component: QuizViewComponent;
@@ -95,7 +96,7 @@ describe('QuizViewComponent', () => {
     quizServiceMock.getWrongAnswers.and.returnValue(mockResult.answers.filter((a: QuizAnswer) => !a.isCorrect));
 
     await TestBed.configureTestingModule({
-      imports: [QuizViewComponent],
+      imports: [QuizViewComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: FlashcardApiService, useValue: flashcardApiServiceMock },

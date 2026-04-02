@@ -23,7 +23,7 @@ export interface ReorderEvent {
   imports: [
     FormsModule,
     NgxSkeletonLoaderModule
-  , TranslocoDirective],
+    , TranslocoDirective],
   templateUrl: './flashcard-table.component.html',
   styleUrls: ['./flashcard-table.component.scss']
 })

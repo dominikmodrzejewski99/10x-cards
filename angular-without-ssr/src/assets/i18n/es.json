@@ -571,7 +571,20 @@
     "skip": "Saltar",
     "back": "Atrás",
     "next": "Siguiente",
-    "start": "Empezar a estudiar"
+    "start": "Empezar a estudiar",
+    "tour.welcome.title": "¡Bienvenido a <span class=\"tour__brand\">Memlo</span>!",
+    "tour.welcome.desc": "Te guiaremos por las funciones principales.<br>¿Listo? ¡Empecemos!",
+    "tour.createSet.title": "Crea tu primer conjunto",
+    "tour.createSet.desc": "Aquí viven tus conjuntos de tarjetas.<br>Haz clic en <span class=\"tour__highlight\">Nuevo conjunto</span> y organiza por tema.",
+    "tour.generate.title": "Genera con IA",
+    "tour.generate.desc": "Pega cualquier texto y la IA generará tarjetas por ti.<br>¡Rápido y sin esfuerzo!",
+    "tour.learn.title": "Aprende eficazmente",
+    "tour.learn.desc": "Estudia con <span class=\"tour__highlight\">repetición espaciada</span>, cuestionarios y tests de idiomas — todo en un solo lugar.",
+    "tour.friends.title": "Aprende con amigos",
+    "tour.friends.desc": "Añade amigos, comparte conjuntos y compara tu progreso.",
+    "tour.finish.title": "¡Todo listo!",
+    "tour.finish.desc": "Empieza creando tu primer conjunto de tarjetas o genéralas con IA.<br>¡Buena suerte!",
+    "tour.keyboardHint": "Navega con flechas ← → · Esc para cerrar"
   },
   "share": {
     "loading": "Copiando set...",

@@ -2,12 +2,12 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { of, throwError } from 'rxjs';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
-import { FlashcardFormComponent, FlashcardFormData } from './flashcard-form.component';
+import { FlashcardFormComponent } from './flashcard-form.component';
 import { ImageUploadService } from '../../../services/image-upload.service';
 import { OpenRouterService } from '../../../services/openrouter.service';
 import { AudioUploadService } from '../../../services/audio-upload.service';
-import { FlashcardDTO } from '../../../../types';
 
 describe('FlashcardFormComponent', () => {
   let component: FlashcardFormComponent;
@@ -16,23 +16,6 @@ describe('FlashcardFormComponent', () => {
   let imageUploadMock: jasmine.SpyObj<ImageUploadService>;
   let openRouterMock: jasmine.SpyObj<OpenRouterService>;
   let audioUploadMock: jasmine.SpyObj<AudioUploadService>;
-
-  const mockFlashcard: FlashcardDTO = {
-    id: 1,
-    front: 'Hello',
-    back: 'Cześć',
-    front_image_url: 'https://example.com/image.png',
-    back_audio_url: 'https://example.com/audio.webm',
-    front_language: 'en',
-    back_language: 'pl',
-    source: 'manual',
-    created_at: '2026-01-01T00:00:00Z',
-    updated_at: '2026-01-01T00:00:00Z',
-    user_id: 'user-1',
-    generation_id: null,
-    set_id: 5,
-    position: 0
-  };
 
   beforeEach(async () => {
     imageUploadMock = jasmine.createSpyObj<ImageUploadService>(
@@ -52,7 +35,7 @@ describe('FlashcardFormComponent', () => {
     audioUploadMock.validateFile.and.returnValue(null);
 
     await TestBed.configureTestingModule({
-      imports: [FlashcardFormComponent, ReactiveFormsModule],
+      imports: [FlashcardFormComponent, ReactiveFormsModule, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: ImageUploadService, useValue: imageUploadMock },

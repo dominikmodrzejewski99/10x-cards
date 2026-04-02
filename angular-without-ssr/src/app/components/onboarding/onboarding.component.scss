@@ -1,222 +1,223 @@
 @use 'variables' as *;
 
-.ob {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.tour {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+}
+
+// ── Overlay ──
+.tour__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  animation: tourFadeIn 0.3s ease;
+}
+
+// ── Spotlight ──
+.tour__spotlight {
+  position: fixed;
+  border-radius: $radius-lg;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
+  z-index: 10001;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: inherit;
+    border: 2px solid rgba(66, 85, 255, 0.5);
+    animation: tourPulse 2s ease-in-out infinite;
+  }
+}
+
+// ── Card / Tooltip ──
+.tour__card {
+  position: fixed;
+  z-index: 10002;
+  background: $color-white;
+  border-radius: $radius-xl;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(66, 85, 255, 0.08);
+  padding: 1.5rem;
+  width: 90vw;
+  max-width: 380px;
   text-align: center;
-  padding: 1.5rem 0.5rem 0.5rem;
+  transition: top 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              left 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s ease;
+  animation: tourFadeIn 0.3s ease;
+
+  &--centered {
+    max-width: 440px;
+  }
 }
 
-/* Progress dots */
-.ob__dots {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1.75rem;
-}
-
-.ob__dot {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
+// ── Progress bar ──
+.tour__progress {
+  height: 3px;
   background: $color-border;
-  transition: all 0.25s ease;
+  border-radius: $radius-pill;
+  margin-bottom: 1.25rem;
+  overflow: hidden;
 }
 
-.ob__dot--active {
-  width: 1.5rem;
-  border-radius: 0.25rem;
-  background: var(--dot-color, #{$color-primary});
+.tour__progress-fill {
+  height: 100%;
+  background: $color-primary;
+  border-radius: $radius-pill;
+  transition: width 0.35s ease;
 }
 
-.ob__dot--done {
-  background: var(--dot-color, #{$color-primary});
-}
-
-/* Icon */
-.ob__icon-wrap {
-  width: 4.5rem;
-  height: 4.5rem;
-  border-radius: 50%;
+// ── Icon ──
+.tour__icon-wrap {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: $radius-full;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.25rem;
+  margin: 0 auto 1rem;
 }
 
-.ob__icon {
-  font-size: 2rem;
+.tour__icon {
+  font-size: 1.5rem;
 }
 
-/* Content */
-.ob__title {
-  font-size: 1.35rem;
-  font-weight: 800;
+// ── Content ──
+.tour__title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-extrabold;
   color: $color-text;
   margin: 0 0 0.5rem;
+  line-height: $line-height-snug;
 }
 
-:host ::ng-deep .ob__brand {
+:host ::ng-deep .tour__brand {
   color: $color-purple;
-  font-weight: 800;
+  font-weight: $font-weight-extrabold;
 }
 
-:host ::ng-deep .ob__highlight {
+:host ::ng-deep .tour__highlight {
   color: $color-primary;
-  font-weight: 700;
+  font-weight: $font-weight-bold;
 }
 
-.ob__desc {
-  font-size: 0.95rem;
-  color: $color-text-secondary;
-  margin: 0 0 1.25rem;
-  max-width: 400px;
-  line-height: 1.5;
-}
-
-.ob__details {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1.25rem;
-  text-align: left;
-  width: 100%;
-  max-width: 420px;
-}
-
-.ob__detail {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
-  padding: 0.4rem 0;
-  font-size: 0.88rem;
-  color: $color-text;
-  line-height: 1.45;
-}
-
-.ob__detail-icon {
-  flex-shrink: 0;
-  margin-top: 0.15rem;
-  font-size: 0.85rem;
-}
-
-.ob__counter {
-  font-size: 0.75rem;
+.tour__desc {
+  font-size: $font-size-sm;
   color: $color-text-secondary;
   margin: 0 0 1rem;
-  font-weight: 600;
+  line-height: $line-height-normal;
 }
 
-/* Actions */
-.ob__actions {
+.tour__counter {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  margin: 0 0 0.75rem;
+  font-weight: $font-weight-semibold;
+}
+
+// ── Actions ──
+.tour__actions {
   display: flex;
   gap: 0.75rem;
   width: 100%;
   justify-content: space-between;
 }
 
-.ob__btn {
+.tour__btn {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.65rem 1.25rem;
-  border-radius: 0.5rem;
-  font-weight: 700;
-  font-size: 0.9rem;
+  padding: 0.6rem 1.15rem;
+  border-radius: $radius-md;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-sm;
   cursor: pointer;
   border: none;
   font-family: inherit;
-  transition: all 0.15s;
+  transition: $transition-fast;
 }
 
-.ob__btn--primary {
+.tour__btn--primary {
   background: $color-primary;
   color: #ffffff;
+
+  &:hover {
+    background: $color-primary-hover;
+  }
 }
 
-.ob__btn--primary:hover {
-  background: $color-primary-hover;
-}
-
-.ob__btn--ghost {
+.tour__btn--ghost {
   background: transparent;
   color: $color-text-secondary;
   border: 1.5px solid $color-border;
+
+  &:hover {
+    border-color: $color-primary;
+    color: $color-primary;
+  }
 }
 
-.ob__btn--ghost:hover {
-  border-color: $color-primary;
-  color: $color-primary;
+// ── Keyboard hint ──
+.tour__hint {
+  margin: 0.75rem 0 0;
+  font-size: 0.7rem;
+  color: $color-text-secondary;
+  opacity: 0.6;
 }
 
-/* Dialog override */
-:host ::ng-deep .onboarding-dialog .p-dialog-content {
-  padding: 0 1.5rem 1.5rem;
-  border-radius: 1rem;
+// ── Animations ──
+@keyframes tourFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-:host ::ng-deep .onboarding-dialog .p-dialog {
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: 0 24px 48px rgba(66, 85, 255, 0.15), 0 0 0 1px rgba(66, 85, 255, 0.08);
+
+@keyframes tourPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }
 
-@media (max-width: 480px) {
-  .ob {
-    padding: 0.75rem 0 0.25rem;
+// ── Mobile adjustments ──
+@media (max-width: $bp-navbar) {
+  .tour__card {
+    max-width: calc(100vw - 1.5rem);
   }
 
-  .ob__dots {
-    margin-bottom: 1rem;
+  .tour__hint {
+    display: none;
   }
 
-  .ob__icon-wrap {
-    width: 3rem;
-    height: 3rem;
+  .tour__icon-wrap {
+    width: 2.75rem;
+    height: 2.75rem;
     margin-bottom: 0.75rem;
   }
 
-  .ob__icon {
+  .tour__icon {
     font-size: 1.25rem;
   }
 
-  .ob__title {
-    font-size: 1.05rem;
-    margin-bottom: 0.3rem;
+  .tour__title {
+    font-size: $font-size-base;
   }
 
-  .ob__desc {
-    font-size: 0.85rem;
-    margin-bottom: 0.75rem;
+  .tour__desc {
+    font-size: $font-size-xs;
   }
 
-  .ob__details {
-    margin-bottom: 0.75rem;
-    max-height: 35vh;
-    overflow-y: auto;
-  }
-
-  .ob__detail {
-    padding: 0.25rem 0;
-    font-size: 0.8rem;
-  }
-
-  .ob__counter {
-    margin-bottom: 0.6rem;
-  }
-
-  .ob__actions {
+  .tour__actions {
     flex-direction: column;
     gap: 0.5rem;
   }
 
-  .ob__btn {
+  .tour__btn {
     width: 100%;
     justify-content: center;
     padding: 0.55rem 1rem;
-    font-size: 0.85rem;
   }
-}
-
-:host ::ng-deep .onboarding-dialog .p-dialog-content {
-  max-height: 85dvh;
 }

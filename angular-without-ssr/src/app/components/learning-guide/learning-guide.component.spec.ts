@@ -3,6 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { LearningGuideComponent } from './learning-guide.component';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 describe('LearningGuideComponent', () => {
   let component: LearningGuideComponent;
@@ -10,7 +11,7 @@ describe('LearningGuideComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LearningGuideComponent, RouterModule.forRoot([])],
+      imports: [LearningGuideComponent, RouterModule.forRoot([]), TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
 

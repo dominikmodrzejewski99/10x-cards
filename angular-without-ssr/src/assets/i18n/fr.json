@@ -571,7 +571,20 @@
     "skip": "Passer",
     "back": "Retour",
     "next": "Suivant",
-    "start": "Commencer à apprendre"
+    "start": "Commencer à apprendre",
+    "tour.welcome.title": "Bienvenue sur <span class=\"tour__brand\">Memlo</span> !",
+    "tour.welcome.desc": "Nous allons vous guider à travers les principales fonctionnalités.<br>Prêt ? C'est parti !",
+    "tour.createSet.title": "Créez votre premier ensemble",
+    "tour.createSet.desc": "C'est ici que vivent vos ensembles de cartes.<br>Cliquez sur <span class=\"tour__highlight\">Nouvel ensemble</span> et organisez par thème.",
+    "tour.generate.title": "Générez avec l'IA",
+    "tour.generate.desc": "Collez n'importe quel texte et l'IA générera des cartes pour vous.<br>Rapide et sans effort !",
+    "tour.learn.title": "Apprenez efficacement",
+    "tour.learn.desc": "Étudiez avec la <span class=\"tour__highlight\">répétition espacée</span>, des quiz et des tests de langues — tout en un seul endroit.",
+    "tour.friends.title": "Apprenez avec des amis",
+    "tour.friends.desc": "Ajoutez des amis, partagez des ensembles et suivez vos progrès.",
+    "tour.finish.title": "Tout est prêt !",
+    "tour.finish.desc": "Commencez par créer votre premier ensemble de cartes ou générez-les avec l'IA.<br>Bonne chance !",
+    "tour.keyboardHint": "Naviguez avec ← → · Échap pour fermer"
   },
   "share": {
     "loading": "Copie du set...",
