@@ -135,6 +135,48 @@
   }
 }
 
+.set-card__action--publish {
+  color: $color-success;
+
+  &:hover:not(:disabled) {
+    background: $color-success-light;
+    color: $color-success;
+  }
+}
+
+.set-card__action--unpublish {
+  color: $color-danger;
+
+  &:hover:not(:disabled) {
+    background: $color-danger-light;
+    color: $color-danger;
+  }
+}
+
+.set-card--public {
+  border-color: $color-success;
+}
+
+.set-card__public-badge {
+  background: $color-success-light;
+  color: $color-success;
+  font-size: $font-size-xs;
+  padding: 0.1rem 0.4rem;
+  border-radius: $radius-sm;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.set-card__copies {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
 .set-card__desc {
   font-size: 0.85rem;
   color: $color-text-secondary;

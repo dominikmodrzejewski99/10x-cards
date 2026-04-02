@@ -203,7 +203,24 @@
     "descPlaceholder": "Short set description...",
     "cancel": "Cancel",
     "save": "Save",
-    "create": "Create"
+    "create": "Create",
+    "publishAction": "Publish",
+    "unpublishAction": "Unpublish",
+    "publicBadge": "Public",
+    "copyCount": "copies"
+  },
+  "explore": {
+    "title": "Explore public sets",
+    "searchPlaceholder": "Search sets...",
+    "sortPopular": "Most popular",
+    "sortNewest": "Newest",
+    "sortMostCards": "Most cards",
+    "copyButton": "Copy to my sets",
+    "copies": "copies",
+    "cards": "cards",
+    "retry": "Try again",
+    "emptyTitle": "No public sets",
+    "emptyDesc": "No sets match your search. Try different keywords."
   },
   "reviewReminder": {
     "title": "Time for review!",
@@ -322,6 +339,8 @@
     "guide": "Guide",
     "generate": "Generate",
     "friends": "Friends",
+    "explore": "Explore",
+    "mySets": "My sets",
     "login": "Log in",
     "register": "Sign up",
     "mobileNav": "Mobile navigation"
@@ -717,6 +736,7 @@
     "nudgeSent": "Reminder sent!",
     "nudgeCooldown": "Reminder already sent today",
     "inactive": "Inactive for {{ days }} days",
+    "lastReview": "Last review {{ days }}d ago",
     "streak": "{{ count }} day streak",
     "requestSent": "Invitation sent!",
     "requestAccepted": "Invitation accepted",

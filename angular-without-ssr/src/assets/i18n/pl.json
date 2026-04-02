@@ -4,7 +4,7 @@
       "proof": "Algorytm SM-2 · sprawdzona nauka o pamięci",
       "title": "Przestań zapominać.",
       "titleAccent": "Zacznij pamiętać.",
-      "desc": "Algorytm SM-2 planuje Twoje powtórki — ta sama metoda, którą stosują <strong>poligloci</strong> i <strong>lekarze</strong>. Ty odwracasz karty. Reszta działa sama.",
+      "desc": "Algorytm SM-2 planuje Twoje powtórki, ta sama metoda, którą stosują <strong>poligloci</strong> i <strong>lekarze</strong>. Ty odwracasz karty. Reszta działa sama.",
       "cta": "Zacznij za darmo",
       "tryAnonymous": "Wypróbuj bez rejestracji",
       "imgAlt": "Widok sesji nauki w Memlo — fiszka z odpowiedzią i przyciski oceny"
@@ -203,7 +203,24 @@
     "descPlaceholder": "Krótki opis zestawu...",
     "cancel": "Anuluj",
     "save": "Zapisz",
-    "create": "Utwórz"
+    "create": "Utwórz",
+    "publishAction": "Opublikuj",
+    "unpublishAction": "Ukryj",
+    "publicBadge": "Publiczny",
+    "copyCount": "kopii"
+  },
+  "explore": {
+    "title": "Przeglądaj publiczne zestawy",
+    "searchPlaceholder": "Szukaj zestawów...",
+    "sortPopular": "Najpopularniejsze",
+    "sortNewest": "Najnowsze",
+    "sortMostCards": "Najwięcej fiszek",
+    "copyButton": "Kopiuj do siebie",
+    "copies": "kopii",
+    "cards": "fiszek",
+    "retry": "Spróbuj ponownie",
+    "emptyTitle": "Brak publicznych zestawów",
+    "emptyDesc": "Żaden zestaw nie pasuje do wyszukiwania. Spróbuj innych słów kluczowych."
   },
   "reviewReminder": {
     "title": "Czas na powtórkę!",
@@ -322,6 +339,8 @@
     "guide": "Poradnik",
     "generate": "Generuj",
     "friends": "Znajomi",
+    "explore": "Odkrywaj",
+    "mySets": "Moje zestawy",
     "login": "Zaloguj się",
     "register": "Zarejestruj się",
     "mobileNav": "Nawigacja mobilna"
@@ -717,6 +736,7 @@
     "nudgeSent": "Przypomnienie wysłane!",
     "nudgeCooldown": "Już wysłano dziś przypomnienie",
     "inactive": "Nieaktywny od {{ days }} dni",
+    "lastReview": "Powtórka {{ days }} dni temu",
     "streak": "{{ count }} dni z rzędu",
     "requestSent": "Zaproszenie wysłane!",
     "requestAccepted": "Zaproszenie zaakceptowane",

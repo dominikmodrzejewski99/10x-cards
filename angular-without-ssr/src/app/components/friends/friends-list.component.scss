@@ -144,6 +144,11 @@
   font-size: $font-size-xs;
 }
 
+.friends__stat--review {
+  color: $color-text-secondary;
+  font-size: $font-size-xs;
+}
+
 // ── Buttons ──
 .friends__card-actions {
   display: flex;

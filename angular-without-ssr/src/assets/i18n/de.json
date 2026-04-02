@@ -203,7 +203,24 @@
     "descPlaceholder": "Kurze Set-Beschreibung...",
     "cancel": "Abbrechen",
     "save": "Speichern",
-    "create": "Erstellen"
+    "create": "Erstellen",
+    "publishAction": "Veröffentlichen",
+    "unpublishAction": "Verbergen",
+    "publicBadge": "Öffentlich",
+    "copyCount": "Kopien"
+  },
+  "explore": {
+    "title": "Öffentliche Sets durchsuchen",
+    "searchPlaceholder": "Sets suchen...",
+    "sortPopular": "Beliebteste",
+    "sortNewest": "Neueste",
+    "sortMostCards": "Meiste Karten",
+    "copyButton": "Zu meinen Sets kopieren",
+    "copies": "Kopien",
+    "cards": "Karten",
+    "retry": "Erneut versuchen",
+    "emptyTitle": "Keine öffentlichen Sets",
+    "emptyDesc": "Keine Sets entsprechen Ihrer Suche. Versuchen Sie andere Schlüsselwörter."
   },
   "reviewReminder": {
     "title": "Zeit für Wiederholung!",
@@ -322,6 +339,8 @@
     "guide": "Ratgeber",
     "generate": "Generieren",
     "friends": "Freunde",
+    "explore": "Entdecken",
+    "mySets": "Meine Sets",
     "login": "Anmelden",
     "register": "Registrieren",
     "mobileNav": "Mobile Navigation"
@@ -717,6 +736,7 @@
     "nudgeSent": "Erinnerung gesendet!",
     "nudgeCooldown": "Erinnerung wurde heute bereits gesendet",
     "inactive": "Seit {{ days }} Tagen inaktiv",
+    "lastReview": "Letzte Wiederholung vor {{ days }} Tagen",
     "streak": "{{ count }} Tage in Folge",
     "requestSent": "Einladung gesendet!",
     "requestAccepted": "Einladung angenommen",

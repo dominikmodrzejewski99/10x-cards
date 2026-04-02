@@ -1,0 +1,203 @@
+@use 'variables' as *;
+@use 'buttons' as *;
+@use 'layout' as *;
+@use 'cards' as *;
+@use 'states' as *;
+@use 'forms' as *;
+
+.explore {
+  @include page-wide;
+}
+
+.explore__header {
+  margin-bottom: 1.5rem;
+}
+
+.explore__title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-extrabold;
+  color: $color-text;
+  margin: 0;
+}
+
+.explore__toolbar {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.explore__search {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+
+.explore__search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $color-text-secondary;
+  font-size: 0.85rem;
+}
+
+.explore__search-input {
+  @include form-input;
+  padding-left: 2.25rem;
+  width: 100%;
+}
+
+.explore__sort {
+  @include form-input;
+  width: auto;
+  cursor: pointer;
+}
+
+.explore__btn {
+  @include btn-base;
+  @include btn-md;
+}
+
+.explore__btn--outline {
+  @include btn-ghost;
+  @include btn-md;
+}
+
+.explore__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  border: 2px dashed $color-border;
+  border-radius: $radius-2xl;
+  background: linear-gradient(135deg, $color-bg 0%, $color-white 100%);
+}
+
+.explore__empty-icon-wrap {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: $radius-full;
+  background: $color-primary-light;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  color: $color-primary;
+  margin-bottom: 1rem;
+}
+
+.explore__empty-title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-extrabold;
+  color: $color-text;
+  margin: 0 0 0.5rem;
+}
+
+.explore__empty-desc {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin: 0;
+  max-width: 320px;
+  line-height: $line-height-normal;
+}
+
+.explore__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.explore-card {
+  @include card;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.explore-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.explore-card__name {
+  font-size: 1.05rem;
+  font-weight: $font-weight-bold;
+  color: $color-text;
+  margin: 0;
+  line-height: $line-height-snug;
+}
+
+.explore-card__badge {
+  background: $color-primary-light;
+  color: $color-primary;
+  font-size: $font-size-xs;
+  padding: 0.2rem 0.5rem;
+  border-radius: $radius-sm;
+  white-space: nowrap;
+  font-weight: $font-weight-semibold;
+}
+
+.explore-card__desc {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin: 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.explore-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid $color-border-light;
+}
+
+.explore-card__meta {
+  display: flex;
+  gap: 0.5rem;
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+}
+
+.explore-card__copy {
+  @include btn-icon(1.75rem);
+
+  &:hover:not(:disabled) {
+    background: $color-primary;
+    color: $color-white;
+  }
+}
+
+.explore__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.explore__page-btn {
+  @include btn-icon(2rem);
+}
+
+.explore__page-info {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  font-weight: $font-weight-semibold;
+}
+
+@media (max-width: $bp-tablet) {
+  .explore__grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -311,12 +311,10 @@ export class PrintTestService {
 
   private getStyles(): string {
     return `
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
       body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         font-size: 11pt;
         line-height: 1.5;
         color: #1a1a2e;

@@ -203,7 +203,24 @@
     "descPlaceholder": "Descripción breve del set...",
     "cancel": "Cancelar",
     "save": "Guardar",
-    "create": "Crear"
+    "create": "Crear",
+    "publishAction": "Publicar",
+    "unpublishAction": "Ocultar",
+    "publicBadge": "Público",
+    "copyCount": "copias"
+  },
+  "explore": {
+    "title": "Explorar sets públicos",
+    "searchPlaceholder": "Buscar sets...",
+    "sortPopular": "Más populares",
+    "sortNewest": "Más recientes",
+    "sortMostCards": "Más tarjetas",
+    "copyButton": "Copiar a mis sets",
+    "copies": "copias",
+    "cards": "tarjetas",
+    "retry": "Reintentar",
+    "emptyTitle": "Sin sets públicos",
+    "emptyDesc": "Ningún set coincide con tu búsqueda. Prueba con otras palabras clave."
   },
   "reviewReminder": {
     "title": "¡Hora de repasar!",
@@ -322,6 +339,8 @@
     "guide": "Guía",
     "generate": "Generar",
     "friends": "Amigos",
+    "explore": "Explorar",
+    "mySets": "Mis sets",
     "login": "Iniciar sesión",
     "register": "Registrarse",
     "mobileNav": "Navegación móvil"
@@ -717,6 +736,7 @@
     "nudgeSent": "¡Recordatorio enviado!",
     "nudgeCooldown": "Ya se envió un recordatorio hoy",
     "inactive": "Inactivo desde hace {{ days }} días",
+    "lastReview": "Última revisión hace {{ days }} días",
     "streak": "{{ count }} días seguidos",
     "requestSent": "¡Invitación enviada!",
     "requestAccepted": "Invitación aceptada",

@@ -203,7 +203,24 @@
     "descPlaceholder": "Короткий опис набору...",
     "cancel": "Скасувати",
     "save": "Зберегти",
-    "create": "Створити"
+    "create": "Створити",
+    "publishAction": "Опублікувати",
+    "unpublishAction": "Сховати",
+    "publicBadge": "Публічний",
+    "copyCount": "копій"
+  },
+  "explore": {
+    "title": "Публічні набори",
+    "searchPlaceholder": "Шукати набори...",
+    "sortPopular": "Найпопулярніші",
+    "sortNewest": "Найновіші",
+    "sortMostCards": "Найбільше карток",
+    "copyButton": "Копіювати до себе",
+    "copies": "копій",
+    "cards": "карток",
+    "retry": "Спробувати знову",
+    "emptyTitle": "Немає публічних наборів",
+    "emptyDesc": "Жоден набір не відповідає пошуку. Спробуйте інші ключові слова."
   },
   "reviewReminder": {
     "title": "Час на повторення!",
@@ -322,6 +339,8 @@
     "guide": "Посібник",
     "generate": "Генерувати",
     "friends": "Друзі",
+    "explore": "Огляд",
+    "mySets": "Мої набори",
     "login": "Увійти",
     "register": "Зареєструватися",
     "mobileNav": "Мобільна навігація"
@@ -717,6 +736,7 @@
     "nudgeSent": "Нагадування надіслано!",
     "nudgeCooldown": "Нагадування вже надіслано сьогодні",
     "inactive": "Неактивний {{ days }} днів",
+    "lastReview": "Повторення {{ days }} днів тому",
     "streak": "{{ count }} днів поспіль",
     "requestSent": "Запрошення надіслано!",
     "requestAccepted": "Запрошення прийнято",
