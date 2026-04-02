@@ -8,6 +8,7 @@ import { PomodoroService } from '../../../services/pomodoro.service';
   selector: 'app-bottom-nav',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterModule, TranslocoDirective],
+  host: { style: 'display: contents' },
   template: `
     <ng-container *transloco="let t; prefix: 'nav'">
       @if (authCheckedSignal() && isAuthenticatedSignal()) {
