@@ -128,6 +128,9 @@ import { AuthStore } from '../../auth/store';
             <a routerLink="/friends" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
               <i class="pi pi-users"></i> {{ t('friends') }}
             </a>
+            <a routerLink="/feedback" routerLinkActive="navbar__link--active" class="navbar__link navbar__link--feedback" (click)="closeMobile()">
+              <i class="pi pi-comment"></i> {{ t('feedback') }}
+            </a>
           </div>
         }
       </nav>

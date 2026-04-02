@@ -396,3 +396,22 @@ export interface NotificationDTO {
   read: boolean;
   created_at: string;
 }
+
+// ============ Feedback ============
+
+export type FeedbackType = 'bug' | 'idea';
+
+export interface CreateFeedbackCommand {
+  type: FeedbackType;
+  title: string;
+  description: string;
+}
+
+export interface FeedbackDTO {
+  id: number;
+  user_id: string;
+  type: FeedbackType;
+  title: string;
+  description: string;
+  created_at: string;
+}

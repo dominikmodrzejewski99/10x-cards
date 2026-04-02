@@ -1,6 +1,10 @@
 <ng-container *transloco="let t; prefix: 'auth.userMenu'">
   <div class="user-menu-container">
     @if (isAuthenticatedSignal() && userSignal()?.is_anonymous) {
+      <a routerLink="/feedback" class="feedback-btn">
+        <i class="pi pi-comment"></i>
+        {{ t('feedback') }}
+      </a>
       <button class="logout-btn" (click)="onLogout()">
         <i class="pi pi-sign-out"></i>
         {{ t('endSession') }}
@@ -29,6 +33,10 @@
               <a routerLink="/settings" class="dropdown-item" (click)="closeMenu()">
                 <i class="pi pi-cog"></i>
                 {{ t('settings') }}
+              </a>
+              <a routerLink="/feedback" class="dropdown-item" (click)="closeMenu()">
+                <i class="pi pi-comment"></i>
+                {{ t('feedback') }}
               </a>
             </div>
             <div class="dropdown-footer">

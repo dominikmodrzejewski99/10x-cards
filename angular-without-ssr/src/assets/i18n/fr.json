@@ -326,7 +326,8 @@
       "deleteAccountDialogTitle": "Suppression du compte",
       "deleteAccountWarning": "Cette action est <strong>irréversible</strong>. Toutes tes cartes, sets et ton historique d'étude seront définitivement supprimés.",
       "deleteAccountPrompt": "Tape <strong>USUŃ</strong> pour confirmer :",
-      "cancel": "Annuler"
+      "cancel": "Annuler",
+      "feedback": "Signaler un problème"
     }
   },
   "nav": {
@@ -343,7 +344,8 @@
     "mySets": "Mes sets",
     "login": "Se connecter",
     "register": "S'inscrire",
-    "mobileNav": "Navigation mobile"
+    "mobileNav": "Navigation mobile",
+    "feedback": "Signaler"
   },
   "quiz": {
     "config": {
@@ -780,6 +782,28 @@
   "footer": {
     "terms": "Conditions",
     "privacy": "Confidentialité",
-    "cookies": "Cookies"
+    "cookies": "Cookies",
+    "feedback": "Signaler un problème"
+  },
+  "feedback": {
+    "title": "Signaler un bug ou une idée",
+    "subtitle": "Vos retours nous aident à améliorer l'application",
+    "typeLabel": "Type de signalement",
+    "typeBug": "Bug",
+    "typeIdea": "Idée",
+    "titleLabel": "Titre",
+    "titlePlaceholderBug": "Décrivez brièvement le problème",
+    "titlePlaceholderIdea": "Décrivez brièvement votre idée",
+    "descLabel": "Description",
+    "descPlaceholderBug": "Décrivez en détail ce qui s'est passé, les étapes pour reproduire, ce que vous attendiez...",
+    "descPlaceholderIdea": "Décrivez votre idée en détail — ce que vous aimeriez voir, comment cela pourrait fonctionner...",
+    "send": "Envoyer",
+    "sending": "Envoi en cours...",
+    "errorRequired": "Ce champ est obligatoire",
+    "errorMinTitle": "Le titre doit comporter au moins 3 caractères",
+    "errorMinDesc": "La description doit comporter au moins 10 caractères",
+    "successTitle": "Merci !",
+    "successText": "Votre signalement a été envoyé. Nous l'examinerons dès que possible.",
+    "sendAnother": "Envoyer un autre"
   }
 }

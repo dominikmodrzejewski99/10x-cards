@@ -326,7 +326,8 @@
       "deleteAccountDialogTitle": "Konto löschen",
       "deleteAccountWarning": "Diese Aktion ist <strong>unwiderruflich</strong>. Alle deine Karteikarten, Sets und dein Lernverlauf werden dauerhaft gelöscht.",
       "deleteAccountPrompt": "Gib <strong>USUŃ</strong> ein, um zu bestätigen:",
-      "cancel": "Abbrechen"
+      "cancel": "Abbrechen",
+      "feedback": "Problem melden"
     }
   },
   "nav": {
@@ -343,7 +344,8 @@
     "mySets": "Meine Sets",
     "login": "Anmelden",
     "register": "Registrieren",
-    "mobileNav": "Mobile Navigation"
+    "mobileNav": "Mobile Navigation",
+    "feedback": "Feedback"
   },
   "quiz": {
     "config": {
@@ -780,6 +782,28 @@
   "footer": {
     "terms": "AGB",
     "privacy": "Datenschutz",
-    "cookies": "Cookies"
+    "cookies": "Cookies",
+    "feedback": "Problem melden"
+  },
+  "feedback": {
+    "title": "Fehler oder Idee melden",
+    "subtitle": "Ihr Feedback hilft uns, die App zu verbessern",
+    "typeLabel": "Art der Meldung",
+    "typeBug": "Fehler",
+    "typeIdea": "Idee",
+    "titleLabel": "Titel",
+    "titlePlaceholderBug": "Beschreiben Sie das Problem kurz",
+    "titlePlaceholderIdea": "Beschreiben Sie Ihre Idee kurz",
+    "descLabel": "Beschreibung",
+    "descPlaceholderBug": "Beschreiben Sie detailliert, was passiert ist, die Schritte zur Reproduktion, was Sie erwartet haben...",
+    "descPlaceholderIdea": "Beschreiben Sie Ihre Idee im Detail — was Sie sich wünschen, wie es funktionieren könnte...",
+    "send": "Senden",
+    "sending": "Wird gesendet...",
+    "errorRequired": "Dieses Feld ist erforderlich",
+    "errorMinTitle": "Der Titel muss mindestens 3 Zeichen lang sein",
+    "errorMinDesc": "Die Beschreibung muss mindestens 10 Zeichen lang sein",
+    "successTitle": "Vielen Dank!",
+    "successText": "Ihre Meldung wurde gesendet. Wir werden sie so schnell wie möglich prüfen.",
+    "sendAnother": "Weitere senden"
   }
 }

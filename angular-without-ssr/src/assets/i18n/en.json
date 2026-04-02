@@ -326,7 +326,8 @@
       "deleteAccountDialogTitle": "Delete account",
       "deleteAccountWarning": "This action is <strong>irreversible</strong>. All your flashcards, sets, and study history will be permanently deleted.",
       "deleteAccountPrompt": "Type <strong>USUŃ</strong> to confirm:",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "feedback": "Report a problem"
     }
   },
   "nav": {
@@ -343,7 +344,8 @@
     "mySets": "My sets",
     "login": "Log in",
     "register": "Sign up",
-    "mobileNav": "Mobile navigation"
+    "mobileNav": "Mobile navigation",
+    "feedback": "Feedback"
   },
   "quiz": {
     "config": {
@@ -780,6 +782,28 @@
   "footer": {
     "terms": "Terms",
     "privacy": "Privacy",
-    "cookies": "Cookies"
+    "cookies": "Cookies",
+    "feedback": "Report a problem"
+  },
+  "feedback": {
+    "title": "Report a bug or idea",
+    "subtitle": "Your feedback helps us improve the app",
+    "typeLabel": "Report type",
+    "typeBug": "Bug",
+    "typeIdea": "Idea",
+    "titleLabel": "Title",
+    "titlePlaceholderBug": "Briefly describe the problem",
+    "titlePlaceholderIdea": "Briefly describe your idea",
+    "descLabel": "Description",
+    "descPlaceholderBug": "Describe in detail what happened, the steps to reproduce, what you expected...",
+    "descPlaceholderIdea": "Describe your idea in detail — what you'd like to see, how it could work...",
+    "send": "Send",
+    "sending": "Sending...",
+    "errorRequired": "This field is required",
+    "errorMinTitle": "Title must be at least 3 characters",
+    "errorMinDesc": "Description must be at least 10 characters",
+    "successTitle": "Thank you!",
+    "successText": "Your report has been submitted. We'll review it as soon as possible.",
+    "sendAnother": "Send another"
   }
 }

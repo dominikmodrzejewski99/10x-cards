@@ -326,7 +326,8 @@
       "deleteAccountDialogTitle": "Eliminar cuenta",
       "deleteAccountWarning": "Esta acción es <strong>irreversible</strong>. Todas tus tarjetas, sets e historial de estudio se eliminarán permanentemente.",
       "deleteAccountPrompt": "Escribe <strong>USUŃ</strong> para confirmar:",
-      "cancel": "Cancelar"
+      "cancel": "Cancelar",
+      "feedback": "Reportar un problema"
     }
   },
   "nav": {
@@ -343,7 +344,8 @@
     "mySets": "Mis sets",
     "login": "Iniciar sesión",
     "register": "Registrarse",
-    "mobileNav": "Navegación móvil"
+    "mobileNav": "Navegación móvil",
+    "feedback": "Comentarios"
   },
   "quiz": {
     "config": {
@@ -780,6 +782,28 @@
   "footer": {
     "terms": "Términos",
     "privacy": "Privacidad",
-    "cookies": "Cookies"
+    "cookies": "Cookies",
+    "feedback": "Reportar problema"
+  },
+  "feedback": {
+    "title": "Reportar un error o idea",
+    "subtitle": "Tu opinión nos ayuda a mejorar la aplicación",
+    "typeLabel": "Tipo de reporte",
+    "typeBug": "Error",
+    "typeIdea": "Idea",
+    "titleLabel": "Título",
+    "titlePlaceholderBug": "Describe brevemente el problema",
+    "titlePlaceholderIdea": "Describe brevemente tu idea",
+    "descLabel": "Descripción",
+    "descPlaceholderBug": "Describe en detalle qué pasó, los pasos para reproducirlo, qué esperabas...",
+    "descPlaceholderIdea": "Describe tu idea en detalle — qué te gustaría ver, cómo podría funcionar...",
+    "send": "Enviar",
+    "sending": "Enviando...",
+    "errorRequired": "Este campo es obligatorio",
+    "errorMinTitle": "El título debe tener al menos 3 caracteres",
+    "errorMinDesc": "La descripción debe tener al menos 10 caracteres",
+    "successTitle": "¡Gracias!",
+    "successText": "Tu reporte ha sido enviado. Lo revisaremos lo antes posible.",
+    "sendAnother": "Enviar otro"
   }
 }

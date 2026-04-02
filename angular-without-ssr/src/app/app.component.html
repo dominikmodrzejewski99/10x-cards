@@ -24,6 +24,10 @@
     <a routerLink="/privacy" class="app__footer-link">{{ 'footer.privacy' | transloco }}</a>
     <span class="app__footer-sep">·</span>
     <button class="app__footer-link app__footer-btn" (click)="openCookieSettings()">{{ 'footer.cookies' | transloco }}</button>
+    @if (isAuthenticatedSignal()) {
+      <span class="app__footer-sep">·</span>
+      <a routerLink="/feedback" class="app__footer-link">{{ 'footer.feedback' | transloco }}</a>
+    }
   </footer>
 
   <app-bottom-nav></app-bottom-nav>

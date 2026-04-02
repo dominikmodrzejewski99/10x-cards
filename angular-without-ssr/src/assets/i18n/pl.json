@@ -326,7 +326,8 @@
       "deleteAccountDialogTitle": "Usuwanie konta",
       "deleteAccountWarning": "Ta operacja jest <strong>nieodwracalna</strong>. Wszystkie Twoje fiszki, zestawy i historia nauki zostaną trwale usunięte.",
       "deleteAccountPrompt": "Wpisz <strong>USUŃ</strong> aby potwierdzić:",
-      "cancel": "Anuluj"
+      "cancel": "Anuluj",
+      "feedback": "Zgłoś problem"
     }
   },
   "nav": {
@@ -343,7 +344,8 @@
     "mySets": "Moje zestawy",
     "login": "Zaloguj się",
     "register": "Zarejestruj się",
-    "mobileNav": "Nawigacja mobilna"
+    "mobileNav": "Nawigacja mobilna",
+    "feedback": "Zgłoś problem"
   },
   "quiz": {
     "config": {
@@ -780,6 +782,28 @@
   "footer": {
     "terms": "Regulamin",
     "privacy": "Prywatność",
-    "cookies": "Cookies"
+    "cookies": "Cookies",
+    "feedback": "Zgłoś problem"
+  },
+  "feedback": {
+    "title": "Zgłoś problem lub pomysł",
+    "subtitle": "Twoja opinia pomaga nam ulepszać aplikację",
+    "typeLabel": "Typ zgłoszenia",
+    "typeBug": "Błąd",
+    "typeIdea": "Pomysł",
+    "titleLabel": "Tytuł",
+    "titlePlaceholderBug": "Krótko opisz napotkany problem",
+    "titlePlaceholderIdea": "Krótko opisz swój pomysł",
+    "descLabel": "Opis",
+    "descPlaceholderBug": "Opisz szczegółowo co się stało, jakie kroki prowadzą do błędu, czego się spodziewałeś...",
+    "descPlaceholderIdea": "Opisz szczegółowo swój pomysł — co chciałbyś zobaczyć, jak mogłoby to działać...",
+    "send": "Wyślij",
+    "sending": "Wysyłanie...",
+    "errorRequired": "To pole jest wymagane",
+    "errorMinTitle": "Tytuł musi mieć co najmniej 3 znaki",
+    "errorMinDesc": "Opis musi mieć co najmniej 10 znaków",
+    "successTitle": "Dziękujemy!",
+    "successText": "Twoje zgłoszenie zostało wysłane. Przeanalizujemy je najszybciej jak to możliwe.",
+    "sendAnother": "Wyślij kolejne"
   }
 }

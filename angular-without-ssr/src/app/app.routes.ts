@@ -92,6 +92,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'feedback',
+    loadComponent: () => import('./components/feedback/feedback.component').then(m => m.FeedbackComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'login',
     loadComponent: () => import('./auth/auth-page.component').then(m => m.AuthPageComponent),
     canActivate: [nonAuthGuard]
