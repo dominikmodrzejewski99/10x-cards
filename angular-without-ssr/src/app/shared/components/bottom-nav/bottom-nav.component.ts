@@ -11,14 +11,14 @@ import { PomodoroService } from '../../../services/pomodoro.service';
   template: `
     <ng-container *transloco="let t; prefix: 'nav'">
       @if (authCheckedSignal() && isAuthenticatedSignal()) {
-        @if (pomodoroService.isRunning()) {
-          <div class="bottom-nav__pomodoro"
-               [class.bottom-nav__pomodoro--work]="pomodoroService.phase() === 'work'"
-               [class.bottom-nav__pomodoro--break]="pomodoroService.phase() !== 'work'">
-            {{ formatTime(pomodoroService.timeRemaining()) }}
-          </div>
-        }
         <nav class="bottom-nav" [attr.aria-label]="t('mobileNav')">
+          @if (pomodoroService.isRunning()) {
+            <div class="bottom-nav__pomodoro"
+                 [class.bottom-nav__pomodoro--work]="pomodoroService.phase() === 'work'"
+                 [class.bottom-nav__pomodoro--break]="pomodoroService.phase() !== 'work'">
+              {{ formatTime(pomodoroService.timeRemaining()) }}
+            </div>
+          }
           <a routerLink="/dashboard" routerLinkActive="bottom-nav__item--active"
              [routerLinkActiveOptions]="{exact: true}" class="bottom-nav__item">
             <i class="pi pi-home bottom-nav__icon"></i>

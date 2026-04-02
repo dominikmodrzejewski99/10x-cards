@@ -17,6 +17,7 @@ $bottom-nav-height: 3.5rem;
   align-items: flex-start;
   justify-content: space-around;
   box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
+  overflow: visible;
 }
 
 @media (max-width: 640px) {
