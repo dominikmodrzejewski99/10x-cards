@@ -1,0 +1,86 @@
+<ng-container *transloco="let t; prefix: 'feedback'">
+<p-toast position="top-center" />
+<div class="feedback">
+  <h1 class="feedback__title">{{ t('title') }}</h1>
+  <p class="feedback__subtitle">{{ t('subtitle') }}</p>
+
+  @if (submittedSignal()) {
+    <div class="feedback__success">
+      <div class="feedback__success-icon">
+        <i class="pi pi-check-circle"></i>
+      </div>
+      <h2 class="feedback__success-title">{{ t('successTitle') }}</h2>
+      <p class="feedback__success-text">{{ t('successText') }}</p>
+      <button class="feedback__btn feedback__btn--secondary" (click)="sendAnother()">
+        {{ t('sendAnother') }}
+      </button>
+    </div>
+  } @else {
+    <div class="feedback__card">
+      <!-- Type selector -->
+      <div class="feedback__type-group">
+        <label class="feedback__label">{{ t('typeLabel') }}</label>
+        <div class="feedback__type-options">
+          <button class="feedback__type-btn"
+                  [class.feedback__type-btn--active]="selectedTypeSignal() === 'bug'"
+                  (click)="selectType('bug')">
+            <i class="pi pi-exclamation-triangle"></i>
+            <span>{{ t('typeBug') }}</span>
+          </button>
+          <button class="feedback__type-btn feedback__type-btn--idea"
+                  [class.feedback__type-btn--active]="selectedTypeSignal() === 'idea'"
+                  (click)="selectType('idea')">
+            <i class="pi pi-lightbulb"></i>
+            <span>{{ t('typeIdea') }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="feedbackForm" (ngSubmit)="submit()" class="feedback__form">
+        <div class="feedback__field">
+          <label class="feedback__label" for="feedback-title">{{ t('titleLabel') }}</label>
+          <input id="feedback-title"
+                 class="feedback__input"
+                 [class.feedback__input--error]="feedbackForm.get('title')?.touched && feedbackForm.get('title')?.invalid"
+                 formControlName="title"
+                 [placeholder]="selectedTypeSignal() === 'bug' ? t('titlePlaceholderBug') : t('titlePlaceholderIdea')"
+                 maxlength="200" />
+          @if (feedbackForm.get('title')?.touched && feedbackForm.get('title')?.hasError('required')) {
+            <span class="feedback__error">{{ t('errorRequired') }}</span>
+          }
+          @if (feedbackForm.get('title')?.touched && feedbackForm.get('title')?.hasError('minlength')) {
+            <span class="feedback__error">{{ t('errorMinTitle') }}</span>
+          }
+        </div>
+
+        <div class="feedback__field">
+          <label class="feedback__label" for="feedback-desc">{{ t('descLabel') }}</label>
+          <textarea id="feedback-desc"
+                    class="feedback__textarea"
+                    [class.feedback__textarea--error]="feedbackForm.get('description')?.touched && feedbackForm.get('description')?.invalid"
+                    formControlName="description"
+                    [placeholder]="selectedTypeSignal() === 'bug' ? t('descPlaceholderBug') : t('descPlaceholderIdea')"
+                    rows="5"
+                    maxlength="5000"></textarea>
+          @if (feedbackForm.get('description')?.touched && feedbackForm.get('description')?.hasError('required')) {
+            <span class="feedback__error">{{ t('errorRequired') }}</span>
+          }
+          @if (feedbackForm.get('description')?.touched && feedbackForm.get('description')?.hasError('minlength')) {
+            <span class="feedback__error">{{ t('errorMinDesc') }}</span>
+          }
+        </div>
+
+        <button type="submit"
+                class="feedback__btn feedback__btn--primary"
+                [disabled]="submittingSignal()">
+          @if (submittingSignal()) {
+            <i class="pi pi-spinner pi-spin"></i>
+          }
+          {{ submittingSignal() ? t('sending') : t('send') }}
+        </button>
+      </form>
+    </div>
+  }
+</div>
+</ng-container>
