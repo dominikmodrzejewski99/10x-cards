@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Potwierdź rejestrację — Memlo</title>
+  <style>
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    body { margin: 0; padding: 0; width: 100% !important; }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F8FAFC; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #F8FAFC;">
+    <tr>
+      <td align="center" style="padding: 40px 16px;">
+
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width: 480px; background-color: #ffffff; border-radius: 16px; border: 1px solid #E2E8F0; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+
+          <!-- Header -->
+          <tr>
+            <td align="center" style="padding: 32px 32px 24px;">
+              <img src="https://zlfntdnltdnuvrnraqak.supabase.co/storage/v1/object/public/email-assets/logo-memlo-email.png" alt="Memlo" width="140" height="34" style="display: block; border: 0;" />
+            </td>
+          </tr>
+
+          <!-- Icon -->
+          <tr>
+            <td align="center" style="padding: 0 32px 16px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="width: 56px; height: 56px; background-color: #e8f8f0; border-radius: 50%; text-align: center; vertical-align: middle; font-size: 24px;">
+                    &#9989;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Title -->
+          <tr>
+            <td align="center" style="padding: 0 32px 8px;">
+              <h1 style="margin: 0; font-size: 20px; font-weight: 700; color: #1E293B; line-height: 1.3;">
+                Potwierdź swój adres email
+              </h1>
+            </td>
+          </tr>
+
+          <!-- Description -->
+          <tr>
+            <td align="center" style="padding: 0 32px 24px;">
+              <p style="margin: 0; font-size: 14px; color: #475569; line-height: 1.6;">
+                Witamy w Memlo! Kliknij poniższy przycisk, aby potwierdzić swoje konto i rozpocząć naukę z fiszkami.
+              </p>
+            </td>
+          </tr>
+
+          <!-- CTA -->
+          <tr>
+            <td align="center" style="padding: 0 32px 24px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center" style="background-color: #3b4cca; border-radius: 8px;">
+                    <a href="{{ .ConfirmationURL }}"
+                       target="_blank"
+                       style="display: inline-block; padding: 12px 32px; font-size: 15px; font-weight: 600; color: #ffffff; text-decoration: none; border-radius: 8px; background-color: #3b4cca;">
+                      Potwierdź konto
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Divider -->
+          <tr>
+            <td style="padding: 8px 32px 16px;">
+              <div style="height: 1px; background-color: #E2E8F0;"></div>
+            </td>
+          </tr>
+
+          <!-- Safety note -->
+          <tr>
+            <td align="center" style="padding: 0 32px 24px;">
+              <p style="margin: 0; font-size: 12px; color: #94A3B8; line-height: 1.6;">
+                Jeśli nie zakładałeś konta w Memlo, zignoruj tę wiadomość.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td align="center" style="padding: 0 32px 32px;">
+              <p style="margin: 0; font-size: 11px; color: #CBD5E1; line-height: 1.5;">
+                &copy; {{ .SiteURL }} &middot; Memlo
+              </p>
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
