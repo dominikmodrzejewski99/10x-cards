@@ -45,7 +45,7 @@
 .ftable__search-input:focus {
   outline: none;
   border-color: $color-primary;
-  box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.10);
+  box-shadow: 0 0 0 3px rgba(59, 76, 202, 0.10);
 }
 
 .ftable__search-input::placeholder {
@@ -402,7 +402,7 @@
   &:focus {
     outline: none;
     border-color: $color-primary;
-    box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.10);
+    box-shadow: 0 0 0 3px rgba(59, 76, 202, 0.10);
   }
 }
 

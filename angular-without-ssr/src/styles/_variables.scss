@@ -8,16 +8,16 @@ $color-primary-hover: var(--app-primary-hover);
 $color-primary-light: var(--app-primary-light);
 
 $color-success: var(--app-success);
-$color-success-hover: #1e9c5e;
+$color-success-hover: #166534;
 $color-success-light: var(--app-success-light);
 
 $color-danger: var(--app-error);
-$color-danger-hover: #e5573a;
+$color-danger-hover: #b91c1c;
 $color-danger-light: var(--app-danger-light);
 $color-danger-border: var(--app-danger-border);
 
-$color-warning: #f5a623;
-$color-warning-hover: #e09515;
+$color-warning: var(--app-warning);
+$color-warning-hover: #92400e;
 $color-warning-light: var(--app-warning-light);
 
 $color-purple: var(--app-purple);
@@ -61,8 +61,8 @@ $transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 $shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
 $shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
 $shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.07);
-$shadow-primary: 0 2px 12px rgba(66, 85, 255, 0.25);
-$shadow-primary-hover: 0 4px 20px rgba(66, 85, 255, 0.35);
+$shadow-primary: 0 2px 12px rgba(59, 76, 202, 0.25);
+$shadow-primary-hover: 0 4px 20px rgba(59, 76, 202, 0.35);
 $shadow-purple: 0 4px 20px rgba(124, 58, 237, 0.25);
 
 // ── Typography ──

@@ -136,7 +136,7 @@ import { RouterModule } from '@angular/router';
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      color: #4255ff;
+      color: #3b4cca;
       font-weight: 600;
       font-size: 0.875rem;
       text-decoration: none;

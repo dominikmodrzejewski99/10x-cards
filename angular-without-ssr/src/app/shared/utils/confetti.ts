@@ -11,7 +11,7 @@ interface Particle {
   shape: 'rect' | 'circle';
 }
 
-const COLORS = ['#4255ff', '#a855f7', '#23b26d', '#ffcd1f', '#ff6240', '#f5a623', '#ec4899'];
+const COLORS = ['#3b4cca', '#a855f7', '#15803d', '#f59e0b', '#dc2626', '#d97706', '#ec4899'];
 
 export function launchConfetti(duration = 3000): void {
   const canvas = document.createElement('canvas');

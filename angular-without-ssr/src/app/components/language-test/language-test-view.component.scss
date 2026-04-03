@@ -40,7 +40,7 @@
 
   i {
     font-size: 2.5rem;
-    color: var(--app-error, #ff6240);
+    color: var(--app-error, #dc2626);
   }
 
   p {
@@ -65,8 +65,8 @@
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    border-color: var(--app-primary, #4255ff);
-    color: var(--app-primary, #4255ff);
+    border-color: var(--app-primary, #3b4cca);
+    color: var(--app-primary, #3b4cca);
   }
 }
 
@@ -135,7 +135,7 @@
 // Gap styles injected via innerHTML
 :host ::ng-deep .test-view__gap {
   display: inline-block;
-  background: var(--app-primary, #4255ff);
+  background: var(--app-primary, #3b4cca);
   color: #ffffff;
   font-weight: 700;
   border-radius: 0.375rem;

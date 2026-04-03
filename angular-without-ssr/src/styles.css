@@ -1,5 +1,6 @@
 @import "assets/fonts/fonts.css";
 @import "primeicons/primeicons.css";
+@import "@angular/cdk/overlay-prebuilt.css";
 
 /* Skip-to-content link (a11y) */
 .skip-link {
@@ -8,7 +9,7 @@
   top: 0;
   z-index: 9999;
   padding: 0.5rem 1rem;
-  background: #4255ff;
+  background: #3b4cca;
   color: #fff;
   font-weight: 600;
   font-size: 0.875rem;
@@ -20,8 +21,8 @@
 }
 
 :root {
-  --app-primary: #4255ff;
-  --app-primary-hover: #3b4ce3;
+  --app-primary: #3b4cca;
+  --app-primary-hover: #2f3db3;
   --app-primary-light: #edefff;
   --app-bg: #F8FAFC;
   --app-bg-alt: #f6f7fb;
@@ -31,13 +32,13 @@
   --app-text-secondary: #475569;
   --app-border: #E2E8F0;
   --app-border-light: #edeff5;
-  --app-success: #23b26d;
+  --app-success: #15803d;
   --app-success-light: #e8f8f0;
-  --app-error: #ff6240;
-  --app-danger-light: #fff0ed;
-  --app-danger-border: #ffcfc5;
-  --app-warning-light: #fff8e6;
-  --app-yellow: #ffcd1f;
+  --app-error: #dc2626;
+  --app-danger-light: #fef2f2;
+  --app-danger-border: #fecaca;
+  --app-warning: #b45309;
+  --app-warning-light: #fffbeb;
   --app-purple: #7c3aed;
   --app-purple-light: #f3eeff;
   --app-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
@@ -49,7 +50,7 @@
 :root[data-theme="dark"] {
   --app-primary: #818cf8;
   --app-primary-hover: #6366f1;
-  --app-primary-light: rgba(66, 85, 255, 0.12);
+  --app-primary-light: rgba(59, 76, 202, 0.12);
   --app-bg: #0b1120;
   --app-bg-alt: #0f1629;
   --app-white: #141c2e;
@@ -58,13 +59,13 @@
   --app-text-secondary: #94a3b8;
   --app-border: #1e293b;
   --app-border-light: #1e293b;
-  --app-success: #34d399;
-  --app-success-light: rgba(35, 178, 109, 0.12);
-  --app-error: #fb7c64;
-  --app-danger-light: rgba(255, 98, 64, 0.1);
-  --app-danger-border: rgba(255, 98, 64, 0.2);
-  --app-warning-light: rgba(245, 158, 11, 0.12);
-  --app-yellow: #fbbf24;
+  --app-success: #4ade80;
+  --app-success-light: rgba(21, 128, 61, 0.12);
+  --app-error: #f87171;
+  --app-danger-light: rgba(220, 38, 38, 0.1);
+  --app-danger-border: rgba(220, 38, 38, 0.2);
+  --app-warning: #fbbf24;
+  --app-warning-light: rgba(180, 83, 9, 0.12);
   --app-purple: #a78bfa;
   --app-purple-light: rgba(124, 58, 237, 0.12);
   --app-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
@@ -103,7 +104,7 @@ router-outlet + * {
 
 /* Global focus-visible ring for keyboard navigation */
 :focus-visible {
-  outline: 2px solid var(--app-primary, #4255ff);
+  outline: 2px solid var(--app-primary, #3b4cca);
   outline-offset: 2px;
 }
 
@@ -111,8 +112,8 @@ input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
   outline: none;
-  border-color: var(--app-primary, #4255ff);
-  box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.12);
+  border-color: var(--app-primary, #3b4cca);
+  box-shadow: 0 0 0 3px rgba(59, 76, 202, 0.12);
 }
 
 /* ngx-skeleton-loader reset — kill default margins to prevent layout shift */
@@ -137,228 +138,32 @@ h1, h2, h3, h4, h5, h6, p, span, label, div {
   color: inherit;
 }
 
-/* === PrimeNG global text/background fixes === */
-body .p-component {
-  color: var(--app-text);
-}
-
-/* Table */
-body .p-datatable .p-datatable-thead > tr > th {
-  color: #282e3e;
-  background: #f6f7fb;
-  border-color: #d9dbe9;
-  font-weight: 600;
-}
-
-body .p-datatable .p-datatable-tbody > tr {
-  color: #282e3e;
-  background: #ffffff;
-}
-
-body .p-datatable .p-datatable-tbody > tr > td {
-  color: #282e3e;
-  border-color: #edeff5;
-}
-
-body .p-datatable .p-datatable-tbody > tr:hover {
-  background: #f6f7fb;
-}
-
-body .p-datatable .p-datatable-tbody > tr.p-highlight {
-  background: #edefff;
-  color: #4255ff;
-}
-
-/* Paginator */
-body .p-paginator {
-  background: #ffffff;
-  color: #586380;
-  border-color: #d9dbe9;
-}
-
-body .p-paginator .p-paginator-pages .p-paginator-page {
-  color: #586380;
-}
-
-body .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-  background: #4255ff;
-  color: #ffffff;
-  border-color: #4255ff;
-}
-
-body .p-paginator .p-paginator-first,
-body .p-paginator .p-paginator-prev,
-body .p-paginator .p-paginator-next,
-body .p-paginator .p-paginator-last {
-  color: #586380;
-}
-
-/* Inputs */
-body .p-inputtext,
-body .p-textarea,
-body .p-inputtextarea,
-body textarea.p-inputtextarea {
-  color: #282e3e;
-  background: #ffffff;
-  border-color: #d9dbe9;
-  font-size: max(1rem, 16px); /* prevent iOS zoom on focus */
-}
-
-body .p-inputtext:focus,
-body .p-textarea:focus,
-body .p-inputtextarea:focus {
-  border-color: #4255ff;
-  box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.12);
-}
-
-/* Dropdown */
-body .p-dropdown {
-  background: #ffffff;
-  color: #282e3e;
-  border-color: #d9dbe9;
-}
-
-body .p-dropdown .p-dropdown-label {
-  color: #282e3e;
-  background: #ffffff;
-}
-
-body .p-dropdown .p-dropdown-trigger {
-  color: #586380;
-  background: #ffffff;
-}
-
-body .p-dropdown-panel {
-  background: #ffffff;
-  border-color: #d9dbe9;
-}
-
-body .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
-  color: #282e3e;
-  background: #ffffff;
-}
-
-body .p-dropdown-panel .p-dropdown-items .p-dropdown-item:hover {
-  background: #f6f7fb;
-}
-
-body .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
-  background: #edefff;
-  color: #4255ff;
-}
-
-/* Dialogs */
-body .p-dialog {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-  border-radius: 0.75rem;
-  border: 1px solid #d9dbe9;
-  overflow: hidden;
-}
-
-body .p-dialog .p-dialog-header {
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid #d9dbe9;
-  background: #ffffff;
-  color: #282e3e;
-}
-
-body .p-dialog .p-dialog-header .p-dialog-title {
-  color: #282e3e;
-  font-weight: 700;
-}
-
-body .p-dialog .p-dialog-content {
-  padding: 1.5rem;
-  background: #ffffff;
-  color: #282e3e;
-}
-
-body .p-dialog .p-dialog-footer {
-  padding: 1rem 1.5rem;
-  border-top: 1px solid #d9dbe9;
-  background: #ffffff;
-}
-
-body .p-dialog .p-dialog-header .p-dialog-header-icon {
-  color: #586380;
-}
-body .p-dialog .p-dialog-header .p-dialog-header-icon:hover {
-  color: #282e3e;
-  background: #f6f7fb;
-}
-
-/* Overlay */
-body .p-overlay-mask { background-color: rgba(40, 46, 62, 0.5); }
-body .p-dialog-mask { background-color: transparent; }
-body .p-dialog-mask.p-overlay-mask { background-color: rgba(40, 46, 62, 0.5); }
-
-/* Toast */
-body .p-toast { opacity: 1; }
-body .p-toast .p-toast-message {
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-}
-body .p-toast .p-toast-message-content {
-  padding: 1rem 1.25rem;
-  border-width: 0 0 0 4px;
-}
-body .p-toast .p-toast-summary { font-weight: 600; color: #282e3e; }
-body .p-toast .p-toast-detail { margin-top: 0.25rem; font-size: 0.875rem; color: #586380; }
-
-@media (max-width: 480px) {
-  body .p-toast { width: calc(100% - 1.5rem); max-width: none; left: 0.75rem; right: 0.75rem; bottom: calc(4rem + env(safe-area-inset-bottom, 0px)); top: auto; }
-  body .p-toast .p-toast-message { border-radius: 0.5rem; }
-  body .p-toast .p-toast-message-content { padding: 0.65rem 0.85rem; }
-  body .p-toast .p-toast-summary { font-size: 0.8rem; }
-  body .p-toast .p-toast-detail { font-size: 0.75rem; }
-}
-
-/* Buttons */
-html body .p-button.p-button-primary {
-  background-color: #4255ff;
-  border-color: #4255ff;
-  color: #ffffff;
-}
-html body .p-button.p-button-primary:hover {
-  background-color: #3b4ce3;
-  border-color: #3b4ce3;
-}
-html body .p-button.p-button-primary .p-button-label,
-html body .p-button.p-button-primary .p-button-icon {
-  color: #ffffff;
-}
-
-html body .p-button {
-  color: #282e3e;
-}
-
-html body .p-button.p-button-outlined {
-  color: #4255ff;
-  border-color: #d9dbe9;
-  background: transparent;
-}
-
-html body .p-button.p-button-text {
-  color: #4255ff;
-}
-
-/* Confirm dialog */
-body .p-confirm-dialog .p-confirm-dialog-message {
-  color: #282e3e;
-}
-
 /* Prevent iOS zoom on select inputs */
 select, input, textarea {
   font-size: max(1rem, 16px);
 }
 
-/* Connected overlay portal */
-body .p-connected-overlay {
-  background: transparent;
+/* CDK Overlay — dialog backdrop + wrapper */
+.app-dialog-backdrop {
+  background: rgba(0, 0, 0, 0.45);
 }
 
-body .p-connected-overlay .p-dropdown-panel {
-  background: #ffffff;
+.app-dialog-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.app-confirm-backdrop {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.app-confirm-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
 }
 
 /* Fullscreen mode — hide chrome */
@@ -377,62 +182,3 @@ body .p-connected-overlay .p-dropdown-panel {
   flex-direction: column;
   flex: 1;
 }
-
-/* Modern dialog overrides */
-body .modern-dialog {
-  --p-dialog-background: var(--app-white);
-  --p-dialog-border-color: var(--app-border);
-  --p-dialog-text-color: var(--app-text);
-  --p-dialog-header-background: var(--app-white);
-  --p-dialog-header-text-color: var(--app-text);
-  --p-dialog-content-background: var(--app-white);
-  --p-dialog-content-text-color: var(--app-text);
-  background-color: var(--app-white);
-  color: var(--app-text);
-  border: 1px solid var(--app-border);
-}
-
-/* ══════════════════════════════════════ */
-/*  DARK THEME — PrimeNG overrides        */
-/* ══════════════════════════════════════ */
-:root[data-theme="dark"] body .p-component { color: var(--app-text); }
-
-:root[data-theme="dark"] body .p-datatable .p-datatable-thead > tr > th { color: var(--app-text); background: var(--app-bg-alt); border-color: var(--app-border); }
-:root[data-theme="dark"] body .p-datatable .p-datatable-tbody > tr { color: var(--app-text); background: var(--app-white); }
-:root[data-theme="dark"] body .p-datatable .p-datatable-tbody > tr > td { color: var(--app-text); border-color: var(--app-border); }
-:root[data-theme="dark"] body .p-datatable .p-datatable-tbody > tr:hover { background: var(--app-bg-alt); }
-
-:root[data-theme="dark"] body .p-paginator { background: var(--app-white); color: var(--app-text-secondary); border-color: var(--app-border); }
-:root[data-theme="dark"] body .p-paginator .p-paginator-pages .p-paginator-page { color: var(--app-text-secondary); }
-
-:root[data-theme="dark"] body .p-inputtext,
-:root[data-theme="dark"] body .p-textarea,
-:root[data-theme="dark"] body .p-inputtextarea,
-:root[data-theme="dark"] body textarea.p-inputtextarea { color: var(--app-text); background: var(--app-bg-alt); border-color: var(--app-border); }
-
-:root[data-theme="dark"] body .p-dropdown { background: var(--app-bg-alt); color: var(--app-text); border-color: var(--app-border); }
-:root[data-theme="dark"] body .p-dropdown .p-dropdown-label { color: var(--app-text); background: var(--app-bg-alt); }
-:root[data-theme="dark"] body .p-dropdown .p-dropdown-trigger { color: var(--app-text-secondary); background: var(--app-bg-alt); }
-:root[data-theme="dark"] body .p-dropdown-panel { background: var(--app-white); border-color: var(--app-border); }
-:root[data-theme="dark"] body .p-dropdown-panel .p-dropdown-items .p-dropdown-item { color: var(--app-text); background: var(--app-white); }
-:root[data-theme="dark"] body .p-dropdown-panel .p-dropdown-items .p-dropdown-item:hover { background: var(--app-bg-alt); }
-
-:root[data-theme="dark"] body .p-dialog { border-color: var(--app-border); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); }
-:root[data-theme="dark"] body .p-dialog .p-dialog-header { background: var(--app-white); color: var(--app-text); border-bottom-color: var(--app-border); }
-:root[data-theme="dark"] body .p-dialog .p-dialog-header .p-dialog-title { color: var(--app-text); }
-:root[data-theme="dark"] body .p-dialog .p-dialog-content { background: var(--app-white); color: var(--app-text); }
-:root[data-theme="dark"] body .p-dialog .p-dialog-footer { background: var(--app-white); border-top-color: var(--app-border); }
-:root[data-theme="dark"] body .p-dialog .p-dialog-header .p-dialog-header-icon { color: var(--app-text-secondary); }
-:root[data-theme="dark"] body .p-dialog .p-dialog-header .p-dialog-header-icon:hover { color: var(--app-text); background: var(--app-bg-alt); }
-
-:root[data-theme="dark"] body .p-toast .p-toast-summary { color: var(--app-text); }
-:root[data-theme="dark"] body .p-toast .p-toast-detail { color: var(--app-text-secondary); }
-
-:root[data-theme="dark"] html body .p-button { color: var(--app-text); }
-:root[data-theme="dark"] html body .p-button.p-button-outlined { color: var(--app-primary); border-color: var(--app-border); }
-:root[data-theme="dark"] html body .p-button.p-button-text { color: var(--app-primary); }
-
-:root[data-theme="dark"] body .p-confirm-dialog .p-confirm-dialog-message { color: var(--app-text); }
-:root[data-theme="dark"] body .p-connected-overlay .p-dropdown-panel { background: var(--app-white); }
-:root[data-theme="dark"] body .p-overlay-mask { background-color: rgba(0, 0, 0, 0.6); }
-:root[data-theme="dark"] body .p-dialog-mask.p-overlay-mask { background-color: rgba(0, 0, 0, 0.6); }

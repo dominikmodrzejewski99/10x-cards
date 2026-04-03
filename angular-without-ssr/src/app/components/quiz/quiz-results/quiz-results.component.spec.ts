@@ -144,22 +144,22 @@ describe('QuizResultsComponent', () => {
   describe('scoreColorSignal', () => {
     it('powinien zwrócić zielony kolor dla wyniku >= 90%', () => {
       setDefaultInputs(createMockResult({ percentage: 95 }));
-      expect(component.scoreColorSignal()).toBe('#23b26d');
+      expect(component.scoreColorSignal()).toBe('#15803d');
     });
 
     it('powinien zwrócić zielony kolor dla wyniku dokładnie 90%', () => {
       setDefaultInputs(createMockResult({ percentage: 90 }));
-      expect(component.scoreColorSignal()).toBe('#23b26d');
+      expect(component.scoreColorSignal()).toBe('#15803d');
     });
 
     it('powinien zwrócić niebieski kolor dla wyniku >= 70% i < 90%', () => {
       setDefaultInputs(createMockResult({ percentage: 75 }));
-      expect(component.scoreColorSignal()).toBe('#4255ff');
+      expect(component.scoreColorSignal()).toBe('#3b4cca');
     });
 
     it('powinien zwrócić niebieski kolor dla wyniku dokładnie 70%', () => {
       setDefaultInputs(createMockResult({ percentage: 70 }));
-      expect(component.scoreColorSignal()).toBe('#4255ff');
+      expect(component.scoreColorSignal()).toBe('#3b4cca');
     });
 
     it('powinien zwrócić pomarańczowy kolor dla wyniku >= 50% i < 70%', () => {
@@ -174,12 +174,12 @@ describe('QuizResultsComponent', () => {
 
     it('powinien zwrócić czerwony kolor dla wyniku < 50%', () => {
       setDefaultInputs(createMockResult({ percentage: 30 }));
-      expect(component.scoreColorSignal()).toBe('#ff6240');
+      expect(component.scoreColorSignal()).toBe('#dc2626');
     });
 
     it('powinien zwrócić czerwony kolor dla wyniku 0%', () => {
       setDefaultInputs(createMockResult({ percentage: 0 }));
-      expect(component.scoreColorSignal()).toBe('#ff6240');
+      expect(component.scoreColorSignal()).toBe('#dc2626');
     });
   });
 

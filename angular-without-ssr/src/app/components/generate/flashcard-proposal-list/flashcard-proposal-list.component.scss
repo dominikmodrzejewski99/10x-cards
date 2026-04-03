@@ -38,7 +38,7 @@
 }
 
 .proposal--accepted:hover {
-  border-color: #1e9c5e;
+  border-color: #166534;
 }
 
 /* Number badge */
@@ -58,7 +58,7 @@
 .proposal--accepted .proposal__number {
   background: $color-success;
   color: #fff;
-  border-right-color: #1e9c5e;
+  border-right-color: #166534;
 }
 
 /* Body (content + actions stacked) */
@@ -156,7 +156,7 @@
 }
 
 .proposal__btn--accepted:hover {
-  background: #1e9c5e;
+  background: #166534;
   color: #fff;
 }
 
@@ -249,16 +249,6 @@
 
 .edit-form__btn--save:hover {
   background: $color-primary-hover;
-}
-
-/* Dialog overrides */
-:host ::ng-deep .edit-dialog-custom .p-dialog-content {
-  padding: 0;
-}
-
-:host ::ng-deep .edit-dialog-custom .p-dialog-footer {
-  padding: 0;
-  border-top: none;
 }
 
 @media (max-width: 600px) {

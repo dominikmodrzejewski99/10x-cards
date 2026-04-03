@@ -167,26 +167,12 @@
 
 :host ::ng-deep .p-inputtextarea:focus {
   border-color: $color-primary;
-  box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.12);
+  box-shadow: 0 0 0 3px rgba(59, 76, 202, 0.12);
 }
 
 :host ::ng-deep .p-inputtext {
   background-color: $color-white;
   color: $color-text;
-}
-
-:host ::ng-deep .p-dropdown,
-:host ::ng-deep .p-dropdown-panel,
-:host ::ng-deep .p-dropdown-items-wrapper {
-  background-color: $color-white;
-}
-
-:host ::ng-deep .p-dropdown-item {
-  color: $color-text;
-}
-
-:host ::ng-deep .p-dropdown-item:hover {
-  background-color: $color-bg;
 }
 
 // ── Image upload ──

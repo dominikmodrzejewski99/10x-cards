@@ -20,7 +20,7 @@
 
 .guide__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 0.75rem; }
 .guide__card { background: var(--app-white); border: 1.5px solid var(--app-border); border-radius: 1.25rem; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-.guide__card:hover { border-color: var(--app-primary); box-shadow: 0 4px 16px rgba(66, 85, 255, 0.06); }
+.guide__card:hover { border-color: var(--app-primary); box-shadow: 0 4px 16px rgba(59, 76, 202, 0.06); }
 .guide__card--expanded { grid-column: 1 / -1; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06); }
 .guide__card-header {
   display: flex; align-items: flex-start; gap: clamp(0.65rem, 1.5vw, 0.85rem); width: 100%;
@@ -172,7 +172,7 @@
 .guide__footer { text-align: center; margin-top: 3rem; padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.25rem, 3vw, 2rem); }
 .guide__footer-text { font-size: 1.25rem; font-weight: 800; color: var(--app-text); margin: 0 0 1.25rem; }
 .guide__footer-actions { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; }
-.guide__footer-cta { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: var(--app-primary); color: #fff; border-radius: 0.75rem; font-weight: 700; font-size: 0.9rem; text-decoration: none; transition: all 0.2s; box-shadow: 0 4px 12px rgba(66, 85, 255, 0.25); }
+.guide__footer-cta { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: var(--app-primary); color: #fff; border-radius: 0.75rem; font-weight: 700; font-size: 0.9rem; text-decoration: none; transition: all 0.2s; box-shadow: 0 4px 12px rgba(59, 76, 202, 0.25); }
 .guide__footer-cta:hover { background: var(--app-primary-hover); transform: translateY(-2px); }
 .guide__footer-cta--secondary { background: transparent; color: var(--app-text-secondary); border: 1.5px solid var(--app-border); box-shadow: none; }
 .guide__footer-cta--secondary:hover { background: transparent; border-color: var(--app-primary); color: var(--app-primary); box-shadow: none; }

@@ -50,10 +50,10 @@ export class QuizResultsComponent {
 
   public readonly scoreColorSignal: Signal<string> = computed<string>(() => {
     const pct: number = this.resultSignal().percentage;
-    if (pct >= 90) return '#23b26d';
-    if (pct >= 70) return '#4255ff';
+    if (pct >= 90) return '#15803d';
+    if (pct >= 70) return '#3b4cca';
     if (pct >= 50) return '#f5a623';
-    return '#ff6240';
+    return '#dc2626';
   });
 
   public readonly ringDashSignal: Signal<string> = computed<string>(() => {

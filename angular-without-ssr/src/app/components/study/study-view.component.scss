@@ -167,7 +167,7 @@
   &:hover { background: $color-bg-alt; }
 
   &--active {
-    background: rgba(66, 85, 255, 0.08);
+    background: rgba(59, 76, 202, 0.08);
     color: $color-primary;
     font-weight: 600;
 
@@ -231,12 +231,12 @@
   width: 5rem;
   height: 5rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, #ffcd1f 0%, #f5a623 100%);
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   animation: trophy-bounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 8px 32px rgba(255, 205, 31, 0.3);
+  box-shadow: 0 8px 32px rgba(245, 158, 11, 0.3);
 }
 
 .study__trophy-icon {
