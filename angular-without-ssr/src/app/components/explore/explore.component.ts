@@ -1,4 +1,5 @@
-import { Component, OnInit, signal, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, signal, inject, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
@@ -33,6 +34,7 @@ interface ExploreState {
 export class ExploreComponent implements OnInit {
   private exploreService = inject(ExploreService);
   private messageService = inject(MessageService);
+  private destroyRef = inject(DestroyRef);
 
   state = signal<ExploreState>({
     sets: [],
@@ -52,7 +54,8 @@ export class ExploreComponent implements OnInit {
   ngOnInit(): void {
     this.searchSubject.pipe(
       debounceTime(300),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe(search => {
       this.state.update(s => ({ ...s, search, page: 1 }));
       this.loadSets();
@@ -95,9 +98,7 @@ export class ExploreComponent implements OnInit {
 
   toggleTag(tag: string): void {
     this.state.update(s => {
-      const selected: string[] = s.selectedTags.includes(tag)
-        ? s.selectedTags.filter((t: string) => t !== tag)
-        : [...s.selectedTags, tag];
+      const selected: string[] = s.selectedTags.includes(tag) ? [] : [tag];
       return { ...s, selectedTags: selected, page: 1 };
     });
     this.loadSets();
