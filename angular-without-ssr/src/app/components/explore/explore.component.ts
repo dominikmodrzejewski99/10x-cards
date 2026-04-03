@@ -2,11 +2,11 @@ import { Component, OnInit, signal, inject, ChangeDetectionStrategy, DestroyRef 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { ToastService } from '../../shared/services/toast.service';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ExploreService } from '../../services/explore.service';
+import { UserPreferencesService } from '../../services/user-preferences.service';
 import { PublicSetDTO } from '../../../types';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 
@@ -25,16 +25,21 @@ interface ExploreState {
 
 @Component({
   selector: 'app-explore',
-  imports: [FormsModule, RouterModule, ToastModule, NgxSkeletonLoaderModule, TranslocoDirective],
-  providers: [MessageService],
+  imports: [FormsModule, RouterModule, NgxSkeletonLoaderModule, TranslocoDirective],
   templateUrl: './explore.component.html',
   styleUrls: ['./explore.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExploreComponent implements OnInit {
   private exploreService = inject(ExploreService);
-  private messageService = inject(MessageService);
+  private toastService = inject(ToastService);
+  private prefsService = inject(UserPreferencesService);
   private destroyRef = inject(DestroyRef);
+
+  copyDialogVisible = signal(false);
+  copyDialogRemember = signal(false);
+  private pendingCopySetId: number | null = null;
+  private skipCopyConfirm = false;
 
   state = signal<ExploreState>({
     sets: [],
@@ -60,6 +65,9 @@ export class ExploreComponent implements OnInit {
       this.state.update(s => ({ ...s, search, page: 1 }));
       this.loadSets();
     });
+    this.prefsService.isDialogDismissed('copy_set_confirm').pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(dismissed => this.skipCopyConfirm = dismissed);
     this.loadPopularTags();
     this.loadSets();
   }
@@ -119,10 +127,42 @@ export class ExploreComponent implements OnInit {
     this.loadSets();
   }
 
-  copySet(setId: number): void {
+  get totalPages(): number {
+    return Math.ceil(this.state().total / this.state().pageSize);
+  }
+
+  requestCopy(setId: number): void {
+    if (this.skipCopyConfirm) {
+      this.executeCopy(setId);
+      return;
+    }
+    this.pendingCopySetId = setId;
+    this.copyDialogRemember.set(false);
+    this.copyDialogVisible.set(true);
+  }
+
+  confirmCopy(): void {
+    const setId = this.pendingCopySetId;
+    this.copyDialogVisible.set(false);
+    if (setId == null) return;
+
+    if (this.copyDialogRemember()) {
+      this.skipCopyConfirm = true;
+      this.prefsService.dismissDialog('copy_set_confirm').subscribe();
+    }
+
+    this.executeCopy(setId);
+  }
+
+  cancelCopy(): void {
+    this.copyDialogVisible.set(false);
+    this.pendingCopySetId = null;
+  }
+
+  private executeCopy(setId: number): void {
     this.exploreService.copySet(setId).subscribe({
       next: () => {
-        this.messageService.add({
+        this.toastService.add({
           severity: 'success',
           summary: 'Skopiowano',
           detail: 'Zestaw został skopiowany do Twoich zestawów.'
@@ -138,12 +178,8 @@ export class ExploreComponent implements OnInit {
         const detail = err?.message?.includes('Cannot copy your own')
           ? 'Nie możesz skopiować własnego zestawu.'
           : 'Nie udało się skopiować zestawu.';
-        this.messageService.add({ severity: 'error', summary: 'Błąd', detail });
+        this.toastService.add({ severity: 'error', summary: 'Błąd', detail });
       }
     });
-  }
-
-  get totalPages(): number {
-    return Math.ceil(this.state().total / this.state().pageSize);
   }
 }

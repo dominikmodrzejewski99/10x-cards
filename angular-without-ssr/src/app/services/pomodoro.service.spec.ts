@@ -23,6 +23,7 @@ function createMockPreferences(): UserPreferencesDTO {
     pomodoro_sound_enabled: false,
     pomodoro_notifications_enabled: false,
     pomodoro_focus_reminder_dismissed: false,
+    dismissed_dialogs: [],
     created_at: '2026-01-01T00:00:00Z',
     updated_at: '2026-01-01T00:00:00Z'
   };

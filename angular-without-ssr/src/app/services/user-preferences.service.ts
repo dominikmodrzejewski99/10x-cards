@@ -58,6 +58,7 @@ export class UserPreferencesService {
   | 'pomodoro_sound_enabled'
   | 'pomodoro_notifications_enabled'
   | 'pomodoro_focus_reminder_dismissed'
+  | 'dismissed_dialogs'
 >>): Observable<UserPreferencesDTO> {
     this.cache$ = null; // Invalidate cache
 
@@ -115,6 +116,22 @@ export class UserPreferencesService {
     );
   }
 
+  isDialogDismissed(dialogKey: string): Observable<boolean> {
+    return this.getPreferences().pipe(
+      map(prefs => (prefs.dismissed_dialogs ?? []).includes(dialogKey))
+    );
+  }
+
+  dismissDialog(dialogKey: string): Observable<UserPreferencesDTO> {
+    return this.getPreferences().pipe(
+      switchMap(prefs => {
+        const current = prefs.dismissed_dialogs ?? [];
+        if (current.includes(dialogKey)) return of(prefs);
+        return this.updatePreferences({ dismissed_dialogs: [...current, dialogKey] });
+      })
+    );
+  }
+
   /** Reset cache when user logs out or changes */
   clearCache(): void {
     this.cache$ = null;
@@ -139,6 +156,7 @@ export class UserPreferencesService {
       pomodoro_sound_enabled: true,
       pomodoro_notifications_enabled: true,
       pomodoro_focus_reminder_dismissed: false,
+      dismissed_dialogs: [],
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     };

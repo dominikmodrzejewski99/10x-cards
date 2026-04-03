@@ -31,6 +31,7 @@ describe('PomodoroTimerComponent', () => {
   const mockPrefsService = {
     getPreferences: jasmine.createSpy('getPreferences').and.returnValue(of({
       pomodoro_focus_reminder_dismissed: false,
+      dismissed_dialogs: [],
       pomodoro_sessions_before_long_break: 4
     })),
     updatePreferences: jasmine.createSpy('updatePreferences').and.returnValue(of({}))

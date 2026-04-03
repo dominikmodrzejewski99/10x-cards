@@ -19,6 +19,23 @@
       <option value="newest">{{ t('sortNewest') }}</option>
       <option value="most_cards">{{ t('sortMostCards') }}</option>
     </select>
+    @if (totalPages > 1) {
+      <div class="explore__pagination">
+        <button
+          class="explore__page-btn"
+          [disabled]="state().page <= 1"
+          (click)="onPageChange(state().page - 1)">
+          <i class="pi pi-chevron-left"></i>
+        </button>
+        <span class="explore__page-info">{{ state().page }} / {{ totalPages }}</span>
+        <button
+          class="explore__page-btn"
+          [disabled]="state().page >= totalPages"
+          (click)="onPageChange(state().page + 1)">
+          <i class="pi pi-chevron-right"></i>
+        </button>
+      </div>
+    }
   </div>
 
   @if (state().popularTags.length > 0) {
@@ -94,7 +111,7 @@
               <span>·</span>
               <span>{{ set.copy_count }} {{ t('copies') }}</span>
             </div>
-            <button class="explore-card__copy" [title]="t('copyButton')" (click)="copySet(set.id)">
+            <button class="explore-card__copy" [title]="t('copyButton')" (click)="requestCopy(set.id)">
               <i class="pi pi-copy"></i>
             </button>
           </div>
@@ -102,25 +119,30 @@
       }
     </div>
 
-    @if (totalPages > 1) {
-      <div class="explore__pagination">
-        <button
-          class="explore__page-btn"
-          [disabled]="state().page <= 1"
-          (click)="onPageChange(state().page - 1)">
-          <i class="pi pi-chevron-left"></i>
-        </button>
-        <span class="explore__page-info">{{ state().page }} / {{ totalPages }}</span>
-        <button
-          class="explore__page-btn"
-          [disabled]="state().page >= totalPages"
-          (click)="onPageChange(state().page + 1)">
-          <i class="pi pi-chevron-right"></i>
-        </button>
-      </div>
-    }
   }
 
-  <p-toast position="bottom-center"></p-toast>
+  @if (copyDialogVisible()) {
+    <div class="confirm-overlay" (click)="cancelCopy()">
+      <div class="confirm-dialog" (click)="$event.stopPropagation()">
+        <div class="confirm-dialog__icon">
+          <i class="pi pi-copy"></i>
+        </div>
+        <h3 class="confirm-dialog__title">{{ t('copyConfirmTitle') }}</h3>
+        <p class="confirm-dialog__text">{{ t('copyConfirmText') }}</p>
+        <label class="confirm-dialog__remember">
+          <input type="checkbox" [checked]="copyDialogRemember()" (change)="copyDialogRemember.set(!copyDialogRemember())" />
+          {{ t('copyConfirmRemember') }}
+        </label>
+        <div class="confirm-dialog__actions">
+          <button class="confirm-dialog__btn confirm-dialog__btn--cancel" (click)="cancelCopy()">
+            {{ t('copyConfirmCancel') }}
+          </button>
+          <button class="confirm-dialog__btn confirm-dialog__btn--confirm" (click)="confirmCopy()">
+            <i class="pi pi-copy"></i> {{ t('copyConfirmOk') }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
 </div>
 </ng-container>

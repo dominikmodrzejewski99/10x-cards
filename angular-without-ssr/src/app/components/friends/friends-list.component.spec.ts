@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslocoTestingModule } from '@jsverse/transloco';
-import { MessageService } from 'primeng/api';
+import { ToastService } from '../../shared/services/toast.service';
 import { FriendsListComponent } from './friends-list.component';
 import { FriendshipService } from '../../services/friendship.service';
 import { NotificationService } from '../../services/notification.service';
@@ -10,7 +10,7 @@ describe('FriendsListComponent', () => {
   let component: FriendsListComponent;
   let fixture: ComponentFixture<FriendsListComponent>;
   let friendshipServiceMock: jasmine.SpyObj<FriendshipService>;
-  let messageServiceMock: jasmine.SpyObj<MessageService>;
+  let messageServiceMock: jasmine.SpyObj<ToastService>;
 
   const mockFriend: FriendDTO = {
     friendship_id: 'f1',
@@ -33,7 +33,7 @@ describe('FriendsListComponent', () => {
     friendshipServiceMock = jasmine.createSpyObj('FriendshipService', [
       'getFriends', 'getPendingRequests', 'sendRequest', 'respondToRequest', 'removeFriend', 'sendNudge'
     ]);
-    messageServiceMock = jasmine.createSpyObj('MessageService', ['add']);
+    messageServiceMock = jasmine.createSpyObj('ToastService', ['add']);
 
     friendshipServiceMock.getFriends.and.returnValue(Promise.resolve([mockFriend]));
     friendshipServiceMock.getPendingRequests.and.returnValue(Promise.resolve([mockRequest]));
@@ -52,7 +52,7 @@ describe('FriendsListComponent', () => {
       ]
     })
     .overrideComponent(FriendsListComponent, {
-      set: { providers: [{ provide: MessageService, useValue: messageServiceMock }] }
+      set: { providers: [{ provide: ToastService, useValue: messageServiceMock }] }
     })
     .compileComponents();
 

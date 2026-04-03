@@ -1,16 +1,10 @@
 <ng-container *transloco="let t; prefix: 'flashcards.import'">
-<p-dialog
+<app-dialog
   [header]="t('title')"
   [visible]="isVisible()"
   (visibleChange)="onClose()"
-  [modal]="true"
-  [closeOnEscape]="true"
   [dismissableMask]="true"
-  [draggable]="false"
-  [resizable]="false"
-  [style]="{width: '95vw', maxWidth: '700px'}"
-  styleClass="modern-dialog"
-  (onHide)="onClose()">
+  [maxWidth]="'700px'">
 
   @if (!isParsed()) {
     <div class="import__input">
@@ -129,6 +123,6 @@
       </div>
     </div>
   }
-</p-dialog>
+</app-dialog>
 
 </ng-container>

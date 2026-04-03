@@ -1,16 +1,14 @@
 import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, computed, input, output, InputSignal, OutputEmitterRef, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DialogModule } from 'primeng/dialog';
-import { TextareaModule } from 'primeng/textarea';
+import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
 import { FlashcardProposalDTO } from '../../../../types';
 
 @Component({
   selector: 'app-flashcard-proposal-list',
   imports: [
-    DialogModule,
-    FormsModule,
-    TextareaModule
+    DialogComponent,
+    FormsModule
   , TranslocoDirective],
   templateUrl: './flashcard-proposal-list.component.html',
   styleUrls: ['./flashcard-proposal-list.component.scss']

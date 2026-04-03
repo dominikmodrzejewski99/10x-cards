@@ -223,6 +223,11 @@
     "retry": "Spróbuj ponownie",
     "emptyTitle": "Brak publicznych zestawów",
     "emptyDesc": "Żaden zestaw nie pasuje do wyszukiwania. Spróbuj innych słów kluczowych.",
+    "copyConfirmTitle": "Kopiuj zestaw?",
+    "copyConfirmText": "Zestaw zostanie skopiowany do Twoich zestawów.",
+    "copyConfirmRemember": "Nie pytaj ponownie",
+    "copyConfirmCancel": "Anuluj",
+    "copyConfirmOk": "Kopiuj",
     "clearTags": "Wyczyść"
   },
   "reviewReminder": {

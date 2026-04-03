@@ -223,6 +223,11 @@
     "retry": "Réessayer",
     "emptyTitle": "Aucun set public",
     "emptyDesc": "Aucun set ne correspond à votre recherche. Essayez d'autres mots-clés.",
+    "copyConfirmTitle": "Copier ce set ?",
+    "copyConfirmText": "Le set sera copié dans vos sets.",
+    "copyConfirmRemember": "Ne plus demander",
+    "copyConfirmCancel": "Annuler",
+    "copyConfirmOk": "Copier",
     "clearTags": "Effacer"
   },
   "reviewReminder": {

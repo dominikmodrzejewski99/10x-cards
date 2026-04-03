@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of, throwError, Subject } from 'rxjs';
-import { MessageService, ConfirmationService, Confirmation } from 'primeng/api';
+import { of, throwError } from 'rxjs';
+import { ToastService } from '../../shared/services/toast.service';
+import { ConfirmService } from '../../shared/services/confirm.service';
 
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { SetListComponent } from './set-list.component';
@@ -14,8 +15,8 @@ describe('SetListComponent', () => {
   let fixture: ComponentFixture<SetListComponent>;
 
   let setApiMock: jasmine.SpyObj<FlashcardSetApiService>;
-  let messageServiceMock: jasmine.SpyObj<MessageService>;
-  let confirmationServiceMock: jasmine.SpyObj<ConfirmationService>;
+  let messageServiceMock: jasmine.SpyObj<ToastService>;
+  let confirmationServiceMock: jasmine.SpyObj<ConfirmService>;
   let routerMock: jasmine.SpyObj<Router>;
 
   const mockSet: FlashcardSetDTO = {
@@ -49,12 +50,8 @@ describe('SetListComponent', () => {
       'FlashcardSetApiService',
       ['getSets', 'createSet', 'updateSet', 'deleteSet']
     );
-    messageServiceMock = jasmine.createSpyObj<MessageService>('MessageService', ['add', 'clear']);
-    (messageServiceMock as unknown as Record<string, unknown>)['messageObserver'] = new Subject<unknown>();
-    (messageServiceMock as unknown as Record<string, unknown>)['clearObserver'] = new Subject<unknown>();
-
-    confirmationServiceMock = jasmine.createSpyObj<ConfirmationService>('ConfirmationService', ['confirm']);
-    (confirmationServiceMock as unknown as Record<string, unknown>)['requireConfirmation$'] = new Subject<Confirmation>();
+    messageServiceMock = jasmine.createSpyObj<ToastService>('ToastService', ['add', 'clear']);
+    confirmationServiceMock = jasmine.createSpyObj<ConfirmService>('ConfirmService', ['confirm']);
 
     routerMock = jasmine.createSpyObj<Router>('Router', ['navigate']);
 
@@ -75,11 +72,11 @@ describe('SetListComponent', () => {
       ]
     })
     .overrideComponent(SetListComponent, {
-      remove: { providers: [MessageService, ConfirmationService] },
+      remove: { providers: [ToastService, ConfirmService] },
       add: {
         providers: [
-          { provide: MessageService, useValue: messageServiceMock },
-          { provide: ConfirmationService, useValue: confirmationServiceMock }
+          { provide: ToastService, useValue: messageServiceMock },
+          { provide: ConfirmService, useValue: confirmationServiceMock }
         ]
       }
     })
@@ -196,18 +193,13 @@ describe('SetListComponent', () => {
   });
 
   describe('deleteSet', () => {
-    it('should delete a set after confirmation', () => {
+    it('should delete a set after confirmation', async () => {
       fixture.detectChanges();
       setApiMock.deleteSet.and.returnValue(of(undefined));
 
-      confirmationServiceMock.confirm.and.callFake((confirmation: Confirmation) => {
-        if (confirmation.accept) {
-          confirmation.accept();
-        }
-        return confirmationServiceMock;
-      });
+      confirmationServiceMock.confirm.and.returnValue(Promise.resolve(true));
 
-      component.deleteSet(mockSet);
+      await component.deleteSet(mockSet);
 
       expect(confirmationServiceMock.confirm).toHaveBeenCalled();
       expect(setApiMock.deleteSet).toHaveBeenCalledWith(1);
@@ -217,18 +209,13 @@ describe('SetListComponent', () => {
       );
     });
 
-    it('should handle error on delete failure', () => {
+    it('should handle error on delete failure', async () => {
       fixture.detectChanges();
       setApiMock.deleteSet.and.returnValue(throwError(() => new Error('Delete failed')));
 
-      confirmationServiceMock.confirm.and.callFake((confirmation: Confirmation) => {
-        if (confirmation.accept) {
-          confirmation.accept();
-        }
-        return confirmationServiceMock;
-      });
+      confirmationServiceMock.confirm.and.returnValue(Promise.resolve(true));
 
-      component.deleteSet(mockSet);
+      await component.deleteSet(mockSet);
 
       expect(component.state().loading).toBeFalse();
       expect(messageServiceMock.add).toHaveBeenCalledWith(

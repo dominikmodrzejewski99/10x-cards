@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslocoTestingModule } from '@jsverse/transloco';
-import { MessageService } from 'primeng/api';
+import { ToastService } from '../../shared/services/toast.service';
 import { of, throwError } from 'rxjs';
 import { FeedbackComponent } from './feedback.component';
 import { FeedbackApiService } from '../../services/feedback-api.service';
@@ -36,7 +36,7 @@ describe('FeedbackComponent', () => {
       ],
       providers: [
         { provide: FeedbackApiService, useValue: mockFeedbackApi },
-        MessageService,
+        ToastService,
       ]
     });
 

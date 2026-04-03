@@ -1,10 +1,9 @@
 import { Component, OnInit, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
-import { DialogModule } from 'primeng/dialog';
-import { ToastModule } from 'primeng/toast';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { DialogComponent } from '../../shared/components/dialog/dialog.component';
+import { ToastService } from '../../shared/services/toast.service';
+import { ConfirmService } from '../../shared/services/confirm.service';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
@@ -30,14 +29,11 @@ interface SetListState {
   imports: [
     FormsModule,
     RouterModule,
-    DialogModule,
-    ToastModule,
-    ConfirmDialogModule,
+    DialogComponent,
     NgxSkeletonLoaderModule,
     TranslocoDirective,
     TagInputComponent
   ],
-  providers: [MessageService, ConfirmationService],
   templateUrl: './set-list.component.html',
   styleUrls: ['./set-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -45,8 +41,8 @@ interface SetListState {
 export class SetListComponent implements OnInit {
   private setApi = inject(FlashcardSetApiService);
   private shareService = inject(ShareService);
-  private messageService = inject(MessageService);
-  private confirmationService = inject(ConfirmationService);
+  private toastService = inject(ToastService);
+  private confirmService = inject(ConfirmService);
   private router = inject(Router);
   private route: ActivatedRoute = inject(ActivatedRoute);
   private exploreService = inject(ExploreService);
@@ -89,7 +85,7 @@ export class SetListComponent implements OnInit {
           loading: false,
           error: 'Nie udało się załadować zestawów.'
         }));
-        this.messageService.add({
+        this.toastService.add({
           severity: 'error',
           summary: 'Błąd',
           detail: 'Nie udało się załadować zestawów.',
@@ -164,7 +160,7 @@ export class SetListComponent implements OnInit {
             formSaving: false
           }));
           this.closeDialog();
-          this.messageService.add({
+          this.toastService.add({
             severity: 'success',
             summary: 'Sukces',
             detail: 'Zestaw został zaktualizowany.'
@@ -172,7 +168,7 @@ export class SetListComponent implements OnInit {
         },
         error: () => {
           this.state.update(s => ({ ...s, formSaving: false }));
-          this.messageService.add({
+          this.toastService.add({
             severity: 'error',
             summary: 'Błąd',
             detail: 'Nie udało się zaktualizować zestawu.'
@@ -193,7 +189,7 @@ export class SetListComponent implements OnInit {
             formSaving: false
           }));
           this.closeDialog();
-          this.messageService.add({
+          this.toastService.add({
             severity: 'success',
             summary: 'Sukces',
             detail: 'Zestaw został utworzony.'
@@ -201,7 +197,7 @@ export class SetListComponent implements OnInit {
         },
         error: () => {
           this.state.update(s => ({ ...s, formSaving: false }));
-          this.messageService.add({
+          this.toastService.add({
             severity: 'error',
             summary: 'Błąd',
             detail: 'Nie udało się utworzyć zestawu.'
@@ -211,39 +207,40 @@ export class SetListComponent implements OnInit {
     }
   }
 
-  deleteSet(set: FlashcardSetDTO): void {
-    this.confirmationService.confirm({
+  async deleteSet(set: FlashcardSetDTO): Promise<void> {
+    const confirmed = await this.confirmService.confirm({
       message: `Czy na pewno chcesz usunąć zestaw „${set.name}"? Wszystkie fiszki z tego zestawu zostaną również usunięte.`,
       header: 'Potwierdzenie usunięcia',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Tak',
       rejectLabel: 'Nie',
-      accept: () => {
-        this.state.update(s => ({ ...s, loading: true }));
-        this.setApi.deleteSet(set.id).subscribe({
-          next: () => {
-            this.state.update(s => ({
-              ...s,
-              sets: s.sets.filter(st => st.id !== set.id),
-              loading: false
-            }));
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Sukces',
-              detail: 'Zestaw został usunięty.'
-            });
-          },
-          error: () => {
-            this.state.update(s => ({ ...s, loading: false }));
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Błąd',
-              detail: 'Nie udało się usunąć zestawu.'
-            });
-          }
-        });
-      }
+      acceptClass: 'danger'
     });
+    if (confirmed) {
+      this.state.update(s => ({ ...s, loading: true }));
+      this.setApi.deleteSet(set.id).subscribe({
+        next: () => {
+          this.state.update(s => ({
+            ...s,
+            sets: s.sets.filter(st => st.id !== set.id),
+            loading: false
+          }));
+          this.toastService.add({
+            severity: 'success',
+            summary: 'Sukces',
+            detail: 'Zestaw został usunięty.'
+          });
+        },
+        error: () => {
+          this.state.update(s => ({ ...s, loading: false }));
+          this.toastService.add({
+            severity: 'error',
+            summary: 'Błąd',
+            detail: 'Nie udało się usunąć zestawu.'
+          });
+        }
+      });
+    }
   }
 
   navigateToSet(set: FlashcardSetDTO): void {
@@ -263,13 +260,13 @@ export class SetListComponent implements OnInit {
       const link = await this.shareService.createShareLink(set.id);
       const url = this.shareService.buildShareUrl(link.id);
       await navigator.clipboard.writeText(url);
-      this.messageService.add({
+      this.toastService.add({
         severity: 'success',
         summary: 'Skopiowano',
         detail: 'Link do udostępnienia skopiowany do schowka (ważny 7 dni)',
       });
     } catch {
-      this.messageService.add({
+      this.toastService.add({
         severity: 'error',
         summary: 'Błąd',
         detail: 'Nie udało się wygenerować linku',
@@ -277,74 +274,74 @@ export class SetListComponent implements OnInit {
     }
   }
 
-  publishSet(set: FlashcardSetDTO): void {
-    this.confirmationService.confirm({
+  async publishSet(set: FlashcardSetDTO): Promise<void> {
+    const confirmed = await this.confirmService.confirm({
       message: `Czy na pewno chcesz opublikować zestaw „${set.name}"? Będzie widoczny dla wszystkich użytkowników.`,
       header: 'Publikacja zestawu',
       icon: 'pi pi-globe',
       acceptLabel: 'Opublikuj',
-      rejectLabel: 'Anuluj',
-      accept: () => {
-        this.exploreService.publishSet(set.id).subscribe({
-          next: () => {
-            this.state.update(s => ({
-              ...s,
-              sets: s.sets.map(st => st.id === set.id
-                ? { ...st, is_public: true, published_at: new Date().toISOString(), copy_count: st.copy_count ?? 0 }
-                : st
-              )
-            }));
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Opublikowano',
-              detail: 'Zestaw jest teraz publiczny.'
-            });
-          },
-          error: () => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Błąd',
-              detail: 'Nie udało się opublikować zestawu.'
-            });
-          }
-        });
-      }
+      rejectLabel: 'Anuluj'
     });
+    if (confirmed) {
+      this.exploreService.publishSet(set.id).subscribe({
+        next: () => {
+          this.state.update(s => ({
+            ...s,
+            sets: s.sets.map(st => st.id === set.id
+              ? { ...st, is_public: true, published_at: new Date().toISOString(), copy_count: st.copy_count ?? 0 }
+              : st
+            )
+          }));
+          this.toastService.add({
+            severity: 'success',
+            summary: 'Opublikowano',
+            detail: 'Zestaw jest teraz publiczny.'
+          });
+        },
+        error: () => {
+          this.toastService.add({
+            severity: 'error',
+            summary: 'Błąd',
+            detail: 'Nie udało się opublikować zestawu.'
+          });
+        }
+      });
+    }
   }
 
-  unpublishSet(set: FlashcardSetDTO): void {
-    this.confirmationService.confirm({
+  async unpublishSet(set: FlashcardSetDTO): Promise<void> {
+    const confirmed = await this.confirmService.confirm({
       message: `Czy na pewno chcesz ukryć zestaw „${set.name}"? Nie będzie już widoczny publicznie.`,
       header: 'Ukrycie zestawu',
       icon: 'pi pi-lock',
       acceptLabel: 'Ukryj',
-      rejectLabel: 'Anuluj',
-      accept: () => {
-        this.exploreService.unpublishSet(set.id).subscribe({
-          next: () => {
-            this.state.update(s => ({
-              ...s,
-              sets: s.sets.map(st => st.id === set.id
-                ? { ...st, is_public: false }
-                : st
-              )
-            }));
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Ukryto',
-              detail: 'Zestaw nie jest już publiczny.'
-            });
-          },
-          error: () => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Błąd',
-              detail: 'Nie udało się ukryć zestawu.'
-            });
-          }
-        });
-      }
+      rejectLabel: 'Anuluj'
     });
+    if (confirmed) {
+      this.exploreService.unpublishSet(set.id).subscribe({
+        next: () => {
+          this.state.update(s => ({
+            ...s,
+            sets: s.sets.map(st => st.id === set.id
+              ? { ...st, is_public: false }
+              : st
+            )
+          }));
+          this.toastService.add({
+            severity: 'success',
+            summary: 'Ukryto',
+            detail: 'Zestaw nie jest już publiczny.'
+          });
+        },
+        error: () => {
+          this.toastService.add({
+            severity: 'error',
+            summary: 'Błąd',
+            detail: 'Nie udało się ukryć zestawu.'
+          });
+        }
+      });
+    }
   }
 
   formatDate(dateStr: string): string {

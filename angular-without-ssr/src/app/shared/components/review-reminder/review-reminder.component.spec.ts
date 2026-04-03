@@ -95,9 +95,9 @@ describe('ReviewReminderComponent', () => {
     expect(hostComponent.dismissCalled).toBeTrue();
   });
 
-  it('should render p-dialog element', () => {
+  it('should render app-dialog element', () => {
     const el: HTMLElement = fixture.nativeElement;
-    const dialog: Element | null = el.querySelector('p-dialog');
+    const dialog: Element | null = el.querySelector('app-dialog');
     expect(dialog).toBeTruthy();
   });
 });

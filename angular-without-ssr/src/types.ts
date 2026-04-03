@@ -211,6 +211,7 @@ export interface UserPreferencesDTO {
   pomodoro_sound_enabled: boolean;
   pomodoro_notifications_enabled: boolean;
   pomodoro_focus_reminder_dismissed: boolean;
+  dismissed_dialogs: string[];
   created_at: string;
   updated_at: string;
 }

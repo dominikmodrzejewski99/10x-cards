@@ -1,13 +1,10 @@
 import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, OnInit, OnDestroy, signal, inject, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DialogModule } from 'primeng/dialog';
-import { ToastModule } from 'primeng/toast';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { InputTextModule } from 'primeng/inputtext';
-import { TooltipModule } from 'primeng/tooltip';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { DialogComponent } from '../../shared/components/dialog/dialog.component';
+import { ToastService } from '../../shared/services/toast.service';
+import { ConfirmService } from '../../shared/services/confirm.service';
+import { SpinnerComponent } from '../../shared/components/spinner/spinner.component';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -22,7 +19,6 @@ import { FlashcardFormComponent, FlashcardFormData } from './flashcard-form/flas
 import { ImportModalComponent } from './import-modal/import-modal.component';
 import { PrintTestConfigComponent } from './print-test-config/print-test-config.component';
 import { FlashcardDTO, FlashcardProposalDTO } from '../../../types';
-import {Button} from 'primeng/button';
 
 interface FlashcardListState {
   flashcards: FlashcardDTO[];
@@ -44,21 +40,15 @@ interface FlashcardListState {
 @Component({
   selector: 'app-flashcard-list',
   imports: [
-    DialogModule,
-    ToastModule,
-    ConfirmDialogModule,
-    ProgressSpinnerModule,
-    InputTextModule,
-    TooltipModule,
+    DialogComponent,
+    SpinnerComponent,
     FlashcardTableComponent,
     FlashcardFormComponent,
     ImportModalComponent,
     PrintTestConfigComponent,
     RouterModule,
-    TranslocoDirective,
-    Button
+    TranslocoDirective
   ],
-  providers: [MessageService, ConfirmationService],
   templateUrl: './flashcard-list.component.html',
   styleUrls: ['./flashcard-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -67,8 +57,8 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
   private flashcardApiService: FlashcardApiService = inject(FlashcardApiService);
   private flashcardSetApiService: FlashcardSetApiService = inject(FlashcardSetApiService);
   private flashcardExportService: FlashcardExportService = inject(FlashcardExportService);
-  private messageService: MessageService = inject(MessageService);
-  private confirmationService: ConfirmationService = inject(ConfirmationService);
+  private toastService: ToastService = inject(ToastService);
+  private confirmService = inject(ConfirmService);
   private router: Router = inject(Router);
   private route: ActivatedRoute = inject(ActivatedRoute);
   private destroyRef: DestroyRef = inject(DestroyRef);
@@ -122,7 +112,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
 
     const shared = this.route.snapshot.queryParams['shared'];
     if (shared) {
-      this.messageService.add({
+      this.toastService.add({
         severity: 'success',
         summary: 'Skopiowano',
         detail: 'Zestaw został skopiowany na Twoje konto',
@@ -205,7 +195,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
           errorMessage = 'Musisz być zalogowany, aby zobaczyć swoje fiszki.';
 
           // Wyświetlamy komunikat w toaście
-          this.messageService.add({
+          this.toastService.add({
             severity: 'error',
             summary: 'Błąd autoryzacji',
             detail: errorMessage,
@@ -279,7 +269,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
             loading: false
           }));
           this.onCloseFormModal();
-          this.messageService.add({
+          this.toastService.add({
             severity: 'success',
             summary: 'Sukces',
             detail: 'Fiszka została zaktualizowana.'
@@ -305,7 +295,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
             loading: false
           }));
           this.onCloseFormModal();
-          this.messageService.add({
+          this.toastService.add({
             severity: 'success',
             summary: 'Sukces',
             detail: 'Nowa fiszka została dodana.'
@@ -317,86 +307,88 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
   }
 
   // Obsługa usuwania fiszki
-  handleDelete(flashcard: FlashcardDTO): void {
-    this.confirmationService.confirm({
+  async handleDelete(flashcard: FlashcardDTO): Promise<void> {
+    const confirmed = await this.confirmService.confirm({
       message: `Czy na pewno chcesz usunąć fiszkę "${flashcard.front}"?`,
       header: 'Potwierdzenie usunięcia',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Tak',
       rejectLabel: 'Nie',
-      accept: () => {
-        this.state.update(state => ({
-          ...state,
-          loading: true
-        }));
-
-        this.flashcardApiService.deleteFlashcard(flashcard.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-          next: () => {
-            this.state.update(state => ({
-              ...state,
-              flashcards: state.flashcards.filter(f => f.id !== flashcard.id),
-              totalRecords: state.totalRecords - 1,
-              loading: false
-            }));
-            if (this.state().flashcards.length === 0 && this.state().first > 0) {
-              this.loadFlashcards({ first: Math.max(0, this.state().first - this.state().rows) });
-            } else {
-              this.loadFlashcards();
-            }
-            this.showUndoDelete(flashcard);
-          },
-          error: (error) => this.handleApiError(error, 'usuwania')
-        });
-      }
+      acceptClass: 'danger'
     });
+    if (confirmed) {
+      this.state.update(state => ({
+        ...state,
+        loading: true
+      }));
+
+      this.flashcardApiService.deleteFlashcard(flashcard.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+        next: () => {
+          this.state.update(state => ({
+            ...state,
+            flashcards: state.flashcards.filter(f => f.id !== flashcard.id),
+            totalRecords: state.totalRecords - 1,
+            loading: false
+          }));
+          if (this.state().flashcards.length === 0 && this.state().first > 0) {
+            this.loadFlashcards({ first: Math.max(0, this.state().first - this.state().rows) });
+          } else {
+            this.loadFlashcards();
+          }
+          this.showUndoDelete(flashcard);
+        },
+        error: (error) => this.handleApiError(error, 'usuwania')
+      });
+    }
   }
 
-  handleBulkDelete(ids: number[]): void {
-    this.confirmationService.confirm({
+  async handleBulkDelete(ids: number[]): Promise<void> {
+    const confirmed = await this.confirmService.confirm({
       message: `Czy na pewno chcesz usunąć ${ids.length} ${ids.length === 1 ? 'fiszkę' : (ids.length < 5 ? 'fiszki' : 'fiszek')}?`,
       header: 'Potwierdzenie usunięcia',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Tak',
       rejectLabel: 'Nie',
-      accept: () => {
-        this.state.update(state => ({ ...state, loading: true }));
-
-        const deleteObservables = ids.map(id =>
-          this.flashcardApiService.deleteFlashcard(id).pipe(
-            catchError(() => of({ error: true, id }))
-          )
-        );
-        forkJoin(deleteObservables).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-          next: (results) => {
-            const failed = results.filter((r): r is { error: true; id: number } => typeof r === 'object' && r !== null && 'error' in r);
-            const successCount = ids.length - failed.length;
-
-            if (failed.length === 0) {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Sukces',
-                detail: `Usunięto ${successCount} ${successCount === 1 ? 'fiszkę' : (successCount < 5 ? 'fiszki' : 'fiszek')}.`
-              });
-            } else if (successCount > 0) {
-              this.messageService.add({
-                severity: 'warn',
-                summary: 'Częściowy sukces',
-                detail: `Usunięto ${successCount} z ${ids.length}. Nie udało się usunąć ${failed.length}.`,
-                life: 5000
-              });
-            } else {
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Błąd',
-                detail: 'Nie udało się usunąć fiszek. Spróbuj ponownie.',
-                life: 5000
-              });
-            }
-            this.loadFlashcards();
-          }
-        });
-      }
+      acceptClass: 'danger'
     });
+    if (confirmed) {
+      this.state.update(state => ({ ...state, loading: true }));
+
+      const deleteObservables = ids.map(id =>
+        this.flashcardApiService.deleteFlashcard(id).pipe(
+          catchError(() => of({ error: true, id }))
+        )
+      );
+      forkJoin(deleteObservables).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+        next: (results) => {
+          const failed = results.filter((r): r is { error: true; id: number } => typeof r === 'object' && r !== null && 'error' in r);
+          const successCount = ids.length - failed.length;
+
+          if (failed.length === 0) {
+            this.toastService.add({
+              severity: 'success',
+              summary: 'Sukces',
+              detail: `Usunięto ${successCount} ${successCount === 1 ? 'fiszkę' : (successCount < 5 ? 'fiszki' : 'fiszek')}.`
+            });
+          } else if (successCount > 0) {
+            this.toastService.add({
+              severity: 'warn',
+              summary: 'Częściowy sukces',
+              detail: `Usunięto ${successCount} z ${ids.length}. Nie udało się usunąć ${failed.length}.`,
+              life: 5000
+            });
+          } else {
+            this.toastService.add({
+              severity: 'error',
+              summary: 'Błąd',
+              detail: 'Nie udało się usunąć fiszek. Spróbuj ponownie.',
+              life: 5000
+            });
+          }
+          this.loadFlashcards();
+        }
+      });
+    }
   }
 
   onPageChange(event: { first: number; rows: number }): void {
@@ -447,14 +439,14 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
       next: () => {
-        this.messageService.add({
+        this.toastService.add({
           severity: 'success',
           summary: 'Sukces',
           detail: 'Kolejność fiszek została zmieniona.'
         });
       },
       error: () => {
-        this.messageService.add({
+        this.toastService.add({
           severity: 'error',
           summary: 'Błąd',
           detail: 'Nie udało się zapisać kolejności. Odświeżam...',
@@ -505,7 +497,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
     this.flashcardApiService.createFlashcards(proposals, this.state().setId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (savedFlashcards) => {
         this.state.update(s => ({ ...s, isImportModalVisible: false, loading: false }));
-        this.messageService.add({
+        this.toastService.add({
           severity: 'success',
           summary: 'Sukces',
           detail: `Zaimportowano ${savedFlashcards.length} fiszek.`
@@ -539,7 +531,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
       const link = await this.shareService.createShareLink(setId);
       this.shareLink.set(this.shareService.buildShareUrl(link.id));
     } catch {
-      this.messageService.add({
+      this.toastService.add({
         severity: 'error',
         summary: 'Błąd',
         detail: 'Nie udało się wygenerować linku',
@@ -555,13 +547,13 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
     if (!link) return;
     try {
       await navigator.clipboard.writeText(link);
-      this.messageService.add({
+      this.toastService.add({
         severity: 'success',
         summary: 'Skopiowano',
         detail: 'Link skopiowany do schowka',
       });
     } catch {
-      this.messageService.add({
+      this.toastService.add({
         severity: 'error',
         summary: 'Błąd',
         detail: 'Nie udało się skopiować linku',
@@ -578,7 +570,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
     this.fetchAllFlashcards((flashcards: FlashcardDTO[]) => {
       const opened: boolean = this.printTestService.generateAndPrint(flashcards, config);
       if (!opened) {
-        this.messageService.add({
+        this.toastService.add({
           severity: 'warn',
           summary: 'Popup zablokowany',
           detail: 'Odblokuj wyskakujące okienka w przeglądarce, aby wydrukować test.',
@@ -607,7 +599,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
         this.state.update(s => ({ ...s, loading: false }));
         callback(response.flashcards);
         if (successMessage) {
-          this.messageService.add({
+          this.toastService.add({
             severity: 'success',
             summary: 'Sukces',
             detail: successMessage
@@ -644,14 +636,14 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
     }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: () => {
         this.loadFlashcards();
-        this.messageService.add({
+        this.toastService.add({
           severity: 'success',
           summary: 'Przywrócono',
           detail: 'Fiszka została przywrócona.'
         });
       },
       error: () => {
-        this.messageService.add({
+        this.toastService.add({
           severity: 'error',
           summary: 'Błąd',
           detail: 'Nie udało się przywrócić fiszki.'
@@ -696,7 +688,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
       error: errorMessage
     }));
 
-    this.messageService.add({
+    this.toastService.add({
       severity: 'error',
       summary: summary,
       detail: errorMessage,

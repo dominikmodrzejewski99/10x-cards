@@ -31,7 +31,6 @@
       <div class="quiz-question__written">
         <input
           type="text"
-          pInputText
           class="quiz-question__input"
           [class.quiz-question__input--correct]="isAnsweredSignal() && isCorrectSignal()"
           [class.quiz-question__input--wrong]="isAnsweredSignal() && !isCorrectSignal()"

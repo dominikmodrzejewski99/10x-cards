@@ -64,16 +64,11 @@
   }
 </div>
 
-<p-dialog
-  [(visible)]="editDialogVisible"
-  [style]="{width: '560px'}"
-  [modal]="true"
-  [draggable]="false"
-  [resizable]="false"
-  [closeOnEscape]="true"
+<app-dialog
+  [visible]="editDialogVisible"
+  (visibleChange)="editDialogVisible = $event"
+  [maxWidth]="'560px'"
   [dismissableMask]="true"
-  [baseZIndex]="1000"
-  styleClass="edit-dialog-custom"
   [header]="t('editDialog')">
 
   <div class="edit-form">
@@ -81,9 +76,7 @@
       <label for="front" class="edit-form__label">{{ t('frontQuestion') }}</label>
       <textarea
         id="front"
-        pTextarea
         [(ngModel)]="editedProposal.front"
-        [autoResize]="true"
         rows="3"
         class="edit-form__textarea"
         [placeholder]="t('frontPlaceholder')">
@@ -93,9 +86,7 @@
       <label for="back" class="edit-form__label">{{ t('backAnswer') }}</label>
       <textarea
         id="back"
-        pTextarea
         [(ngModel)]="editedProposal.back"
-        [autoResize]="true"
         rows="3"
         class="edit-form__textarea"
         [placeholder]="t('backPlaceholder')">
@@ -103,7 +94,7 @@
     </div>
   </div>
 
-  <ng-template pTemplate="footer">
+  <div dialogFooter>
     <div class="edit-form__footer">
       <button class="edit-form__btn edit-form__btn--cancel" (click)="closeEditDialog()">
         {{ t('cancel') }}
@@ -112,7 +103,7 @@
         <i class="pi pi-check"></i> {{ t('save') }}
       </button>
     </div>
-  </ng-template>
-</p-dialog>
+  </div>
+</app-dialog>
 
 </ng-container>

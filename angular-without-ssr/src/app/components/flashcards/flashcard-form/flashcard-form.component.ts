@@ -2,9 +2,6 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, OnInit, OnDestroy, WritableSignal, signal, effect, inject, input, output, InputSignal, OutputEmitterRef, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
-import { TextareaModule } from 'primeng/textarea';
-import { SelectModule } from 'primeng/select';
 import { FlashcardDTO, FlashcardLanguage } from '../../../../types';
 import { ImageUploadService } from '../../../services/image-upload.service';
 import { OpenRouterService } from '../../../services/openrouter.service';
@@ -35,12 +32,10 @@ export interface FlashcardFormData {
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    InputTextModule,
-    TextareaModule,
-    SelectModule,
     AudioRecorderComponent,
-    AudioPlayerComponent
-  , TranslocoDirective],
+    AudioPlayerComponent,
+    TranslocoDirective
+  ],
   templateUrl: './flashcard-form.component.html',
   styleUrls: ['./flashcard-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

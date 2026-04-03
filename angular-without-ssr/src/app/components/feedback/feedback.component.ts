@@ -1,15 +1,13 @@
 import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { MessageService } from 'primeng/api';
-import { ToastModule } from 'primeng/toast';
+import { ToastService } from '../../shared/services/toast.service';
 import { FeedbackApiService } from '../../services/feedback-api.service';
 import { FeedbackType } from '../../../types';
 
 @Component({
   selector: 'app-feedback',
-  imports: [ReactiveFormsModule, TranslocoDirective, ToastModule],
-  providers: [MessageService],
+  imports: [ReactiveFormsModule, TranslocoDirective],
   templateUrl: './feedback.component.html',
   styleUrls: ['./feedback.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -17,7 +15,7 @@ import { FeedbackType } from '../../../types';
 export class FeedbackComponent {
   private fb: FormBuilder = inject(FormBuilder);
   private feedbackApi: FeedbackApiService = inject(FeedbackApiService);
-  private messageService: MessageService = inject(MessageService);
+  private toastService: ToastService = inject(ToastService);
 
   readonly submittingSignal = signal<boolean>(false);
   readonly submittedSignal = signal<boolean>(false);
@@ -49,7 +47,7 @@ export class FeedbackComponent {
         this.submittingSignal.set(false);
         this.submittedSignal.set(true);
         this.feedbackForm.reset();
-        this.messageService.add({
+        this.toastService.add({
           severity: 'success',
           summary: '',
           detail: this.selectedTypeSignal() === 'bug' ? 'Zgłoszenie wysłane!' : 'Pomysł wysłany!',
@@ -58,7 +56,7 @@ export class FeedbackComponent {
       },
       error: () => {
         this.submittingSignal.set(false);
-        this.messageService.add({
+        this.toastService.add({
           severity: 'error',
           summary: '',
           detail: 'Nie udało się wysłać. Spróbuj ponownie.',

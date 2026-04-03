@@ -1,12 +1,13 @@
 import { Component, ChangeDetectionStrategy, AfterViewInit, ViewChild, inject, effect, Signal, WritableSignal, signal, OnDestroy } from '@angular/core';
 import { Router, RouterModule, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
-import { ToastModule } from 'primeng/toast';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AuthNavbarComponent } from './shared/components/auth-navbar.component';
 import { BottomNavComponent } from './shared/components/bottom-nav/bottom-nav.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
 import { CookieConsentComponent } from './shared/components/cookie-consent/cookie-consent.component';
+import { ToastComponent } from './shared/components/toast/toast.component';
+import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AuthStore } from './auth/store';
 import { UpdateService } from './services/update.service';
@@ -16,7 +17,7 @@ import { UpdateService } from './services/update.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, ToastModule, AuthNavbarComponent, BottomNavComponent, OnboardingComponent, CookieConsentComponent, TranslocoPipe],
+  imports: [RouterModule, AuthNavbarComponent, BottomNavComponent, OnboardingComponent, CookieConsentComponent, TranslocoPipe, ToastComponent, ConfirmDialogComponent],
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
   private readonly authStore = inject(AuthStore);

@@ -27,7 +27,7 @@
 
   @if (loading()) {
     <div class="friends__loading">
-      <p-progressSpinner [style]="{width: '40px', height: '40px'}" />
+      <app-spinner />
     </div>
   } @else {
     <!-- Pending Requests -->
@@ -111,5 +111,4 @@
   }
 </div>
 
-<p-toast position="bottom-center"></p-toast>
 </ng-container>

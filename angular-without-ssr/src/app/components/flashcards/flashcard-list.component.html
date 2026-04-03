@@ -83,18 +83,12 @@
     </app-flashcard-table>
   </div>
 
-  <p-dialog
+  <app-dialog
     [header]="state().flashcardBeingEdited ? t('editDialog') : t('addDialog')"
     [visible]="state().isFormModalVisible"
     (visibleChange)="onCloseFormModal()"
-    [modal]="true"
-    [closeOnEscape]="true"
     [dismissableMask]="true"
-    [draggable]="false"
-    [resizable]="false"
-    [style]="{width: '95vw', maxWidth: '560px'}"
-    styleClass="modern-dialog"
-    (onHide)="onCloseFormModal()"
+    [maxWidth]="'560px'"
     data-test-id="flashcard-dialog">
     <app-flashcard-form
       [isVisible]="state().isFormModalVisible"
@@ -102,7 +96,7 @@
       (save)="onSave($event)"
       (close)="onCloseFormModal()">
     </app-flashcard-form>
-  </p-dialog>
+  </app-dialog>
 
   @if (lastDeletedSignal()) {
     <div class="flist__undo">
@@ -114,14 +108,6 @@
     </div>
   }
 
-  <p-toast position="bottom-center"></p-toast>
-  <p-confirmDialog
-    styleClass="modern-dialog"
-    [style]="{width: '95vw', maxWidth: '420px'}"
-    icon="pi pi-exclamation-triangle"
-    data-test-id="confirm-dialog">
-  </p-confirmDialog>
-
   <app-import-modal
     [isVisible]="state().isImportModalVisible"
     [setId]="state().setId"
@@ -132,21 +118,16 @@
   </app-import-modal>
 </div>
 
-<p-dialog
+<app-dialog
   [header]="t('shareTitle')"
   [visible]="shareDialogVisible()"
   (visibleChange)="shareDialogVisible.set($event)"
-  [modal]="true"
-  [closeOnEscape]="true"
   [dismissableMask]="true"
-  [draggable]="false"
-  [resizable]="false"
-  [style]="{width: '95vw', maxWidth: '500px'}"
-  styleClass="modern-dialog">
+  [maxWidth]="'500px'">
 
   @if (shareLoading()) {
     <div style="text-align: center; padding: 2rem;">
-      <p-progressSpinner />
+      <app-spinner />
     </div>
   } @else if (shareLink()) {
     <div class="flist__share-dialog">
@@ -156,39 +137,28 @@
       <div class="flist__share-link-row">
         <input
           type="text"
-          pInputText
           [value]="shareLink()"
           readonly
           class="flist__share-input"
         />
-        <p-button
-          icon="pi pi-copy"
-          (onClick)="copyShareLink()"
-          styleClass="p-button-outlined"
-          [pTooltip]="t('copyLink')"
-        />
+        <button class="flist__copy-btn" (click)="copyShareLink()" [title]="t('copyLink')"><i class="pi pi-copy"></i></button>
       </div>
     </div>
   }
-</p-dialog>
+</app-dialog>
 
-<p-dialog
+<app-dialog
   [header]="t('printTestTitle')"
   [visible]="printTestDialogVisible()"
   (visibleChange)="printTestDialogVisible.set($event)"
-  [modal]="true"
-  [closeOnEscape]="true"
   [dismissableMask]="true"
-  [draggable]="false"
-  [resizable]="false"
-  [style]="{width: '95vw', maxWidth: '500px'}"
-  styleClass="modern-dialog">
+  [maxWidth]="'500px'">
   <app-print-test-config
     [setName]="state().setName"
     [cardCount]="state().totalRecords"
     (print)="onPrintTest($event)"
     (close)="printTestDialogVisible.set(false)">
   </app-print-test-config>
-</p-dialog>
+</app-dialog>
 
 </ng-container>

@@ -2,18 +2,17 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ShareService } from '../../services/share.service';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { ButtonModule } from 'primeng/button';
+import { SpinnerComponent } from '../../shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-share-accept',
   standalone: true,
-  imports: [ProgressSpinnerModule, ButtonModule, TranslocoDirective],
+  imports: [SpinnerComponent, TranslocoDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-container *transloco="let t; prefix: 'share'">
     @if (loading()) {
       <div class="share-accept">
-        <p-progressSpinner />
+        <app-spinner />
         <p>{{ t('loading') }}</p>
       </div>
     } @else if (error()) {
@@ -21,7 +20,7 @@ import { ButtonModule } from 'primeng/button';
         <i class="pi pi-exclamation-triangle share-accept__icon"></i>
         <h2>{{ t('errorTitle') }}</h2>
         <p>{{ error() }}</p>
-        <p-button [label]="t('goToDashboard')" (onClick)="goToDashboard()" />
+        <button class="share-accept__btn" (click)="goToDashboard()">{{ t('goToDashboard') }}</button>
       </div>
     }
   </ng-container>`,

@@ -9,7 +9,7 @@
 
   @if (loading()) {
     <div class="fstats__loading">
-      <p-progressSpinner [style]="{width: '40px', height: '40px'}" />
+      <app-spinner />
     </div>
   } @else if (!friendStats() || !myStats()) {
     <div class="fstats__error">
@@ -71,5 +71,4 @@
   }
 </div>
 
-<p-toast position="bottom-center"></p-toast>
 </ng-container>

@@ -1,23 +1,23 @@
 import { TestBed } from '@angular/core/testing';
 import { NgZone } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { ToastService } from '../shared/services/toast.service';
 import { GlobalErrorHandler } from './global-error-handler';
 import { SentryService } from './sentry.service';
 
 describe('GlobalErrorHandler', () => {
   let handler: GlobalErrorHandler;
-  let messageServiceSpy: jasmine.SpyObj<MessageService>;
+  let toastServiceSpy: jasmine.SpyObj<ToastService>;
   let sentryServiceSpy: jasmine.SpyObj<SentryService>;
   let ngZone: NgZone;
 
   beforeEach(() => {
-    messageServiceSpy = jasmine.createSpyObj<MessageService>('MessageService', ['add']);
+    toastServiceSpy = jasmine.createSpyObj<ToastService>('ToastService', ['add']);
     sentryServiceSpy = jasmine.createSpyObj<SentryService>('SentryService', ['captureException']);
 
     TestBed.configureTestingModule({
       providers: [
         GlobalErrorHandler,
-        { provide: MessageService, useValue: messageServiceSpy },
+        { provide: ToastService, useValue: toastServiceSpy },
         { provide: SentryService, useValue: sentryServiceSpy },
       ],
     });
@@ -39,7 +39,7 @@ describe('GlobalErrorHandler', () => {
 
       expect(console.error).toHaveBeenCalledWith('[GlobalErrorHandler]', error);
       expect(sentryServiceSpy.captureException).toHaveBeenCalledWith(error);
-      expect(messageServiceSpy.add).toHaveBeenCalledWith(
+      expect(toastServiceSpy.add).toHaveBeenCalledWith(
         jasmine.objectContaining({
           severity: 'error',
           summary: 'Wystąpił błąd',
@@ -59,7 +59,7 @@ describe('GlobalErrorHandler', () => {
       expect(console.warn).toHaveBeenCalledWith('[GlobalErrorHandler] Ignored:', jasmine.any(String));
       expect(console.error).not.toHaveBeenCalled();
       expect(sentryServiceSpy.captureException).not.toHaveBeenCalled();
-      expect(messageServiceSpy.add).not.toHaveBeenCalled();
+      expect(toastServiceSpy.add).not.toHaveBeenCalled();
     });
 
     it('powinien zignorować błąd z wzorcem Loading chunk', () => {
@@ -121,7 +121,7 @@ describe('GlobalErrorHandler', () => {
       handler.handleError(error);
 
       expect(ngZone.run).toHaveBeenCalled();
-      expect(messageServiceSpy.add).toHaveBeenCalled();
+      expect(toastServiceSpy.add).toHaveBeenCalled();
     });
   });
 
@@ -135,7 +135,7 @@ describe('GlobalErrorHandler', () => {
 
       handler.handleError(error);
 
-      expect(messageServiceSpy.add).toHaveBeenCalledWith(
+      expect(toastServiceSpy.add).toHaveBeenCalledWith(
         jasmine.objectContaining({ detail: 'Specific error message' })
       );
     });
@@ -145,7 +145,7 @@ describe('GlobalErrorHandler', () => {
 
       handler.handleError(error);
 
-      expect(messageServiceSpy.add).toHaveBeenCalledWith(
+      expect(toastServiceSpy.add).toHaveBeenCalledWith(
         jasmine.objectContaining({
           detail: 'Wystąpił nieoczekiwany błąd aplikacji. Odśwież stronę.',
         })
@@ -157,7 +157,7 @@ describe('GlobalErrorHandler', () => {
 
       handler.handleError(error);
 
-      expect(messageServiceSpy.add).toHaveBeenCalledWith(
+      expect(toastServiceSpy.add).toHaveBeenCalledWith(
         jasmine.objectContaining({ detail: 'Nieznany błąd' })
       );
     });
@@ -167,7 +167,7 @@ describe('GlobalErrorHandler', () => {
 
       handler.handleError(error);
 
-      expect(messageServiceSpy.add).toHaveBeenCalledWith(
+      expect(toastServiceSpy.add).toHaveBeenCalledWith(
         jasmine.objectContaining({ detail: 'Prosty błąd tekstowy' })
       );
     });
@@ -177,7 +177,7 @@ describe('GlobalErrorHandler', () => {
 
       handler.handleError(error);
 
-      expect(messageServiceSpy.add).toHaveBeenCalledWith(
+      expect(toastServiceSpy.add).toHaveBeenCalledWith(
         jasmine.objectContaining({ detail: 'Obiekt z wiadomością' })
       );
     });
@@ -189,7 +189,7 @@ describe('GlobalErrorHandler', () => {
 
       handler.handleError(error);
 
-      expect(messageServiceSpy.add).toHaveBeenCalledWith(
+      expect(toastServiceSpy.add).toHaveBeenCalledWith(
         jasmine.objectContaining({ detail: 'Rejection error message' })
       );
     });
@@ -199,7 +199,7 @@ describe('GlobalErrorHandler', () => {
 
       handler.handleError(error);
 
-      expect(messageServiceSpy.add).toHaveBeenCalledWith(
+      expect(toastServiceSpy.add).toHaveBeenCalledWith(
         jasmine.objectContaining({
           detail: 'Wystąpił nieoczekiwany błąd. Spróbuj odświeżyć stronę.',
         })
@@ -209,7 +209,7 @@ describe('GlobalErrorHandler', () => {
     it('powinien zwrócić domyślny komunikat dla null', () => {
       handler.handleError(null);
 
-      expect(messageServiceSpy.add).toHaveBeenCalledWith(
+      expect(toastServiceSpy.add).toHaveBeenCalledWith(
         jasmine.objectContaining({
           detail: 'Wystąpił nieoczekiwany błąd. Spróbuj odświeżyć stronę.',
         })
@@ -221,7 +221,7 @@ describe('GlobalErrorHandler', () => {
 
       handler.handleError(error);
 
-      expect(messageServiceSpy.add).toHaveBeenCalledWith(
+      expect(toastServiceSpy.add).toHaveBeenCalledWith(
         jasmine.objectContaining({
           detail: 'Wystąpił nieoczekiwany błąd. Spróbuj odświeżyć stronę.',
         })
@@ -233,7 +233,7 @@ describe('GlobalErrorHandler', () => {
 
       handler.handleError(error);
 
-      expect(messageServiceSpy.add).toHaveBeenCalledWith(
+      expect(toastServiceSpy.add).toHaveBeenCalledWith(
         jasmine.objectContaining({
           detail: 'Wystąpił nieoczekiwany błąd. Spróbuj odświeżyć stronę.',
         })

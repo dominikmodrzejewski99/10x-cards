@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of, throwError, Subject } from 'rxjs';
-import { MessageService } from 'primeng/api';
+import { of, throwError } from 'rxjs';
+import { ToastService } from '../../shared/services/toast.service';
 
 import { GenerateViewComponent } from './generate-view.component';
 import { GenerationApiService } from '../../services/generation-api.service';
@@ -23,7 +23,7 @@ describe('GenerateViewComponent', () => {
   let generationApiMock: jasmine.SpyObj<GenerationApiService>;
   let flashcardApiMock: jasmine.SpyObj<FlashcardApiService>;
   let flashcardSetApiMock: jasmine.SpyObj<FlashcardSetApiService>;
-  let messageServiceMock: jasmine.SpyObj<MessageService>;
+  let toastServiceMock: jasmine.SpyObj<ToastService>;
   let routerMock: jasmine.SpyObj<Router>;
 
   const mockGeneration: GenerationDTO = {
@@ -84,9 +84,7 @@ describe('GenerateViewComponent', () => {
       'FlashcardSetApiService',
       ['getSets', 'createSet']
     );
-    messageServiceMock = jasmine.createSpyObj<MessageService>('MessageService', ['add', 'clear']);
-    (messageServiceMock as unknown as Record<string, unknown>)['messageObserver'] = new Subject<unknown>();
-    (messageServiceMock as unknown as Record<string, unknown>)['clearObserver'] = new Subject<unknown>();
+    toastServiceMock = jasmine.createSpyObj<ToastService>('ToastService', ['add', 'clear']);
 
     routerMock = jasmine.createSpyObj<Router>('Router', ['navigate']);
 
@@ -104,10 +102,10 @@ describe('GenerateViewComponent', () => {
       ]
     })
     .overrideComponent(GenerateViewComponent, {
-      remove: { providers: [MessageService] },
+      remove: { providers: [ToastService] },
       add: {
         providers: [
-          { provide: MessageService, useValue: messageServiceMock }
+          { provide: ToastService, useValue: toastServiceMock }
         ]
       }
     })
@@ -175,7 +173,7 @@ describe('GenerateViewComponent', () => {
 
       component.generate();
 
-      expect(messageServiceMock.clear).toHaveBeenCalled();
+      expect(toastServiceMock.clear).toHaveBeenCalled();
     });
 
     it('should show loading indicator while generating', () => {
@@ -213,7 +211,7 @@ describe('GenerateViewComponent', () => {
 
       expect(component.errorMessage()).toBeTruthy();
       expect(component.isGenerating()).toBeFalse();
-      expect(messageServiceMock.add).toHaveBeenCalledWith(
+      expect(toastServiceMock.add).toHaveBeenCalledWith(
         jasmine.objectContaining({ severity: 'error' })
       );
     });
@@ -250,7 +248,7 @@ describe('GenerateViewComponent', () => {
       component.saveAllProposals();
 
       expect(flashcardApiMock.createFlashcards).toHaveBeenCalled();
-      expect(messageServiceMock.add).toHaveBeenCalledWith(
+      expect(toastServiceMock.add).toHaveBeenCalledWith(
         jasmine.objectContaining({ severity: 'success' })
       );
       expect(routerMock.navigate).toHaveBeenCalledWith(
@@ -329,8 +327,8 @@ describe('GenerateViewComponent', () => {
       component.rejectProposal(proposal);
 
       expect(component.proposals().length).toBe(0);
-      expect(messageServiceMock.add).toHaveBeenCalledWith(
-        jasmine.objectContaining({ severity: 'info' })
+      expect(toastServiceMock.add).toHaveBeenCalledWith(
+        jasmine.objectContaining({ severity: 'warn' })
       );
     });
   });

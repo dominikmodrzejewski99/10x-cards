@@ -223,6 +223,11 @@
     "retry": "Erneut versuchen",
     "emptyTitle": "Keine öffentlichen Sets",
     "emptyDesc": "Keine Sets entsprechen Ihrer Suche. Versuchen Sie andere Schlüsselwörter.",
+    "copyConfirmTitle": "Set kopieren?",
+    "copyConfirmText": "Das Set wird zu deinen Sets kopiert.",
+    "copyConfirmRemember": "Nicht erneut fragen",
+    "copyConfirmCancel": "Abbrechen",
+    "copyConfirmOk": "Kopieren",
     "clearTags": "Löschen"
   },
   "reviewReminder": {

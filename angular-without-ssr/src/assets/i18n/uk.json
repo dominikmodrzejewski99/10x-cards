@@ -223,6 +223,11 @@
     "retry": "Спробувати знову",
     "emptyTitle": "Немає публічних наборів",
     "emptyDesc": "Жоден набір не відповідає пошуку. Спробуйте інші ключові слова.",
+    "copyConfirmTitle": "Скопіювати набір?",
+    "copyConfirmText": "Набір буде скопійовано до ваших наборів.",
+    "copyConfirmRemember": "Більше не питати",
+    "copyConfirmCancel": "Скасувати",
+    "copyConfirmOk": "Копіювати",
     "clearTags": "Очистити"
   },
   "reviewReminder": {

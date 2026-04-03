@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, of, throwError, Subject } from 'rxjs';
-import { MessageService, ConfirmationService, Confirmation } from 'primeng/api';
+import { BehaviorSubject, of, throwError } from 'rxjs';
+import { ToastService } from '../../shared/services/toast.service';
+import { ConfirmService } from '../../shared/services/confirm.service';
 
 import { FlashcardListComponent } from './flashcard-list.component';
 import { FlashcardApiService } from '../../services/flashcard-api.service';
@@ -19,8 +20,8 @@ describe('FlashcardListComponent', () => {
   let flashcardApiMock: jasmine.SpyObj<FlashcardApiService>;
   let flashcardSetApiMock: jasmine.SpyObj<FlashcardSetApiService>;
   let shareServiceMock: jasmine.SpyObj<ShareService>;
-  let messageServiceMock: jasmine.SpyObj<MessageService>;
-  let confirmationServiceMock: jasmine.SpyObj<ConfirmationService>;
+  let messageServiceMock: jasmine.SpyObj<ToastService>;
+  let confirmationServiceMock: jasmine.SpyObj<ConfirmService>;
   let routerMock: jasmine.SpyObj<Router>;
   let routeParamsSubject: BehaviorSubject<Record<string, string>>;
 
@@ -81,14 +82,8 @@ describe('FlashcardListComponent', () => {
       'ShareService',
       ['createShareLink', 'buildShareUrl']
     );
-    messageServiceMock = jasmine.createSpyObj<MessageService>('MessageService', ['add', 'clear']);
-    // Toast component needs messageObserver and clearObserver
-    (messageServiceMock as unknown as Record<string, unknown>)['messageObserver'] = new Subject<unknown>();
-    (messageServiceMock as unknown as Record<string, unknown>)['clearObserver'] = new Subject<unknown>();
-
-    confirmationServiceMock = jasmine.createSpyObj<ConfirmationService>('ConfirmationService', ['confirm']);
-    // ConfirmDialog component needs requireConfirmation$
-    (confirmationServiceMock as unknown as Record<string, unknown>)['requireConfirmation$'] = new Subject<Confirmation>();
+    messageServiceMock = jasmine.createSpyObj<ToastService>('ToastService', ['add', 'clear']);
+    confirmationServiceMock = jasmine.createSpyObj<ConfirmService>('ConfirmService', ['confirm']);
     routerMock = jasmine.createSpyObj<Router>('Router', ['navigate']);
 
     flashcardApiMock.getFlashcards.and.returnValue(of(mockFlashcardsResponse));
@@ -112,11 +107,11 @@ describe('FlashcardListComponent', () => {
       ]
     })
     .overrideComponent(FlashcardListComponent, {
-      remove: { providers: [MessageService, ConfirmationService] },
+      remove: { providers: [ToastService, ConfirmService] },
       add: {
         providers: [
-          { provide: MessageService, useValue: messageServiceMock },
-          { provide: ConfirmationService, useValue: confirmationServiceMock }
+          { provide: ToastService, useValue: messageServiceMock },
+          { provide: ConfirmService, useValue: confirmationServiceMock }
         ]
       }
     })
@@ -183,39 +178,29 @@ describe('FlashcardListComponent', () => {
   });
 
   describe('handleDelete', () => {
-    it('should call confirmationService and delete flashcard on accept', () => {
+    it('should call confirmationService and delete flashcard on accept', async () => {
       fixture.detectChanges();
       flashcardApiMock.deleteFlashcard.and.returnValue(of(undefined));
       flashcardApiMock.getFlashcards.calls.reset();
 
-      confirmationServiceMock.confirm.and.callFake((confirmation: Confirmation) => {
-        if (confirmation.accept) {
-          confirmation.accept();
-        }
-        return confirmationServiceMock;
-      });
+      confirmationServiceMock.confirm.and.returnValue(Promise.resolve(true));
 
-      component.handleDelete(mockFlashcard);
+      await component.handleDelete(mockFlashcard);
 
       expect(confirmationServiceMock.confirm).toHaveBeenCalled();
       expect(flashcardApiMock.deleteFlashcard).toHaveBeenCalledWith(1);
       expect(component.lastDeletedSignal()).toEqual(mockFlashcard);
     });
 
-    it('should show error message on delete failure', () => {
+    it('should show error message on delete failure', async () => {
       fixture.detectChanges();
       flashcardApiMock.deleteFlashcard.and.returnValue(
         throwError(() => ({ status: 500, message: 'Server error' }))
       );
 
-      confirmationServiceMock.confirm.and.callFake((confirmation: Confirmation) => {
-        if (confirmation.accept) {
-          confirmation.accept();
-        }
-        return confirmationServiceMock;
-      });
+      confirmationServiceMock.confirm.and.returnValue(Promise.resolve(true));
 
-      component.handleDelete(mockFlashcard);
+      await component.handleDelete(mockFlashcard);
 
       expect(messageServiceMock.add).toHaveBeenCalledWith(
         jasmine.objectContaining({ severity: 'error' })
@@ -225,7 +210,7 @@ describe('FlashcardListComponent', () => {
   });
 
   describe('handleBulkDelete', () => {
-    it('should handle partial failure during bulk delete', () => {
+    it('should handle partial failure during bulk delete', async () => {
       fixture.detectChanges();
       flashcardApiMock.deleteFlashcard.and.callFake((id: number) => {
         if (id === 1) {
@@ -235,14 +220,9 @@ describe('FlashcardListComponent', () => {
       });
       flashcardApiMock.getFlashcards.calls.reset();
 
-      confirmationServiceMock.confirm.and.callFake((confirmation: Confirmation) => {
-        if (confirmation.accept) {
-          confirmation.accept();
-        }
-        return confirmationServiceMock;
-      });
+      confirmationServiceMock.confirm.and.returnValue(Promise.resolve(true));
 
-      component.handleBulkDelete([1, 2]);
+      await component.handleBulkDelete([1, 2]);
 
       expect(messageServiceMock.add).toHaveBeenCalledWith(
         jasmine.objectContaining({ severity: 'warn', summary: 'Częściowy sukces' })
@@ -250,39 +230,29 @@ describe('FlashcardListComponent', () => {
       expect(flashcardApiMock.getFlashcards).toHaveBeenCalled();
     });
 
-    it('should show success when all bulk deletes succeed', () => {
+    it('should show success when all bulk deletes succeed', async () => {
       fixture.detectChanges();
       flashcardApiMock.deleteFlashcard.and.returnValue(of(undefined));
       flashcardApiMock.getFlashcards.calls.reset();
 
-      confirmationServiceMock.confirm.and.callFake((confirmation: Confirmation) => {
-        if (confirmation.accept) {
-          confirmation.accept();
-        }
-        return confirmationServiceMock;
-      });
+      confirmationServiceMock.confirm.and.returnValue(Promise.resolve(true));
 
-      component.handleBulkDelete([1, 2]);
+      await component.handleBulkDelete([1, 2]);
 
       expect(messageServiceMock.add).toHaveBeenCalledWith(
         jasmine.objectContaining({ severity: 'success' })
       );
     });
 
-    it('should show error when all bulk deletes fail', () => {
+    it('should show error when all bulk deletes fail', async () => {
       fixture.detectChanges();
       flashcardApiMock.deleteFlashcard.and.returnValue(
         throwError(() => new Error('Delete failed'))
       );
 
-      confirmationServiceMock.confirm.and.callFake((confirmation: Confirmation) => {
-        if (confirmation.accept) {
-          confirmation.accept();
-        }
-        return confirmationServiceMock;
-      });
+      confirmationServiceMock.confirm.and.returnValue(Promise.resolve(true));
 
-      component.handleBulkDelete([1, 2]);
+      await component.handleBulkDelete([1, 2]);
 
       expect(messageServiceMock.add).toHaveBeenCalledWith(
         jasmine.objectContaining({ severity: 'error' })

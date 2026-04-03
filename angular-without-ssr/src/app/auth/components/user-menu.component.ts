@@ -2,14 +2,14 @@ import { Component, ChangeDetectionStrategy, inject, signal, computed, WritableS
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { DialogModule } from 'primeng/dialog';
+import { DialogComponent } from '../../shared/components/dialog/dialog.component';
 import { UserDTO } from '../../../types';
 import { AuthStore } from '../store';
 
 @Component({
   selector: 'app-user-menu',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, FormsModule, DialogModule, TranslocoDirective],
+  imports: [RouterModule, FormsModule, DialogComponent, TranslocoDirective],
   host: {
     '(document:keydown.escape)': 'onEscape()'
   },

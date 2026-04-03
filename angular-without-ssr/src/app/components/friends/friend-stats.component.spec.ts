@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { TranslocoTestingModule } from '@jsverse/transloco';
-import { MessageService } from 'primeng/api';
+import { ToastService } from '../../shared/services/toast.service';
 import { FriendStatsComponent } from './friend-stats.component';
 import { FriendshipService } from '../../services/friendship.service';
 import { UserPreferencesService } from '../../services/user-preferences.service';
@@ -46,7 +46,7 @@ describe('FriendStatsComponent', () => {
       ]
     })
     .overrideComponent(FriendStatsComponent, {
-      set: { providers: [{ provide: MessageService, useValue: jasmine.createSpyObj('MessageService', ['add']) }] }
+      set: { providers: [{ provide: ToastService, useValue: jasmine.createSpyObj('ToastService', ['add']) }] }
     })
     .compileComponents();
 
@@ -94,7 +94,7 @@ describe('FriendStatsComponent', () => {
       providers: [
         { provide: FriendshipService, useValue: friendshipServiceMock },
         { provide: UserPreferencesService, useValue: { getPreferences: () => of({}) } },
-        { provide: MessageService, useValue: jasmine.createSpyObj('MessageService', ['add']) },
+        { provide: ToastService, useValue: jasmine.createSpyObj('ToastService', ['add']) },
         { provide: Router, useValue: routerMock },
         {
           provide: ActivatedRoute,

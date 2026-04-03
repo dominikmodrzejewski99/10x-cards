@@ -32,6 +32,7 @@ describe('OnboardingComponent', () => {
     pomodoro_sound_enabled: true,
     pomodoro_notifications_enabled: true,
     pomodoro_focus_reminder_dismissed: false,
+    dismissed_dialogs: [],
     created_at: '2026-01-01',
     updated_at: '2026-01-01'
   };

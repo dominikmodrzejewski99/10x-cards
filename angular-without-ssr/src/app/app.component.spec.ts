@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import { signal, WritableSignal } from '@angular/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
-import { MessageService } from 'primeng/api';
+import { ToastService } from './shared/services/toast.service';
 import { AppComponent } from './app.component';
 import { AuthStore } from './auth/store';
 import { UpdateService } from './services/update.service';
@@ -39,7 +39,7 @@ describe('AppComponent', () => {
         provideRouter([]),
         { provide: AuthStore, useValue: mockAuthStore },
         { provide: UpdateService, useValue: mockUpdateService },
-        MessageService,
+        ToastService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -123,7 +123,7 @@ describe('AppComponent', () => {
 
   it('should render toast component', () => {
     const el: HTMLElement = fixture.nativeElement;
-    const toast: Element | null = el.querySelector('p-toast');
+    const toast: Element | null = el.querySelector('app-toast');
     expect(toast).toBeTruthy();
   });
 });

@@ -1,10 +1,10 @@
 import { ErrorHandler, Injectable, NgZone, inject } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { ToastService } from '../shared/services/toast.service';
 import { SentryService } from './sentry.service';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
-  private messageService: MessageService = inject(MessageService);
+  private toastService: ToastService = inject(ToastService);
   private ngZone: NgZone = inject(NgZone);
   private sentryService: SentryService = inject(SentryService);
 
@@ -24,7 +24,7 @@ export class GlobalErrorHandler implements ErrorHandler {
 
     // Show toast in Angular zone to trigger change detection
     this.ngZone.run(() => {
-      this.messageService.add({
+      this.toastService.add({
         severity: 'error',
         summary: 'Wystąpił błąd',
         detail: message,

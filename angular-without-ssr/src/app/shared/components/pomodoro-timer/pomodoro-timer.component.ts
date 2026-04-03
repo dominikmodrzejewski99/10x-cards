@@ -7,14 +7,14 @@ import {
   OnInit
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DialogModule } from 'primeng/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
 import { PomodoroService } from '../../../services/pomodoro.service';
 import { UserPreferencesService } from '../../../services/user-preferences.service';
 
 @Component({
   selector: 'app-pomodoro-timer',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DialogModule, FormsModule],
+  imports: [DialogComponent, FormsModule],
   host: {
     '(document:click)': 'onDocumentClick($event)'
   },
@@ -107,17 +107,11 @@ import { UserPreferencesService } from '../../../services/user-preferences.servi
     </div>
 
     <!-- Focus Reminder Dialog -->
-    <p-dialog
+    <app-dialog
       header="\uD83C\uDFAF Tryb skupienia"
       [visible]="showFocusReminderSignal()"
       (visibleChange)="showFocusReminderSignal.set(false)"
-      [modal]="true"
-      [closeOnEscape]="true"
-      [dismissableMask]="true"
-      [draggable]="false"
-      [resizable]="false"
-      [style]="{width: '95vw', maxWidth: '420px'}"
-      styleClass="modern-dialog">
+      [maxWidth]="'420px'">
       <div class="focus-reminder">
         <p class="focus-reminder__text">
           Aby w pe\u0142ni wykorzysta\u0107 czas nauki, w\u0142\u0105cz tryb "Nie przeszkadza\u0107":
@@ -135,7 +129,7 @@ import { UserPreferencesService } from '../../../services/user-preferences.servi
           Zaczynamy!
         </button>
       </div>
-    </p-dialog>
+    </app-dialog>
   `,
   styles: [`
     .pomodoro { position: relative; }

@@ -105,18 +105,12 @@
     </div>
   }
 
-  <p-dialog
+  <app-dialog
     [header]="state().editingSet ? t('dialogEditTitle') : t('dialogNewTitle')"
     [visible]="state().dialogVisible"
     (visibleChange)="closeDialog()"
-    [modal]="true"
-    [closeOnEscape]="true"
     [dismissableMask]="true"
-    [draggable]="false"
-    [resizable]="false"
-    [style]="{width: '95vw', maxWidth: '480px'}"
-    styleClass="modern-dialog"
-    (onHide)="closeDialog()">
+    [maxWidth]="'480px'">
     <div class="set-form">
       <div class="set-form__field">
         <label class="set-form__label" for="setName">{{ t('nameLabel') }}</label>
@@ -170,13 +164,7 @@
         </button>
       </div>
     </div>
-  </p-dialog>
+  </app-dialog>
 
-  <p-toast position="bottom-center"></p-toast>
-  <p-confirmDialog
-    styleClass="modern-dialog"
-    [style]="{width: '95vw', maxWidth: '420px'}"
-    icon="pi pi-exclamation-triangle">
-  </p-confirmDialog>
 </div>
 </ng-container>

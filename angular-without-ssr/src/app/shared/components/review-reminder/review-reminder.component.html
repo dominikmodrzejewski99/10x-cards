@@ -1,14 +1,10 @@
 <ng-container *transloco="let t; prefix: 'reviewReminder'">
-<p-dialog
+<app-dialog
   [header]="t('title')"
   [visible]="dialogVisible()"
   (visibleChange)="onHide()"
-  [modal]="true"
-  [closeOnEscape]="true"
   [dismissableMask]="false"
-  [draggable]="false"
-  [resizable]="false"
-  [style]="{ width: '26rem' }"
+  [maxWidth]="'26rem'"
 >
   <div class="reminder">
     <div class="reminder__icon">
@@ -16,7 +12,7 @@
     </div>
     <p class="reminder__message" [innerHTML]="dueCount() === 1 ? t('dueCountSingular') : t('dueCount', { count: dueCount() })"></p>
   </div>
-  <ng-template #footer>
+  <div dialogFooter>
     <div class="reminder__actions">
       <button class="reminder__btn--secondary" (click)="onDismiss()">
         {{ t('dismiss') }}
@@ -26,6 +22,6 @@
         {{ t('study') }}
       </button>
     </div>
-  </ng-template>
-</p-dialog>
+  </div>
+</app-dialog>
 </ng-container>

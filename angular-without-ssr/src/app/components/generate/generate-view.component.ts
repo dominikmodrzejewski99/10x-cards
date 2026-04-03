@@ -7,8 +7,7 @@ import {GenerationApiService} from '../../services/generation-api.service';
 import {FlashcardApiService} from '../../services/flashcard-api.service';
 import {FlashcardSetApiService} from '../../services/flashcard-set-api.service';
 import {LoggerService} from '../../services/logger.service';
-import {MessageService} from 'primeng/api';
-import {ToastModule} from 'primeng/toast';
+import {ToastService} from '../../shared/services/toast.service';
 import {FlashcardProposalDTO, FlashcardSetDTO, GenerateFlashcardsCommand, GenerationDTO} from '../../../types';
 
 import {LoadingIndicatorComponent} from './loading-indicator/loading-indicator.component';
@@ -26,7 +25,6 @@ interface FlashcardProposalViewModel extends FlashcardProposalDTO {
 @Component({
   selector: 'app-generate-view',
   imports: [
-    ToastModule,
     FormsModule,
     RouterModule,
     LoadingIndicatorComponent,
@@ -36,7 +34,6 @@ interface FlashcardProposalViewModel extends FlashcardProposalDTO {
     GenerateButtonComponent,
     SourceTextareaComponent
   , TranslocoDirective],
-  providers: [MessageService],
   templateUrl: './generate-view.component.html',
   styleUrls: ['./generate-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -46,7 +43,7 @@ export class GenerateViewComponent implements OnInit {
   private flashcardApi = inject(FlashcardApiService);
   private flashcardSetApi = inject(FlashcardSetApiService);
   private logger: LoggerService = inject(LoggerService);
-  private messageService = inject(MessageService);
+  private toastService = inject(ToastService);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
 
@@ -109,7 +106,7 @@ export class GenerateViewComponent implements OnInit {
       },
       error: () => {
         this.isCreatingSet.set(false);
-        this.messageService.add({
+        this.toastService.add({
           severity: 'error',
           summary: 'Błąd',
           detail: 'Nie udało się utworzyć zestawu.'
@@ -156,7 +153,7 @@ export class GenerateViewComponent implements OnInit {
 
     this.flashcardApi.createFlashcards(flashcardsToSave, this.selectedSetId()!).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (savedFlashcards) => {
-        this.messageService.add({
+        this.toastService.add({
           severity: 'success',
           summary: 'Sukces',
           detail: `Zapisano ${savedFlashcards.length} fiszek.`
@@ -198,7 +195,7 @@ export class GenerateViewComponent implements OnInit {
     }
 
     this.errorMessage.set(message);
-    this.messageService.add({
+    this.toastService.add({
       severity: 'error',
       summary,
       detail: message,
@@ -216,12 +213,12 @@ export class GenerateViewComponent implements OnInit {
     this.errorMessage.set(null);
     this.proposals.set([]);
     this.generationResult.set(null);
-    this.messageService.clear();
+    this.toastService.clear();
   }
 
   private clearMessages(): void {
     this.errorMessage.set(null);
-    this.messageService.clear();
+    this.toastService.clear();
   }
 
   acceptProposal(proposal: FlashcardProposalViewModel): void {
@@ -232,8 +229,8 @@ export class GenerateViewComponent implements OnInit {
 
   rejectProposal(proposal: FlashcardProposalViewModel): void {
     this.proposals.update(list => list.filter(p => p._id !== proposal._id));
-    this.messageService.add({
-      severity: 'info',
+    this.toastService.add({
+      severity: 'warn',
       summary: 'Informacja',
       detail: 'Propozycja fiszki została odrzucona.'
     });
@@ -249,7 +246,7 @@ export class GenerateViewComponent implements OnInit {
       updated[index] = { ...event.edited, accepted: list[index].accepted, _id: list[index]._id };
       return updated;
     });
-    this.messageService.add({
+    this.toastService.add({
       severity: 'success',
       summary: 'Sukces',
       detail: 'Propozycja fiszki została zaktualizowana.'

@@ -5,7 +5,6 @@
     <input
       id="front"
       type="text"
-      pInputText
       formControlName="front"
       [class.ng-invalid]="hasError('front', 'required') || hasError('front', 'maxlength') || hasError('front', 'whitespace')"
       class="fc-form__input"
@@ -42,7 +41,6 @@
     <textarea
       id="back"
       rows="4"
-      pTextarea
       formControlName="back"
       [class.ng-invalid]="hasError('back', 'required') || hasError('back', 'maxlength') || hasError('back', 'whitespace')"
       class="fc-form__textarea"
@@ -92,33 +90,29 @@
   <div class="fc-form__row">
     <div class="fc-form__col">
       <label class="fc-form__label fc-form__label--sm">{{ t('questionLanguage') }}</label>
-      <p-select
-        [options]="LANGUAGES"
-        optionLabel="label"
-        optionValue="value"
+      <select class="fc-form__select"
         [ngModel]="frontLanguageSignal()"
         [ngModelOptions]="{ standalone: true }"
         (ngModelChange)="frontLanguageSignal.set($event)"
-        [style]="{ width: '100%' }"
-        [showClear]="!!frontLanguageSignal()"
-        [placeholder]="t('noLanguage')"
         data-test-id="front-language-select">
-      </p-select>
+        <option value="">{{ t('noLanguage') }}</option>
+        @for (lang of LANGUAGES; track lang.value) {
+          <option [value]="lang.value">{{ lang.label }}</option>
+        }
+      </select>
     </div>
     <div class="fc-form__col">
       <label class="fc-form__label fc-form__label--sm">{{ t('answerLanguage') }}</label>
-      <p-select
-        [options]="LANGUAGES"
-        optionLabel="label"
-        optionValue="value"
+      <select class="fc-form__select"
         [ngModel]="backLanguageSignal()"
         [ngModelOptions]="{ standalone: true }"
         (ngModelChange)="backLanguageSignal.set($event)"
-        [style]="{ width: '100%' }"
-        [showClear]="!!backLanguageSignal()"
-        [placeholder]="t('noLanguage')"
         data-test-id="back-language-select">
-      </p-select>
+        <option value="">{{ t('noLanguage') }}</option>
+        @for (lang of LANGUAGES; track lang.value) {
+          <option [value]="lang.value">{{ lang.label }}</option>
+        }
+      </select>
     </div>
   </div>
   }
