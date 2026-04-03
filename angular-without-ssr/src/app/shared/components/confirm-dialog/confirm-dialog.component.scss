@@ -1,0 +1,108 @@
+@use 'variables' as *;
+
+.app-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: appConfirmFadeIn 0.18s ease-out;
+}
+
+.app-confirm-panel {
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-radius: $radius-xl;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  padding: 1.5rem;
+  width: 95vw;
+  max-width: 420px;
+  text-align: center;
+  animation: appConfirmSlideUp 0.2s ease-out;
+}
+
+.app-confirm-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: $radius-full;
+  background: $color-danger-light;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.75rem;
+  font-size: 1.25rem;
+  color: $color-danger;
+}
+
+.app-confirm-title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-text;
+  margin: 0 0 0.35rem;
+}
+
+.app-confirm-text {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin: 0 0 1.25rem;
+  line-height: $line-height-normal;
+}
+
+.app-confirm-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.app-confirm-btn {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border-radius: $radius-md;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  transition: $transition-fast;
+}
+
+.app-confirm-btn--cancel {
+  background: $color-white;
+  color: $color-text-secondary;
+  border: 1.5px solid $color-border;
+
+  &:hover {
+    border-color: $color-primary;
+    color: $color-primary;
+  }
+}
+
+.app-confirm-btn--primary {
+  background: $color-primary;
+  color: #fff;
+
+  &:hover {
+    background: $color-primary-hover;
+    box-shadow: $shadow-primary;
+  }
+}
+
+.app-confirm-btn--danger {
+  background: $color-danger;
+  color: #fff;
+
+  &:hover {
+    background: $color-danger-hover;
+  }
+}
+
+@keyframes appConfirmFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes appConfirmSlideUp {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}

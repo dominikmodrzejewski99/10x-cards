@@ -1,0 +1,123 @@
+@use 'variables' as *;
+
+.toast-container {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 25rem;
+  max-width: calc(100% - 1.5rem);
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-left: 4px solid $color-border;
+  border-radius: $radius-lg;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  pointer-events: auto;
+  animation: toastSlideIn 0.25s ease-out;
+}
+
+.toast--success {
+  border-left-color: $color-success;
+}
+
+.toast--error {
+  border-left-color: $color-danger;
+}
+
+.toast--warn {
+  border-left-color: $color-warning;
+}
+
+.toast__icon {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding-top: 0.1rem;
+}
+
+.toast--success .toast__icon { color: $color-success; }
+.toast--error .toast__icon { color: $color-danger; }
+.toast--warn .toast__icon { color: $color-warning; }
+
+.toast__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.toast__summary {
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+  color: $color-text;
+  line-height: $line-height-snug;
+}
+
+.toast__detail {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-normal;
+  margin-top: 0.1rem;
+}
+
+.toast__close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  background: none;
+  color: $color-text-secondary;
+  cursor: pointer;
+  border-radius: $radius-sm;
+  font-size: 0.75rem;
+  transition: $transition-fast;
+  padding: 0;
+
+  &:hover {
+    background: $color-bg;
+    color: $color-text;
+  }
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: $bp-mobile) {
+  .toast-container {
+    bottom: calc(4rem + env(safe-area-inset-bottom, 0px));
+    left: 0.75rem;
+    right: 0.75rem;
+    width: auto;
+    max-width: none;
+    transform: none;
+  }
+
+  .toast {
+    border-radius: $radius-md;
+    padding: 0.65rem 0.85rem;
+  }
+
+  .toast__summary { font-size: $font-size-xs; }
+  .toast__detail { font-size: $font-size-xs; }
+}
