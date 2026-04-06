@@ -58,6 +58,7 @@
 .app-confirm-btn {
   flex: 1;
   padding: 0.6rem 1rem;
+  min-height: 44px;
   border-radius: $radius-md;
   font-weight: $font-weight-semibold;
   font-size: $font-size-sm;
@@ -105,4 +106,22 @@
 @keyframes appConfirmSlideUp {
   from { opacity: 0; transform: translateY(8px) scale(0.97); }
   to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 480px) {
+  .app-confirm-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .app-confirm-panel {
+    width: 100vw;
+    max-width: none;
+    border-radius: $radius-xl $radius-xl 0 0;
+    padding: 1.5rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .app-confirm-actions {
+    flex-direction: column-reverse;
+  }
 }

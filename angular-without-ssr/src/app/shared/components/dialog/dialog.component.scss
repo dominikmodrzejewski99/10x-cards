@@ -39,8 +39,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  min-width: 44px;
+  min-height: 44px;
   border: none;
   background: none;
   color: $color-text-secondary;
@@ -60,6 +62,13 @@
   padding: 1.5rem;
   overflow-y: auto;
   flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+
+.app-dialog-footer:has(*) {
+  flex-shrink: 0;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid $color-border;
 }
 
 @keyframes appDialogSlideIn {
@@ -73,7 +82,41 @@
   }
 }
 
-@media (max-width: $bp-tablet) {
+@keyframes appDialogSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: $bp-mobile) {
+  .app-dialog-panel {
+    width: 100vw;
+    max-height: calc(100dvh - 1rem);
+    border-radius: $radius-2xl $radius-2xl 0 0;
+    animation: appDialogSlideUp 0.25s ease-out;
+    border-bottom: none;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .app-dialog-header {
+    padding: 1rem;
+  }
+
+  .app-dialog-body {
+    padding: 1rem;
+  }
+
+  .app-dialog-footer:has(*) {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: $bp-tablet) and (min-width: #{$bp-mobile + 1}) {
   .app-dialog-header {
     padding: 1rem 1.15rem;
   }

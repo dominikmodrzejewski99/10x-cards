@@ -22,7 +22,7 @@ import { TemplatePortal } from '@angular/cdk/portal';
   template: `
     <ng-template #dialogTpl>
       <div class="app-dialog-panel"
-           [style.max-width]="maxWidth()"
+           [style.max-width]="isMobile() ? 'none' : maxWidth()"
            role="dialog"
            aria-modal="true"
            [attr.aria-label]="header()">
@@ -35,7 +35,9 @@ import { TemplatePortal } from '@angular/cdk/portal';
         <div class="app-dialog-body">
           <ng-content />
         </div>
-        <ng-content select="[dialogFooter]" />
+        <div class="app-dialog-footer">
+          <ng-content select="[dialogFooter]" />
+        </div>
       </div>
     </ng-template>
   `,
@@ -55,6 +57,7 @@ export class DialogComponent implements OnDestroy {
   private dialogTpl = viewChild.required<TemplateRef<unknown>>('dialogTpl');
 
   private overlayRef: OverlayRef | null = null;
+  private readonly MOBILE_BREAKPOINT = 480;
 
   constructor() {
     effect(() => {
@@ -75,14 +78,23 @@ export class DialogComponent implements OnDestroy {
     this.onHide.emit();
   }
 
+  isMobile(): boolean {
+    return window.innerWidth <= this.MOBILE_BREAKPOINT;
+  }
+
   private openOverlay(): void {
     if (this.overlayRef) return;
+
+    const mobile = this.isMobile();
+    const position = mobile
+      ? this.overlay.position().global().centerHorizontally().bottom('0')
+      : this.overlay.position().global().centerHorizontally().centerVertically();
 
     this.overlayRef = this.overlay.create({
       hasBackdrop: true,
       backdropClass: 'app-dialog-backdrop',
-      panelClass: 'app-dialog-wrapper',
-      positionStrategy: this.overlay.position().global().centerHorizontally().centerVertically(),
+      panelClass: mobile ? ['app-dialog-wrapper', 'app-dialog-wrapper--mobile'] : 'app-dialog-wrapper',
+      positionStrategy: position,
       scrollStrategy: this.overlay.scrollStrategies.block(),
       disposeOnNavigation: true,
     });

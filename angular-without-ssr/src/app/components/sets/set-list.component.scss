@@ -278,3 +278,14 @@
     flex-shrink: 1;
   }
 }
+
+@media (max-width: $bp-mobile) {
+  .set-form__actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}

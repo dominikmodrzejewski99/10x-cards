@@ -77,6 +77,17 @@
   margin-top: 1rem;
 }
 
+@media (max-width: 480px) {
+  .fc-form__actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
 .fc-form__btn {
   @include btn-base;
   @include btn-md;
