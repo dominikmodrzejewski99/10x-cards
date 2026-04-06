@@ -1,16 +1,13 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
-  ElementRef,
   inject,
   OnDestroy,
   OnInit,
   signal,
   Signal,
-  ViewChild,
   WritableSignal
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
@@ -40,7 +37,7 @@ import {Subscription} from 'rxjs';
     '(document:fullscreenchange)': 'onFullscreenChange()'
   }
 })
-export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
+export class StudyViewComponent implements OnInit, OnDestroy {
   private reviewApi: ReviewApiService = inject(ReviewApiService);
   private setApi: FlashcardSetApiService = inject(FlashcardSetApiService);
   private sm2: SpacedRepetitionService = inject(SpacedRepetitionService);
@@ -78,19 +75,6 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
     unknown: 0,
     total: 0
   });
-
-  @ViewChild('swipeArea') private swipeAreaRef!: ElementRef<HTMLElement>;
-
-  /* Swipe gesture state */
-  public swipeDeltaXSignal: WritableSignal<number> = signal<number>(0);
-  public swipeDeltaYSignal: WritableSignal<number> = signal<number>(0);
-  public swipeActiveSignal: WritableSignal<boolean> = signal<boolean>(false);
-  public swipeDirectionSignal: WritableSignal<'left' | 'right' | 'up' | null> = signal<'left' | 'right' | 'up' | null>(null);
-  private touchStartX: number = 0;
-  private touchStartY: number = 0;
-  private touchStartTime: number = 0;
-  private readonly SWIPE_THRESHOLD: number = 60;
-  private readonly SWIPE_VELOCITY_THRESHOLD: number = 0.3;
 
   public setsSignal: WritableSignal<FlashcardSetDTO[]> = signal<FlashcardSetDTO[]>([]);
   public selectedSetIdSignal: WritableSignal<number | null> = signal<number | null>(null);
@@ -158,85 +142,8 @@ export class StudyViewComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  public ngAfterViewInit(): void {
-    // Touch listeners are bound via template (touchstart), (touchmove), (touchend)
-  }
-
   public onFullscreenChange(): void {
     this.isFullscreenSignal.set(!!document.fullscreenElement);
-  }
-
-  public onTouchStart(event: TouchEvent): void {
-    if (this.isSessionCompleteSignal() || this.savingSignal()) return;
-    const touch = event.touches[0];
-    this.touchStartX = touch.clientX;
-    this.touchStartY = touch.clientY;
-    this.touchStartTime = Date.now();
-    this.swipeActiveSignal.set(true);
-    this.swipeDeltaXSignal.set(0);
-    this.swipeDeltaYSignal.set(0);
-    this.swipeDirectionSignal.set(null);
-  }
-
-  public onTouchMove(event: TouchEvent): void {
-    if (!this.swipeActiveSignal()) return;
-    const touch = event.touches[0];
-    const dx = touch.clientX - this.touchStartX;
-    const dy = touch.clientY - this.touchStartY;
-    this.swipeDeltaXSignal.set(dx);
-    this.swipeDeltaYSignal.set(dy);
-
-    // Determine direction for visual feedback (only after card is flipped)
-    if (this.isFlippedSignal()) {
-      const absDx = Math.abs(dx);
-      const absDy = Math.abs(dy);
-      if (absDx > 20 || absDy > 20) {
-        if (dy < -30 && absDy > absDx) {
-          this.swipeDirectionSignal.set('up');
-        } else if (dx < -20) {
-          this.swipeDirectionSignal.set('left');
-        } else if (dx > 20) {
-          this.swipeDirectionSignal.set('right');
-        } else {
-          this.swipeDirectionSignal.set(null);
-        }
-      }
-    }
-
-    // Prevent vertical scroll when swiping horizontally on the card
-    if (this.isFlippedSignal() && Math.abs(dx) > 10) {
-      event.preventDefault();
-    }
-  }
-
-  public onTouchEnd(): void {
-    if (!this.swipeActiveSignal()) return;
-    const dx = this.swipeDeltaXSignal();
-    const dy = this.swipeDeltaYSignal();
-    const elapsed = Date.now() - this.touchStartTime;
-    const velocity = Math.max(Math.abs(dx), Math.abs(dy)) / elapsed;
-    const meetsThreshold = Math.max(Math.abs(dx), Math.abs(dy)) > this.SWIPE_THRESHOLD
-      || velocity > this.SWIPE_VELOCITY_THRESHOLD;
-
-    if (this.isFlippedSignal() && meetsThreshold) {
-      const absDx = Math.abs(dx);
-      const absDy = Math.abs(dy);
-      if (dy < -this.SWIPE_THRESHOLD && absDy > absDx) {
-        this.answer(3); // Swipe up = hard
-      } else if (dx < -this.SWIPE_THRESHOLD) {
-        this.answer(1); // Swipe left = don't know
-      } else if (dx > this.SWIPE_THRESHOLD) {
-        this.answer(4); // Swipe right = know
-      }
-    } else if (!this.isFlippedSignal() && Math.abs(dx) < 10 && Math.abs(dy) < 10) {
-      // Tap to flip (only if it wasn't a swipe)
-      this.flip();
-    }
-
-    this.swipeActiveSignal.set(false);
-    this.swipeDeltaXSignal.set(0);
-    this.swipeDeltaYSignal.set(0);
-    this.swipeDirectionSignal.set(null);
   }
 
   public ngOnDestroy(): void {
