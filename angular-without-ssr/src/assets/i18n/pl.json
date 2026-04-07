@@ -910,11 +910,11 @@
     "unpublished": "Zestaw nie jest już publiczny.",
     "unpublishFailed": "Nie udało się ukryć zestawu.",
     "confirmDeleteHeader": "Potwierdzenie usunięcia",
-    "confirmDeleteMessage": "Czy na pewno chcesz usunąć zestaw „{{ name }}"? Wszystkie fiszki z tego zestawu zostaną również usunięte.",
+    "confirmDeleteMessage": "Czy na pewno chcesz usunąć zestaw „{{ name }}\u201D? Wszystkie fiszki z tego zestawu zostaną również usunięte.",
     "confirmPublishHeader": "Publikacja zestawu",
-    "confirmPublishMessage": "Czy na pewno chcesz opublikować zestaw „{{ name }}"? Będzie widoczny dla wszystkich użytkowników.",
+    "confirmPublishMessage": "Czy na pewno chcesz opublikować zestaw „{{ name }}\u201D? Będzie widoczny dla wszystkich użytkowników.",
     "confirmUnpublishHeader": "Ukrycie zestawu",
-    "confirmUnpublishMessage": "Czy na pewno chcesz ukryć zestaw „{{ name }}"? Nie będzie już widoczny publicznie.",
+    "confirmUnpublishMessage": "Czy na pewno chcesz ukryć zestaw „{{ name }}\u201D? Nie będzie już widoczny publicznie.",
     "hide": "Ukryj"
   },
   "generate.toasts": {
