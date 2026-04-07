@@ -121,6 +121,11 @@
     "sets": {
       "title": "Twoje zestawy",
       "viewAll": "Zobacz wszystkie"
+    },
+    "errors": {
+      "offline": "Brak połączenia z internetem. Sprawdź sieć i odśwież stronę.",
+      "sessionExpired": "Sesja wygasła. Zaloguj się ponownie.",
+      "loadFailed": "Nie udało się załadować danych. Spróbuj odświeżyć stronę."
     }
   },
   "study": {
@@ -180,6 +185,9 @@
       "imageAlt": "Obrazek do: {{text}}",
       "ariaFlipped": "Kliknij aby zobaczyć pytanie",
       "ariaNotFlipped": "Kliknij aby zobaczyć odpowiedź"
+    },
+    "errors": {
+      "loadFailed": "Nie udało się załadować fiszek. Spróbuj ponownie."
     }
   },
   "sets": {
@@ -420,6 +428,12 @@
       "cards": "fiszek",
       "startQuiz": "Rozpocznij test",
       "minCards": "Min. 4 fiszki"
+    },
+    "errors": {
+      "loadSetsFailed": "Nie udało się pobrać zestawów.",
+      "setNotFound": "Nie znaleziono zestawu.",
+      "loadFlashcardsFailed": "Nie udało się pobrać fiszek.",
+      "minCards": "Zestaw musi mieć minimum 4 fiszki, aby uruchomić test."
     }
   },
   "generate": {
@@ -595,6 +609,11 @@
       "today": "Dzisiaj",
       "yesterday": "Wczoraj",
       "daysAgo": "{{ count }} dni temu"
+    },
+    "errors": {
+      "loadTestFailed": "Nie udało się załadować testu. Spróbuj ponownie.",
+      "loadResultsFailed": "Nie udało się załadować wyników.",
+      "createFlashcardsFailed": "Nie udało się utworzyć fiszek. Spróbuj ponownie."
     }
   },
   "onboarding": {
@@ -795,7 +814,140 @@
     "friend_accepted": "{{ email }} zaakceptował Twoje zaproszenie",
     "nudge": "{{ email }} przypomina Ci o nauce! Do roboty!",
     "deck_shared": "{{ email }} udostępnił Ci \"{{ set_name }}\"",
-    "acceptDeck": "Akceptuj"
+    "acceptDeck": "Akceptuj",
+    "acceptFailed": "Nie udało się zaakceptować zestawu."
+  },
+  "toasts": {
+    "error": "Błąd",
+    "success": "Sukces",
+    "warning": "Uwaga",
+    "copied": "Skopiowano",
+    "sent": "Wysłano",
+    "accepted": "Zaakceptowano",
+    "deleted": "Usunięto",
+    "cancelled": "Anulowano",
+    "shared": "Udostępniono",
+    "hidden": "Ukryto",
+    "published": "Opublikowano",
+    "yes": "Tak",
+    "no": "Nie",
+    "cancel": "Anuluj",
+    "publish": "Opublikuj",
+    "genericError": "Wystąpił błąd. Spróbuj ponownie później.",
+    "sessionExpired": "Sesja wygasła. Zaloguj się ponownie.",
+    "offline": "Brak połączenia z internetem. Sprawdź sieć i spróbuj ponownie.",
+    "noPermission": "Brak uprawnień do wykonania tej operacji.",
+    "serverError": "Błąd serwera. Spróbuj ponownie później.",
+    "operationFailed": "Nie udało się wykonać operacji. Spróbuj ponownie."
+  },
+  "friends.toasts": {
+    "loadFailed": "Nie udało się załadować danych znajomych.",
+    "inviteSent": "Zaproszenie zostało wysłane!",
+    "inviteSendFailed": "Nie udało się wysłać zaproszenia.",
+    "friendAccepted": "Dodano do znajomych!",
+    "acceptFailed": "Nie udało się zaakceptować.",
+    "rejectFailed": "Nie udało się odrzucić.",
+    "friendRemoved": "Usunięto ze znajomych.",
+    "removeFailed": "Nie udało się usunąć.",
+    "nudgeSent": "Przypomnienie wysłane!",
+    "nudgeSendFailed": "Nie udało się wysłać przypomnienia.",
+    "inviteCancelled": "Zaproszenie anulowane.",
+    "cancelFailed": "Nie udało się anulować zaproszenia.",
+    "statsFailed": "Nie udało się załadować statystyk.",
+    "leaderboardFailed": "Nie udało się załadować rankingu.",
+    "loadFriendsFailed": "Nie udało się załadować znajomych.",
+    "setShared": "Zestaw udostępniony!",
+    "shareFailed": "Nie udało się udostępnić zestawu.",
+    "deckAcceptFailed": "Nie udało się zaakceptować zestawu."
+  },
+  "flashcards.toasts": {
+    "loadFailed": "Nie udało się pobrać fiszek.",
+    "authError": "Błąd autoryzacji",
+    "cardUpdated": "Fiszka została zaktualizowana.",
+    "cardAdded": "Nowa fiszka została dodana.",
+    "cardsDeleted": "Usunięto {{ count }} fiszek.",
+    "partialDeleteFailed": "Nie udało się usunąć {{ count }} fiszek.",
+    "deleteFailed": "Nie udało się usunąć fiszek. Spróbuj ponownie.",
+    "orderChanged": "Kolejność fiszek została zmieniona.",
+    "orderSaveFailed": "Nie udało się zapisać kolejności. Odświeżam...",
+    "cardsImported": "Zaimportowano {{ count }} fiszek.",
+    "linkGenerationFailed": "Nie udało się wygenerować linku.",
+    "linkCopied": "Link skopiowany do schowka.",
+    "linkCopyFailed": "Nie udało się skopiować linku.",
+    "restoreFailed": "Nie udało się przywrócić fiszki.",
+    "setCopied": "Zestaw został skopiowany na Twoje konto.",
+    "restored": "Fiszka została przywrócona.",
+    "restoredSummary": "Przywrócono",
+    "cardsExported": "Wyeksportowano {{ count }} fiszek.",
+    "popupBlocked": "Popup zablokowany",
+    "popupBlockedDetail": "Odblokuj wyskakujące okienka w przeglądarce, aby wydrukować test.",
+    "authLogin": "Błąd autoryzacji. Zaloguj się ponownie.",
+    "authSummary": "Błąd autoryzacji",
+    "permissionError": "Brak uprawnień do wykonania tej operacji.",
+    "permissionSummary": "Błąd uprawnień",
+    "notFoundDetail": "Nie znaleziono fiszki. Może została już usunięta.",
+    "loginRequired": "Musisz być zalogowany, aby zarządzać fiszkami.",
+    "loadFailedAuth": "Musisz być zalogowany, aby zobaczyć swoje fiszki.",
+    "operationFailed": "Nie udało się wykonać operacji {{ action }}. Spróbuj ponownie później.",
+    "partialSuccess": "Częściowy sukces",
+    "partialDeleteDetail": "Usunięto {{ success }} z {{ total }}. Nie udało się usunąć {{ failed }}.",
+    "confirmDeleteHeader": "Potwierdzenie usunięcia",
+    "confirmDeleteMessage": "Czy na pewno chcesz usunąć fiszkę \"{{ front }}\"?",
+    "confirmBulkDeleteMessage": "Czy na pewno chcesz usunąć {{ count }} fiszek?"
+  },
+  "sets.toasts": {
+    "loadFailed": "Nie udało się załadować zestawów.",
+    "setUpdated": "Zestaw został zaktualizowany.",
+    "updateFailed": "Nie udało się zaktualizować zestawu.",
+    "setCreated": "Zestaw został utworzony.",
+    "createFailed": "Nie udało się utworzyć zestawu.",
+    "setDeleted": "Zestaw został usunięty.",
+    "deleteFailed": "Nie udało się usunąć zestawu.",
+    "shareLinkCopied": "Link do udostępnienia skopiowany do schowka (ważny 7 dni).",
+    "linkGenerationFailed": "Nie udało się wygenerować linku.",
+    "published": "Zestaw jest teraz publiczny.",
+    "publishFailed": "Nie udało się opublikować zestawu.",
+    "unpublished": "Zestaw nie jest już publiczny.",
+    "unpublishFailed": "Nie udało się ukryć zestawu.",
+    "confirmDeleteHeader": "Potwierdzenie usunięcia",
+    "confirmDeleteMessage": "Czy na pewno chcesz usunąć zestaw „{{ name }}"? Wszystkie fiszki z tego zestawu zostaną również usunięte.",
+    "confirmPublishHeader": "Publikacja zestawu",
+    "confirmPublishMessage": "Czy na pewno chcesz opublikować zestaw „{{ name }}"? Będzie widoczny dla wszystkich użytkowników.",
+    "confirmUnpublishHeader": "Ukrycie zestawu",
+    "confirmUnpublishMessage": "Czy na pewno chcesz ukryć zestaw „{{ name }}"? Nie będzie już widoczny publicznie.",
+    "hide": "Ukryj"
+  },
+  "generate.toasts": {
+    "createSetFailed": "Nie udało się utworzyć zestawu.",
+    "flashcardsSaved": "Zapisano {{ count }} fiszek.",
+    "proposalUpdated": "Propozycja fiszki została zaktualizowana.",
+    "generationFailed": "Nie udało się wygenerować fiszek.",
+    "tooManyRequests": "Zbyt wiele zapytań. Spróbuj ponownie za chwilę.",
+    "textTooLong": "Tekst jest zbyt długi.",
+    "proposalRejected": "Propozycja fiszki została odrzucona.",
+    "validationError": "Błąd walidacji danych wejściowych podczas {{ action }}. Sprawdź dane.",
+    "authLogin": "Błąd autoryzacji. Zaloguj się ponownie.",
+    "authSummary": "Błąd autoryzacji",
+    "serverError": "Błąd serwera podczas {{ action }}. Spróbuj ponownie później.",
+    "loginRequired": "Musisz być zalogowany, aby korzystać z funkcji {{ action }}.",
+    "unexpectedError": "Wystąpił nieoczekiwany błąd podczas {{ action }}. Spróbuj ponownie później.",
+    "info": "Informacja"
+  },
+  "explore.toasts": {
+    "setCopied": "Zestaw został skopiowany do Twoich zestawów.",
+    "cannotCopyOwnSet": "Nie możesz skopiować własnego zestawu.",
+    "copyFailed": "Nie udało się skopiować zestawu."
+  },
+  "feedback.toasts": {
+    "bugSubmitted": "Zgłoszenie wysłane!",
+    "ideaSubmitted": "Pomysł wysłany!",
+    "submitFailed": "Nie udało się wysłać. Spróbuj ponownie."
+  },
+  "share.toasts": {
+    "invalidLink": "Nieprawidłowy link.",
+    "linkExpired": "Link wygasł. Poproś właściciela o nowy link.",
+    "linkInvalidOrDeleted": "Link jest nieprawidłowy lub został usunięty.",
+    "emptySet": "Zestaw nie zawiera fiszek."
   },
   "cookieConsent": {
     "title": "Ustawienia prywatności",

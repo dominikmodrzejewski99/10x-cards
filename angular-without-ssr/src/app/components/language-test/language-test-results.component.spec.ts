@@ -174,7 +174,7 @@ describe('LanguageTestResultsComponent', () => {
 
       fixture.detectChanges();
 
-      expect(component.error()).toBe('Nie udało się załadować wyników.');
+      expect(component.error()).toBe('languageTest.errors.loadResultsFailed');
       expect(component.loading()).toBeFalse();
     });
   });
@@ -238,7 +238,7 @@ describe('LanguageTestResultsComponent', () => {
 
       component.generateFlashcards();
 
-      expect(component.error()).toBe('Nie udało się utworzyć fiszek. Spróbuj ponownie.');
+      expect(component.error()).toBe('languageTest.errors.createFlashcardsFailed');
       expect(component.generatingFlashcards()).toBeFalse();
     });
 

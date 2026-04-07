@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { ToastService } from '../../shared/services/toast.service';
 import { FeedbackApiService } from '../../services/feedback-api.service';
 import { FeedbackType } from '../../../types';
@@ -16,6 +16,7 @@ export class FeedbackComponent {
   private fb: FormBuilder = inject(FormBuilder);
   private feedbackApi: FeedbackApiService = inject(FeedbackApiService);
   private toastService: ToastService = inject(ToastService);
+  private t: TranslocoService = inject(TranslocoService);
 
   readonly submittingSignal = signal<boolean>(false);
   readonly submittedSignal = signal<boolean>(false);
@@ -50,7 +51,7 @@ export class FeedbackComponent {
         this.toastService.add({
           severity: 'success',
           summary: '',
-          detail: this.selectedTypeSignal() === 'bug' ? 'Zgłoszenie wysłane!' : 'Pomysł wysłany!',
+          detail: this.selectedTypeSignal() === 'bug' ? this.t.translate('feedback.toasts.bugSubmitted') : this.t.translate('feedback.toasts.ideaSubmitted'),
           life: 3000,
         });
       },
@@ -59,7 +60,7 @@ export class FeedbackComponent {
         this.toastService.add({
           severity: 'error',
           summary: '',
-          detail: 'Nie udało się wysłać. Spróbuj ponownie.',
+          detail: this.t.translate('feedback.toasts.submitFailed'),
           life: 4000,
         });
       },

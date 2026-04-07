@@ -5,7 +5,7 @@ import { DialogComponent } from '../../shared/components/dialog/dialog.component
 import { ToastService } from '../../shared/services/toast.service';
 import { ConfirmService } from '../../shared/services/confirm.service';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
 import { ShareService } from '../../services/share.service';
 import { ExploreService } from '../../services/explore.service';
@@ -46,6 +46,7 @@ export class SetListComponent implements OnInit {
   private router = inject(Router);
   private route: ActivatedRoute = inject(ActivatedRoute);
   private exploreService = inject(ExploreService);
+  private t = inject(TranslocoService);
 
   state = signal<SetListState>({
     sets: [],
@@ -83,12 +84,12 @@ export class SetListComponent implements OnInit {
         this.state.update(s => ({
           ...s,
           loading: false,
-          error: 'Nie udało się załadować zestawów.'
+          error: this.t.translate('sets.toasts.loadFailed')
         }));
         this.toastService.add({
           severity: 'error',
-          summary: 'Błąd',
-          detail: 'Nie udało się załadować zestawów.',
+          summary: this.t.translate('toasts.error'),
+          detail: this.t.translate('sets.toasts.loadFailed'),
           life: 5000
         });
       }
@@ -162,16 +163,16 @@ export class SetListComponent implements OnInit {
           this.closeDialog();
           this.toastService.add({
             severity: 'success',
-            summary: 'Sukces',
-            detail: 'Zestaw został zaktualizowany.'
+            summary: this.t.translate('toasts.success'),
+            detail: this.t.translate('sets.toasts.setUpdated')
           });
         },
         error: () => {
           this.state.update(s => ({ ...s, formSaving: false }));
           this.toastService.add({
             severity: 'error',
-            summary: 'Błąd',
-            detail: 'Nie udało się zaktualizować zestawu.'
+            summary: this.t.translate('toasts.error'),
+            detail: this.t.translate('sets.toasts.updateFailed')
           });
         }
       });
@@ -191,16 +192,16 @@ export class SetListComponent implements OnInit {
           this.closeDialog();
           this.toastService.add({
             severity: 'success',
-            summary: 'Sukces',
-            detail: 'Zestaw został utworzony.'
+            summary: this.t.translate('toasts.success'),
+            detail: this.t.translate('sets.toasts.setCreated')
           });
         },
         error: () => {
           this.state.update(s => ({ ...s, formSaving: false }));
           this.toastService.add({
             severity: 'error',
-            summary: 'Błąd',
-            detail: 'Nie udało się utworzyć zestawu.'
+            summary: this.t.translate('toasts.error'),
+            detail: this.t.translate('sets.toasts.createFailed')
           });
         }
       });
@@ -209,11 +210,11 @@ export class SetListComponent implements OnInit {
 
   async deleteSet(set: FlashcardSetDTO): Promise<void> {
     const confirmed = await this.confirmService.confirm({
-      message: `Czy na pewno chcesz usunąć zestaw „${set.name}"? Wszystkie fiszki z tego zestawu zostaną również usunięte.`,
-      header: 'Potwierdzenie usunięcia',
+      message: this.t.translate('sets.toasts.confirmDeleteMessage', { name: set.name }),
+      header: this.t.translate('sets.toasts.confirmDeleteHeader'),
       icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'Tak',
-      rejectLabel: 'Nie',
+      acceptLabel: this.t.translate('toasts.yes'),
+      rejectLabel: this.t.translate('toasts.no'),
       acceptClass: 'danger'
     });
     if (confirmed) {
@@ -227,16 +228,16 @@ export class SetListComponent implements OnInit {
           }));
           this.toastService.add({
             severity: 'success',
-            summary: 'Sukces',
-            detail: 'Zestaw został usunięty.'
+            summary: this.t.translate('toasts.success'),
+            detail: this.t.translate('sets.toasts.setDeleted')
           });
         },
         error: () => {
           this.state.update(s => ({ ...s, loading: false }));
           this.toastService.add({
             severity: 'error',
-            summary: 'Błąd',
-            detail: 'Nie udało się usunąć zestawu.'
+            summary: this.t.translate('toasts.error'),
+            detail: this.t.translate('sets.toasts.deleteFailed')
           });
         }
       });
@@ -262,25 +263,25 @@ export class SetListComponent implements OnInit {
       await navigator.clipboard.writeText(url);
       this.toastService.add({
         severity: 'success',
-        summary: 'Skopiowano',
-        detail: 'Link do udostępnienia skopiowany do schowka (ważny 7 dni)',
+        summary: this.t.translate('toasts.copied'),
+        detail: this.t.translate('sets.toasts.shareLinkCopied'),
       });
     } catch {
       this.toastService.add({
         severity: 'error',
-        summary: 'Błąd',
-        detail: 'Nie udało się wygenerować linku',
+        summary: this.t.translate('toasts.error'),
+        detail: this.t.translate('sets.toasts.linkGenerationFailed'),
       });
     }
   }
 
   async publishSet(set: FlashcardSetDTO): Promise<void> {
     const confirmed = await this.confirmService.confirm({
-      message: `Czy na pewno chcesz opublikować zestaw „${set.name}"? Będzie widoczny dla wszystkich użytkowników.`,
-      header: 'Publikacja zestawu',
+      message: this.t.translate('sets.toasts.confirmPublishMessage', { name: set.name }),
+      header: this.t.translate('sets.toasts.confirmPublishHeader'),
       icon: 'pi pi-globe',
-      acceptLabel: 'Opublikuj',
-      rejectLabel: 'Anuluj'
+      acceptLabel: this.t.translate('toasts.publish'),
+      rejectLabel: this.t.translate('toasts.cancel')
     });
     if (confirmed) {
       this.exploreService.publishSet(set.id).subscribe({
@@ -294,15 +295,15 @@ export class SetListComponent implements OnInit {
           }));
           this.toastService.add({
             severity: 'success',
-            summary: 'Opublikowano',
-            detail: 'Zestaw jest teraz publiczny.'
+            summary: this.t.translate('toasts.published'),
+            detail: this.t.translate('sets.toasts.published')
           });
         },
         error: () => {
           this.toastService.add({
             severity: 'error',
-            summary: 'Błąd',
-            detail: 'Nie udało się opublikować zestawu.'
+            summary: this.t.translate('toasts.error'),
+            detail: this.t.translate('sets.toasts.publishFailed')
           });
         }
       });
@@ -311,11 +312,11 @@ export class SetListComponent implements OnInit {
 
   async unpublishSet(set: FlashcardSetDTO): Promise<void> {
     const confirmed = await this.confirmService.confirm({
-      message: `Czy na pewno chcesz ukryć zestaw „${set.name}"? Nie będzie już widoczny publicznie.`,
-      header: 'Ukrycie zestawu',
+      message: this.t.translate('sets.toasts.confirmUnpublishMessage', { name: set.name }),
+      header: this.t.translate('sets.toasts.confirmUnpublishHeader'),
       icon: 'pi pi-lock',
-      acceptLabel: 'Ukryj',
-      rejectLabel: 'Anuluj'
+      acceptLabel: this.t.translate('sets.toasts.hide'),
+      rejectLabel: this.t.translate('toasts.cancel')
     });
     if (confirmed) {
       this.exploreService.unpublishSet(set.id).subscribe({

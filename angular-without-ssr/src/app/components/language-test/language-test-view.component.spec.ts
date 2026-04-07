@@ -158,7 +158,7 @@ describe('LanguageTestViewComponent', () => {
 
       fixture.detectChanges();
 
-      expect(component.errorSignal()).toBe('Nie udało się załadować testu. Spróbuj ponownie.');
+      expect(component.errorSignal()).toBe('languageTest.errors.loadTestFailed');
       expect(component.loadingSignal()).toBeFalse();
     });
   });

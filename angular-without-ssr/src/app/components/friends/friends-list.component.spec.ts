@@ -3,7 +3,6 @@ import { TranslocoTestingModule } from '@jsverse/transloco';
 import { ToastService } from '../../shared/services/toast.service';
 import { FriendsListComponent } from './friends-list.component';
 import { FriendshipService } from '../../services/friendship.service';
-import { NotificationService } from '../../services/notification.service';
 import { FriendDTO, FriendRequestDTO, SentRequestDTO } from '../../../types';
 
 describe('FriendsListComponent', () => {
@@ -56,8 +55,7 @@ describe('FriendsListComponent', () => {
         })
       ],
       providers: [
-        { provide: FriendshipService, useValue: friendshipServiceMock },
-        { provide: NotificationService, useValue: {} }
+        { provide: FriendshipService, useValue: friendshipServiceMock }
       ]
     })
     .overrideComponent(FriendsListComponent, {

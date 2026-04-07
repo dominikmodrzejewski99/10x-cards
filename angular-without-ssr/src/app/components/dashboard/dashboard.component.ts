@@ -18,7 +18,7 @@ import { LanguageTestWidgetComponent } from '../language-test/language-test-widg
 import { AuthStore } from '../../auth/store';
 import { forkJoin } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { FlashcardSetDTO, StudyCardDTO } from '../../../types';
 
 interface CardBreakdown {
@@ -45,6 +45,7 @@ export class DashboardComponent implements OnInit {
   private router = inject(Router);
   private authStore = inject(AuthStore);
   private destroyRef = inject(DestroyRef);
+  private t = inject(TranslocoService);
 
   isAnonymous = this.authStore.isAnonymous;
   loading = signal(true);
@@ -105,11 +106,11 @@ export class DashboardComponent implements OnInit {
         this.loading.set(false);
         const isOffline: boolean = !navigator.onLine;
         if (isOffline) {
-          this.errorMessage.set('Brak połączenia z internetem. Sprawdź sieć i odśwież stronę.');
+          this.errorMessage.set(this.t.translate('dashboard.errors.offline'));
         } else if ((err as { status?: number })?.status === 401) {
-          this.errorMessage.set('Sesja wygasła. Zaloguj się ponownie.');
+          this.errorMessage.set(this.t.translate('dashboard.errors.sessionExpired'));
         } else {
-          this.errorMessage.set('Nie udało się załadować danych. Spróbuj odświeżyć stronę.');
+          this.errorMessage.set(this.t.translate('dashboard.errors.loadFailed'));
         }
       }
     });

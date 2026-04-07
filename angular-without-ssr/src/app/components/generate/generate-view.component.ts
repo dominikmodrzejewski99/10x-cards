@@ -1,4 +1,4 @@
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import {ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit, signal} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {FormsModule} from '@angular/forms';
@@ -46,6 +46,7 @@ export class GenerateViewComponent implements OnInit {
   private toastService = inject(ToastService);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
+  private t = inject(TranslocoService);
 
   proposals = signal<FlashcardProposalViewModel[]>([]);
   generationResult = signal<GenerationDTO | null>(null);
@@ -108,8 +109,8 @@ export class GenerateViewComponent implements OnInit {
         this.isCreatingSet.set(false);
         this.toastService.add({
           severity: 'error',
-          summary: 'Błąd',
-          detail: 'Nie udało się utworzyć zestawu.'
+          summary: this.t.translate('toasts.error'),
+          detail: this.t.translate('generate.toasts.createSetFailed')
         });
       }
     });
@@ -155,8 +156,8 @@ export class GenerateViewComponent implements OnInit {
       next: (savedFlashcards) => {
         this.toastService.add({
           severity: 'success',
-          summary: 'Sukces',
-          detail: `Zapisano ${savedFlashcards.length} fiszek.`
+          summary: this.t.translate('toasts.success'),
+          detail: this.t.translate('generate.toasts.flashcardsSaved', { count: savedFlashcards.length })
         });
         this.proposals.set([]);
         this.generationResult.set(null);
@@ -172,25 +173,25 @@ export class GenerateViewComponent implements OnInit {
   }
 
   private handleApiError(error: unknown, action: 'generowania' | 'zapisywania'): void {
-    let message = `Wystąpił nieoczekiwany błąd podczas ${action}. Spróbuj ponownie później.`;
-    let summary = 'Błąd';
+    let message = this.t.translate('generate.toasts.unexpectedError', { action });
+    let summary = this.t.translate('toasts.error');
     let redirectToLogin = false;
 
     const err = error as { status?: number; error?: { details?: string }; message?: string };
 
     if (err.status === 400) {
-      message = `Błąd walidacji danych wejściowych podczas ${action}. Sprawdź dane.`;
+      message = this.t.translate('generate.toasts.validationError', { action });
     } else if (err.status === 401) {
-      message = 'Błąd autoryzacji. Zaloguj się ponownie.';
-      summary = 'Błąd autoryzacji';
+      message = this.t.translate('generate.toasts.authLogin');
+      summary = this.t.translate('generate.toasts.authSummary');
       redirectToLogin = true;
     } else if (err.status && err.status >= 500) {
-      message = `Błąd serwera podczas ${action}. Spróbuj ponownie później.`;
+      message = this.t.translate('generate.toasts.serverError', { action });
     }
 
     if (err.message && (err.message.includes('nie jest zalogowany') || err.message.includes('Sesja wygasła'))) {
-      summary = 'Błąd autoryzacji';
-      message = `Musisz być zalogowany, aby korzystać z funkcji ${action}.`;
+      summary = this.t.translate('generate.toasts.authSummary');
+      message = this.t.translate('generate.toasts.loginRequired', { action });
       redirectToLogin = true;
     }
 
@@ -231,8 +232,8 @@ export class GenerateViewComponent implements OnInit {
     this.proposals.update(list => list.filter(p => p._id !== proposal._id));
     this.toastService.add({
       severity: 'warn',
-      summary: 'Informacja',
-      detail: 'Propozycja fiszki została odrzucona.'
+      summary: this.t.translate('generate.toasts.info'),
+      detail: this.t.translate('generate.toasts.proposalRejected')
     });
   }
 
@@ -248,8 +249,8 @@ export class GenerateViewComponent implements OnInit {
     });
     this.toastService.add({
       severity: 'success',
-      summary: 'Sukces',
-      detail: 'Propozycja fiszki została zaktualizowana.'
+      summary: this.t.translate('toasts.success'),
+      detail: this.t.translate('generate.toasts.proposalUpdated')
     });
   }
 }

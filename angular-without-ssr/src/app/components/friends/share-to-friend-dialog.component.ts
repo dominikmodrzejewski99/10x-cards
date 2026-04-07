@@ -1,7 +1,7 @@
 import {
   Component, ChangeDetectionStrategy, inject, signal, input, output, effect
 } from '@angular/core';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
 import { SpinnerComponent } from '../../shared/components/spinner/spinner.component';
 import { ToastService } from '../../shared/services/toast.service';
@@ -18,6 +18,7 @@ import { FriendDTO } from '../../../types';
 export class ShareToFriendDialogComponent {
   private friendshipService = inject(FriendshipService);
   private toastService = inject(ToastService);
+  private t: TranslocoService = inject(TranslocoService);
 
   setId = input.required<number>();
   visible = input.required<boolean>();
@@ -44,8 +45,8 @@ export class ShareToFriendDialogComponent {
     } catch {
       this.toastService.add({
         severity: 'error',
-        summary: 'Błąd',
-        detail: 'Nie udało się załadować znajomych.'
+        summary: this.t.translate('toasts.error'),
+        detail: this.t.translate('friends.toasts.loadFriendsFailed')
       });
     } finally {
       this.loading.set(false);
@@ -59,12 +60,12 @@ export class ShareToFriendDialogComponent {
       this.sharedTo.update(set => new Set(set).add(friendUserId));
       this.toastService.add({
         severity: 'success',
-        summary: 'Udostępniono',
-        detail: 'Zestaw udostępniony!'
+        summary: this.t.translate('toasts.shared'),
+        detail: this.t.translate('friends.toasts.setShared')
       });
     } catch (error: unknown) {
-      const msg = (error as { message?: string })?.message || 'Nie udało się udostępnić zestawu.';
-      this.toastService.add({ severity: 'error', summary: 'Błąd', detail: msg });
+      const msg: string = (error as { message?: string })?.message || this.t.translate('friends.toasts.shareFailed');
+      this.toastService.add({ severity: 'error', summary: this.t.translate('toasts.error'), detail: msg });
     } finally {
       this.sharing.set(null);
     }

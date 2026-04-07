@@ -21,7 +21,7 @@ import {FlashcardSetDTO, ReviewQuality, SessionResultDTO, StudyCardDTO} from '..
 import {FlashcardFlipComponent} from './flashcard-flip/flashcard-flip.component';
 import {SyncStatusComponent} from '../../shared/components/sync-status/sync-status.component';
 import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
-import {TranslocoDirective} from '@jsverse/transloco';
+import {TranslocoDirective, TranslocoService} from '@jsverse/transloco';
 import {launchConfetti} from '../../shared/utils/confetti';
 import {ClassifiedError, classifyError} from '../../shared/utils/error-classifier';
 import {Subscription} from 'rxjs';
@@ -44,6 +44,7 @@ export class StudyViewComponent implements OnInit, OnDestroy {
   private streakService: StreakService = inject(StreakService);
   private route: ActivatedRoute = inject(ActivatedRoute);
   private destroyRef: DestroyRef = inject(DestroyRef);
+  private t: TranslocoService = inject(TranslocoService);
   private loadSubscription: Subscription | null = null;
   private answerSubscription: Subscription | null = null;
 
@@ -379,7 +380,7 @@ export class StudyViewComponent implements OnInit, OnDestroy {
 
       },
       error: () => {
-        this.errorSignal.set('Nie udało się załadować fiszek. Spróbuj ponownie.');
+        this.errorSignal.set(this.t.translate('study.errors.loadFailed'));
         this.loadingSignal.set(false);
 
       }

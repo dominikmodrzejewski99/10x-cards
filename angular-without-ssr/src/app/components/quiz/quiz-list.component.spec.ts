@@ -102,7 +102,7 @@ describe('QuizListComponent', () => {
 
       fixture.detectChanges();
 
-      expect(component.errorSignal()).toBe('Nie udało się pobrać zestawów.');
+      expect(component.errorSignal()).toBe('quiz.errors.loadSetsFailed');
       expect(component.loadingSignal()).toBeFalse();
     });
   });

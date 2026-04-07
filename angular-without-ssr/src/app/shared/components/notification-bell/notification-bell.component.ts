@@ -2,7 +2,7 @@ import {
   Component, ChangeDetectionStrategy, OnInit, OnDestroy, inject, signal, ElementRef
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { NgClass } from '@angular/common';
 import { NotificationService } from '../../../services/notification.service';
 import { FriendshipService } from '../../../services/friendship.service';
@@ -23,6 +23,7 @@ export class NotificationBellComponent implements OnInit, OnDestroy {
   private notificationService: NotificationService = inject(NotificationService);
   private friendshipService: FriendshipService = inject(FriendshipService);
   private toastService: ToastService = inject(ToastService);
+  private t: TranslocoService = inject(TranslocoService);
   private router: Router = inject(Router);
   private elementRef: ElementRef = inject(ElementRef);
 
@@ -118,8 +119,8 @@ export class NotificationBellComponent implements OnInit, OnDestroy {
     } catch {
       this.toastService.add({
         severity: 'error',
-        summary: 'Błąd',
-        detail: 'Nie udało się zaakceptować zestawu.'
+        summary: this.t.translate('toasts.error'),
+        detail: this.t.translate('notifications.acceptFailed')
       });
     }
   }

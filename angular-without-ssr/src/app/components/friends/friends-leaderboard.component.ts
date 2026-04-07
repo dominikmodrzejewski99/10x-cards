@@ -2,7 +2,7 @@ import {
   Component, ChangeDetectionStrategy, OnInit, inject, signal, computed
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SpinnerComponent } from '../../shared/components/spinner/spinner.component';
 import { ToastService } from '../../shared/services/toast.service';
 import { FriendshipService } from '../../services/friendship.service';
@@ -18,6 +18,7 @@ import { LeaderboardEntryDTO, LeaderboardCategory } from '../../../types';
 export class FriendsLeaderboardComponent implements OnInit {
   private friendshipService = inject(FriendshipService);
   private toastService = inject(ToastService);
+  private t: TranslocoService = inject(TranslocoService);
 
   readonly entries = signal<LeaderboardEntryDTO[]>([]);
   readonly loading = signal(true);
@@ -44,8 +45,8 @@ export class FriendsLeaderboardComponent implements OnInit {
     } catch {
       this.toastService.add({
         severity: 'error',
-        summary: 'Błąd',
-        detail: 'Nie udało się załadować rankingu.'
+        summary: this.t.translate('toasts.error'),
+        detail: this.t.translate('friends.toasts.leaderboardFailed')
       });
     } finally {
       this.loading.set(false);

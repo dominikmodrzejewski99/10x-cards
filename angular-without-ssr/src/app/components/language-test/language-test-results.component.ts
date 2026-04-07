@@ -1,4 +1,4 @@
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { LanguageTestResultsService } from '../../services/language-test-results.service';
@@ -21,6 +21,7 @@ export class LanguageTestResultsComponent implements OnInit {
   private resultsService = inject(LanguageTestResultsService);
   private setApi = inject(FlashcardSetApiService);
   private flashcardApi = inject(FlashcardApiService);
+  private t = inject(TranslocoService);
 
   result = signal<LanguageTestResultDTO | null>(null);
   loading = signal(true);
@@ -63,7 +64,7 @@ export class LanguageTestResultsComponent implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.error.set('Nie udało się załadować wyników.');
+        this.error.set(this.t.translate('languageTest.errors.loadResultsFailed'));
         this.loading.set(false);
       }
     });
@@ -98,7 +99,7 @@ export class LanguageTestResultsComponent implements OnInit {
         this.generatingFlashcards.set(false);
       },
       error: () => {
-        this.error.set('Nie udało się utworzyć fiszek. Spróbuj ponownie.');
+        this.error.set(this.t.translate('languageTest.errors.createFlashcardsFailed'));
         this.generatingFlashcards.set(false);
       }
     });

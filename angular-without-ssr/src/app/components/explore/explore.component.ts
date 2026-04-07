@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ToastService } from '../../shared/services/toast.service';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { ExploreService } from '../../services/explore.service';
 import { UserPreferencesService } from '../../services/user-preferences.service';
 import { PublicSetDTO } from '../../../types';
@@ -35,6 +35,7 @@ export class ExploreComponent implements OnInit {
   private toastService = inject(ToastService);
   private prefsService = inject(UserPreferencesService);
   private destroyRef = inject(DestroyRef);
+  private t = inject(TranslocoService);
 
   copyDialogVisible = signal(false);
   copyDialogRemember = signal(false);
@@ -73,7 +74,7 @@ export class ExploreComponent implements OnInit {
   }
 
   loadPopularTags(): void {
-    this.exploreService.getPopularTags().subscribe({
+    this.exploreService.getPopularTags().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (tags: string[]) => {
         this.state.update(s => ({ ...s, popularTags: tags }));
       },
@@ -85,7 +86,7 @@ export class ExploreComponent implements OnInit {
     const { search, sort, page, pageSize, selectedTags } = this.state();
     this.state.update(s => ({ ...s, loading: true, error: null }));
 
-    this.exploreService.browse(search, sort, page, pageSize, selectedTags).subscribe({
+    this.exploreService.browse(search, sort, page, pageSize, selectedTags).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         this.state.update(s => ({
           ...s,
@@ -160,12 +161,12 @@ export class ExploreComponent implements OnInit {
   }
 
   private executeCopy(setId: number): void {
-    this.exploreService.copySet(setId).subscribe({
+    this.exploreService.copySet(setId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: () => {
         this.toastService.add({
           severity: 'success',
-          summary: 'Skopiowano',
-          detail: 'Zestaw został skopiowany do Twoich zestawów.'
+          summary: this.t.translate('toasts.copied'),
+          detail: this.t.translate('explore.toasts.setCopied')
         });
         this.state.update(s => ({
           ...s,
@@ -176,9 +177,9 @@ export class ExploreComponent implements OnInit {
       },
       error: (err) => {
         const detail = err?.message?.includes('Cannot copy your own')
-          ? 'Nie możesz skopiować własnego zestawu.'
-          : 'Nie udało się skopiować zestawu.';
-        this.toastService.add({ severity: 'error', summary: 'Błąd', detail });
+          ? this.t.translate('explore.toasts.cannotCopyOwnSet')
+          : this.t.translate('explore.toasts.copyFailed');
+        this.toastService.add({ severity: 'error', summary: this.t.translate('toasts.error'), detail });
       }
     });
   }

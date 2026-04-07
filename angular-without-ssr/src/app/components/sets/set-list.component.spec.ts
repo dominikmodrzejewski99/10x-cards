@@ -105,7 +105,7 @@ describe('SetListComponent', () => {
       fixture.detectChanges();
 
       expect(component.state().loading).toBeFalse();
-      expect(component.state().error).toBe('Nie udało się załadować zestawów.');
+      expect(component.state().error).toBe('sets.toasts.loadFailed');
       expect(messageServiceMock.add).toHaveBeenCalledWith(
         jasmine.objectContaining({ severity: 'error' })
       );

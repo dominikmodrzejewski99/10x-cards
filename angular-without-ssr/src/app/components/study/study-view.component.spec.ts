@@ -566,7 +566,7 @@ describe('StudyViewComponent', () => {
 
       component.loadExtraPractice();
 
-      expect(component.errorSignal()).toBe('Nie udało się załadować fiszek. Spróbuj ponownie.');
+      expect(component.errorSignal()).toBe('study.errors.loadFailed');
       expect(component.loadingSignal()).toBeFalse();
     });
   });

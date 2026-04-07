@@ -225,7 +225,7 @@ describe('FlashcardListComponent', () => {
       await component.handleBulkDelete([1, 2]);
 
       expect(messageServiceMock.add).toHaveBeenCalledWith(
-        jasmine.objectContaining({ severity: 'warn', summary: 'Częściowy sukces' })
+        jasmine.objectContaining({ severity: 'warn', summary: 'flashcards.toasts.partialSuccess' })
       );
       expect(flashcardApiMock.getFlashcards).toHaveBeenCalled();
     });
@@ -331,9 +331,9 @@ describe('FlashcardListComponent', () => {
       fixture.detectChanges();
 
       expect(component.state().loading).toBeFalse();
-      expect(component.state().error).toContain('zalogowany');
+      expect(component.state().error).toContain('flashcards.toasts.loadFailedAuth');
       expect(messageServiceMock.add).toHaveBeenCalledWith(
-        jasmine.objectContaining({ severity: 'error', summary: 'Błąd autoryzacji' })
+        jasmine.objectContaining({ severity: 'error', summary: 'flashcards.toasts.authError' })
       );
     });
   });
