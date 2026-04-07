@@ -2,7 +2,7 @@
 <div class="flist">
   <div class="flist__header">
     <div class="flist__title-row">
-      <button class="flist__back" (click)="goBackToSets()" [title]="t('backToSets')">
+      <button class="flist__back" (click)="goBackToSets()" [title]="t('backToSets')" [attr.aria-label]="t('backToSets')">
         <i class="pi pi-arrow-left"></i>
       </button>
       <h1 class="flist__title" data-test-id="flashcards-title">{{ state().setName || t('defaultTitle') }}</h1>
@@ -141,7 +141,7 @@
           readonly
           class="flist__share-input"
         />
-        <button class="flist__copy-btn" (click)="copyShareLink()" [title]="t('copyLink')"><i class="pi pi-copy"></i></button>
+        <button class="flist__copy-btn" (click)="copyShareLink()" [title]="t('copyLink')" [attr.aria-label]="t('copyLink')"><i class="pi pi-copy"></i></button>
       </div>
     </div>
   }

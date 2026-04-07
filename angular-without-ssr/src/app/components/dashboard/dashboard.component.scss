@@ -142,13 +142,13 @@
   align-items: center;
   gap: clamp(0.85rem, 2.5vw, 1.25rem);
   padding: clamp(1rem, 3vw, 1.5rem) clamp(1.15rem, 3.5vw, 1.75rem);
-  background: linear-gradient(135deg, #3b4cca 0%, #4d5db3 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--app-primary) 0%, var(--app-primary-hover) 100%);
+  color: #fff;
   border-radius: 1.25rem;
   text-decoration: none;
   margin-bottom: 2rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 24px rgba(59, 76, 202, 0.3);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--app-primary) 30%, transparent);
   position: relative;
   overflow: hidden;
 }
@@ -163,7 +163,7 @@
 
 .dash__study-cta:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 36px rgba(59, 76, 202, 0.4);
+  box-shadow: 0 12px 36px color-mix(in srgb, var(--app-primary) 40%, transparent);
 }
 
 .dash__study-cta-icon {
@@ -234,14 +234,14 @@
   border-radius: 1.25rem;
   margin-bottom: 2rem;
   background: var(--app-primary-light);
-  box-shadow: 0 4px 16px rgba(59, 76, 202, 0.08);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--app-primary) 8%, transparent);
 }
 
 .dash__streak-icon {
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, #3b4cca 0%, #2f3db3 100%);
+  background: linear-gradient(135deg, var(--app-primary) 0%, var(--app-primary-hover) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -250,7 +250,7 @@
 
 .dash__streak-icon i {
   font-size: 1.25rem;
-  color: #ffffff;
+  color: #fff;
 }
 
 .dash__streak-main {
@@ -305,7 +305,7 @@
   flex-direction: column;
   align-items: center;
   padding: 0.5rem 1rem;
-  background: rgba(59, 76, 202, 0.08);
+  background: color-mix(in srgb, var(--app-primary) 8%, transparent);
   border-radius: 0.75rem;
   min-width: 70px;
 }
@@ -351,7 +351,7 @@
   border-style: solid;
   background: var(--app-primary-light);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(59, 76, 202, 0.08);
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--app-primary) 8%, transparent);
 }
 
 .dash__streak-start-icon {
@@ -604,7 +604,7 @@
 .dash__action:hover {
   border-color: var(--app-primary);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(59, 76, 202, 0.08);
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--app-primary) 8%, transparent);
 }
 
 .dash__action-icon {
@@ -703,7 +703,7 @@
   position: absolute;
   inset: 0 0 auto;
   height: 3px;
-  background: linear-gradient(90deg, #3b4cca, #a855f7);
+  background: linear-gradient(90deg, var(--app-primary), var(--app-purple));
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s;
@@ -712,7 +712,7 @@
 .dash__set-card:hover {
   border-color: var(--app-primary);
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(59, 76, 202, 0.1);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--app-primary) 10%, transparent);
 }
 
 .dash__set-card:hover .dash__set-card-top {
@@ -792,7 +792,7 @@
 
   &:hover {
     border-color: var(--app-primary);
-    box-shadow: 0 4px 16px rgba(59, 76, 202, 0.1);
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--app-primary) 10%, transparent);
     transform: translateY(-2px);
   }
 }

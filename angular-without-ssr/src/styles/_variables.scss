@@ -61,8 +61,8 @@ $transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 $shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
 $shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
 $shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.07);
-$shadow-primary: 0 2px 12px rgba(59, 76, 202, 0.25);
-$shadow-primary-hover: 0 4px 20px rgba(59, 76, 202, 0.35);
+$shadow-primary: 0 2px 12px color-mix(in srgb, var(--app-primary) 25%, transparent);
+$shadow-primary-hover: 0 4px 20px color-mix(in srgb, var(--app-primary) 35%, transparent);
 $shadow-purple: 0 4px 20px rgba(124, 58, 237, 0.25);
 
 // ── Typography ──
@@ -95,6 +95,17 @@ $letter-spacing-snug: -0.02em;
 $letter-spacing-normal: 0;
 $letter-spacing-wide: 0.05em;
 $letter-spacing-wider: 0.1em;
+
+// ── Z-index scale ──
+$z-dropdown: 10;
+$z-sticky: 20;
+$z-fixed: 30;
+$z-bottom-nav: 40;
+$z-navbar: 50;
+$z-overlay: 60;
+$z-modal: 70;
+$z-toast: 80;
+$z-skip-link: 9999;
 
 // ── Breakpoints ──
 $bp-mobile: 480px;

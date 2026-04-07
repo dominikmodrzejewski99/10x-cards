@@ -37,7 +37,7 @@
   &:focus {
     outline: none;
     border-color: $color-primary;
-    box-shadow: 0 0 0 3px rgba(59, 76, 202, 0.12);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--app-primary) 12%, transparent);
   }
 }
 

@@ -48,7 +48,7 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
-  z-index: 100;
+  z-index: $z-modal;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -167,7 +167,7 @@
   &:hover { background: $color-bg-alt; }
 
   &--active {
-    background: rgba(59, 76, 202, 0.08);
+    background: color-mix(in srgb, var(--app-primary) 8%, transparent);
     color: $color-primary;
     font-weight: 600;
 

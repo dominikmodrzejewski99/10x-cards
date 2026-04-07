@@ -50,7 +50,7 @@
 }
 
 .flip-card:hover .flip-card__face {
-  box-shadow: 0 8px 32px rgba(59, 76, 202, 0.1);
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--app-primary) 10%, transparent);
 }
 
 .flip-card__face--back {

@@ -67,7 +67,7 @@
 .user-menu-button.is-open {
   background: $color-primary-light;
   border-color: $color-primary;
-  box-shadow: 0 0 0 3px rgba(59, 76, 202, 0.08);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--app-primary) 8%, transparent);
 }
 
 .user-avatar {
@@ -76,7 +76,7 @@
   justify-content: center;
   width: 1.85rem;
   height: 1.85rem;
-  background: linear-gradient(135deg, $color-primary 0%, #6c63ff 100%);
+  background: linear-gradient(135deg, var(--app-primary) 0%, var(--app-purple) 100%);
   color: $color-white;
   border-radius: 50%;
   font-weight: 700;
@@ -115,7 +115,7 @@
 .dropdown-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 49;
+  z-index: $z-overlay - 1;
 }
 
 /* ---- Dropdown panel ---- */
@@ -130,7 +130,7 @@
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.05),
     0 10px 24px -4px rgba(0, 0, 0, 0.1);
-  z-index: 50;
+  z-index: $z-overlay;
   overflow: hidden;
   animation: dropdown-enter 0.18s ease-out;
 }
@@ -307,7 +307,7 @@
 
 .delete-dialog__icon {
   font-size: 2.5rem;
-  color: #dc3545;
+  color: $color-danger;
 }
 
 .delete-dialog__text {
@@ -340,8 +340,8 @@
 
 .delete-dialog__input:focus {
   outline: none;
-  border-color: #dc3545;
-  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.12);
+  border-color: $color-danger;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--app-error) 12%, transparent);
 }
 
 .delete-dialog__actions {
@@ -375,12 +375,12 @@
 }
 
 .delete-dialog__btn--delete {
-  background: #dc3545;
+  background: $color-danger;
   color: $color-white;
 }
 
 .delete-dialog__btn--delete:hover:not(:disabled) {
-  background: #b91c1c;
+  background: $color-danger-hover;
 }
 
 .delete-dialog__btn--delete:disabled {

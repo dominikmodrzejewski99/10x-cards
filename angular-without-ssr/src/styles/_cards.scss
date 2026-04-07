@@ -10,7 +10,7 @@
 
 @mixin card-hover {
   border-color: $color-primary;
-  box-shadow: 0 4px 16px rgba(59, 76, 202, 0.1);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--app-primary) 10%, transparent);
   transform: translateY(-2px);
 }
 

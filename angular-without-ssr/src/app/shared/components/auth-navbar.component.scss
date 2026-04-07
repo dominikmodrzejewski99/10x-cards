@@ -1,18 +1,17 @@
 @use 'variables' as *;
 
 .navbar {
-  background: rgba(255, 255, 255, 0.82);
+  background: color-mix(in srgb, var(--app-white) 82%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid $color-border;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
   position: sticky;
   top: 0;
-  z-index: 52;
+  z-index: $z-navbar;
 }
 
 :host-context(:root[data-theme="dark"]) .navbar {
-  background: rgba(20, 28, 46, 0.82);
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.15);
 }
 
@@ -153,7 +152,7 @@
   border: 1px solid $color-border;
   box-shadow: $shadow-md;
   padding: 0.375rem 0;
-  z-index: 50;
+  z-index: $z-dropdown;
   animation: dropdown-fade 0.15s ease-out;
 
   // Invisible bridge to cover the gap between trigger and menu
@@ -284,7 +283,7 @@
   padding: 0.75rem 1rem 1rem;
   background: $color-white;
   border-top: 1px solid $color-border-light;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: $shadow-lg;
   animation: drawer-slide 0.2s ease-out;
 }
 

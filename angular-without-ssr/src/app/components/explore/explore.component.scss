@@ -378,7 +378,7 @@
 
   &:hover {
     background: $color-primary-hover;
-    box-shadow: 0 2px 12px rgba(59, 76, 202, 0.25);
+    box-shadow: 0 2px 12px color-mix(in srgb, var(--app-primary) 25%, transparent);
   }
 }
 

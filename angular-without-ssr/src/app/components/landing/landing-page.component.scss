@@ -129,12 +129,12 @@
 .btn--primary {
   background: $color-primary;
   color: $color-white;
-  box-shadow: 0 1px 3px rgba(59, 76, 202, 0.2);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--app-primary) 20%, transparent);
 }
 
 .btn--primary:hover {
   background: $color-primary-hover;
-  box-shadow: 0 4px 12px rgba(59, 76, 202, 0.25);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--app-primary) 25%, transparent);
   transform: translateY(-1px);
 }
 
@@ -343,7 +343,7 @@
 .demo__flipcard-face--front {
   background: $color-primary;
   color: $color-white;
-  box-shadow: 0 2px 8px rgba(59, 76, 202, 0.18);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--app-primary) 18%, transparent);
 }
 
 .demo__flipcard-face--back {

@@ -9,7 +9,7 @@
   top: 0;
   z-index: 9999;
   padding: 0.5rem 1rem;
-  background: #3b4cca;
+  background: var(--app-primary);
   color: #fff;
   font-weight: 600;
   font-size: 0.875rem;
@@ -113,7 +113,7 @@ textarea:focus-visible,
 select:focus-visible {
   outline: none;
   border-color: var(--app-primary, #3b4cca);
-  box-shadow: 0 0 0 3px rgba(59, 76, 202, 0.12);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--app-primary) 12%, transparent);
 }
 
 /* ngx-skeleton-loader reset — kill default margins to prevent layout shift */
@@ -244,7 +244,7 @@ select, input, textarea {
 }
 
 .pomodoro-dropdown-panel .pomodoro-dropdown__start-btn:hover {
-  background: var(--app-primary-hover); box-shadow: 0 2px 12px rgba(66,85,255,0.25);
+  background: var(--app-primary-hover); box-shadow: 0 2px 12px color-mix(in srgb, var(--app-primary) 25%, transparent);
 }
 
 /* Fullscreen mode — hide chrome */
@@ -262,4 +262,18 @@ select, input, textarea {
   display: flex;
   flex-direction: column;
   flex: 1;
+}
+
+/* ══════════════════════════════════════ */
+/*  REDUCED MOTION (a11y)                */
+/* ══════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
