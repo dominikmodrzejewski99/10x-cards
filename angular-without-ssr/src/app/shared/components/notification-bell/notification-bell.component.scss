@@ -140,6 +140,26 @@
   line-height: $line-height-normal;
 }
 
+.notif-bell__accept-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.35rem;
+  padding: 0.2rem 0.5rem;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  background: $color-primary;
+  color: #fff;
+  border: none;
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: $transition-fast;
+
+  i { font-size: 0.65rem; }
+
+  &:hover { opacity: 0.85; }
+}
+
 // ── States ──
 .notif-bell__empty,
 .notif-bell__loading {

@@ -57,10 +57,42 @@
       </div>
     }
 
+    <!-- Sent Requests -->
+    @if (sentRequests().length > 0) {
+      <div class="friends__section">
+        <h2 class="friends__section-title">
+          <i class="pi pi-send"></i> {{ t('sentRequests') }}
+          <span class="friends__badge">{{ sentRequests().length }}</span>
+        </h2>
+        <div class="friends__list">
+          @for (request of sentRequests(); track request.friendship_id) {
+            <div class="friends__card friends__card--sent">
+              <div class="friends__card-info">
+                <span class="friends__card-email">{{ request.email_masked }}</span>
+                <span class="friends__stat" [class.friends__stat--rejected]="request.status === 'rejected'">
+                  {{ request.status === 'pending' ? t('statusPending') : t('statusRejected') }}
+                </span>
+              </div>
+              <div class="friends__card-actions">
+                <button class="friends__btn friends__btn--remove" (click)="cancelRequest(request.friendship_id)" [title]="t('cancel')">
+                  <i class="pi pi-times"></i>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
     <!-- My Friends -->
     <div class="friends__section">
       <h2 class="friends__section-title">
         <i class="pi pi-users"></i> {{ t('myFriends') }}
+        @if (friends().length > 0) {
+          <a routerLink="/friends/leaderboard" class="friends__leaderboard-link">
+            <i class="pi pi-chart-bar"></i> {{ t('leaderboardBtn') }}
+          </a>
+        }
       </h2>
 
       @if (friends().length === 0) {

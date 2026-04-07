@@ -1,0 +1,68 @@
+@use 'variables' as *;
+@use 'buttons' as *;
+
+.share-friend__loading {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.share-friend__empty {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: $color-text-secondary;
+}
+
+.share-friend__empty-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.4;
+}
+
+.share-friend__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.share-friend__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  background: $color-bg-alt;
+  border: 1.5px solid $color-border-light;
+  border-radius: $radius-md;
+}
+
+.share-friend__email {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-text;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
+}
+
+.share-friend__btn {
+  @include btn-base;
+  @include btn-primary;
+  padding: 0.3rem 0.7rem;
+  font-size: $font-size-xs;
+  border-radius: $radius-md;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.share-friend__sent {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $color-success;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}

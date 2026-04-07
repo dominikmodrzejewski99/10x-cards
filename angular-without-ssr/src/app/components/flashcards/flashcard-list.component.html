@@ -20,6 +20,9 @@
       <button (click)="openShareDialog()" class="flist__btn flist__btn--share" data-test-id="share-button" [title]="t('shareTitle')">
         <i class="pi pi-share-alt"></i>
       </button>
+      <button (click)="shareToFriendVisible.set(true)" class="flist__btn flist__btn--share-friend" data-test-id="share-to-friend-button" [title]="t('shareToFriend')">
+        <i class="pi pi-users"></i>
+      </button>
       <div class="flist__more">
         <button class="flist__btn flist__btn--more" (click)="moreMenuOpen.set(!moreMenuOpen())" [attr.aria-label]="t('moreOptions')" [title]="t('moreOptions')">
           <i class="pi pi-ellipsis-h"></i>
@@ -160,5 +163,11 @@
     (close)="printTestDialogVisible.set(false)">
   </app-print-test-config>
 </app-dialog>
+
+<app-share-to-friend-dialog
+  [setId]="state().setId"
+  [visible]="shareToFriendVisible()"
+  (visibleChange)="shareToFriendVisible.set($event)">
+</app-share-to-friend-dialog>
 
 </ng-container>

@@ -461,6 +461,7 @@
       "test": "Test",
       "add": "Dodaj",
       "shareTitle": "Udostępnij zestaw",
+      "shareToFriend": "Udostępnij znajomemu",
       "moreOptions": "Więcej opcji",
       "import": "Importuj",
       "exportCsv": "Eksport CSV",
@@ -753,6 +754,12 @@
     "alreadyFriends": "Już jesteście znajomymi",
     "userNotFound": "Nie znaleziono użytkownika",
     "cannotAddAnonymous": "Anonimowi użytkownicy nie mogą dodawać znajomych",
+    "sentRequests": "Wysłane zaproszenia",
+    "statusPending": "Oczekuje",
+    "statusRejected": "Odrzucone",
+    "cancel": "Anuluj",
+    "cancelledSuccess": "Zaproszenie anulowane",
+    "leaderboardBtn": "Ranking",
     "stats": {
       "title": "Porównanie statystyk",
       "back": "Wróć",
@@ -762,6 +769,22 @@
       "totalSessions": "Łączne sesje",
       "totalCards": "Powtórzone karty",
       "errorLoading": "Nie udało się załadować statystyk."
+    },
+    "leaderboard": {
+      "title": "Ranking znajomych",
+      "back": "Wróć",
+      "streak": "Seria",
+      "cardsThisWeek": "Karty w tym tygodniu",
+      "totalCards": "Łączne karty",
+      "noEntries": "Dodaj znajomych, aby zobaczyć ranking",
+      "you": "(Ty)"
+    },
+    "shareDeck": {
+      "title": "Udostępnij zestaw znajomemu",
+      "send": "Udostępnij",
+      "sent": "Udostępniono",
+      "already": "Już udostępniono",
+      "noFriends": "Brak znajomych do udostępnienia"
     }
   },
   "notifications": {
@@ -770,7 +793,9 @@
     "empty": "Brak powiadomień",
     "friend_request": "{{ email }} chce być Twoim znajomym",
     "friend_accepted": "{{ email }} zaakceptował Twoje zaproszenie",
-    "nudge": "{{ email }} przypomina Ci o nauce! Do roboty!"
+    "nudge": "{{ email }} przypomina Ci o nauce! Do roboty!",
+    "deck_shared": "{{ email }} udostępnił Ci \"{{ set_name }}\"",
+    "acceptDeck": "Akceptuj"
   },
   "cookieConsent": {
     "title": "Ustawienia prywatności",

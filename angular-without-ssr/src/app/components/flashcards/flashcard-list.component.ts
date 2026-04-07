@@ -19,6 +19,7 @@ import { FlashcardFormComponent, FlashcardFormData } from './flashcard-form/flas
 import { ImportModalComponent } from './import-modal/import-modal.component';
 import { PrintTestConfigComponent } from './print-test-config/print-test-config.component';
 import { FlashcardDTO, FlashcardProposalDTO } from '../../../types';
+import { ShareToFriendDialogComponent } from '../friends/share-to-friend-dialog.component';
 
 interface FlashcardListState {
   flashcards: FlashcardDTO[];
@@ -46,6 +47,7 @@ interface FlashcardListState {
     FlashcardFormComponent,
     ImportModalComponent,
     PrintTestConfigComponent,
+    ShareToFriendDialogComponent,
     RouterModule,
     TranslocoDirective
   ],
@@ -89,6 +91,7 @@ export class FlashcardListComponent implements OnInit, OnDestroy {
   readonly shareLink = signal<string | null>(null);
   readonly shareLoading = signal(false);
   readonly printTestDialogVisible = signal(false);
+  readonly shareToFriendVisible = signal(false);
   private undoTimer: ReturnType<typeof setTimeout> | null = null;
   private redirectTimer: ReturnType<typeof setTimeout> | null = null;
 

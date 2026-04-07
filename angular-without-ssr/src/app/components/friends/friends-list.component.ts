@@ -8,7 +8,7 @@ import { ToastService } from '../../shared/services/toast.service';
 import { SpinnerComponent } from '../../shared/components/spinner/spinner.component';
 import { FriendshipService } from '../../services/friendship.service';
 import { NotificationService } from '../../services/notification.service';
-import { FriendDTO, FriendRequestDTO } from '../../../types';
+import { FriendDTO, FriendRequestDTO, SentRequestDTO } from '../../../types';
 
 @Component({
   selector: 'app-friends-list',
@@ -24,6 +24,7 @@ export class FriendsListComponent implements OnInit {
 
   readonly friends = signal<FriendDTO[]>([]);
   readonly pendingRequests = signal<FriendRequestDTO[]>([]);
+  readonly sentRequests = signal<SentRequestDTO[]>([]);
   readonly loading = signal(true);
   readonly sending = signal(false);
   readonly emailInput = signal('');
@@ -35,12 +36,14 @@ export class FriendsListComponent implements OnInit {
   async loadData(): Promise<void> {
     this.loading.set(true);
     try {
-      const [friends, pending] = await Promise.all([
+      const [friends, pending, sent] = await Promise.all([
         this.friendshipService.getFriends(),
-        this.friendshipService.getPendingRequests()
+        this.friendshipService.getPendingRequests(),
+        this.friendshipService.getSentRequests()
       ]);
       this.friends.set(friends);
       this.pendingRequests.set(pending);
+      this.sentRequests.set(sent);
     } catch {
       this.toastService.add({
         severity: 'error',
@@ -65,6 +68,7 @@ export class FriendsListComponent implements OnInit {
         summary: 'Wysłano',
         detail: 'Zaproszenie zostało wysłane!'
       });
+      this.friendshipService.getSentRequests().then(sent => this.sentRequests.set(sent));
     } catch (error: unknown) {
       const msg = (error as { message?: string })?.message || 'Nie udało się wysłać zaproszenia.';
       this.toastService.add({
@@ -113,6 +117,16 @@ export class FriendsListComponent implements OnInit {
     } catch (error: unknown) {
       const msg = (error as { message?: string })?.message || 'Nie udało się wysłać przypomnienia.';
       this.toastService.add({ severity: 'warn', summary: 'Uwaga', detail: msg });
+    }
+  }
+
+  async cancelRequest(friendshipId: string): Promise<void> {
+    try {
+      await this.friendshipService.cancelRequest(friendshipId);
+      this.sentRequests.update(list => list.filter(r => r.friendship_id !== friendshipId));
+      this.toastService.add({ severity: 'success', summary: 'Anulowano', detail: 'Zaproszenie anulowane.' });
+    } catch {
+      this.toastService.add({ severity: 'error', summary: 'Błąd', detail: 'Nie udało się anulować zaproszenia.' });
     }
   }
 

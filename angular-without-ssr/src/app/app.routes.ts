@@ -82,6 +82,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'friends/leaderboard',
+    loadComponent: () => import('./components/friends/friends-leaderboard.component').then(m => m.FriendsLeaderboardComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'friends/:userId',
     loadComponent: () => import('./components/friends/friend-stats.component').then(m => m.FriendStatsComponent),
     canActivate: [authGuard]

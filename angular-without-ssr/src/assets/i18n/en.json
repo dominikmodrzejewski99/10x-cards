@@ -461,6 +461,7 @@
       "test": "Quiz",
       "add": "Add",
       "shareTitle": "Share set",
+      "shareToFriend": "Share to friend",
       "moreOptions": "More options",
       "import": "Import",
       "exportCsv": "Export CSV",
@@ -753,6 +754,12 @@
     "alreadyFriends": "You are already friends",
     "userNotFound": "User not found",
     "cannotAddAnonymous": "Anonymous users cannot add friends",
+    "sentRequests": "Sent invitations",
+    "statusPending": "Pending",
+    "statusRejected": "Rejected",
+    "cancel": "Cancel",
+    "cancelledSuccess": "Invitation cancelled",
+    "leaderboardBtn": "Leaderboard",
     "stats": {
       "title": "Stats comparison",
       "back": "Back",
@@ -762,6 +769,22 @@
       "totalSessions": "Total sessions",
       "totalCards": "Cards reviewed",
       "errorLoading": "Failed to load stats."
+    },
+    "leaderboard": {
+      "title": "Friends Leaderboard",
+      "back": "Back",
+      "streak": "Streak",
+      "cardsThisWeek": "Cards this week",
+      "totalCards": "Total cards",
+      "noEntries": "Add friends to see the leaderboard",
+      "you": "(You)"
+    },
+    "shareDeck": {
+      "title": "Share deck to a friend",
+      "send": "Share",
+      "sent": "Shared",
+      "already": "Already shared",
+      "noFriends": "No friends to share with"
     }
   },
   "notifications": {
@@ -770,7 +793,9 @@
     "empty": "No notifications",
     "friend_request": "{{ email }} wants to be your friend",
     "friend_accepted": "{{ email }} accepted your invitation",
-    "nudge": "{{ email }} is reminding you to study! Get to work!"
+    "nudge": "{{ email }} is reminding you to study! Get to work!",
+    "deck_shared": "{{ email }} shared \"{{ set_name }}\" with you",
+    "acceptDeck": "Accept"
   },
   "cookieConsent": {
     "title": "Privacy settings",

@@ -1,0 +1,58 @@
+<ng-container *transloco="let t; prefix: 'friends.leaderboard'">
+<div class="leaderboard">
+  <div class="leaderboard__top-bar">
+    <a class="leaderboard__back-btn" routerLink="/friends" [attr.aria-label]="t('back')">
+      <i class="pi pi-arrow-left"></i>
+    </a>
+    <h1 class="leaderboard__title">{{ t('title') }}</h1>
+  </div>
+
+  <div class="leaderboard__tabs">
+    <button class="leaderboard__tab"
+            [class.leaderboard__tab--active]="activeCategory() === 'streak'"
+            (click)="activeCategory.set('streak')">
+      <i class="pi pi-bolt"></i> {{ t('streak') }}
+    </button>
+    <button class="leaderboard__tab"
+            [class.leaderboard__tab--active]="activeCategory() === 'cards_this_week'"
+            (click)="activeCategory.set('cards_this_week')">
+      <i class="pi pi-calendar"></i> {{ t('cardsThisWeek') }}
+    </button>
+    <button class="leaderboard__tab"
+            [class.leaderboard__tab--active]="activeCategory() === 'total_cards'"
+            (click)="activeCategory.set('total_cards')">
+      <i class="pi pi-book"></i> {{ t('totalCards') }}
+    </button>
+  </div>
+
+  @if (loading()) {
+    <div class="leaderboard__loading">
+      <app-spinner />
+    </div>
+  } @else if (sortedEntries().length <= 1) {
+    <div class="leaderboard__empty">
+      <i class="pi pi-users leaderboard__empty-icon"></i>
+      <p>{{ t('noEntries') }}</p>
+    </div>
+  } @else {
+    <div class="leaderboard__list">
+      @for (entry of sortedEntries(); track entry.user_id; let i = $index) {
+        <div class="leaderboard__row" [class.leaderboard__row--me]="entry.is_current_user">
+          <span class="leaderboard__position" [class.leaderboard__position--gold]="i === 0"
+                [class.leaderboard__position--silver]="i === 1" [class.leaderboard__position--bronze]="i === 2">
+            {{ i + 1 }}
+          </span>
+          <span class="leaderboard__email">
+            {{ entry.email_masked }}
+            @if (entry.is_current_user) {
+              <span class="leaderboard__you">{{ t('you') }}</span>
+            }
+          </span>
+          <span class="leaderboard__value">{{ getValueForCategory(entry) }}</span>
+        </div>
+      }
+    </div>
+  }
+</div>
+
+</ng-container>
