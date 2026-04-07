@@ -1,8 +1,8 @@
 import {
-  Component, ChangeDetectionStrategy, OnInit, inject, signal, DestroyRef
+  Component, ChangeDetectionStrategy, OnInit, inject, signal
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SpinnerComponent } from '../../shared/components/spinner/spinner.component';
 import { ToastService } from '../../shared/services/toast.service';
 import { FriendshipService } from '../../services/friendship.service';
@@ -22,6 +22,7 @@ export class FriendStatsComponent implements OnInit {
   private friendshipService: FriendshipService = inject(FriendshipService);
   private userPreferencesService: UserPreferencesService = inject(UserPreferencesService);
   private toastService: ToastService = inject(ToastService);
+  private t: TranslocoService = inject(TranslocoService);
 
   readonly friendStats = signal<FriendStatsDTO | null>(null);
   readonly myStats = signal<UserPreferencesDTO | null>(null);
@@ -53,8 +54,8 @@ export class FriendStatsComponent implements OnInit {
     } catch {
       this.toastService.add({
         severity: 'error',
-        summary: 'Błąd',
-        detail: 'Nie udało się załadować statystyk.'
+        summary: this.t.translate('toasts.error'),
+        detail: this.t.translate('friends.toasts.statsFailed')
       });
       this.router.navigate(['/friends']);
     } finally {

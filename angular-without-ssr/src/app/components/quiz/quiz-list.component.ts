@@ -1,4 +1,4 @@
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Component, OnInit, inject, signal, WritableSignal, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
@@ -22,6 +22,7 @@ export class QuizListComponent implements OnInit {
   private router: Router = inject(Router);
   private flashcardSetApiService: FlashcardSetApiService = inject(FlashcardSetApiService);
   private destroyRef: DestroyRef = inject(DestroyRef);
+  private t: TranslocoService = inject(TranslocoService);
 
   public setsSignal: WritableSignal<QuizSetItem[]> = signal<QuizSetItem[]>([]);
   public loadingSignal: WritableSignal<boolean> = signal<boolean>(true);
@@ -49,7 +50,7 @@ export class QuizListComponent implements OnInit {
         this.loadingSignal.set(false);
       },
       error: () => {
-        this.errorSignal.set('Nie udało się pobrać zestawów.');
+        this.errorSignal.set(this.t.translate('quiz.errors.loadSetsFailed'));
         this.loadingSignal.set(false);
       }
     });

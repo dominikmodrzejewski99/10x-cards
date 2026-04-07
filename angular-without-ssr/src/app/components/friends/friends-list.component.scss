@@ -65,6 +65,22 @@
   i { color: $color-text-secondary; }
 }
 
+.friends__leaderboard-link {
+  margin-left: auto;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $color-primary;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: $transition-fast;
+
+  i { color: inherit; }
+
+  &:hover { opacity: 0.8; }
+}
+
 .friends__badge {
   background: $color-primary;
   color: #fff;
@@ -99,6 +115,15 @@
 
 .friends__card--pending {
   border-left: 3px solid $color-primary;
+}
+
+.friends__card--sent {
+  border-left: 3px solid $color-text-secondary;
+}
+
+.friends__stat--rejected {
+  color: $color-danger;
+  font-weight: $font-weight-semibold;
 }
 
 .friends__card-info {

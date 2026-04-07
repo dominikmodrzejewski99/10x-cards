@@ -121,6 +121,11 @@
     "sets": {
       "title": "Your sets",
       "viewAll": "View all"
+    },
+    "errors": {
+      "offline": "No internet connection. Check your network and refresh the page.",
+      "sessionExpired": "Session expired. Please log in again.",
+      "loadFailed": "Failed to load data. Try refreshing the page."
     }
   },
   "study": {
@@ -180,6 +185,9 @@
       "imageAlt": "Image for: {{text}}",
       "ariaFlipped": "Click to see question",
       "ariaNotFlipped": "Click to see answer"
+    },
+    "errors": {
+      "loadFailed": "Failed to load flashcards. Please try again."
     }
   },
   "sets": {
@@ -420,6 +428,12 @@
       "cards": "cards",
       "startQuiz": "Start quiz",
       "minCards": "Min. 4 cards"
+    },
+    "errors": {
+      "loadSetsFailed": "Failed to load sets.",
+      "setNotFound": "Set not found.",
+      "loadFlashcardsFailed": "Failed to load flashcards.",
+      "minCards": "Set must have at least 4 flashcards to start a quiz."
     }
   },
   "generate": {
@@ -461,6 +475,7 @@
       "test": "Quiz",
       "add": "Add",
       "shareTitle": "Share set",
+      "shareToFriend": "Share to friend",
       "moreOptions": "More options",
       "import": "Import",
       "exportCsv": "Export CSV",
@@ -594,6 +609,11 @@
       "today": "Today",
       "yesterday": "Yesterday",
       "daysAgo": "{{ count }} days ago"
+    },
+    "errors": {
+      "loadTestFailed": "Failed to load test. Please try again.",
+      "loadResultsFailed": "Failed to load results.",
+      "createFlashcardsFailed": "Failed to create flashcards. Please try again."
     }
   },
   "onboarding": {
@@ -753,6 +773,12 @@
     "alreadyFriends": "You are already friends",
     "userNotFound": "User not found",
     "cannotAddAnonymous": "Anonymous users cannot add friends",
+    "sentRequests": "Sent invitations",
+    "statusPending": "Pending",
+    "statusRejected": "Rejected",
+    "cancel": "Cancel",
+    "cancelledSuccess": "Invitation cancelled",
+    "leaderboardBtn": "Leaderboard",
     "stats": {
       "title": "Stats comparison",
       "back": "Back",
@@ -762,6 +788,22 @@
       "totalSessions": "Total sessions",
       "totalCards": "Cards reviewed",
       "errorLoading": "Failed to load stats."
+    },
+    "leaderboard": {
+      "title": "Friends Leaderboard",
+      "back": "Back",
+      "streak": "Streak",
+      "cardsThisWeek": "Cards this week",
+      "totalCards": "Total cards",
+      "noEntries": "Add friends to see the leaderboard",
+      "you": "(You)"
+    },
+    "shareDeck": {
+      "title": "Share deck to a friend",
+      "send": "Share",
+      "sent": "Shared",
+      "already": "Already shared",
+      "noFriends": "No friends to share with"
     }
   },
   "notifications": {
@@ -770,7 +812,142 @@
     "empty": "No notifications",
     "friend_request": "{{ email }} wants to be your friend",
     "friend_accepted": "{{ email }} accepted your invitation",
-    "nudge": "{{ email }} is reminding you to study! Get to work!"
+    "nudge": "{{ email }} is reminding you to study! Get to work!",
+    "deck_shared": "{{ email }} shared \"{{ set_name }}\" with you",
+    "acceptDeck": "Accept",
+    "acceptFailed": "Failed to accept shared deck."
+  },
+  "toasts": {
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "copied": "Copied",
+    "sent": "Sent",
+    "accepted": "Accepted",
+    "deleted": "Deleted",
+    "cancelled": "Cancelled",
+    "shared": "Shared",
+    "hidden": "Hidden",
+    "published": "Published",
+    "yes": "Yes",
+    "no": "No",
+    "cancel": "Cancel",
+    "publish": "Publish",
+    "genericError": "Something went wrong. Please try again later.",
+    "sessionExpired": "Session expired. Please log in again.",
+    "offline": "No internet connection. Check your network and try again.",
+    "noPermission": "You do not have permission to perform this action.",
+    "serverError": "Server error. Please try again later.",
+    "operationFailed": "Operation failed. Please try again."
+  },
+  "friends.toasts": {
+    "loadFailed": "Failed to load friends data.",
+    "inviteSent": "Invitation sent!",
+    "inviteSendFailed": "Failed to send invitation.",
+    "friendAccepted": "Added to friends!",
+    "acceptFailed": "Failed to accept.",
+    "rejectFailed": "Failed to reject.",
+    "friendRemoved": "Removed from friends.",
+    "removeFailed": "Failed to remove.",
+    "nudgeSent": "Reminder sent!",
+    "nudgeSendFailed": "Failed to send reminder.",
+    "inviteCancelled": "Invitation cancelled.",
+    "cancelFailed": "Failed to cancel invitation.",
+    "statsFailed": "Failed to load stats.",
+    "leaderboardFailed": "Failed to load leaderboard.",
+    "loadFriendsFailed": "Failed to load friends.",
+    "setShared": "Deck shared!",
+    "shareFailed": "Failed to share deck.",
+    "deckAcceptFailed": "Failed to accept shared deck."
+  },
+  "flashcards.toasts": {
+    "loadFailed": "Failed to load flashcards.",
+    "authError": "Authorization error",
+    "cardUpdated": "Flashcard updated.",
+    "cardAdded": "New flashcard added.",
+    "cardsDeleted": "Deleted {{ count }} flashcards.",
+    "partialDeleteFailed": "Failed to delete {{ count }} flashcards.",
+    "deleteFailed": "Failed to delete flashcards. Please try again.",
+    "orderChanged": "Flashcard order updated.",
+    "orderSaveFailed": "Failed to save order. Refreshing...",
+    "cardsImported": "Imported {{ count }} flashcards.",
+    "linkGenerationFailed": "Failed to generate share link.",
+    "linkCopied": "Link copied to clipboard.",
+    "linkCopyFailed": "Failed to copy link.",
+    "restoreFailed": "Failed to restore flashcard.",
+    "setCopied": "Set has been copied to your account.",
+    "restored": "Flashcard restored.",
+    "restoredSummary": "Restored",
+    "cardsExported": "Exported {{ count }} flashcards.",
+    "popupBlocked": "Popup blocked",
+    "popupBlockedDetail": "Allow popups in your browser to print the test.",
+    "authLogin": "Authorization error. Please log in again.",
+    "authSummary": "Authorization error",
+    "permissionError": "You do not have permission to perform this action.",
+    "permissionSummary": "Permission error",
+    "notFoundDetail": "Flashcard not found. It may have been deleted.",
+    "loginRequired": "You must be logged in to manage flashcards.",
+    "loadFailedAuth": "You must be logged in to see your flashcards.",
+    "operationFailed": "Failed to perform {{ action }} operation. Please try again later.",
+    "partialSuccess": "Partial success",
+    "partialDeleteDetail": "Deleted {{ success }} of {{ total }}. Failed to delete {{ failed }}.",
+    "confirmDeleteHeader": "Confirm deletion",
+    "confirmDeleteMessage": "Are you sure you want to delete the flashcard \"{{ front }}\"?",
+    "confirmBulkDeleteMessage": "Are you sure you want to delete {{ count }} flashcards?"
+  },
+  "sets.toasts": {
+    "loadFailed": "Failed to load sets.",
+    "setUpdated": "Set updated.",
+    "updateFailed": "Failed to update set.",
+    "setCreated": "Set created.",
+    "createFailed": "Failed to create set.",
+    "setDeleted": "Set deleted.",
+    "deleteFailed": "Failed to delete set.",
+    "shareLinkCopied": "Share link copied to clipboard (valid for 7 days).",
+    "linkGenerationFailed": "Failed to generate share link.",
+    "published": "Set is now public.",
+    "publishFailed": "Failed to publish set.",
+    "unpublished": "Set is no longer public.",
+    "unpublishFailed": "Failed to unpublish set.",
+    "confirmDeleteHeader": "Confirm deletion",
+    "confirmDeleteMessage": "Are you sure you want to delete the set \"{{ name }}\"? All flashcards in this set will also be deleted.",
+    "confirmPublishHeader": "Publish set",
+    "confirmPublishMessage": "Are you sure you want to publish the set \"{{ name }}\"? It will be visible to all users.",
+    "confirmUnpublishHeader": "Hide set",
+    "confirmUnpublishMessage": "Are you sure you want to hide the set \"{{ name }}\"? It will no longer be publicly visible.",
+    "hide": "Hide"
+  },
+  "generate.toasts": {
+    "createSetFailed": "Failed to create set.",
+    "flashcardsSaved": "Saved {{ count }} flashcards.",
+    "proposalUpdated": "Flashcard proposal updated.",
+    "generationFailed": "Failed to generate flashcards.",
+    "tooManyRequests": "Too many requests. Please try again in a moment.",
+    "textTooLong": "Text is too long.",
+    "proposalRejected": "Flashcard proposal rejected.",
+    "validationError": "Input validation error during {{ action }}. Check your data.",
+    "authLogin": "Authorization error. Please log in again.",
+    "authSummary": "Authorization error",
+    "serverError": "Server error during {{ action }}. Please try again later.",
+    "loginRequired": "You must be logged in to use {{ action }} features.",
+    "unexpectedError": "An unexpected error occurred during {{ action }}. Please try again later.",
+    "info": "Info"
+  },
+  "explore.toasts": {
+    "setCopied": "Set has been copied to your sets.",
+    "cannotCopyOwnSet": "You cannot copy your own set.",
+    "copyFailed": "Failed to copy set."
+  },
+  "feedback.toasts": {
+    "bugSubmitted": "Bug report submitted!",
+    "ideaSubmitted": "Idea submitted!",
+    "submitFailed": "Failed to submit. Please try again."
+  },
+  "share.toasts": {
+    "invalidLink": "Invalid link.",
+    "linkExpired": "Link has expired. Ask the owner for a new link.",
+    "linkInvalidOrDeleted": "Link is invalid or has been deleted.",
+    "emptySet": "Set has no flashcards."
   },
   "cookieConsent": {
     "title": "Privacy settings",

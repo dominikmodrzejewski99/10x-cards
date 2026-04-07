@@ -1,0 +1,193 @@
+@use 'variables' as *;
+@use 'buttons' as *;
+
+.leaderboard {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: $page-padding;
+}
+
+.leaderboard__top-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.leaderboard__back-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid $color-border;
+  border-radius: 50%;
+  background: transparent;
+  color: $color-text;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: $transition-fast;
+  text-decoration: none;
+
+  &:hover {
+    border-color: $color-primary;
+    background: $color-primary-light;
+    color: $color-primary;
+  }
+}
+
+.leaderboard__title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-extrabold;
+  color: $color-text-heading;
+  margin: 0;
+}
+
+// ── Tabs ──
+.leaderboard__tabs {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+
+.leaderboard__tab {
+  @include btn-base;
+  padding: 0.5rem 0.9rem;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  border-radius: $radius-pill;
+  border: 1.5px solid $color-border-light;
+  background: transparent;
+  color: $color-text-secondary;
+  white-space: nowrap;
+  transition: $transition-fast;
+
+  i { font-size: 0.7rem; }
+
+  &:hover {
+    border-color: $color-primary;
+    color: $color-primary;
+  }
+}
+
+.leaderboard__tab--active {
+  background: $color-primary;
+  border-color: $color-primary;
+  color: #fff;
+
+  &:hover {
+    color: #fff;
+    border-color: $color-primary;
+  }
+}
+
+// ── List ──
+.leaderboard__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.leaderboard__row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: $color-bg-alt;
+  border: 1.5px solid $color-border-light;
+  border-radius: $radius-lg;
+  transition: $transition-fast;
+}
+
+.leaderboard__row--me {
+  border-color: $color-primary;
+  background: $color-primary-light;
+}
+
+.leaderboard__position {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-extrabold;
+  border-radius: 50%;
+  background: $color-border-light;
+  color: $color-text-secondary;
+  flex-shrink: 0;
+}
+
+.leaderboard__position--gold {
+  background: #fbbf24;
+  color: #78350f;
+}
+
+.leaderboard__position--silver {
+  background: #d1d5db;
+  color: #374151;
+}
+
+.leaderboard__position--bronze {
+  background: #d97706;
+  color: #fff;
+}
+
+.leaderboard__email {
+  flex: 1;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-text;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.leaderboard__you {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-regular;
+  color: $color-primary;
+  margin-left: 0.3rem;
+}
+
+.leaderboard__value {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-extrabold;
+  color: $color-text-heading;
+  flex-shrink: 0;
+}
+
+// ── Empty & Loading ──
+.leaderboard__empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: $color-text-secondary;
+}
+
+.leaderboard__empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.4;
+}
+
+.leaderboard__loading {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 0;
+}
+
+@media (max-width: $bp-mobile) {
+  .leaderboard {
+    padding: $page-padding-mobile;
+  }
+
+  .leaderboard__tabs {
+    gap: 0.3rem;
+  }
+
+  .leaderboard__tab {
+    padding: 0.4rem 0.7rem;
+  }
+}

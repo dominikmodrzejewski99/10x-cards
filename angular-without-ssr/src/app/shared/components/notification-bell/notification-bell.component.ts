@@ -2,9 +2,11 @@ import {
   Component, ChangeDetectionStrategy, OnInit, OnDestroy, inject, signal, ElementRef
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { NgClass } from '@angular/common';
 import { NotificationService } from '../../../services/notification.service';
+import { FriendshipService } from '../../../services/friendship.service';
+import { ToastService } from '../../services/toast.service';
 import { NotificationDTO } from '../../../../types';
 
 @Component({
@@ -19,6 +21,9 @@ import { NotificationDTO } from '../../../../types';
 })
 export class NotificationBellComponent implements OnInit, OnDestroy {
   private notificationService: NotificationService = inject(NotificationService);
+  private friendshipService: FriendshipService = inject(FriendshipService);
+  private toastService: ToastService = inject(ToastService);
+  private t: TranslocoService = inject(TranslocoService);
   private router: Router = inject(Router);
   private elementRef: ElementRef = inject(ElementRef);
 
@@ -97,6 +102,29 @@ export class NotificationBellComponent implements OnInit, OnDestroy {
     }
   }
 
+  async acceptDeckShare(notification: NotificationDTO, event: Event): Promise<void> {
+    event.stopPropagation();
+    const deckShareId = notification.data['deck_share_id'] as string;
+    if (!deckShareId) return;
+
+    try {
+      const newSetId = await this.friendshipService.acceptDeckShare(deckShareId);
+      await this.notificationService.markAsRead(notification.id);
+      this.notifications.update(list =>
+        list.map(n => n.id === notification.id ? { ...n, read: true } : n)
+      );
+      this.unreadCount.update(c => Math.max(0, c - 1));
+      this.panelOpen.set(false);
+      this.router.navigate(['/sets', newSetId], { queryParams: { shared: 'true' } });
+    } catch {
+      this.toastService.add({
+        severity: 'error',
+        summary: this.t.translate('toasts.error'),
+        detail: this.t.translate('notifications.acceptFailed')
+      });
+    }
+  }
+
   onDocumentClick(event: Event): void {
     if (!this.elementRef.nativeElement.contains(event.target)) {
       this.panelOpen.set(false);
@@ -108,6 +136,7 @@ export class NotificationBellComponent implements OnInit, OnDestroy {
       case 'friend_request': return 'pi-user-plus';
       case 'friend_accepted': return 'pi-check-circle';
       case 'nudge': return 'pi-bell';
+      case 'deck_shared': return 'pi-share-alt';
       default: return 'pi-info-circle';
     }
   }

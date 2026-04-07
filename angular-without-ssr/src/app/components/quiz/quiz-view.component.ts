@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, inject, signal, WritableSignal, ChangeDet
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { TranslocoService } from '@jsverse/transloco';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FlashcardApiService } from '../../services/flashcard-api.service';
 import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
@@ -33,6 +34,7 @@ export class QuizViewComponent implements OnInit, OnDestroy {
   private flashcardSetApiService: FlashcardSetApiService = inject(FlashcardSetApiService);
   private quizService: QuizService = inject(QuizService);
   private destroyRef: DestroyRef = inject(DestroyRef);
+  private t: TranslocoService = inject(TranslocoService);
 
   public phaseSignal: WritableSignal<QuizPhase> = signal<QuizPhase>('loading');
   public errorMessageSignal: WritableSignal<string> = signal<string>('');
@@ -204,7 +206,7 @@ export class QuizViewComponent implements OnInit, OnDestroy {
         this.loadFlashcards(setId);
       },
       error: () => {
-        this.errorMessageSignal.set('Nie znaleziono zestawu.');
+        this.errorMessageSignal.set(this.t.translate('quiz.errors.setNotFound'));
         this.phaseSignal.set('error');
       }
     });
@@ -214,7 +216,7 @@ export class QuizViewComponent implements OnInit, OnDestroy {
     this.flashcardApiService.getAllFlashcardsForSet(setId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (flashcards: FlashcardDTO[]) => {
         if (flashcards.length < 4) {
-          this.errorMessageSignal.set('Zestaw musi mieć minimum 4 fiszki, aby uruchomić test.');
+          this.errorMessageSignal.set(this.t.translate('quiz.errors.minCards'));
           this.phaseSignal.set('error');
           return;
         }
@@ -222,7 +224,7 @@ export class QuizViewComponent implements OnInit, OnDestroy {
         this.phaseSignal.set('config');
       },
       error: () => {
-        this.errorMessageSignal.set('Nie udało się pobrać fiszek.');
+        this.errorMessageSignal.set(this.t.translate('quiz.errors.loadFlashcardsFailed'));
         this.phaseSignal.set('error');
       }
     });

@@ -183,4 +183,92 @@ describe('FriendshipService', () => {
       await expectAsync(service.sendNudge('user-456')).toBeRejectedWith(error);
     });
   });
+
+  describe('getSentRequests', () => {
+    it('powinien wywolac RPC get_sent_requests', async () => {
+      const mockSent = [
+        { friendship_id: 's1', user_id: 'u3', email_masked: 'an...@test.com', status: 'pending', created_at: '2026-04-07' }
+      ];
+      rpcSpy.and.returnValue(Promise.resolve({ data: mockSent, error: null }));
+
+      const result = await service.getSentRequests();
+
+      expect(rpcSpy).toHaveBeenCalledWith('get_sent_requests');
+      expect(result.length).toBe(1);
+      expect(result[0].status).toBe('pending');
+    });
+
+    it('powinien zwrocic pusta tablice gdy brak wyslanych', async () => {
+      rpcSpy.and.returnValue(Promise.resolve({ data: null, error: null }));
+
+      const result = await service.getSentRequests();
+
+      expect(result).toEqual([]);
+    });
+  });
+
+  describe('cancelRequest', () => {
+    it('powinien wywolac RPC cancel_friend_request', async () => {
+      rpcSpy.and.returnValue(Promise.resolve({ data: null, error: null }));
+
+      await service.cancelRequest('friend-789');
+
+      expect(rpcSpy).toHaveBeenCalledWith('cancel_friend_request', { p_friendship_id: 'friend-789' });
+    });
+
+    it('powinien rzucic blad gdy zaproszenie nie istnieje', async () => {
+      const error = { message: 'Request not found or cannot be cancelled' };
+      rpcSpy.and.returnValue(Promise.resolve({ data: null, error }));
+
+      await expectAsync(service.cancelRequest('invalid')).toBeRejectedWith(error);
+    });
+  });
+
+  describe('getLeaderboard', () => {
+    it('powinien wywolac RPC get_friends_leaderboard', async () => {
+      const mockEntries = [
+        { user_id: 'u1', email_masked: 'te...@test.com', current_streak: 10, total_cards_reviewed: 200, cards_this_week: 30, is_current_user: true },
+        { user_id: 'u2', email_masked: 'jo...@test.com', current_streak: 5, total_cards_reviewed: 100, cards_this_week: 15, is_current_user: false }
+      ];
+      rpcSpy.and.returnValue(Promise.resolve({ data: mockEntries, error: null }));
+
+      const result = await service.getLeaderboard();
+
+      expect(rpcSpy).toHaveBeenCalledWith('get_friends_leaderboard');
+      expect(result.length).toBe(2);
+      expect(result[0].is_current_user).toBeTrue();
+    });
+  });
+
+  describe('shareDeckToFriend', () => {
+    it('powinien wywolac RPC share_deck_to_friend', async () => {
+      rpcSpy.and.returnValue(Promise.resolve({ data: 'share-uuid-123', error: null }));
+
+      const result = await service.shareDeckToFriend(42, 'friend-user-id');
+
+      expect(rpcSpy).toHaveBeenCalledWith('share_deck_to_friend', {
+        p_set_id: 42,
+        p_friend_user_id: 'friend-user-id'
+      });
+      expect(result).toBe('share-uuid-123');
+    });
+
+    it('powinien rzucic blad gdy nie sa znajomymi', async () => {
+      const error = { message: 'Not friends' };
+      rpcSpy.and.returnValue(Promise.resolve({ data: null, error }));
+
+      await expectAsync(service.shareDeckToFriend(1, 'stranger')).toBeRejectedWith(error);
+    });
+  });
+
+  describe('acceptDeckShare', () => {
+    it('powinien wywolac RPC accept_deck_share i zwrocic nowy set id', async () => {
+      rpcSpy.and.returnValue(Promise.resolve({ data: 99, error: null }));
+
+      const result = await service.acceptDeckShare('share-uuid');
+
+      expect(rpcSpy).toHaveBeenCalledWith('accept_deck_share', { p_deck_share_id: 'share-uuid' });
+      expect(result).toBe(99);
+    });
+  });
 });

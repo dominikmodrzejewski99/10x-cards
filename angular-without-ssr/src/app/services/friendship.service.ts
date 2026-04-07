@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from './supabase-client.factory';
-import { FriendDTO, FriendRequestDTO, FriendStatsDTO } from '../../types';
+import { FriendDTO, FriendRequestDTO, FriendStatsDTO, SentRequestDTO, LeaderboardEntryDTO } from '../../types';
 
 @Injectable({ providedIn: 'root' })
 export class FriendshipService {
@@ -56,5 +56,41 @@ export class FriendshipService {
       p_friend_user_id: friendUserId
     });
     if (error) throw error;
+  }
+
+  async getSentRequests(): Promise<SentRequestDTO[]> {
+    const { data, error } = await this.supabase.rpc('get_sent_requests');
+    if (error) throw error;
+    return (data as SentRequestDTO[]) || [];
+  }
+
+  async cancelRequest(friendshipId: string): Promise<void> {
+    const { error } = await this.supabase.rpc('cancel_friend_request', {
+      p_friendship_id: friendshipId
+    });
+    if (error) throw error;
+  }
+
+  async getLeaderboard(): Promise<LeaderboardEntryDTO[]> {
+    const { data, error } = await this.supabase.rpc('get_friends_leaderboard');
+    if (error) throw error;
+    return (data as LeaderboardEntryDTO[]) || [];
+  }
+
+  async shareDeckToFriend(setId: number, friendUserId: string): Promise<string> {
+    const { data, error } = await this.supabase.rpc('share_deck_to_friend', {
+      p_set_id: setId,
+      p_friend_user_id: friendUserId
+    });
+    if (error) throw error;
+    return data as string;
+  }
+
+  async acceptDeckShare(deckShareId: string): Promise<number> {
+    const { data, error } = await this.supabase.rpc('accept_deck_share', {
+      p_deck_share_id: deckShareId
+    });
+    if (error) throw error;
+    return data as number;
   }
 }

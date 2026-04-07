@@ -1,14 +1,13 @@
 import {
-  Component, ChangeDetectionStrategy, OnInit, inject, signal, DestroyRef
+  Component, ChangeDetectionStrategy, OnInit, inject, signal
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { ToastService } from '../../shared/services/toast.service';
 import { SpinnerComponent } from '../../shared/components/spinner/spinner.component';
 import { FriendshipService } from '../../services/friendship.service';
-import { NotificationService } from '../../services/notification.service';
-import { FriendDTO, FriendRequestDTO } from '../../../types';
+import { FriendDTO, FriendRequestDTO, SentRequestDTO } from '../../../types';
 
 @Component({
   selector: 'app-friends-list',
@@ -19,11 +18,12 @@ import { FriendDTO, FriendRequestDTO } from '../../../types';
 })
 export class FriendsListComponent implements OnInit {
   private friendshipService: FriendshipService = inject(FriendshipService);
-  private notificationService: NotificationService = inject(NotificationService);
   private toastService: ToastService = inject(ToastService);
+  private t: TranslocoService = inject(TranslocoService);
 
   readonly friends = signal<FriendDTO[]>([]);
   readonly pendingRequests = signal<FriendRequestDTO[]>([]);
+  readonly sentRequests = signal<SentRequestDTO[]>([]);
   readonly loading = signal(true);
   readonly sending = signal(false);
   readonly emailInput = signal('');
@@ -35,17 +35,19 @@ export class FriendsListComponent implements OnInit {
   async loadData(): Promise<void> {
     this.loading.set(true);
     try {
-      const [friends, pending] = await Promise.all([
+      const [friends, pending, sent] = await Promise.all([
         this.friendshipService.getFriends(),
-        this.friendshipService.getPendingRequests()
+        this.friendshipService.getPendingRequests(),
+        this.friendshipService.getSentRequests()
       ]);
       this.friends.set(friends);
       this.pendingRequests.set(pending);
+      this.sentRequests.set(sent);
     } catch {
       this.toastService.add({
         severity: 'error',
-        summary: 'Błąd',
-        detail: 'Nie udało się załadować danych znajomych.'
+        summary: this.t.translate('toasts.error'),
+        detail: this.t.translate('friends.toasts.loadFailed')
       });
     } finally {
       this.loading.set(false);
@@ -62,14 +64,16 @@ export class FriendsListComponent implements OnInit {
       this.emailInput.set('');
       this.toastService.add({
         severity: 'success',
-        summary: 'Wysłano',
-        detail: 'Zaproszenie zostało wysłane!'
+        summary: this.t.translate('toasts.sent'),
+        detail: this.t.translate('friends.toasts.inviteSent')
       });
+      const sent = await this.friendshipService.getSentRequests();
+      this.sentRequests.set(sent);
     } catch (error: unknown) {
-      const msg = (error as { message?: string })?.message || 'Nie udało się wysłać zaproszenia.';
+      const msg: string = (error as { message?: string })?.message || this.t.translate('friends.toasts.inviteSendFailed');
       this.toastService.add({
         severity: 'error',
-        summary: 'Błąd',
+        summary: this.t.translate('toasts.error'),
         detail: msg
       });
     } finally {
@@ -80,10 +84,10 @@ export class FriendsListComponent implements OnInit {
   async acceptRequest(friendshipId: string): Promise<void> {
     try {
       await this.friendshipService.respondToRequest(friendshipId, true);
-      this.toastService.add({ severity: 'success', summary: 'Zaakceptowano', detail: 'Dodano do znajomych!' });
+      this.toastService.add({ severity: 'success', summary: this.t.translate('toasts.accepted'), detail: this.t.translate('friends.toasts.friendAccepted') });
       await this.loadData();
     } catch {
-      this.toastService.add({ severity: 'error', summary: 'Błąd', detail: 'Nie udało się zaakceptować.' });
+      this.toastService.add({ severity: 'error', summary: this.t.translate('toasts.error'), detail: this.t.translate('friends.toasts.acceptFailed') });
     }
   }
 
@@ -92,7 +96,7 @@ export class FriendsListComponent implements OnInit {
       await this.friendshipService.respondToRequest(friendshipId, false);
       this.pendingRequests.update(list => list.filter(r => r.friendship_id !== friendshipId));
     } catch {
-      this.toastService.add({ severity: 'error', summary: 'Błąd', detail: 'Nie udało się odrzucić.' });
+      this.toastService.add({ severity: 'error', summary: this.t.translate('toasts.error'), detail: this.t.translate('friends.toasts.rejectFailed') });
     }
   }
 
@@ -100,19 +104,29 @@ export class FriendsListComponent implements OnInit {
     try {
       await this.friendshipService.removeFriend(friendshipId);
       this.friends.update(list => list.filter(f => f.friendship_id !== friendshipId));
-      this.toastService.add({ severity: 'success', summary: 'Usunięto', detail: 'Usunięto ze znajomych.' });
+      this.toastService.add({ severity: 'success', summary: this.t.translate('toasts.deleted'), detail: this.t.translate('friends.toasts.friendRemoved') });
     } catch {
-      this.toastService.add({ severity: 'error', summary: 'Błąd', detail: 'Nie udało się usunąć.' });
+      this.toastService.add({ severity: 'error', summary: this.t.translate('toasts.error'), detail: this.t.translate('friends.toasts.removeFailed') });
     }
   }
 
   async sendNudge(friendUserId: string): Promise<void> {
     try {
       await this.friendshipService.sendNudge(friendUserId);
-      this.toastService.add({ severity: 'success', summary: 'Wysłano', detail: 'Przypomnienie wysłane!' });
+      this.toastService.add({ severity: 'success', summary: this.t.translate('toasts.sent'), detail: this.t.translate('friends.toasts.nudgeSent') });
     } catch (error: unknown) {
-      const msg = (error as { message?: string })?.message || 'Nie udało się wysłać przypomnienia.';
-      this.toastService.add({ severity: 'warn', summary: 'Uwaga', detail: msg });
+      const msg: string = (error as { message?: string })?.message || this.t.translate('friends.toasts.nudgeSendFailed');
+      this.toastService.add({ severity: 'warn', summary: this.t.translate('toasts.warning'), detail: msg });
+    }
+  }
+
+  async cancelRequest(friendshipId: string): Promise<void> {
+    try {
+      await this.friendshipService.cancelRequest(friendshipId);
+      this.sentRequests.update(list => list.filter(r => r.friendship_id !== friendshipId));
+      this.toastService.add({ severity: 'success', summary: this.t.translate('toasts.cancelled'), detail: this.t.translate('friends.toasts.inviteCancelled') });
+    } catch {
+      this.toastService.add({ severity: 'error', summary: this.t.translate('toasts.error'), detail: this.t.translate('friends.toasts.cancelFailed') });
     }
   }
 

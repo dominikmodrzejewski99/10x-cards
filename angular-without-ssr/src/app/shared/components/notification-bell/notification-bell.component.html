@@ -34,8 +34,13 @@
               <i class="pi notif-bell__item-icon" [ngClass]="getNotificationIcon(notif.type)"></i>
               <div class="notif-bell__item-body">
                 <span class="notif-bell__item-text">
-                  {{ t(notif.type, { email: notif.data['from_email'] || '***' }) }}
+                  {{ t(notif.type, { email: notif.data['from_email'] || '***', set_name: notif.data['set_name'] || '' }) }}
                 </span>
+                @if (notif.type === 'deck_shared' && !notif.read) {
+                  <button class="notif-bell__accept-btn" (click)="acceptDeckShare(notif, $event)">
+                    <i class="pi pi-check"></i> {{ t('acceptDeck') }}
+                  </button>
+                }
               </div>
             </button>
           }

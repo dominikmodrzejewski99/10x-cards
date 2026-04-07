@@ -228,7 +228,7 @@ describe('GenerateViewComponent', () => {
 
       component.generate();
 
-      expect(component.errorMessage()).toContain('autoryzacji');
+      expect(component.errorMessage()).toContain('generate.toasts.authLogin');
     });
   });
 

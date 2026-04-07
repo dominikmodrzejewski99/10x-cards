@@ -1,4 +1,4 @@
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ShareService } from '../../services/share.service';
@@ -45,6 +45,7 @@ export class ShareAcceptComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly shareService = inject(ShareService);
+  private readonly t = inject(TranslocoService);
 
   readonly loading = signal(true);
   readonly error = signal<string | null>(null);
@@ -52,7 +53,7 @@ export class ShareAcceptComponent implements OnInit {
   ngOnInit(): void {
     const token = this.route.snapshot.paramMap.get('token');
     if (!token) {
-      this.error.set('Nieprawidłowy link');
+      this.error.set(this.t.translate('share.invalidLink'));
       this.loading.set(false);
       return;
     }
@@ -66,13 +67,13 @@ export class ShareAcceptComponent implements OnInit {
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       if (message.includes('expired')) {
-        this.error.set('Link wygasł. Poproś właściciela o nowy link.');
+        this.error.set(this.t.translate('share.expired'));
       } else if (message.includes('not found')) {
-        this.error.set('Link jest nieprawidłowy lub został usunięty.');
+        this.error.set(this.t.translate('share.notFound'));
       } else if (message.includes('no flashcards')) {
-        this.error.set('Zestaw nie zawiera fiszek.');
+        this.error.set(this.t.translate('share.noFlashcards'));
       } else {
-        this.error.set('Wystąpił błąd. Spróbuj ponownie później.');
+        this.error.set(this.t.translate('share.genericError'));
       }
       this.loading.set(false);
     }

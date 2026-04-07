@@ -147,7 +147,7 @@ describe('QuizViewComponent', () => {
       fixture.detectChanges();
 
       expect(component.phaseSignal()).toBe('error');
-      expect(component.errorMessageSignal()).toBe('Nie znaleziono zestawu.');
+      expect(component.errorMessageSignal()).toBe('quiz.errors.setNotFound');
     });
   });
 
@@ -159,7 +159,7 @@ describe('QuizViewComponent', () => {
       fixture.detectChanges();
 
       expect(component.phaseSignal()).toBe('error');
-      expect(component.errorMessageSignal()).toBe('Zestaw musi mieć minimum 4 fiszki, aby uruchomić test.');
+      expect(component.errorMessageSignal()).toBe('quiz.errors.minCards');
     });
 
     it('powinien ustawic faze error gdy pobranie fiszek zakonczy sie bledem', () => {
@@ -168,7 +168,7 @@ describe('QuizViewComponent', () => {
       fixture.detectChanges();
 
       expect(component.phaseSignal()).toBe('error');
-      expect(component.errorMessageSignal()).toBe('Nie udało się pobrać fiszek.');
+      expect(component.errorMessageSignal()).toBe('quiz.errors.loadFlashcardsFailed');
     });
   });
 

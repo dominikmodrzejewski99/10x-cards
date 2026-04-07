@@ -69,6 +69,12 @@
   padding: 0.55rem 0.65rem;
 }
 
+.flist__btn--share-friend {
+  @include btn-ghost;
+  @include btn-md;
+  padding: 0.55rem 0.65rem;
+}
+
 .flist__btn--more {
   @include btn-ghost;
   @include btn-md;

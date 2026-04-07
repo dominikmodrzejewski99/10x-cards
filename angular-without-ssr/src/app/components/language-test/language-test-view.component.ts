@@ -1,4 +1,4 @@
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit, OnDestroy, Signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -24,6 +24,7 @@ export class LanguageTestViewComponent implements OnInit, OnDestroy {
   private bankService: LanguageTestBankService = inject(LanguageTestBankService);
   private testService: LanguageTestService = inject(LanguageTestService);
   private resultsService: LanguageTestResultsService = inject(LanguageTestResultsService);
+  private t: TranslocoService = inject(TranslocoService);
 
   public testDefinitionSignal: WritableSignal<TestDefinition | null> = signal<TestDefinition | null>(null);
   public currentIndexSignal: WritableSignal<number> = signal<number>(0);
@@ -77,7 +78,7 @@ export class LanguageTestViewComponent implements OnInit, OnDestroy {
         this.loadingSignal.set(false);
       },
       error: () => {
-        this.errorSignal.set('Nie udało się załadować testu. Spróbuj ponownie.');
+        this.errorSignal.set(this.t.translate('languageTest.errors.loadTestFailed'));
         this.loadingSignal.set(false);
       }
     });

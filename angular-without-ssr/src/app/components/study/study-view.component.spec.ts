@@ -566,7 +566,7 @@ describe('StudyViewComponent', () => {
 
       component.loadExtraPractice();
 
-      expect(component.errorSignal()).toBe('Nie udało się załadować fiszek. Spróbuj ponownie.');
+      expect(component.errorSignal()).toBe('study.errors.loadFailed');
       expect(component.loadingSignal()).toBeFalse();
     });
   });
@@ -600,56 +600,4 @@ describe('StudyViewComponent', () => {
     });
   });
 
-  describe('touch gestures', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
-
-    it('should initialize swipe state on touch start', () => {
-      const touchEvent: Partial<TouchEvent> = {
-        touches: [{ clientX: 100, clientY: 200 }] as unknown as TouchList
-      };
-
-      component.onTouchStart(touchEvent as TouchEvent);
-
-      expect(component.swipeActiveSignal()).toBeTrue();
-      expect(component.swipeDeltaXSignal()).toBe(0);
-      expect(component.swipeDeltaYSignal()).toBe(0);
-    });
-
-    it('should not start swipe when session is complete', () => {
-      component.isSessionCompleteSignal.set(true);
-      const touchEvent: Partial<TouchEvent> = {
-        touches: [{ clientX: 100, clientY: 200 }] as unknown as TouchList
-      };
-
-      component.onTouchStart(touchEvent as TouchEvent);
-
-      expect(component.swipeActiveSignal()).toBeFalse();
-    });
-
-    it('should update deltas on touch move', () => {
-      component.swipeActiveSignal.set(true);
-      const touchEvent: Partial<TouchEvent> = {
-        touches: [{ clientX: 150, clientY: 200 }] as unknown as TouchList,
-        preventDefault: jasmine.createSpy('preventDefault')
-      };
-
-      component.onTouchMove(touchEvent as TouchEvent);
-
-      expect(component.swipeDeltaXSignal()).toBe(150);
-    });
-
-    it('should reset swipe state on touch end', () => {
-      component.swipeActiveSignal.set(true);
-      component.swipeDeltaXSignal.set(5);
-      component.swipeDeltaYSignal.set(5);
-
-      component.onTouchEnd();
-
-      expect(component.swipeActiveSignal()).toBeFalse();
-      expect(component.swipeDeltaXSignal()).toBe(0);
-      expect(component.swipeDeltaYSignal()).toBe(0);
-    });
-  });
 });

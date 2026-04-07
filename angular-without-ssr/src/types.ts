@@ -387,9 +387,37 @@ export interface FriendStatsDTO {
   last_active_at: string | null;
 }
 
+export interface SentRequestDTO {
+  friendship_id: string;
+  user_id: string;
+  email_masked: string;
+  status: 'pending' | 'rejected';
+  created_at: string;
+}
+
+export interface LeaderboardEntryDTO {
+  user_id: string;
+  email_masked: string;
+  current_streak: number;
+  total_cards_reviewed: number;
+  cards_this_week: number;
+  is_current_user: boolean;
+}
+
+export type LeaderboardCategory = 'streak' | 'cards_this_week' | 'total_cards';
+
+export interface DeckShareDTO {
+  id: string;
+  set_id: number;
+  from_user_id: string;
+  to_user_id: string;
+  status: 'pending' | 'accepted' | 'rejected';
+  created_at: string;
+}
+
 // ============ Notifications ============
 
-export type NotificationType = 'friend_request' | 'friend_accepted' | 'nudge';
+export type NotificationType = 'friend_request' | 'friend_accepted' | 'nudge' | 'deck_shared';
 
 export interface NotificationDTO {
   id: string;

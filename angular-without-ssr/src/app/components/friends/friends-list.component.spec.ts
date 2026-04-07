@@ -3,8 +3,7 @@ import { TranslocoTestingModule } from '@jsverse/transloco';
 import { ToastService } from '../../shared/services/toast.service';
 import { FriendsListComponent } from './friends-list.component';
 import { FriendshipService } from '../../services/friendship.service';
-import { NotificationService } from '../../services/notification.service';
-import { FriendDTO, FriendRequestDTO } from '../../../types';
+import { FriendDTO, FriendRequestDTO, SentRequestDTO } from '../../../types';
 
 describe('FriendsListComponent', () => {
   let component: FriendsListComponent;
@@ -29,14 +28,23 @@ describe('FriendsListComponent', () => {
     created_at: '2026-04-01T00:00:00Z'
   };
 
+  const mockSentRequest: SentRequestDTO = {
+    friendship_id: 's1',
+    user_id: 'u3',
+    email_masked: 'an...@test.com',
+    status: 'pending',
+    created_at: '2026-04-07T00:00:00Z'
+  };
+
   beforeEach(async () => {
     friendshipServiceMock = jasmine.createSpyObj('FriendshipService', [
-      'getFriends', 'getPendingRequests', 'sendRequest', 'respondToRequest', 'removeFriend', 'sendNudge'
+      'getFriends', 'getPendingRequests', 'getSentRequests', 'sendRequest', 'respondToRequest', 'removeFriend', 'sendNudge', 'cancelRequest'
     ]);
     messageServiceMock = jasmine.createSpyObj('ToastService', ['add']);
 
     friendshipServiceMock.getFriends.and.returnValue(Promise.resolve([mockFriend]));
     friendshipServiceMock.getPendingRequests.and.returnValue(Promise.resolve([mockRequest]));
+    friendshipServiceMock.getSentRequests.and.returnValue(Promise.resolve([mockSentRequest]));
 
     await TestBed.configureTestingModule({
       imports: [
@@ -47,8 +55,7 @@ describe('FriendsListComponent', () => {
         })
       ],
       providers: [
-        { provide: FriendshipService, useValue: friendshipServiceMock },
-        { provide: NotificationService, useValue: {} }
+        { provide: FriendshipService, useValue: friendshipServiceMock }
       ]
     })
     .overrideComponent(FriendsListComponent, {
@@ -64,13 +71,15 @@ describe('FriendsListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('powinien zaladowac znajomych i zaproszenia przy init', async () => {
+  it('powinien zaladowac znajomych, zaproszenia i wyslane przy init', async () => {
     await component.loadData();
 
     expect(friendshipServiceMock.getFriends).toHaveBeenCalled();
     expect(friendshipServiceMock.getPendingRequests).toHaveBeenCalled();
+    expect(friendshipServiceMock.getSentRequests).toHaveBeenCalled();
     expect(component.friends().length).toBe(1);
     expect(component.pendingRequests().length).toBe(1);
+    expect(component.sentRequests().length).toBe(1);
     expect(component.loading()).toBeFalse();
   });
 
@@ -97,6 +106,7 @@ describe('FriendsListComponent', () => {
     friendshipServiceMock.respondToRequest.and.returnValue(Promise.resolve());
     friendshipServiceMock.getFriends.and.returnValue(Promise.resolve([mockFriend]));
     friendshipServiceMock.getPendingRequests.and.returnValue(Promise.resolve([]));
+    friendshipServiceMock.getSentRequests.and.returnValue(Promise.resolve([]));
 
     await component.acceptRequest('r1');
 
@@ -130,6 +140,17 @@ describe('FriendsListComponent', () => {
     await component.sendNudge('u1');
 
     expect(friendshipServiceMock.sendNudge).toHaveBeenCalledWith('u1');
+    expect(messageServiceMock.add).toHaveBeenCalledWith(jasmine.objectContaining({ severity: 'success' }));
+  });
+
+  it('powinien anulowac wyslane zaproszenie', async () => {
+    component.sentRequests.set([mockSentRequest]);
+    friendshipServiceMock.cancelRequest.and.returnValue(Promise.resolve());
+
+    await component.cancelRequest('s1');
+
+    expect(friendshipServiceMock.cancelRequest).toHaveBeenCalledWith('s1');
+    expect(component.sentRequests().length).toBe(0);
     expect(messageServiceMock.add).toHaveBeenCalledWith(jasmine.objectContaining({ severity: 'success' }));
   });
 

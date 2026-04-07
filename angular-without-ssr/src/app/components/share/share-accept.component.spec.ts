@@ -49,7 +49,7 @@ describe('ShareAcceptComponent', () => {
     it('should show error for missing token', () => {
       fixture.detectChanges();
 
-      expect(component.error()).toBe('Nieprawidłowy link');
+      expect(component.error()).toBe('share.invalidLink');
       expect(component.loading()).toBeFalse();
       expect(shareServiceMock.acceptShareLink).not.toHaveBeenCalled();
     });
@@ -82,7 +82,7 @@ describe('ShareAcceptComponent', () => {
       fixture.detectChanges();
       await fixture.whenStable();
 
-      expect(component.error()).toBe('Link wygasł. Poproś właściciela o nowy link.');
+      expect(component.error()).toBe('share.expired');
       expect(component.loading()).toBeFalse();
     });
 
@@ -92,7 +92,7 @@ describe('ShareAcceptComponent', () => {
       fixture.detectChanges();
       await fixture.whenStable();
 
-      expect(component.error()).toBe('Link jest nieprawidłowy lub został usunięty.');
+      expect(component.error()).toBe('share.notFound');
       expect(component.loading()).toBeFalse();
     });
 
@@ -102,7 +102,7 @@ describe('ShareAcceptComponent', () => {
       fixture.detectChanges();
       await fixture.whenStable();
 
-      expect(component.error()).toBe('Wystąpił błąd. Spróbuj ponownie później.');
+      expect(component.error()).toBe('share.genericError');
       expect(component.loading()).toBeFalse();
     });
 
