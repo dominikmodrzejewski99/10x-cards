@@ -4,11 +4,40 @@ import { FlashcardSetDTO, CreateFlashcardSetCommand, UpdateFlashcardSetCommand }
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from './supabase-client.factory';
 
+export const SET_CONSTRAINTS = {
+  NAME_MAX: 100,
+  DESCRIPTION_MAX: 500,
+  TAGS_MAX_COUNT: 10,
+  TAG_MAX_LENGTH: 30,
+} as const;
+
 @Injectable({
   providedIn: 'root'
 })
 export class FlashcardSetApiService {
   private supabase: SupabaseClient = inject(SupabaseClientFactory).getClient();
+
+  private validateSetData(data: CreateFlashcardSetCommand | UpdateFlashcardSetCommand): void {
+    if ('name' in data && data.name !== undefined) {
+      const trimmed = data.name.trim();
+      if (trimmed.length < 1) throw new Error('Nazwa zestawu nie może być pusta');
+      if (trimmed.length > SET_CONSTRAINTS.NAME_MAX)
+        throw new Error(`Nazwa zestawu może mieć max ${SET_CONSTRAINTS.NAME_MAX} znaków`);
+    }
+    if ('description' in data && data.description) {
+      if (data.description.length > SET_CONSTRAINTS.DESCRIPTION_MAX)
+        throw new Error(`Opis może mieć max ${SET_CONSTRAINTS.DESCRIPTION_MAX} znaków`);
+    }
+    if ('tags' in data && data.tags) {
+      if (data.tags.length > SET_CONSTRAINTS.TAGS_MAX_COUNT)
+        throw new Error(`Maksymalnie ${SET_CONSTRAINTS.TAGS_MAX_COUNT} tagów`);
+      for (const tag of data.tags) {
+        if (tag.trim().length < 1) throw new Error('Tag nie może być pusty');
+        if (tag.length > SET_CONSTRAINTS.TAG_MAX_LENGTH)
+          throw new Error(`Tag może mieć max ${SET_CONSTRAINTS.TAG_MAX_LENGTH} znaków`);
+      }
+    }
+  }
 
   private getCurrentUserId(): Observable<string> {
     return from(this.supabase.auth.getSession()).pipe(
@@ -62,6 +91,7 @@ export class FlashcardSetApiService {
   }
 
   createSet(data: CreateFlashcardSetCommand): Observable<FlashcardSetDTO> {
+    this.validateSetData(data);
     return this.getCurrentUserId().pipe(
       switchMap(userId =>
         from(
@@ -89,6 +119,7 @@ export class FlashcardSetApiService {
   }
 
   updateSet(id: number, data: UpdateFlashcardSetCommand): Observable<FlashcardSetDTO> {
+    this.validateSetData(data);
     return this.getCurrentUserId().pipe(
       switchMap(userId =>
         from(

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { FlashcardSetApiService } from './flashcard-set-api.service';
+import { FlashcardSetApiService, SET_CONSTRAINTS } from './flashcard-set-api.service';
 import { SupabaseClientFactory } from './supabase-client.factory';
 import { FlashcardSetDTO, CreateFlashcardSetCommand, UpdateFlashcardSetCommand } from '../../types';
 
@@ -277,6 +277,68 @@ describe('FlashcardSetApiService', () => {
       service.getSetsWithCardCount().subscribe({
         next: (result: { set: FlashcardSetDTO; cardCount: number }[]) => {
           expect(result[0].cardCount).toBe(0);
+          done();
+        }
+      });
+    });
+  });
+
+  describe('validation', () => {
+    it('should reject empty name on create', () => {
+      expect(() => service.createSet({ name: '   ' })).toThrowError(/pusta/);
+    });
+
+    it('should reject name exceeding max length on create', () => {
+      expect(() => service.createSet({ name: 'a'.repeat(SET_CONSTRAINTS.NAME_MAX + 1) }))
+        .toThrowError(/max/);
+    });
+
+    it('should reject description exceeding max length on create', () => {
+      expect(() => service.createSet({ name: 'OK', description: 'x'.repeat(SET_CONSTRAINTS.DESCRIPTION_MAX + 1) }))
+        .toThrowError(/max/);
+    });
+
+    it('should reject more than max tags on create', () => {
+      const tooManyTags = Array.from({ length: SET_CONSTRAINTS.TAGS_MAX_COUNT + 1 }, (_, i) => `tag${i}`);
+      expect(() => service.createSet({ name: 'OK', tags: tooManyTags }))
+        .toThrowError(/tag/i);
+    });
+
+    it('should reject blank tag on create', () => {
+      expect(() => service.createSet({ name: 'OK', tags: ['good', '  '] }))
+        .toThrowError(/pusty/);
+    });
+
+    it('should reject tag exceeding max length on create', () => {
+      expect(() => service.createSet({ name: 'OK', tags: ['a'.repeat(SET_CONSTRAINTS.TAG_MAX_LENGTH + 1)] }))
+        .toThrowError(/max/);
+    });
+
+    it('should reject empty name on update', () => {
+      expect(() => service.updateSet(1, { name: '' })).toThrowError(/pusta/);
+    });
+
+    it('should allow valid data on create', (done: DoneFn) => {
+      const createdSet: FlashcardSetDTO = makeMockSet({ name: 'Valid' });
+      const queryBuilder: MockQueryBuilder = createMockQueryBuilder({ data: createdSet, error: null });
+      mockSupabase.from.and.returnValue(queryBuilder);
+
+      service.createSet({ name: 'Valid', tags: ['a', 'b'] }).subscribe({
+        next: (result: FlashcardSetDTO) => {
+          expect(result.name).toBe('Valid');
+          done();
+        }
+      });
+    });
+
+    it('should allow partial update without name', (done: DoneFn) => {
+      const updatedSet: FlashcardSetDTO = makeMockSet({ description: 'new desc' });
+      const queryBuilder: MockQueryBuilder = createMockQueryBuilder({ data: updatedSet, error: null });
+      mockSupabase.from.and.returnValue(queryBuilder);
+
+      service.updateSet(1, { description: 'new desc' }).subscribe({
+        next: (result: FlashcardSetDTO) => {
+          expect(result.description).toBe('new desc');
           done();
         }
       });
