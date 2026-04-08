@@ -2,6 +2,7 @@
 <div class="proposals">
   @if (proposalsSignal().length === 0) {
   <div class="proposals__empty">
+    <i class="pi pi-inbox"></i>
     <p>{{ t('empty') }}</p>
     <p class="proposals__empty-hint">{{ t('emptyHint') }}</p>
   </div>
@@ -13,30 +14,18 @@
     [class.proposal--accepted]="proposal.accepted"
     [attr.data-test-id]="'flashcard-proposal-' + $index">
 
-    <div class="proposal__number">
-      @if (proposal.accepted) {
-        <i class="pi pi-check"></i>
-      } @else {
-        {{ $index + 1 }}
-      }
-    </div>
-
-    <div class="proposal__body">
-      <div class="proposal__content">
-        <div class="proposal__side">
-          <span class="proposal__label">{{ t('frontLabel') }}</span>
-          <span class="proposal__text">{{ proposal.front }}</span>
-        </div>
-        <div class="proposal__side proposal__side--back">
-          <span class="proposal__label proposal__label--back">{{ t('backLabel') }}</span>
-          <span class="proposal__text">{{ proposal.back }}</span>
-        </div>
-      </div>
-
-      <div class="proposal__actions">
+    <div class="proposal__header">
+      <span class="proposal__number">
+        @if (proposal.accepted) {
+          <i class="pi pi-check"></i>
+        } @else {
+          {{ $index + 1 }}
+        }
+      </span>
+      <div class="proposal__actions-inline">
         <button
-          class="proposal__btn proposal__btn--accept"
-          [class.proposal__btn--accepted]="proposal.accepted"
+          class="proposal__action-btn proposal__action-btn--accept"
+          [class.proposal__action-btn--accepted]="proposal.accepted"
           (click)="onAccept(proposal)"
           [attr.aria-label]="proposal.accepted ? t('undoAccept') : t('accept')"
           [attr.data-test-id]="'accept-flashcard-button-' + $index">
@@ -44,20 +33,35 @@
           {{ proposal.accepted ? t('accepted') : t('accept') }}
         </button>
         <button
-          class="proposal__btn proposal__btn--edit"
+          class="proposal__action-btn proposal__action-btn--edit"
           (click)="openEditDialog(proposal)"
           [attr.aria-label]="t('edit')">
           <i class="pi pi-pencil"></i>
           {{ t('edit') }}
         </button>
         <button
-          class="proposal__btn proposal__btn--reject"
+          class="proposal__action-btn proposal__action-btn--reject"
           (click)="onReject(proposal)"
           [attr.aria-label]="t('reject')"
           [attr.data-test-id]="'reject-flashcard-button-' + $index">
           <i class="pi pi-trash"></i>
-          {{ t('reject') }}
         </button>
+      </div>
+    </div>
+
+    <div class="proposal__cards">
+      <div class="proposal__card proposal__card--front">
+        <span class="proposal__card-label">{{ t('frontLabel') }}</span>
+        <p class="proposal__card-text">{{ proposal.front }}</p>
+        <span class="proposal__card-chars">{{ t('charCount', { count: proposal.front.length }) }}</span>
+      </div>
+      <div class="proposal__card-divider">
+        <i class="pi pi-arrows-h"></i>
+      </div>
+      <div class="proposal__card proposal__card--back">
+        <span class="proposal__card-label">{{ t('backLabel') }}</span>
+        <p class="proposal__card-text">{{ proposal.back }}</p>
+        <span class="proposal__card-chars">{{ t('charCount', { count: proposal.back.length }) }}</span>
       </div>
     </div>
   </div>

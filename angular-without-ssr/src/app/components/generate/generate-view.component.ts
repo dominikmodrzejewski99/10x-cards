@@ -237,6 +237,13 @@ export class GenerateViewComponent implements OnInit {
     });
   }
 
+  toggleAcceptAll(): void {
+    const allAccepted = this.acceptedCount() === this.proposals().length;
+    this.proposals.update(list =>
+      list.map(p => ({ ...p, accepted: !allAccepted }))
+    );
+  }
+
   editProposal(event: {original: FlashcardProposalDTO, edited: FlashcardProposalDTO}): void {
     this.proposals.update(list => {
       const index = list.findIndex(p =>

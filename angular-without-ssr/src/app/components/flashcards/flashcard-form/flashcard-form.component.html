@@ -1,7 +1,48 @@
 <ng-container *transloco="let t; prefix: 'flashcards.form'">
 <form [formGroup]="flashcardForm" (ngSubmit)="onSubmit()" class="fc-form" data-test-id="flashcard-form">
+
+  <!-- Live preview -->
+  <div class="fc-preview" [class.fc-preview--empty]="!frontControl?.value && !backControl?.value">
+    <span class="fc-preview__badge">{{ t('previewTitle') }}</span>
+    <div class="fc-preview__cards">
+      <div class="fc-preview__card fc-preview__card--front">
+        <span class="fc-preview__card-label">{{ t('previewFront') }}</span>
+        <p class="fc-preview__card-text" [class.fc-preview__card-text--empty]="!frontControl?.value?.trim()">
+          {{ frontControl?.value?.trim() || t('previewEmptyFront') }}
+        </p>
+        @if (imagePreviewSignal()) {
+          <img [src]="imagePreviewSignal()" [alt]="t('imagePreviewAlt')" class="fc-preview__img" loading="lazy" />
+        }
+      </div>
+      <div class="fc-preview__card fc-preview__card--back">
+        <span class="fc-preview__card-label">{{ t('previewBack') }}</span>
+        <p class="fc-preview__card-text" [class.fc-preview__card-text--empty]="!backControl?.value?.trim()">
+          {{ backControl?.value?.trim() || t('previewEmptyBack') }}
+        </p>
+        @if (audioPreviewSignal()) {
+          <span class="fc-preview__audio-badge"><i class="pi pi-volume-up"></i> {{ t('previewHasAudio') }}</span>
+        }
+      </div>
+    </div>
+    @if (frontLanguageSignal() || backLanguageSignal()) {
+      <div class="fc-preview__langs">
+        @if (frontLanguageSignal()) {
+          <span class="fc-preview__lang">{{ frontLanguageSignal() }}</span>
+        }
+        @if (frontLanguageSignal() && backLanguageSignal()) {
+          <i class="pi pi-arrow-right fc-preview__lang-arrow"></i>
+        }
+        @if (backLanguageSignal()) {
+          <span class="fc-preview__lang">{{ backLanguageSignal() }}</span>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Front field -->
   <div class="fc-form__field">
     <label for="front" class="fc-form__label">{{ t('frontLabel') }} <span class="fc-form__required">*</span></label>
+    <p class="fc-form__hint">{{ t('frontHint') }}</p>
     <input
       id="front"
       type="text"
@@ -30,14 +71,16 @@
         </small>
         }
       </div>
-      <small class="fc-form__counter">
+      <small class="fc-form__counter" [class.fc-form__counter--warn]="(frontControl?.value?.length || 0) > FRONT_MAX_LENGTH * 0.9">
         {{ frontControl?.value?.length || 0 }}/{{ FRONT_MAX_LENGTH }}
       </small>
     </div>
   </div>
 
+  <!-- Back field -->
   <div class="fc-form__field">
     <label for="back" class="fc-form__label">{{ t('backLabel') }} <span class="fc-form__required">*</span></label>
+    <p class="fc-form__hint">{{ t('backHint') }}</p>
     <textarea
       id="back"
       rows="4"
@@ -66,7 +109,7 @@
         </small>
         }
       </div>
-      <small class="fc-form__counter">
+      <small class="fc-form__counter" [class.fc-form__counter--warn]="(backControl?.value?.length || 0) > BACK_MAX_LENGTH * 0.9">
         {{ backControl?.value?.length || 0 }}/{{ BACK_MAX_LENGTH }}
       </small>
     </div>

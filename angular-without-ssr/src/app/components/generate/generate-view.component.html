@@ -1,10 +1,31 @@
 <ng-container *transloco="let t; prefix: 'generate'">
 <div class="gen">
   <div class="gen__inner">
+    <!-- Header -->
     <div class="gen__header">
       <h1 class="gen__title">{{ t('title') }}</h1>
+      <p class="gen__subtitle">{{ t('subtitle') }}</p>
     </div>
 
+    <!-- Steps indicator -->
+    <div class="gen__steps">
+      <div class="gen__step" [class.gen__step--active]="true" [class.gen__step--done]="proposals().length > 0">
+        <span class="gen__step-num">1</span>
+        <span class="gen__step-label">{{ t('stepSource') }}</span>
+      </div>
+      <div class="gen__step-line" [class.gen__step-line--done]="proposals().length > 0"></div>
+      <div class="gen__step" [class.gen__step--active]="proposals().length > 0" [class.gen__step--done]="acceptedCount() > 0">
+        <span class="gen__step-num">2</span>
+        <span class="gen__step-label">{{ t('stepReview') }}</span>
+      </div>
+      <div class="gen__step-line" [class.gen__step-line--done]="acceptedCount() > 0"></div>
+      <div class="gen__step" [class.gen__step--active]="acceptedCount() > 0">
+        <span class="gen__step-num">3</span>
+        <span class="gen__step-label">{{ t('stepSave') }}</span>
+      </div>
+    </div>
+
+    <!-- Step 1: Source text -->
     <div class="gen__card">
       <app-source-textarea
         (textChange)="onTextChange($event)"
@@ -26,21 +47,36 @@
       }
     </div>
 
+    <!-- Step 2: Review proposals -->
     @if (proposals().length > 0) {
     <div class="gen__card">
       <div class="gen__proposals-header">
-        <h2 class="gen__proposals-title">
-          <i class="pi pi-microchip-ai"></i>
-          {{ t('generated') }}
-        </h2>
-        <div class="gen__proposals-stats">
-          <span class="gen__stat gen__stat--total">
-            {{ t('proposals', { count: proposals().length }) }}
-          </span>
-          <span class="gen__stat gen__stat--accepted">
-            <i class="pi pi-check"></i>
-            {{ t('accepted', { count: acceptedCount() }) }}
-          </span>
+        <div class="gen__proposals-title-group">
+          <h2 class="gen__proposals-title">
+            <i class="pi pi-microchip-ai"></i>
+            {{ t('generated') }}
+          </h2>
+          <p class="gen__proposals-subtitle">{{ t('generatedSubtitle') }}</p>
+        </div>
+        <div class="gen__proposals-meta">
+          <div class="gen__proposals-stats">
+            <span class="gen__stat gen__stat--total">
+              {{ t('proposals', { count: proposals().length }) }}
+            </span>
+            <span class="gen__stat gen__stat--accepted">
+              <i class="pi pi-check"></i>
+              {{ t('accepted', { count: acceptedCount() }) }}
+            </span>
+          </div>
+          <button
+            class="gen__accept-all-btn"
+            (click)="toggleAcceptAll()">
+            @if (acceptedCount() < proposals().length) {
+              <i class="pi pi-check-circle"></i> {{ t('acceptAll') }}
+            } @else {
+              <i class="pi pi-times-circle"></i> {{ t('undoAll') }}
+            }
+          </button>
         </div>
       </div>
 
@@ -50,65 +86,72 @@
         (reject)="rejectProposal($any($event))"
         (edit)="editProposal($event)">
       </app-flashcard-proposal-list>
+    </div>
 
-      <div class="gen__save-section">
-        <div class="gen__save-set">
-          <label class="gen__save-label">{{ t('saveToSet') }}</label>
-          <div class="gen__save-controls">
-            <select
-              class="gen__set-select"
-              [ngModel]="selectedSetId()"
-              (ngModelChange)="selectedSetId.set($event)">
-              <option [ngValue]="null" disabled>{{ t('selectSet') }}</option>
-              @for (set of sets(); track set.id) {
-                <option [ngValue]="set.id">{{ set.name }}</option>
-              }
-            </select>
-            <span class="gen__save-or">{{ t('or') }}</span>
-            <div class="gen__save-new">
-              <input
-                type="text"
-                class="gen__set-input"
-                [ngModel]="newSetName()"
-                (ngModelChange)="newSetName.set($event)"
-                [placeholder]="t('newSetPlaceholder')"
-                maxlength="100"
-                (keydown.enter)="createNewSet()" />
-              <button
-                class="gen__btn gen__btn--small"
-                [disabled]="!newSetName().trim() || isCreatingSet()"
-                (click)="createNewSet()">
-                @if (isCreatingSet()) {
-                  <i class="pi pi-spin pi-spinner"></i>
-                } @else {
-                  <i class="pi pi-plus"></i>
-                }
-                {{ t('createSet') }}
-              </button>
-            </div>
-          </div>
+    <!-- Step 3: Save -->
+    <div class="gen__card gen__card--save" [class.gen__card--save-ready]="acceptedCount() > 0">
+      <h3 class="gen__save-title">
+        <i class="pi pi-folder-open"></i>
+        {{ t('saveToSet') }}
+      </h3>
+
+      <div class="gen__save-layout">
+        <div class="gen__save-existing">
+          <select
+            class="gen__set-select"
+            [ngModel]="selectedSetId()"
+            (ngModelChange)="selectedSetId.set($event)">
+            <option [ngValue]="null" disabled>{{ t('selectSet') }}</option>
+            @for (set of sets(); track set.id) {
+              <option [ngValue]="set.id">{{ set.name }}</option>
+            }
+          </select>
         </div>
 
-        <div class="gen__save-action">
-          @if (!selectedSetId() && acceptedCount() > 0) {
-            <span class="gen__set-warn">
-              <i class="pi pi-info-circle"></i> {{ t('selectOrCreateWarn') }}
-            </span>
-          }
-          <app-bulk-save-button
-            [label]="'Zapisz (' + acceptedCount() + ')'"
-            [disabled]="!canSave()"
-            [loading]="isSaving()"
-            (saveAllClick)="saveAllProposals()">
-          </app-bulk-save-button>
+        <span class="gen__save-divider">{{ t('or') }}</span>
+
+        <div class="gen__save-new">
+          <input
+            type="text"
+            class="gen__set-input"
+            [ngModel]="newSetName()"
+            (ngModelChange)="newSetName.set($event)"
+            [placeholder]="t('newSetPlaceholder')"
+            maxlength="100"
+            (keydown.enter)="createNewSet()" />
+          <button
+            class="gen__create-btn"
+            [disabled]="!newSetName().trim() || isCreatingSet()"
+            (click)="createNewSet()">
+            @if (isCreatingSet()) {
+              <i class="pi pi-spin pi-spinner"></i>
+            } @else {
+              <i class="pi pi-plus"></i>
+            }
+            {{ t('createSet') }}
+          </button>
         </div>
+      </div>
+
+      <div class="gen__save-action">
+        @if (!selectedSetId() && acceptedCount() > 0) {
+          <span class="gen__set-warn">
+            <i class="pi pi-info-circle"></i> {{ t('selectOrCreateWarn') }}
+          </span>
+        }
+        <app-bulk-save-button
+          [label]="'Zapisz (' + acceptedCount() + ')'"
+          [disabled]="!canSave()"
+          [loading]="isSaving()"
+          (saveAllClick)="saveAllProposals()">
+        </app-bulk-save-button>
       </div>
     </div>
     }
 
     @if (!isGenerating() && !proposals().length && sourceText().length > 0 && isSourceValid()) {
     <div class="gen__empty">
-      <i class="pi pi-arrow-up"></i>
+      <i class="pi pi-sparkles"></i>
       <p>{{ t('clickGenerate') }}</p>
     </div>
     }

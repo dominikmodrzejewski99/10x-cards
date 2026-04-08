@@ -1,9 +1,10 @@
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, OnInit, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-source-textarea',
-  imports: [FormsModule],
+  imports: [FormsModule, TranslocoDirective],
   templateUrl: './source-textarea.component.html',
   styleUrls: ['./source-textarea.component.scss']
 })
@@ -17,6 +18,10 @@ export class SourceTextareaComponent implements OnInit {
   text: string = '';
   currentLength: number = 0;
   touched: boolean = false;
+
+  get progressPercent(): number {
+    return Math.min((this.currentLength / this.minLengthSignal()) * 100, 100);
+  }
 
   ngOnInit(): void {
     setTimeout(() => {

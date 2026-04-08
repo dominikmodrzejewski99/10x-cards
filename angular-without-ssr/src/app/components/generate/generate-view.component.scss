@@ -1,5 +1,6 @@
 @use 'layout' as *;
 @use 'variables' as *;
+@use 'buttons' as *;
 
 .gen {
   @include page-narrow;
@@ -9,24 +10,116 @@
   max-width: none;
 }
 
+/* Header */
 .gen__header {
-  margin-bottom: 2rem;
+  margin-bottom: 0.75rem;
   text-align: center;
 }
 
 .gen__title {
-  font-size: 1.75rem;
-  font-weight: 800;
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-extrabold;
   color: $color-text;
   margin: 0;
 }
 
+.gen__subtitle {
+  margin: 0.35rem 0 0;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-normal;
+}
+
+/* Steps indicator */
+.gen__steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  padding: 0 1rem;
+}
+
+.gen__step {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  opacity: 0.4;
+  transition: opacity 0.3s;
+}
+
+.gen__step--active {
+  opacity: 1;
+}
+
+.gen__step-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: $radius-full;
+  background: $color-border-light;
+  color: $color-text-secondary;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  flex-shrink: 0;
+  transition: background 0.3s, color 0.3s;
+}
+
+.gen__step--active .gen__step-num {
+  background: $color-primary;
+  color: #fff;
+}
+
+.gen__step--done .gen__step-num {
+  background: $color-success;
+  color: #fff;
+}
+
+.gen__step-label {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $color-text-secondary;
+  white-space: nowrap;
+}
+
+.gen__step--active .gen__step-label {
+  color: $color-text;
+}
+
+.gen__step-line {
+  width: 2.5rem;
+  height: 2px;
+  background: $color-border-light;
+  margin: 0 0.5rem;
+  transition: background 0.3s;
+  flex-shrink: 0;
+}
+
+.gen__step-line--done {
+  background: $color-success;
+}
+
+/* Cards */
 .gen__card {
   background: $color-white;
   border: 1px solid $color-border;
-  border-radius: 0.75rem;
+  border-radius: $radius-lg;
   padding: 1.5rem;
   margin-bottom: 1.25rem;
+}
+
+.gen__card--save {
+  border-style: dashed;
+  border-color: $color-border-light;
+  transition: border-color 0.3s, border-style 0.3s;
+}
+
+.gen__card--save-ready {
+  border-style: solid;
+  border-color: $color-primary;
+  background: color-mix(in srgb, var(--app-primary) 3%, $color-white);
 }
 
 .gen__card-footer {
@@ -42,43 +135,61 @@
 /* Proposals header */
 .gen__proposals-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   margin-bottom: 1rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid $color-border-light;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.75rem;
+}
+
+.gen__proposals-title-group {
+  flex: 1;
+  min-width: 200px;
 }
 
 .gen__proposals-title {
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: $font-weight-bold;
   color: $color-text;
   margin: 0;
   display: flex;
   align-items: center;
   gap: 0.4rem;
+
+  i {
+    color: $color-primary;
+    font-size: 1rem;
+  }
 }
 
-.gen__proposals-title i {
-  color: $color-primary;
-  font-size: 1rem;
+.gen__proposals-subtitle {
+  margin: 0.2rem 0 0;
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+}
+
+.gen__proposals-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .gen__proposals-stats {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.35rem;
 }
 
 .gen__stat {
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.25rem 0.6rem;
-  border-radius: 9999px;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  padding: 0.2rem 0.55rem;
+  border-radius: $radius-pill;
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.2rem;
 }
 
 .gen__stat--total {
@@ -91,44 +202,109 @@
   color: $color-success;
 }
 
-/* Save section */
-.gen__save-section {
-  margin-top: 1.25rem;
-  padding-top: 1.25rem;
-  border-top: 2px solid $color-border-light;
+.gen__accept-all-btn {
+  @include btn-base;
+  @include btn-sm;
+  background: transparent;
+  color: $color-text-secondary;
+  border: 1px solid $color-border;
+
+  &:hover {
+    background: $color-success-light;
+    color: $color-success;
+    border-color: color-mix(in srgb, var(--app-success) 30%, transparent);
+  }
 }
 
-.gen__save-set {
+/* Save section */
+.gen__save-title {
+  font-size: 1rem;
+  font-weight: $font-weight-bold;
+  color: $color-text;
+  margin: 0 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  i {
+    color: $color-primary;
+    font-size: 1rem;
+  }
+}
+
+.gen__save-layout {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
   margin-bottom: 1rem;
 }
 
-.gen__save-label {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 700;
+.gen__save-existing {
+  flex: 1;
+  min-width: 180px;
+}
+
+.gen__set-select {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-md;
+  font-family: inherit;
+  font-size: $font-size-sm;
   color: $color-text;
-  margin-bottom: 0.6rem;
+  background: $color-white;
+  cursor: pointer;
+  transition: border-color 0.15s;
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+  }
 }
 
-.gen__save-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-}
-
-.gen__save-or {
-  font-size: 0.75rem;
+.gen__save-divider {
+  font-size: $font-size-xs;
   color: $color-text-secondary;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-weight: $font-weight-semibold;
+  white-space: nowrap;
 }
 
 .gen__save-new {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.gen__set-input {
+  flex: 1;
+  padding: 0.55rem 0.75rem;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-md;
+  font-family: inherit;
+  font-size: $font-size-sm;
+  color: $color-text;
+  background: $color-white;
+  min-width: 0;
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+  }
+}
+
+.gen__create-btn {
+  @include btn-base;
+  @include btn-sm;
+  background: $color-primary;
+  color: #fff;
+  flex-shrink: 0;
+
+  &:hover:not(:disabled) {
+    background: $color-primary-hover;
+  }
 }
 
 .gen__save-action {
@@ -136,43 +312,12 @@
   align-items: center;
   justify-content: flex-end;
   gap: 0.75rem;
-}
-
-.gen__set-select {
-  padding: 0.45rem 0.65rem;
-  border: 1.5px solid $color-border;
-  border-radius: 0.5rem;
-  font-family: inherit;
-  font-size: 0.85rem;
-  color: $color-text;
-  background: $color-white;
-  cursor: pointer;
-  min-width: 180px;
-}
-
-.gen__set-select:focus {
-  outline: none;
-  border-color: $color-primary;
-}
-
-.gen__set-input {
-  padding: 0.45rem 0.65rem;
-  border: 1.5px solid $color-border;
-  border-radius: 0.5rem;
-  font-family: inherit;
-  font-size: 0.85rem;
-  color: $color-text;
-  background: $color-white;
-  min-width: 140px;
-}
-
-.gen__set-input:focus {
-  outline: none;
-  border-color: $color-primary;
+  padding-top: 0.75rem;
+  border-top: 1px solid $color-border-light;
 }
 
 .gen__set-warn {
-  font-size: 0.8rem;
+  font-size: $font-size-sm;
   color: $color-danger;
   display: inline-flex;
   align-items: center;
@@ -180,48 +325,30 @@
   margin-right: auto;
 }
 
-.gen__btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.6rem 1.25rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-decoration: none;
-  transition: all 0.15s;
-}
-
-.gen__btn--small {
-  padding: 0.4rem 0.75rem;
-  font-size: 0.8rem;
-  background: $color-primary;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  border-radius: 0.5rem;
-  font-family: inherit;
-  font-weight: 600;
-}
-
-.gen__btn--small:hover { background: $color-primary-hover; }
-.gen__btn--small:disabled { opacity: 0.5; cursor: not-allowed; }
-
+/* Empty state */
 .gen__empty {
   text-align: center;
-  padding: 2rem 0;
+  padding: 2.5rem 0;
   color: $color-text-secondary;
+
+  i {
+    font-size: 1.75rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    color: $color-primary;
+    opacity: 0.5;
+  }
+
+  p {
+    margin: 0;
+    font-size: $font-size-sm;
+  }
 }
 
-.gen__empty i {
-  font-size: 1.5rem;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
+/* Textarea overrides */
 textarea {
   border: 1.5px solid $color-border;
-  border-radius: 0.5rem;
+  border-radius: $radius-md;
   transition: border-color 0.15s;
   font-size: 0.95rem;
 }
@@ -232,22 +359,34 @@ textarea:focus {
   outline: none;
 }
 
-@media (max-width: 600px) {
-  .gen__save-controls {
+/* Responsive */
+@media (max-width: $bp-tablet) {
+  .gen__steps {
+    padding: 0;
+  }
+
+  .gen__step-label {
+    display: none;
+  }
+
+  .gen__step-line {
+    width: 1.5rem;
+  }
+
+  .gen__save-layout {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .gen__save-or {
+  .gen__save-divider {
     text-align: center;
   }
 
-  .gen__save-new {
-    width: 100%;
+  .gen__save-existing {
+    min-width: 0;
   }
 
-  .gen__set-select {
-    width: 100%;
+  .gen__save-new {
     min-width: 0;
   }
 

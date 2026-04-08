@@ -1,5 +1,8 @@
+<ng-container *transloco="let t; prefix: 'generate'">
 <div class="source">
-  <label for="sourceText" class="source__label">Tekst Źródłowy</label>
+  <label for="sourceText" class="source__label">{{ t('sourceLabel') }}</label>
+  <p class="source__hint">{{ t('sourceHint') }}</p>
+
   <div class="source__wrap">
     <textarea
       id="sourceText"
@@ -8,7 +11,8 @@
       (blur)="onBlur()"
       class="source__textarea"
       [class.source__textarea--error]="touched && !isTextValid() && currentLength > 0"
-      placeholder="Wklej tutaj tekst źródłowy (min. 1000 znaków, maks. 10000 znaków)..."
+      [class.source__textarea--valid]="isTextValid()"
+      [placeholder]="t('sourcePlaceholder')"
       [attr.data-test-id]="'source-text-input'">
     </textarea>
   </div>
@@ -18,13 +22,13 @@
       @if (touched && isTooShort()) {
       <div class="source__error">
         <i class="pi pi-exclamation-circle"></i>
-        <small>Tekst musi zawierać co najmniej {{ minLengthSignal() }} znaków</small>
+        <small>{{ t('sourceMinError', { remaining: minLengthSignal() - currentLength }) }}</small>
       </div>
       }
       @if (isTooLong()) {
       <div class="source__error">
         <i class="pi pi-exclamation-circle"></i>
-        <small>Tekst może zawierać maksymalnie {{ maxLengthSignal() }} znaków</small>
+        <small>{{ t('sourceMaxError', { excess: currentLength - maxLengthSignal() }) }}</small>
       </div>
       }
     </div>
@@ -34,7 +38,18 @@
       [class.source__counter--error]="touched && !isTextValid() && currentLength > 0"
       [class.source__counter--valid]="isTextValid()"
     >
-      {{ currentLength }} / {{ maxLengthSignal() }} znaków
+      {{ t('sourceProgress', { current: currentLength, max: maxLengthSignal() }) }}
     </span>
   </div>
+
+  @if (currentLength > 0 && !isTextValid()) {
+  <div class="source__progress-track">
+    <div
+      class="source__progress-fill"
+      [class.source__progress-fill--over]="isTooLong()"
+      [style.width.%]="progressPercent">
+    </div>
+  </div>
+  }
 </div>
+</ng-container>

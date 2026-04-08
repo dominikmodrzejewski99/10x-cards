@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { SourceTextareaComponent } from './source-textarea.component';
 
@@ -35,7 +36,10 @@ describe('SourceTextareaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TestHostComponent],
+      imports: [
+        TestHostComponent,
+        TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
 
