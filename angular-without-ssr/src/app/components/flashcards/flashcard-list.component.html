@@ -96,8 +96,23 @@
     <app-flashcard-form
       [isVisible]="facade.isFormModalVisibleSignal()"
       [flashcardToEdit]="facade.flashcardBeingEditedSignal()"
+      [imagePreview]="facade.imagePreviewSignal()"
+      [imageUploading]="facade.imageUploadingSignal()"
+      [imageError]="facade.imageErrorSignal()"
+      [audioPreview]="facade.audioPreviewSignal()"
+      [audioUploading]="facade.audioUploadingSignal()"
+      [audioError]="facade.audioErrorSignal()"
+      [translationSuggestion]="facade.translationSuggestionSignal()"
+      [translating]="facade.translatingSignal()"
       (save)="facade.saveFlashcard($event)"
-      (close)="facade.closeFormModal()">
+      (close)="facade.closeFormModal()"
+      (imageSelected)="facade.uploadImage($event)"
+      (imageRemoved)="facade.deleteImage()"
+      (audioFileSelected)="facade.uploadAudio($event)"
+      (audioRecorded)="facade.uploadAudio($event)"
+      (audioRemoved)="facade.deleteAudio()"
+      (translationRequested)="facade.requestTranslation($event.text, $event.fromLang, $event.toLang)"
+      (translationAccepted)="facade.clearTranslationSuggestion()">
     </app-flashcard-form>
   </app-dialog>
 

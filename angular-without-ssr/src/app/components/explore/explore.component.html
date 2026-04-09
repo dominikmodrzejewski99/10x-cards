@@ -11,53 +11,53 @@
         type="text"
         class="explore__search-input"
         [placeholder]="t('searchPlaceholder')"
-        [ngModel]="state().search"
-        (ngModelChange)="onSearchInput($event)" />
+        [ngModel]="facade.searchSignal()"
+        (ngModelChange)="facade.onSearchInput($event)" />
     </div>
-    <select class="explore__sort" [ngModel]="state().sort" (ngModelChange)="onSortChange($event)">
+    <select class="explore__sort" [ngModel]="facade.sortSignal()" (ngModelChange)="facade.onSortChange($event)">
       <option value="popular">{{ t('sortPopular') }}</option>
       <option value="newest">{{ t('sortNewest') }}</option>
       <option value="most_cards">{{ t('sortMostCards') }}</option>
     </select>
-    @if (totalPages > 1) {
+    @if (facade.totalPagesSignal() > 1) {
       <div class="explore__pagination">
         <button
           class="explore__page-btn"
-          [disabled]="state().page <= 1"
-          (click)="onPageChange(state().page - 1)">
+          [disabled]="facade.pageSignal() <= 1"
+          (click)="facade.onPageChange(facade.pageSignal() - 1)">
           <i class="pi pi-chevron-left"></i>
         </button>
-        <span class="explore__page-info">{{ state().page }} / {{ totalPages }}</span>
+        <span class="explore__page-info">{{ facade.pageSignal() }} / {{ facade.totalPagesSignal() }}</span>
         <button
           class="explore__page-btn"
-          [disabled]="state().page >= totalPages"
-          (click)="onPageChange(state().page + 1)">
+          [disabled]="facade.pageSignal() >= facade.totalPagesSignal()"
+          (click)="facade.onPageChange(facade.pageSignal() + 1)">
           <i class="pi pi-chevron-right"></i>
         </button>
       </div>
     }
   </div>
 
-  @if (state().popularTags.length > 0) {
+  @if (facade.popularTagsSignal().length > 0) {
     <div class="explore__tags">
-      @for (tag of state().popularTags; track tag) {
+      @for (tag of facade.popularTagsSignal(); track tag) {
         <button
           type="button"
           class="explore__tag-chip"
-          [class.explore__tag-chip--active]="state().selectedTags.includes(tag)"
-          (click)="toggleTag(tag)">
+          [class.explore__tag-chip--active]="facade.selectedTagsSignal().includes(tag)"
+          (click)="facade.toggleTag(tag)">
           {{ tag }}
         </button>
       }
-      @if (state().selectedTags.length > 0) {
-        <button type="button" class="explore__tag-clear" (click)="clearTags()">
+      @if (facade.selectedTagsSignal().length > 0) {
+        <button type="button" class="explore__tag-clear" (click)="facade.clearTags()">
           <i class="pi pi-times"></i> {{ t('clearTags') }}
         </button>
       }
     </div>
   }
 
-  @if (state().loading && state().sets.length === 0) {
+  @if (facade.loadingSignal() && facade.setsSignal().length === 0) {
     <div class="explore__grid">
       @for (_ of [1,2,3,4,5,6]; track $index) {
         <div class="explore-card">
@@ -69,15 +69,15 @@
     </div>
   }
 
-  @if (state().error && state().sets.length === 0) {
+  @if (facade.errorSignal() && facade.setsSignal().length === 0) {
     <div class="explore__empty">
       <i class="pi pi-exclamation-circle"></i>
-      <p>{{ state().error }}</p>
-      <button (click)="loadSets()" class="explore__btn explore__btn--outline">{{ t('retry') }}</button>
+      <p>{{ facade.errorSignal() }}</p>
+      <button (click)="facade.loadSets()" class="explore__btn explore__btn--outline">{{ t('retry') }}</button>
     </div>
   }
 
-  @if (!state().loading && state().sets.length === 0 && !state().error) {
+  @if (!facade.loadingSignal() && facade.setsSignal().length === 0 && !facade.errorSignal()) {
     <div class="explore__empty">
       <div class="explore__empty-icon-wrap">
         <i class="pi pi-search"></i>
@@ -87,9 +87,9 @@
     </div>
   }
 
-  @if (state().sets.length > 0) {
+  @if (facade.setsSignal().length > 0) {
     <div class="explore__grid fade-in">
-      @for (set of state().sets; track set.id) {
+      @for (set of facade.setsSignal(); track set.id) {
         <div class="explore-card">
           <div class="explore-card__header">
             <h2 class="explore-card__name">{{ set.name }}</h2>
@@ -111,7 +111,7 @@
               <span>·</span>
               <span>{{ set.copy_count }} {{ t('copies') }}</span>
             </div>
-            <button class="explore-card__copy" [title]="t('copyButton')" (click)="requestCopy(set.id)">
+            <button class="explore-card__copy" [title]="t('copyButton')" (click)="facade.requestCopy(set.id)">
               <i class="pi pi-copy"></i>
             </button>
           </div>
@@ -121,8 +121,8 @@
 
   }
 
-  @if (copyDialogVisible()) {
-    <div class="confirm-overlay" (click)="cancelCopy()">
+  @if (facade.copyDialogVisibleSignal()) {
+    <div class="confirm-overlay" (click)="facade.cancelCopy()">
       <div class="confirm-dialog" (click)="$event.stopPropagation()">
         <div class="confirm-dialog__icon">
           <i class="pi pi-copy"></i>
@@ -130,14 +130,14 @@
         <h3 class="confirm-dialog__title">{{ t('copyConfirmTitle') }}</h3>
         <p class="confirm-dialog__text">{{ t('copyConfirmText') }}</p>
         <label class="confirm-dialog__remember">
-          <input type="checkbox" [checked]="copyDialogRemember()" (change)="copyDialogRemember.set(!copyDialogRemember())" />
+          <input type="checkbox" [checked]="facade.copyDialogRememberSignal()" (change)="facade.toggleCopyDialogRemember()" />
           {{ t('copyConfirmRemember') }}
         </label>
         <div class="confirm-dialog__actions">
-          <button class="confirm-dialog__btn confirm-dialog__btn--cancel" (click)="cancelCopy()">
+          <button class="confirm-dialog__btn confirm-dialog__btn--cancel" (click)="facade.cancelCopy()">
             {{ t('copyConfirmCancel') }}
           </button>
-          <button class="confirm-dialog__btn confirm-dialog__btn--confirm" (click)="confirmCopy()">
+          <button class="confirm-dialog__btn confirm-dialog__btn--confirm" (click)="facade.confirmCopy()">
             <i class="pi pi-copy"></i> {{ t('copyConfirmOk') }}
           </button>
         </div>

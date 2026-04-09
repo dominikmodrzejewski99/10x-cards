@@ -38,7 +38,9 @@ describe('FlashcardListComponent', () => {
       'openImportModal', 'closeImportModal', 'importFlashcards',
       'exportCsv', 'exportJson', 'printTest', 'onReorder',
       'setShareLink', 'setShareLoading', 'setSavedCount', 'dismissSavedBanner', 'destroy',
-      'generateShareLink'
+      'generateShareLink',
+      'uploadImage', 'deleteImage', 'uploadAudio', 'deleteAudio',
+      'requestTranslation', 'clearTranslationSuggestion', 'resetFormMediaState', 'initFormMediaState'
     ], {
       flashcardsSignal: signal<FlashcardDTO[]>([mockFlashcard]),
       totalRecordsSignal: signal<number>(1),
@@ -58,7 +60,15 @@ describe('FlashcardListComponent', () => {
       savedCountSignal: signal<number>(0),
       shareLinkSignal: signal<string | null>(null),
       shareLoadingSignal: signal<boolean>(false),
-      needsAuthRedirectSignal: signal<boolean>(false)
+      needsAuthRedirectSignal: signal<boolean>(false),
+      imagePreviewSignal: signal<string | null>(null),
+      imageUploadingSignal: signal<boolean>(false),
+      imageErrorSignal: signal<string | null>(null),
+      audioPreviewSignal: signal<string | null>(null),
+      audioUploadingSignal: signal<boolean>(false),
+      audioErrorSignal: signal<string | null>(null),
+      translationSuggestionSignal: signal<string | null>(null),
+      translatingSignal: signal<boolean>(false)
     });
 
     routerMock = jasmine.createSpyObj<Router>('Router', ['navigate']);

@@ -5,9 +5,13 @@ import { catchError } from 'rxjs/operators';
 import { FlashcardApiService } from './flashcard-api.service';
 import { FlashcardSetApiService } from './flashcard-set-api.service';
 import { FlashcardExportService } from './flashcard-export.service';
+import { ImageUploadService } from './image-upload.service';
+import { AudioUploadService } from './audio-upload.service';
+import { OpenRouterService } from './openrouter.service';
+import { LoggerService } from './logger.service';
 import { PrintTestService, PrintTestConfig } from './print-test.service';
 import { ToastService } from '../shared/services/toast.service';
-import { FlashcardDTO, FlashcardProposalDTO } from '../../types';
+import { FlashcardDTO, FlashcardLanguage, FlashcardProposalDTO } from '../../types';
 import { FlashcardFormData } from '../components/flashcards/flashcard-form/flashcard-form.component';
 import { ReorderEvent } from '../components/flashcards/flashcard-table/flashcard-table.component';
 
@@ -16,6 +20,10 @@ export class FlashcardsFacadeService {
   private readonly flashcardApi: FlashcardApiService = inject(FlashcardApiService);
   private readonly setApi: FlashcardSetApiService = inject(FlashcardSetApiService);
   private readonly exportService: FlashcardExportService = inject(FlashcardExportService);
+  private readonly imageUploadService: ImageUploadService = inject(ImageUploadService);
+  private readonly audioUploadService: AudioUploadService = inject(AudioUploadService);
+  private readonly openRouterService: OpenRouterService = inject(OpenRouterService);
+  private readonly logger: LoggerService = inject(LoggerService);
   private readonly printTestService: PrintTestService = inject(PrintTestService);
   private readonly toastService: ToastService = inject(ToastService);
   private readonly t: TranslocoService = inject(TranslocoService);
@@ -39,6 +47,14 @@ export class FlashcardsFacadeService {
   private readonly _shareLink: WritableSignal<string | null> = signal<string | null>(null);
   private readonly _shareLoading: WritableSignal<boolean> = signal<boolean>(false);
   private readonly _needsAuthRedirect: WritableSignal<boolean> = signal<boolean>(false);
+  private readonly _imagePreview: WritableSignal<string | null> = signal<string | null>(null);
+  private readonly _imageUploading: WritableSignal<boolean> = signal<boolean>(false);
+  private readonly _imageError: WritableSignal<string | null> = signal<string | null>(null);
+  private readonly _audioPreview: WritableSignal<string | null> = signal<string | null>(null);
+  private readonly _audioUploading: WritableSignal<boolean> = signal<boolean>(false);
+  private readonly _audioError: WritableSignal<string | null> = signal<string | null>(null);
+  private readonly _translationSuggestion: WritableSignal<string | null> = signal<string | null>(null);
+  private readonly _translating: WritableSignal<boolean> = signal<boolean>(false);
 
   public readonly flashcardsSignal: Signal<FlashcardDTO[]> = this._flashcards.asReadonly();
   public readonly totalRecordsSignal: Signal<number> = this._totalRecords.asReadonly();
@@ -59,6 +75,14 @@ export class FlashcardsFacadeService {
   public readonly shareLinkSignal: Signal<string | null> = this._shareLink.asReadonly();
   public readonly shareLoadingSignal: Signal<boolean> = this._shareLoading.asReadonly();
   public readonly needsAuthRedirectSignal: Signal<boolean> = this._needsAuthRedirect.asReadonly();
+  public readonly imagePreviewSignal: Signal<string | null> = this._imagePreview.asReadonly();
+  public readonly imageUploadingSignal: Signal<boolean> = this._imageUploading.asReadonly();
+  public readonly imageErrorSignal: Signal<string | null> = this._imageError.asReadonly();
+  public readonly audioPreviewSignal: Signal<string | null> = this._audioPreview.asReadonly();
+  public readonly audioUploadingSignal: Signal<boolean> = this._audioUploading.asReadonly();
+  public readonly audioErrorSignal: Signal<string | null> = this._audioError.asReadonly();
+  public readonly translationSuggestionSignal: Signal<string | null> = this._translationSuggestion.asReadonly();
+  public readonly translatingSignal: Signal<boolean> = this._translating.asReadonly();
 
   private undoTimer: ReturnType<typeof setTimeout> | null = null;
   private redirectTimer: ReturnType<typeof setTimeout> | null = null;
@@ -135,17 +159,20 @@ export class FlashcardsFacadeService {
 
   public openAddModal(): void {
     this._flashcardBeingEdited.set(null);
+    this.initFormMediaState(null);
     this._isFormModalVisible.set(true);
   }
 
   public openEditModal(flashcard: FlashcardDTO): void {
     this._flashcardBeingEdited.set(flashcard);
+    this.initFormMediaState(flashcard);
     this._isFormModalVisible.set(true);
   }
 
   public closeFormModal(): void {
     this._isFormModalVisible.set(false);
     this._flashcardBeingEdited.set(null);
+    this.resetFormMediaState();
   }
 
   public saveFlashcard(formData: FlashcardFormData): void {
@@ -402,6 +429,104 @@ export class FlashcardsFacadeService {
 
   public dismissSavedBanner(): void {
     this._savedCount.set(0);
+  }
+
+  public uploadImage(file: File): void {
+    this._imageError.set(null);
+    const validationError: string | null = this.imageUploadService.validateFile(file);
+    if (validationError) {
+      this._imageError.set(validationError);
+      return;
+    }
+    this._imageUploading.set(true);
+    this.imageUploadService.uploadImage(file).subscribe({
+      next: (url: string) => {
+        this._imagePreview.set(url);
+        this._imageUploading.set(false);
+      },
+      error: (err: Error) => {
+        this._imageError.set(err.message);
+        this._imageUploading.set(false);
+      }
+    });
+  }
+
+  public deleteImage(): void {
+    const currentUrl: string | null = this._imagePreview();
+    if (currentUrl) {
+      this.imageUploadService.deleteImage(currentUrl).subscribe({
+        error: (err: unknown) => this.logger.error('FlashcardsFacade.deleteImage', err)
+      });
+    }
+    this._imagePreview.set(null);
+    this._imageError.set(null);
+  }
+
+  public uploadAudio(file: File): void {
+    this._audioError.set(null);
+    const validationError: string | null = this.audioUploadService.validateFile(file);
+    if (validationError) {
+      this._audioError.set(validationError);
+      return;
+    }
+    this._audioUploading.set(true);
+    this.audioUploadService.uploadAudio(file).subscribe({
+      next: (url: string) => {
+        this._audioPreview.set(url);
+        this._audioUploading.set(false);
+      },
+      error: (err: Error) => {
+        this._audioError.set(err.message);
+        this._audioUploading.set(false);
+      }
+    });
+  }
+
+  public deleteAudio(): void {
+    const currentUrl: string | null = this._audioPreview();
+    if (currentUrl) {
+      this.audioUploadService.deleteAudio(currentUrl).subscribe({
+        error: (err: unknown) => this.logger.error('FlashcardsFacade.deleteAudio', err)
+      });
+    }
+    this._audioPreview.set(null);
+    this._audioError.set(null);
+  }
+
+  public requestTranslation(text: string, fromLang: FlashcardLanguage, toLang: FlashcardLanguage): void {
+    this._translating.set(true);
+    this._translationSuggestion.set(null);
+    this.openRouterService.translateText(text, fromLang, toLang)
+      .then((translation: string) => {
+        this._translationSuggestion.set(translation);
+        this._translating.set(false);
+      })
+      .catch(() => {
+        this._translating.set(false);
+      });
+  }
+
+  public clearTranslationSuggestion(): void {
+    this._translationSuggestion.set(null);
+  }
+
+  public resetFormMediaState(): void {
+    this._imagePreview.set(null);
+    this._imageUploading.set(false);
+    this._imageError.set(null);
+    this._audioPreview.set(null);
+    this._audioUploading.set(false);
+    this._audioError.set(null);
+    this._translationSuggestion.set(null);
+    this._translating.set(false);
+  }
+
+  public initFormMediaState(flashcard: FlashcardDTO | null): void {
+    this.resetFormMediaState();
+    if (flashcard) {
+      this._imagePreview.set(flashcard.front_image_url || null);
+      this._audioPreview.set(flashcard.back_audio_url || null);
+    }
   }
 
   public destroy(): void {

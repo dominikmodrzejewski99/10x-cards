@@ -1,52 +1,109 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { of, throwError } from 'rxjs';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
-import { FlashcardFormComponent } from './flashcard-form.component';
-import { ImageUploadService } from '../../../services/image-upload.service';
-import { OpenRouterService } from '../../../services/openrouter.service';
-import { AudioUploadService } from '../../../services/audio-upload.service';
+import { FlashcardFormComponent, FlashcardFormData } from './flashcard-form.component';
+import { FlashcardDTO, FlashcardLanguage } from '../../../../types';
+
+@Component({
+  template: `
+    <app-flashcard-form
+      [flashcardToEdit]="flashcardToEdit"
+      [isVisible]="isVisible"
+      [imagePreview]="imagePreview"
+      [imageUploading]="imageUploading"
+      [imageError]="imageError"
+      [audioPreview]="audioPreview"
+      [audioUploading]="audioUploading"
+      [audioError]="audioError"
+      [translationSuggestion]="translationSuggestion"
+      [translating]="translating"
+      (save)="onSave($event)"
+      (close)="onClose()"
+      (imageSelected)="onImageSelected($event)"
+      (imageRemoved)="onImageRemoved()"
+      (audioFileSelected)="onAudioFileSelected($event)"
+      (audioRecorded)="onAudioRecorded($event)"
+      (audioRemoved)="onAudioRemoved()"
+      (translationRequested)="onTranslationRequested($event)"
+      (translationAccepted)="onTranslationAccepted()"
+    />
+  `,
+  imports: [FlashcardFormComponent]
+})
+class TestHostComponent {
+  public flashcardToEdit: FlashcardDTO | null = null;
+  public isVisible: boolean = true;
+  public imagePreview: string | null = null;
+  public imageUploading: boolean = false;
+  public imageError: string | null = null;
+  public audioPreview: string | null = null;
+  public audioUploading: boolean = false;
+  public audioError: string | null = null;
+  public translationSuggestion: string | null = null;
+  public translating: boolean = false;
+
+  public savedData: FlashcardFormData | null = null;
+  public closeCalled: boolean = false;
+  public selectedImage: File | null = null;
+  public imageRemovedCalled: boolean = false;
+  public selectedAudioFile: File | null = null;
+  public recordedAudio: File | null = null;
+  public audioRemovedCalled: boolean = false;
+  public translationRequestedEvent: { text: string; fromLang: FlashcardLanguage; toLang: FlashcardLanguage } | null = null;
+  public translationAcceptedCalled: boolean = false;
+
+  public onSave(data: FlashcardFormData): void {
+    this.savedData = data;
+  }
+  public onClose(): void {
+    this.closeCalled = true;
+  }
+  public onImageSelected(file: File): void {
+    this.selectedImage = file;
+  }
+  public onImageRemoved(): void {
+    this.imageRemovedCalled = true;
+  }
+  public onAudioFileSelected(file: File): void {
+    this.selectedAudioFile = file;
+  }
+  public onAudioRecorded(file: File): void {
+    this.recordedAudio = file;
+  }
+  public onAudioRemoved(): void {
+    this.audioRemovedCalled = true;
+  }
+  public onTranslationRequested(event: { text: string; fromLang: FlashcardLanguage; toLang: FlashcardLanguage }): void {
+    this.translationRequestedEvent = event;
+  }
+  public onTranslationAccepted(): void {
+    this.translationAcceptedCalled = true;
+  }
+}
 
 describe('FlashcardFormComponent', () => {
+  let fixture: ComponentFixture<TestHostComponent>;
+  let host: TestHostComponent;
   let component: FlashcardFormComponent;
-  let fixture: ComponentFixture<FlashcardFormComponent>;
-
-  let imageUploadMock: jasmine.SpyObj<ImageUploadService>;
-  let openRouterMock: jasmine.SpyObj<OpenRouterService>;
-  let audioUploadMock: jasmine.SpyObj<AudioUploadService>;
 
   beforeEach(async () => {
-    imageUploadMock = jasmine.createSpyObj<ImageUploadService>(
-      'ImageUploadService',
-      ['uploadImage', 'deleteImage', 'validateFile']
-    );
-    openRouterMock = jasmine.createSpyObj<OpenRouterService>(
-      'OpenRouterService',
-      ['translateText']
-    );
-    audioUploadMock = jasmine.createSpyObj<AudioUploadService>(
-      'AudioUploadService',
-      ['uploadAudio', 'deleteAudio', 'validateFile']
-    );
-
-    imageUploadMock.validateFile.and.returnValue(null);
-    audioUploadMock.validateFile.and.returnValue(null);
-
     await TestBed.configureTestingModule({
-      imports: [FlashcardFormComponent, ReactiveFormsModule, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        { provide: ImageUploadService, useValue: imageUploadMock },
-        { provide: OpenRouterService, useValue: openRouterMock },
-        { provide: AudioUploadService, useValue: audioUploadMock }
-      ]
+      imports: [
+        TestHostComponent,
+        TranslocoTestingModule.forRoot({
+          langs: { pl: {} },
+          translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' }
+        })
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(FlashcardFormComponent);
-    component = fixture.componentInstance;
+    fixture = TestBed.createComponent(TestHostComponent);
+    host = fixture.componentInstance;
     fixture.detectChanges();
+
+    component = fixture.debugElement.children[0].componentInstance as FlashcardFormComponent;
   });
 
   it('should create', () => {
@@ -97,36 +154,106 @@ describe('FlashcardFormComponent', () => {
     });
 
     it('should be valid with proper data', () => {
-      component.flashcardForm.patchValue({ front: 'Hello', back: 'Cześć' });
+      component.flashcardForm.patchValue({ front: 'Hello', back: 'Cze\u015b\u0107' });
 
       expect(component.flashcardForm.valid).toBeTrue();
     });
+  });
 
-    it('should not submit when form is invalid', () => {
-      spyOn(component.save, 'emit');
+  describe('onSubmit', () => {
+    it('should not emit save when form is invalid', () => {
       component.flashcardForm.patchValue({ front: '', back: '' });
 
       component.onSubmit();
 
-      expect(component.save.emit).not.toHaveBeenCalled();
+      expect(host.savedData).toBeNull();
     });
 
-    it('should emit save with form data when valid', () => {
-      spyOn(component.save, 'emit');
-      component.flashcardForm.patchValue({ front: 'Hello', back: 'Cześć' });
+    it('should emit save with form data including imagePreview and audioPreview from inputs', () => {
+      host.imagePreview = 'https://example.com/image.png';
+      host.audioPreview = 'https://example.com/audio.webm';
+      fixture.detectChanges();
+
+      component.flashcardForm.patchValue({ front: 'Hello', back: 'Cze\u015b\u0107' });
+      component.frontLanguageSignal.set('en');
+      component.backLanguageSignal.set('pl');
 
       component.onSubmit();
 
-      expect(component.save.emit).toHaveBeenCalledWith(
-        jasmine.objectContaining({ front: 'Hello', back: 'Cześć' })
-      );
+      expect(host.savedData).toEqual(jasmine.objectContaining({
+        front: 'Hello',
+        back: 'Cze\u015b\u0107',
+        front_image_url: 'https://example.com/image.png',
+        back_audio_url: 'https://example.com/audio.webm',
+        front_language: 'en',
+        back_language: 'pl'
+      }));
+    });
+
+    it('should emit save with null image and audio when inputs are not set', () => {
+      component.flashcardForm.patchValue({ front: 'Hello', back: 'Cze\u015b\u0107' });
+
+      component.onSubmit();
+
+      expect(host.savedData).toEqual(jasmine.objectContaining({
+        front: 'Hello',
+        back: 'Cze\u015b\u0107',
+        front_image_url: null,
+        back_audio_url: null
+      }));
+    });
+
+    it('should include flashcard id when editing an existing flashcard', () => {
+      host.flashcardToEdit = {
+        id: 42,
+        front: 'Old front',
+        back: 'Old back',
+        front_image_url: null,
+        back_audio_url: null,
+        front_language: null,
+        back_language: null,
+        source: 'manual',
+        created_at: '2026-01-01',
+        updated_at: '2026-01-01',
+        user_id: 'user-1',
+        generation_id: null,
+        set_id: 1,
+        position: 0
+      };
+      fixture.detectChanges();
+
+      component.flashcardForm.patchValue({ front: 'Updated front', back: 'Updated back' });
+
+      component.onSubmit();
+
+      expect(host.savedData?.id).toBe(42);
+    });
+
+    it('should not submit when image is uploading', () => {
+      host.imageUploading = true;
+      fixture.detectChanges();
+
+      component.flashcardForm.patchValue({ front: 'Hello', back: 'Cze\u015b\u0107' });
+
+      component.onSubmit();
+
+      expect(host.savedData).toBeNull();
+    });
+
+    it('should not submit when audio is uploading', () => {
+      host.audioUploading = true;
+      fixture.detectChanges();
+
+      component.flashcardForm.patchValue({ front: 'Hello', back: 'Cze\u015b\u0107' });
+
+      component.onSubmit();
+
+      expect(host.savedData).toBeNull();
     });
   });
 
-  describe('image upload', () => {
-    it('should upload image and set preview', () => {
-      imageUploadMock.uploadImage.and.returnValue(of('https://example.com/new-image.png'));
-
+  describe('image outputs', () => {
+    it('should emit imageSelected when onFileSelected is called with a file', () => {
       const mockFile: File = new File(['data'], 'test.png', { type: 'image/png' });
       const mockEvent: Partial<Event> = {
         target: { files: [mockFile], value: '' } as unknown as EventTarget
@@ -134,82 +261,28 @@ describe('FlashcardFormComponent', () => {
 
       component.onFileSelected(mockEvent as Event);
 
-      expect(imageUploadMock.uploadImage).toHaveBeenCalledWith(mockFile);
-      expect(component.imagePreviewSignal()).toBe('https://example.com/new-image.png');
-      expect(component.uploadingSignal()).toBeFalse();
+      expect(host.selectedImage).toBe(mockFile);
     });
 
-    it('should show error on upload failure', () => {
-      imageUploadMock.uploadImage.and.returnValue(
-        throwError(() => new Error('Upload failed'))
-      );
-
-      const mockFile: File = new File(['data'], 'test.png', { type: 'image/png' });
+    it('should not emit imageSelected when no file is provided', () => {
       const mockEvent: Partial<Event> = {
-        target: { files: [mockFile], value: '' } as unknown as EventTarget
+        target: { files: [], value: '' } as unknown as EventTarget
       };
 
       component.onFileSelected(mockEvent as Event);
 
-      expect(component.imageErrorSignal()).toBe('Upload failed');
-      expect(component.uploadingSignal()).toBeFalse();
+      expect(host.selectedImage).toBeNull();
     });
 
-    it('should show validation error for invalid file', () => {
-      imageUploadMock.validateFile.and.returnValue('Invalid file type');
-
-      const mockFile: File = new File(['data'], 'test.txt', { type: 'text/plain' });
-      const mockEvent: Partial<Event> = {
-        target: { files: [mockFile], value: '' } as unknown as EventTarget
-      };
-
-      component.onFileSelected(mockEvent as Event);
-
-      expect(component.imageErrorSignal()).toBe('Invalid file type');
-      expect(imageUploadMock.uploadImage).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('image remove', () => {
-    it('should remove image and call deleteImage', () => {
-      imageUploadMock.uploadImage.and.returnValue(of('https://example.com/img.png'));
-      imageUploadMock.deleteImage.and.returnValue(of(undefined));
-
-      // Simulate having an uploaded image
-      const mockFile: File = new File(['data'], 'test.png', { type: 'image/png' });
-      const mockEvent: Partial<Event> = {
-        target: { files: [mockFile], value: '' } as unknown as EventTarget
-      };
-      component.onFileSelected(mockEvent as Event);
-
+    it('should emit imageRemoved when removeImage is called', () => {
       component.removeImage();
 
-      expect(imageUploadMock.deleteImage).toHaveBeenCalledWith('https://example.com/img.png');
-      expect(component.imagePreviewSignal()).toBeNull();
-    });
-
-    it('should handle delete error gracefully', () => {
-      imageUploadMock.uploadImage.and.returnValue(of('https://example.com/img.png'));
-      imageUploadMock.deleteImage.and.returnValue(
-        throwError(() => new Error('Delete failed'))
-      );
-
-      const mockFile: File = new File(['data'], 'test.png', { type: 'image/png' });
-      const mockEvent: Partial<Event> = {
-        target: { files: [mockFile], value: '' } as unknown as EventTarget
-      };
-      component.onFileSelected(mockEvent as Event);
-
-      // Should not throw
-      expect(() => component.removeImage()).not.toThrow();
-      expect(component.imagePreviewSignal()).toBeNull();
+      expect(host.imageRemovedCalled).toBeTrue();
     });
   });
 
-  describe('audio upload', () => {
-    it('should upload audio and set preview', () => {
-      audioUploadMock.uploadAudio.and.returnValue(of('https://example.com/audio.webm'));
-
+  describe('audio outputs', () => {
+    it('should emit audioFileSelected when onAudioFileSelected is called with a file', () => {
       const mockFile: File = new File(['data'], 'test.webm', { type: 'audio/webm' });
       const mockEvent: Partial<Event> = {
         target: { files: [mockFile], value: '' } as unknown as EventTarget
@@ -217,204 +290,201 @@ describe('FlashcardFormComponent', () => {
 
       component.onAudioFileSelected(mockEvent as Event);
 
-      expect(audioUploadMock.uploadAudio).toHaveBeenCalledWith(mockFile);
-      expect(component.audioPreviewSignal()).toBe('https://example.com/audio.webm');
-      expect(component.audioUploadingSignal()).toBeFalse();
+      expect(host.selectedAudioFile).toBe(mockFile);
     });
 
-    it('should show error on audio upload failure', () => {
-      audioUploadMock.uploadAudio.and.returnValue(
-        throwError(() => new Error('Audio upload failed'))
-      );
-
-      const mockFile: File = new File(['data'], 'test.webm', { type: 'audio/webm' });
+    it('should not emit audioFileSelected when no file is provided', () => {
       const mockEvent: Partial<Event> = {
-        target: { files: [mockFile], value: '' } as unknown as EventTarget
+        target: { files: [], value: '' } as unknown as EventTarget
       };
 
       component.onAudioFileSelected(mockEvent as Event);
 
-      expect(component.audioErrorSignal()).toBe('Audio upload failed');
-      expect(component.audioUploadingSignal()).toBeFalse();
+      expect(host.selectedAudioFile).toBeNull();
     });
 
-    it('should show validation error for invalid audio file', () => {
-      audioUploadMock.validateFile.and.returnValue('Invalid audio type');
-
-      const mockFile: File = new File(['data'], 'test.txt', { type: 'text/plain' });
-      const mockEvent: Partial<Event> = {
-        target: { files: [mockFile], value: '' } as unknown as EventTarget
-      };
-
-      component.onAudioFileSelected(mockEvent as Event);
-
-      expect(component.audioErrorSignal()).toBe('Invalid audio type');
-      expect(audioUploadMock.uploadAudio).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('audio remove', () => {
-    it('should remove audio and call deleteAudio', () => {
-      audioUploadMock.uploadAudio.and.returnValue(of('https://example.com/audio.webm'));
-      audioUploadMock.deleteAudio.and.returnValue(of(undefined));
-
-      const mockFile: File = new File(['data'], 'test.webm', { type: 'audio/webm' });
-      const mockEvent: Partial<Event> = {
-        target: { files: [mockFile], value: '' } as unknown as EventTarget
-      };
-      component.onAudioFileSelected(mockEvent as Event);
-
-      component.removeAudio();
-
-      expect(audioUploadMock.deleteAudio).toHaveBeenCalledWith('https://example.com/audio.webm');
-      expect(component.audioPreviewSignal()).toBeNull();
-    });
-  });
-
-  describe('audio recording', () => {
-    it('should upload recorded audio file', () => {
-      audioUploadMock.uploadAudio.and.returnValue(of('https://example.com/recorded.webm'));
+    it('should emit audioRecorded and hide recorder when onAudioRecorded is called', () => {
+      component.showRecorderSignal.set(true);
 
       const recordedFile: File = new File(['audio-data'], 'recording.webm', { type: 'audio/webm' });
-
       component.onAudioRecorded(recordedFile);
 
+      expect(host.recordedAudio).toBe(recordedFile);
       expect(component.showRecorderSignal()).toBeFalse();
-      expect(audioUploadMock.uploadAudio).toHaveBeenCalledWith(recordedFile);
-      expect(component.audioPreviewSignal()).toBe('https://example.com/recorded.webm');
+    });
+
+    it('should emit audioRemoved when removeAudio is called', () => {
+      component.removeAudio();
+
+      expect(host.audioRemovedCalled).toBeTrue();
     });
   });
 
   describe('translation', () => {
-    it('should fetch translation on front blur when languages are set', fakeAsync(() => {
-      openRouterMock.translateText.and.returnValue(Promise.resolve('Cześć'));
-
+    it('should emit translationRequested with correct params on front blur when languages are set', () => {
       component.frontLanguageSignal.set('en');
       component.backLanguageSignal.set('pl');
       component.flashcardForm.patchValue({ front: 'Hello' });
 
       component.onFrontBlur();
-      tick(600); // Wait for debounce timeout
 
-      expect(openRouterMock.translateText).toHaveBeenCalledWith('Hello', 'en', 'pl');
-      expect(component.translationSuggestionSignal()).toBe('Cześć');
-      expect(component.translatingSignal()).toBeFalse();
-    }));
+      expect(host.translationRequestedEvent).toEqual({
+        text: 'Hello',
+        fromLang: 'en',
+        toLang: 'pl'
+      });
+    });
 
-    it('should not translate when languages are the same', fakeAsync(() => {
+    it('should not emit translationRequested when languages are the same', () => {
       component.frontLanguageSignal.set('en');
       component.backLanguageSignal.set('en');
       component.flashcardForm.patchValue({ front: 'Hello' });
 
       component.onFrontBlur();
-      tick(600);
 
-      expect(openRouterMock.translateText).not.toHaveBeenCalled();
-      expect(component.translationSuggestionSignal()).toBeNull();
-    }));
+      expect(host.translationRequestedEvent).toBeNull();
+    });
 
-    it('should not translate when front language is not set', fakeAsync(() => {
+    it('should not emit translationRequested when front language is not set', () => {
       component.frontLanguageSignal.set(null);
       component.backLanguageSignal.set('pl');
       component.flashcardForm.patchValue({ front: 'Hello' });
 
       component.onFrontBlur();
-      tick(600);
 
-      expect(openRouterMock.translateText).not.toHaveBeenCalled();
-    }));
+      expect(host.translationRequestedEvent).toBeNull();
+    });
 
-    it('should not translate when front value is empty', fakeAsync(() => {
+    it('should not emit translationRequested when back language is not set', () => {
+      component.frontLanguageSignal.set('en');
+      component.backLanguageSignal.set(null);
+      component.flashcardForm.patchValue({ front: 'Hello' });
+
+      component.onFrontBlur();
+
+      expect(host.translationRequestedEvent).toBeNull();
+    });
+
+    it('should not emit translationRequested when front value is empty', () => {
       component.frontLanguageSignal.set('en');
       component.backLanguageSignal.set('pl');
       component.flashcardForm.patchValue({ front: '' });
 
       component.onFrontBlur();
-      tick(600);
 
-      expect(openRouterMock.translateText).not.toHaveBeenCalled();
-    }));
+      expect(host.translationRequestedEvent).toBeNull();
+    });
 
-    it('should handle translation error gracefully', fakeAsync(() => {
-      openRouterMock.translateText.and.callFake(() => {
-        const p: Promise<string> = Promise.reject(new Error('Translation failed'));
-        // Prevent unhandled rejection warning
-        p.catch(() => {});
-        return p;
-      });
-
+    it('should not emit translationRequested when front value is only whitespace', () => {
       component.frontLanguageSignal.set('en');
       component.backLanguageSignal.set('pl');
-      component.flashcardForm.patchValue({ front: 'Hello' });
+      component.flashcardForm.patchValue({ front: '   ' });
 
       component.onFrontBlur();
-      tick(600);
 
-      expect(component.translatingSignal()).toBeFalse();
-      expect(component.translationSuggestionSignal()).toBeNull();
-    }));
+      expect(host.translationRequestedEvent).toBeNull();
+    });
 
-    it('should accept translation and set back value', fakeAsync(() => {
-      openRouterMock.translateText.and.returnValue(Promise.resolve('Cześć'));
+    it('should patch back field and emit translationAccepted when acceptTranslation is called', () => {
+      host.translationSuggestion = 'Cze\u015b\u0107';
+      fixture.detectChanges();
 
-      component.frontLanguageSignal.set('en');
-      component.backLanguageSignal.set('pl');
       component.flashcardForm.patchValue({ front: 'Hello', back: '' });
 
-      component.onFrontBlur();
-      tick(600);
-
       component.acceptTranslation();
 
-      expect(component.flashcardForm.get('back')?.value).toBe('Cześć');
-      expect(component.translationSuggestionSignal()).toBeNull();
-    }));
+      expect(component.flashcardForm.get('back')?.value).toBe('Cze\u015b\u0107');
+      expect(host.translationAcceptedCalled).toBeTrue();
+    });
 
-    it('should append translation when back already has content', fakeAsync(() => {
-      openRouterMock.translateText.and.returnValue(Promise.resolve('Cześć'));
+    it('should append translation when back already has content', () => {
+      host.translationSuggestion = 'Cze\u015b\u0107';
+      fixture.detectChanges();
 
-      component.frontLanguageSignal.set('en');
-      component.backLanguageSignal.set('pl');
       component.flashcardForm.patchValue({ front: 'Hello', back: 'Existing' });
 
-      component.onFrontBlur();
-      tick(600);
+      component.acceptTranslation();
+
+      expect(component.flashcardForm.get('back')?.value).toBe('Existing; Cze\u015b\u0107');
+      expect(host.translationAcceptedCalled).toBeTrue();
+    });
+
+    it('should not patch form when translationSuggestion is null', () => {
+      host.translationSuggestion = null;
+      fixture.detectChanges();
+
+      component.flashcardForm.patchValue({ front: 'Hello', back: 'Existing' });
 
       component.acceptTranslation();
 
-      expect(component.flashcardForm.get('back')?.value).toBe('Existing; Cześć');
-    }));
+      expect(component.flashcardForm.get('back')?.value).toBe('Existing');
+      expect(host.translationAcceptedCalled).toBeFalse();
+    });
   });
 
   describe('cancel', () => {
     it('should emit close event', () => {
-      spyOn(component.close, 'emit');
-
       component.onCancel();
 
-      expect(component.close.emit).toHaveBeenCalled();
+      expect(host.closeCalled).toBeTrue();
     });
   });
 
-  describe('not submit while uploading', () => {
-    it('should not submit when image is uploading', () => {
-      spyOn(component.save, 'emit');
-      component.flashcardForm.patchValue({ front: 'Hello', back: 'Cześć' });
-      component.uploadingSignal.set(true);
+  describe('inputs propagation', () => {
+    it('should receive imagePreview input', () => {
+      host.imagePreview = 'https://example.com/image.png';
+      fixture.detectChanges();
 
-      component.onSubmit();
-
-      expect(component.save.emit).not.toHaveBeenCalled();
+      expect(component.imagePreviewSignal()).toBe('https://example.com/image.png');
     });
 
-    it('should not submit when audio is uploading', () => {
-      spyOn(component.save, 'emit');
-      component.flashcardForm.patchValue({ front: 'Hello', back: 'Cześć' });
-      component.audioUploadingSignal.set(true);
+    it('should receive imageUploading input', () => {
+      host.imageUploading = true;
+      fixture.detectChanges();
 
-      component.onSubmit();
+      expect(component.uploadingSignal()).toBeTrue();
+    });
 
-      expect(component.save.emit).not.toHaveBeenCalled();
+    it('should receive imageError input', () => {
+      host.imageError = 'Upload failed';
+      fixture.detectChanges();
+
+      expect(component.imageErrorSignal()).toBe('Upload failed');
+    });
+
+    it('should receive audioPreview input', () => {
+      host.audioPreview = 'https://example.com/audio.webm';
+      fixture.detectChanges();
+
+      expect(component.audioPreviewSignal()).toBe('https://example.com/audio.webm');
+    });
+
+    it('should receive audioUploading input', () => {
+      host.audioUploading = true;
+      fixture.detectChanges();
+
+      expect(component.audioUploadingSignal()).toBeTrue();
+    });
+
+    it('should receive audioError input', () => {
+      host.audioError = 'Audio upload failed';
+      fixture.detectChanges();
+
+      expect(component.audioErrorSignal()).toBe('Audio upload failed');
+    });
+
+    it('should receive translationSuggestion input', () => {
+      host.translationSuggestion = 'Translated text';
+      fixture.detectChanges();
+
+      expect(component.translationSuggestionSignal()).toBe('Translated text');
+    });
+
+    it('should receive translating input', () => {
+      host.translating = true;
+      fixture.detectChanges();
+
+      expect(component.translatingSignal()).toBeTrue();
     });
   });
 });

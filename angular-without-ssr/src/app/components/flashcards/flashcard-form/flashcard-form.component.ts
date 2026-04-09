@@ -1,12 +1,7 @@
 import { TranslocoDirective } from '@jsverse/transloco';
-import { Component, OnInit, OnDestroy, WritableSignal, signal, effect, inject, input, output, InputSignal, OutputEmitterRef, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, OnInit, signal, effect, input, output, InputSignal, OutputEmitterRef, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FlashcardDTO, FlashcardLanguage } from '../../../../types';
-import { ImageUploadService } from '../../../services/image-upload.service';
-import { OpenRouterService } from '../../../services/openrouter.service';
-import { AudioUploadService } from '../../../services/audio-upload.service';
-import { LoggerService } from '../../../services/logger.service';
 import { AudioRecorderComponent } from '../../../shared/components/audio-recorder/audio-recorder.component';
 import { AudioPlayerComponent } from '../../../shared/components/audio-player/audio-player.component';
 
@@ -40,36 +35,38 @@ export interface FlashcardFormData {
   styleUrls: ['./flashcard-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FlashcardFormComponent implements OnInit, OnDestroy {
+export class FlashcardFormComponent implements OnInit {
+  // Inputs from parent
   public flashcardToEditSignal: InputSignal<FlashcardDTO | null> = input<FlashcardDTO | null>(null, { alias: 'flashcardToEdit' });
   public isVisibleSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'isVisible' });
+  public imagePreviewSignal: InputSignal<string | null> = input<string | null>(null, { alias: 'imagePreview' });
+  public uploadingSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'imageUploading' });
+  public imageErrorSignal: InputSignal<string | null> = input<string | null>(null, { alias: 'imageError' });
+  public audioPreviewSignal: InputSignal<string | null> = input<string | null>(null, { alias: 'audioPreview' });
+  public audioUploadingSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'audioUploading' });
+  public audioErrorSignal: InputSignal<string | null> = input<string | null>(null, { alias: 'audioError' });
+  public translationSuggestionSignal: InputSignal<string | null> = input<string | null>(null, { alias: 'translationSuggestion' });
+  public translatingSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'translating' });
 
+  // Outputs
   public save: OutputEmitterRef<FlashcardFormData> = output<FlashcardFormData>();
   public close: OutputEmitterRef<void> = output<void>();
+  public imageSelected: OutputEmitterRef<File> = output<File>();
+  public imageRemoved: OutputEmitterRef<void> = output<void>();
+  public audioFileSelected: OutputEmitterRef<File> = output<File>();
+  public audioRecorded: OutputEmitterRef<File> = output<File>();
+  public audioRemoved: OutputEmitterRef<void> = output<void>();
+  public translationRequested: OutputEmitterRef<{ text: string; fromLang: FlashcardLanguage; toLang: FlashcardLanguage }> = output<{ text: string; fromLang: FlashcardLanguage; toLang: FlashcardLanguage }>();
+  public translationAccepted: OutputEmitterRef<void> = output<void>();
 
-  private fb: FormBuilder = inject(FormBuilder);
-  private imageUploadService: ImageUploadService = inject(ImageUploadService);
-  private openRouterService: OpenRouterService = inject(OpenRouterService);
-  private audioUploadService: AudioUploadService = inject(AudioUploadService);
-  private logger: LoggerService = inject(LoggerService);
-  private destroyRef: DestroyRef = inject(DestroyRef);
+  private fb: FormBuilder = new FormBuilder();
 
-  public imagePreviewSignal: WritableSignal<string | null> = signal<string | null>(null);
-  public uploadingSignal: WritableSignal<boolean> = signal<boolean>(false);
-  public imageErrorSignal: WritableSignal<string | null> = signal<string | null>(null);
-  public translationSuggestionSignal: WritableSignal<string | null> = signal<string | null>(null);
-  public translatingSignal: WritableSignal<boolean> = signal<boolean>(false);
-  public frontLanguageSignal: WritableSignal<FlashcardLanguage | null> = signal<FlashcardLanguage | null>(null);
-  public backLanguageSignal: WritableSignal<FlashcardLanguage | null> = signal<FlashcardLanguage | null>(null);
-
-  public showLanguageSignal: WritableSignal<boolean> = signal<boolean>(false);
-  public showImageSignal: WritableSignal<boolean> = signal<boolean>(false);
-  public showAudioSignal: WritableSignal<boolean> = signal<boolean>(false);
-
-  public audioPreviewSignal: WritableSignal<string | null> = signal<string | null>(null);
-  public audioUploadingSignal: WritableSignal<boolean> = signal<boolean>(false);
-  public audioErrorSignal: WritableSignal<string | null> = signal<string | null>(null);
-  public showRecorderSignal: WritableSignal<boolean> = signal<boolean>(false);
+  public frontLanguageSignal = signal<FlashcardLanguage | null>(null);
+  public backLanguageSignal = signal<FlashcardLanguage | null>(null);
+  public showLanguageSignal = signal<boolean>(false);
+  public showImageSignal = signal<boolean>(false);
+  public showAudioSignal = signal<boolean>(false);
+  public showRecorderSignal = signal<boolean>(false);
 
   public readonly LANGUAGES: { label: string; value: FlashcardLanguage }[] = [
     { label: 'English', value: 'en' },
@@ -85,11 +82,6 @@ export class FlashcardFormComponent implements OnInit, OnDestroy {
   public readonly FRONT_MAX_LENGTH: number = 200;
   public readonly BACK_MAX_LENGTH: number = 1000;
 
-  private pendingImageUrl: string | null = null;
-  private pendingAudioUrl: string | null = null;
-  private translationTimeout: ReturnType<typeof setTimeout> | null = null;
-  private destroyed = false;
-
   constructor() {
     effect(() => {
       this.flashcardToEditSignal();
@@ -102,13 +94,6 @@ export class FlashcardFormComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.initializeForm();
-  }
-
-  public ngOnDestroy(): void {
-    this.destroyed = true;
-    if (this.translationTimeout) {
-      clearTimeout(this.translationTimeout);
-    }
   }
 
   public get frontControl() {
@@ -139,8 +124,8 @@ export class FlashcardFormComponent implements OnInit, OnDestroy {
     const formData: FlashcardFormData = {
       front: formValue.front,
       back: formValue.back,
-      front_image_url: this.pendingImageUrl,
-      back_audio_url: this.pendingAudioUrl,
+      front_image_url: this.imagePreviewSignal(),
+      back_audio_url: this.audioPreviewSignal(),
       front_language: this.frontLanguageSignal(),
       back_language: this.backLanguageSignal()
     };
@@ -155,34 +140,15 @@ export class FlashcardFormComponent implements OnInit, OnDestroy {
   }
 
   public onFrontBlur(): void {
-    if (this.translationTimeout) {
-      clearTimeout(this.translationTimeout);
-    }
-
     const frontLang: FlashcardLanguage | null = this.frontLanguageSignal();
     const backLang: FlashcardLanguage | null = this.backLanguageSignal();
     const frontValue: string = this.flashcardForm.get('front')?.value?.trim() || '';
 
     if (!frontLang || !backLang || !frontValue || frontLang === backLang) {
-      this.translationSuggestionSignal.set(null);
       return;
     }
 
-    this.translationTimeout = setTimeout(() => {
-      this.translatingSignal.set(true);
-      this.translationSuggestionSignal.set(null);
-
-      this.openRouterService.translateText(frontValue, frontLang, backLang)
-        .then((translation: string) => {
-          if (this.destroyed) return;
-          this.translationSuggestionSignal.set(translation);
-          this.translatingSignal.set(false);
-        })
-        .catch(() => {
-          if (this.destroyed) return;
-          this.translatingSignal.set(false);
-        });
-    }, 500);
+    this.translationRequested.emit({ text: frontValue, fromLang: frontLang, toLang: backLang });
   }
 
   public acceptTranslation(): void {
@@ -194,7 +160,7 @@ export class FlashcardFormComponent implements OnInit, OnDestroy {
       } else {
         this.flashcardForm.patchValue({ back: suggestion });
       }
-      this.translationSuggestionSignal.set(null);
+      this.translationAccepted.emit();
     }
   }
 
@@ -206,95 +172,33 @@ export class FlashcardFormComponent implements OnInit, OnDestroy {
     const input: HTMLInputElement = event.target as HTMLInputElement;
     const file: File | undefined = input.files?.[0];
     if (!file) return;
-
-    this.imageErrorSignal.set(null);
-
-    const validationError: string | null = this.imageUploadService.validateFile(file);
-    if (validationError) {
-      this.imageErrorSignal.set(validationError);
-      input.value = '';
-      return;
-    }
-
-    this.uploadingSignal.set(true);
-    this.imageUploadService.uploadImage(file).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: (url: string) => {
-        this.pendingImageUrl = url;
-        this.imagePreviewSignal.set(url);
-        this.uploadingSignal.set(false);
-      },
-      error: (err: Error) => {
-        this.imageErrorSignal.set(err.message);
-        this.uploadingSignal.set(false);
-      }
-    });
-
+    this.imageSelected.emit(file);
     input.value = '';
   }
 
   public removeImage(): void {
-    const currentUrl: string | null = this.pendingImageUrl;
-    if (currentUrl) {
-      this.imageUploadService.deleteImage(currentUrl).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-        error: (err: unknown) => this.logger.error('FlashcardForm.removeImage', err)
-      });
-    }
-    this.pendingImageUrl = null;
-    this.imagePreviewSignal.set(null);
-    this.imageErrorSignal.set(null);
+    this.imageRemoved.emit();
   }
 
   public onAudioFileSelected(event: Event): void {
     const input: HTMLInputElement = event.target as HTMLInputElement;
     const file: File | undefined = input.files?.[0];
     if (!file) return;
-
-    this.uploadAudioFile(file);
+    this.audioFileSelected.emit(file);
     input.value = '';
   }
 
   public onAudioRecorded(file: File): void {
     this.showRecorderSignal.set(false);
-    this.uploadAudioFile(file);
+    this.audioRecorded.emit(file);
   }
 
   public removeAudio(): void {
-    const currentUrl: string | null = this.pendingAudioUrl;
-    if (currentUrl) {
-      this.audioUploadService.deleteAudio(currentUrl).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-        error: (err: unknown) => this.logger.error('FlashcardForm.removeAudio', err)
-      });
-    }
-    this.pendingAudioUrl = null;
-    this.audioPreviewSignal.set(null);
-    this.audioErrorSignal.set(null);
+    this.audioRemoved.emit();
   }
 
   public toggleRecorder(): void {
     this.showRecorderSignal.update((v: boolean) => !v);
-  }
-
-  private uploadAudioFile(file: File): void {
-    this.audioErrorSignal.set(null);
-
-    const validationError: string | null = this.audioUploadService.validateFile(file);
-    if (validationError) {
-      this.audioErrorSignal.set(validationError);
-      return;
-    }
-
-    this.audioUploadingSignal.set(true);
-    this.audioUploadService.uploadAudio(file).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: (url: string) => {
-        this.pendingAudioUrl = url;
-        this.audioPreviewSignal.set(url);
-        this.audioUploadingSignal.set(false);
-      },
-      error: (err: Error) => {
-        this.audioErrorSignal.set(err.message);
-        this.audioUploadingSignal.set(false);
-      }
-    });
   }
 
   private initializeForm(): void {
@@ -322,10 +226,6 @@ export class FlashcardFormComponent implements OnInit, OnDestroy {
           front: flashcard.front,
           back: flashcard.back
         });
-        this.pendingImageUrl = flashcard.front_image_url || null;
-        this.imagePreviewSignal.set(flashcard.front_image_url || null);
-        this.pendingAudioUrl = flashcard.back_audio_url || null;
-        this.audioPreviewSignal.set(flashcard.back_audio_url || null);
         this.frontLanguageSignal.set(flashcard.front_language || null);
         this.backLanguageSignal.set(flashcard.back_language || null);
         this.showLanguageSignal.set(!!flashcard.front_language || !!flashcard.back_language);
@@ -333,17 +233,10 @@ export class FlashcardFormComponent implements OnInit, OnDestroy {
         this.showAudioSignal.set(!!flashcard.back_audio_url);
       } else {
         this.flashcardForm.reset();
-        this.pendingImageUrl = null;
-        this.imagePreviewSignal.set(null);
-        this.pendingAudioUrl = null;
-        this.audioPreviewSignal.set(null);
         this.showRecorderSignal.set(false);
         this.frontLanguageSignal.set(null);
         this.backLanguageSignal.set(null);
       }
-      this.imageErrorSignal.set(null);
-      this.audioErrorSignal.set(null);
-      this.translationSuggestionSignal.set(null);
     }
   }
 }

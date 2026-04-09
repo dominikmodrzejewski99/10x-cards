@@ -1,115 +1,84 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
-import { ToastService } from '../../shared/services/toast.service';
+import { Router } from '@angular/router';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { GenerateViewComponent } from './generate-view.component';
-import { GenerationApiService } from '../../services/generation-api.service';
-import { FlashcardApiService } from '../../services/flashcard-api.service';
-import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
-import {
-  FlashcardDTO,
-  FlashcardProposalDTO,
-  FlashcardSetDTO,
-  GenerationDTO
-} from '../../../types';
-import { TranslocoTestingModule } from '@jsverse/transloco';
+import { GenerateFacadeService } from '../../services/generate-facade.service';
 
 describe('GenerateViewComponent', () => {
   let component: GenerateViewComponent;
   let fixture: ComponentFixture<GenerateViewComponent>;
-
-  let generationApiMock: jasmine.SpyObj<GenerationApiService>;
-  let flashcardApiMock: jasmine.SpyObj<FlashcardApiService>;
-  let flashcardSetApiMock: jasmine.SpyObj<FlashcardSetApiService>;
-  let toastServiceMock: jasmine.SpyObj<ToastService>;
   let routerMock: jasmine.SpyObj<Router>;
 
-  const mockGeneration: GenerationDTO = {
-    id: 1,
-    generated_count: 2,
-    generation_duration: 3.5,
-    model: 'test-model',
-    source_text_hash: 'abc123',
-    source_text_length: 1500,
-    accepted_edited_count: null,
-    accepted_unedited_count: null,
-    created_at: '2026-01-01T00:00:00Z',
-    updated_at: '2026-01-01T00:00:00Z',
-    user_id: 'user-1'
-  };
-
-  const mockProposals: FlashcardProposalDTO[] = [
-    { front: 'What is Angular?', back: 'A web framework', source: 'ai-full' },
-    { front: 'What is RxJS?', back: 'Reactive Extensions for JS', source: 'ai-full' }
-  ];
-
-  const mockSet: FlashcardSetDTO = {
-    id: 10,
-    user_id: 'user-1',
-    name: 'Generated Set',
-    description: null,
-    tags: [],
-    is_public: false,
-    copy_count: 0,
-    published_at: null,
-    created_at: '2026-01-01T00:00:00Z',
-    updated_at: '2026-01-01T00:00:00Z'
-  };
-
-  const mockSavedFlashcards: FlashcardDTO[] = [
-    {
-      id: 100, front: 'What is Angular?', back: 'A web framework',
-      front_image_url: null, back_audio_url: null, front_language: null, back_language: null,
-      source: 'ai-full', created_at: '', updated_at: '', user_id: 'user-1', generation_id: 1, set_id: 10, position: 0
-    },
-    {
-      id: 101, front: 'What is RxJS?', back: 'Reactive Extensions for JS',
-      front_image_url: null, back_audio_url: null, front_language: null, back_language: null,
-      source: 'ai-full', created_at: '', updated_at: '', user_id: 'user-1', generation_id: 1, set_id: 10, position: 0
-    }
-  ];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let facadeMock: any;
 
   beforeEach(async () => {
-    generationApiMock = jasmine.createSpyObj<GenerationApiService>(
-      'GenerationApiService',
-      ['generateFlashcards']
-    );
-    flashcardApiMock = jasmine.createSpyObj<FlashcardApiService>(
-      'FlashcardApiService',
-      ['createFlashcards']
-    );
-    flashcardSetApiMock = jasmine.createSpyObj<FlashcardSetApiService>(
-      'FlashcardSetApiService',
-      ['getSets', 'createSet']
-    );
-    toastServiceMock = jasmine.createSpyObj<ToastService>('ToastService', ['add', 'clear']);
+    facadeMock = {
+      // Readonly signals (callable stubs returning default values)
+      proposalsSignal: jasmine.createSpy('proposalsSignal').and.returnValue([]),
+      generationResultSignal: jasmine.createSpy('generationResultSignal').and.returnValue(null),
+      errorMessageSignal: jasmine.createSpy('errorMessageSignal').and.returnValue(null),
+      isGeneratingSignal: jasmine.createSpy('isGeneratingSignal').and.returnValue(false),
+      isSavingSignal: jasmine.createSpy('isSavingSignal').and.returnValue(false),
+      sourceTextSignal: jasmine.createSpy('sourceTextSignal').and.returnValue(''),
+      isSourceValidSignal: jasmine.createSpy('isSourceValidSignal').and.returnValue(false),
+      setsSignal: jasmine.createSpy('setsSignal').and.returnValue([]),
+      selectedSetIdSignal: jasmine.createSpy('selectedSetIdSignal').and.returnValue(null),
+      newSetNameSignal: jasmine.createSpy('newSetNameSignal').and.returnValue(''),
+      isCreatingSetSignal: jasmine.createSpy('isCreatingSetSignal').and.returnValue(false),
+      dailyCountSignal: jasmine.createSpy('dailyCountSignal').and.returnValue(0),
+      navigationTargetSignal: jasmine.createSpy('navigationTargetSignal').and.returnValue(null),
+      needsAuthRedirectSignal: jasmine.createSpy('needsAuthRedirectSignal').and.returnValue(false),
+
+      // Computed signals
+      remainingGenerationsSignal: jasmine.createSpy('remainingGenerationsSignal').and.returnValue(5),
+      limitReachedSignal: jasmine.createSpy('limitReachedSignal').and.returnValue(false),
+      acceptedCountSignal: jasmine.createSpy('acceptedCountSignal').and.returnValue(0),
+      canGenerateSignal: jasmine.createSpy('canGenerateSignal').and.returnValue(false),
+      canSaveSignal: jasmine.createSpy('canSaveSignal').and.returnValue(false),
+      isButtonLoadingSignal: jasmine.createSpy('isButtonLoadingSignal').and.returnValue(false),
+
+      // Constants
+      minTextLength: 1000,
+      maxTextLength: 10000,
+      dailyLimit: 5,
+
+      // Methods
+      loadSets: jasmine.createSpy('loadSets'),
+      loadDailyCount: jasmine.createSpy('loadDailyCount'),
+      generate: jasmine.createSpy('generate'),
+      saveAllProposals: jasmine.createSpy('saveAllProposals'),
+      acceptProposal: jasmine.createSpy('acceptProposal'),
+      rejectProposal: jasmine.createSpy('rejectProposal'),
+      toggleAcceptAll: jasmine.createSpy('toggleAcceptAll'),
+      editProposal: jasmine.createSpy('editProposal'),
+      onTextChange: jasmine.createSpy('onTextChange'),
+      onValidityChange: jasmine.createSpy('onValidityChange'),
+      setSelectedSetId: jasmine.createSpy('setSelectedSetId'),
+      setNewSetName: jasmine.createSpy('setNewSetName'),
+      createNewSet: jasmine.createSpy('createNewSet'),
+      dismissError: jasmine.createSpy('dismissError'),
+      clearNavigationTarget: jasmine.createSpy('clearNavigationTarget'),
+    };
 
     routerMock = jasmine.createSpyObj<Router>('Router', ['navigate']);
 
-    flashcardSetApiMock.getSets.and.returnValue(of([mockSet]));
-
     await TestBed.configureTestingModule({
-      imports: [GenerateViewComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
+      imports: [
+        GenerateViewComponent,
+        TranslocoTestingModule.forRoot({
+          langs: { pl: {} },
+          translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' },
+        }),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: GenerationApiService, useValue: generationApiMock },
-        { provide: FlashcardApiService, useValue: flashcardApiMock },
-        { provide: FlashcardSetApiService, useValue: flashcardSetApiMock },
+        { provide: GenerateFacadeService, useValue: facadeMock },
         { provide: Router, useValue: routerMock },
-        { provide: ActivatedRoute, useValue: {} }
-      ]
-    })
-    .overrideComponent(GenerateViewComponent, {
-      remove: { providers: [ToastService] },
-      add: {
-        providers: [
-          { provide: ToastService, useValue: toastServiceMock }
-        ]
-      }
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(GenerateViewComponent);
     component = fixture.componentInstance;
@@ -120,216 +89,55 @@ describe('GenerateViewComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should load sets on init', () => {
+    it('should call facade.loadSets()', () => {
       fixture.detectChanges();
+      expect(facadeMock.loadSets).toHaveBeenCalled();
+    });
 
-      expect(flashcardSetApiMock.getSets).toHaveBeenCalled();
-      expect(component.sets().length).toBe(1);
+    it('should call facade.loadDailyCount()', () => {
+      fixture.detectChanges();
+      expect(facadeMock.loadDailyCount).toHaveBeenCalled();
     });
   });
 
-  describe('generate', () => {
-    it('should generate flashcard proposals from source text', () => {
+  describe('navigation effect', () => {
+    it('should navigate to set detail when navigationTargetSignal has a value', () => {
+      facadeMock.navigationTargetSignal.and.returnValue({ setId: 10, savedCount: 3 });
+
       fixture.detectChanges();
 
-      generationApiMock.generateFlashcards.and.returnValue(of({
-        generation: mockGeneration,
-        flashcards: mockProposals
-      }));
-
-      component.sourceText.set('A'.repeat(1500));
-      component.isSourceValid.set(true);
-
-      component.generate();
-
-      expect(generationApiMock.generateFlashcards).toHaveBeenCalledWith(
-        jasmine.objectContaining({ text: 'A'.repeat(1500) })
-      );
-      expect(component.proposals().length).toBe(2);
-      expect(component.isGenerating()).toBeFalse();
-      expect(component.generationResult()).toEqual(mockGeneration);
-    });
-
-    it('should not generate when canGenerate is false', () => {
-      fixture.detectChanges();
-
-      component.isSourceValid.set(false);
-      component.generate();
-
-      expect(generationApiMock.generateFlashcards).not.toHaveBeenCalled();
-    });
-
-    it('should clear previous proposals and errors before generating', () => {
-      fixture.detectChanges();
-
-      generationApiMock.generateFlashcards.and.returnValue(of({
-        generation: mockGeneration,
-        flashcards: mockProposals
-      }));
-
-      component.errorMessage.set('Old error');
-      component.sourceText.set('A'.repeat(1500));
-      component.isSourceValid.set(true);
-
-      component.generate();
-
-      expect(toastServiceMock.clear).toHaveBeenCalled();
-    });
-
-    it('should show loading indicator while generating', () => {
-      fixture.detectChanges();
-
-      // Keep the observable pending by not returning yet
-      generationApiMock.generateFlashcards.and.returnValue(of({
-        generation: mockGeneration,
-        flashcards: mockProposals
-      }));
-
-      component.sourceText.set('A'.repeat(1500));
-      component.isSourceValid.set(true);
-      expect(component.isGenerating()).toBeFalse();
-
-      component.generate();
-
-      // After generation completes
-      expect(component.isGenerating()).toBeFalse();
-    });
-  });
-
-  describe('generate error handling', () => {
-    it('should set error message on generation failure', () => {
-      fixture.detectChanges();
-
-      generationApiMock.generateFlashcards.and.returnValue(
-        throwError(() => ({ status: 500 }))
-      );
-
-      component.sourceText.set('A'.repeat(1500));
-      component.isSourceValid.set(true);
-
-      component.generate();
-
-      expect(component.errorMessage()).toBeTruthy();
-      expect(component.isGenerating()).toBeFalse();
-      expect(toastServiceMock.add).toHaveBeenCalledWith(
-        jasmine.objectContaining({ severity: 'error' })
-      );
-    });
-
-    it('should handle 401 error with auth message', () => {
-      fixture.detectChanges();
-
-      generationApiMock.generateFlashcards.and.returnValue(
-        throwError(() => ({ status: 401 }))
-      );
-
-      component.sourceText.set('A'.repeat(1500));
-      component.isSourceValid.set(true);
-
-      component.generate();
-
-      expect(component.errorMessage()).toContain('generate.toasts.authLogin');
-    });
-  });
-
-  describe('saveAllProposals', () => {
-    it('should save accepted proposals and navigate to set', () => {
-      fixture.detectChanges();
-
-      flashcardApiMock.createFlashcards.and.returnValue(of(mockSavedFlashcards));
-
-      // Simulate generated proposals
-      component.proposals.set([
-        { ...mockProposals[0], accepted: true, _id: '1' },
-        { ...mockProposals[1], accepted: true, _id: '2' }
-      ]);
-      component.selectedSetId.set(10);
-
-      component.saveAllProposals();
-
-      expect(flashcardApiMock.createFlashcards).toHaveBeenCalled();
-      expect(toastServiceMock.add).toHaveBeenCalledWith(
-        jasmine.objectContaining({ severity: 'success' })
-      );
+      expect(facadeMock.clearNavigationTarget).toHaveBeenCalled();
       expect(routerMock.navigate).toHaveBeenCalledWith(
         ['/sets', 10],
-        jasmine.objectContaining({ queryParams: jasmine.objectContaining({ saved: 2 }) })
+        { queryParams: { saved: 3 } }
       );
-      expect(component.proposals().length).toBe(0);
-      expect(component.isSaving()).toBeFalse();
     });
 
-    it('should not save when no proposals are accepted', () => {
+    it('should not navigate when navigationTargetSignal is null', () => {
+      facadeMock.navigationTargetSignal.and.returnValue(null);
+
       fixture.detectChanges();
 
-      component.proposals.set([
-        { ...mockProposals[0], accepted: false, _id: '1' }
-      ]);
-      component.selectedSetId.set(10);
-
-      component.saveAllProposals();
-
-      expect(flashcardApiMock.createFlashcards).not.toHaveBeenCalled();
-    });
-
-    it('should not save when no set is selected', () => {
-      fixture.detectChanges();
-
-      component.proposals.set([
-        { ...mockProposals[0], accepted: true, _id: '1' }
-      ]);
-      component.selectedSetId.set(null);
-
-      component.saveAllProposals();
-
-      expect(flashcardApiMock.createFlashcards).not.toHaveBeenCalled();
-    });
-
-    it('should handle save error', () => {
-      fixture.detectChanges();
-
-      flashcardApiMock.createFlashcards.and.returnValue(
-        throwError(() => ({ status: 500 }))
-      );
-
-      component.proposals.set([
-        { ...mockProposals[0], accepted: true, _id: '1' }
-      ]);
-      component.selectedSetId.set(10);
-
-      component.saveAllProposals();
-
-      expect(component.errorMessage()).toBeTruthy();
-      expect(component.isSaving()).toBeFalse();
+      expect(facadeMock.clearNavigationTarget).not.toHaveBeenCalled();
+      expect(routerMock.navigate).not.toHaveBeenCalled();
     });
   });
 
-  describe('acceptProposal', () => {
-    it('should toggle accepted state of a proposal', () => {
+  describe('auth redirect effect', () => {
+    it('should navigate to /login when needsAuthRedirectSignal is true', () => {
+      facadeMock.needsAuthRedirectSignal.and.returnValue(true);
+
       fixture.detectChanges();
 
-      const proposal = { ...mockProposals[0], accepted: false, _id: '1' };
-      component.proposals.set([proposal]);
-
-      component.acceptProposal(proposal);
-
-      expect(component.proposals()[0].accepted).toBeTrue();
+      expect(routerMock.navigate).toHaveBeenCalledWith(['/login']);
     });
-  });
 
-  describe('rejectProposal', () => {
-    it('should remove proposal from list', () => {
+    it('should not navigate to /login when needsAuthRedirectSignal is false', () => {
+      facadeMock.needsAuthRedirectSignal.and.returnValue(false);
+
       fixture.detectChanges();
 
-      const proposal = { ...mockProposals[0], accepted: true, _id: '1' };
-      component.proposals.set([proposal]);
-
-      component.rejectProposal(proposal);
-
-      expect(component.proposals().length).toBe(0);
-      expect(toastServiceMock.add).toHaveBeenCalledWith(
-        jasmine.objectContaining({ severity: 'warn' })
-      );
+      expect(routerMock.navigate).not.toHaveBeenCalled();
     });
   });
 });

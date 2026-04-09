@@ -9,17 +9,17 @@
 
     <!-- Steps indicator -->
     <div class="gen__steps">
-      <div class="gen__step" [class.gen__step--active]="true" [class.gen__step--done]="proposals().length > 0">
+      <div class="gen__step" [class.gen__step--active]="true" [class.gen__step--done]="facade.proposalsSignal().length > 0">
         <span class="gen__step-num">1</span>
         <span class="gen__step-label">{{ t('stepSource') }}</span>
       </div>
-      <div class="gen__step-line" [class.gen__step-line--done]="proposals().length > 0"></div>
-      <div class="gen__step" [class.gen__step--active]="proposals().length > 0" [class.gen__step--done]="acceptedCount() > 0">
+      <div class="gen__step-line" [class.gen__step-line--done]="facade.proposalsSignal().length > 0"></div>
+      <div class="gen__step" [class.gen__step--active]="facade.proposalsSignal().length > 0" [class.gen__step--done]="facade.acceptedCountSignal() > 0">
         <span class="gen__step-num">2</span>
         <span class="gen__step-label">{{ t('stepReview') }}</span>
       </div>
-      <div class="gen__step-line" [class.gen__step-line--done]="acceptedCount() > 0"></div>
-      <div class="gen__step" [class.gen__step--active]="acceptedCount() > 0">
+      <div class="gen__step-line" [class.gen__step-line--done]="facade.acceptedCountSignal() > 0"></div>
+      <div class="gen__step" [class.gen__step--active]="facade.acceptedCountSignal() > 0">
         <span class="gen__step-num">3</span>
         <span class="gen__step-label">{{ t('stepSave') }}</span>
       </div>
@@ -28,34 +28,34 @@
     <!-- Step 1: Source text -->
     <div class="gen__card">
       <app-source-textarea
-        (textChange)="onTextChange($event)"
-        (validityChange)="onValidityChange($event)">
+        (textChange)="facade.onTextChange($event)"
+        (validityChange)="facade.onValidityChange($event)">
       </app-source-textarea>
 
       <div class="gen__card-footer">
-        <span class="gen__limit" [class.gen__limit--warn]="remainingGenerations() <= 1" [class.gen__limit--exhausted]="limitReached()">
-          @if (limitReached()) {
+        <span class="gen__limit" [class.gen__limit--warn]="facade.remainingGenerationsSignal() <= 1" [class.gen__limit--exhausted]="facade.limitReachedSignal()">
+          @if (facade.limitReachedSignal()) {
             <i class="pi pi-exclamation-triangle"></i> {{ t('limitReached') }}
           } @else {
-            <i class="pi pi-bolt"></i> {{ t('remaining', { count: remainingGenerations(), limit: dailyLimit }) }}
+            <i class="pi pi-bolt"></i> {{ t('remaining', { count: facade.remainingGenerationsSignal(), limit: facade.dailyLimit }) }}
           }
         </span>
         <app-generate-button
-          [disabled]="!canGenerate()"
-          [loading]="isButtonLoading()"
-          (generateClick)="generate()">
+          [disabled]="!facade.canGenerateSignal()"
+          [loading]="facade.isButtonLoadingSignal()"
+          (generateClick)="facade.generate()">
         </app-generate-button>
       </div>
 
-      @if (errorMessage()) {
+      @if (facade.errorMessageSignal()) {
       <div class="gen__error">
-        <app-error-message [errorMessage]="errorMessage()" (retry)="generate()" (dismiss)="errorMessage.set(null)"></app-error-message>
+        <app-error-message [errorMessage]="facade.errorMessageSignal()" (retry)="facade.generate()" (dismiss)="facade.dismissError()"></app-error-message>
       </div>
       }
     </div>
 
     <!-- Step 2: Review proposals -->
-    @if (proposals().length > 0) {
+    @if (facade.proposalsSignal().length > 0) {
     <div class="gen__card">
       <div class="gen__proposals-header">
         <div class="gen__proposals-title-group">
@@ -68,17 +68,17 @@
         <div class="gen__proposals-meta">
           <div class="gen__proposals-stats">
             <span class="gen__stat gen__stat--total">
-              {{ t('proposals', { count: proposals().length }) }}
+              {{ t('proposals', { count: facade.proposalsSignal().length }) }}
             </span>
             <span class="gen__stat gen__stat--accepted">
               <i class="pi pi-check"></i>
-              {{ t('accepted', { count: acceptedCount() }) }}
+              {{ t('accepted', { count: facade.acceptedCountSignal() }) }}
             </span>
           </div>
           <button
             class="gen__accept-all-btn"
-            (click)="toggleAcceptAll()">
-            @if (acceptedCount() < proposals().length) {
+            (click)="facade.toggleAcceptAll()">
+            @if (facade.acceptedCountSignal() < facade.proposalsSignal().length) {
               <i class="pi pi-check-circle"></i> {{ t('acceptAll') }}
             } @else {
               <i class="pi pi-times-circle"></i> {{ t('undoAll') }}
@@ -88,15 +88,15 @@
       </div>
 
       <app-flashcard-proposal-list
-        [proposals]="proposals()"
-        (accept)="acceptProposal($any($event))"
-        (reject)="rejectProposal($any($event))"
-        (edit)="editProposal($event)">
+        [proposals]="facade.proposalsSignal()"
+        (accept)="facade.acceptProposal($any($event))"
+        (reject)="facade.rejectProposal($any($event))"
+        (edit)="facade.editProposal($event)">
       </app-flashcard-proposal-list>
     </div>
 
     <!-- Step 3: Save -->
-    <div class="gen__card gen__card--save" [class.gen__card--save-ready]="acceptedCount() > 0">
+    <div class="gen__card gen__card--save" [class.gen__card--save-ready]="facade.acceptedCountSignal() > 0">
       <h3 class="gen__save-title">
         <i class="pi pi-folder-open"></i>
         {{ t('saveToSet') }}
@@ -106,10 +106,10 @@
         <div class="gen__save-existing">
           <select
             class="gen__set-select"
-            [ngModel]="selectedSetId()"
-            (ngModelChange)="selectedSetId.set($event)">
+            [ngModel]="facade.selectedSetIdSignal()"
+            (ngModelChange)="facade.setSelectedSetId($event)">
             <option [ngValue]="null" disabled>{{ t('selectSet') }}</option>
-            @for (set of sets(); track set.id) {
+            @for (set of facade.setsSignal(); track set.id) {
               <option [ngValue]="set.id">{{ set.name }}</option>
             }
           </select>
@@ -121,16 +121,16 @@
           <input
             type="text"
             class="gen__set-input"
-            [ngModel]="newSetName()"
-            (ngModelChange)="newSetName.set($event)"
+            [ngModel]="facade.newSetNameSignal()"
+            (ngModelChange)="facade.setNewSetName($event)"
             [placeholder]="t('newSetPlaceholder')"
             maxlength="100"
-            (keydown.enter)="createNewSet()" />
+            (keydown.enter)="facade.createNewSet()" />
           <button
             class="gen__create-btn"
-            [disabled]="!newSetName().trim() || isCreatingSet()"
-            (click)="createNewSet()">
-            @if (isCreatingSet()) {
+            [disabled]="!facade.newSetNameSignal().trim() || facade.isCreatingSetSignal()"
+            (click)="facade.createNewSet()">
+            @if (facade.isCreatingSetSignal()) {
               <i class="pi pi-spin pi-spinner"></i>
             } @else {
               <i class="pi pi-plus"></i>
@@ -141,22 +141,22 @@
       </div>
 
       <div class="gen__save-action">
-        @if (!selectedSetId() && acceptedCount() > 0) {
+        @if (!facade.selectedSetIdSignal() && facade.acceptedCountSignal() > 0) {
           <span class="gen__set-warn">
             <i class="pi pi-info-circle"></i> {{ t('selectOrCreateWarn') }}
           </span>
         }
         <app-bulk-save-button
-          [label]="'Zapisz (' + acceptedCount() + ')'"
-          [disabled]="!canSave()"
-          [loading]="isSaving()"
-          (saveAllClick)="saveAllProposals()">
+          [label]="'Zapisz (' + facade.acceptedCountSignal() + ')'"
+          [disabled]="!facade.canSaveSignal()"
+          [loading]="facade.isSavingSignal()"
+          (saveAllClick)="facade.saveAllProposals()">
         </app-bulk-save-button>
       </div>
     </div>
     }
 
-    @if (!isGenerating() && !proposals().length && sourceText().length > 0 && isSourceValid()) {
+    @if (!facade.isGeneratingSignal() && !facade.proposalsSignal().length && facade.sourceTextSignal().length > 0 && facade.isSourceValidSignal()) {
     <div class="gen__empty">
       <i class="pi pi-sparkles"></i>
       <p>{{ t('clickGenerate') }}</p>
@@ -165,6 +165,6 @@
   </div>
 </div>
 
-<app-loading-indicator [isLoading]="isGenerating()"></app-loading-indicator>
+<app-loading-indicator [isLoading]="facade.isGeneratingSignal()"></app-loading-indicator>
 
 </ng-container>
