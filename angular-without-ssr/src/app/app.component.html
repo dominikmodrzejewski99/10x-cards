@@ -26,6 +26,8 @@
       <span class="app__footer-sep">·</span>
       <a routerLink="/feedback" class="app__footer-link">{{ 'footer.feedback' | transloco }}</a>
     }
+    <span class="app__footer-sep">·</span>
+    <span class="app__footer-mcp" [attr.title]="'footer.mcpTooltip' | transloco">MCP</span>
   </footer>
 
   <app-bottom-nav></app-bottom-nav>

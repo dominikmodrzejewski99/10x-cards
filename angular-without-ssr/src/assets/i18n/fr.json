@@ -813,7 +813,8 @@
     "terms": "Conditions",
     "privacy": "Confidentialité",
     "cookies": "Cookies",
-    "feedback": "Signaler un problème"
+    "feedback": "Signaler un problème",
+    "mcpTooltip": "Disponible en tant que serveur MCP — révisez vos cartes dans Claude Code"
   },
   "feedback": {
     "title": "Signaler un bug ou une idée",

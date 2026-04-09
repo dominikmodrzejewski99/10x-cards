@@ -84,6 +84,17 @@
   cursor: pointer;
 }
 
+.app__footer-mcp {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  background: var(--app-border, #d9dbe9);
+  color: var(--app-text-secondary, #586380);
+  cursor: default;
+}
+
 /* Mobile: hide footer only when bottom-nav is present (authenticated) */
 @media (max-width: 640px) {
   .app__main {

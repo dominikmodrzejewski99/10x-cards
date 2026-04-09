@@ -59,6 +59,12 @@ Można też kliknąć „Wypróbuj bez rejestracji" aby korzystać anonimowo.
 ### Poradnik nauki
 - 8 artykułów: Spaced Repetition, Active Recall, krzywa zapominania, efekt Dunninga-Krugera, technika Feynmana, Pomodoro, interleaving, growth mindset
 
+### MCP Server — powtórki w czacie
+- Wbudowany serwer MCP pozwala powtarzać fiszki bezpośrednio w Claude Code
+- 4 narzędzia: `list_sets`, `start_review`, `show_answer`, `rate_card`
+- Ten sam algorytm SM-2 co w aplikacji webowej
+- Konfiguracja: uzupełnij `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `MCP_USER_ID` w `.mcp.json`
+
 ## Stack technologiczny
 
 | Warstwa | Technologia |
@@ -149,4 +155,11 @@ supabase/functions/
 ├── flashcards/         # Zapis fiszek
 ├── flashcards-create/  # Tworzenie fiszek (walidacja Zod)
 └── generations/        # Walidacja tekstu wejściowego
+
+mcp-review/src/         # MCP server — powtórki fiszek w Claude Code
+├── index.ts            # Entry point (McpServer + StdioServerTransport)
+├── tools.ts            # 4 narzędzia MCP
+├── sm2.ts              # Algorytm SM-2 (pure function)
+├── supabase.ts         # Klient Supabase + zapytania
+└── session.ts          # Stan sesji powtórkowej (in-memory)
 ```

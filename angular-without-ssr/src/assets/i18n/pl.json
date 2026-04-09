@@ -990,7 +990,8 @@
     "terms": "Regulamin",
     "privacy": "Prywatność",
     "cookies": "Cookies",
-    "feedback": "Zgłoś problem"
+    "feedback": "Zgłoś problem",
+    "mcpTooltip": "Dostępny jako MCP server — powtarzaj fiszki w Claude Code"
   },
   "feedback": {
     "title": "Zgłoś problem lub pomysł",

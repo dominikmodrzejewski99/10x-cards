@@ -990,7 +990,8 @@
     "terms": "Terms",
     "privacy": "Privacy",
     "cookies": "Cookies",
-    "feedback": "Report a problem"
+    "feedback": "Report a problem",
+    "mcpTooltip": "Available as MCP server — review flashcards in Claude Code"
   },
   "feedback": {
     "title": "Report a bug or idea",

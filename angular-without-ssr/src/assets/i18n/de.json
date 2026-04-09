@@ -813,7 +813,8 @@
     "terms": "AGB",
     "privacy": "Datenschutz",
     "cookies": "Cookies",
-    "feedback": "Problem melden"
+    "feedback": "Problem melden",
+    "mcpTooltip": "Als MCP-Server verfügbar — Karteikarten in Claude Code wiederholen"
   },
   "feedback": {
     "title": "Fehler oder Idee melden",
