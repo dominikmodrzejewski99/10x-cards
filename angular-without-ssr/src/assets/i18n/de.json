@@ -302,6 +302,8 @@
       "emailInvalid": "Ungültiges E-Mail-Format",
       "submitButton": "Link senden",
       "emailSent": "Ein Link zum Zurücksetzen des Passworts wurde an <strong>{{email}}</strong> gesendet.",
+      "emailSentPrefix": "Ein Link zum Zurücksetzen des Passworts wurde an",
+      "emailSentSuffix": " gesendet.",
       "checkInbox": "Schau in dein Postfach (und den Spam-Ordner).",
       "backToLogin": "Zurück zur Anmeldung"
     },

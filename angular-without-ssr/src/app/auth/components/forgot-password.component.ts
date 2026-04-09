@@ -20,7 +20,7 @@ import { AuthStore } from '../store';
           @if (sentSignal()) {
             <div class="auth-success">
               <i class="pi pi-check-circle"></i>
-              <p [innerHTML]="t('emailSent', { email: sentEmailSignal() })"></p>
+              <p>{{ t('emailSentPrefix') }} <strong>{{ sentEmailSignal() }}</strong> {{ t('emailSentSuffix') }}</p>
               <p class="auth-success__hint">{{ t('checkInbox') }}</p>
             </div>
             <div class="auth-footer">

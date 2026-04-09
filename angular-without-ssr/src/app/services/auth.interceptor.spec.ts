@@ -79,21 +79,6 @@ describe('authInterceptor', () => {
     });
   });
 
-  it('should skip openrouter.ai URLs and not add token', (done: DoneFn) => {
-    // Even with a valid session, openrouter requests should pass through unchanged
-    setupTestBed(Promise.resolve({ data: { session: { access_token: mockToken } } }));
-
-    httpClient.get('https://openrouter.ai/api/v1/chat').subscribe({
-      next: () => done(),
-      error: done.fail,
-    });
-
-    // openrouter requests bypass the session check, so they appear immediately
-    const req = httpMock.expectOne('https://openrouter.ai/api/v1/chat');
-    expect(req.request.headers.has('Authorization')).toBeFalse();
-    req.flush({});
-  });
-
   it('should redirect to /login on 401 response', (done: DoneFn) => {
     setupTestBed(Promise.resolve({ data: { session: { access_token: mockToken } } }));
 

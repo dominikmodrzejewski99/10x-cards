@@ -310,6 +310,8 @@
       "emailInvalid": "Niepoprawny format email",
       "submitButton": "Wyślij link resetujący",
       "emailSent": "Link do resetowania hasła został wysłany na <strong>{{email}}</strong>.",
+      "emailSentPrefix": "Link do resetowania hasła został wysłany na",
+      "emailSentSuffix": ".",
       "checkInbox": "Sprawdź skrzynkę (i folder spam).",
       "backToLogin": "Wróć do logowania"
     },
@@ -455,6 +457,8 @@
     "createSet": "Utwórz",
     "selectOrCreateWarn": "Wybierz lub utwórz zestaw, aby zapisać fiszki",
     "clickGenerate": "Kliknij „Generuj\", aby stworzyć propozycje fiszek",
+    "remaining": "{{ count }} / {{ limit }} generacji dziś",
+    "limitReached": "Dzienny limit generacji wyczerpany — spróbuj jutro",
     "sourceLabel": "Tekst źródłowy",
     "sourcePlaceholder": "Wklej tutaj tekst z podręcznika, notatek, artykułu lub innego źródła...",
     "sourceHint": "Im dłuższy i bardziej merytoryczny tekst, tym lepsze fiszki. Minimum 1000 znaków.",

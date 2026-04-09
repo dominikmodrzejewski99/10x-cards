@@ -310,6 +310,8 @@
       "emailInvalid": "Invalid email format",
       "submitButton": "Send reset link",
       "emailSent": "A password reset link has been sent to <strong>{{email}}</strong>.",
+      "emailSentPrefix": "A password reset link has been sent to",
+      "emailSentSuffix": ".",
       "checkInbox": "Check your inbox (and spam folder).",
       "backToLogin": "Back to login"
     },
@@ -455,6 +457,8 @@
     "createSet": "Create",
     "selectOrCreateWarn": "Select or create a set to save flashcards",
     "clickGenerate": "Click \"Generate\" to create flashcard proposals",
+    "remaining": "{{ count }} / {{ limit }} generations today",
+    "limitReached": "Daily generation limit reached — try again tomorrow",
     "sourceLabel": "Source text",
     "sourcePlaceholder": "Paste text from a textbook, notes, article or any other source...",
     "sourceHint": "The longer and more substantive the text, the better the flashcards. Minimum 1,000 characters.",

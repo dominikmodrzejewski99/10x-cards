@@ -33,6 +33,13 @@
       </app-source-textarea>
 
       <div class="gen__card-footer">
+        <span class="gen__limit" [class.gen__limit--warn]="remainingGenerations() <= 1" [class.gen__limit--exhausted]="limitReached()">
+          @if (limitReached()) {
+            <i class="pi pi-exclamation-triangle"></i> {{ t('limitReached') }}
+          } @else {
+            <i class="pi pi-bolt"></i> {{ t('remaining', { count: remainingGenerations(), limit: dailyLimit }) }}
+          }
+        </span>
         <app-generate-button
           [disabled]="!canGenerate()"
           [loading]="isButtonLoading()"

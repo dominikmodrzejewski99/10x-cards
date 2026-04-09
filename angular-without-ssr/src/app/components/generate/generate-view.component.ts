@@ -65,9 +65,14 @@ export class GenerateViewComponent implements OnInit {
   newSetName = signal('');
   isCreatingSet = signal(false);
 
+  dailyCount = signal<number>(0);
+  dailyLimit: number = this.generationApi.getDailyLimit();
+  remainingGenerations = computed(() => Math.max(0, this.dailyLimit - this.dailyCount()));
+  limitReached = computed(() => this.dailyCount() >= this.dailyLimit);
+
   acceptedCount = computed(() => this.proposals().filter(p => p.accepted).length);
 
-  canGenerate = computed(() => this.isSourceValid() && !this.isGenerating() && !this.isSaving());
+  canGenerate = computed(() => this.isSourceValid() && !this.isGenerating() && !this.isSaving() && !this.limitReached());
 
   canSave = computed(() =>
     this.acceptedCount() > 0 && !this.isGenerating() && !this.isSaving() && this.selectedSetId() !== null
@@ -77,6 +82,14 @@ export class GenerateViewComponent implements OnInit {
 
   ngOnInit() {
     this.loadSets();
+    this.loadDailyCount();
+  }
+
+  private loadDailyCount(): void {
+    this.generationApi.getDailyGenerationCount().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (count: number) => this.dailyCount.set(count),
+      error: (err: unknown) => this.logger.error('GenerateViewComponent.loadDailyCount', err)
+    });
   }
 
   private loadSets(): void {
@@ -132,6 +145,7 @@ export class GenerateViewComponent implements OnInit {
         })));
         this.generationResult.set(response.generation);
         this.isGenerating.set(false);
+        this.dailyCount.update((c: number) => c + 1);
       },
       error: (error) => {
         this.proposals.set([]);

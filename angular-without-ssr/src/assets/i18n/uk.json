@@ -302,6 +302,8 @@
       "emailInvalid": "Невірний формат email",
       "submitButton": "Надіслати посилання",
       "emailSent": "Посилання для скидання пароля надіслано на <strong>{{email}}</strong>.",
+      "emailSentPrefix": "Посилання для скидання пароля надіслано на",
+      "emailSentSuffix": ".",
       "checkInbox": "Перевір вхідні (і папку спам).",
       "backToLogin": "Повернутися до входу"
     },

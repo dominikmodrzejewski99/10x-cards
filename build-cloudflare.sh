@@ -134,29 +134,29 @@ else
   log_error "SUPABASE_KEY: nie ustawiono"
 fi
 
-# Dla OPENROUTER_KEY
-if [ -n "${openRouterKey}" ]; then
-  OPENROUTER_KEY="${openRouterKey}"
-elif [ -n "${OPENROUTER_KEY}" ]; then
-  OPENROUTER_KEY="${OPENROUTER_KEY}"
-elif [ -n "${openRouter_KEY}" ]; then
-  OPENROUTER_KEY="${openRouter_KEY}"
-elif [ -n "$openRouterKey" ]; then
-  OPENROUTER_KEY="$openRouterKey"
-elif [ -n "$OPENROUTER_KEY" ]; then
-  OPENROUTER_KEY="$OPENROUTER_KEY"
-elif [ -n "$openRouter_KEY" ]; then
-  OPENROUTER_KEY="$openRouter_KEY"
+# Dla GOOGLE_AI_KEY
+if [ -n "${googleAiKey}" ]; then
+  GOOGLE_AI_KEY="${googleAiKey}"
+elif [ -n "${GOOGLE_AI_KEY}" ]; then
+  GOOGLE_AI_KEY="${GOOGLE_AI_KEY}"
+elif [ -n "${googleAi_KEY}" ]; then
+  GOOGLE_AI_KEY="${googleAi_KEY}"
+elif [ -n "$googleAiKey" ]; then
+  GOOGLE_AI_KEY="$googleAiKey"
+elif [ -n "$GOOGLE_AI_KEY" ]; then
+  GOOGLE_AI_KEY="$GOOGLE_AI_KEY"
+elif [ -n "$googleAi_KEY" ]; then
+  GOOGLE_AI_KEY="$googleAi_KEY"
 else
-  echo "UWAGA: Nie znaleziono zmiennej środowiskowej dla klucza OpenRouter!"
-  OPENROUTER_KEY=""
+  echo "UWAGA: Nie znaleziono zmiennej środowiskowej dla klucza Google AI!"
+  GOOGLE_AI_KEY=""
 fi
 
-# Wyświetl informacje o zmiennej OPENROUTER_KEY (bez ujawniania pełnej wartości)
-if [ -n "${OPENROUTER_KEY}" ]; then
-  log_info "OPENROUTER_KEY: [WARTOŚĆ UKRYTA]"
+# Wyświetl informacje o zmiennej GOOGLE_AI_KEY (bez ujawniania pełnej wartości)
+if [ -n "${GOOGLE_AI_KEY}" ]; then
+  log_info "GOOGLE_AI_KEY: [WARTOŚĆ UKRYTA]"
 else
-  log_error "OPENROUTER_KEY: nie ustawiono"
+  log_error "GOOGLE_AI_KEY: nie ustawiono"
 fi
 
 # Dla zmiennych E2E
@@ -186,7 +186,7 @@ fi
 
 # Wyświetl dostępne zmienne środowiskowe dla debugowania
 log_info "Dostępne zmienne środowiskowe (szczegółowo):"
-env | grep -E 'supabase|SUPABASE|openRouter|OPENROUTER|E2E' || log_warning "Brak zmiennych środowiskowych związanych z Supabase, OpenRouter lub E2E"
+env | grep -E 'supabase|SUPABASE|googleAi|GOOGLE_AI|E2E' || log_warning "Brak zmiennych środowiskowych związanych z Supabase, Google AI lub E2E"
 
 # Sprawdź, czy wymagane zmienne środowiskowe są ustawione
 if [ -z "$SUPABASE_URL" ]; then
@@ -207,13 +207,13 @@ else
   log_success "Znaleziono zmienną środowiskową SUPABASE_KEY"
 fi
 
-if [ -z "$OPENROUTER_KEY" ]; then
-  log_error "Zmienna środowiskowa OPENROUTER_KEY nie jest ustawiona!"
+if [ -z "$GOOGLE_AI_KEY" ]; then
+  log_error "Zmienna środowiskowa GOOGLE_AI_KEY nie jest ustawiona!"
   log_error "Ta zmienna jest wymagana do poprawnego działania aplikacji."
-  log_error "Ustaw zmienną OPENROUTER_KEY w ustawieniach Cloudflare Pages lub w zmiennych środowiskowych GitHub Actions."
+  log_error "Ustaw zmienną GOOGLE_AI_KEY w ustawieniach Cloudflare Pages lub w zmiennych środowiskowych GitHub Actions."
   exit 1
 else
-  log_success "Znaleziono zmienną środowiskową OPENROUTER_KEY"
+  log_success "Znaleziono zmienną środowiskową GOOGLE_AI_KEY"
 fi
 
 # Ustawiamy wartości domyślne dla zmiennych E2E, jeśli nie są ustawione
@@ -241,7 +241,7 @@ declare global {
     RUNTIME_CONFIG: {
       supabaseUrl: string;
       supabaseKey: string;
-      openRouterKey: string;
+      googleAiKey: string;
       E2E_USERNAME_ID: string;
       E2E_USERNAME: string;
       E2E_PASSWORD: string;
@@ -259,8 +259,8 @@ export const environment = {
   get supabaseKey() {
     return window.RUNTIME_CONFIG?.supabaseKey || '${SUPABASE_KEY}';
   },
-  get openRouterKey() {
-    return window.RUNTIME_CONFIG?.openRouterKey || '${OPENROUTER_KEY}';
+  get googleAiKey() {
+    return window.RUNTIME_CONFIG?.googleAiKey || '${GOOGLE_AI_KEY}';
   },
   get E2E_USERNAME_ID() {
     return window.RUNTIME_CONFIG?.E2E_USERNAME_ID || '${E2E_USERNAME_ID_VAR}';
@@ -278,7 +278,7 @@ log_success "Environment file created successfully"
 log_info "Environment file contains the following variables (values hidden):"
 log_info "- supabaseUrl: [HIDDEN]"
 log_info "- supabaseKey: [HIDDEN]"
-log_info "- openRouterKey: [HIDDEN]"
+log_info "- googleAiKey: [HIDDEN]"
 log_info "- E2E_USERNAME_ID: [HIDDEN]"
 log_info "- E2E_USERNAME: [HIDDEN]"
 log_info "- E2E_PASSWORD: [HIDDEN]"
@@ -294,7 +294,7 @@ cat > src/assets/runtime-config.js << EOL
 window.RUNTIME_CONFIG = {
   supabaseUrl: '${SUPABASE_URL}',
   supabaseKey: '${SUPABASE_KEY}',
-  openRouterKey: '${OPENROUTER_KEY}',
+  googleAiKey: '${GOOGLE_AI_KEY}',
   E2E_USERNAME_ID: '${E2E_USERNAME_ID_VAR}',
   E2E_USERNAME: '${E2E_USERNAME_VAR}',
   E2E_PASSWORD: '${E2E_PASSWORD_VAR}'
@@ -305,7 +305,7 @@ EOL
 log_success "Runtime config file created with the following variables (values hidden):"
 log_info "- supabaseUrl: [HIDDEN]"
 log_info "- supabaseKey: [HIDDEN]"
-log_info "- openRouterKey: [HIDDEN]"
+log_info "- googleAiKey: [HIDDEN]"
 log_info "- E2E_USERNAME_ID: [HIDDEN]"
 log_info "- E2E_USERNAME: [HIDDEN]"
 log_info "- E2E_PASSWORD: [HIDDEN]"

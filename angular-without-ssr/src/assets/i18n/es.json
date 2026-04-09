@@ -302,6 +302,8 @@
       "emailInvalid": "Formato de email no válido",
       "submitButton": "Enviar enlace",
       "emailSent": "Se ha enviado un enlace de restablecimiento a <strong>{{email}}</strong>.",
+      "emailSentPrefix": "Se ha enviado un enlace de restablecimiento a",
+      "emailSentSuffix": ".",
       "checkInbox": "Revisa tu bandeja de entrada (y la carpeta de spam).",
       "backToLogin": "Volver al inicio de sesión"
     },

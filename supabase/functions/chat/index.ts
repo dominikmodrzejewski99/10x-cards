@@ -1,4 +1,4 @@
-const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions'
+const GOOGLE_AI_URL = 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions'
 
 const ALLOWED_ORIGINS = [
   'https://memlo.app',
@@ -22,8 +22,9 @@ function getCorsHeaders(req: Request): Record<string, string> {
 }
 
 const ALLOWED_MODELS = new Set([
-  'google/gemma-3-12b-it:free',
-  'google/gemma-3-4b-it:free',
+  'gemini-2.5-flash',
+  'gemini-3.1-flash-lite',
+  'gemini-2.5-flash-lite',
 ])
 
 const MAX_TOKENS_LIMIT = 2000
@@ -67,7 +68,7 @@ Deno.serve(async (req: Request) => {
     })
   }
 
-  const model = body.model || 'google/gemma-3-12b-it:free'
+  const model = body.model || 'gemini-2.5-flash'
   if (!ALLOWED_MODELS.has(model)) {
     return new Response(JSON.stringify({ error: 'Model not allowed' }), {
       status: 400,
@@ -92,7 +93,7 @@ Deno.serve(async (req: Request) => {
   const maxTokens = Math.min(body.max_tokens || 1000, MAX_TOKENS_LIMIT)
   const temperature = Math.max(0, Math.min(body.temperature || 0.7, 2))
 
-  const apiKey = Deno.env.get('OPENROUTER_API_KEY')
+  const apiKey = Deno.env.get('GOOGLE_AI_API_KEY')
   if (!apiKey) {
     return new Response(JSON.stringify({ error: 'API key not configured' }), {
       status: 500,
@@ -101,7 +102,7 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const response = await fetch(OPENROUTER_URL, {
+    const response = await fetch(GOOGLE_AI_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

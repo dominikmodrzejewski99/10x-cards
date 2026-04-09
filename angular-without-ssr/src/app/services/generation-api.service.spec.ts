@@ -9,7 +9,7 @@ describe('GenerationApiService', () => {
 
   beforeEach(() => {
     openRouterSpy = jasmine.createSpyObj<OpenRouterService>('OpenRouterService', ['sendMessage']);
-    (openRouterSpy as unknown as Record<string, unknown>)['defaultModel'] = 'google/gemma-3-12b-it:free';
+    (openRouterSpy as unknown as Record<string, unknown>)['defaultModel'] = 'gemini-2.5-flash';
 
     TestBed.configureTestingModule({
       providers: [

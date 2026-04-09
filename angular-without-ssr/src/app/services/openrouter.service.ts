@@ -29,8 +29,8 @@ interface ApiError {
 const CHAT_FUNCTION_PATH = '/functions/v1/chat';
 
 const FALLBACK_MODELS: readonly string[] = [
-  'google/gemma-3-12b-it:free',
-  'google/gemma-3-4b-it:free',
+  'gemini-2.5-flash',
+  'gemini-3.1-flash-lite',
 ] as const;
 
 const RETRYABLE_STATUSES: ReadonlySet<number> = new Set([400, 429, 502, 503, 504]);
@@ -272,9 +272,7 @@ export class OpenRouterService {
           ? `Błąd modelu AI: ${providerMessage}`
           : 'Nieprawidłowe żądanie do API. Spróbuj ponownie.';
       case 401:
-        return !environment.openRouterKey
-          ? 'Brak klucza API OpenRouter. Sprawdź zmienne środowiskowe.'
-          : 'Brak autoryzacji. Sprawdź swój klucz API OpenRouter.';
+        return 'Brak autoryzacji. Sprawdź klucz API Google AI Studio.';
       case 403:
         return 'Brak dostępu do wybranego modelu lub przekroczone limity.';
       case 404:

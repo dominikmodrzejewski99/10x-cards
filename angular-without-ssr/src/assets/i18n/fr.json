@@ -302,6 +302,8 @@
       "emailInvalid": "Format d'email invalide",
       "submitButton": "Envoyer le lien",
       "emailSent": "Un lien de réinitialisation a été envoyé à <strong>{{email}}</strong>.",
+      "emailSentPrefix": "Un lien de réinitialisation a été envoyé à",
+      "emailSentSuffix": ".",
       "checkInbox": "Vérifie ta boîte de réception (et le dossier spam).",
       "backToLogin": "Retour à la connexion"
     },

@@ -1,28 +1,39 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, from, map } from 'rxjs';
+import { Observable, from, map, switchMap } from 'rxjs';
 import { GenerateFlashcardsCommand, GenerationDTO, FlashcardProposalDTO } from '../../types';
 import { OpenRouterService } from './openrouter.service';
 import { LoggerService } from './logger.service';
+import { SupabaseClientFactory } from './supabase-client.factory';
 
 const MAX_FLASHCARDS = 15;
 const MAX_TOKENS = 4000;
+const DAILY_GENERATION_LIMIT = 5;
 
 @Injectable({
   providedIn: 'root'
 })
 export class GenerationApiService {
   private logger: LoggerService = inject(LoggerService);
+  private supabaseFactory: SupabaseClientFactory = inject(SupabaseClientFactory);
 
   constructor(private openRouterService: OpenRouterService) {}
+
+  public getDailyGenerationCount(): Observable<number> {
+    return from(this.getDailyCount());
+  }
+
+  public getDailyLimit(): number {
+    return DAILY_GENERATION_LIMIT;
+  }
 
   generateFlashcards(command: GenerateFlashcardsCommand): Observable<{
     generation: GenerationDTO,
     flashcards: FlashcardProposalDTO[]
   }> {
-    return this.generateFlashcardsWithOpenRouter(command);
+    return this.generateFlashcardsWithAI(command);
   }
 
-  private generateFlashcardsWithOpenRouter(command: GenerateFlashcardsCommand): Observable<{
+  private generateFlashcardsWithAI(command: GenerateFlashcardsCommand): Observable<{
     generation: GenerationDTO,
     flashcards: FlashcardProposalDTO[]
   }> {
@@ -62,7 +73,6 @@ PRZYKŁAD POPRAWNEJ ODPOWIEDZI:
           try {
             parsedResponse = JSON.parse(cleanedResponse);
           } catch {
-            // Truncated JSON — try to salvage by closing open structures
             parsedResponse = this.repairTruncatedJson(cleanedResponse);
           }
 
@@ -123,18 +133,86 @@ PRZYKŁAD POPRAWNEJ ODPOWIEDZI:
         };
 
         return { generation, flashcards };
-      })
+      }),
+      switchMap((result) => from(this.saveGenerationRecord(result.generation)).pipe(
+        map((savedGeneration: GenerationDTO) => ({
+          generation: savedGeneration,
+          flashcards: result.flashcards
+        }))
+      ))
     );
   }
 
+  private async saveGenerationRecord(generation: GenerationDTO): Promise<GenerationDTO> {
+    try {
+      const supabase = this.supabaseFactory.getClient();
+      const { data: sessionData } = await supabase.auth.getSession();
+      const userId: string | undefined = sessionData?.session?.user?.id;
+
+      if (!userId) {
+        this.logger.warn('GenerationApiService.saveGeneration', 'No user session — skipping DB save');
+        return generation;
+      }
+
+      const { data, error } = await supabase.rpc('insert_generation_with_limit', {
+        p_user_id: userId,
+        p_model: generation.model,
+        p_generated_count: generation.generated_count,
+        p_source_text_hash: generation.source_text_hash,
+        p_generation_duration: Math.round(generation.generation_duration),
+        p_source_text_length: generation.source_text_length,
+        p_daily_limit: DAILY_GENERATION_LIMIT
+      });
+
+      if (error) {
+        if (error.message?.includes('Daily generation limit reached')) {
+          throw new Error(`Osiągnięto dzienny limit generacji (${DAILY_GENERATION_LIMIT}). Spróbuj ponownie jutro.`);
+        }
+        this.logger.error('GenerationApiService.saveGeneration', error);
+        return generation;
+      }
+
+      const row = Array.isArray(data) ? data[0] : data;
+      return { ...generation, id: row?.id ?? generation.id, user_id: userId };
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('dzienny limit')) {
+        throw error;
+      }
+      this.logger.error('GenerationApiService.saveGeneration', error);
+      return generation;
+    }
+  }
+
+  private async getDailyCount(): Promise<number> {
+    try {
+      const supabase = this.supabaseFactory.getClient();
+      const { data: sessionData } = await supabase.auth.getSession();
+      const userId: string | undefined = sessionData?.session?.user?.id;
+
+      if (!userId) return 0;
+
+      const { data, error } = await supabase.rpc('get_daily_generation_count', {
+        p_user_id: userId
+      });
+
+      if (error) {
+        this.logger.error('GenerationApiService.getDailyCount', error);
+        return 0;
+      }
+
+      return (data as number) ?? 0;
+    } catch (error) {
+      this.logger.error('GenerationApiService.getDailyCount', error);
+      return 0;
+    }
+  }
+
   private repairTruncatedJson(text: string): unknown {
-    // Find the last complete object in the array by locating last complete "back":"..."}
     const lastCompleteObj = text.lastIndexOf('}');
     if (lastCompleteObj < 0) return null;
 
     let truncated = text.substring(0, lastCompleteObj + 1);
 
-    // Count open brackets/braces to close them
     let openBrackets = 0;
     let openBraces = 0;
     let inString = false;
@@ -151,14 +229,12 @@ PRZYKŁAD POPRAWNEJ ODPOWIEDZI:
       if (ch === '}') openBraces--;
     }
 
-    // Close any unclosed structures
     for (let i = 0; i < openBrackets; i++) truncated += ']';
     for (let i = 0; i < openBraces; i++) truncated += '}';
 
     try {
       return JSON.parse(truncated);
     } catch {
-      // Last resort: try to extract individual flashcard objects via regex
       const items: Array<{ front: string; back: string }> = [];
       const regex = /"front"\s*:\s*"((?:[^"\\]|\\.)*)"\s*,\s*"back"\s*:\s*"((?:[^"\\]|\\.)*)"/g;
       let match;

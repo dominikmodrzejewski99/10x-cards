@@ -125,7 +125,27 @@
 .gen__card-footer {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
   margin-top: 1rem;
+}
+
+.gen__limit {
+  font-size: 0.8125rem;
+  color: var(--app-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+
+  &--warn {
+    color: var(--app-warning, #d97706);
+    font-weight: 600;
+  }
+
+  &--exhausted {
+    color: var(--app-error);
+    font-weight: 600;
+  }
 }
 
 .gen__error {

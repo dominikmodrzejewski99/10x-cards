@@ -101,7 +101,7 @@ export const environment = {
   production: false,
   supabaseUrl: 'https://YOUR_PROJECT.supabase.co',
   supabaseKey: 'YOUR_ANON_KEY',
-  openRouterKey: 'YOUR_OPENROUTER_KEY'
+  googleAiKey: 'YOUR_GOOGLE_AI_STUDIO_KEY'
 };
 ```
 

@@ -61,7 +61,7 @@ jobs:
             production: true,
             supabaseUrl: '${{ secrets.SUPABASE_URL }}',
             supabaseKey: '${{ secrets.SUPABASE_KEY }}',
-            openRouterKey: '${{ secrets.OPENROUTER_KEY }}'
+            googleAiKey: '${{ secrets.GOOGLE_AI_KEY }}'
           };
           EOF
           echo "Plik środowiskowy został utworzony."

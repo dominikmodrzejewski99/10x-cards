@@ -7,7 +7,7 @@ declare global {
     RUNTIME_CONFIG?: {
       supabaseUrl: string;
       supabaseKey: string;
-      openRouterKey: string;
+      googleAiKey: string;
       E2E_USERNAME_ID: string;
       E2E_USERNAME: string;
       E2E_PASSWORD: string;
@@ -27,8 +27,8 @@ export const environment = {
   get supabaseKey() {
     return window.RUNTIME_CONFIG?.supabaseKey || '';
   },
-  get openRouterKey() {
-    return window.RUNTIME_CONFIG?.openRouterKey || '';
+  get googleAiKey() {
+    return window.RUNTIME_CONFIG?.googleAiKey || '';
   },
   get E2E_USERNAME_ID() {
     return window.RUNTIME_CONFIG?.E2E_USERNAME_ID || '';

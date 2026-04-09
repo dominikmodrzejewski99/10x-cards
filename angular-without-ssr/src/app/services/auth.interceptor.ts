@@ -8,10 +8,6 @@ import { SupabaseClientFactory } from './supabase-client.factory';
 let isLoggingOut = false;
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  if (req.url.includes('openrouter.ai')) {
-    return next(req);
-  }
-
   const supabaseFactory = inject(SupabaseClientFactory);
   const supabase: SupabaseClient = supabaseFactory.getClient();
   const router = inject(Router);
