@@ -18,6 +18,9 @@ $bottom-nav-height: 3.5rem;
   justify-content: space-around;
   box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
   overflow: visible;
+  /* iOS Safari fix: force GPU compositing to prevent bottom bar detachment */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 @media (max-width: 640px) {
