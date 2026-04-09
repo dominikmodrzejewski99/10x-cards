@@ -1,0 +1,62 @@
+<ng-container *transloco="let t; prefix: 'sets'">
+<app-dialog
+  [header]="editingSet() ? t('dialogEditTitle') : t('dialogNewTitle')"
+  [visible]="visible()"
+  (visibleChange)="onClose()"
+  [dismissableMask]="true"
+  [maxWidth]="'480px'">
+  <div class="set-form">
+    <div class="set-form__field">
+      <label class="set-form__label" for="setName">{{ t('nameLabel') }}</label>
+      <input
+        id="setName"
+        type="text"
+        class="set-form__input"
+        [ngModel]="formNameSignal()"
+        (ngModelChange)="formNameSignal.set($event)"
+        [placeholder]="t('namePlaceholder')"
+        maxlength="100"
+        autofocus />
+      @if (!formNameSignal().trim() && formNameSignal() !== '') {
+        <small class="set-form__hint">{{ t('nameRequired') }}</small>
+      }
+    </div>
+    <div class="set-form__field">
+      <label class="set-form__label" for="setDesc">{{ t('descLabel') }}</label>
+      <textarea
+        id="setDesc"
+        class="set-form__textarea"
+        [ngModel]="formDescriptionSignal()"
+        (ngModelChange)="formDescriptionSignal.set($event)"
+        [placeholder]="t('descPlaceholder')"
+        maxlength="500"
+        rows="3"></textarea>
+    </div>
+    <div class="set-form__field">
+      <label class="set-form__label">{{ t('tagsLabel') }}</label>
+      <app-tag-input
+        [tags]="formTagsSignal()"
+        (tagsChange)="formTagsSignal.set($event)"
+        [placeholder]="t('tagsPlaceholder')"
+        [maxTags]="10">
+      </app-tag-input>
+    </div>
+    <div class="set-form__actions">
+      <button
+        class="sets__btn sets__btn--outline"
+        (click)="onClose()">
+        {{ t('cancel') }}
+      </button>
+      <button
+        class="sets__btn sets__btn--create"
+        [disabled]="!formNameSignal().trim() || saving()"
+        (click)="onSave()">
+        @if (saving()) {
+          <i class="pi pi-spin pi-spinner"></i>
+        }
+        {{ editingSet() ? t('save') : t('create') }}
+      </button>
+    </div>
+  </div>
+</app-dialog>
+</ng-container>

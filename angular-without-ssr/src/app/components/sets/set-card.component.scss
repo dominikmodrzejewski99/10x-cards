@@ -1,0 +1,141 @@
+@use 'variables' as *;
+@use 'buttons' as *;
+@use 'cards' as *;
+
+.set-card {
+  @include card-interactive;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.set-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.set-card__name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: $color-text;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.set-card__actions {
+  display: flex;
+  gap: 0.15rem;
+  flex-shrink: 0;
+}
+
+.set-card__action {
+  @include btn-icon(1.75rem);
+  font-size: 0.85rem;
+}
+
+.set-card__action--danger {
+  &:hover {
+    color: $color-danger;
+    background: $color-danger-light;
+  }
+}
+
+.set-card__action--publish {
+  color: $color-success;
+
+  &:hover:not(:disabled) {
+    background: $color-success-light;
+    color: $color-success;
+  }
+}
+
+.set-card__action--unpublish {
+  color: $color-danger;
+
+  &:hover:not(:disabled) {
+    background: $color-danger-light;
+    color: $color-danger;
+  }
+}
+
+.set-card--public {
+  border-color: $color-success;
+}
+
+.set-card__public-badge {
+  background: $color-success-light;
+  color: $color-success;
+  font-size: $font-size-xs;
+  padding: 0.1rem 0.4rem;
+  border-radius: $radius-sm;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.set-card__copies {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.set-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.set-card__tag {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  background: $color-primary-light;
+  color: $color-primary;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  border-radius: $radius-pill;
+  white-space: nowrap;
+}
+
+.set-card__desc {
+  font-size: 0.85rem;
+  color: $color-text-secondary;
+  margin: 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.set-card__footer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.set-card__date {
+  font-size: 0.75rem;
+  color: $color-text-secondary;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+@media (max-width: $bp-tablet) {
+  .set-card__header {
+    flex-wrap: wrap;
+  }
+
+  .set-card__actions {
+    flex-wrap: wrap;
+    flex-shrink: 1;
+  }
+}

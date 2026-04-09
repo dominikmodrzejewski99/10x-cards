@@ -7,15 +7,15 @@
     </button>
   </div>
 
-  @if (state().loading && state().sets.length === 0) {
+  @if (facade.loadingSignal() && facade.setsSignal().length === 0) {
     <div class="sets__grid">
       @for (_ of [1,2,3,4,5,6]; track $index) {
-        <div class="set-card">
-          <div class="set-card__header">
+        <div class="set-card-skeleton">
+          <div class="set-card-skeleton__header">
             <ngx-skeleton-loader [theme]="{ width: '60%', height: '1.25rem' }"></ngx-skeleton-loader>
           </div>
           <ngx-skeleton-loader [theme]="{ width: '80%', height: '0.85rem', margin: '0.5rem 1rem' }"></ngx-skeleton-loader>
-          <div class="set-card__footer">
+          <div class="set-card-skeleton__footer">
             <ngx-skeleton-loader [theme]="{ width: '6rem', height: '0.75rem' }"></ngx-skeleton-loader>
           </div>
         </div>
@@ -23,15 +23,15 @@
     </div>
   }
 
-  @if (state().error && state().sets.length === 0) {
+  @if (facade.errorSignal() && facade.setsSignal().length === 0) {
     <div class="sets__error">
       <i class="pi pi-exclamation-circle"></i>
-      <p>{{ state().error }}</p>
-      <button (click)="loadSets()" class="sets__btn sets__btn--outline">{{ t('retryButton') }}</button>
+      <p>{{ facade.errorSignal() }}</p>
+      <button (click)="facade.loadSets()" class="sets__btn sets__btn--outline">{{ t('retryButton') }}</button>
     </div>
   }
 
-  @if (!state().loading && state().sets.length === 0 && !state().error) {
+  @if (!facade.loadingSignal() && facade.setsSignal().length === 0 && !facade.errorSignal()) {
     <div class="sets__empty">
       <div class="sets__empty-icon-wrap">
         <i class="pi pi-folder-open"></i>
@@ -44,127 +44,28 @@
     </div>
   }
 
-  @if (state().sets.length > 0) {
+  @if (facade.setsSignal().length > 0) {
     <div class="sets__grid fade-in">
-      @for (set of state().sets; track set.id) {
-        <div class="set-card" [class.set-card--public]="set.is_public" (click)="navigateToSet(set)">
-          <div class="set-card__header">
-            <h2 class="set-card__name">{{ set.name }}</h2>
-            @if (set.is_public) {
-              <span class="set-card__public-badge">{{ t('publicBadge') }}</span>
-            }
-            <div class="set-card__actions" (click)="$event.stopPropagation()">
-              <button class="set-card__action" [title]="t('studyAction')" (click)="studySet(set)">
-                <i class="pi pi-book"></i>
-              </button>
-              <button class="set-card__action" [title]="t('quizAction')" (click)="quizSet(set)">
-                <i class="pi pi-file-edit"></i>
-              </button>
-              @if (set.is_public) {
-                <button class="set-card__action set-card__action--unpublish" [title]="t('unpublishAction')" (click)="unpublishSet(set)">
-                  <i class="pi pi-lock"></i>
-                </button>
-              } @else {
-                <button class="set-card__action set-card__action--publish" [title]="t('publishAction')" (click)="publishSet(set)">
-                  <i class="pi pi-globe"></i>
-                </button>
-              }
-              <button class="set-card__action" [title]="t('shareAction')" (click)="shareSet(set)" data-test-id="share-set-button">
-                <i class="pi pi-share-alt"></i>
-              </button>
-              <button class="set-card__action" [title]="t('editAction')" (click)="openEditDialog(set)">
-                <i class="pi pi-pencil"></i>
-              </button>
-              <button class="set-card__action set-card__action--danger" [title]="t('deleteAction')" (click)="deleteSet(set)">
-                <i class="pi pi-trash"></i>
-              </button>
-            </div>
-          </div>
-          @if (set.description) {
-            <p class="set-card__desc">{{ set.description }}</p>
-          }
-          @if (set.tags && set.tags.length > 0) {
-            <div class="set-card__tags">
-              @for (tag of set.tags; track tag) {
-                <span class="set-card__tag">{{ tag }}</span>
-              }
-            </div>
-          }
-          <div class="set-card__footer">
-            <span class="set-card__date">
-              <i class="pi pi-calendar"></i> {{ formatDate(set.created_at) }}
-            </span>
-            @if (set.is_public) {
-              <span class="set-card__copies">
-                <i class="pi pi-copy"></i> {{ set.copy_count }} {{ t('copyCount') }}
-              </span>
-            }
-          </div>
-        </div>
+      @for (set of facade.setsSignal(); track set.id) {
+        <app-set-card
+          [set]="set"
+          (navigate)="navigateToSet(set)"
+          (edit)="openEditDialog(set)"
+          (delete)="onDelete(set)"
+          (study)="studySet(set)"
+          (quiz)="quizSet(set)"
+          (share)="onShare(set)"
+          (publish)="onPublish(set)"
+          (unpublish)="onUnpublish(set)" />
       }
     </div>
   }
 
-  <app-dialog
-    [header]="state().editingSet ? t('dialogEditTitle') : t('dialogNewTitle')"
-    [visible]="state().dialogVisible"
-    (visibleChange)="closeDialog()"
-    [dismissableMask]="true"
-    [maxWidth]="'480px'">
-    <div class="set-form">
-      <div class="set-form__field">
-        <label class="set-form__label" for="setName">{{ t('nameLabel') }}</label>
-        <input
-          id="setName"
-          type="text"
-          class="set-form__input"
-          [ngModel]="state().formName"
-          (ngModelChange)="onFormNameChange($event)"
-          [placeholder]="t('namePlaceholder')"
-          maxlength="100"
-          autofocus />
-        @if (!state().formName.trim() && state().formName !== '') {
-          <small class="set-form__hint">{{ t('nameRequired') }}</small>
-        }
-      </div>
-      <div class="set-form__field">
-        <label class="set-form__label" for="setDesc">{{ t('descLabel') }}</label>
-        <textarea
-          id="setDesc"
-          class="set-form__textarea"
-          [ngModel]="state().formDescription"
-          (ngModelChange)="onFormDescriptionChange($event)"
-          [placeholder]="t('descPlaceholder')"
-          maxlength="500"
-          rows="3"></textarea>
-      </div>
-      <div class="set-form__field">
-        <label class="set-form__label">{{ t('tagsLabel') }}</label>
-        <app-tag-input
-          [tags]="state().formTags"
-          (tagsChange)="onFormTagsChange($event)"
-          [placeholder]="t('tagsPlaceholder')"
-          [maxTags]="10">
-        </app-tag-input>
-      </div>
-      <div class="set-form__actions">
-        <button
-          class="sets__btn sets__btn--outline"
-          (click)="closeDialog()">
-          {{ t('cancel') }}
-        </button>
-        <button
-          class="sets__btn sets__btn--create"
-          [disabled]="!state().formName.trim() || state().formSaving"
-          (click)="saveSet()">
-          @if (state().formSaving) {
-            <i class="pi pi-spin pi-spinner"></i>
-          }
-          {{ state().editingSet ? t('save') : t('create') }}
-        </button>
-      </div>
-    </div>
-  </app-dialog>
-
+  <app-set-form-dialog
+    [visible]="dialogVisibleSignal"
+    [editingSet]="editingSetSignal"
+    [saving]="facade.savingSignal()"
+    (save)="onSave($event)"
+    (close)="closeDialog()" />
 </div>
 </ng-container>

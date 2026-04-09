@@ -50,6 +50,13 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Do NOT use `ngStyle`; use `style` bindings instead
 - When using external templates/styles, use paths relative to the component TS file
 
+## Component Architecture — Smart/Dumb Pattern
+
+- **Smart (container) components**: fetch data, manage state, call services, coordinate child components. Located in feature directories (e.g., `components/dashboard/`).
+- **Dumb (presentational) components**: receive data via `input()`, emit events via `output()`, contain NO service injection and NO direct data fetching. Located in `shared/` or as children of smart components.
+- Every feature should have a clear separation: smart component at the top, dumb components below.
+- Do NOT mix data fetching / state management with presentational logic in the same component.
+
 ## State Management
 
 - Use signals for local component state
@@ -59,6 +66,11 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Do NOT use `mutate` on signals; use `update` or `set` instead
 - Use `@ngrx/signals` (Signal Store) for shared state management — old `@ngrx/store`, `@ngrx/effects` have been removed
 - Prefer moving business logic into shared services
+- **Do NOT mix signals and subscriptions** in the same file for data flow — pick one pattern per concern:
+  - Signals for synchronous/local reactive state
+  - Observables (with `async` pipe or `toSignal()`) for async data from services
+  - Use `toSignal()` / `toObservable()` as bridges, but do not have raw `.subscribe()` calls alongside `signal()` for the same data flow
+- **Use a facade service** (or Signal Store) between components and API services to encapsulate state management and data transformation logic. Components should not call API services directly.
 
 ## Templates
 

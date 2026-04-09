@@ -1,86 +1,60 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
-import { ToastService } from '../../shared/services/toast.service';
-import { ConfirmService } from '../../shared/services/confirm.service';
-
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { SetListComponent } from './set-list.component';
-import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
+import { SetsFacadeService } from '../../services/sets-facade.service';
+import { ShareService } from '../../services/share.service';
+import { ToastService } from '../../shared/services/toast.service';
+import { ConfirmService } from '../../shared/services/confirm.service';
 import { FlashcardSetDTO } from '../../../types';
 
 describe('SetListComponent', () => {
   let component: SetListComponent;
   let fixture: ComponentFixture<SetListComponent>;
-
-  let setApiMock: jasmine.SpyObj<FlashcardSetApiService>;
-  let messageServiceMock: jasmine.SpyObj<ToastService>;
-  let confirmationServiceMock: jasmine.SpyObj<ConfirmService>;
+  let facadeMock: jasmine.SpyObj<SetsFacadeService>;
   let routerMock: jasmine.SpyObj<Router>;
+  let confirmMock: jasmine.SpyObj<ConfirmService>;
+  let shareServiceMock: jasmine.SpyObj<ShareService>;
+  let toastMock: jasmine.SpyObj<ToastService>;
 
   const mockSet: FlashcardSetDTO = {
-    id: 1,
-    user_id: 'user-1',
-    name: 'English Basics',
-    description: 'Basic English words',
-    tags: ['english', 'basics'],
-    is_public: false,
-    copy_count: 0,
-    published_at: null,
-    created_at: '2026-01-01T00:00:00Z',
-    updated_at: '2026-01-01T00:00:00Z'
-  };
-
-  const mockSet2: FlashcardSetDTO = {
-    id: 2,
-    user_id: 'user-1',
-    name: 'German Phrases',
-    description: null,
-    tags: [],
-    is_public: false,
-    copy_count: 0,
-    published_at: null,
-    created_at: '2026-01-02T00:00:00Z',
-    updated_at: '2026-01-02T00:00:00Z'
+    id: 1, user_id: 'u1', name: 'Test Set', description: 'desc', tags: [],
+    is_public: false, copy_count: 0, published_at: null,
+    created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z',
   };
 
   beforeEach(async () => {
-    setApiMock = jasmine.createSpyObj<FlashcardSetApiService>(
-      'FlashcardSetApiService',
-      ['getSets', 'createSet', 'updateSet', 'deleteSet']
+    facadeMock = jasmine.createSpyObj<SetsFacadeService>(
+      'SetsFacadeService',
+      ['loadSets', 'createSet', 'updateSet', 'deleteSet', 'publishSet', 'unpublishSet'],
+      {
+        setsSignal: signal<FlashcardSetDTO[]>([mockSet]),
+        loadingSignal: signal<boolean>(false),
+        errorSignal: signal<string | null>(null),
+        savingSignal: signal<boolean>(false),
+      }
     );
-    messageServiceMock = jasmine.createSpyObj<ToastService>('ToastService', ['add', 'clear']);
-    confirmationServiceMock = jasmine.createSpyObj<ConfirmService>('ConfirmService', ['confirm']);
-
     routerMock = jasmine.createSpyObj<Router>('Router', ['navigate']);
-
-    setApiMock.getSets.and.returnValue(of([mockSet, mockSet2]));
+    confirmMock = jasmine.createSpyObj<ConfirmService>('ConfirmService', ['confirm']);
+    shareServiceMock = jasmine.createSpyObj<ShareService>('ShareService', ['createShareLink', 'buildShareUrl']);
+    toastMock = jasmine.createSpyObj<ToastService>('ToastService', ['add']);
 
     await TestBed.configureTestingModule({
-      imports: [SetListComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
+      imports: [
+        SetListComponent,
+        TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl'], defaultLang: 'pl' } }),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: FlashcardSetApiService, useValue: setApiMock },
+        { provide: SetsFacadeService, useValue: facadeMock },
         { provide: Router, useValue: routerMock },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            snapshot: { queryParams: {} }
-          }
-        }
-      ]
-    })
-    .overrideComponent(SetListComponent, {
-      remove: { providers: [ToastService, ConfirmService] },
-      add: {
-        providers: [
-          { provide: ToastService, useValue: messageServiceMock },
-          { provide: ConfirmService, useValue: confirmationServiceMock }
-        ]
-      }
-    })
-    .compileComponents();
+        { provide: ActivatedRoute, useValue: { snapshot: { queryParams: {} } } },
+        { provide: ShareService, useValue: shareServiceMock },
+        { provide: ConfirmService, useValue: confirmMock },
+        { provide: ToastService, useValue: toastMock },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SetListComponent);
     component = fixture.componentInstance;
@@ -90,176 +64,103 @@ describe('SetListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('ngOnInit', () => {
-    it('should load sets on init', () => {
-      fixture.detectChanges();
-
-      expect(setApiMock.getSets).toHaveBeenCalled();
-      expect(component.state().sets.length).toBe(2);
-      expect(component.state().loading).toBeFalse();
-    });
-
-    it('should handle error when loading sets fails', () => {
-      setApiMock.getSets.and.returnValue(throwError(() => new Error('Network error')));
-
-      fixture.detectChanges();
-
-      expect(component.state().loading).toBeFalse();
-      expect(component.state().error).toBe('sets.toasts.loadFailed');
-      expect(messageServiceMock.add).toHaveBeenCalledWith(
-        jasmine.objectContaining({ severity: 'error' })
-      );
-    });
+  it('should call facade.loadSets on init', () => {
+    fixture.detectChanges();
+    expect(facadeMock.loadSets).toHaveBeenCalled();
   });
 
-  describe('createSet', () => {
-    it('should create a set and add it to the list', () => {
-      fixture.detectChanges();
-      const createdSet: FlashcardSetDTO = {
-        id: 3,
-        user_id: 'user-1',
-        name: 'New Set',
-        description: null,
-        tags: [],
-        is_public: false,
-        copy_count: 0,
-        published_at: null,
-        created_at: '2026-01-03T00:00:00Z',
-        updated_at: '2026-01-03T00:00:00Z'
-      };
-      setApiMock.createSet.and.returnValue(of(createdSet));
-
+  describe('dialog management', () => {
+    it('should open create dialog', () => {
       component.openCreateDialog();
-      component.onFormNameChange('New Set');
-      component.saveSet();
-
-      expect(setApiMock.createSet).toHaveBeenCalledWith(
-        jasmine.objectContaining({ name: 'New Set' })
-      );
-      expect(component.state().sets.length).toBe(3);
-      expect(component.state().sets[0]).toEqual(createdSet);
-      expect(component.state().dialogVisible).toBeFalse();
-      expect(messageServiceMock.add).toHaveBeenCalledWith(
-        jasmine.objectContaining({ severity: 'success' })
-      );
+      expect(component.dialogVisibleSignal).toBeTrue();
+      expect(component.editingSetSignal).toBeNull();
     });
 
-    it('should handle error on create failure', () => {
-      fixture.detectChanges();
-      setApiMock.createSet.and.returnValue(throwError(() => new Error('Create failed')));
-
-      component.openCreateDialog();
-      component.onFormNameChange('New Set');
-      component.saveSet();
-
-      expect(component.state().formSaving).toBeFalse();
-      expect(messageServiceMock.add).toHaveBeenCalledWith(
-        jasmine.objectContaining({ severity: 'error' })
-      );
-    });
-  });
-
-  describe('editSet', () => {
-    it('should update a set in the list', () => {
-      fixture.detectChanges();
-      const updatedSet: FlashcardSetDTO = { ...mockSet, name: 'Updated Name' };
-      setApiMock.updateSet.and.returnValue(of(updatedSet));
-
+    it('should open edit dialog with set', () => {
       component.openEditDialog(mockSet);
-      expect(component.state().editingSet).toEqual(mockSet);
-      expect(component.state().formName).toBe('English Basics');
-
-      component.onFormNameChange('Updated Name');
-      component.saveSet();
-
-      expect(setApiMock.updateSet).toHaveBeenCalledWith(1, jasmine.objectContaining({ name: 'Updated Name' }));
-      expect(component.state().sets.find(s => s.id === 1)?.name).toBe('Updated Name');
-      expect(component.state().dialogVisible).toBeFalse();
+      expect(component.dialogVisibleSignal).toBeTrue();
+      expect(component.editingSetSignal).toEqual(mockSet);
     });
 
-    it('should handle error on update failure', () => {
-      fixture.detectChanges();
-      setApiMock.updateSet.and.returnValue(throwError(() => new Error('Update failed')));
+    it('should close dialog', () => {
+      component.openCreateDialog();
+      component.closeDialog();
+      expect(component.dialogVisibleSignal).toBeFalse();
+      expect(component.editingSetSignal).toBeNull();
+    });
+  });
 
+  describe('onSave', () => {
+    it('should call facade.createSet for new set', () => {
+      component.openCreateDialog();
+      component.onSave({ name: 'New', description: null, tags: [] });
+
+      expect(facadeMock.createSet).toHaveBeenCalledWith({ name: 'New', description: null, tags: [] });
+      expect(component.dialogVisibleSignal).toBeFalse();
+    });
+
+    it('should call facade.updateSet for existing set', () => {
       component.openEditDialog(mockSet);
-      component.onFormNameChange('Updated Name');
-      component.saveSet();
+      component.onSave({ name: 'Updated', description: 'new desc', tags: ['t'] });
 
-      expect(component.state().formSaving).toBeFalse();
-      expect(messageServiceMock.add).toHaveBeenCalledWith(
-        jasmine.objectContaining({ severity: 'error' })
-      );
+      expect(facadeMock.updateSet).toHaveBeenCalledWith(1, { name: 'Updated', description: 'new desc', tags: ['t'] });
+      expect(component.dialogVisibleSignal).toBeFalse();
     });
   });
 
-  describe('deleteSet', () => {
-    it('should delete a set after confirmation', async () => {
-      fixture.detectChanges();
-      setApiMock.deleteSet.and.returnValue(of(undefined));
+  describe('onDelete', () => {
+    it('should call facade.deleteSet after confirmation', async () => {
+      confirmMock.confirm.and.returnValue(Promise.resolve(true));
 
-      confirmationServiceMock.confirm.and.returnValue(Promise.resolve(true));
+      await component.onDelete(mockSet);
 
-      await component.deleteSet(mockSet);
-
-      expect(confirmationServiceMock.confirm).toHaveBeenCalled();
-      expect(setApiMock.deleteSet).toHaveBeenCalledWith(1);
-      expect(component.state().sets.find(s => s.id === 1)).toBeUndefined();
-      expect(messageServiceMock.add).toHaveBeenCalledWith(
-        jasmine.objectContaining({ severity: 'success' })
-      );
+      expect(confirmMock.confirm).toHaveBeenCalled();
+      expect(facadeMock.deleteSet).toHaveBeenCalledWith(1);
     });
 
-    it('should handle error on delete failure', async () => {
-      fixture.detectChanges();
-      setApiMock.deleteSet.and.returnValue(throwError(() => new Error('Delete failed')));
+    it('should not delete when confirmation is rejected', async () => {
+      confirmMock.confirm.and.returnValue(Promise.resolve(false));
 
-      confirmationServiceMock.confirm.and.returnValue(Promise.resolve(true));
+      await component.onDelete(mockSet);
 
-      await component.deleteSet(mockSet);
-
-      expect(component.state().loading).toBeFalse();
-      expect(messageServiceMock.add).toHaveBeenCalledWith(
-        jasmine.objectContaining({ severity: 'error' })
-      );
-    });
-  });
-
-  describe('form validation', () => {
-    it('should not save when form name is empty', () => {
-      fixture.detectChanges();
-
-      component.openCreateDialog();
-      component.onFormNameChange('   ');
-      component.saveSet();
-
-      expect(setApiMock.createSet).not.toHaveBeenCalled();
-    });
-
-    it('should not save when form name is empty string', () => {
-      fixture.detectChanges();
-
-      component.openCreateDialog();
-      component.saveSet();
-
-      expect(setApiMock.createSet).not.toHaveBeenCalled();
+      expect(facadeMock.deleteSet).not.toHaveBeenCalled();
     });
   });
 
   describe('navigation', () => {
-    it('should navigate to set detail', () => {
-      fixture.detectChanges();
-
+    it('should navigate to set', () => {
       component.navigateToSet(mockSet);
-
       expect(routerMock.navigate).toHaveBeenCalledWith(['/sets', 1]);
     });
 
-    it('should navigate to study with setId query param', () => {
-      fixture.detectChanges();
-
+    it('should navigate to study', () => {
       component.studySet(mockSet);
-
       expect(routerMock.navigate).toHaveBeenCalledWith(['/study'], { queryParams: { setId: 1 } });
+    });
+
+    it('should navigate to quiz', () => {
+      component.quizSet(mockSet);
+      expect(routerMock.navigate).toHaveBeenCalledWith(['/quiz', 1]);
+    });
+  });
+
+  describe('onPublish', () => {
+    it('should call facade.publishSet after confirmation', async () => {
+      confirmMock.confirm.and.returnValue(Promise.resolve(true));
+
+      await component.onPublish(mockSet);
+
+      expect(facadeMock.publishSet).toHaveBeenCalledWith(1);
+    });
+  });
+
+  describe('onUnpublish', () => {
+    it('should call facade.unpublishSet after confirmation', async () => {
+      confirmMock.confirm.and.returnValue(Promise.resolve(true));
+
+      await component.onUnpublish(mockSet);
+
+      expect(facadeMock.unpublishSet).toHaveBeenCalledWith(1);
     });
   });
 });

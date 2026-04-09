@@ -1,0 +1,72 @@
+@use 'variables' as *;
+@use 'buttons' as *;
+@use 'forms' as *;
+
+.set-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.set-form__field {
+  @include form-field;
+  margin-bottom: 0;
+}
+
+.set-form__label {
+  @include form-label;
+  color: $color-text-secondary;
+  font-size: 0.8rem;
+}
+
+.set-form__input,
+.set-form__textarea {
+  @include form-input;
+  background: $color-bg;
+
+  &:focus {
+    background: $color-white;
+  }
+}
+
+.set-form__textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.set-form__hint {
+  @include form-error;
+}
+
+.set-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+.sets__btn {
+  @include btn-base;
+  @include btn-md;
+}
+
+.sets__btn--create {
+  @include btn-primary;
+  @include btn-md;
+}
+
+.sets__btn--outline {
+  @include btn-ghost;
+  @include btn-md;
+}
+
+@media (max-width: $bp-mobile) {
+  .set-form__actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}

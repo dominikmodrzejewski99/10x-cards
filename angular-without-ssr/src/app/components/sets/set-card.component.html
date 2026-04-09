@@ -1,0 +1,56 @@
+<ng-container *transloco="let t; prefix: 'sets'">
+<div class="set-card" [class.set-card--public]="set().is_public" (click)="navigate.emit()">
+  <div class="set-card__header">
+    <h2 class="set-card__name">{{ set().name }}</h2>
+    @if (set().is_public) {
+      <span class="set-card__public-badge">{{ t('publicBadge') }}</span>
+    }
+    <div class="set-card__actions" (click)="$event.stopPropagation()">
+      <button class="set-card__action" [title]="t('studyAction')" (click)="study.emit()">
+        <i class="pi pi-book"></i>
+      </button>
+      <button class="set-card__action" [title]="t('quizAction')" (click)="quiz.emit()">
+        <i class="pi pi-file-edit"></i>
+      </button>
+      @if (set().is_public) {
+        <button class="set-card__action set-card__action--unpublish" [title]="t('unpublishAction')" (click)="unpublish.emit()">
+          <i class="pi pi-lock"></i>
+        </button>
+      } @else {
+        <button class="set-card__action set-card__action--publish" [title]="t('publishAction')" (click)="publish.emit()">
+          <i class="pi pi-globe"></i>
+        </button>
+      }
+      <button class="set-card__action" [title]="t('shareAction')" (click)="share.emit()" data-test-id="share-set-button">
+        <i class="pi pi-share-alt"></i>
+      </button>
+      <button class="set-card__action" [title]="t('editAction')" (click)="edit.emit()">
+        <i class="pi pi-pencil"></i>
+      </button>
+      <button class="set-card__action set-card__action--danger" [title]="t('deleteAction')" (click)="delete.emit()">
+        <i class="pi pi-trash"></i>
+      </button>
+    </div>
+  </div>
+  @if (set().description) {
+    <p class="set-card__desc">{{ set().description }}</p>
+  }
+  @if (set().tags && set().tags.length > 0) {
+    <div class="set-card__tags">
+      @for (tag of set().tags; track tag) {
+        <span class="set-card__tag">{{ tag }}</span>
+      }
+    </div>
+  }
+  <div class="set-card__footer">
+    <span class="set-card__date">
+      <i class="pi pi-calendar"></i> {{ formatDate(set().created_at) }}
+    </span>
+    @if (set().is_public) {
+      <span class="set-card__copies">
+        <i class="pi pi-copy"></i> {{ set().copy_count }} {{ t('copyCount') }}
+      </span>
+    }
+  </div>
+</div>
+</ng-container>
