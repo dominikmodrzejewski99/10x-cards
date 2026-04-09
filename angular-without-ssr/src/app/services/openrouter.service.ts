@@ -29,8 +29,8 @@ interface ApiError {
 const CHAT_FUNCTION_PATH = '/functions/v1/chat';
 
 const FALLBACK_MODELS: readonly string[] = [
-  'gemini-2.5-flash',
   'gemini-3.1-flash-lite',
+  'gemini-2.5-flash',
 ] as const;
 
 const RETRYABLE_STATUSES: ReadonlySet<number> = new Set([400, 429, 502, 503, 504]);

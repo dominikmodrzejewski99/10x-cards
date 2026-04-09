@@ -68,7 +68,7 @@ Deno.serve(async (req: Request) => {
     })
   }
 
-  const model = body.model || 'gemini-2.5-flash'
+  const model = body.model || 'gemini-3.1-flash-lite'
   if (!ALLOWED_MODELS.has(model)) {
     return new Response(JSON.stringify({ error: 'Model not allowed' }), {
       status: 400,
