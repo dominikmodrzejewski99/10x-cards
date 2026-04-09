@@ -130,11 +130,57 @@ npm run lint            # ESLint
 npm run format          # Prettier
 ```
 
+## Architektura frontendu
+
+### Wzorzec Smart/Dumb + Facade
+
+Każdy feature stosuje trójwarstwowy podział odpowiedzialności:
+
+```
+┌─────────────────────────────────────────────────┐
+│  Smart Component (orkiestracja)                  │
+│  inject(Facade), Router, ActivatedRoute          │
+│  routing, keyboard, confirm dialogs, fullscreen  │
+│  ZERO .subscribe() — czyste sygnały              │
+├─────────────────────────────────────────────────┤
+│  Facade Service (stan + logika biznesowa)         │
+│  private signals → public readonly (.asReadonly)  │
+│  .subscribe() do API, toasty, obliczenia         │
+│  providedIn: 'root'                              │
+├─────────────────────────────────────────────────┤
+│  API Service (HTTP)                              │
+│  zwraca Observable, zero sygnałów                │
+│  Supabase client, error handling                 │
+├─────────────────────────────────────────────────┤
+│  Dumb Components (prezentacja)                   │
+│  input() / output() — zero serwisów             │
+│  ChangeDetectionStrategy.OnPush                  │
+└─────────────────────────────────────────────────┘
+```
+
+### Fasady per feature
+
+| Feature | Fasada | Smart Component | Dumb Components |
+|---------|--------|----------------|-----------------|
+| Zestawy | `SetsFacadeService` | `SetListComponent` | — |
+| Nauka | `StudyFacadeService` | `StudyViewComponent` | `FlashcardFlipComponent` |
+| Quiz | `QuizFacadeService` | `QuizViewComponent` | `QuizConfigComponent`, `QuizQuestionComponent`, `QuizResultsComponent` |
+| Dashboard | `DashboardFacadeService` | `DashboardComponent` | `ReviewReminderComponent` |
+| Fiszki | `FlashcardsFacadeService` | `FlashcardListComponent` | `FlashcardTableComponent`, `FlashcardFormComponent`, `ImportModalComponent` |
+
+### Zasady
+
+- **Fasada** jest jedynym miejscem z `.subscribe()` — smart komponenty czytają sygnały, nie subskrybują
+- **Routing** w smart komponentach via `toSignal(route.params)` + `effect()` — zero manual `Subscription`
+- **Browser API** (fullscreen, clipboard, confirm dialog, print) zostają w smart komponentach
+- **Sygnały**: private bez postfixa (`_loading`), public readonly z postfixem (`loadingSignal`)
+- **Auth**: `@ngrx/signals` Signal Store w `auth/store/`
+
 ## Struktura projektu
 
 ```
 angular-without-ssr/src/app/
-├── auth/               # Autentykacja (NgRx store, guards, serwis)
+├── auth/               # Autentykacja (NgRx Signal Store, guards, serwis)
 ├── components/
 │   ├── dashboard/      # Panel główny ze statystykami
 │   ├── generate/       # Generator fiszek AI
@@ -146,7 +192,7 @@ angular-without-ssr/src/app/
 │   ├── landing/        # Strona główna
 │   ├── learning-guide/ # Poradnik nauki (8 artykułów)
 │   └── onboarding/     # Onboarding po rejestracji
-├── services/           # Serwisy API i biznesowe
+├── services/           # Fasady (*-facade.service.ts) i serwisy API
 ├── shared/             # Współdzielone komponenty (navbar, audio player/recorder)
 └── interfaces/         # Interfejsy TypeScript
 
