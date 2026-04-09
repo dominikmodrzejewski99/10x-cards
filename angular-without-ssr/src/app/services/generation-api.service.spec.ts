@@ -43,7 +43,7 @@ describe('GenerationApiService', () => {
           expect(result.flashcards[0].back).toBe('A1');
           expect(result.flashcards[0].source).toBe('ai-full');
           expect(result.generation.generated_count).toBe(3);
-          expect(result.generation.model).toBe('google/gemma-3-12b-it:free');
+          expect(result.generation.model).toBe('gemini-2.5-flash');
           expect(result.generation.source_text_length).toBe(1000);
           done();
         }
@@ -181,7 +181,7 @@ describe('GenerationApiService', () => {
       service.generateFlashcards(customCommand).subscribe({
         next: (result: { generation: GenerationDTO; flashcards: FlashcardProposalDTO[] }) => {
           // generation.model reflects the service's defaultModel (OpenRouterService.defaultModel)
-          expect(result.generation.model).toBe('google/gemma-3-12b-it:free');
+          expect(result.generation.model).toBe('gemini-2.5-flash');
           // The service calls sendMessage without a model option (uses FALLBACK_MODELS internally)
           expect(openRouterSpy.sendMessage).toHaveBeenCalledWith(
             jasmine.any(String),

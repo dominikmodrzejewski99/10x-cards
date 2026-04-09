@@ -233,13 +233,13 @@ describe('QuizFacadeService', () => {
       facade.submitAnswer(answer);
 
       const wrongAnswers: QuizAnswer[] = [
-        { questionId: 2, userAnswer: 'piesek', isCorrect: false, correctAnswer: 'kot', questionText: 'cat', timeMs: 3000 }
+        { questionId: 0, userAnswer: 'niepoprawne', isCorrect: false, correctAnswer: 'slowo', questionText: 'word', timeMs: 3000 }
       ];
       quizServiceMock.getWrongAnswers.and.returnValue(wrongAnswers);
 
       const generatedFromWrong: QuizQuestion[] = [{
-        id: 0, type: 'written', questionText: 'cat', questionImageUrl: null,
-        correctAnswer: 'kot', sourceFlashcard: mockFlashcards[2]
+        id: 0, type: 'written', questionText: 'word', questionImageUrl: null,
+        correctAnswer: 'slowo', sourceFlashcard: mockFlashcards[0]
       }];
       quizServiceMock.generateQuestions.and.returnValue(generatedFromWrong);
 

@@ -10,7 +10,7 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
 const EXPECTED_API_URL = `${environment.supabaseUrl}/functions/v1/chat`;
-const EXPECTED_DEFAULT_MODEL = 'google/gemma-3-12b-it:free';
+const EXPECTED_DEFAULT_MODEL = 'gemini-3.1-flash-lite';
 
 describe('OpenRouterService', () => {
   let service: OpenRouterService;
