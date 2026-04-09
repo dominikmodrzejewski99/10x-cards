@@ -156,8 +156,7 @@ select, input, textarea {
 }
 
 .app-dialog-wrapper--mobile {
-  padding: 0;
-  align-items: flex-end;
+  padding: 0.75rem;
 }
 
 .app-confirm-backdrop {

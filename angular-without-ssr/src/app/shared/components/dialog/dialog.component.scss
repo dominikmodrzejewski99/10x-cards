@@ -95,11 +95,10 @@
 
 @media (max-width: $bp-mobile) {
   .app-dialog-panel {
-    width: 100vw;
-    max-height: calc(100dvh - 1rem);
-    border-radius: $radius-2xl $radius-2xl 0 0;
+    width: calc(100vw - 1.5rem);
+    max-height: calc(100dvh - 2rem);
+    border-radius: $radius-2xl;
     animation: appDialogSlideUp 0.25s ease-out;
-    border-bottom: none;
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 

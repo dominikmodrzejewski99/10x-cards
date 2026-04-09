@@ -86,9 +86,7 @@ export class DialogComponent implements OnDestroy {
     if (this.overlayRef) return;
 
     const mobile = this.isMobile();
-    const position = mobile
-      ? this.overlay.position().global().centerHorizontally().bottom('0')
-      : this.overlay.position().global().centerHorizontally().centerVertically();
+    const position = this.overlay.position().global().centerHorizontally().centerVertically();
 
     this.overlayRef = this.overlay.create({
       hasBackdrop: true,
