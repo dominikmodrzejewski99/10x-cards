@@ -1,5 +1,5 @@
 <ng-container *transloco="let t; prefix: 'study'">
-<div class="study" [attr.aria-busy]="loadingSignal()">
+<div class="study" [attr.aria-busy]="facade.loadingSignal()">
 
   @if (showSetModalSignal()) {
     <div class="study__modal-overlay" (click)="showSetModalSignal.set(false)">
@@ -10,38 +10,38 @@
             <i class="pi pi-times"></i>
           </button>
         </div>
-        @if (setsSignal().length > 5) {
+        @if (facade.setsSignal().length > 5) {
           <div class="study__modal-search">
             <i class="pi pi-search"></i>
             <input
               type="text"
               class="study__modal-search-input"
               [placeholder]="t('searchSet')"
-              [ngModel]="setSearchSignal()"
-              (ngModelChange)="setSearchSignal.set($event)" />
+              [ngModel]="facade.setSearchSignal()"
+              (ngModelChange)="facade.updateSetSearch($event)" />
           </div>
         }
         <div class="study__modal-list">
           <button
             class="study__modal-option"
-            [class.study__modal-option--active]="selectedSetIdSignal() === null"
+            [class.study__modal-option--active]="facade.selectedSetIdSignal() === null"
             (click)="selectSetFromModal(null)">
             <i class="pi pi-list"></i>
             <span>{{ t('allCards') }}</span>
           </button>
-          @for (set of filteredSetsSignal(); track set.id) {
+          @for (set of facade.filteredSetsSignal(); track set.id) {
             <button
               class="study__modal-option"
-              [class.study__modal-option--active]="selectedSetIdSignal() === set.id"
+              [class.study__modal-option--active]="facade.selectedSetIdSignal() === set.id"
               (click)="selectSetFromModal(set.id)">
               <i class="pi pi-folder"></i>
               <span>{{ set.name }}</span>
             </button>
           }
-          @if (filteredSetsSignal().length === 0 && setSearchSignal()) {
+          @if (facade.filteredSetsSignal().length === 0 && facade.setSearchSignal()) {
             <div class="study__modal-empty">
               <i class="pi pi-search"></i>
-              <span>{{ t('noResults', { query: setSearchSignal() }) }}</span>
+              <span>{{ t('noResults', { query: facade.setSearchSignal() }) }}</span>
             </div>
           }
         </div>
@@ -49,7 +49,7 @@
     </div>
   }
 
-  @if (loadingSignal()) {
+  @if (facade.loadingSignal()) {
     <div class="study__body">
       <!-- Header: title + hint -->
       <div class="study__header">
@@ -87,28 +87,28 @@
     </div>
   }
 
-  @if (errorSignal()) {
+  @if (facade.errorSignal()) {
     <div class="study__state">
       <i class="pi pi-exclamation-triangle study__state-icon study__state-icon--error"></i>
-      <p class="study__state-text">{{ errorSignal() }}</p>
-      <button (click)="loadDueCards()" class="study__link study__link--primary">{{ t('retryButton') }}</button>
+      <p class="study__state-text">{{ facade.errorSignal() }}</p>
+      <button (click)="facade.loadDueCards()" class="study__link study__link--primary">{{ t('retryButton') }}</button>
     </div>
   }
 
-  @if (!loadingSignal() && !errorSignal() && dueCardsSignal().length === 0 && !isSessionCompleteSignal()) {
+  @if (!facade.loadingSignal() && !facade.errorSignal() && facade.dueCardsSignal().length === 0 && !facade.isSessionCompleteSignal()) {
     <div class="study__state fade-in">
-      @if (nextReviewDateSignal()) {
+      @if (facade.nextReviewDateSignal()) {
         <i class="pi pi-check-circle study__state-icon study__state-icon--success"></i>
         <h2 class="study__state-title">{{ t('allReviewed') }}</h2>
-        <p class="study__state-text" [innerHTML]="t('nextReview', { date: formatDate(nextReviewDateSignal()!) })"></p>
+        <p class="study__state-text" [innerHTML]="t('nextReview', { date: facade.formatDate(facade.nextReviewDateSignal()!) })"></p>
         <div class="study__links">
-          <button (click)="loadExtraPractice()" class="study__link study__link--primary">
+          <button (click)="facade.loadExtraPractice()" class="study__link study__link--primary">
             <i class="pi pi-refresh"></i> {{ t('extraPractice') }}
           </button>
           <a routerLink="/sets" class="study__link study__link--ghost"><i class="pi pi-folder"></i> {{ t('mySets') }}</a>
           <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-microchip-ai"></i> {{ t('generateCards') }}</a>
         </div>
-      } @else if (setsSignal().length === 0) {
+      } @else if (facade.setsSignal().length === 0) {
         <i class="pi pi-folder-open study__state-icon study__state-icon--primary"></i>
         <h2 class="study__state-title">{{ t('noSetsTitle') }}</h2>
         <p class="study__state-text">{{ t('noSetsDesc') }}</p>
@@ -128,7 +128,7 @@
     </div>
   }
 
-  @if (isSessionCompleteSignal()) {
+  @if (facade.isSessionCompleteSignal()) {
     <div class="study__state study__state--complete">
       <div class="study__trophy-wrap">
         <i class="pi pi-trophy study__trophy-icon"></i>
@@ -138,33 +138,33 @@
 
       <div class="study__stats">
         <div class="study__stat study__stat--right">
-          <span class="study__stat-value">{{ sessionResultsSignal().known }}</span>
+          <span class="study__stat-value">{{ facade.sessionResultsSignal().known }}</span>
           <span class="study__stat-label">{{ t('sessionComplete.know') }}</span>
         </div>
         <div class="study__stat study__stat--hard">
-          <span class="study__stat-value">{{ sessionResultsSignal().hard }}</span>
+          <span class="study__stat-value">{{ facade.sessionResultsSignal().hard }}</span>
           <span class="study__stat-label">{{ t('sessionComplete.hard') }}</span>
         </div>
         <div class="study__stat study__stat--wrong">
-          <span class="study__stat-value">{{ sessionResultsSignal().unknown }}</span>
+          <span class="study__stat-value">{{ facade.sessionResultsSignal().unknown }}</span>
           <span class="study__stat-label">{{ t('sessionComplete.dontKnow') }}</span>
         </div>
       </div>
 
       <div class="study__links">
-        @if (trackProgressSignal() && failedCountSignal() > 0) {
-          <button (click)="restartWithFailedCards()" class="study__link study__link--primary">
-            {{ t('sessionComplete.repeatHard', { count: failedCountSignal() }) }}
+        @if (facade.trackProgressSignal() && facade.failedCountSignal() > 0) {
+          <button (click)="facade.restartWithFailedCards()" class="study__link study__link--primary">
+            {{ t('sessionComplete.repeatHard', { count: facade.failedCountSignal() }) }}
           </button>
         }
-        <button (click)="restartSession()" class="study__link" [class.study__link--primary]="failedCountSignal() === 0" [class.study__link--ghost]="failedCountSignal() > 0">{{ t('sessionComplete.repeatAll') }}</button>
+        <button (click)="facade.restartSession()" class="study__link" [class.study__link--primary]="facade.failedCountSignal() === 0" [class.study__link--ghost]="facade.failedCountSignal() > 0">{{ t('sessionComplete.repeatAll') }}</button>
         <a routerLink="/sets" class="study__link study__link--ghost"><i class="pi pi-folder"></i> {{ t('mySets') }}</a>
         <a routerLink="/generate" class="study__link study__link--ghost"><i class="pi pi-microchip-ai"></i> {{ t('generateCards') }}</a>
       </div>
     </div>
   }
 
-  @if (!loadingSignal() && !errorSignal() && dueCardsSignal().length > 0 && !isSessionCompleteSignal()) {
+  @if (!facade.loadingSignal() && !facade.errorSignal() && facade.dueCardsSignal().length > 0 && !facade.isSessionCompleteSignal()) {
     <div class="study__body fade-in">
 
       <div class="study__header">
@@ -172,15 +172,15 @@
           <h1 class="study__title">{{ t('title') }}</h1>
           <app-sync-status />
         </div>
-        @if (setsSignal().length > 0) {
+        @if (facade.setsSignal().length > 0) {
           <button class="study__set-btn" (click)="openSetModal()" [title]="t('changeSet')">
             <i class="pi pi-folder"></i>
-            <span>{{ currentSetNameSignal() || t('allCards') }}</span>
+            <span>{{ facade.currentSetNameSignal() || t('allCards') }}</span>
             <i class="pi pi-chevron-down study__set-btn-arrow"></i>
           </button>
         }
         <p class="study__hint">
-          @if (!isFlippedSignal()) {
+          @if (!facade.isFlippedSignal()) {
             {{ t('hintFlip') }}
           } @else {
             {{ t('hintRate') }}
@@ -189,30 +189,30 @@
       </div>
 
       <div class="study__card">
-        @if (currentCardSignal(); as card) {
+        @if (facade.currentCardSignal(); as card) {
           <app-flashcard-flip
-            [front]="displayFrontSignal()"
-            [back]="displayBackSignal()"
-            [frontImageUrl]="displayFrontImageSignal()"
-            [backAudioUrl]="displayBackAudioSignal()"
-            [isFlipped]="isFlippedSignal()"
-            [skipTransition]="skipTransitionSignal()"
-            (flipToggle)="flip()">
+            [front]="facade.displayFrontSignal()"
+            [back]="facade.displayBackSignal()"
+            [frontImageUrl]="facade.displayFrontImageSignal()"
+            [backAudioUrl]="facade.displayBackAudioSignal()"
+            [isFlipped]="facade.isFlippedSignal()"
+            [skipTransition]="facade.skipTransitionSignal()"
+            (flipToggle)="facade.flip()">
           </app-flashcard-flip>
         }
       </div>
 
       <div class="study__controls">
-        @if (!isFlippedSignal()) {
+        @if (!facade.isFlippedSignal()) {
           <div class="study__controls-side">
             <label class="study__toggle">
               <span class="study__toggle-label">{{ t('trackProgress') }}</span>
               <button
                 class="study__toggle-switch"
-                [class.study__toggle-switch--on]="trackProgressSignal()"
-                (click)="toggleTrackProgress()"
+                [class.study__toggle-switch--on]="facade.trackProgressSignal()"
+                (click)="facade.toggleTrackProgress()"
                 role="switch"
-                [attr.aria-checked]="trackProgressSignal()">
+                [attr.aria-checked]="facade.trackProgressSignal()">
                 <span class="study__toggle-knob"></span>
               </button>
             </label>
@@ -220,7 +220,7 @@
 
           <div class="study__controls-center">
             <div class="study__tooltip-wrap">
-              <button (click)="flip()" class="study__ctrl study__ctrl--flip">
+              <button (click)="facade.flip()" class="study__ctrl study__ctrl--flip">
                 <i class="pi pi-sync"></i>
               </button>
               <span class="study__tooltip">{{ t('flipCard') }}</span>
@@ -231,21 +231,21 @@
             <div class="study__tooltip-wrap">
               <button
                 class="study__ctrl"
-                [class.study__ctrl--active]="isReversedSignal()"
-                (click)="toggleDirection()"
-                [attr.aria-label]="isReversedSignal() ? t('normalMode') : t('reverseDirection')">
+                [class.study__ctrl--active]="facade.isReversedSignal()"
+                (click)="facade.toggleDirection()"
+                [attr.aria-label]="facade.isReversedSignal() ? t('normalMode') : t('reverseDirection')">
                 <i class="pi pi-arrow-right-arrow-left"></i>
               </button>
-              <span class="study__tooltip">{{ isReversedSignal() ? t('normalMode') : t('reverseDirection') }}</span>
+              <span class="study__tooltip">{{ facade.isReversedSignal() ? t('normalMode') : t('reverseDirection') }}</span>
             </div>
             <div class="study__tooltip-wrap">
-              @if (isShuffledSignal()) {
-                <button class="study__ctrl study__ctrl--active" (click)="restoreOrder()">
+              @if (facade.isShuffledSignal()) {
+                <button class="study__ctrl study__ctrl--active" (click)="facade.restoreOrder()">
                   <i class="pi pi-sort-alt"></i>
                 </button>
                 <span class="study__tooltip">{{ t('disableShuffle') }}</span>
               } @else {
-                <button class="study__ctrl" (click)="shuffleCards()">
+                <button class="study__ctrl" (click)="facade.shuffleCards()">
                   <i class="pi pi-sort-alt-slash"></i>
                 </button>
                 <span class="study__tooltip">{{ t('shuffle') }}</span>
@@ -264,10 +264,10 @@
               <span class="study__toggle-label">{{ t('trackProgress') }}</span>
               <button
                 class="study__toggle-switch"
-                [class.study__toggle-switch--on]="trackProgressSignal()"
-                (click)="toggleTrackProgress()"
+                [class.study__toggle-switch--on]="facade.trackProgressSignal()"
+                (click)="facade.toggleTrackProgress()"
                 role="switch"
-                [attr.aria-checked]="trackProgressSignal()">
+                [attr.aria-checked]="facade.trackProgressSignal()">
                 <span class="study__toggle-knob"></span>
               </button>
             </label>
@@ -275,19 +275,19 @@
 
           <div class="study__controls-center">
             <div class="study__tooltip-wrap">
-              <button (click)="answer(4)" [disabled]="savingSignal()" class="study__ctrl study__ctrl--right">
+              <button (click)="facade.answer(4)" [disabled]="facade.savingSignal()" class="study__ctrl study__ctrl--right">
                 <i class="pi pi-check"></i>
               </button>
               <span class="study__tooltip">{{ t('know') }}</span>
             </div>
             <div class="study__tooltip-wrap">
-              <button (click)="answer(3)" [disabled]="savingSignal()" class="study__ctrl study__ctrl--hard">
+              <button (click)="facade.answer(3)" [disabled]="facade.savingSignal()" class="study__ctrl study__ctrl--hard">
                 <i class="pi pi-minus"></i>
               </button>
               <span class="study__tooltip">{{ t('hard') }}</span>
             </div>
             <div class="study__tooltip-wrap">
-              <button (click)="answer(1)" [disabled]="savingSignal()" class="study__ctrl study__ctrl--wrong">
+              <button (click)="facade.answer(1)" [disabled]="facade.savingSignal()" class="study__ctrl study__ctrl--wrong">
                 <i class="pi pi-times"></i>
               </button>
               <span class="study__tooltip">{{ t('dontKnow') }}</span>
@@ -298,21 +298,21 @@
             <div class="study__tooltip-wrap">
               <button
                 class="study__ctrl"
-                [class.study__ctrl--active]="isReversedSignal()"
-                (click)="toggleDirection()"
-                [attr.aria-label]="isReversedSignal() ? t('normalMode') : t('reverseDirection')">
+                [class.study__ctrl--active]="facade.isReversedSignal()"
+                (click)="facade.toggleDirection()"
+                [attr.aria-label]="facade.isReversedSignal() ? t('normalMode') : t('reverseDirection')">
                 <i class="pi pi-arrow-right-arrow-left"></i>
               </button>
-              <span class="study__tooltip">{{ isReversedSignal() ? t('normalMode') : t('reverseDirection') }}</span>
+              <span class="study__tooltip">{{ facade.isReversedSignal() ? t('normalMode') : t('reverseDirection') }}</span>
             </div>
             <div class="study__tooltip-wrap">
-              @if (isShuffledSignal()) {
-                <button class="study__ctrl study__ctrl--active" (click)="restoreOrder()">
+              @if (facade.isShuffledSignal()) {
+                <button class="study__ctrl study__ctrl--active" (click)="facade.restoreOrder()">
                   <i class="pi pi-sort-alt"></i>
                 </button>
                 <span class="study__tooltip">{{ t('disableShuffle') }}</span>
               } @else {
-                <button class="study__ctrl" (click)="shuffleCards()">
+                <button class="study__ctrl" (click)="facade.shuffleCards()">
                   <i class="pi pi-sort-alt-slash"></i>
                 </button>
                 <span class="study__tooltip">{{ t('shuffle') }}</span>
@@ -329,14 +329,14 @@
       </div>
 
       <div class="study__progress-row">
-        <div class="study__progress-bar" role="progressbar" [attr.aria-valuenow]="progressPercentSignal()" aria-valuemin="0" aria-valuemax="100" [attr.aria-label]="t('sessionProgress')">
-          <div class="study__progress-fill" [style.width.%]="progressPercentSignal()"></div>
+        <div class="study__progress-bar" role="progressbar" [attr.aria-valuenow]="facade.progressPercentSignal()" aria-valuemin="0" aria-valuemax="100" [attr.aria-label]="t('sessionProgress')">
+          <div class="study__progress-fill" [style.width.%]="facade.progressPercentSignal()"></div>
         </div>
-        <span class="study__counter">{{ currentIndexSignal() + 1 }} / {{ dueCardsSignal().length }}</span>
+        <span class="study__counter">{{ facade.currentIndexSignal() + 1 }} / {{ facade.dueCardsSignal().length }}</span>
       </div>
 
       <p class="study__kbd study__kbd--desktop">
-        @if (!isFlippedSignal()) {
+        @if (!facade.isFlippedSignal()) {
           {{ t('kbdFlip') }}
         } @else {
           {{ t('kbdRate') }}

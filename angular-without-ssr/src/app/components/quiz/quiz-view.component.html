@@ -1,5 +1,5 @@
 <div class="quiz-view">
-  @switch (phaseSignal()) {
+  @switch (facade.phaseSignal()) {
     @case ('loading') {
       <div class="quiz-view__skeleton">
         <ngx-skeleton-loader [theme]="{ width: '70%', height: '1.5rem', 'margin-bottom': '0.25rem', 'border-radius': '0.25rem' }"></ngx-skeleton-loader>
@@ -24,7 +24,7 @@
     @case ('error') {
       <div class="quiz-view__state">
         <i class="pi pi-exclamation-triangle quiz-view__state-icon quiz-view__state-icon--error"></i>
-        <p class="quiz-view__state-text">{{ errorMessageSignal() }}</p>
+        <p class="quiz-view__state-text">{{ facade.errorMessageSignal() }}</p>
         <button class="quiz-view__btn quiz-view__btn--ghost" (click)="onGoBack()">
           <i class="pi pi-arrow-left"></i> Wróć do zestawu
         </button>
@@ -33,20 +33,20 @@
 
     @case ('config') {
       <app-quiz-config class="fade-in"
-        [setId]="setIdSignal()"
-        [setName]="setNameSignal()"
-        [cardCount]="flashcardsSignal().length"
+        [setId]="facade.setIdSignal()"
+        [setName]="facade.setNameSignal()"
+        [cardCount]="facade.flashcardsSignal().length"
         (startQuiz)="onStartQuiz($event)"
         (goBack)="onGoBackFromConfig()">
       </app-quiz-config>
     }
 
     @case ('test') {
-      @if (currentQuestionSignal; as question) {
+      @if (facade.currentQuestionSignal(); as question) {
         <app-quiz-question
           [question]="question"
-          [currentIndex]="currentIndexSignal()"
-          [totalQuestions]="questionsSignal().length"
+          [currentIndex]="facade.currentIndexSignal()"
+          [totalQuestions]="facade.questionsSignal().length"
           (answerSubmitted)="onAnswerSubmitted($event)"
           (quitQuiz)="onGoBack()">
         </app-quiz-question>
@@ -54,11 +54,11 @@
     }
 
     @case ('results') {
-      @if (resultSignal(); as result) {
+      @if (facade.resultSignal(); as result) {
         <app-quiz-results
           [result]="result"
-          [gradeText]="gradeTextSignal()"
-          [setId]="setIdSignal()"
+          [gradeText]="facade.gradeTextSignal()"
+          [setId]="facade.setIdSignal()"
           (retry)="onRetry()"
           (retryWrong)="onRetryWrong()"
           (retryStarred)="onRetryStarred($event)"

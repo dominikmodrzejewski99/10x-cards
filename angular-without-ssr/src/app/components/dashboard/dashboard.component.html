@@ -1,6 +1,6 @@
 <ng-container *transloco="let t; prefix: 'dashboard'">
-<div class="dash" [attr.aria-busy]="loading()">
-  @if (loading()) {
+<div class="dash" [attr.aria-busy]="facade.loadingSignal()">
+  @if (facade.loadingSignal()) {
     <!-- Header: greeting + subtitle -->
     <header class="dash__header">
       <div>
@@ -63,11 +63,11 @@
         }
       </div>
     </section>
-  } @else if (errorMessage()) {
+  } @else if (facade.errorMessageSignal()) {
     <div class="dash__error fade-in">
       <i class="pi pi-exclamation-triangle dash__error-icon"></i>
-      <p class="dash__error-text">{{ errorMessage() }}</p>
-      <button class="dash__error-btn" (click)="loadData()">
+      <p class="dash__error-text">{{ facade.errorMessageSignal() }}</p>
+      <button class="dash__error-btn" (click)="facade.loadData()">
         <i class="pi pi-refresh"></i> {{ t('retryButton') }}
       </button>
     </div>
@@ -88,15 +88,15 @@
     <!-- Header -->
     <header class="dash__header">
       <div>
-        <h1 class="dash__greeting">{{ greeting() }}</h1>
+        <h1 class="dash__greeting">{{ facade.greetingSignal() }}</h1>
         <p class="dash__subtitle">
-          @if (dueCount() > 0) {
-            @if (dueCount() === 1) {
+          @if (facade.dueCountSignal() > 0) {
+            @if (facade.dueCountSignal() === 1) {
               <span [innerHTML]="t('dueCardsSingular')"></span>
             } @else {
-              <span [innerHTML]="t('dueCards', { count: dueCount() })"></span>
+              <span [innerHTML]="t('dueCards', { count: facade.dueCountSignal() })"></span>
             }
-          } @else if (totalCards() > 0) {
+          } @else if (facade.totalCardsSignal() > 0) {
             {{ t('allReviewed') }}
           } @else {
             {{ t('startCreating') }}
@@ -106,7 +106,7 @@
     </header>
 
     <!-- Onboarding (no sets yet) -->
-    @if (sets().length === 0) {
+    @if (facade.setsSignal().length === 0) {
       <section class="dash__empty">
         <h3 class="dash__empty-title">{{ t('onboarding.title') }}</h3>
 
@@ -146,7 +146,7 @@
           <div class="dash__action-icon dash__action-icon--blue"><i class="pi pi-folder"></i></div>
           <div class="dash__action-body">
             <div class="dash__action-title">{{ t('actions.mySets') }}</div>
-            <div class="dash__action-desc">{{ totalSets() === 1 ? t('actions.setsCountSingular') : t('actions.setsCount', { count: totalSets() }) }}</div>
+            <div class="dash__action-desc">{{ facade.totalSetsSignal() === 1 ? t('actions.setsCountSingular') : t('actions.setsCount', { count: facade.totalSetsSignal() }) }}</div>
           </div>
           <i class="pi pi-arrow-right dash__action-arrow"></i>
         </a>
@@ -158,12 +158,12 @@
           </div>
           <i class="pi pi-arrow-right dash__action-arrow"></i>
         </a>
-        @if (dueCount() === 0 && nextReviewDate()) {
+        @if (facade.dueCountSignal() === 0 && facade.nextReviewDateSignal()) {
           <a routerLink="/study" class="dash__action">
             <div class="dash__action-icon dash__action-icon--green"><i class="pi pi-graduation-cap"></i></div>
             <div class="dash__action-body">
               <div class="dash__action-title">{{ t('actions.study') }}</div>
-              <div class="dash__action-desc">{{ t('actions.nextReview', { date: formatDate(nextReviewDate()!) }) }}</div>
+              <div class="dash__action-desc">{{ t('actions.nextReview', { date: facade.formatDate(facade.nextReviewDateSignal()!) }) }}</div>
             </div>
             <i class="pi pi-arrow-right dash__action-arrow"></i>
           </a>
@@ -172,33 +172,33 @@
     </section>
 
     <!-- Primary CTA — Study -->
-    @if (dueCount() > 0) {
+    @if (facade.dueCountSignal() > 0) {
       <a routerLink="/study" class="dash__study-cta">
         <div class="dash__study-cta-icon">
           <i class="pi pi-play-circle"></i>
-          <span class="dash__study-cta-badge">{{ dueCount() }}</span>
+          <span class="dash__study-cta-badge">{{ facade.dueCountSignal() }}</span>
         </div>
         <div class="dash__study-cta-content">
           <div class="dash__study-cta-title">{{ t('studyCta.title') }}</div>
-          <div class="dash__study-cta-desc">{{ dueCount() === 1 ? t('studyCta.descSingular') : t('studyCta.desc', { count: dueCount() }) }}</div>
+          <div class="dash__study-cta-desc">{{ facade.dueCountSignal() === 1 ? t('studyCta.descSingular') : t('studyCta.desc', { count: facade.dueCountSignal() }) }}</div>
         </div>
         <i class="pi pi-arrow-right dash__study-cta-arrow"></i>
       </a>
     }
 
-    @if (totalCards() > 0) {
+    @if (facade.totalCardsSignal() > 0) {
       <!-- Streak -->
-      @if (currentStreak() > 0 || studiedToday()) {
+      @if (facade.currentStreakSignal() > 0 || facade.studiedTodaySignal()) {
         <!-- Active streak -->
         <div class="dash__streak dash__streak--active" role="region" [attr.aria-label]="t('streak.ariaLabel')">
           <div class="dash__streak-icon">
             <i class="pi pi-bolt"></i>
           </div>
           <div class="dash__streak-main">
-            <div class="dash__streak-count">{{ currentStreak() }}</div>
-            <div class="dash__streak-label">{{ currentStreak() === 1 ? t('streak.dayInRow') : t('streak.daysInRow') }}</div>
+            <div class="dash__streak-count">{{ facade.currentStreakSignal() }}</div>
+            <div class="dash__streak-label">{{ facade.currentStreakSignal() === 1 ? t('streak.dayInRow') : t('streak.daysInRow') }}</div>
           </div>
-          @if (studiedToday()) {
+          @if (facade.studiedTodaySignal()) {
             <span class="dash__streak-badge dash__streak-badge--done">
               <i class="pi pi-check"></i> {{ t('streak.doneToday') }}
             </span>
@@ -207,10 +207,10 @@
               {{ t('streak.keepStreak') }}
             </span>
           }
-          @if (longestStreak() > currentStreak()) {
+          @if (facade.longestStreakSignal() > facade.currentStreakSignal()) {
             <div class="dash__streak-best">
               <span class="dash__streak-best-label">{{ t('streak.record') }}</span>
-              <span class="dash__streak-best-value">{{ longestStreak() }}<small> {{ t('streak.days') }}</small></span>
+              <span class="dash__streak-best-value">{{ facade.longestStreakSignal() }}<small> {{ t('streak.days') }}</small></span>
             </div>
           }
         </div>
@@ -233,7 +233,7 @@
         <a routerLink="/study" class="dash__stat dash__stat--link">
           <div class="dash__stat-icon dash__stat-icon--blue"><i class="pi pi-calendar-clock"></i></div>
           <div class="dash__stat-body">
-            <div class="dash__stat-value">{{ dueCount() }}</div>
+            <div class="dash__stat-value">{{ facade.dueCountSignal() }}</div>
             <div class="dash__stat-label">{{ t('stats.dueReview') }}</div>
           </div>
           <i class="pi pi-arrow-right dash__stat-arrow"></i>
@@ -241,7 +241,7 @@
         <a routerLink="/sets" class="dash__stat dash__stat--link">
           <div class="dash__stat-icon dash__stat-icon--purple"><i class="pi pi-clone"></i></div>
           <div class="dash__stat-body">
-            <div class="dash__stat-value">{{ totalCards() }}</div>
+            <div class="dash__stat-value">{{ facade.totalCardsSignal() }}</div>
             <div class="dash__stat-label">{{ t('stats.cards') }}</div>
           </div>
           <i class="pi pi-arrow-right dash__stat-arrow"></i>
@@ -250,7 +250,7 @@
     }
 
     <!-- Card Status Breakdown -->
-    @if (totalCards() > 0) {
+    @if (facade.totalCardsSignal() > 0) {
       <section class="dash__breakdown" role="region" [attr.aria-label]="t('breakdown.ariaLabel')">
         <div class="dash__breakdown-header">
           <h2 class="dash__section-title">{{ t('breakdown.title') }}</h2>
@@ -258,28 +258,28 @@
 
         <!-- Stacked bar -->
         <div class="dash__breakdown-bar" role="progressbar" [attr.aria-label]="t('breakdown.barAriaLabel')">
-          @if (breakdown().mastered > 0) {
+          @if (facade.breakdownSignal().mastered > 0) {
             <div class="dash__bar-seg dash__bar-seg--mastered"
-              [style.width.%]="barWidth(breakdown().mastered)"
-              [attr.title]="t('breakdown.mastered') + ': ' + breakdown().mastered">
+              [style.width.%]="facade.barWidth(facade.breakdownSignal().mastered)"
+              [attr.title]="t('breakdown.mastered') + ': ' + facade.breakdownSignal().mastered">
             </div>
           }
-          @if (breakdown().reviewing > 0) {
+          @if (facade.breakdownSignal().reviewing > 0) {
             <div class="dash__bar-seg dash__bar-seg--reviewing"
-              [style.width.%]="barWidth(breakdown().reviewing)"
-              [attr.title]="t('breakdown.reviewing') + ': ' + breakdown().reviewing">
+              [style.width.%]="facade.barWidth(facade.breakdownSignal().reviewing)"
+              [attr.title]="t('breakdown.reviewing') + ': ' + facade.breakdownSignal().reviewing">
             </div>
           }
-          @if (breakdown().learning > 0) {
+          @if (facade.breakdownSignal().learning > 0) {
             <div class="dash__bar-seg dash__bar-seg--learning"
-              [style.width.%]="barWidth(breakdown().learning)"
-              [attr.title]="t('breakdown.learning') + ': ' + breakdown().learning">
+              [style.width.%]="facade.barWidth(facade.breakdownSignal().learning)"
+              [attr.title]="t('breakdown.learning') + ': ' + facade.breakdownSignal().learning">
             </div>
           }
-          @if (breakdown().newCards > 0) {
+          @if (facade.breakdownSignal().newCards > 0) {
             <div class="dash__bar-seg dash__bar-seg--new"
-              [style.width.%]="barWidth(breakdown().newCards)"
-              [attr.title]="t('breakdown.new') + ': ' + breakdown().newCards">
+              [style.width.%]="facade.barWidth(facade.breakdownSignal().newCards)"
+              [attr.title]="t('breakdown.new') + ': ' + facade.breakdownSignal().newCards">
             </div>
           }
         </div>
@@ -289,36 +289,36 @@
           <div class="dash__legend-item">
             <span class="dash__legend-dot dash__legend-dot--mastered"></span>
             <span class="dash__legend-label">{{ t('breakdown.mastered') }}</span>
-            <span class="dash__legend-count">{{ breakdown().mastered }}</span>
+            <span class="dash__legend-count">{{ facade.breakdownSignal().mastered }}</span>
           </div>
           <div class="dash__legend-item">
             <span class="dash__legend-dot dash__legend-dot--reviewing"></span>
             <span class="dash__legend-label">{{ t('breakdown.reviewing') }}</span>
-            <span class="dash__legend-count">{{ breakdown().reviewing }}</span>
+            <span class="dash__legend-count">{{ facade.breakdownSignal().reviewing }}</span>
           </div>
           <div class="dash__legend-item">
             <span class="dash__legend-dot dash__legend-dot--learning"></span>
             <span class="dash__legend-label">{{ t('breakdown.learning') }}</span>
-            <span class="dash__legend-count">{{ breakdown().learning }}</span>
+            <span class="dash__legend-count">{{ facade.breakdownSignal().learning }}</span>
           </div>
           <div class="dash__legend-item">
             <span class="dash__legend-dot dash__legend-dot--new"></span>
             <span class="dash__legend-label">{{ t('breakdown.new') }}</span>
-            <span class="dash__legend-count">{{ breakdown().newCards }}</span>
+            <span class="dash__legend-count">{{ facade.breakdownSignal().newCards }}</span>
           </div>
         </div>
       </section>
     }
 
     <!-- Sets -->
-    @if (sets().length > 0) {
+    @if (facade.setsSignal().length > 0) {
       <section class="dash__sets">
         <div class="dash__sets-header">
           <h2 class="dash__section-title">{{ t('sets.title') }}</h2>
           <a routerLink="/sets" class="dash__sets-link">{{ t('sets.viewAll') }} <i class="pi pi-arrow-right"></i></a>
         </div>
         <div class="dash__sets-grid">
-          @for (set of sets(); track set.id) {
+          @for (set of facade.setsSignal(); track set.id) {
             <a [routerLink]="['/sets', set.id]" class="dash__set-card">
               <div class="dash__set-card-top"></div>
               <div class="dash__set-name">{{ set.name }}</div>
@@ -326,7 +326,7 @@
                 <div class="dash__set-desc">{{ set.description }}</div>
               }
               <div class="dash__set-meta">
-                <i class="pi pi-clock"></i> {{ formatFullDate(set.created_at) }}
+                <i class="pi pi-clock"></i> {{ facade.formatFullDate(set.created_at) }}
               </div>
             </a>
           }
@@ -339,8 +339,8 @@
   }
 
   <app-review-reminder
-    [visible]="reminderVisible()"
-    [dueCount]="reminderDueCount()"
+    [visible]="facade.reminderVisibleSignal()"
+    [dueCount]="facade.reminderDueCountSignal()"
     (study)="onReminderStudy()"
     (dismiss)="onReminderDismiss()"
   />

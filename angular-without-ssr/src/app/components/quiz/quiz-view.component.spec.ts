@@ -1,29 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, of, throwError } from 'rxjs';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { QuizViewComponent } from './quiz-view.component';
-import { FlashcardApiService } from '../../services/flashcard-api.service';
-import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
-import { QuizService } from '../../services/quiz.service';
+import { QuizFacadeService, QuizPhase } from '../../services/quiz-facade.service';
 import {
   FlashcardDTO,
-  FlashcardSetDTO,
   QuizConfig,
   QuizQuestion,
   QuizAnswer,
   QuizResult
 } from '../../../types';
-import { TranslocoTestingModule } from '@jsverse/transloco';
 
 describe('QuizViewComponent', () => {
   let component: QuizViewComponent;
   let fixture: ComponentFixture<QuizViewComponent>;
 
-  let flashcardApiServiceMock: jasmine.SpyObj<FlashcardApiService>;
-  let flashcardSetApiServiceMock: jasmine.SpyObj<FlashcardSetApiService>;
-  let quizServiceMock: jasmine.SpyObj<QuizService>;
+  let facadeMock: jasmine.SpyObj<QuizFacadeService>;
   let routerMock: jasmine.SpyObj<Router>;
   let routeParamsSubject: BehaviorSubject<Record<string, string>>;
 
@@ -34,19 +29,6 @@ describe('QuizViewComponent', () => {
     { id: 4, front: 'dog', back: 'pies', front_image_url: null, back_audio_url: null, front_language: 'en', back_language: 'pl', source: 'manual', created_at: '', updated_at: '', user_id: '', generation_id: null, set_id: 14, position: 0 },
     { id: 5, front: 'tree', back: 'drzewo', front_image_url: null, back_audio_url: null, front_language: 'en', back_language: 'pl', source: 'manual', created_at: '', updated_at: '', user_id: '', generation_id: null, set_id: 14, position: 0 }
   ];
-
-  const mockSet: FlashcardSetDTO = {
-    id: 14,
-    user_id: 'user-1',
-    name: 'Angielski B2',
-    description: null,
-    tags: [],
-    is_public: false,
-    copy_count: 0,
-    published_at: null,
-    created_at: '',
-    updated_at: ''
-  };
 
   const mockQuestions: QuizQuestion[] = mockFlashcards.map((card: FlashcardDTO, index: number) => ({
     id: index,
@@ -81,31 +63,29 @@ describe('QuizViewComponent', () => {
   beforeEach(async () => {
     routeParamsSubject = new BehaviorSubject<Record<string, string>>({ setId: '14' });
 
-    flashcardApiServiceMock = jasmine.createSpyObj<FlashcardApiService>('FlashcardApiService', ['getFlashcards', 'getAllFlashcardsForSet']);
-    flashcardSetApiServiceMock = jasmine.createSpyObj<FlashcardSetApiService>('FlashcardSetApiService', ['getSet']);
-    quizServiceMock = jasmine.createSpyObj<QuizService>('QuizService', [
-      'generateQuestions',
-      'calculateResult',
-      'getGradeText',
-      'getWrongAnswers'
-    ]);
+    facadeMock = jasmine.createSpyObj<QuizFacadeService>('QuizFacadeService', [
+      'loadSetData', 'startQuiz', 'submitAnswer', 'retry', 'retryWrong', 'retryStarred', 'reset'
+    ], {
+      phaseSignal: signal<QuizPhase>('config'),
+      errorMessageSignal: signal<string>(''),
+      setIdSignal: signal<number>(14),
+      setNameSignal: signal<string>('Angielski B2'),
+      flashcardsSignal: signal<FlashcardDTO[]>(mockFlashcards),
+      questionsSignal: signal<QuizQuestion[]>(mockQuestions),
+      currentIndexSignal: signal<number>(0),
+      answersSignal: signal<QuizAnswer[]>([]),
+      resultSignal: signal<QuizResult | null>(null),
+      gradeTextSignal: signal<string>(''),
+      currentQuestionSignal: signal<QuizQuestion | null>(mockQuestions[0])
+    });
+
     routerMock = jasmine.createSpyObj<Router>('Router', ['navigate']);
 
-    flashcardSetApiServiceMock.getSet.and.returnValue(of(mockSet));
-    flashcardApiServiceMock.getFlashcards.and.returnValue(of({ flashcards: mockFlashcards, totalRecords: mockFlashcards.length }));
-    flashcardApiServiceMock.getAllFlashcardsForSet.and.returnValue(of(mockFlashcards));
-    quizServiceMock.generateQuestions.and.returnValue(mockQuestions);
-    quizServiceMock.calculateResult.and.returnValue(mockResult);
-    quizServiceMock.getGradeText.and.returnValue('Poćwicz jeszcze');
-    quizServiceMock.getWrongAnswers.and.returnValue(mockResult.answers.filter((a: QuizAnswer) => !a.isCorrect));
-
     await TestBed.configureTestingModule({
-      imports: [QuizViewComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
+      imports: [QuizViewComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl'], defaultLang: 'pl' } })],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: FlashcardApiService, useValue: flashcardApiServiceMock },
-        { provide: FlashcardSetApiService, useValue: flashcardSetApiServiceMock },
-        { provide: QuizService, useValue: quizServiceMock },
+        { provide: QuizFacadeService, useValue: facadeMock },
         { provide: Router, useValue: routerMock },
         { provide: ActivatedRoute, useValue: { params: routeParamsSubject.asObservable() } }
       ]
@@ -115,269 +95,83 @@ describe('QuizViewComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('powinien zostac utworzony', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
   describe('ngOnInit', () => {
-    it('powinien zaladowac dane zestawu i fiszki, a nastepnie przejsc do fazy config', () => {
+    it('should call facade.loadSetData with setId from route', () => {
       fixture.detectChanges();
 
-      expect(flashcardSetApiServiceMock.getSet).toHaveBeenCalledWith(14);
-      expect(flashcardApiServiceMock.getAllFlashcardsForSet).toHaveBeenCalledWith(14);
-      expect(component.setIdSignal()).toBe(14);
-      expect(component.setNameSignal()).toBe('Angielski B2');
-      expect(component.flashcardsSignal()).toEqual(mockFlashcards);
-      expect(component.phaseSignal()).toBe('config');
+      expect(facadeMock.loadSetData).toHaveBeenCalledWith(14);
     });
 
-    it('powinien przekierowac do /quiz gdy setId jest nieprawidlowy', () => {
+    it('should navigate to /quiz when setId is invalid', () => {
       routeParamsSubject.next({ setId: 'abc' });
-
       fixture.detectChanges();
 
       expect(routerMock.navigate).toHaveBeenCalledWith(['/quiz']);
     });
   });
 
-  describe('loadSetData', () => {
-    it('powinien ustawic faze error gdy API zestawu zwroci blad', () => {
-      flashcardSetApiServiceMock.getSet.and.returnValue(throwError(() => new Error('Not found')));
-
-      fixture.detectChanges();
-
-      expect(component.phaseSignal()).toBe('error');
-      expect(component.errorMessageSignal()).toBe('quiz.errors.setNotFound');
-    });
-  });
-
-  describe('loadFlashcards', () => {
-    it('powinien ustawic blad gdy zestaw ma mniej niz 4 fiszki', () => {
-      const tooFewCards: FlashcardDTO[] = mockFlashcards.slice(0, 3);
-      flashcardApiServiceMock.getAllFlashcardsForSet.and.returnValue(of(tooFewCards));
-
-      fixture.detectChanges();
-
-      expect(component.phaseSignal()).toBe('error');
-      expect(component.errorMessageSignal()).toBe('quiz.errors.minCards');
-    });
-
-    it('powinien ustawic faze error gdy pobranie fiszek zakonczy sie bledem', () => {
-      flashcardApiServiceMock.getAllFlashcardsForSet.and.returnValue(throwError(() => new Error('Network error')));
-
-      fixture.detectChanges();
-
-      expect(component.phaseSignal()).toBe('error');
-      expect(component.errorMessageSignal()).toBe('quiz.errors.loadFlashcardsFailed');
-    });
-  });
-
   describe('onStartQuiz', () => {
-    it('powinien wygenerowac pytania, zresetowac stan i ustawic faze test', () => {
-      fixture.detectChanges();
-
+    it('should delegate to facade', () => {
       component.onStartQuiz(mockConfig);
 
-      expect(quizServiceMock.generateQuestions).toHaveBeenCalledWith(mockFlashcards, mockConfig);
-      expect(component.questionsSignal()).toEqual(mockQuestions);
-      expect(component.currentIndexSignal()).toBe(0);
-      expect(component.answersSignal()).toEqual([]);
-      expect(component.resultSignal()).toBeNull();
-      expect(component.phaseSignal()).toBe('test');
+      expect(facadeMock.startQuiz).toHaveBeenCalledWith(mockConfig);
     });
   });
 
   describe('onAnswerSubmitted', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-      component.onStartQuiz(mockConfig);
-    });
-
-    it('powinien dodac odpowiedz z czasem i przejsc do nastepnego pytania', () => {
+    it('should delegate to facade', () => {
       const answer: QuizAnswer = {
-        questionId: 0,
-        userAnswer: 'slowo',
-        isCorrect: true,
-        correctAnswer: 'slowo',
-        questionText: 'word',
-        timeMs: 0
+        questionId: 0, userAnswer: 'slowo', isCorrect: true,
+        correctAnswer: 'slowo', questionText: 'word', timeMs: 0
       };
 
       component.onAnswerSubmitted(answer);
 
-      expect(component.answersSignal().length).toBe(1);
-      expect(component.answersSignal()[0].questionId).toBe(0);
-      expect(component.answersSignal()[0].timeMs).toBeGreaterThanOrEqual(0);
-      expect(component.currentIndexSignal()).toBe(1);
-      expect(component.phaseSignal()).toBe('test');
-    });
-
-    it('powinien wywolac finishQuiz po odpowiedzi na ostatnie pytanie', () => {
-      const questions: QuizQuestion[] = mockQuestions.slice(0, 2);
-      quizServiceMock.generateQuestions.and.returnValue(questions);
-      component.onStartQuiz(mockConfig);
-
-      const answer1: QuizAnswer = {
-        questionId: 0, userAnswer: 'slowo', isCorrect: true,
-        correctAnswer: 'slowo', questionText: 'word', timeMs: 0
-      };
-      const answer2: QuizAnswer = {
-        questionId: 1, userAnswer: 'dom', isCorrect: true,
-        correctAnswer: 'dom', questionText: 'house', timeMs: 0
-      };
-
-      component.onAnswerSubmitted(answer1);
-      component.onAnswerSubmitted(answer2);
-
-      expect(quizServiceMock.calculateResult).toHaveBeenCalled();
-      expect(component.phaseSignal()).toBe('results');
-      expect(component.resultSignal()).toEqual(mockResult);
-      expect(component.gradeTextSignal()).toBe('Poćwicz jeszcze');
+      expect(facadeMock.submitAnswer).toHaveBeenCalledWith(answer);
     });
   });
 
   describe('onRetry', () => {
-    it('powinien ponownie uruchomic quiz z ostatnia konfiguracja', () => {
-      fixture.detectChanges();
-      component.onStartQuiz(mockConfig);
-
-      quizServiceMock.generateQuestions.calls.reset();
-
+    it('should delegate to facade', () => {
       component.onRetry();
 
-      expect(quizServiceMock.generateQuestions).toHaveBeenCalledWith(mockFlashcards, mockConfig);
-      expect(component.phaseSignal()).toBe('test');
-    });
-
-    it('powinien przejsc do fazy config gdy brak ostatniej konfiguracji', () => {
-      fixture.detectChanges();
-
-      component.onRetry();
-
-      expect(component.phaseSignal()).toBe('config');
+      expect(facadeMock.retry).toHaveBeenCalled();
     });
   });
 
   describe('onRetryWrong', () => {
-    it('powinien utworzyc quiz z blednych fiszek', () => {
-      fixture.detectChanges();
-      component.onStartQuiz(mockConfig);
-
-      // Symuluj zakonczenie quizu
-      const shortQuestions: QuizQuestion[] = mockQuestions.slice(0, 1);
-      quizServiceMock.generateQuestions.and.returnValue(shortQuestions);
-      component.onStartQuiz(mockConfig);
-
-      // Odpowiedz na jedyne pytanie, aby zakonczyc quiz
-      const answer: QuizAnswer = {
-        questionId: 0, userAnswer: 'slowo', isCorrect: true,
-        correctAnswer: 'slowo', questionText: 'word', timeMs: 0
-      };
-      component.onAnswerSubmitted(answer);
-
-      // Teraz resultSignal jest ustawiony
-      expect(component.resultSignal()).toBeTruthy();
-
-      // Przygotuj mock na retry wrong
-      const wrongAnswers: QuizAnswer[] = [
-        { questionId: 2, userAnswer: 'piesek', isCorrect: false, correctAnswer: 'kot', questionText: 'cat', timeMs: 3000 }
-      ];
-      quizServiceMock.getWrongAnswers.and.returnValue(wrongAnswers);
-
-      // Ustaw pytania, aby find() moglo znalezc sourceFlashcard
-      component.questionsSignal.set(mockQuestions);
-
-      const generatedFromWrong: QuizQuestion[] = [{
-        id: 0,
-        type: 'written',
-        questionText: 'cat',
-        questionImageUrl: null,
-        correctAnswer: 'kot',
-        sourceFlashcard: mockFlashcards[2]
-      }];
-      quizServiceMock.generateQuestions.and.returnValue(generatedFromWrong);
-
+    it('should delegate to facade', () => {
       component.onRetryWrong();
 
-      expect(quizServiceMock.getWrongAnswers).toHaveBeenCalled();
-      expect(component.phaseSignal()).toBe('test');
-      expect(component.currentIndexSignal()).toBe(0);
-      expect(component.answersSignal()).toEqual([]);
+      expect(facadeMock.retryWrong).toHaveBeenCalled();
     });
   });
 
   describe('onRetryStarred', () => {
-    it('powinien utworzyc quiz z oznaczonych pytan', () => {
-      fixture.detectChanges();
-      component.onStartQuiz(mockConfig);
-
-      // Ustaw pytania z sourceFlashcard
-      component.questionsSignal.set(mockQuestions);
-
-      const starredQuestion: QuizQuestion = {
-        id: 0,
-        type: 'written',
-        questionText: 'word',
-        questionImageUrl: null,
-        correctAnswer: 'slowo',
-        sourceFlashcard: mockFlashcards[0]
-      };
-      quizServiceMock.generateQuestions.and.returnValue([starredQuestion]);
-
+    it('should delegate to facade', () => {
       component.onRetryStarred([0, 1]);
 
-      expect(quizServiceMock.generateQuestions).toHaveBeenCalled();
-      expect(component.phaseSignal()).toBe('test');
-      expect(component.currentIndexSignal()).toBe(0);
-      expect(component.answersSignal()).toEqual([]);
-    });
-
-    it('powinien nie robic nic gdy brak ostatniej konfiguracji', () => {
-      fixture.detectChanges();
-
-      component.onRetryStarred([0, 1]);
-
-      expect(component.phaseSignal()).toBe('config');
+      expect(facadeMock.retryStarred).toHaveBeenCalledWith([0, 1]);
     });
   });
 
   describe('onGoBack', () => {
-    it('powinien nawigowac do /sets/:setId', () => {
-      fixture.detectChanges();
-
+    it('should navigate to /sets/:setId', () => {
       component.onGoBack();
 
       expect(routerMock.navigate).toHaveBeenCalledWith(['/sets', 14]);
     });
   });
 
-  describe('currentQuestionSignal', () => {
-    it('powinien zwrocic aktualne pytanie', () => {
-      fixture.detectChanges();
-      component.onStartQuiz(mockConfig);
+  describe('onGoBackFromConfig', () => {
+    it('should navigate to /sets/:setId', () => {
+      component.onGoBackFromConfig();
 
-      const currentQuestion: QuizQuestion | null = component.currentQuestionSignal;
-
-      expect(currentQuestion).toBeTruthy();
-      expect(currentQuestion!.id).toBe(0);
-    });
-
-    it('powinien zwrocic null gdy brak pytan', () => {
-      fixture.detectChanges();
-
-      const currentQuestion: QuizQuestion | null = component.currentQuestionSignal;
-
-      expect(currentQuestion).toBeNull();
-    });
-
-    it('powinien zwrocic null gdy indeks wykracza poza zakres', () => {
-      fixture.detectChanges();
-      component.onStartQuiz(mockConfig);
-      component.currentIndexSignal.set(999);
-
-      const currentQuestion: QuizQuestion | null = component.currentQuestionSignal;
-
-      expect(currentQuestion).toBeNull();
+      expect(routerMock.navigate).toHaveBeenCalledWith(['/sets', 14]);
     });
   });
 });

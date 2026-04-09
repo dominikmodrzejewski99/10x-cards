@@ -5,16 +5,16 @@
       <button class="flist__back" (click)="goBackToSets()" [title]="t('backToSets')" [attr.aria-label]="t('backToSets')">
         <i class="pi pi-arrow-left"></i>
       </button>
-      <h1 class="flist__title" data-test-id="flashcards-title">{{ state().setName || t('defaultTitle') }}</h1>
+      <h1 class="flist__title" data-test-id="flashcards-title">{{ facade.setNameSignal() || t('defaultTitle') }}</h1>
     </div>
     <div class="flist__actions">
-      <a [routerLink]="['/study']" [queryParams]="{setId: state().setId}" class="flist__btn--study" data-test-id="start-study-button">
+      <a [routerLink]="['/study']" [queryParams]="{setId: facade.setIdSignal()}" class="flist__btn--study" data-test-id="start-study-button">
         <i class="pi pi-book"></i> {{ t('study') }}
       </a>
-      <a [routerLink]="['/quiz', state().setId]" class="flist__btn--quiz" data-test-id="start-quiz-button">
+      <a [routerLink]="['/quiz', facade.setIdSignal()]" class="flist__btn--quiz" data-test-id="start-quiz-button">
         <i class="pi pi-file-edit"></i> {{ t('test') }}
       </a>
-      <button (click)="openAddModal()" class="flist__btn flist__btn--add" data-test-id="add-flashcard-button">
+      <button (click)="facade.openAddModal()" class="flist__btn flist__btn--add" data-test-id="add-flashcard-button">
         <i class="pi pi-plus"></i> {{ t('add') }}
       </button>
       <button (click)="openShareDialog()" class="flist__btn flist__btn--share" data-test-id="share-button" [title]="t('shareTitle')">
@@ -29,13 +29,13 @@
         </button>
         @if (moreMenuOpen()) {
           <div class="flist__more-menu" (click)="moreMenuOpen.set(false)">
-            <button (click)="openImportModal()" class="flist__more-item" data-test-id="import-flashcards-button">
+            <button (click)="facade.openImportModal()" class="flist__more-item" data-test-id="import-flashcards-button">
               <i class="pi pi-upload"></i> {{ t('import') }}
             </button>
-            <button (click)="exportCsv()" class="flist__more-item" data-test-id="export-csv-button">
+            <button (click)="facade.exportCsv()" class="flist__more-item" data-test-id="export-csv-button">
               <i class="pi pi-download"></i> {{ t('exportCsv') }}
             </button>
-            <button (click)="exportJson()" class="flist__more-item" data-test-id="export-json-button">
+            <button (click)="facade.exportJson()" class="flist__more-item" data-test-id="export-json-button">
               <i class="pi pi-download"></i> {{ t('exportJson') }}
             </button>
             <button (click)="openPrintTestDialog()" class="flist__more-item" data-test-id="print-test-button">
@@ -50,17 +50,17 @@
     </div>
   </div>
 
-  @if (savedCountSignal() > 0) {
+  @if (facade.savedCountSignal() > 0) {
     <div class="flist__saved-banner fade-in">
       <div class="flist__saved-body">
         <i class="pi pi-check-circle"></i>
-        <span [innerHTML]="t('savedBanner', { count: savedCountSignal() })"></span>
+        <span [innerHTML]="t('savedBanner', { count: facade.savedCountSignal() })"></span>
       </div>
       <div class="flist__saved-actions">
-        <a [routerLink]="['/study']" [queryParams]="{setId: state().setId}" class="flist__saved-cta">
+        <a [routerLink]="['/study']" [queryParams]="{setId: facade.setIdSignal()}" class="flist__saved-cta">
           <i class="pi pi-play-circle"></i> {{ t('startLearning') }}
         </a>
-        <button class="flist__saved-dismiss" (click)="dismissSavedBanner()" aria-label="Zamknij">
+        <button class="flist__saved-dismiss" (click)="facade.dismissSavedBanner()" aria-label="Zamknij">
           <i class="pi pi-times"></i>
         </button>
       </div>
@@ -69,54 +69,54 @@
 
   <div class="flist__table">
     <app-flashcard-table
-      [flashcards]="state().flashcards"
-      [loading]="state().loading"
-      [totalRecords]="state().totalRecords"
-      [rows]="state().rows"
-      [first]="state().first"
-      [sortField]="state().sortField"
-      [sortOrder]="state().sortOrder"
-      (editFlashcard)="openEditModal($event)"
+      [flashcards]="facade.flashcardsSignal()"
+      [loading]="facade.loadingSignal()"
+      [totalRecords]="facade.totalRecordsSignal()"
+      [rows]="facade.rowsSignal()"
+      [first]="facade.firstSignal()"
+      [sortField]="facade.sortFieldSignal()"
+      [sortOrder]="facade.sortOrderSignal()"
+      (editFlashcard)="facade.openEditModal($event)"
       (deleteFlashcard)="handleDelete($event)"
-      (lazyLoad)="loadFlashcards($event)"
-      (search)="onSearch($event)"
+      (lazyLoad)="facade.loadFlashcards($event)"
+      (search)="facade.onSearch($event)"
       (bulkDelete)="handleBulkDelete($event)"
-      (rowsChange)="onRowsChange($event)"
-      (reorder)="onReorder($event)">
+      (rowsChange)="facade.onRowsChange($event)"
+      (reorder)="facade.onReorder($event)">
     </app-flashcard-table>
   </div>
 
   <app-dialog
-    [header]="state().flashcardBeingEdited ? t('editDialog') : t('addDialog')"
-    [visible]="state().isFormModalVisible"
-    (visibleChange)="onCloseFormModal()"
+    [header]="facade.flashcardBeingEditedSignal() ? t('editDialog') : t('addDialog')"
+    [visible]="facade.isFormModalVisibleSignal()"
+    (visibleChange)="facade.closeFormModal()"
     [dismissableMask]="true"
     [maxWidth]="'640px'"
     data-test-id="flashcard-dialog">
     <app-flashcard-form
-      [isVisible]="state().isFormModalVisible"
-      [flashcardToEdit]="state().flashcardBeingEdited"
-      (save)="onSave($event)"
-      (close)="onCloseFormModal()">
+      [isVisible]="facade.isFormModalVisibleSignal()"
+      [flashcardToEdit]="facade.flashcardBeingEditedSignal()"
+      (save)="facade.saveFlashcard($event)"
+      (close)="facade.closeFormModal()">
     </app-flashcard-form>
   </app-dialog>
 
-  @if (lastDeletedSignal()) {
+  @if (facade.lastDeletedSignal()) {
     <div class="flist__undo">
       <span class="flist__undo-text">{{ t('deleted') }}</span>
-      <button class="flist__undo-btn" (click)="undoDelete()">{{ t('undo') }}</button>
-      <button class="flist__undo-close" (click)="dismissUndo()" aria-label="Zamknij">
+      <button class="flist__undo-btn" (click)="facade.undoDelete()">{{ t('undo') }}</button>
+      <button class="flist__undo-close" (click)="facade.dismissUndo()" aria-label="Zamknij">
         <i class="pi pi-times"></i>
       </button>
     </div>
   }
 
   <app-import-modal
-    [isVisible]="state().isImportModalVisible"
-    [setId]="state().setId"
-    [isSaving]="state().loading"
-    (close)="onCloseImportModal()"
-    (saved)="onImportSaved($event)"
+    [isVisible]="facade.isImportModalVisibleSignal()"
+    [setId]="facade.setIdSignal()"
+    [isSaving]="facade.loadingSignal()"
+    (close)="facade.closeImportModal()"
+    (saved)="facade.importFlashcards($event)"
     data-test-id="import-modal">
   </app-import-modal>
 </div>
@@ -128,11 +128,11 @@
   [dismissableMask]="true"
   [maxWidth]="'500px'">
 
-  @if (shareLoading()) {
+  @if (facade.shareLoadingSignal()) {
     <div style="text-align: center; padding: 2rem;">
       <app-spinner />
     </div>
-  } @else if (shareLink()) {
+  } @else if (facade.shareLinkSignal()) {
     <div class="flist__share-dialog">
       <p class="flist__share-info">
         {{ t('shareInfo') }}
@@ -140,7 +140,7 @@
       <div class="flist__share-link-row">
         <input
           type="text"
-          [value]="shareLink()"
+          [value]="facade.shareLinkSignal()"
           readonly
           class="flist__share-input"
         />
@@ -157,15 +157,15 @@
   [dismissableMask]="true"
   [maxWidth]="'500px'">
   <app-print-test-config
-    [setName]="state().setName"
-    [cardCount]="state().totalRecords"
+    [setName]="facade.setNameSignal()"
+    [cardCount]="facade.totalRecordsSignal()"
     (print)="onPrintTest($event)"
     (close)="printTestDialogVisible.set(false)">
   </app-print-test-config>
 </app-dialog>
 
 <app-share-to-friend-dialog
-  [setId]="state().setId"
+  [setId]="facade.setIdSignal()"
   [visible]="shareToFriendVisible()"
   (visibleChange)="shareToFriendVisible.set($event)">
 </app-share-to-friend-dialog>
