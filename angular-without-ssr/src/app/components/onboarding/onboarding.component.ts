@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, HostListener, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { UserPreferencesService } from '../../services/user-preferences.service';
+import { OnboardingFacadeService } from '../../services/onboarding-facade.service';
 
 export interface TourStep {
   id: string;
@@ -87,7 +87,7 @@ const TOUR_STEPS: TourStep[] = [
   },
 ];
 
-const MOBILE_BREAKPOINT = 992;
+const MOBILE_BREAKPOINT: number = 992;
 
 @Component({
   selector: 'app-onboarding',
@@ -97,11 +97,11 @@ const MOBILE_BREAKPOINT = 992;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OnboardingComponent implements OnDestroy {
-  private router = inject(Router);
-  private preferencesService = inject(UserPreferencesService);
+  private router: Router = inject(Router);
+  private facade: OnboardingFacadeService = inject(OnboardingFacadeService);
   private resizeObserver: ResizeObserver | null = null;
 
-  steps = TOUR_STEPS;
+  steps: TourStep[] = TOUR_STEPS;
   currentStepIndex = signal(0);
   visible = signal(false);
 
@@ -115,10 +115,10 @@ export class OnboardingComponent implements OnDestroy {
   progress = computed(() => ((this.currentStepIndex() + 1) / this.steps.length) * 100);
 
   tooltipStyle = computed(() => {
-    const rect = this.spotlightRect();
-    const step = this.currentStep();
+    const rect: DOMRect | null = this.spotlightRect();
+    const step: TourStep = this.currentStep();
 
-    // Centered steps (welcome, finish) — position in the middle of viewport
+    // Centered steps (welcome, finish) -- position in the middle of viewport
     if (!rect) {
       return {
         top: '50%',
@@ -127,9 +127,9 @@ export class OnboardingComponent implements OnDestroy {
       };
     }
 
-    const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
-    const pos = isMobile ? step.mobilePosition : step.position;
-    const padding = step.spotlightPadding ?? 8;
+    const isMobile: boolean = window.innerWidth < MOBILE_BREAKPOINT;
+    const pos: string = isMobile ? step.mobilePosition : step.position;
+    const padding: number = step.spotlightPadding ?? 8;
 
     const styles: Record<string, string> = {};
 
@@ -160,9 +160,9 @@ export class OnboardingComponent implements OnDestroy {
   });
 
   spotlightStyle = computed(() => {
-    const rect = this.spotlightRect();
+    const rect: DOMRect | null = this.spotlightRect();
     if (!rect) return {};
-    const padding = this.currentStep().spotlightPadding ?? 8;
+    const padding: number = this.currentStep().spotlightPadding ?? 8;
     return {
       top: `${rect.top - padding}px`,
       left: `${rect.left - padding}px`,
@@ -204,16 +204,7 @@ export class OnboardingComponent implements OnDestroy {
   }
 
   checkAndShow(): void {
-    this.preferencesService.getPreferences().subscribe({
-      next: (prefs) => {
-        if (!prefs.onboarding_completed) {
-          this.show();
-        }
-      },
-      error: () => {
-        this.show();
-      },
-    });
+    this.facade.checkOnboardingStatus(() => this.show());
   }
 
   show(): void {
@@ -224,14 +215,14 @@ export class OnboardingComponent implements OnDestroy {
 
   next(): void {
     if (!this.isLast()) {
-      this.currentStepIndex.update(i => i + 1);
+      this.currentStepIndex.update((i: number) => i + 1);
       this.navigateAndSpotlight();
     }
   }
 
   prev(): void {
     if (!this.isFirst()) {
-      this.currentStepIndex.update(i => i - 1);
+      this.currentStepIndex.update((i: number) => i - 1);
       this.navigateAndSpotlight();
     }
   }
@@ -246,13 +237,13 @@ export class OnboardingComponent implements OnDestroy {
   }
 
   private complete(): void {
-    this.preferencesService.setOnboardingCompleted().subscribe();
+    this.facade.completeOnboarding();
     this.visible.set(false);
     this.spotlightRect.set(null);
   }
 
   private navigateAndSpotlight(): void {
-    const step = this.steps[this.currentStepIndex()];
+    const step: TourStep = this.steps[this.currentStepIndex()];
     if (step.route) {
       this.router.navigate([step.route]).then(() => {
         // Wait for the route component to render
@@ -265,16 +256,16 @@ export class OnboardingComponent implements OnDestroy {
 
   private updateSpotlight(): void {
     requestAnimationFrame(() => {
-      const step = this.steps[this.currentStepIndex()];
-      const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
-      const selector = isMobile ? step.mobileTargetSelector : step.targetSelector;
+      const step: TourStep = this.steps[this.currentStepIndex()];
+      const isMobile: boolean = window.innerWidth < MOBILE_BREAKPOINT;
+      const selector: string = isMobile ? step.mobileTargetSelector : step.targetSelector;
 
       if (!selector) {
         this.spotlightRect.set(null);
         return;
       }
 
-      const el = document.querySelector(selector);
+      const el: Element | null = document.querySelector(selector);
       if (el) {
         this.spotlightRect.set(el.getBoundingClientRect());
       } else {

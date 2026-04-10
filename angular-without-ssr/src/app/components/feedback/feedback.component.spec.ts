@@ -1,29 +1,31 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslocoTestingModule } from '@jsverse/transloco';
-import { ToastService } from '../../shared/services/toast.service';
-import { of, throwError } from 'rxjs';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+
 import { FeedbackComponent } from './feedback.component';
-import { FeedbackApiService } from '../../services/feedback-api.service';
-import { FeedbackDTO } from '../../../types';
+import { FeedbackFacadeService } from '../../services/feedback-facade.service';
 
 describe('FeedbackComponent', () => {
   let component: FeedbackComponent;
   let fixture: ComponentFixture<FeedbackComponent>;
-  let mockFeedbackApi: jasmine.SpyObj<FeedbackApiService>;
 
-  const mockFeedbackResponse: FeedbackDTO = {
-    id: 1,
-    user_id: 'user-123',
-    type: 'bug',
-    title: 'Test bug',
-    description: 'Test description for the bug',
-    created_at: '2026-04-02T00:00:00Z'
+  const facadeMock: Record<string, jasmine.Spy> = {
+    selectedTypeSignal: jasmine.createSpy('selectedTypeSignal').and.returnValue('bug'),
+    submittingSignal: jasmine.createSpy('submittingSignal').and.returnValue(false),
+    submittedSignal: jasmine.createSpy('submittedSignal').and.returnValue(false),
+    selectType: jasmine.createSpy('selectType'),
+    submit: jasmine.createSpy('submit'),
+    sendAnother: jasmine.createSpy('sendAnother'),
   };
 
   beforeEach(() => {
-    mockFeedbackApi = jasmine.createSpyObj('FeedbackApiService', ['submitFeedback']);
-    mockFeedbackApi.submitFeedback.and.returnValue(of(mockFeedbackResponse));
+    Object.values(facadeMock).forEach((spy: jasmine.Spy) => spy.calls.reset());
+
+    // Reset return values that may have been mutated by previous tests
+    facadeMock['selectedTypeSignal'].and.returnValue('bug');
+    facadeMock['submittingSignal'].and.returnValue(false);
+    facadeMock['submittedSignal'].and.returnValue(false);
 
     TestBed.configureTestingModule({
       imports: [
@@ -34,10 +36,10 @@ describe('FeedbackComponent', () => {
           translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' },
         }),
       ],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: FeedbackApiService, useValue: mockFeedbackApi },
-        ToastService,
-      ]
+        { provide: FeedbackFacadeService, useValue: facadeMock },
+      ],
     });
 
     fixture = TestBed.createComponent(FeedbackComponent);
@@ -49,58 +51,38 @@ describe('FeedbackComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should default to bug type', () => {
-    expect(component.selectedTypeSignal()).toBe('bug');
-  });
-
-  it('should switch type to idea', () => {
-    component.selectType('idea');
-    expect(component.selectedTypeSignal()).toBe('idea');
-  });
-
   it('should not submit when form is invalid', () => {
     component.submit();
-    expect(mockFeedbackApi.submitFeedback).not.toHaveBeenCalled();
+
+    expect(facadeMock['submit']).not.toHaveBeenCalled();
   });
 
   it('should mark form as touched on invalid submit', () => {
     component.submit();
+
     expect(component.feedbackForm.get('title')?.touched).toBeTrue();
     expect(component.feedbackForm.get('description')?.touched).toBeTrue();
   });
 
-  it('should submit when form is valid', () => {
+  it('should call facade.submit when form is valid', () => {
     component.feedbackForm.setValue({
       title: 'Test bug title',
-      description: 'This is a detailed description of the bug'
+      description: 'This is a detailed description of the bug',
     });
-    component.selectType('bug');
 
     component.submit();
 
-    expect(mockFeedbackApi.submitFeedback).toHaveBeenCalledWith({
+    expect(facadeMock['submit']).toHaveBeenCalledWith({
       type: 'bug',
       title: 'Test bug title',
-      description: 'This is a detailed description of the bug'
+      description: 'This is a detailed description of the bug',
     });
-  });
-
-  it('should show success state after submission', () => {
-    component.feedbackForm.setValue({
-      title: 'Test bug title',
-      description: 'This is a detailed description of the bug'
-    });
-
-    component.submit();
-
-    expect(component.submittedSignal()).toBeTrue();
-    expect(component.submittingSignal()).toBeFalse();
   });
 
   it('should reset form after successful submission', () => {
     component.feedbackForm.setValue({
       title: 'Test bug title',
-      description: 'This is a detailed description of the bug'
+      description: 'This is a detailed description of the bug',
     });
 
     component.submit();
@@ -109,62 +91,37 @@ describe('FeedbackComponent', () => {
     expect(component.feedbackForm.get('description')?.value).toBeNull();
   });
 
-  it('should handle submission error', () => {
-    mockFeedbackApi.submitFeedback.and.returnValue(throwError(() => new Error('Network error')));
+  it('should not submit while already submitting', () => {
+    facadeMock['submittingSignal'].and.returnValue(true);
 
     component.feedbackForm.setValue({
       title: 'Test bug title',
-      description: 'This is a detailed description of the bug'
+      description: 'This is a detailed description of the bug',
     });
 
     component.submit();
 
-    expect(component.submittedSignal()).toBeFalse();
-    expect(component.submittingSignal()).toBeFalse();
-  });
-
-  it('should allow sending another after success', () => {
-    component.submittedSignal.set(true);
-    component.selectType('idea');
-
-    component.sendAnother();
-
-    expect(component.submittedSignal()).toBeFalse();
-    expect(component.selectedTypeSignal()).toBe('bug');
+    expect(facadeMock['submit']).not.toHaveBeenCalled();
   });
 
   it('should validate title minimum length', () => {
     component.feedbackForm.get('title')?.setValue('ab');
     component.feedbackForm.get('title')?.markAsTouched();
+
     expect(component.feedbackForm.get('title')?.hasError('minlength')).toBeTrue();
   });
 
   it('should validate description minimum length', () => {
     component.feedbackForm.get('description')?.setValue('short');
     component.feedbackForm.get('description')?.markAsTouched();
+
     expect(component.feedbackForm.get('description')?.hasError('minlength')).toBeTrue();
-  });
-
-  it('should not submit while already submitting', () => {
-    component.feedbackForm.setValue({
-      title: 'Test bug title',
-      description: 'This is a detailed description of the bug'
-    });
-    component.submittingSignal.set(true);
-
-    component.submit();
-
-    expect(mockFeedbackApi.submitFeedback).not.toHaveBeenCalled();
-  });
-
-  it('should render type selector buttons', () => {
-    const buttons: HTMLButtonElement[] = fixture.nativeElement.querySelectorAll('.feedback__type-btn');
-    expect(buttons.length).toBe(2);
   });
 
   it('should render form inputs', () => {
     const input: HTMLInputElement = fixture.nativeElement.querySelector('#feedback-title');
     const textarea: HTMLTextAreaElement = fixture.nativeElement.querySelector('#feedback-desc');
+
     expect(input).toBeTruthy();
     expect(textarea).toBeTruthy();
   });

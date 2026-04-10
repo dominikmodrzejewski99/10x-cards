@@ -15,8 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { Overlay, OverlayRef, OverlayModule } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { DialogComponent } from '../dialog/dialog.component';
-import { PomodoroService } from '../../../services/pomodoro.service';
-import { UserPreferencesService } from '../../../services/user-preferences.service';
+import { PomodoroFacadeService } from '../../../services/pomodoro-facade.service';
 
 @Component({
   selector: 'app-pomodoro-timer',
@@ -25,7 +24,7 @@ import { UserPreferencesService } from '../../../services/user-preferences.servi
   template: `
     <div class="pomodoro" #triggerEl>
       <!-- Inactive state: trigger button -->
-      @if (!pomodoroService.isRunning() && pomodoroService.timeRemaining() === 0) {
+      @if (!facade.isRunningSignal() && facade.timeRemainingSignal() === 0) {
         <button class="pomodoro-trigger" (click)="toggleDropdown()">
           <span class="pomodoro-trigger__icon">\uD83C\uDF45</span>
           <span class="pomodoro-trigger__text">Pomodoro</span>
@@ -33,17 +32,17 @@ import { UserPreferencesService } from '../../../services/user-preferences.servi
       }
 
       <!-- Active work state: green badge -->
-      @if ((pomodoroService.isRunning() || pomodoroService.timeRemaining() > 0) && pomodoroService.phase() === 'work') {
+      @if ((facade.isRunningSignal() || facade.timeRemainingSignal() > 0) && facade.phaseSignal() === 'work') {
         <button
           class="pomodoro-badge pomodoro-badge--work"
           (click)="toggleDropdown()">
-          {{ formatTime(pomodoroService.timeRemaining()) }}
-          <span class="pomodoro-badge__session">{{ pomodoroService.sessionsCompleted() + 1 }}/{{ sessionsBeforeLongBreakSignal() }}</span>
+          {{ facade.formatTime(facade.timeRemainingSignal()) }}
+          <span class="pomodoro-badge__session">{{ facade.sessionsCompletedSignal() + 1 }}/{{ facade.sessionsBeforeLongBreakSignal() }}</span>
         </button>
       }
 
       <!-- Break state: blue badge -->
-      @if ((pomodoroService.isRunning() || pomodoroService.timeRemaining() > 0) && (pomodoroService.phase() === 'break' || pomodoroService.phase() === 'longBreak')) {
+      @if ((facade.isRunningSignal() || facade.timeRemainingSignal() > 0) && (facade.phaseSignal() === 'break' || facade.phaseSignal() === 'longBreak')) {
         <button
           class="pomodoro-badge pomodoro-badge--break"
           (click)="toggleDropdown()">
@@ -56,19 +55,19 @@ import { UserPreferencesService } from '../../../services/user-preferences.servi
     <ng-template #dropdownTpl>
       <div class="pomodoro-dropdown">
         <div class="pomodoro-dropdown__timer">
-          {{ formatTime(pomodoroService.timeRemaining() || getDefaultDuration()) }}
+          {{ facade.formatTime(facade.timeRemainingSignal() || facade.getDefaultDuration()) }}
         </div>
         <div class="pomodoro-dropdown__phase">
-          @switch (pomodoroService.phase()) {
+          @switch (facade.phaseSignal()) {
             @case ('work') { Sesja nauki }
             @case ('break') { Przerwa }
             @case ('longBreak') { D\u0142uga przerwa }
           }
         </div>
 
-        @if (pomodoroService.isRunning() || pomodoroService.timeRemaining() > 0) {
+        @if (facade.isRunningSignal() || facade.timeRemainingSignal() > 0) {
           <div class="pomodoro-dropdown__controls">
-            @if (pomodoroService.isRunning()) {
+            @if (facade.isRunningSignal()) {
               <button class="pomodoro-dropdown__control-btn" (click)="onPause()" title="Pauza">
                 \u23F8
               </button>
@@ -89,7 +88,7 @@ import { UserPreferencesService } from '../../../services/user-preferences.servi
             @for (dot of sessionsArray(); track $index) {
               <span
                 class="pomodoro-dropdown__dot"
-                [class.pomodoro-dropdown__dot--filled]="$index < pomodoroService.sessionsCompleted()">
+                [class.pomodoro-dropdown__dot--filled]="$index < facade.sessionsCompletedSignal()">
               </span>
             }
           </div>
@@ -108,8 +107,8 @@ import { UserPreferencesService } from '../../../services/user-preferences.servi
     <!-- Focus Reminder Dialog -->
     <app-dialog
       header="\uD83C\uDFAF Tryb skupienia"
-      [visible]="showFocusReminderSignal()"
-      (visibleChange)="showFocusReminderSignal.set(false)"
+      [visible]="facade.showFocusReminderSignal()"
+      (visibleChange)="facade.dismissFocusReminder()"
       [maxWidth]="'420px'">
       <div class="focus-reminder">
         <p class="focus-reminder__text">
@@ -168,35 +167,22 @@ import { UserPreferencesService } from '../../../services/user-preferences.servi
   `]
 })
 export class PomodoroTimerComponent implements OnInit, OnDestroy {
-  public readonly pomodoroService = inject(PomodoroService);
-  private readonly prefsService = inject(UserPreferencesService);
-  private readonly overlay = inject(Overlay);
-  private readonly vcr = inject(ViewContainerRef);
+  public readonly facade: PomodoroFacadeService = inject(PomodoroFacadeService);
+  private readonly overlay: Overlay = inject(Overlay);
+  private readonly vcr: ViewContainerRef = inject(ViewContainerRef);
 
   private readonly triggerEl = viewChild.required<ElementRef>('triggerEl');
   private readonly dropdownTpl = viewChild.required<TemplateRef<unknown>>('dropdownTpl');
 
   public isDropdownOpenSignal: WritableSignal<boolean> = signal(false);
-  public showFocusReminderSignal: WritableSignal<boolean> = signal(false);
-  public focusReminderDismissedSignal: WritableSignal<boolean> = signal(false);
-  public dontShowAgainSignal: WritableSignal<boolean> = signal(false);
-  public sessionsBeforeLongBreakSignal: WritableSignal<number> = signal(4);
-
-  public dontShowAgainChecked = false;
+  public dontShowAgainChecked: boolean = false;
 
   private overlayRef: OverlayRef | null = null;
 
-  public sessionsArray = () => Array.from({ length: this.sessionsBeforeLongBreakSignal() });
+  public sessionsArray = (): unknown[] => Array.from({ length: this.facade.sessionsBeforeLongBreakSignal() });
 
   ngOnInit(): void {
-    this.pomodoroService.loadSettings().subscribe(() => {
-      this.pomodoroService.restoreState();
-    });
-
-    this.prefsService.getPreferences().subscribe(prefs => {
-      this.focusReminderDismissedSignal.set(prefs.pomodoro_focus_reminder_dismissed ?? false);
-      this.sessionsBeforeLongBreakSignal.set(prefs.pomodoro_sessions_before_long_break ?? 4);
-    });
+    this.facade.init();
   }
 
   ngOnDestroy(): void {
@@ -219,6 +205,36 @@ export class PomodoroTimerComponent implements OnInit, OnDestroy {
     this.isDropdownOpenSignal.set(false);
   }
 
+  public onStart(): void {
+    const started: boolean = this.facade.start();
+    if (started) {
+      this.closeDropdown();
+    } else {
+      this.closeDropdown();
+    }
+  }
+
+  public onStartConfirmed(): void {
+    this.facade.startConfirmed(this.dontShowAgainChecked);
+  }
+
+  public onPause(): void {
+    this.facade.pause();
+  }
+
+  public onResume(): void {
+    this.facade.resume();
+  }
+
+  public onReset(): void {
+    this.facade.reset();
+    this.closeDropdown();
+  }
+
+  public onSkip(): void {
+    this.facade.skip();
+  }
+
   private openDropdown(): void {
     if (this.overlayRef) return;
 
@@ -239,68 +255,14 @@ export class PomodoroTimerComponent implements OnInit, OnDestroy {
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
     });
 
-    const portal = new TemplatePortal(this.dropdownTpl(), this.vcr);
+    const portal: TemplatePortal<unknown> = new TemplatePortal(this.dropdownTpl(), this.vcr);
     this.overlayRef.attach(portal);
 
     this.overlayRef.backdropClick().subscribe(() => this.closeDropdown());
-    this.overlayRef.keydownEvents().subscribe(event => {
+    this.overlayRef.keydownEvents().subscribe((event: KeyboardEvent) => {
       if (event.key === 'Escape') this.closeDropdown();
     });
 
     this.isDropdownOpenSignal.set(true);
-  }
-
-  public onStart(): void {
-    if (!this.focusReminderDismissedSignal()) {
-      this.closeDropdown();
-      this.showFocusReminderSignal.set(true);
-    } else {
-      this.pomodoroService.start();
-      this.closeDropdown();
-    }
-  }
-
-  public onStartConfirmed(): void {
-    if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
-      Notification.requestPermission().catch(() => {});
-    }
-
-    this.showFocusReminderSignal.set(false);
-
-    if (this.dontShowAgainChecked) {
-      this.focusReminderDismissedSignal.set(true);
-      this.prefsService.updatePreferences({
-        pomodoro_focus_reminder_dismissed: true
-      }).subscribe();
-    }
-
-    this.pomodoroService.start();
-  }
-
-  public onPause(): void {
-    this.pomodoroService.pause();
-  }
-
-  public onResume(): void {
-    this.pomodoroService.resume();
-  }
-
-  public onReset(): void {
-    this.pomodoroService.reset();
-    this.closeDropdown();
-  }
-
-  public onSkip(): void {
-    this.pomodoroService.skip();
-  }
-
-  public formatTime(seconds: number): string {
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-  }
-
-  public getDefaultDuration(): number {
-    return 25 * 60;
   }
 }

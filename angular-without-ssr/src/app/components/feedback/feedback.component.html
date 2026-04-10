@@ -3,14 +3,14 @@
   <h1 class="feedback__title">{{ t('title') }}</h1>
   <p class="feedback__subtitle">{{ t('subtitle') }}</p>
 
-  @if (submittedSignal()) {
+  @if (facade.submittedSignal()) {
     <div class="feedback__success">
       <div class="feedback__success-icon">
         <i class="pi pi-check-circle"></i>
       </div>
       <h2 class="feedback__success-title">{{ t('successTitle') }}</h2>
       <p class="feedback__success-text">{{ t('successText') }}</p>
-      <button class="feedback__btn feedback__btn--secondary" (click)="sendAnother()">
+      <button class="feedback__btn feedback__btn--secondary" (click)="facade.sendAnother()">
         {{ t('sendAnother') }}
       </button>
     </div>
@@ -21,14 +21,14 @@
         <label class="feedback__label">{{ t('typeLabel') }}</label>
         <div class="feedback__type-options">
           <button class="feedback__type-btn"
-                  [class.feedback__type-btn--active]="selectedTypeSignal() === 'bug'"
-                  (click)="selectType('bug')">
+                  [class.feedback__type-btn--active]="facade.selectedTypeSignal() === 'bug'"
+                  (click)="facade.selectType('bug')">
             <i class="pi pi-exclamation-triangle"></i>
             <span>{{ t('typeBug') }}</span>
           </button>
           <button class="feedback__type-btn feedback__type-btn--idea"
-                  [class.feedback__type-btn--active]="selectedTypeSignal() === 'idea'"
-                  (click)="selectType('idea')">
+                  [class.feedback__type-btn--active]="facade.selectedTypeSignal() === 'idea'"
+                  (click)="facade.selectType('idea')">
             <i class="pi pi-lightbulb"></i>
             <span>{{ t('typeIdea') }}</span>
           </button>
@@ -43,7 +43,7 @@
                  class="feedback__input"
                  [class.feedback__input--error]="feedbackForm.get('title')?.touched && feedbackForm.get('title')?.invalid"
                  formControlName="title"
-                 [placeholder]="selectedTypeSignal() === 'bug' ? t('titlePlaceholderBug') : t('titlePlaceholderIdea')"
+                 [placeholder]="facade.selectedTypeSignal() === 'bug' ? t('titlePlaceholderBug') : t('titlePlaceholderIdea')"
                  maxlength="200" />
           @if (feedbackForm.get('title')?.touched && feedbackForm.get('title')?.hasError('required')) {
             <span class="feedback__error">{{ t('errorRequired') }}</span>
@@ -59,7 +59,7 @@
                     class="feedback__textarea"
                     [class.feedback__textarea--error]="feedbackForm.get('description')?.touched && feedbackForm.get('description')?.invalid"
                     formControlName="description"
-                    [placeholder]="selectedTypeSignal() === 'bug' ? t('descPlaceholderBug') : t('descPlaceholderIdea')"
+                    [placeholder]="facade.selectedTypeSignal() === 'bug' ? t('descPlaceholderBug') : t('descPlaceholderIdea')"
                     rows="5"
                     maxlength="5000"></textarea>
           @if (feedbackForm.get('description')?.touched && feedbackForm.get('description')?.hasError('required')) {
@@ -72,11 +72,11 @@
 
         <button type="submit"
                 class="feedback__btn feedback__btn--primary"
-                [disabled]="submittingSignal()">
-          @if (submittingSignal()) {
+                [disabled]="facade.submittingSignal()">
+          @if (facade.submittingSignal()) {
             <i class="pi pi-spinner pi-spin"></i>
           }
-          {{ submittingSignal() ? t('sending') : t('send') }}
+          {{ facade.submittingSignal() ? t('sending') : t('send') }}
         </button>
       </form>
     </div>

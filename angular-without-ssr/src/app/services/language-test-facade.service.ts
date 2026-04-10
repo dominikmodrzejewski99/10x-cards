@@ -1,15 +1,20 @@
 import { Injectable, inject, signal, computed, WritableSignal, Signal } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
+import { switchMap } from 'rxjs';
 import { LanguageTestBankService } from './language-test-bank.service';
 import { LanguageTestService, TestAnswer } from './language-test.service';
 import { LanguageTestResultsService } from './language-test-results.service';
-import { TestDefinition, TestLevel, TestQuestion } from '../../types';
+import { FlashcardSetApiService } from './flashcard-set-api.service';
+import { FlashcardApiService } from './flashcard-api.service';
+import { TestDefinition, TestLevel, TestQuestion, LanguageTestResultDTO } from '../../types';
 
 @Injectable({ providedIn: 'root' })
 export class LanguageTestFacadeService {
   private readonly bankService: LanguageTestBankService = inject(LanguageTestBankService);
   private readonly testService: LanguageTestService = inject(LanguageTestService);
   private readonly resultsService: LanguageTestResultsService = inject(LanguageTestResultsService);
+  private readonly setApi: FlashcardSetApiService = inject(FlashcardSetApiService);
+  private readonly flashcardApi: FlashcardApiService = inject(FlashcardApiService);
   private readonly t: TranslocoService = inject(TranslocoService);
 
   private readonly _testDefinition: WritableSignal<TestDefinition | null> = signal<TestDefinition | null>(null);
@@ -64,6 +69,145 @@ export class LanguageTestFacadeService {
     return false;
   });
 
+  // --- List component state ---
+  public readonly availableLevelsSignal: Signal<{ level: TestLevel; title: string; description: string; questionCount: number; estimatedMinutes: number }[]> =
+    computed<{ level: TestLevel; title: string; description: string; questionCount: number; estimatedMinutes: number }[]>(() => this.bankService.getAvailableLevels());
+
+  // --- Results component state ---
+  private readonly _testResult: WritableSignal<LanguageTestResultDTO | null> = signal<LanguageTestResultDTO | null>(null);
+  private readonly _resultLoading: WritableSignal<boolean> = signal<boolean>(true);
+  private readonly _resultError: WritableSignal<string | null> = signal<string | null>(null);
+  private readonly _generatingFlashcards: WritableSignal<boolean> = signal<boolean>(false);
+  private readonly _flashcardsGenerated: WritableSignal<boolean> = signal<boolean>(false);
+
+  public readonly testResultSignal: Signal<LanguageTestResultDTO | null> = this._testResult.asReadonly();
+  public readonly resultLoadingSignal: Signal<boolean> = this._resultLoading.asReadonly();
+  public readonly resultErrorSignal: Signal<string | null> = this._resultError.asReadonly();
+  public readonly generatingFlashcardsSignal: Signal<boolean> = this._generatingFlashcards.asReadonly();
+  public readonly flashcardsGeneratedSignal: Signal<boolean> = this._flashcardsGenerated.asReadonly();
+
+  public readonly categoriesSignal: Signal<{ name: string; correct: number; total: number; percentage: number }[]> =
+    computed<{ name: string; correct: number; total: number; percentage: number }[]>(() => {
+      const r: LanguageTestResultDTO | null = this._testResult();
+      if (!r) return [];
+      return Object.entries(r.category_breakdown).map(([name, data]: [string, { correct: number; total: number }]) => ({
+        name,
+        correct: data.correct,
+        total: data.total,
+        percentage: Math.round((data.correct / data.total) * 100)
+      }));
+    });
+
+  // --- Widget component state ---
+  private readonly _latestResult: WritableSignal<LanguageTestResultDTO | null> = signal<LanguageTestResultDTO | null>(null);
+  private readonly _widgetLoading: WritableSignal<boolean> = signal<boolean>(true);
+
+  public readonly latestResultSignal: Signal<LanguageTestResultDTO | null> = this._latestResult.asReadonly();
+  public readonly widgetLoadingSignal: Signal<boolean> = this._widgetLoading.asReadonly();
+
+  // --- List methods ---
+  public getAvailableLevels(): { level: TestLevel; title: string; description: string; questionCount: number; estimatedMinutes: number }[] {
+    return this.bankService.getAvailableLevels();
+  }
+
+  // --- Results methods ---
+  public loadResult(level: TestLevel, stateResult?: LanguageTestResultDTO): void {
+    if (stateResult && stateResult.level === level) {
+      this._testResult.set(stateResult);
+      this._flashcardsGenerated.set(stateResult.generated_set_id !== null);
+      this._resultLoading.set(false);
+      return;
+    }
+
+    this._resultLoading.set(true);
+    this.resultsService.getLatestResult(level).subscribe({
+      next: (result: LanguageTestResultDTO | null) => {
+        if (result) {
+          this._testResult.set(result);
+          this._flashcardsGenerated.set(result.generated_set_id !== null);
+        }
+        this._resultLoading.set(false);
+      },
+      error: () => {
+        this._resultError.set(this.t.translate('languageTest.errors.loadResultsFailed'));
+        this._resultLoading.set(false);
+      }
+    });
+  }
+
+  public generateFlashcards(): void {
+    const r: LanguageTestResultDTO | null = this._testResult();
+    if (!r || r.wrong_answers.length === 0) return;
+
+    this._generatingFlashcards.set(true);
+
+    const today: string = new Date().toISOString().split('T')[0];
+    const levelLabel: string = r.level === 'b1' ? 'B1' : r.level === 'b2-fce' ? 'B2 FCE' : 'C1 CAE';
+
+    this.setApi.createSet({
+      name: `Błędy ${levelLabel} — ${today}`,
+      description: `Fiszki z błędnych odpowiedzi w teście ${levelLabel}`
+    }).pipe(
+      switchMap((set) => {
+        const proposals: { front: string; back: string; source: 'test' }[] = r.wrong_answers.map((wa) => ({
+          front: wa.front,
+          back: wa.back,
+          source: 'test' as const
+        }));
+        return this.flashcardApi.createFlashcards(proposals, set.id).pipe(
+          switchMap(() => this.resultsService.updateGeneratedSetId(r.id, set.id))
+        );
+      })
+    ).subscribe({
+      next: () => {
+        this._flashcardsGenerated.set(true);
+        this._generatingFlashcards.set(false);
+      },
+      error: () => {
+        this._resultError.set(this.t.translate('languageTest.errors.createFlashcardsFailed'));
+        this._generatingFlashcards.set(false);
+      }
+    });
+  }
+
+  public getLevelLabel(): string {
+    const r: LanguageTestResultDTO | null = this._testResult();
+    if (!r) return '';
+    if (r.level === 'b1') return 'B1 Preliminary';
+    if (r.level === 'b2-fce') return 'B2 First (FCE)';
+    return 'C1 Advanced (CAE)';
+  }
+
+  // --- Widget methods ---
+  public loadLatestResult(): void {
+    this._widgetLoading.set(true);
+    this.resultsService.getLatestResult().subscribe({
+      next: (result: LanguageTestResultDTO | null) => {
+        this._latestResult.set(result);
+        this._widgetLoading.set(false);
+      },
+      error: () => this._widgetLoading.set(false)
+    });
+  }
+
+  public getWidgetLevelLabel(level: string): string {
+    if (level === 'b1') return 'B1';
+    if (level === 'b2-fce') return 'B2 FCE';
+    return 'C1 CAE';
+  }
+
+  public getRelativeDate(dateStr: string): string {
+    const now: Date = new Date();
+    const then: Date = new Date(dateStr);
+    const todayMidnight: Date = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const thenMidnight: Date = new Date(then.getFullYear(), then.getMonth(), then.getDate());
+    const days: number = Math.round((todayMidnight.getTime() - thenMidnight.getTime()) / 86400000);
+    if (days === 0) return 'Dzisiaj';
+    if (days === 1) return 'Wczoraj';
+    return `${days} dni temu`;
+  }
+
+  // --- Test execution methods ---
   public loadTest(level: TestLevel): void {
     this._loading.set(true);
     this._error.set(null);

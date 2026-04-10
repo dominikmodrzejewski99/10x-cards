@@ -2,7 +2,7 @@
 <div class="quiz-list">
   <h1 class="quiz-list__title">{{ t('title') }}</h1>
 
-  @if (loadingSignal()) {
+  @if (facade.quizSetsLoadingSignal()) {
     <div class="quiz-list__grid">
       @for (_ of [1,2,3]; track $index) {
         <div class="quiz-list__card">
@@ -20,13 +20,13 @@
     </div>
   }
 
-  @if (errorSignal()) {
+  @if (facade.quizSetsErrorSignal()) {
     <div class="quiz-list__state">
-      <p class="quiz-list__state-text">{{ errorSignal() }}</p>
+      <p class="quiz-list__state-text">{{ facade.quizSetsErrorSignal() }}</p>
     </div>
   }
 
-  @if (!loadingSignal() && !errorSignal() && setsSignal().length === 0) {
+  @if (!facade.quizSetsLoadingSignal() && !facade.quizSetsErrorSignal() && facade.quizSetsSignal().length === 0) {
     <div class="quiz-list__state fade-in">
       <i class="pi pi-folder-open quiz-list__state-icon"></i>
       <p class="quiz-list__state-text">{{ t('noSets') }}</p>
@@ -36,9 +36,9 @@
     </div>
   }
 
-  @if (!loadingSignal() && !errorSignal() && setsSignal().length > 0) {
+  @if (!facade.quizSetsLoadingSignal() && !facade.quizSetsErrorSignal() && facade.quizSetsSignal().length > 0) {
     <div class="quiz-list__grid fade-in">
-      @for (item of setsSignal(); track item.set.id) {
+      @for (item of facade.quizSetsSignal(); track item.set.id) {
         <div class="quiz-list__card">
           <div class="quiz-list__card-body">
             <h3 class="quiz-list__card-name">{{ item.set.name }}</h3>

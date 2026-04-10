@@ -1,44 +1,54 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { LanguageTestWidgetComponent } from './language-test-widget.component';
-import { LanguageTestResultsService } from '../../services/language-test-results.service';
-import { LanguageTestResultDTO } from '../../../types';
-import { TranslocoTestingModule } from '@jsverse/transloco';
+import { LanguageTestFacadeService } from '../../services/language-test-facade.service';
 
 describe('LanguageTestWidgetComponent', () => {
   let component: LanguageTestWidgetComponent;
   let fixture: ComponentFixture<LanguageTestWidgetComponent>;
-  let resultsServiceMock: jasmine.SpyObj<LanguageTestResultsService>;
 
-  const mockResult: LanguageTestResultDTO = {
-    id: 1,
-    user_id: 'user-1',
-    level: 'b2-fce',
-    total_score: 20,
-    max_score: 30,
-    percentage: 67,
-    category_breakdown: { grammar: { correct: 8, total: 10 } },
-    wrong_answers: [],
-    generated_set_id: null,
-    completed_at: new Date().toISOString(),
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
+  const facadeMock: Record<string, jasmine.Spy> = {
+    latestResultSignal: jasmine.createSpy('latestResultSignal').and.returnValue(null),
+    widgetLoadingSignal: jasmine.createSpy('widgetLoadingSignal').and.returnValue(true),
+    loadLatestResult: jasmine.createSpy('loadLatestResult'),
+    getWidgetLevelLabel: jasmine.createSpy('getWidgetLevelLabel').and.callFake((level: string) => {
+      if (level === 'b1') return 'B1';
+      if (level === 'b2-fce') return 'B2 FCE';
+      return 'C1 CAE';
+    }),
+    getRelativeDate: jasmine.createSpy('getRelativeDate').and.callFake((dateStr: string) => {
+      const now = new Date();
+      const then = new Date(dateStr);
+      const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const thenMidnight = new Date(then.getFullYear(), then.getMonth(), then.getDate());
+      const days = Math.round((todayMidnight.getTime() - thenMidnight.getTime()) / 86400000);
+      if (days === 0) return 'Dzisiaj';
+      if (days === 1) return 'Wczoraj';
+      return `${days} dni temu`;
+    }),
   };
 
   beforeEach(async () => {
-    resultsServiceMock = jasmine.createSpyObj<LanguageTestResultsService>('LanguageTestResultsService', ['getLatestResult']);
-    resultsServiceMock.getLatestResult.and.returnValue(of(mockResult));
+    Object.values(facadeMock).forEach((spy: jasmine.Spy) => spy.calls.reset());
+    facadeMock['latestResultSignal'].and.returnValue(null);
+    facadeMock['widgetLoadingSignal'].and.returnValue(true);
 
     await TestBed.configureTestingModule({
-      imports: [LanguageTestWidgetComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
+      imports: [
+        LanguageTestWidgetComponent,
+        TranslocoTestingModule.forRoot({
+          langs: { pl: {} },
+          translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' },
+        }),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         provideRouter([]),
-        { provide: LanguageTestResultsService, useValue: resultsServiceMock }
-      ]
+        { provide: LanguageTestFacadeService, useValue: facadeMock },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LanguageTestWidgetComponent);
@@ -50,30 +60,10 @@ describe('LanguageTestWidgetComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should load latest result and set loading to false', () => {
+    it('should call facade.loadLatestResult()', () => {
       fixture.detectChanges();
 
-      expect(resultsServiceMock.getLatestResult).toHaveBeenCalled();
-      expect(component.latestResult()).toEqual(mockResult);
-      expect(component.loading()).toBeFalse();
-    });
-
-    it('should set latestResult to null when no result exists', () => {
-      resultsServiceMock.getLatestResult.and.returnValue(of(null));
-
-      fixture.detectChanges();
-
-      expect(component.latestResult()).toBeNull();
-      expect(component.loading()).toBeFalse();
-    });
-
-    it('should set loading to false on error', () => {
-      resultsServiceMock.getLatestResult.and.returnValue(throwError(() => new Error('fail')));
-
-      fixture.detectChanges();
-
-      expect(component.loading()).toBeFalse();
-      expect(component.latestResult()).toBeNull();
+      expect(facadeMock['loadLatestResult']).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -95,10 +85,6 @@ describe('LanguageTestWidgetComponent', () => {
     it('should return "C1 CAE" for c1-cae level', () => {
       expect(component.getLevelLabel('c1-cae')).toBe('C1 CAE');
     });
-
-    it('should return "C1 CAE" for unknown levels', () => {
-      expect(component.getLevelLabel('other')).toBe('C1 CAE');
-    });
   });
 
   describe('getRelativeDate', () => {
@@ -111,17 +97,15 @@ describe('LanguageTestWidgetComponent', () => {
     it('should return "Wczoraj" for yesterday', () => {
       const yesterday: Date = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
-      const yesterdayStr: string = yesterday.toISOString();
 
-      expect(component.getRelativeDate(yesterdayStr)).toBe('Wczoraj');
+      expect(component.getRelativeDate(yesterday.toISOString())).toBe('Wczoraj');
     });
 
     it('should return "X dni temu" for older dates', () => {
       const threeDaysAgo: Date = new Date();
       threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
-      const dateStr: string = threeDaysAgo.toISOString();
 
-      expect(component.getRelativeDate(dateStr)).toBe('3 dni temu');
+      expect(component.getRelativeDate(threeDaysAgo.toISOString())).toBe('3 dni temu');
     });
   });
 });

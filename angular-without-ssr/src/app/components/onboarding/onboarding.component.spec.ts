@@ -1,60 +1,49 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { OnboardingComponent } from './onboarding.component';
-import { UserPreferencesService } from '../../services/user-preferences.service';
-import { UserPreferencesDTO } from '../../../types';
+import { OnboardingFacadeService } from '../../services/onboarding-facade.service';
 
 describe('OnboardingComponent', () => {
   let component: OnboardingComponent;
   let fixture: ComponentFixture<OnboardingComponent>;
   let routerSpy: jasmine.SpyObj<Router>;
-  let preferencesServiceSpy: jasmine.SpyObj<UserPreferencesService>;
 
-  const mockPreferences: UserPreferencesDTO = {
-    id: 1,
-    user_id: 'user-1',
-    theme: 'light',
-    language: 'pl',
-    onboarding_completed: false,
-    current_streak: 0,
-    longest_streak: 0,
-    last_study_date: null,
-    total_sessions: 0,
-    total_cards_reviewed: 0,
-    pomodoro_work_duration: 25,
-    pomodoro_break_duration: 5,
-    pomodoro_long_break_duration: 15,
-    pomodoro_sessions_before_long_break: 4,
-    pomodoro_sound_enabled: true,
-    pomodoro_notifications_enabled: true,
-    pomodoro_focus_reminder_dismissed: false,
-    dismissed_dialogs: [],
-    created_at: '2026-01-01',
-    updated_at: '2026-01-01'
+  const facadeMock = {
+    onboardingCompletedSignal: jasmine.createSpy('onboardingCompletedSignal').and.returnValue(false),
+    checkOnboardingStatus: jasmine.createSpy('checkOnboardingStatus').and.callFake((onShow: () => void) => {
+      onShow();
+    }),
+    completeOnboarding: jasmine.createSpy('completeOnboarding'),
   };
 
   beforeEach(async () => {
+    Object.values(facadeMock).forEach((spy: jasmine.Spy) => spy.calls.reset());
+
+    // Reset return values and callbacks that may have been mutated by previous tests
+    facadeMock.onboardingCompletedSignal.and.returnValue(false);
+    facadeMock.checkOnboardingStatus.and.callFake((onShow: () => void) => {
+      onShow();
+    });
+
     routerSpy = jasmine.createSpyObj<Router>('Router', ['navigate']);
     routerSpy.navigate.and.returnValue(Promise.resolve(true));
 
-    preferencesServiceSpy = jasmine.createSpyObj<UserPreferencesService>(
-      'UserPreferencesService',
-      ['getPreferences', 'setOnboardingCompleted']
-    );
-    preferencesServiceSpy.getPreferences.and.returnValue(of(mockPreferences));
-    preferencesServiceSpy.setOnboardingCompleted.and.returnValue(of(mockPreferences));
-
     await TestBed.configureTestingModule({
-      imports: [OnboardingComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
+      imports: [
+        OnboardingComponent,
+        TranslocoTestingModule.forRoot({
+          langs: { pl: {} },
+          translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' },
+        }),
+      ],
       providers: [
         { provide: Router, useValue: routerSpy },
-        { provide: UserPreferencesService, useValue: preferencesServiceSpy }
+        { provide: OnboardingFacadeService, useValue: facadeMock },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(OnboardingComponent);
@@ -99,7 +88,7 @@ describe('OnboardingComponent', () => {
     });
 
     it('isCentered should return false for steps with targets', () => {
-      component.currentStepIndex.set(1); // sets step
+      component.currentStepIndex.set(1);
       expect(component.isCentered()).toBeFalse();
     });
 
@@ -144,34 +133,30 @@ describe('OnboardingComponent', () => {
   });
 
   describe('checkAndShow', () => {
-    it('should show tour when onboarding_completed is false', () => {
+    it('should call facade.checkOnboardingStatus and show tour', () => {
       component.checkAndShow();
+
+      expect(facadeMock.checkOnboardingStatus).toHaveBeenCalled();
       expect(component.visible()).toBeTrue();
     });
 
-    it('should not show tour when onboarding_completed is true', () => {
-      preferencesServiceSpy.getPreferences.and.returnValue(
-        of({ ...mockPreferences, onboarding_completed: true })
-      );
+    it('should not show tour when facade does not call onShow', () => {
+      facadeMock.checkOnboardingStatus.and.callFake(() => {
+        // Does not call onShow -- simulates onboarding_completed=true
+      });
+
       component.checkAndShow();
+
       expect(component.visible()).toBeFalse();
-    });
-
-    it('should show tour on error (fallback)', () => {
-      preferencesServiceSpy.getPreferences.and.returnValue(
-        throwError(() => new Error('DB error'))
-      );
-      component.checkAndShow();
-      expect(component.visible()).toBeTrue();
     });
   });
 
   describe('skip', () => {
-    it('should hide tour and mark onboarding completed', () => {
+    it('should hide tour and call facade.completeOnboarding', () => {
       component.show();
       component.skip();
       expect(component.visible()).toBeFalse();
-      expect(preferencesServiceSpy.setOnboardingCompleted).toHaveBeenCalled();
+      expect(facadeMock.completeOnboarding).toHaveBeenCalled();
     });
 
     it('should clear spotlight rect', () => {
@@ -182,11 +167,11 @@ describe('OnboardingComponent', () => {
   });
 
   describe('finish', () => {
-    it('should hide tour, mark completed, and navigate to dashboard', () => {
+    it('should hide tour, call completeOnboarding, and navigate to dashboard', () => {
       component.show();
       component.finish();
       expect(component.visible()).toBeFalse();
-      expect(preferencesServiceSpy.setOnboardingCompleted).toHaveBeenCalled();
+      expect(facadeMock.completeOnboarding).toHaveBeenCalled();
       expect(routerSpy.navigate).toHaveBeenCalledWith(['/dashboard']);
     });
   });
@@ -227,7 +212,7 @@ describe('OnboardingComponent', () => {
   describe('spotlight positioning', () => {
     it('should have null spotlight for centered steps', fakeAsync(() => {
       component.show();
-      tick(16); // requestAnimationFrame
+      tick(16);
       expect(component.spotlightRect()).toBeNull();
     }));
 
@@ -259,7 +244,7 @@ describe('OnboardingComponent', () => {
     it('middle steps should have target selectors', () => {
       for (let i = 1; i < component.steps.length - 1; i++) {
         expect(component.steps[i].targetSelector).toBeTruthy(
-          `Step ${component.steps[i].id} should have a targetSelector`
+          `Step ${component.steps[i].id} should have a targetSelector`,
         );
       }
     });

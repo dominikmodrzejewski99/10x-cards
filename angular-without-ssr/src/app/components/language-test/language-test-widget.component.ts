@@ -1,13 +1,12 @@
 import { TranslocoDirective } from '@jsverse/transloco';
-import { Component, ChangeDetectionStrategy, ViewEncapsulation, inject, signal, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewEncapsulation, inject, OnInit, Signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { LanguageTestResultsService } from '../../services/language-test-results.service';
+import { LanguageTestFacadeService } from '../../services/language-test-facade.service';
 import { LanguageTestResultDTO } from '../../../types';
 
 @Component({
   selector: 'app-language-test-widget',
-  standalone: true,
   imports: [RouterModule, NgxSkeletonLoaderModule, TranslocoDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.Emulated,
@@ -213,34 +212,20 @@ import { LanguageTestResultDTO } from '../../../types';
   `]
 })
 export class LanguageTestWidgetComponent implements OnInit {
-  private resultsService = inject(LanguageTestResultsService);
-  latestResult = signal<LanguageTestResultDTO | null>(null);
-  loading = signal(true);
+  private readonly facade: LanguageTestFacadeService = inject(LanguageTestFacadeService);
 
-  ngOnInit(): void {
-    this.resultsService.getLatestResult().subscribe({
-      next: result => {
-        this.latestResult.set(result);
-        this.loading.set(false);
-      },
-      error: () => this.loading.set(false)
-    });
+  public readonly latestResult: Signal<LanguageTestResultDTO | null> = this.facade.latestResultSignal;
+  public readonly loading: Signal<boolean> = this.facade.widgetLoadingSignal;
+
+  public ngOnInit(): void {
+    this.facade.loadLatestResult();
   }
 
-  getLevelLabel(level: string): string {
-    if (level === 'b1') return 'B1';
-    if (level === 'b2-fce') return 'B2 FCE';
-    return 'C1 CAE';
+  public getLevelLabel(level: string): string {
+    return this.facade.getWidgetLevelLabel(level);
   }
 
-  getRelativeDate(dateStr: string): string {
-    const now = new Date();
-    const then = new Date(dateStr);
-    const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const thenMidnight = new Date(then.getFullYear(), then.getMonth(), then.getDate());
-    const days = Math.round((todayMidnight.getTime() - thenMidnight.getTime()) / 86400000);
-    if (days === 0) return 'Dzisiaj';
-    if (days === 1) return 'Wczoraj';
-    return `${days} dni temu`;
+  public getRelativeDate(dateStr: string): string {
+    return this.facade.getRelativeDate(dateStr);
   }
 }

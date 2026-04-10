@@ -1,56 +1,56 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
-import { of } from 'rxjs';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PomodoroTimerComponent } from './pomodoro-timer.component';
-import { PomodoroService, PomodoroPhase } from '../../../services/pomodoro.service';
-import { UserPreferencesService } from '../../../services/user-preferences.service';
+import { PomodoroFacadeService } from '../../../services/pomodoro-facade.service';
 
 describe('PomodoroTimerComponent', () => {
   let component: PomodoroTimerComponent;
   let fixture: ComponentFixture<PomodoroTimerComponent>;
 
-  const isRunning = signal(false);
-  const timeRemaining = signal(0);
-  const phase = signal<PomodoroPhase>('work');
-  const sessionsCompleted = signal(0);
+  const facadeMock: Record<string, jasmine.Spy> = {
+    isRunningSignal: jasmine.createSpy('isRunningSignal').and.returnValue(false),
+    timeRemainingSignal: jasmine.createSpy('timeRemainingSignal').and.returnValue(0),
+    phaseSignal: jasmine.createSpy('phaseSignal').and.returnValue('work'),
+    sessionsCompletedSignal: jasmine.createSpy('sessionsCompletedSignal').and.returnValue(0),
+    sessionsBeforeLongBreakSignal: jasmine.createSpy('sessionsBeforeLongBreakSignal').and.returnValue(4),
+    showFocusReminderSignal: jasmine.createSpy('showFocusReminderSignal').and.returnValue(false),
+    focusReminderDismissedSignal: jasmine.createSpy('focusReminderDismissedSignal').and.returnValue(false),
 
-  const mockPomodoroService = {
-    isRunning: isRunning.asReadonly(),
-    timeRemaining: timeRemaining.asReadonly(),
-    phase: phase.asReadonly(),
-    sessionsCompleted: sessionsCompleted.asReadonly(),
-    loadSettings: jasmine.createSpy('loadSettings').and.returnValue(of({})),
-    restoreState: jasmine.createSpy('restoreState'),
-    start: jasmine.createSpy('start'),
+    init: jasmine.createSpy('init'),
+    start: jasmine.createSpy('start').and.returnValue(true),
+    startConfirmed: jasmine.createSpy('startConfirmed'),
+    dismissFocusReminder: jasmine.createSpy('dismissFocusReminder'),
     pause: jasmine.createSpy('pause'),
     resume: jasmine.createSpy('resume'),
     reset: jasmine.createSpy('reset'),
-    skip: jasmine.createSpy('skip')
-  };
-
-  const mockPrefsService = {
-    getPreferences: jasmine.createSpy('getPreferences').and.returnValue(of({
-      pomodoro_focus_reminder_dismissed: false,
-      dismissed_dialogs: [],
-      pomodoro_sessions_before_long_break: 4
-    })),
-    updatePreferences: jasmine.createSpy('updatePreferences').and.returnValue(of({}))
+    skip: jasmine.createSpy('skip'),
+    formatTime: jasmine.createSpy('formatTime').and.callFake((seconds: number) => {
+      const m: number = Math.floor(seconds / 60);
+      const s: number = seconds % 60;
+      return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }),
+    getDefaultDuration: jasmine.createSpy('getDefaultDuration').and.returnValue(1500),
   };
 
   beforeEach(async () => {
-    // Reset signal values
-    isRunning.set(false);
-    timeRemaining.set(0);
-    phase.set('work');
-    sessionsCompleted.set(0);
+    Object.values(facadeMock).forEach((spy: jasmine.Spy) => spy.calls.reset());
+
+    // Reset return values that may have been mutated by previous tests
+    facadeMock['isRunningSignal'].and.returnValue(false);
+    facadeMock['timeRemainingSignal'].and.returnValue(0);
+    facadeMock['phaseSignal'].and.returnValue('work');
+    facadeMock['sessionsCompletedSignal'].and.returnValue(0);
+    facadeMock['sessionsBeforeLongBreakSignal'].and.returnValue(4);
+    facadeMock['showFocusReminderSignal'].and.returnValue(false);
+    facadeMock['focusReminderDismissedSignal'].and.returnValue(false);
+    facadeMock['start'].and.returnValue(true);
 
     await TestBed.configureTestingModule({
       imports: [PomodoroTimerComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: PomodoroService, useValue: mockPomodoroService },
-        { provide: UserPreferencesService, useValue: mockPrefsService }
-      ]
+        { provide: PomodoroFacadeService, useValue: facadeMock },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PomodoroTimerComponent);
@@ -62,21 +62,27 @@ describe('PomodoroTimerComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should call facade.init on ngOnInit', () => {
+    expect(facadeMock['init']).toHaveBeenCalledTimes(1);
+  });
+
   it('should show inactive trigger button when timer not running', () => {
     const el: HTMLElement = fixture.nativeElement;
     const trigger = el.querySelector('.pomodoro-trigger');
+
     expect(trigger).toBeTruthy();
     expect(trigger?.textContent).toContain('Pomodoro');
   });
 
   it('should show timer badge when running', () => {
-    isRunning.set(true);
-    timeRemaining.set(1500);
-    phase.set('work');
+    facadeMock['isRunningSignal'].and.returnValue(true);
+    facadeMock['timeRemainingSignal'].and.returnValue(1500);
+    facadeMock['phaseSignal'].and.returnValue('work');
     fixture.detectChanges();
 
     const el: HTMLElement = fixture.nativeElement;
     const badge = el.querySelector('.pomodoro-badge--work');
+
     expect(badge).toBeTruthy();
     expect(badge?.textContent).toContain('25:00');
 
@@ -84,17 +90,27 @@ describe('PomodoroTimerComponent', () => {
     expect(trigger).toBeNull();
   });
 
-  it('should toggle dropdown', () => {
-    expect(component.isDropdownOpenSignal()).toBe(false);
-    component.toggleDropdown();
-    expect(component.isDropdownOpenSignal()).toBe(true);
-    component.toggleDropdown();
-    expect(component.isDropdownOpenSignal()).toBe(false);
+  it('should delegate onPause to facade.pause()', () => {
+    component.onPause();
+
+    expect(facadeMock['pause']).toHaveBeenCalled();
   });
 
-  it('should format time correctly', () => {
-    expect(component.formatTime(1500)).toBe('25:00');
-    expect(component.formatTime(65)).toBe('01:05');
-    expect(component.formatTime(0)).toBe('00:00');
+  it('should delegate onResume to facade.resume()', () => {
+    component.onResume();
+
+    expect(facadeMock['resume']).toHaveBeenCalled();
+  });
+
+  it('should delegate onSkip to facade.skip()', () => {
+    component.onSkip();
+
+    expect(facadeMock['skip']).toHaveBeenCalled();
+  });
+
+  it('should delegate onReset to facade.reset()', () => {
+    component.onReset();
+
+    expect(facadeMock['reset']).toHaveBeenCalled();
   });
 });

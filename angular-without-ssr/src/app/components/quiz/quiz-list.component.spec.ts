@@ -1,65 +1,41 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
-
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { QuizListComponent } from './quiz-list.component';
-import { FlashcardSetApiService } from '../../services/flashcard-set-api.service';
-import { FlashcardSetDTO } from '../../../types';
+import { QuizFacadeService } from '../../services/quiz-facade.service';
 
 describe('QuizListComponent', () => {
   let component: QuizListComponent;
   let fixture: ComponentFixture<QuizListComponent>;
-
-  let flashcardSetApiMock: jasmine.SpyObj<FlashcardSetApiService>;
   let routerMock: jasmine.SpyObj<Router>;
 
-  const mockSet: FlashcardSetDTO = {
-    id: 1,
-    user_id: 'user-1',
-    name: 'English',
-    description: null,
-    tags: [],
-    is_public: false,
-    copy_count: 0,
-    published_at: null,
-    created_at: '2026-01-01T00:00:00Z',
-    updated_at: '2026-01-01T00:00:00Z'
+  const facadeMock: Record<string, jasmine.Spy> = {
+    quizSetsSignal: jasmine.createSpy('quizSetsSignal').and.returnValue([]),
+    quizSetsLoadingSignal: jasmine.createSpy('quizSetsLoadingSignal').and.returnValue(false),
+    quizSetsErrorSignal: jasmine.createSpy('quizSetsErrorSignal').and.returnValue(null),
+    loadQuizSets: jasmine.createSpy('loadQuizSets'),
   };
 
-  const mockSetsWithCount: { set: FlashcardSetDTO; cardCount: number }[] = [
-    { set: mockSet, cardCount: 15 },
-    {
-      set: {
-        id: 2, user_id: 'user-1', name: 'German', description: null,
-        tags: [], is_public: false, copy_count: 0, published_at: null,
-        created_at: '2026-01-02T00:00:00Z', updated_at: '2026-01-02T00:00:00Z'
-      },
-      cardCount: 8
-    }
-  ];
-
   beforeEach(async () => {
-    flashcardSetApiMock = jasmine.createSpyObj<FlashcardSetApiService>(
-      'FlashcardSetApiService',
-      ['getSetsWithCardCount']
-    );
-    routerMock = jasmine.createSpyObj<Router>('Router', ['navigate']);
+    Object.values(facadeMock).forEach((spy: jasmine.Spy) => spy.calls.reset());
 
-    flashcardSetApiMock.getSetsWithCardCount.and.returnValue(of(mockSetsWithCount));
+    routerMock = jasmine.createSpyObj<Router>('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
       imports: [
         QuizListComponent,
-        TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })
+        TranslocoTestingModule.forRoot({
+          langs: { pl: {} },
+          translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' },
+        }),
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: FlashcardSetApiService, useValue: flashcardSetApiMock },
-        { provide: Router, useValue: routerMock }
-      ]
+        { provide: QuizFacadeService, useValue: facadeMock },
+        { provide: Router, useValue: routerMock },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(QuizListComponent);
@@ -71,39 +47,10 @@ describe('QuizListComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should load sets with card counts using a single query', () => {
+    it('should call facade.loadQuizSets()', () => {
       fixture.detectChanges();
 
-      expect(flashcardSetApiMock.getSetsWithCardCount).toHaveBeenCalledTimes(1);
-      expect(component.setsSignal().length).toBe(2);
-      expect(component.setsSignal()[0].cardCount).toBe(15);
-      expect(component.setsSignal()[1].cardCount).toBe(8);
-      expect(component.loadingSignal()).toBeFalse();
-      expect(component.errorSignal()).toBeNull();
-    });
-  });
-
-  describe('empty state', () => {
-    it('should show empty state when no sets are returned', () => {
-      flashcardSetApiMock.getSetsWithCardCount.and.returnValue(of([]));
-
-      fixture.detectChanges();
-
-      expect(component.setsSignal().length).toBe(0);
-      expect(component.loadingSignal()).toBeFalse();
-    });
-  });
-
-  describe('error handling', () => {
-    it('should set error signal on load failure', () => {
-      flashcardSetApiMock.getSetsWithCardCount.and.returnValue(
-        throwError(() => new Error('Network error'))
-      );
-
-      fixture.detectChanges();
-
-      expect(component.errorSignal()).toBe('quiz.errors.loadSetsFailed');
-      expect(component.loadingSignal()).toBeFalse();
+      expect(facadeMock['loadQuizSets']).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -122,13 +69,6 @@ describe('QuizListComponent', () => {
       component.onGoToSets();
 
       expect(routerMock.navigate).toHaveBeenCalledWith(['/sets']);
-    });
-  });
-
-  describe('loading state', () => {
-    it('should start with loading true', () => {
-      // Before detectChanges triggers ngOnInit
-      expect(component.loadingSignal()).toBeTrue();
     });
   });
 });

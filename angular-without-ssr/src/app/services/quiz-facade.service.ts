@@ -5,6 +5,7 @@ import { FlashcardSetApiService } from './flashcard-set-api.service';
 import { QuizService } from './quiz.service';
 import {
   FlashcardDTO,
+  FlashcardSetDTO,
   QuizConfig,
   QuizQuestion,
   QuizAnswer,
@@ -13,6 +14,11 @@ import {
 
 export type QuizPhase = 'loading' | 'error' | 'config' | 'test' | 'results';
 
+export interface QuizSetItem {
+  set: FlashcardSetDTO;
+  cardCount: number;
+}
+
 @Injectable({ providedIn: 'root' })
 export class QuizFacadeService {
   private readonly flashcardApi: FlashcardApiService = inject(FlashcardApiService);
@@ -20,6 +26,16 @@ export class QuizFacadeService {
   private readonly quizService: QuizService = inject(QuizService);
   private readonly t: TranslocoService = inject(TranslocoService);
 
+  // --- Quiz list state ---
+  private readonly _quizSets: WritableSignal<QuizSetItem[]> = signal<QuizSetItem[]>([]);
+  private readonly _quizSetsLoading: WritableSignal<boolean> = signal<boolean>(true);
+  private readonly _quizSetsError: WritableSignal<string | null> = signal<string | null>(null);
+
+  public readonly quizSetsSignal: Signal<QuizSetItem[]> = this._quizSets.asReadonly();
+  public readonly quizSetsLoadingSignal: Signal<boolean> = this._quizSetsLoading.asReadonly();
+  public readonly quizSetsErrorSignal: Signal<string | null> = this._quizSetsError.asReadonly();
+
+  // --- Quiz session state ---
   private readonly _phase: WritableSignal<QuizPhase> = signal<QuizPhase>('loading');
   private readonly _errorMessage: WritableSignal<string> = signal<string>('');
   private readonly _setId: WritableSignal<number> = signal<number>(0);
@@ -50,6 +66,22 @@ export class QuizFacadeService {
 
   private lastConfig: QuizConfig | null = null;
   private questionStartTime: number = 0;
+
+  public loadQuizSets(): void {
+    this._quizSetsLoading.set(true);
+    this._quizSetsError.set(null);
+
+    this.setApi.getSetsWithCardCount().subscribe({
+      next: (items: QuizSetItem[]) => {
+        this._quizSets.set(items);
+        this._quizSetsLoading.set(false);
+      },
+      error: () => {
+        this._quizSetsError.set(this.t.translate('quiz.errors.loadSetsFailed'));
+        this._quizSetsLoading.set(false);
+      },
+    });
+  }
 
   public loadSetData(setId: number): void {
     this._phase.set('loading');

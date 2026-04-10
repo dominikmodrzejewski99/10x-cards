@@ -1,43 +1,43 @@
 <ng-container *transloco="let t; prefix: 'notifications'">
 <div class="notif-bell">
-  <button class="notif-bell__btn" (click)="togglePanel()" [attr.aria-label]="t('title')">
+  <button class="notif-bell__btn" (click)="facade.togglePanel()" [attr.aria-label]="t('title')">
     <i class="pi pi-bell"></i>
-    @if (unreadCount() > 0) {
-      <span class="notif-bell__badge">{{ unreadCount() > 9 ? '9+' : unreadCount() }}</span>
+    @if (facade.unreadCountSignal() > 0) {
+      <span class="notif-bell__badge">{{ facade.unreadCountSignal() > 9 ? '9+' : facade.unreadCountSignal() }}</span>
     }
   </button>
 
-  @if (panelOpen()) {
+  @if (facade.panelOpenSignal()) {
     <div class="notif-bell__panel">
       <div class="notif-bell__header">
         <span class="notif-bell__title">{{ t('title') }}</span>
-        @if (unreadCount() > 0) {
-          <button class="notif-bell__mark-all" (click)="markAllAsRead()">
+        @if (facade.unreadCountSignal() > 0) {
+          <button class="notif-bell__mark-all" (click)="facade.markAllAsRead()">
             {{ t('markAllRead') }}
           </button>
         }
       </div>
 
       <div class="notif-bell__list">
-        @if (loading()) {
+        @if (facade.loadingSignal()) {
           <div class="notif-bell__loading">
             <i class="pi pi-spin pi-spinner"></i>
           </div>
-        } @else if (notifications().length === 0) {
+        } @else if (facade.notificationsSignal().length === 0) {
           <div class="notif-bell__empty">{{ t('empty') }}</div>
         } @else {
-          @for (notif of notifications(); track notif.id) {
+          @for (notif of facade.notificationsSignal(); track notif.id) {
             <button
               class="notif-bell__item"
               [class.notif-bell__item--unread]="!notif.read"
-              (click)="onNotificationClick(notif)">
-              <i class="pi notif-bell__item-icon" [ngClass]="getNotificationIcon(notif.type)"></i>
+              (click)="facade.onNotificationClick(notif)">
+              <i class="pi notif-bell__item-icon" [ngClass]="facade.getNotificationIcon(notif.type)"></i>
               <div class="notif-bell__item-body">
                 <span class="notif-bell__item-text">
                   {{ t(notif.type, { email: notif.data['from_email'] || '***', set_name: notif.data['set_name'] || '' }) }}
                 </span>
                 @if (notif.type === 'deck_shared' && !notif.read) {
-                  <button class="notif-bell__accept-btn" (click)="acceptDeckShare(notif, $event)">
+                  <button class="notif-bell__accept-btn" (click)="facade.acceptDeckShare(notif); $event.stopPropagation()">
                     <i class="pi pi-check"></i> {{ t('acceptDeck') }}
                   </button>
                 }
