@@ -1,6 +1,6 @@
 <ng-container *transloco="let t; prefix: 'languageTest.view'">
 <div class="test-view">
-  @if (loadingSignal()) {
+  @if (facade.loadingSignal()) {
     <!-- Progress skeleton -->
     <div class="test-view__progress">
       <ngx-skeleton-loader [theme]="{ width: '3rem', height: '0.85rem' }"></ngx-skeleton-loader>
@@ -19,16 +19,16 @@
     <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
       <ngx-skeleton-loader [theme]="{ width: '8rem', height: '2.5rem', 'border-radius': '0.5rem' }"></ngx-skeleton-loader>
     </div>
-  } @else if (errorSignal()) {
+  } @else if (facade.errorSignal()) {
     <div class="test-view__error">
       <i class="pi pi-exclamation-triangle"></i>
-      <p>{{ errorSignal() }}</p>
+      <p>{{ facade.errorSignal() }}</p>
       <a routerLink="/language-test" class="test-view__back">← {{ t('backToTests') }}</a>
     </div>
-  } @else if (currentQuestionSignal(); as q) {
+  } @else if (facade.currentQuestionSignal(); as q) {
     <!-- Progress header -->
     <div class="test-view__header fade-in">
-      <span class="test-view__counter">{{ currentIndexSignal() + 1 }}/{{ testDefinitionSignal()!.questions.length }}</span>
+      <span class="test-view__counter">{{ facade.currentIndexSignal() + 1 }}/{{ facade.testDefinitionSignal()!.questions.length }}</span>
       <span class="test-view__type">
         {{ q.type === 'multiple-choice-cloze' ? t('multipleChoice') : t('wordFormation') }}
       </span>
@@ -37,21 +37,21 @@
     <!-- Progress bar -->
     <div class="test-view__progress fade-in">
       <div class="test-view__progress-bar">
-        <div class="test-view__progress-fill" [style.width.%]="progressSignal()"></div>
+        <div class="test-view__progress-fill" [style.width.%]="facade.progressSignal()"></div>
       </div>
     </div>
 
     <!-- Multiple Choice Cloze -->
     @if (q.type === 'multiple-choice-cloze') {
       <div class="test-view__question">
-        <p class="test-view__sentence">{{ splitByGap(q.text).before }}<span class="test-view__gap">______</span>{{ splitByGap(q.text).after }}</p>
+        <p class="test-view__sentence">{{ facade.splitByGap(q.text).before }}<span class="test-view__gap">______</span>{{ facade.splitByGap(q.text).after }}</p>
       </div>
       <div class="test-view__options">
         @for (option of q.options; track $index) {
           <button
             class="test-view__option"
-            [class.test-view__option--selected]="selectedOptionSignal() === $index"
-            (click)="selectOption($index)"
+            [class.test-view__option--selected]="facade.selectedOptionSignal() === $index"
+            (click)="facade.selectOption($index)"
           >
             <span class="test-view__option-letter">{{ ['A','B','C','D'][$index] }}</span>
             <span class="test-view__option-text">{{ option }}</span>
@@ -64,7 +64,7 @@
     <!-- Word Formation -->
     @if (q.type === 'word-formation') {
       <div class="test-view__question">
-        <p class="test-view__sentence">{{ splitByGap(q.text).before }}<span class="test-view__gap test-view__gap--dashed">______</span>{{ splitByGap(q.text).after }}</p>
+        <p class="test-view__sentence">{{ facade.splitByGap(q.text).before }}<span class="test-view__gap test-view__gap--dashed">______</span>{{ facade.splitByGap(q.text).after }}</p>
       </div>
       <div class="test-view__base-word">
         <span class="test-view__base-word-label">{{ t('baseWord') }}</span>
@@ -73,10 +73,10 @@
       <input
         type="text"
         class="test-view__input"
-        [ngModel]="wordFormationInputSignal()"
-        (ngModelChange)="wordFormationInputSignal.set($event)"
+        [ngModel]="facade.wordFormationInputSignal()"
+        (ngModelChange)="facade.setWordFormationInput($event)"
         [placeholder]="t('inputPlaceholder')"
-        (keydown.enter)="canProceedSignal() && next()"
+        (keydown.enter)="facade.canProceedSignal() && next()"
       />
     }
 
@@ -84,29 +84,29 @@
     <div class="test-view__actions">
       <button
         class="test-view__prev"
-        [disabled]="isFirstQuestionSignal()"
-        (click)="previous()"
+        [disabled]="facade.isFirstQuestionSignal()"
+        (click)="facade.previous()"
       >
         {{ t('previous') }}
       </button>
 
       <div class="test-view__actions-right">
-        @if (!isLastQuestionSignal()) {
+        @if (!facade.isLastQuestionSignal()) {
           <button
             class="test-view__skip"
-            (click)="skip()"
+            (click)="facade.skip()"
           >
             {{ t('skip') }}
           </button>
         }
         <button
           class="test-view__next"
-          [disabled]="!canProceedSignal() || submittingSignal()"
+          [disabled]="!facade.canProceedSignal() || facade.submittingSignal()"
           (click)="next()"
         >
-          @if (submittingSignal()) {
+          @if (facade.submittingSignal()) {
             <i class="pi pi-spin pi-spinner"></i> {{ t('saving') }}
-          } @else if (isLastQuestionSignal()) {
+          } @else if (facade.isLastQuestionSignal()) {
             {{ t('finish') }}
           } @else {
             {{ t('next') }}

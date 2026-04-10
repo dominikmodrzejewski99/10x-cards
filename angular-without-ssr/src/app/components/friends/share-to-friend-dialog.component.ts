@@ -1,12 +1,10 @@
 import {
-  Component, ChangeDetectionStrategy, inject, signal, input, output, effect
+  Component, ChangeDetectionStrategy, inject, input, output, effect
 } from '@angular/core';
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
 import { SpinnerComponent } from '../../shared/components/spinner/spinner.component';
-import { ToastService } from '../../shared/services/toast.service';
-import { FriendshipService } from '../../services/friendship.service';
-import { FriendDTO } from '../../../types';
+import { FriendsFacadeService } from '../../services/friends-facade.service';
 
 @Component({
   selector: 'app-share-to-friend-dialog',
@@ -16,66 +14,30 @@ import { FriendDTO } from '../../../types';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShareToFriendDialogComponent {
-  private friendshipService = inject(FriendshipService);
-  private toastService = inject(ToastService);
-  private t: TranslocoService = inject(TranslocoService);
+  readonly facade: FriendsFacadeService = inject(FriendsFacadeService);
 
   setId = input.required<number>();
   visible = input.required<boolean>();
   visibleChange = output<boolean>();
 
-  readonly friends = signal<FriendDTO[]>([]);
-  readonly loading = signal(false);
-  readonly sharedTo = signal<Set<string>>(new Set());
-  readonly sharing = signal<string | null>(null);
-
   constructor() {
     effect(() => {
       if (this.visible()) {
-        this.loadFriends();
+        this.facade.loadShareFriends();
       }
     });
   }
 
-  private async loadFriends(): Promise<void> {
-    this.loading.set(true);
-    try {
-      const friends = await this.friendshipService.getFriends();
-      this.friends.set(friends);
-    } catch {
-      this.toastService.add({
-        severity: 'error',
-        summary: this.t.translate('toasts.error'),
-        detail: this.t.translate('friends.toasts.loadFriendsFailed')
-      });
-    } finally {
-      this.loading.set(false);
-    }
-  }
-
-  async shareToFriend(friendUserId: string): Promise<void> {
-    this.sharing.set(friendUserId);
-    try {
-      await this.friendshipService.shareDeckToFriend(this.setId(), friendUserId);
-      this.sharedTo.update(set => new Set(set).add(friendUserId));
-      this.toastService.add({
-        severity: 'success',
-        summary: this.t.translate('toasts.shared'),
-        detail: this.t.translate('friends.toasts.setShared')
-      });
-    } catch (error: unknown) {
-      const msg: string = (error as { message?: string })?.message || this.t.translate('friends.toasts.shareFailed');
-      this.toastService.add({ severity: 'error', summary: this.t.translate('toasts.error'), detail: msg });
-    } finally {
-      this.sharing.set(null);
-    }
+  shareToFriend(friendUserId: string): void {
+    this.facade.shareToFriend(this.setId(), friendUserId);
   }
 
   isShared(friendUserId: string): boolean {
-    return this.sharedTo().has(friendUserId);
+    return this.facade.isShared(friendUserId);
   }
 
   close(): void {
+    this.facade.resetShareState();
     this.visibleChange.emit(false);
   }
 }

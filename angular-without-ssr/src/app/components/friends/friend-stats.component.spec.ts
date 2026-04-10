@@ -1,30 +1,38 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs';
 import { TranslocoTestingModule } from '@jsverse/transloco';
-import { ToastService } from '../../shared/services/toast.service';
+
 import { FriendStatsComponent } from './friend-stats.component';
-import { FriendshipService } from '../../services/friendship.service';
-import { UserPreferencesService } from '../../services/user-preferences.service';
+import { FriendsFacadeService } from '../../services/friends-facade.service';
 
 describe('FriendStatsComponent', () => {
   let component: FriendStatsComponent;
   let fixture: ComponentFixture<FriendStatsComponent>;
-  let friendshipServiceMock: jasmine.SpyObj<FriendshipService>;
   let routerMock: jasmine.SpyObj<Router>;
+  let activatedRouteMock: { snapshot: { paramMap: { get: jasmine.Spy } } };
+
+  const facadeMock: Record<string, jasmine.Spy> = {
+    friendStatsSignal: jasmine.createSpy('friendStatsSignal').and.returnValue(null),
+    myStatsSignal: jasmine.createSpy('myStatsSignal').and.returnValue(null),
+    statsLoadingSignal: jasmine.createSpy('statsLoadingSignal').and.returnValue(false),
+    statsErrorSignal: jasmine.createSpy('statsErrorSignal').and.returnValue(false),
+
+    loadFriendStats: jasmine.createSpy('loadFriendStats'),
+  };
 
   beforeEach(async () => {
-    friendshipServiceMock = jasmine.createSpyObj('FriendshipService', ['getFriendStats']);
-    routerMock = jasmine.createSpyObj('Router', ['navigate']);
+    Object.values(facadeMock).forEach((spy: jasmine.Spy) => spy.calls.reset());
 
-    const prefsMock = {
-      getPreferences: () => of({
-        current_streak: 10,
-        longest_streak: 20,
-        total_sessions: 50,
-        total_cards_reviewed: 500,
-        last_study_date: '2026-04-01'
-      })
+    routerMock = jasmine.createSpyObj<Router>('Router', ['navigate']);
+    activatedRouteMock = {
+      snapshot: {
+        paramMap: {
+          get: jasmine.createSpy('get').and.callFake(
+            (key: string): string | null => key === 'userId' ? 'user-123' : null
+          ),
+        },
+      },
     };
 
     await TestBed.configureTestingModule({
@@ -32,86 +40,47 @@ describe('FriendStatsComponent', () => {
         FriendStatsComponent,
         TranslocoTestingModule.forRoot({
           langs: { pl: {} },
-          translocoConfig: { availableLangs: ['pl'], defaultLang: 'pl' }
-        })
+          translocoConfig: { availableLangs: ['pl'], defaultLang: 'pl' },
+        }),
       ],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: FriendshipService, useValue: friendshipServiceMock },
-        { provide: UserPreferencesService, useValue: prefsMock },
+        { provide: FriendsFacadeService, useValue: facadeMock },
         { provide: Router, useValue: routerMock },
-        {
-          provide: ActivatedRoute,
-          useValue: { snapshot: { paramMap: { get: () => 'user-123' } } }
-        }
-      ]
-    })
-    .overrideComponent(FriendStatsComponent, {
-      set: { providers: [{ provide: ToastService, useValue: jasmine.createSpyObj('ToastService', ['add']) }] }
-    })
-    .compileComponents();
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FriendStatsComponent);
     component = fixture.componentInstance;
   });
 
-  it('powinien utworzyc komponent', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('powinien zaladowac statystyki przy init', async () => {
-    friendshipServiceMock.getFriendStats.and.returnValue(Promise.resolve({
-      user_id: 'user-123',
-      email_masked: 'te...@test.com',
-      current_streak: 5,
-      longest_streak: 15,
-      total_sessions: 30,
-      total_cards_reviewed: 300,
-      last_study_date: '2026-03-30',
-      last_active_at: null
-    }));
+  describe('ngOnInit', () => {
+    it('should call facade.loadFriendStats with userId from route', () => {
+      component.ngOnInit();
 
-    component.ngOnInit();
-    // Wait for all microtasks (Promises) to resolve
-    await new Promise(resolve => setTimeout(resolve, 0));
-    await fixture.whenStable();
+      expect(facadeMock['loadFriendStats']).toHaveBeenCalledWith('user-123');
+    });
 
-    expect(friendshipServiceMock.getFriendStats).toHaveBeenCalledWith('user-123');
-    expect(component.friendStats()).toBeTruthy();
-    expect(component.myStats()).toBeTruthy();
-    expect(component.loading()).toBeFalse();
+    it('should redirect to /friends when userId is missing from route', () => {
+      activatedRouteMock.snapshot.paramMap.get.and.returnValue(null);
+
+      component.ngOnInit();
+
+      expect(routerMock.navigate).toHaveBeenCalledWith(['/friends']);
+      expect(facadeMock['loadFriendStats']).not.toHaveBeenCalled();
+    });
   });
 
-  it('powinien przekierowac gdy brak userId w route', async () => {
-    TestBed.resetTestingModule();
-    await TestBed.configureTestingModule({
-      imports: [
-        FriendStatsComponent,
-        TranslocoTestingModule.forRoot({
-          langs: { pl: {} },
-          translocoConfig: { availableLangs: ['pl'], defaultLang: 'pl' }
-        })
-      ],
-      providers: [
-        { provide: FriendshipService, useValue: friendshipServiceMock },
-        { provide: UserPreferencesService, useValue: { getPreferences: () => of({}) } },
-        { provide: ToastService, useValue: jasmine.createSpyObj('ToastService', ['add']) },
-        { provide: Router, useValue: routerMock },
-        {
-          provide: ActivatedRoute,
-          useValue: { snapshot: { paramMap: { get: () => null } } }
-        }
-      ]
-    }).compileComponents();
+  describe('goBack', () => {
+    it('should navigate to /friends', () => {
+      component.goBack();
 
-    const fix = TestBed.createComponent(FriendStatsComponent);
-    const comp = fix.componentInstance;
-    comp.ngOnInit();
-
-    expect(routerMock.navigate).toHaveBeenCalledWith(['/friends']);
-  });
-
-  it('powinien nawigowac do /friends na goBack', () => {
-    component.goBack();
-    expect(routerMock.navigate).toHaveBeenCalledWith(['/friends']);
+      expect(routerMock.navigate).toHaveBeenCalledWith(['/friends']);
+    });
   });
 });

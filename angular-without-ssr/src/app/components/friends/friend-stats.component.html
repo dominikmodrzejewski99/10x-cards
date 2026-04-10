@@ -7,11 +7,11 @@
     <h1 class="fstats__title">{{ t('title') }}</h1>
   </div>
 
-  @if (loading()) {
+  @if (facade.statsLoadingSignal()) {
     <div class="fstats__loading">
       <app-spinner />
     </div>
-  } @else if (!friendStats() || !myStats()) {
+  } @else if (!facade.friendStatsSignal() || !facade.myStatsSignal()) {
     <div class="fstats__error">
       <i class="pi pi-exclamation-triangle"></i>
       <p>{{ t('errorLoading') }}</p>
@@ -23,48 +23,48 @@
       </div>
       <div class="fstats__col-divider"></div>
       <div class="fstats__col">
-        <h2 class="fstats__col-title fstats__col-title--friend">{{ friendStats()!.email_masked }}</h2>
+        <h2 class="fstats__col-title fstats__col-title--friend">{{ facade.friendStatsSignal()!.email_masked }}</h2>
       </div>
     </div>
 
     <div class="fstats__rows">
       <div class="fstats__row">
-        <span class="fstats__value" [class.fstats__value--winner]="myStats()!.current_streak > friendStats()!.current_streak">
-          {{ myStats()!.current_streak }}
+        <span class="fstats__value" [class.fstats__value--winner]="facade.myStatsSignal()!.current_streak > facade.friendStatsSignal()!.current_streak">
+          {{ facade.myStatsSignal()!.current_streak }}
         </span>
         <span class="fstats__label"><i class="pi pi-bolt"></i> {{ t('currentStreak') }}</span>
-        <span class="fstats__value" [class.fstats__value--winner]="friendStats()!.current_streak > myStats()!.current_streak">
-          {{ friendStats()!.current_streak }}
+        <span class="fstats__value" [class.fstats__value--winner]="facade.friendStatsSignal()!.current_streak > facade.myStatsSignal()!.current_streak">
+          {{ facade.friendStatsSignal()!.current_streak }}
         </span>
       </div>
 
       <div class="fstats__row">
-        <span class="fstats__value" [class.fstats__value--winner]="myStats()!.longest_streak > friendStats()!.longest_streak">
-          {{ myStats()!.longest_streak }}
+        <span class="fstats__value" [class.fstats__value--winner]="facade.myStatsSignal()!.longest_streak > facade.friendStatsSignal()!.longest_streak">
+          {{ facade.myStatsSignal()!.longest_streak }}
         </span>
         <span class="fstats__label"><i class="pi pi-star"></i> {{ t('longestStreak') }}</span>
-        <span class="fstats__value" [class.fstats__value--winner]="friendStats()!.longest_streak > myStats()!.longest_streak">
-          {{ friendStats()!.longest_streak }}
+        <span class="fstats__value" [class.fstats__value--winner]="facade.friendStatsSignal()!.longest_streak > facade.myStatsSignal()!.longest_streak">
+          {{ facade.friendStatsSignal()!.longest_streak }}
         </span>
       </div>
 
       <div class="fstats__row">
-        <span class="fstats__value" [class.fstats__value--winner]="myStats()!.total_sessions > friendStats()!.total_sessions">
-          {{ myStats()!.total_sessions }}
+        <span class="fstats__value" [class.fstats__value--winner]="facade.myStatsSignal()!.total_sessions > facade.friendStatsSignal()!.total_sessions">
+          {{ facade.myStatsSignal()!.total_sessions }}
         </span>
         <span class="fstats__label"><i class="pi pi-calendar"></i> {{ t('totalSessions') }}</span>
-        <span class="fstats__value" [class.fstats__value--winner]="friendStats()!.total_sessions > myStats()!.total_sessions">
-          {{ friendStats()!.total_sessions }}
+        <span class="fstats__value" [class.fstats__value--winner]="facade.friendStatsSignal()!.total_sessions > facade.myStatsSignal()!.total_sessions">
+          {{ facade.friendStatsSignal()!.total_sessions }}
         </span>
       </div>
 
       <div class="fstats__row">
-        <span class="fstats__value" [class.fstats__value--winner]="myStats()!.total_cards_reviewed > friendStats()!.total_cards_reviewed">
-          {{ myStats()!.total_cards_reviewed }}
+        <span class="fstats__value" [class.fstats__value--winner]="facade.myStatsSignal()!.total_cards_reviewed > facade.friendStatsSignal()!.total_cards_reviewed">
+          {{ facade.myStatsSignal()!.total_cards_reviewed }}
         </span>
         <span class="fstats__label"><i class="pi pi-book"></i> {{ t('totalCards') }}</span>
-        <span class="fstats__value" [class.fstats__value--winner]="friendStats()!.total_cards_reviewed > myStats()!.total_cards_reviewed">
-          {{ friendStats()!.total_cards_reviewed }}
+        <span class="fstats__value" [class.fstats__value--winner]="facade.friendStatsSignal()!.total_cards_reviewed > facade.myStatsSignal()!.total_cards_reviewed">
+          {{ facade.friendStatsSignal()!.total_cards_reviewed }}
         </span>
       </div>
     </div>

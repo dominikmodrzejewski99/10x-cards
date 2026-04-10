@@ -1,11 +1,7 @@
-import { Component, OnInit, signal, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { UserPreferencesService } from '../../services/user-preferences.service';
-import { PomodoroService } from '../../services/pomodoro.service';
-import { ThemeService, Theme } from '../../services/theme.service';
-import { LanguageService } from '../../services/language.service';
-import { AppLanguage } from '../../../types';
+import { SettingsFacadeService } from '../../services/settings-facade.service';
 
 @Component({
   selector: 'app-settings',
@@ -102,17 +98,17 @@ import { AppLanguage } from '../../../types';
           <div class="settings__field">
             <label class="settings__label">{{ t('pomodoro.workDuration') }}</label>
             <input type="number" class="settings__input" [min]="1" [max]="120"
-                   [ngModel]="workDurationSignal()" (ngModelChange)="workDurationSignal.set($event)">
+                   [ngModel]="facade.workDurationSignal()" (ngModelChange)="facade.setWorkDuration($event)">
           </div>
           <div class="settings__field">
             <label class="settings__label">{{ t('pomodoro.breakDuration') }}</label>
             <input type="number" class="settings__input" [min]="1" [max]="60"
-                   [ngModel]="breakDurationSignal()" (ngModelChange)="breakDurationSignal.set($event)">
+                   [ngModel]="facade.breakDurationSignal()" (ngModelChange)="facade.setBreakDuration($event)">
           </div>
           <div class="settings__field">
             <label class="settings__label">{{ t('pomodoro.longBreakDuration') }}</label>
             <input type="number" class="settings__input" [min]="1" [max]="60"
-                   [ngModel]="longBreakDurationSignal()" (ngModelChange)="longBreakDurationSignal.set($event)">
+                   [ngModel]="facade.longBreakDurationSignal()" (ngModelChange)="facade.setLongBreakDuration($event)">
           </div>
         </div>
 
@@ -120,7 +116,7 @@ import { AppLanguage } from '../../../types';
         <div class="settings__field settings__field--narrow">
           <label class="settings__label">{{ t('pomodoro.sessionsBeforeLongBreak') }}</label>
           <input type="number" class="settings__input" [min]="1" [max]="10"
-                 [ngModel]="sessionsBeforeLongBreakSignal()" (ngModelChange)="sessionsBeforeLongBreakSignal.set($event)">
+                 [ngModel]="facade.sessionsBeforeLongBreakSignal()" (ngModelChange)="facade.setSessionsBeforeLongBreak($event)">
         </div>
 
         <!-- Toggles -->
@@ -131,7 +127,7 @@ import { AppLanguage } from '../../../types';
               <div class="settings__toggle-desc">{{ t('pomodoro.soundDesc') }}</div>
             </div>
             <label class="settings__switch">
-              <input type="checkbox" [ngModel]="soundEnabledSignal()" (ngModelChange)="soundEnabledSignal.set($event)">
+              <input type="checkbox" [ngModel]="facade.soundEnabledSignal()" (ngModelChange)="facade.setSoundEnabled($event)">
               <span class="settings__switch-slider"></span>
             </label>
           </div>
@@ -141,7 +137,7 @@ import { AppLanguage } from '../../../types';
               <div class="settings__toggle-desc">{{ t('pomodoro.notificationsDesc') }}</div>
             </div>
             <label class="settings__switch">
-              <input type="checkbox" [ngModel]="notificationsEnabledSignal()" (ngModelChange)="notificationsEnabledSignal.set($event)">
+              <input type="checkbox" [ngModel]="facade.notificationsEnabledSignal()" (ngModelChange)="facade.setNotificationsEnabled($event)">
               <span class="settings__switch-slider"></span>
             </label>
           </div>
@@ -149,10 +145,10 @@ import { AppLanguage } from '../../../types';
 
         <!-- Save button -->
         <div class="settings__actions">
-          <button class="settings__save-btn" (click)="save()" [disabled]="isSavingSignal()">
-            {{ isSavingSignal() ? t('saving') : t('save') }}
+          <button class="settings__save-btn" (click)="facade.save()" [disabled]="facade.isSavingSignal()">
+            {{ facade.isSavingSignal() ? t('saving') : t('save') }}
           </button>
-          @if (savedSignal()) {
+          @if (facade.savedSignal()) {
             <span class="settings__saved">✓ {{ t('saved') }}</span>
           }
         </div>
@@ -167,14 +163,14 @@ import { AppLanguage } from '../../../types';
 
         <div class="settings__theme-options">
           <button class="settings__theme-btn"
-                  [class.settings__theme-btn--active]="themeSignal() === 'light'"
-                  (click)="setTheme('light')">
+                  [class.settings__theme-btn--active]="facade.themeSignal() === 'light'"
+                  (click)="facade.setTheme('light')">
             <i class="pi pi-sun"></i>
             <span>{{ t('theme.light') }}</span>
           </button>
           <button class="settings__theme-btn"
-                  [class.settings__theme-btn--active]="themeSignal() === 'dark'"
-                  (click)="setTheme('dark')">
+                  [class.settings__theme-btn--active]="facade.themeSignal() === 'dark'"
+                  (click)="facade.setTheme('dark')">
             <i class="pi pi-moon"></i>
             <span>{{ t('theme.dark') }}</span>
           </button>
@@ -190,33 +186,33 @@ import { AppLanguage } from '../../../types';
 
         <div class="settings__lang-grid">
           <button class="settings__theme-btn"
-                  [class.settings__theme-btn--active]="languageSignal() === 'pl'"
-                  (click)="setLanguage('pl')">
+                  [class.settings__theme-btn--active]="facade.languageSignal() === 'pl'"
+                  (click)="facade.setLanguage('pl')">
             <span>Polski</span>
           </button>
           <button class="settings__theme-btn"
-                  [class.settings__theme-btn--active]="languageSignal() === 'en'"
-                  (click)="setLanguage('en')">
+                  [class.settings__theme-btn--active]="facade.languageSignal() === 'en'"
+                  (click)="facade.setLanguage('en')">
             <span>English</span>
           </button>
           <button class="settings__theme-btn"
-                  [class.settings__theme-btn--active]="languageSignal() === 'de'"
-                  (click)="setLanguage('de')">
+                  [class.settings__theme-btn--active]="facade.languageSignal() === 'de'"
+                  (click)="facade.setLanguage('de')">
             <span>Deutsch</span>
           </button>
           <button class="settings__theme-btn"
-                  [class.settings__theme-btn--active]="languageSignal() === 'es'"
-                  (click)="setLanguage('es')">
+                  [class.settings__theme-btn--active]="facade.languageSignal() === 'es'"
+                  (click)="facade.setLanguage('es')">
             <span>Español</span>
           </button>
           <button class="settings__theme-btn"
-                  [class.settings__theme-btn--active]="languageSignal() === 'fr'"
-                  (click)="setLanguage('fr')">
+                  [class.settings__theme-btn--active]="facade.languageSignal() === 'fr'"
+                  (click)="facade.setLanguage('fr')">
             <span>Français</span>
           </button>
           <button class="settings__theme-btn"
-                  [class.settings__theme-btn--active]="languageSignal() === 'uk'"
-                  (click)="setLanguage('uk')">
+                  [class.settings__theme-btn--active]="facade.languageSignal() === 'uk'"
+                  (click)="facade.setLanguage('uk')">
             <span>Українська</span>
           </button>
         </div>
@@ -226,67 +222,9 @@ import { AppLanguage } from '../../../types';
   `
 })
 export class SettingsComponent implements OnInit {
-  private prefsService: UserPreferencesService = inject(UserPreferencesService);
-  private pomodoroService: PomodoroService = inject(PomodoroService);
-  private themeService: ThemeService = inject(ThemeService);
-  private languageService: LanguageService = inject(LanguageService);
-
-  readonly workDurationSignal = signal(25);
-  readonly breakDurationSignal = signal(5);
-  readonly longBreakDurationSignal = signal(15);
-  readonly sessionsBeforeLongBreakSignal = signal(4);
-  readonly soundEnabledSignal = signal(true);
-  readonly notificationsEnabledSignal = signal(true);
-  readonly isSavingSignal = signal(false);
-  readonly savedSignal = signal(false);
-  readonly themeSignal = this.themeService.theme;
-  readonly languageSignal = this.languageService.language;
+  protected readonly facade: SettingsFacadeService = inject(SettingsFacadeService);
 
   ngOnInit(): void {
-    this.prefsService.getPreferences().subscribe(prefs => {
-      this.workDurationSignal.set(prefs.pomodoro_work_duration);
-      this.breakDurationSignal.set(prefs.pomodoro_break_duration);
-      this.longBreakDurationSignal.set(prefs.pomodoro_long_break_duration);
-      this.sessionsBeforeLongBreakSignal.set(prefs.pomodoro_sessions_before_long_break);
-      this.soundEnabledSignal.set(prefs.pomodoro_sound_enabled);
-      this.notificationsEnabledSignal.set(prefs.pomodoro_notifications_enabled);
-    });
-  }
-
-  setTheme(theme: Theme): void {
-    this.themeService.setTheme(theme);
-  }
-
-  setLanguage(lang: AppLanguage): void {
-    this.languageService.setLanguage(lang);
-  }
-
-  save(): void {
-    // Clamp values
-    this.workDurationSignal.set(Math.min(120, Math.max(1, this.workDurationSignal())));
-    this.breakDurationSignal.set(Math.min(60, Math.max(1, this.breakDurationSignal())));
-    this.longBreakDurationSignal.set(Math.min(60, Math.max(1, this.longBreakDurationSignal())));
-    this.sessionsBeforeLongBreakSignal.set(Math.min(10, Math.max(1, this.sessionsBeforeLongBreakSignal())));
-
-    this.isSavingSignal.set(true);
-
-    this.prefsService.updatePreferences({
-      pomodoro_work_duration: this.workDurationSignal(),
-      pomodoro_break_duration: this.breakDurationSignal(),
-      pomodoro_long_break_duration: this.longBreakDurationSignal(),
-      pomodoro_sessions_before_long_break: this.sessionsBeforeLongBreakSignal(),
-      pomodoro_sound_enabled: this.soundEnabledSignal(),
-      pomodoro_notifications_enabled: this.notificationsEnabledSignal()
-    }).subscribe({
-      next: () => {
-        this.pomodoroService.reloadSettings();
-        this.savedSignal.set(true);
-        this.isSavingSignal.set(false);
-        setTimeout(() => this.savedSignal.set(false), 2000);
-      },
-      error: () => {
-        this.isSavingSignal.set(false);
-      }
-    });
+    this.facade.init();
   }
 }

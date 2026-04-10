@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
-import { ToastService } from '../../shared/services/toast.service';
+
 import { ShareToFriendDialogComponent } from './share-to-friend-dialog.component';
-import { FriendshipService } from '../../services/friendship.service';
-import { FriendDTO } from '../../../types';
-import { Component } from '@angular/core';
+import { FriendsFacadeService } from '../../services/friends-facade.service';
 
 @Component({
   imports: [ShareToFriendDialogComponent],
@@ -14,7 +13,7 @@ import { Component } from '@angular/core';
       [visible]="visible"
       (visibleChange)="visible = $event">
     </app-share-to-friend-dialog>
-  `
+  `,
 })
 class TestHostComponent {
   visible = false;
@@ -23,20 +22,21 @@ class TestHostComponent {
 describe('ShareToFriendDialogComponent', () => {
   let hostFixture: ComponentFixture<TestHostComponent>;
   let component: ShareToFriendDialogComponent;
-  let friendshipServiceMock: jasmine.SpyObj<FriendshipService>;
-  let toastServiceMock: jasmine.SpyObj<ToastService>;
 
-  const mockFriends: FriendDTO[] = [
-    { friendship_id: 'f1', user_id: 'u1', email_masked: 'te...@test.com', current_streak: 5, last_study_date: null, last_active_at: null, total_cards_reviewed: 100 },
-    { friendship_id: 'f2', user_id: 'u2', email_masked: 'jo...@test.com', current_streak: 3, last_study_date: null, last_active_at: null, total_cards_reviewed: 50 }
-  ];
+  const facadeMock: Record<string, jasmine.Spy> = {
+    shareFriendsSignal: jasmine.createSpy('shareFriendsSignal').and.returnValue([]),
+    shareLoadingSignal: jasmine.createSpy('shareLoadingSignal').and.returnValue(false),
+    sharedToSignal: jasmine.createSpy('sharedToSignal').and.returnValue(new Set()),
+    sharingSignal: jasmine.createSpy('sharingSignal').and.returnValue(null),
+
+    loadShareFriends: jasmine.createSpy('loadShareFriends'),
+    shareToFriend: jasmine.createSpy('shareToFriend'),
+    isShared: jasmine.createSpy('isShared').and.returnValue(false),
+    resetShareState: jasmine.createSpy('resetShareState'),
+  };
 
   beforeEach(async () => {
-    friendshipServiceMock = jasmine.createSpyObj('FriendshipService', ['getFriends', 'shareDeckToFriend']);
-    toastServiceMock = jasmine.createSpyObj('ToastService', ['add']);
-
-    friendshipServiceMock.getFriends.and.returnValue(Promise.resolve(mockFriends));
-    friendshipServiceMock.shareDeckToFriend.and.returnValue(Promise.resolve('share-id'));
+    Object.values(facadeMock).forEach((spy: jasmine.Spy) => spy.calls.reset());
 
     await TestBed.configureTestingModule({
       imports: [
@@ -44,13 +44,13 @@ describe('ShareToFriendDialogComponent', () => {
         ShareToFriendDialogComponent,
         TranslocoTestingModule.forRoot({
           langs: { pl: {} },
-          translocoConfig: { availableLangs: ['pl'], defaultLang: 'pl' }
-        })
+          translocoConfig: { availableLangs: ['pl'], defaultLang: 'pl' },
+        }),
       ],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: FriendshipService, useValue: friendshipServiceMock },
-        { provide: ToastService, useValue: toastServiceMock }
-      ]
+        { provide: FriendsFacadeService, useValue: facadeMock },
+      ],
     }).compileComponents();
 
     hostFixture = TestBed.createComponent(TestHostComponent);
@@ -58,44 +58,29 @@ describe('ShareToFriendDialogComponent', () => {
     component = hostFixture.debugElement.children[0].componentInstance;
   });
 
-  it('powinien utworzyc komponent', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('powinien zaladowac znajomych gdy dialog widoczny', async () => {
-    hostFixture.componentInstance.visible = true;
-    hostFixture.detectChanges();
-    await hostFixture.whenStable();
+  it('should delegate shareToFriend to facade with setId and friendUserId', () => {
+    component.shareToFriend('u1');
 
-    expect(friendshipServiceMock.getFriends).toHaveBeenCalled();
-    expect(component.friends().length).toBe(2);
+    expect(facadeMock['shareToFriend']).toHaveBeenCalledWith(42, 'u1');
   });
 
-  it('powinien udostepnic talie znajomemu', async () => {
-    component.friends.set(mockFriends);
-
-    await component.shareToFriend('u1');
-
-    expect(friendshipServiceMock.shareDeckToFriend).toHaveBeenCalledWith(42, 'u1');
-    expect(component.isShared('u1')).toBeTrue();
-    expect(toastServiceMock.add).toHaveBeenCalledWith(jasmine.objectContaining({ severity: 'success' }));
-  });
-
-  it('powinien oznaczyc jako udostepnione po wyslaniu', async () => {
-    component.friends.set(mockFriends);
-    await component.shareToFriend('u1');
+  it('should delegate isShared to facade', () => {
+    facadeMock['isShared'].and.returnValue(true);
 
     expect(component.isShared('u1')).toBeTrue();
-    expect(component.isShared('u2')).toBeFalse();
+    expect(facadeMock['isShared']).toHaveBeenCalledWith('u1');
   });
 
-  it('powinien obsluzyc blad udostepniania', async () => {
-    friendshipServiceMock.shareDeckToFriend.and.returnValue(Promise.reject({ message: 'Not friends' }));
-    component.friends.set(mockFriends);
+  it('should call facade.resetShareState and emit visibleChange on close', () => {
+    spyOn(component.visibleChange, 'emit');
 
-    await component.shareToFriend('u1');
+    component.close();
 
-    expect(component.isShared('u1')).toBeFalse();
-    expect(toastServiceMock.add).toHaveBeenCalledWith(jasmine.objectContaining({ severity: 'error' }));
+    expect(facadeMock['resetShareState']).toHaveBeenCalled();
+    expect(component.visibleChange.emit).toHaveBeenCalledWith(false);
   });
 });

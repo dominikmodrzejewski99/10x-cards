@@ -1,27 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { LanguageTestViewComponent } from './language-test-view.component';
-import { LanguageTestBankService } from '../../services/language-test-bank.service';
-import { LanguageTestService, TestAnswer, TestResult } from '../../services/language-test.service';
-import { LanguageTestResultsService } from '../../services/language-test-results.service';
+import { LanguageTestFacadeService } from '../../services/language-test-facade.service';
 import {
   TestDefinition,
   MultipleChoiceQuestion,
-  WordFormationQuestion,
-  LanguageTestResultDTO
+  WordFormationQuestion
 } from '../../../types';
 
 describe('LanguageTestViewComponent', () => {
   let component: LanguageTestViewComponent;
   let fixture: ComponentFixture<LanguageTestViewComponent>;
 
-  let bankServiceMock: jasmine.SpyObj<LanguageTestBankService>;
-  let testServiceMock: jasmine.SpyObj<LanguageTestService>;
-  let resultsServiceMock: jasmine.SpyObj<LanguageTestResultsService>;
+  let facadeMock: jasmine.SpyObj<LanguageTestFacadeService>;
   let routerMock: jasmine.SpyObj<Router>;
   let activatedRouteMock: { snapshot: { paramMap: { get: jasmine.Spy } } };
 
@@ -56,43 +50,33 @@ describe('LanguageTestViewComponent', () => {
     questions: [mockMcQuestion, mockWfQuestion]
   };
 
-  const mockTestResult: TestResult = {
-    totalScore: 1,
-    maxScore: 2,
-    percentage: 50,
-    categoryBreakdown: {
-      grammar: { correct: 1, total: 1 },
-      'word-building': { correct: 0, total: 1 }
-    },
-    wrongAnswers: [{
-      questionId: 'q2',
-      userAnswer: 'constructing',
-      correctAnswer: 'construction',
-      front: 'Utwórz formę słowa construct: The ___ of the building was impressive.',
-      back: 'construction — Construct becomes construction.'
-    }],
-    passed: false
-  };
-
-  const mockSavedResult: LanguageTestResultDTO = {
-    id: 1,
-    user_id: 'user-1',
-    level: 'b2-fce',
-    total_score: 1,
-    max_score: 2,
-    percentage: 50,
-    category_breakdown: { grammar: { correct: 1, total: 1 } },
-    wrong_answers: [],
-    generated_set_id: null,
-    completed_at: '2026-03-24T00:00:00Z',
-    created_at: '2026-03-24T00:00:00Z',
-    updated_at: '2026-03-24T00:00:00Z'
-  };
-
   beforeEach(async () => {
-    bankServiceMock = jasmine.createSpyObj<LanguageTestBankService>('LanguageTestBankService', ['getTest']);
-    testServiceMock = jasmine.createSpyObj<LanguageTestService>('LanguageTestService', ['evaluateTest']);
-    resultsServiceMock = jasmine.createSpyObj<LanguageTestResultsService>('LanguageTestResultsService', ['saveResult']);
+    facadeMock = jasmine.createSpyObj<LanguageTestFacadeService>(
+      'LanguageTestFacadeService',
+      ['loadTest', 'selectOption', 'setWordFormationInput', 'next', 'skip', 'previous', 'splitByGap', 'handleKeydown', 'reset'],
+      {
+        testDefinitionSignal: signal<TestDefinition | null>(mockTestDefinition),
+        currentIndexSignal: signal<number>(0),
+        answersMapSignal: signal<Map<number, any>>(new Map()),
+        selectedOptionSignal: signal<number | null>(null),
+        wordFormationInputSignal: signal<string>(''),
+        loadingSignal: signal<boolean>(false),
+        submittingSignal: signal<boolean>(false),
+        errorSignal: signal<string | null>(null),
+        completedResultSignal: signal<{ level: string; route: string[]; state?: unknown } | null>(null),
+        currentQuestionSignal: signal(mockMcQuestion),
+        progressSignal: signal<number>(0),
+        isLastQuestionSignal: signal<boolean>(false),
+        isFirstQuestionSignal: signal<boolean>(true),
+        canProceedSignal: signal<boolean>(false)
+      }
+    );
+
+    facadeMock.splitByGap.and.callFake((text: string) => {
+      const parts = text.split('___');
+      return { before: parts[0] || '', after: parts[1] || '' };
+    });
+
     routerMock = jasmine.createSpyObj<Router>('Router', ['navigate']);
     activatedRouteMock = {
       snapshot: {
@@ -102,17 +86,17 @@ describe('LanguageTestViewComponent', () => {
       }
     };
 
-    bankServiceMock.getTest.and.returnValue(of(mockTestDefinition));
-    testServiceMock.evaluateTest.and.returnValue(mockTestResult);
-    resultsServiceMock.saveResult.and.returnValue(of(mockSavedResult));
-
     await TestBed.configureTestingModule({
-      imports: [LanguageTestViewComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
+      imports: [
+        LanguageTestViewComponent,
+        TranslocoTestingModule.forRoot({
+          langs: { pl: {} },
+          translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' }
+        })
+      ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: LanguageTestBankService, useValue: bankServiceMock },
-        { provide: LanguageTestService, useValue: testServiceMock },
-        { provide: LanguageTestResultsService, useValue: resultsServiceMock },
+        { provide: LanguageTestFacadeService, useValue: facadeMock },
         { provide: Router, useValue: routerMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock }
       ]
@@ -127,12 +111,12 @@ describe('LanguageTestViewComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should load test definition for valid level', () => {
-      fixture.detectChanges();
+    it('should call facade.loadTest for valid level', () => {
+      TestBed.runInInjectionContext(() => {
+        component.ngOnInit();
+      });
 
-      expect(bankServiceMock.getTest).toHaveBeenCalledWith('b2-fce');
-      expect(component.testDefinitionSignal()).toEqual(mockTestDefinition);
-      expect(component.loadingSignal()).toBeFalse();
+      expect(facadeMock.loadTest).toHaveBeenCalledWith('b2-fce');
     });
 
     it('should redirect to /language-test for invalid level', () => {
@@ -140,286 +124,63 @@ describe('LanguageTestViewComponent', () => {
         (key: string): string | null => key === 'level' ? 'invalid-level' : null
       );
 
-      fixture.detectChanges();
+      TestBed.runInInjectionContext(() => {
+        component.ngOnInit();
+      });
 
       expect(routerMock.navigate).toHaveBeenCalledWith(['/language-test']);
+      expect(facadeMock.loadTest).not.toHaveBeenCalled();
     });
 
     it('should redirect when level is null', () => {
       activatedRouteMock.snapshot.paramMap.get.and.returnValue(null);
 
-      fixture.detectChanges();
+      TestBed.runInInjectionContext(() => {
+        component.ngOnInit();
+      });
 
       expect(routerMock.navigate).toHaveBeenCalledWith(['/language-test']);
-    });
-
-    it('should set error when test loading fails', () => {
-      bankServiceMock.getTest.and.returnValue(throwError(() => new Error('network')));
-
-      fixture.detectChanges();
-
-      expect(component.errorSignal()).toBe('languageTest.errors.loadTestFailed');
-      expect(component.loadingSignal()).toBeFalse();
-    });
-  });
-
-  describe('computed signals', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
-
-    it('currentQuestionSignal should return the question at current index', () => {
-      expect(component.currentQuestionSignal()).toEqual(mockMcQuestion);
-    });
-
-    it('currentQuestionSignal should return null when no test definition', () => {
-      component.testDefinitionSignal.set(null);
-
-      expect(component.currentQuestionSignal()).toBeNull();
-    });
-
-    it('progressSignal should compute correct percentage', () => {
-      component.currentIndexSignal.set(0);
-
-      expect(component.progressSignal()).toBe(0);
-    });
-
-    it('progressSignal should update as questions are answered', () => {
-      component.currentIndexSignal.set(1);
-
-      expect(component.progressSignal()).toBe(50);
-    });
-
-    it('isLastQuestionSignal should return false for first question', () => {
-      component.currentIndexSignal.set(0);
-
-      expect(component.isLastQuestionSignal()).toBeFalse();
-    });
-
-    it('isLastQuestionSignal should return true for last question', () => {
-      component.currentIndexSignal.set(1);
-
-      expect(component.isLastQuestionSignal()).toBeTrue();
-    });
-
-    it('isFirstQuestionSignal should return true for first question', () => {
-      component.currentIndexSignal.set(0);
-
-      expect(component.isFirstQuestionSignal()).toBeTrue();
-    });
-
-    it('isFirstQuestionSignal should return false for non-first question', () => {
-      component.currentIndexSignal.set(1);
-
-      expect(component.isFirstQuestionSignal()).toBeFalse();
-    });
-
-    it('canProceedSignal should return false when no option selected for MC', () => {
-      component.selectedOptionSignal.set(null);
-
-      expect(component.canProceedSignal()).toBeFalse();
-    });
-
-    it('canProceedSignal should return true when option is selected for MC', () => {
-      component.selectedOptionSignal.set(1);
-
-      expect(component.canProceedSignal()).toBeTrue();
-    });
-
-    it('canProceedSignal should return true for word-formation when input has text', () => {
-      component.currentIndexSignal.set(1);
-      component.wordFormationInputSignal.set('construction');
-
-      expect(component.canProceedSignal()).toBeTrue();
-    });
-
-    it('canProceedSignal should return false for word-formation when input is empty', () => {
-      component.currentIndexSignal.set(1);
-      component.wordFormationInputSignal.set('  ');
-
-      expect(component.canProceedSignal()).toBeFalse();
-    });
-  });
-
-  describe('selectOption', () => {
-    it('should set selected option index', () => {
-      component.selectOption(2);
-
-      expect(component.selectedOptionSignal()).toBe(2);
+      expect(facadeMock.loadTest).not.toHaveBeenCalled();
     });
   });
 
   describe('onKeydown', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
-
-    it('should select option when pressing 1-4 on MC question', () => {
+    it('should call facade.handleKeydown and preventDefault when returns true', () => {
+      facadeMock.handleKeydown.and.returnValue(true);
       const event: KeyboardEvent = new KeyboardEvent('keydown', { key: '2' });
       spyOn(event, 'preventDefault');
 
       component.onKeydown(event);
 
-      expect(component.selectedOptionSignal()).toBe(1);
+      expect(facadeMock.handleKeydown).toHaveBeenCalledWith('2');
       expect(event.preventDefault).toHaveBeenCalled();
     });
 
-    it('should not select option when pressing key > number of options', () => {
-      component.selectedOptionSignal.set(null);
+    it('should not call preventDefault when handleKeydown returns false', () => {
+      facadeMock.handleKeydown.and.returnValue(false);
       const event: KeyboardEvent = new KeyboardEvent('keydown', { key: '5' });
-
-      component.onKeydown(event);
-
-      expect(component.selectedOptionSignal()).toBeNull();
-    });
-
-    it('should call next on Enter when canProceed is true', () => {
-      component.selectedOptionSignal.set(1);
-      spyOn(component, 'next');
-      const event: KeyboardEvent = new KeyboardEvent('keydown', { key: 'Enter' });
       spyOn(event, 'preventDefault');
 
       component.onKeydown(event);
 
-      expect(component.next).toHaveBeenCalled();
-    });
-
-    it('should not call next on Enter when canProceed is false', () => {
-      component.selectedOptionSignal.set(null);
-      spyOn(component, 'next');
-      const event: KeyboardEvent = new KeyboardEvent('keydown', { key: 'Enter' });
-
-      component.onKeydown(event);
-
-      expect(component.next).not.toHaveBeenCalled();
-    });
-
-    it('should do nothing when loading', () => {
-      component.loadingSignal.set(true);
-      const event: KeyboardEvent = new KeyboardEvent('keydown', { key: '1' });
-
-      component.onKeydown(event);
-
-      expect(component.selectedOptionSignal()).toBeNull();
+      expect(facadeMock.handleKeydown).toHaveBeenCalledWith('5');
+      expect(event.preventDefault).not.toHaveBeenCalled();
     });
   });
 
   describe('next', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
-
-    it('should save answer and advance to next question for MC question', () => {
-      component.selectedOptionSignal.set(1);
-
+    it('should delegate to facade.next()', () => {
       component.next();
 
-      expect(component.answersMapSignal().size).toBe(1);
-      const answer: TestAnswer | undefined = component.answersMapSignal().get(0);
-      expect(answer?.questionId).toBe('q1');
-      expect(answer?.answer).toBe(1);
-      expect(component.currentIndexSignal()).toBe(1);
-      expect(component.selectedOptionSignal()).toBeNull();
-    });
-
-    it('should save answer with text for word-formation question', () => {
-      component.currentIndexSignal.set(1);
-      component.wordFormationInputSignal.set('construction');
-
-      component.next();
-
-      const answer: TestAnswer | undefined = component.answersMapSignal().get(1);
-      expect(answer?.questionId).toBe('q2');
-      expect(answer?.answer).toBe('construction');
-    });
-
-    it('should submit test when on last question', () => {
-      component.selectedOptionSignal.set(1);
-      component.next();
-
-      component.wordFormationInputSignal.set('construction');
-      component.next();
-
-      expect(testServiceMock.evaluateTest).toHaveBeenCalled();
-      expect(resultsServiceMock.saveResult).toHaveBeenCalled();
-      expect(routerMock.navigate).toHaveBeenCalledWith(
-        ['/language-test', 'b2-fce', 'results'],
-        jasmine.objectContaining({ state: jasmine.objectContaining({ result: jasmine.anything() }) })
-      );
-    });
-
-    it('should navigate to results even on save error', () => {
-      resultsServiceMock.saveResult.and.returnValue(throwError(() => new Error('save failed')));
-
-      component.selectedOptionSignal.set(1);
-      component.next();
-      component.wordFormationInputSignal.set('construction');
-      component.next();
-
-      expect(routerMock.navigate).toHaveBeenCalledWith(['/language-test', 'b2-fce', 'results']);
-    });
-
-    it('should do nothing when currentQuestion is null', () => {
-      component.testDefinitionSignal.set(null);
-
-      component.next();
-
-      expect(component.answersMapSignal().size).toBe(0);
-    });
-
-    it('should reset selectedOption and wordFormationInput after advancing', () => {
-      component.selectedOptionSignal.set(1);
-      component.wordFormationInputSignal.set('test');
-
-      component.next();
-
-      expect(component.selectedOptionSignal()).toBeNull();
-      expect(component.wordFormationInputSignal()).toBe('');
+      expect(facadeMock.next).toHaveBeenCalled();
     });
   });
 
-  describe('skip', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
+  describe('ngOnDestroy', () => {
+    it('should call facade.reset()', () => {
+      component.ngOnDestroy();
 
-    it('should advance without saving answer', () => {
-      component.skip();
-
-      expect(component.currentIndexSignal()).toBe(1);
-      expect(component.answersMapSignal().size).toBe(0);
-    });
-
-    it('should not advance past last question', () => {
-      component.currentIndexSignal.set(1);
-
-      component.skip();
-
-      expect(component.currentIndexSignal()).toBe(1);
-    });
-  });
-
-  describe('previous', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
-
-    it('should not go before first question', () => {
-      component.previous();
-
-      expect(component.currentIndexSignal()).toBe(0);
-    });
-
-    it('should go back and restore answer', () => {
-      component.selectedOptionSignal.set(1);
-      component.next();
-
-      expect(component.currentIndexSignal()).toBe(1);
-
-      component.previous();
-
-      expect(component.currentIndexSignal()).toBe(0);
-      expect(component.selectedOptionSignal()).toBe(1);
+      expect(facadeMock.reset).toHaveBeenCalled();
     });
   });
 });

@@ -12,42 +12,42 @@
         type="email"
         class="friends__add-input"
         [placeholder]="t('emailPlaceholder')"
-        [ngModel]="emailInput()"
-        (ngModelChange)="emailInput.set($event)"
-        (keydown.enter)="sendRequest()"
-        [disabled]="sending()" />
+        [ngModel]="facade.emailInputSignal()"
+        (ngModelChange)="facade.setEmailInput($event)"
+        (keydown.enter)="facade.sendRequest()"
+        [disabled]="facade.sendingSignal()" />
       <button
         class="friends__add-btn"
-        (click)="sendRequest()"
-        [disabled]="sending() || !emailInput().trim()">
+        (click)="facade.sendRequest()"
+        [disabled]="facade.sendingSignal() || !facade.emailInputSignal().trim()">
         <i class="pi pi-user-plus"></i> {{ t('send') }}
       </button>
     </div>
   </div>
 
-  @if (loading()) {
+  @if (facade.loadingSignal()) {
     <div class="friends__loading">
       <app-spinner />
     </div>
   } @else {
     <!-- Pending Requests -->
-    @if (pendingRequests().length > 0) {
+    @if (facade.pendingRequestsSignal().length > 0) {
       <div class="friends__section">
         <h2 class="friends__section-title">
           <i class="pi pi-clock"></i> {{ t('pendingRequests') }}
-          <span class="friends__badge">{{ pendingRequests().length }}</span>
+          <span class="friends__badge">{{ facade.pendingRequestsSignal().length }}</span>
         </h2>
         <div class="friends__list">
-          @for (request of pendingRequests(); track request.friendship_id) {
+          @for (request of facade.pendingRequestsSignal(); track request.friendship_id) {
             <div class="friends__card friends__card--pending">
               <div class="friends__card-info">
                 <span class="friends__card-email">{{ request.email_masked }}</span>
               </div>
               <div class="friends__card-actions">
-                <button class="friends__btn friends__btn--accept" (click)="acceptRequest(request.friendship_id)">
+                <button class="friends__btn friends__btn--accept" (click)="facade.acceptRequest(request.friendship_id)">
                   <i class="pi pi-check"></i> {{ t('accept') }}
                 </button>
-                <button class="friends__btn friends__btn--reject" (click)="rejectRequest(request.friendship_id)">
+                <button class="friends__btn friends__btn--reject" (click)="facade.rejectRequest(request.friendship_id)">
                   <i class="pi pi-times"></i>
                 </button>
               </div>
@@ -58,14 +58,14 @@
     }
 
     <!-- Sent Requests -->
-    @if (sentRequests().length > 0) {
+    @if (facade.sentRequestsSignal().length > 0) {
       <div class="friends__section">
         <h2 class="friends__section-title">
           <i class="pi pi-send"></i> {{ t('sentRequests') }}
-          <span class="friends__badge">{{ sentRequests().length }}</span>
+          <span class="friends__badge">{{ facade.sentRequestsSignal().length }}</span>
         </h2>
         <div class="friends__list">
-          @for (request of sentRequests(); track request.friendship_id) {
+          @for (request of facade.sentRequestsSignal(); track request.friendship_id) {
             <div class="friends__card friends__card--sent">
               <div class="friends__card-info">
                 <span class="friends__card-email">{{ request.email_masked }}</span>
@@ -74,7 +74,7 @@
                 </span>
               </div>
               <div class="friends__card-actions">
-                <button class="friends__btn friends__btn--remove" (click)="cancelRequest(request.friendship_id)" [title]="t('cancel')">
+                <button class="friends__btn friends__btn--remove" (click)="facade.cancelRequest(request.friendship_id)" [title]="t('cancel')">
                   <i class="pi pi-times"></i>
                 </button>
               </div>
@@ -88,21 +88,21 @@
     <div class="friends__section">
       <h2 class="friends__section-title">
         <i class="pi pi-users"></i> {{ t('myFriends') }}
-        @if (friends().length > 0) {
+        @if (facade.friendsSignal().length > 0) {
           <a routerLink="/friends/leaderboard" class="friends__leaderboard-link">
             <i class="pi pi-chart-bar"></i> {{ t('leaderboardBtn') }}
           </a>
         }
       </h2>
 
-      @if (friends().length === 0) {
+      @if (facade.friendsSignal().length === 0) {
         <div class="friends__empty">
           <i class="pi pi-user-plus friends__empty-icon"></i>
           <p>{{ t('noFriends') }}</p>
         </div>
       } @else {
         <div class="friends__list">
-          @for (friend of friends(); track friend.friendship_id) {
+          @for (friend of facade.friendsSignal(); track friend.friendship_id) {
             <div class="friends__card">
               <a [routerLink]="['/friends', friend.user_id]" class="friends__card-info">
                 <span class="friends__card-email">{{ friend.email_masked }}</span>
@@ -113,25 +113,25 @@
                   <span class="friends__stat">
                     <i class="pi pi-book"></i> {{ friend.total_cards_reviewed }}
                   </span>
-                  @if (getDaysInactive(friend.last_active_at) !== null && getDaysInactive(friend.last_active_at)! > 1) {
+                  @if (facade.getDaysInactive(friend.last_active_at) !== null && facade.getDaysInactive(friend.last_active_at)! > 1) {
                     <span class="friends__stat friends__stat--inactive">
-                      {{ t('inactive', { days: getDaysInactive(friend.last_active_at) }) }}
+                      {{ t('inactive', { days: facade.getDaysInactive(friend.last_active_at) }) }}
                     </span>
                   }
                   @if (friend.last_study_date) {
                     <span class="friends__stat friends__stat--review">
-                      <i class="pi pi-replay"></i> {{ t('lastReview', { days: getDaysInactive(friend.last_study_date) ?? 0 }) }}
+                      <i class="pi pi-replay"></i> {{ t('lastReview', { days: facade.getDaysInactive(friend.last_study_date) ?? 0 }) }}
                     </span>
                   }
                 </div>
               </a>
               <div class="friends__card-actions">
-                @if (getDaysInactive(friend.last_active_at) !== null && getDaysInactive(friend.last_active_at)! > 1) {
-                  <button class="friends__btn friends__btn--nudge" (click)="sendNudge(friend.user_id)" [title]="t('nudge')">
+                @if (facade.getDaysInactive(friend.last_active_at) !== null && facade.getDaysInactive(friend.last_active_at)! > 1) {
+                  <button class="friends__btn friends__btn--nudge" (click)="facade.sendNudge(friend.user_id)" [title]="t('nudge')">
                     <i class="pi pi-bell"></i>
                   </button>
                 }
-                <button class="friends__btn friends__btn--remove" (click)="removeFriend(friend.friendship_id)" [title]="t('remove')">
+                <button class="friends__btn friends__btn--remove" (click)="facade.removeFriend(friend.friendship_id)" [title]="t('remove')">
                   <i class="pi pi-user-minus"></i>
                 </button>
               </div>

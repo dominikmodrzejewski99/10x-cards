@@ -2,20 +2,20 @@
   <app-dialog
     [header]="t('title')"
     [visible]="visible()"
-    (visibleChange)="visibleChange.emit($event)">
+    (visibleChange)="close()">
 
-    @if (loading()) {
+    @if (facade.shareLoadingSignal()) {
       <div class="share-friend__loading">
         <app-spinner />
       </div>
-    } @else if (friends().length === 0) {
+    } @else if (facade.shareFriendsSignal().length === 0) {
       <div class="share-friend__empty">
         <i class="pi pi-users share-friend__empty-icon"></i>
         <p>{{ t('noFriends') }}</p>
       </div>
     } @else {
       <div class="share-friend__list">
-        @for (friend of friends(); track friend.friendship_id) {
+        @for (friend of facade.shareFriendsSignal(); track friend.friendship_id) {
           <div class="share-friend__row">
             <span class="share-friend__email">{{ friend.email_masked }}</span>
             @if (isShared(friend.user_id)) {
@@ -25,8 +25,8 @@
             } @else {
               <button class="share-friend__btn"
                       (click)="shareToFriend(friend.user_id)"
-                      [disabled]="sharing() === friend.user_id">
-                @if (sharing() === friend.user_id) {
+                      [disabled]="facade.sharingSignal() === friend.user_id">
+                @if (facade.sharingSignal() === friend.user_id) {
                   <app-spinner />
                 } @else {
                   <i class="pi pi-share-alt"></i> {{ t('send') }}
