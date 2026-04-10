@@ -124,6 +124,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Minimum 80% branch coverage for every file; target 100% for services
 - Use `jasmine.createSpyObj` for dependency mocks; never use `any` in test code — use proper typed interfaces
 - Run unit tests: `npm run test:quiz` or `ng test --no-watch --browsers=ChromeHeadless`
+- **Code first, tests second**: When refactoring or implementing features, always write/modify production code first, build, and run existing tests as-is. Only modify tests AFTER verifying the code is correct and understanding which tests break due to API changes. Never batch-rewrite test files alongside production code — existing tests are a safety net that validates the refactored code still works correctly.
 
 ## E2E Testing — MANDATORY
 - E2E tests use Playwright with the Page Object Model (POM) pattern
