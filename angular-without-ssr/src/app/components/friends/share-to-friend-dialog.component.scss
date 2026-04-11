@@ -55,6 +55,11 @@
   border-radius: $radius-md;
   white-space: nowrap;
   flex-shrink: 0;
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
 }
 
 .share-friend__sent {

@@ -15,8 +15,8 @@
 }
 
 .leaderboard__back-btn {
-  width: 40px;
-  height: 40px;
+  width: 2.75rem;
+  height: 2.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,6 +33,11 @@
     border-color: $color-primary;
     background: $color-primary-light;
     color: $color-primary;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
   }
 }
 
@@ -69,15 +74,20 @@
     border-color: $color-primary;
     color: $color-primary;
   }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
 }
 
 .leaderboard__tab--active {
   background: $color-primary;
   border-color: $color-primary;
-  color: #fff;
+  color: $color-white;
 
   &:hover {
-    color: #fff;
+    color: $color-white;
     border-color: $color-primary;
   }
 }
@@ -131,7 +141,7 @@
 
 .leaderboard__position--bronze {
   background: #d97706;
-  color: #fff;
+  color: $color-white;
 }
 
 .leaderboard__email {

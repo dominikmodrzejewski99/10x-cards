@@ -47,6 +47,8 @@
   justify-content: center;
   width: 1rem;
   height: 1rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
   padding: 0;
   border: none;
   background: none;
@@ -105,5 +107,10 @@
   &:hover {
     background: $color-primary-light;
     color: $color-primary;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
   }
 }

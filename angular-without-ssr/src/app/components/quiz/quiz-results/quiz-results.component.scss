@@ -186,6 +186,11 @@
     background: $color-primary-light;
   }
 
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+
   > .pi-chevron-right {
     color: $color-text-secondary;
     font-size: 0.8rem;
@@ -320,6 +325,11 @@
   &:hover {
     background: $color-bg;
   }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
 }
 
 .quiz-results__answers-toggle-text {
@@ -380,6 +390,11 @@
     border-color: $color-purple;
     color: $color-purple;
     background: $color-purple-light;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-purple;
+    outline-offset: 2px;
   }
 
   &--active {

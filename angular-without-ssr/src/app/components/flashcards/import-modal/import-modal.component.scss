@@ -161,6 +161,8 @@
 
 .import__icon-btn {
   @include btn-icon(1.75rem);
+  min-width: 2.75rem;
+  min-height: 2.75rem;
   font-size: 0.8rem;
 }
 

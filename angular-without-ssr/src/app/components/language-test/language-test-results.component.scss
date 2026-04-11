@@ -169,6 +169,11 @@
         opacity: 0.9;
       }
 
+      &:focus-visible {
+        outline: 2px solid $color-purple;
+        outline-offset: 2px;
+      }
+
       &:disabled {
         opacity: 0.55;
         cursor: not-allowed;
@@ -183,6 +188,11 @@
       &:hover {
         background: $color-bg-alt;
         color: $color-text;
+      }
+
+      &:focus-visible {
+        outline: 2px solid $color-primary;
+        outline-offset: 2px;
       }
     }
   }

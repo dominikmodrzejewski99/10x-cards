@@ -59,6 +59,11 @@
     color: var(--app-text);
   }
 
+  &:focus-visible {
+    outline: 2px solid var(--app-primary);
+    outline-offset: 2px;
+  }
+
   &--idea:hover {
     border-color: var(--app-purple);
   }
@@ -168,6 +173,11 @@
     &:hover:not(:disabled) {
       background: var(--app-primary-hover);
       box-shadow: 0 2px 12px color-mix(in srgb, var(--app-primary) 25%, transparent);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--app-primary);
+      outline-offset: 2px;
     }
 
     &:disabled {

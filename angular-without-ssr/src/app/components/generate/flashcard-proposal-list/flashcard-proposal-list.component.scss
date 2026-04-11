@@ -49,7 +49,7 @@
 }
 
 .proposal--accepted:hover {
-  border-color: #166534;
+  border-color: $color-success-hover;
 }
 
 /* Header with number + actions */
@@ -83,7 +83,7 @@
 
 .proposal--accepted .proposal__number {
   background: $color-success;
-  color: #fff;
+  color: $color-white;
 }
 
 .proposal__actions-inline {
@@ -98,6 +98,11 @@
   background: transparent;
   color: $color-text-secondary;
   border: 1px solid transparent;
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
 }
 
 .proposal__action-btn--accept:hover {
@@ -108,14 +113,14 @@
 
 .proposal__action-btn--accepted {
   background: $color-success;
-  color: #fff;
+  color: $color-white;
   border-color: $color-success;
 }
 
 .proposal__action-btn--accepted:hover {
-  background: #166534;
-  color: #fff;
-  border-color: #166534;
+  background: $color-success-hover;
+  color: $color-white;
+  border-color: $color-success-hover;
 }
 
 .proposal__action-btn--edit:hover {
@@ -264,7 +269,7 @@
 
 .edit-form__btn--save {
   background: $color-primary;
-  color: #fff;
+  color: $color-white;
 
   &:hover {
     background: $color-primary-hover;

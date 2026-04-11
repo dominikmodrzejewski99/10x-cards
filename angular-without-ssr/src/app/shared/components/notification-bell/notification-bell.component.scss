@@ -7,8 +7,8 @@
 
 .notif-bell__btn {
   position: relative;
-  width: 36px;
-  height: 36px;
+  width: 2.75rem;
+  height: 2.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,6 +24,11 @@
     border-color: $color-primary;
     color: $color-primary;
     background: $color-primary-light;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
   }
 }
 
@@ -84,6 +89,11 @@
   padding: 0;
 
   &:hover { text-decoration: underline; }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
 }
 
 // ── List ──
@@ -146,6 +156,7 @@
   gap: 0.25rem;
   margin-top: 0.35rem;
   padding: 0.2rem 0.5rem;
+  min-height: 2.75rem;
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
   background: $color-primary;
@@ -158,6 +169,11 @@
   i { font-size: 0.65rem; }
 
   &:hover { opacity: 0.85; }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
 }
 
 // ── States ──
