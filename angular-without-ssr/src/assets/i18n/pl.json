@@ -51,6 +51,12 @@
       "cloudTitle": "Zawsze pod ręką",
       "cloudDesc": "Laptop, telefon, tablet. Twoje fiszki czekają w chmurze."
     },
+    "partnerTeaser": {
+      "label": "Dla twórców",
+      "title": "Zarabiaj na swoich zestawach fiszek",
+      "desc": "Publikuj zestawy w bibliotece publicznej i zarabiaj za każde użycie swoich fiszek — bez opłat dla uczących się.",
+      "cta": "Poznaj program partnerski"
+    },
     "cta": {
       "title": "Twoja pamięć potrzebuje systemu, nie więcej godzin",
       "desc": "Dołącz za darmo. Bez karty kredytowej, bez limitu zestawów.",

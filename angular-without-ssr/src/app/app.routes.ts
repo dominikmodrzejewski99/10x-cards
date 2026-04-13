@@ -19,6 +19,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'explore/author/:authorId',
+    loadComponent: () => import('./components/explore/author-profile.component').then(m => m.AuthorProfileComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'sets',
     loadComponent: () => import('./components/sets/set-list.component').then(m => m.SetListComponent),
     canActivate: [authGuard]
@@ -97,6 +102,16 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'partner',
+    loadComponent: () => import('./components/partner/partner-page.component').then(m => m.PartnerPageComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'admin/payouts',
+    loadComponent: () => import('./components/admin/admin-payouts.component').then(m => m.AdminPayoutsComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'feedback',
     loadComponent: () => import('./components/feedback/feedback.component').then(m => m.FeedbackComponent),
     canActivate: [authGuard]
@@ -119,6 +134,10 @@ export const routes: Routes = [
   {
     path: 'reset-password',
     loadComponent: () => import('./auth/components/reset-password.component').then(m => m.ResetPasswordComponent),
+  },
+  {
+    path: 'partners',
+    loadComponent: () => import('./components/partners-info/partners-info.component').then(m => m.PartnersInfoComponent),
   },
   {
     path: 'terms',

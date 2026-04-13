@@ -1,0 +1,44 @@
+<div class="author">
+  @if (loading()) {
+    <div class="author__loading">Ładowanie profilu autora…</div>
+  } @else if (error()) {
+    <div class="author__error">{{ error() }}</div>
+  } @else if (profile(); as p) {
+    <div class="author__header">
+      <a class="author__back" routerLink="/explore">← Wróć do biblioteki</a>
+      <h1 class="author__name">{{ p.author_email_masked }}</h1>
+      <p class="author__stats">
+        <strong>{{ p.total_published_sets }}</strong> zestawów ·
+        <strong>{{ p.total_copies }}</strong> kopii
+      </p>
+    </div>
+
+    @if (p.sets.length === 0) {
+      <div class="author__empty">Ten autor nie opublikował jeszcze żadnego zestawu.</div>
+    } @else {
+      <div class="author__grid">
+        @for (set of p.sets; track set.id) {
+          <div class="author__card">
+            <div class="author__card-header">
+              <h2 class="author__card-name">{{ set.name }}</h2>
+              <span class="author__card-badge">{{ set.card_count }} fiszek</span>
+            </div>
+            @if (set.description) {
+              <p class="author__card-desc">{{ set.description }}</p>
+            }
+            @if (set.tags && set.tags.length > 0) {
+              <div class="author__card-tags">
+                @for (tag of set.tags; track tag) {
+                  <span class="author__card-tag">{{ tag }}</span>
+                }
+              </div>
+            }
+            <div class="author__card-footer">
+              <span>{{ set.copy_count }} kopii</span>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

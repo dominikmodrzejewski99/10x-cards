@@ -51,6 +51,12 @@
       "cloudTitle": "Завжди під рукою",
       "cloudDesc": "Ноутбук, телефон, планшет. Твої картки чекають у хмарі."
     },
+    "partnerTeaser": {
+      "label": "For creators",
+      "title": "Earn from your flashcard sets",
+      "desc": "Publish sets to the public library and earn for every use of your cards — no fees for learners.",
+      "cta": "Learn about the partner program"
+    },
     "cta": {
       "title": "Твоїй пам'яті потрібна система, а не більше годин",
       "desc": "Приєднуйся безкоштовно. Без кредитної картки, без обмежень.",

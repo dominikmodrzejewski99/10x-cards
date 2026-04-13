@@ -237,6 +237,16 @@
   color: $color-text-secondary;
 }
 
+.explore-card__author {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    color: $color-primary;
+    text-decoration: underline;
+  }
+}
+
 .explore-card__copy {
   @include btn-icon(1.75rem);
 

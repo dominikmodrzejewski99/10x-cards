@@ -92,6 +92,12 @@ export interface FlashcardSetDTO {
   is_public: boolean;
   copy_count: number;
   published_at: string | null;
+  /** Immutable author attribution for partner program royalties.
+   *  For originals: equals user_id. For copies (via copy_public_set): equals
+   *  the ORIGINAL author, never the copier. */
+  original_author_id: string;
+  /** Set this row was copied from, NULL for originals. */
+  source_set_id: number | null;
   created_at: string;
   updated_at: string;
 }
@@ -122,9 +128,20 @@ export interface PublicSetDTO {
   description: string | null;
   tags: string[];
   card_count: number;
+  /** Original author's user_id — always present for sets published after
+   *  the M1 author-attribution migration. Used to link to the author profile. */
+  author_id: string;
   author_email_masked: string;
   copy_count: number;
   published_at: string;
+}
+
+export interface AuthorProfileDTO {
+  author_id: string;
+  author_email_masked: string;
+  total_published_sets: number;
+  total_copies: number;
+  sets: PublicSetDTO[];
 }
 
 export interface BrowsePublicSetsResponse {
@@ -446,4 +463,61 @@ export interface FeedbackDTO {
   title: string;
   description: string;
   created_at: string;
+}
+
+/** ---------- Partner Program ---------- */
+
+export type PartnerStatus = 'none' | 'pending' | 'active' | 'suspended';
+
+export interface PartnerProfileDTO {
+  user_id: string;
+  status: PartnerStatus;
+  legal_name: string | null;
+  pesel: string | null;
+  address_line1: string | null;
+  address_line2: string | null;
+  postal_code: string | null;
+  city: string | null;
+  tax_office: string | null;
+  bank_account_iban: string | null;
+  license_version: string | null;
+  license_accepted_at: string | null;
+  pending_balance_grosz: number;
+  lifetime_earnings_grosz: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PartnerMonthlyStatsDTO {
+  author_id: string;
+  period: string; // ISO date, first day of month
+  billable_uses: number;
+  unique_learners: number;
+  gross_earnings_grosz: number;
+  capped_earnings_grosz: number;
+  accrued_to_balance_grosz: number;
+  concentration_top_user_pct: number | null;
+  concentration_flag: boolean;
+  computed_at: string | null;
+}
+
+export interface PartnerConfigDTO {
+  price_per_use_grosz: number;
+  partner_share_percent: number;
+  min_payout_grosz: number;
+  monthly_global_budget_grosz: number;
+  per_partner_monthly_cap_grosz: number;
+}
+
+/** Partner onboarding form — all fields required before status → 'active'. */
+export interface PartnerOnboardingCommand {
+  legal_name: string;
+  pesel: string;
+  address_line1: string;
+  postal_code: string;
+  city: string;
+  tax_office: string;
+  bank_account_iban: string;
+  license_version: string;
+  license_accepted: true;
 }

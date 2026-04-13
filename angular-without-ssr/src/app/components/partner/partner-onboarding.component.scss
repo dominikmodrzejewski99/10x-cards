@@ -1,0 +1,167 @@
+.po {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 2rem;
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--app-text-heading);
+    margin: 0 0 0.25rem;
+  }
+
+  &__subtitle {
+    color: var(--app-text-secondary);
+    font-size: 0.9rem;
+    margin: 0 0 1.5rem;
+    line-height: 1.5;
+  }
+
+  &__banner {
+    background: var(--app-primary-light);
+    border: 1px solid var(--app-primary);
+    color: var(--app-primary);
+    padding: 0.85rem 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  &__card {
+    background: var(--app-white);
+    border: 1px solid var(--app-border);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: var(--app-card-shadow);
+    margin-bottom: 1.5rem;
+  }
+
+  &__card-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--app-text-heading);
+    margin: 0 0 1rem;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    margin-bottom: 1rem;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  &__label {
+    font-size: 0.8rem;
+    color: var(--app-text-secondary);
+    font-weight: 500;
+
+    &--req::after {
+      content: ' *';
+      color: var(--app-danger);
+    }
+  }
+
+  &__input {
+    padding: 0.6rem 0.75rem;
+    border: 1.5px solid var(--app-border);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-family: inherit;
+    color: var(--app-text);
+    background: var(--app-white);
+    transition: border-color 0.15s;
+    width: 100%;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: var(--app-primary);
+      box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.1);
+    }
+
+    &--err {
+      border-color: var(--app-danger);
+    }
+  }
+
+  &__field-err {
+    font-size: 0.8rem;
+    color: var(--app-danger);
+    margin: 0.125rem 0 0;
+  }
+
+  &__legal {
+    background: var(--app-bg);
+    border: 1px solid var(--app-border);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    font-size: 0.85rem;
+    color: var(--app-text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  &__checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    cursor: pointer;
+
+    input {
+      margin-top: 0.2rem;
+    }
+  }
+
+  &__checkbox-label {
+    font-size: 0.9rem;
+    color: var(--app-text);
+    line-height: 1.4;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  &__submit {
+    padding: 0.7rem 1.75rem;
+    background: var(--app-primary);
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s ease;
+
+    &:hover:not(:disabled) {
+      background: var(--app-primary-hover);
+      box-shadow: 0 2px 12px rgba(66, 85, 255, 0.25);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  &__error {
+    color: var(--app-danger);
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .po__grid { grid-template-columns: 1fr; }
+}

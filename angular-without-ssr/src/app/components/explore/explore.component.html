@@ -107,7 +107,9 @@
           }
           <div class="explore-card__footer">
             <div class="explore-card__meta">
-              <span>{{ set.author_email_masked }}</span>
+              <a class="explore-card__author"
+                 [routerLink]="['/explore/author', set.author_id]"
+                 (click)="$event.stopPropagation()">{{ set.author_email_masked }}</a>
               <span>·</span>
               <span>{{ set.copy_count }} {{ t('copies') }}</span>
             </div>

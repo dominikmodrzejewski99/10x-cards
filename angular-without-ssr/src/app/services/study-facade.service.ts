@@ -5,6 +5,7 @@ import { ReviewApiService } from './review-api.service';
 import { FlashcardSetApiService } from './flashcard-set-api.service';
 import { Sm2Result, SpacedRepetitionService } from './spaced-repetition.service';
 import { StreakService } from '../shared/services/streak.service';
+import { UsageEventsApiService } from './usage-events-api.service';
 import { FlashcardSetDTO, ReviewQuality, SessionResultDTO, StudyCardDTO } from '../../types';
 import { launchConfetti } from '../shared/utils/confetti';
 import { ClassifiedError, classifyError } from '../shared/utils/error-classifier';
@@ -15,7 +16,12 @@ export class StudyFacadeService {
   private readonly setApi: FlashcardSetApiService = inject(FlashcardSetApiService);
   private readonly sm2: SpacedRepetitionService = inject(SpacedRepetitionService);
   private readonly streakService: StreakService = inject(StreakService);
+  private readonly usageEvents: UsageEventsApiService = inject(UsageEventsApiService);
   private readonly t: TranslocoService = inject(TranslocoService);
+
+  /** Session ID sent with every usage event so fraud-analysis can cluster
+   *  bursts from the same session. Reset whenever due cards are (re)loaded. */
+  private currentSessionId: string | null = null;
 
   private readonly _dueCards: WritableSignal<StudyCardDTO[]> = signal<StudyCardDTO[]>([]);
   private readonly _originalCards: WritableSignal<StudyCardDTO[]> = signal<StudyCardDTO[]>([]);
@@ -147,6 +153,8 @@ export class StudyFacadeService {
     this._failedCards.set([]);
     this._sessionResults.set({ known: 0, hard: 0, unknown: 0, total: 0 });
 
+    this.currentSessionId = this.generateSessionId();
+
     this.loadSubscription = this.reviewApi.getDueCards(this._selectedSetId()).subscribe({
       next: (cards: StudyCardDTO[]) => {
         this._dueCards.set(cards);
@@ -184,6 +192,10 @@ export class StudyFacadeService {
     this.answerSubscription?.unsubscribe();
     this.answerSubscription = this.reviewApi.saveReview(card.flashcard.id, reviewData).subscribe({
       next: () => {
+        // Record the billable usage event (fire-and-forget — failures do not
+        // block the study flow). Server resolves author_id from the flashcard.
+        this.usageEvents.recordReview(card.flashcard.id, this.currentSessionId).subscribe();
+
         this._sessionResults.update((r: SessionResultDTO) => ({
           known: quality >= 4 ? r.known + 1 : r.known,
           hard: quality === 3 ? r.hard + 1 : r.hard,
@@ -316,6 +328,15 @@ export class StudyFacadeService {
       this._currentIndex.set(nextIdx);
       setTimeout(() => this._skipTransition.set(false));
     }
+  }
+
+  private generateSessionId(): string {
+    // Browser-native. Prefer crypto.randomUUID; fall back to a timestamp+random
+    // string for ancient browsers where crypto.randomUUID is missing.
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+      return crypto.randomUUID();
+    }
+    return `s_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
   }
 
   private loadNextReviewDate(): void {

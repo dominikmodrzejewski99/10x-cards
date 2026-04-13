@@ -51,6 +51,12 @@
       "cloudTitle": "Toujours sous la main",
       "cloudDesc": "Ordi, téléphone, tablette. Tes cartes t'attendent dans le cloud."
     },
+    "partnerTeaser": {
+      "label": "For creators",
+      "title": "Earn from your flashcard sets",
+      "desc": "Publish sets to the public library and earn for every use of your cards — no fees for learners.",
+      "cta": "Learn about the partner program"
+    },
     "cta": {
       "title": "Ta mémoire a besoin d'un système, pas de plus d'heures",
       "desc": "Inscris-toi gratuitement. Pas de carte bancaire, pas de limites.",

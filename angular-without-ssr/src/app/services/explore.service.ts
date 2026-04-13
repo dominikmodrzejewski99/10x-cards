@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, from, map, catchError, throwError } from 'rxjs';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from './supabase-client.factory';
-import { BrowsePublicSetsResponse } from '../../types';
+import { AuthorProfileDTO, BrowsePublicSetsResponse } from '../../types';
 
 @Injectable({ providedIn: 'root' })
 export class ExploreService {
@@ -67,6 +67,18 @@ export class ExploreService {
     ).pipe(
       map(response => {
         if (response.error) throw new Error(response.error.message);
+      }),
+      catchError(error => throwError(() => error))
+    );
+  }
+
+  getAuthorPublicSets(authorId: string): Observable<AuthorProfileDTO> {
+    return from(
+      this.supabase.rpc('get_author_public_sets', { p_author_id: authorId })
+    ).pipe(
+      map(response => {
+        if (response.error) throw new Error(response.error.message);
+        return response.data as AuthorProfileDTO;
       }),
       catchError(error => throwError(() => error))
     );

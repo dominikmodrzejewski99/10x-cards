@@ -51,6 +51,12 @@
       "cloudTitle": "Immer griffbereit",
       "cloudDesc": "Laptop, Handy, Tablet. Deine Karteikarten warten in der Cloud."
     },
+    "partnerTeaser": {
+      "label": "For creators",
+      "title": "Earn from your flashcard sets",
+      "desc": "Publish sets to the public library and earn for every use of your cards — no fees for learners.",
+      "cta": "Learn about the partner program"
+    },
     "cta": {
       "title": "Dein Gedächtnis braucht ein System, nicht mehr Stunden",
       "desc": "Melde dich kostenlos an. Keine Kreditkarte, keine Limits.",

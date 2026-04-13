@@ -1,0 +1,124 @@
+<div class="po">
+  <h1 class="po__title">Zostań partnerem</h1>
+  <p class="po__subtitle">
+    Publikuj zestawy w bibliotece publicznej i zarabiaj za każde płatne użycie swoich fiszek.
+    Rozliczenie na podstawie umowy licencyjnej z 50% kosztami uzyskania przychodu (prawa autorskie).
+  </p>
+
+  @if (facade.pendingBalanceSignal() > 0) {
+    <div class="po__banner">
+      <strong>Masz już {{ facade.formatPln(facade.pendingBalanceSignal()) }} do wypłaty!</strong>
+      Aby odebrać środki, dokończ poniższy formularz.
+    </div>
+  }
+
+  <div class="po__card">
+    <h2 class="po__card-title">Dane do umowy i PIT-11</h2>
+
+    <div class="po__field">
+      <label class="po__label po__label--req">Imię i nazwisko</label>
+      <input class="po__input"
+             [class.po__input--err]="errors().legal_name"
+             [(ngModel)]="form.legal_name"
+             placeholder="Jan Kowalski">
+    </div>
+
+    <div class="po__grid">
+      <div class="po__field">
+        <label class="po__label po__label--req">PESEL</label>
+        <input class="po__input"
+               [class.po__input--err]="errors().pesel"
+               [(ngModel)]="form.pesel"
+               placeholder="11 cyfr"
+               maxlength="11">
+      </div>
+      <div class="po__field">
+        <label class="po__label po__label--req">Urząd skarbowy</label>
+        <input class="po__input"
+               [class.po__input--err]="errors().tax_office"
+               [(ngModel)]="form.tax_office"
+               placeholder="np. US Warszawa-Mokotów">
+      </div>
+    </div>
+
+    <div class="po__field">
+      <label class="po__label po__label--req">Adres zamieszkania</label>
+      <input class="po__input"
+             [class.po__input--err]="errors().address_line1"
+             [(ngModel)]="form.address_line1"
+             placeholder="Ulica i numer">
+    </div>
+
+    <div class="po__grid">
+      <div class="po__field">
+        <label class="po__label po__label--req">Kod pocztowy</label>
+        <input class="po__input"
+               [class.po__input--err]="errors().postal_code"
+               [(ngModel)]="form.postal_code"
+               placeholder="00-000">
+      </div>
+      <div class="po__field">
+        <label class="po__label po__label--req">Miasto</label>
+        <input class="po__input"
+               [class.po__input--err]="errors().city"
+               [(ngModel)]="form.city">
+      </div>
+    </div>
+
+    <div class="po__field">
+      <label class="po__label po__label--req">Numer konta (IBAN)</label>
+      <input class="po__input"
+             [class.po__input--err]="errors().bank_account_iban"
+             [(ngModel)]="form.bank_account_iban"
+             placeholder="PL00 0000 0000 0000 0000 0000 0000">
+      @if (errors().bank_account_iban) {
+        <p class="po__field-err">Format: PL + 26 cyfr (spacje opcjonalne)</p>
+      }
+    </div>
+  </div>
+
+  <div class="po__card">
+    <h2 class="po__card-title">Umowa licencyjna</h2>
+
+    <div class="po__legal">
+      <p><strong>Wersja dokumentu: {{ licenseVersion }}</strong></p>
+      <p>
+        Na mocy niniejszej umowy licencyjnej niewyłącznej Partner udziela platformie 10x-cards
+        prawa do udostępniania opublikowanych zestawów fiszek innym użytkownikom platformy
+        w zamian za wynagrodzenie liczone od liczby płatnych użyć jego zestawów.
+      </p>
+      <p>
+        Wynagrodzenie wypłacane jest w cyklu miesięcznym po osiągnięciu progu
+        {{ facade.formatPln(minPayout()) }}. Stawka za jedno płatne użycie oraz sposób jej
+        podziału pomiędzy Partnera i platformę określone są w regulaminie programu.
+      </p>
+      <p>
+        Wynagrodzenie traktowane jest jako przychód z praw autorskich (art. 22 ust. 9 PIT)
+        — platforma potrąca zaliczkę na podatek dochodowy i sporządza PIT-11 na koniec roku.
+      </p>
+      <p>
+        <em>⚠️ To jest wersja robocza. Pełne warunki umowy zostaną przedstawione po ich
+        skonsultowaniu z radcą prawnym przed oficjalnym uruchomieniem programu.</em>
+      </p>
+    </div>
+
+    <label class="po__checkbox-row">
+      <input type="checkbox" [(ngModel)]="licenseAccepted">
+      <span class="po__checkbox-label">
+        Akceptuję powyższe warunki umowy licencyjnej w wersji <code>{{ licenseVersion }}</code>.
+        Rozumiem, że od wypłaconego wynagrodzenia zostanie potrącona zaliczka na podatek dochodowy.
+      </span>
+    </label>
+  </div>
+
+  <div class="po__actions">
+    <button class="po__submit"
+            (click)="submit()"
+            [disabled]="facade.submittingSignal() || !isValid()">
+      {{ facade.submittingSignal() ? 'Zapisywanie…' : 'Rozpocznij zarabianie' }}
+    </button>
+    @if (facade.errorSignal()) {
+      <span class="po__error">{{ facade.errorSignal() }}</span>
+    }
+  </div>
+</div>

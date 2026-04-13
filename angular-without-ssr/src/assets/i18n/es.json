@@ -51,6 +51,12 @@
       "cloudTitle": "Siempre a la mano",
       "cloudDesc": "Portátil, celular, tablet. Tus tarjetas te esperan en la nube."
     },
+    "partnerTeaser": {
+      "label": "For creators",
+      "title": "Earn from your flashcard sets",
+      "desc": "Publish sets to the public library and earn for every use of your cards — no fees for learners.",
+      "cta": "Learn about the partner program"
+    },
     "cta": {
       "title": "Tu memoria necesita un sistema, no más horas",
       "desc": "Regístrate gratis. Sin tarjeta de crédito, sin límites.",

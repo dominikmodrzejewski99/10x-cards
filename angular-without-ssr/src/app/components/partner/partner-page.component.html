@@ -1,0 +1,7 @@
+@if (facade.loadingSignal()) {
+  <div class="partner-page__loading">Ładowanie…</div>
+} @else if (facade.profileSignal()?.status === 'active') {
+  <app-partner-dashboard />
+} @else {
+  <app-partner-onboarding />
+}

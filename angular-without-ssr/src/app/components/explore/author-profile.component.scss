@@ -1,0 +1,120 @@
+.author {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 2rem;
+
+  &__loading, &__error, &__empty {
+    padding: 3rem 1rem;
+    text-align: center;
+    color: var(--app-text-secondary);
+    font-size: 0.95rem;
+  }
+
+  &__error {
+    color: var(--app-danger);
+  }
+
+  &__header {
+    margin-bottom: 1.5rem;
+  }
+
+  &__back {
+    display: inline-block;
+    color: var(--app-primary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--app-text-heading);
+    margin: 0 0 0.25rem;
+  }
+
+  &__stats {
+    color: var(--app-text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+
+    strong {
+      color: var(--app-text);
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  &__card {
+    background: var(--app-white);
+    border: 1px solid var(--app-border);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    box-shadow: var(--app-card-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  &__card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  &__card-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--app-text-heading);
+    margin: 0;
+    flex: 1;
+  }
+
+  &__card-badge {
+    font-size: 0.75rem;
+    color: var(--app-primary);
+    background: var(--app-primary-light);
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  &__card-desc {
+    color: var(--app-text-secondary);
+    font-size: 0.875rem;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  &__card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  &__card-tag {
+    font-size: 0.7rem;
+    color: var(--app-text-secondary);
+    background: var(--app-bg);
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+  }
+
+  &__card-footer {
+    color: var(--app-text-secondary);
+    font-size: 0.8rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--app-border);
+  }
+}

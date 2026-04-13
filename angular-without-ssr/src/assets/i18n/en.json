@@ -51,6 +51,12 @@
       "cloudTitle": "Always at hand",
       "cloudDesc": "Laptop, phone, tablet. Your flashcards are waiting in the cloud."
     },
+    "partnerTeaser": {
+      "label": "For creators",
+      "title": "Earn from your flashcard sets",
+      "desc": "Publish sets to the public library and earn for every use of your cards — no fees for learners.",
+      "cta": "Learn about the partner program"
+    },
     "cta": {
       "title": "Your memory needs a system, not more hours",
       "desc": "Join for free. No credit card, no set limits.",
