@@ -1,4 +1,17 @@
-/* Inter — self-hosted, latin subset */
+/* Inter — self-hosted.
+ *
+ * latin: the default subset (A-Z, a-z, common accents).
+ * latin-ext: adds Central/Eastern European diacritics including Polish
+ *   (ą, ę, ł, ń, ó, ś, ź, ż). Browsers load the latin-ext woff2 on demand
+ *   via unicode-range — only when a matching glyph is rendered.
+ *
+ * The normal weights 400/600/700/900 in latin-ext all reference the same
+ * woff2 file because Google Fonts serves a single variable font for this
+ * subset. Listing them as separate @font-face rules lets the browser pick
+ * the right one per weight, and the shared file is fetched only once.
+ */
+
+/* ── latin subset (ASCII + common accents) ── */
 @font-face {
   font-family: 'Inter';
   font-style: normal;
@@ -37,4 +50,50 @@
   font-weight: 900;
   font-display: swap;
   src: url('inter-v20-latin-900.woff2') format('woff2');
+}
+
+/* ── latin-ext subset (Polish, Czech, Hungarian, etc.) ── */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('inter-v20-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('inter-v20-latin-ext-italic.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('inter-v20-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('inter-v20-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('inter-v20-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
