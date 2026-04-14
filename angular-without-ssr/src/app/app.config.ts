@@ -3,12 +3,11 @@ import { Router } from '@angular/router';
 import * as Sentry from '@sentry/angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideServiceWorker } from '@angular/service-worker';
-import { provideRouter, withEnabledBlockingInitialNavigation } from '@angular/router';
+import { PreloadAllModules, provideRouter, withEnabledBlockingInitialNavigation, withPreloading } from '@angular/router';
 import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
 import { provideTransloco } from '@jsverse/transloco';
 import { routes } from './app.routes';
-import { authInterceptor } from './services/auth.interceptor';
-import { GlobalErrorHandler } from './services/global-error-handler';
+import { authInterceptor } from './services/infrastructure/auth.interceptor';
 import { TranslocoHttpLoader } from './transloco-loader';
 
 export const appConfig: ApplicationConfig = {
@@ -30,7 +29,7 @@ export const appConfig: ApplicationConfig = {
             multi: true,
         },
         provideAnimationsAsync(),
-        provideRouter(routes, withEnabledBlockingInitialNavigation()),
+        provideRouter(routes, withEnabledBlockingInitialNavigation(), withPreloading(PreloadAllModules)),
         provideHttpClient(
             withInterceptors([authInterceptor]),
             withFetch()
