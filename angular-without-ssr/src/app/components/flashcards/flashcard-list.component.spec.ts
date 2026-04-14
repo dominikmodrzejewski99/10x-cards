@@ -5,8 +5,8 @@ import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { FlashcardListComponent } from './flashcard-list.component';
-import { FlashcardsFacadeService } from '../../services/flashcards-facade.service';
-import { ShareService } from '../../services/share.service';
+import { FlashcardsFacadeService } from '../../services/facades/flashcards-facade.service';
+import { ShareService } from '../../services/api/share.service';
 import { ConfirmService } from '../../shared/services/confirm.service';
 import { ToastService } from '../../shared/services/toast.service';
 import { FlashcardDTO } from '../../../types';
@@ -38,9 +38,8 @@ describe('FlashcardListComponent', () => {
       'openImportModal', 'closeImportModal', 'importFlashcards',
       'exportCsv', 'exportJson', 'printTest', 'onReorder',
       'setShareLink', 'setShareLoading', 'setSavedCount', 'dismissSavedBanner', 'destroy',
-      'generateShareLink',
       'uploadImage', 'deleteImage', 'uploadAudio', 'deleteAudio',
-      'requestTranslation', 'clearTranslationSuggestion', 'resetFormMediaState', 'initFormMediaState'
+      'requestTranslation', 'clearTranslationSuggestion'
     ], {
       flashcardsSignal: signal<FlashcardDTO[]>([mockFlashcard]),
       totalRecordsSignal: signal<number>(1),
