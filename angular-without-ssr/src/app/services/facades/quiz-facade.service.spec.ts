@@ -30,7 +30,7 @@ describe('QuizFacadeService', () => {
 
   const mockSet: FlashcardSetDTO = {
     id: 14, user_id: 'user-1', name: 'Angielski B2', description: null, tags: [],
-    is_public: false, copy_count: 0, published_at: null, created_at: '', updated_at: ''
+    is_public: false, copy_count: 0, published_at: null, original_author_id: 'user-1', source_set_id: null, created_at: '', updated_at: ''
   };
 
   const mockQuestions: QuizQuestion[] = mockFlashcards.map((card: FlashcardDTO, index: number) => ({

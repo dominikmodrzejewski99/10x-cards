@@ -25,7 +25,7 @@ describe('DashboardFacadeService', () => {
   const mockSets: FlashcardSetDTO[] = [
     {
       id: 1, user_id: 'user-1', name: 'English', description: null, tags: [],
-      is_public: false, copy_count: 0, published_at: null,
+      is_public: false, copy_count: 0, published_at: null, original_author_id: 'user-1', source_set_id: null,
       created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z'
     }
   ];

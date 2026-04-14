@@ -23,8 +23,8 @@ describe('StudyFacadeService', () => {
   };
 
   const mockSets: FlashcardSetDTO[] = [
-    { id: 1, user_id: 'u1', name: 'Set A', description: null, tags: [], is_public: false, copy_count: 0, published_at: null, created_at: '', updated_at: '' },
-    { id: 2, user_id: 'u1', name: 'Set B', description: null, tags: [], is_public: false, copy_count: 0, published_at: null, created_at: '', updated_at: '' }
+    { id: 1, user_id: 'u1', name: 'Set A', description: null, tags: [], is_public: false, copy_count: 0, published_at: null, original_author_id: 'u1', source_set_id: null, created_at: '', updated_at: '' },
+    { id: 2, user_id: 'u1', name: 'Set B', description: null, tags: [], is_public: false, copy_count: 0, published_at: null, original_author_id: 'u1', source_set_id: null, created_at: '', updated_at: '' }
   ];
 
   const mockCards: StudyCardDTO[] = [

@@ -21,6 +21,7 @@ describe('SetListComponent', () => {
   const mockSet: FlashcardSetDTO = {
     id: 1, user_id: 'u1', name: 'Test Set', description: 'desc', tags: [],
     is_public: false, copy_count: 0, published_at: null,
+    original_author_id: 'u1', source_set_id: null,
     created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z',
   };
 
