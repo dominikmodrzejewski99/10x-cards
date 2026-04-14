@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './auth/guards/auth.guard';
 import { nonAuthGuard } from './auth/guards/non-auth.guard';
 import { adminGuard } from './auth/guards/admin.guard';
+import { setTitleResolver, quizTitleResolver, languageTestTitleResolver } from './services/domain/route-title.resolver';
 
 export const routes: Routes = [
   {
@@ -36,7 +37,7 @@ export const routes: Routes = [
   },
   {
     path: 'sets/:id',
-    title: 'Fiszki — Memlo',
+    title: setTitleResolver,
     loadComponent: () => import('./components/flashcards/flashcard-list.component').then(m => m.FlashcardListComponent),
     canActivate: [authGuard]
   },
@@ -59,7 +60,7 @@ export const routes: Routes = [
   },
   {
     path: 'quiz/:setId',
-    title: 'Quiz — Memlo',
+    title: quizTitleResolver,
     loadComponent: () => import('./components/quiz/quiz-view.component').then(m => m.QuizViewComponent),
     canActivate: [authGuard]
   },
@@ -77,13 +78,13 @@ export const routes: Routes = [
   },
   {
     path: 'language-test/:level',
-    title: 'Test językowy — Memlo',
+    title: languageTestTitleResolver,
     loadComponent: () => import('./components/language-test/language-test-view.component').then(m => m.LanguageTestViewComponent),
     canActivate: [authGuard]
   },
   {
     path: 'language-test/:level/results',
-    title: 'Wyniki testu — Memlo',
+    title: languageTestTitleResolver,
     loadComponent: () => import('./components/language-test/language-test-results.component').then(m => m.LanguageTestResultsComponent),
     canActivate: [authGuard]
   },
