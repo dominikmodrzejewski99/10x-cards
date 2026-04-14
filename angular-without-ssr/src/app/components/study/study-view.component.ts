@@ -119,10 +119,14 @@ export class StudyViewComponent implements OnInit, OnDestroy {
 
   public toggleFullscreen(): void {
     if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(() => {});
+      document.documentElement.requestFullscreen().catch((err: unknown) => {
+        console.warn('Fullscreen request failed:', err);
+      });
       this.isFullscreenSignal.set(true);
     } else {
-      document.exitFullscreen().catch(() => {});
+      document.exitFullscreen().catch((err: unknown) => {
+        console.warn('Exit fullscreen failed:', err);
+      });
       this.isFullscreenSignal.set(false);
     }
   }

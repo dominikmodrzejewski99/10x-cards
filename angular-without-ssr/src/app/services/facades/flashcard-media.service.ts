@@ -100,7 +100,8 @@ export class FlashcardMediaService {
         this._translationSuggestion.set(translation);
         this._translating.set(false);
       })
-      .catch(() => {
+      .catch((err: unknown) => {
+        this.logger.error('FlashcardMedia.requestTranslation', err);
         this._translating.set(false);
       });
   }
