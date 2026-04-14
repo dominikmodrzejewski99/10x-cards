@@ -37,10 +37,14 @@ export class NotificationService {
   }
 
   async markAsRead(notificationId: string): Promise<void> {
+    const userId = (await this.supabase.auth.getUser()).data.user?.id;
+    if (!userId) throw new Error('Not authenticated');
+
     const { error } = await this.supabase
       .from('notifications')
       .update({ read: true })
-      .eq('id', notificationId);
+      .eq('id', notificationId)
+      .eq('user_id', userId);
 
     if (error) throw error;
   }

@@ -43,8 +43,7 @@
     {
       "name": "supabase-api",
       "urls": [
-        "https://*.supabase.co/rest/v1/**",
-        "https://*.supabase.co/auth/v1/**"
+        "https://*.supabase.co/rest/v1/**"
       ],
       "cacheConfig": {
         "strategy": "freshness",

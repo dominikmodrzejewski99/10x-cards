@@ -85,12 +85,14 @@ export class LanguageTestResultsService {
   }
 
   updateGeneratedSetId(resultId: number, setId: number): Observable<void> {
-    return from(
-      this.supabase
-        .from('language_test_results')
-        .update({ generated_set_id: setId, updated_at: new Date().toISOString() })
-        .eq('id', resultId)
-    ).pipe(
+    return this.getCurrentUserId().pipe(
+      switchMap(userId => from(
+        this.supabase
+          .from('language_test_results')
+          .update({ generated_set_id: setId, updated_at: new Date().toISOString() })
+          .eq('id', resultId)
+          .eq('user_id', userId)
+      )),
       map(response => {
         if (response.error) throw new Error(response.error.message);
       }),

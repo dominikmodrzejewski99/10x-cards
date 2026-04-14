@@ -99,16 +99,18 @@ describe('NotificationService', () => {
 
   describe('markAsRead', () => {
     it('powinien zaktualizowac notyfikacje jako przeczytana', async () => {
+      const eqUserIdSpy = jasmine.createSpy('eq-user_id').and.returnValue(Promise.resolve({ error: null }));
+      const eqIdSpy = jasmine.createSpy('eq-id').and.returnValue({ eq: eqUserIdSpy });
       const chain = createChainMock({ error: null });
-      chain['update'] = jasmine.createSpy('update').and.returnValue({
-        eq: jasmine.createSpy('eq').and.returnValue(Promise.resolve({ error: null }))
-      });
+      chain['update'] = jasmine.createSpy('update').and.returnValue({ eq: eqIdSpy });
       mockSupabaseClient.from.and.returnValue(chain);
 
       await service.markAsRead('n1');
 
       expect(mockSupabaseClient.from).toHaveBeenCalledWith('notifications');
       expect(chain['update']).toHaveBeenCalledWith({ read: true });
+      expect(eqIdSpy).toHaveBeenCalledWith('id', 'n1');
+      expect(eqUserIdSpy).toHaveBeenCalledWith('user_id', 'user-1');
     });
   });
 

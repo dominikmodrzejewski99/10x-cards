@@ -128,11 +128,17 @@ export class AdminPayoutsService {
   }
 
   private csvEscape(value: string): string {
+    // Prevent CSV formula injection — prefix dangerous first characters
+    // with a single quote so Excel does not interpret the cell as a formula.
+    let safe: string = value;
+    if (/^[=+\-@\t\r]/.test(safe)) {
+      safe = "'" + safe;
+    }
     // Semicolon separator + Excel-friendly quoting for cells containing
     // semicolons, quotes, or newlines.
-    if (/[;"\r\n]/.test(value)) {
-      return `"${value.replace(/"/g, '""')}"`;
+    if (/[;"\r\n]/.test(safe)) {
+      return `"${safe.replace(/"/g, '""')}"`;
     }
-    return value;
+    return safe;
   }
 }

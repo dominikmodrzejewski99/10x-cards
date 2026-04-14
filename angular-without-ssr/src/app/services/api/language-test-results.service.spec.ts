@@ -270,12 +270,21 @@ describe('LanguageTestResultsService', () => {
 
   describe('updateGeneratedSetId', () => {
     it('should update the generated_set_id on a result', (done: DoneFn) => {
-      queryBuilder.eq.and.resolveTo({ data: null, error: null });
+      supabaseMock.auth.getSession.and.resolveTo({
+        data: { session: { user: { id: TEST_USER_ID } } },
+        error: null
+      });
+      // Chain: update() -> eq('id', ...) -> eq('user_id', ...) -> resolves
+      const eqUserIdSpy = jasmine.createSpy('eq-user_id').and.resolveTo({ data: null, error: null });
+      const eqIdSpy = jasmine.createSpy('eq-id').and.returnValue({ eq: eqUserIdSpy });
+      queryBuilder.update.and.returnValue({ eq: eqIdSpy });
 
       service.updateGeneratedSetId(1, 42).subscribe({
         next: () => {
           expect(supabaseMock.from).toHaveBeenCalledWith('language_test_results');
           expect(queryBuilder.update).toHaveBeenCalled();
+          expect(eqIdSpy).toHaveBeenCalledWith('id', 1);
+          expect(eqUserIdSpy).toHaveBeenCalledWith('user_id', TEST_USER_ID);
           done();
         },
         error: done.fail
@@ -283,7 +292,13 @@ describe('LanguageTestResultsService', () => {
     });
 
     it('should throw when update returns error', (done: DoneFn) => {
-      queryBuilder.eq.and.resolveTo({ data: null, error: { message: 'Update failed' } });
+      supabaseMock.auth.getSession.and.resolveTo({
+        data: { session: { user: { id: TEST_USER_ID } } },
+        error: null
+      });
+      const eqUserIdSpy = jasmine.createSpy('eq-user_id').and.resolveTo({ data: null, error: { message: 'Update failed' } });
+      const eqIdSpy = jasmine.createSpy('eq-id').and.returnValue({ eq: eqUserIdSpy });
+      queryBuilder.update.and.returnValue({ eq: eqIdSpy });
 
       service.updateGeneratedSetId(1, 42).subscribe({
         next: () => done.fail('Expected error'),

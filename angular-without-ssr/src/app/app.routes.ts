@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './auth/guards/auth.guard';
 import { nonAuthGuard } from './auth/guards/non-auth.guard';
 import { adminGuard } from './auth/guards/admin.guard';
+import { registeredGuard } from './auth/guards/registered.guard';
 import { setTitleResolver, quizTitleResolver, languageTestTitleResolver } from './services/domain/route-title.resolver';
 
 export const routes: Routes = [
@@ -101,43 +102,43 @@ export const routes: Routes = [
     path: 'friends',
     title: 'Znajomi — Memlo',
     loadComponent: () => import('./components/friends/friends-list.component').then(m => m.FriendsListComponent),
-    canActivate: [authGuard]
+    canActivate: [authGuard, registeredGuard]
   },
   {
     path: 'friends/leaderboard',
     title: 'Ranking — Memlo',
     loadComponent: () => import('./components/friends/friends-leaderboard.component').then(m => m.FriendsLeaderboardComponent),
-    canActivate: [authGuard]
+    canActivate: [authGuard, registeredGuard]
   },
   {
     path: 'friends/:userId',
     title: 'Statystyki znajomego — Memlo',
     loadComponent: () => import('./components/friends/friend-stats.component').then(m => m.FriendStatsComponent),
-    canActivate: [authGuard]
+    canActivate: [authGuard, registeredGuard]
   },
   {
     path: 'settings',
     title: 'Ustawienia — Memlo',
     loadComponent: () => import('./components/settings/settings.component').then(m => m.SettingsComponent),
-    canActivate: [authGuard]
+    canActivate: [authGuard, registeredGuard]
   },
   {
     path: 'partner',
     title: 'Program partnerski — Memlo',
     loadComponent: () => import('./components/partner/partner-page.component').then(m => m.PartnerPageComponent),
-    canActivate: [authGuard]
+    canActivate: [authGuard, registeredGuard]
   },
   {
     path: 'admin/payouts',
     title: 'Wypłaty — Memlo Admin',
     loadComponent: () => import('./components/admin/admin-payouts.component').then(m => m.AdminPayoutsComponent),
-    canActivate: [authGuard, adminGuard]
+    canActivate: [authGuard, registeredGuard, adminGuard]
   },
   {
     path: 'feedback',
     title: 'Feedback — Memlo',
     loadComponent: () => import('./components/feedback/feedback.component').then(m => m.FeedbackComponent),
-    canActivate: [authGuard]
+    canActivate: [authGuard, registeredGuard]
   },
   {
     path: 'login',
