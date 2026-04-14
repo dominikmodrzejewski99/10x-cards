@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import { PartnersInfoComponent } from './partners-info.component';
 
@@ -9,7 +10,7 @@ describe('PartnersInfoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PartnersInfoComponent],
+      imports: [PartnersInfoComponent, RouterModule.forRoot([])],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
@@ -27,8 +28,6 @@ describe('PartnersInfoComponent', () => {
   });
 
   it('should use OnPush change detection', () => {
-    // PartnersInfoComponent is a static page with no inputs/outputs
-    // Verify the component instance is a plain object
     expect(component).toEqual(jasmine.any(PartnersInfoComponent));
   });
 });

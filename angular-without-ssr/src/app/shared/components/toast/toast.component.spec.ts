@@ -8,6 +8,7 @@ describe('ToastComponent', () => {
   let component: ToastComponent;
   let fixture: ComponentFixture<ToastComponent>;
   let toastServiceMock: jasmine.SpyObj<ToastService>;
+  let messagesSignal = signal<ToastMessage[]>([]);
 
   const mockMessages: ToastMessage[] = [
     { id: 1, severity: 'success', summary: 'OK', detail: 'Saved successfully', life: 4000 },
@@ -15,10 +16,12 @@ describe('ToastComponent', () => {
   ];
 
   beforeEach(async () => {
+    messagesSignal = signal<ToastMessage[]>(mockMessages);
+
     toastServiceMock = jasmine.createSpyObj<ToastService>('ToastService', [
       'add', 'remove', 'clear',
     ], {
-      messages: signal<ToastMessage[]>(mockMessages),
+      messages: messagesSignal,
     });
 
     await TestBed.configureTestingModule({
@@ -50,11 +53,8 @@ describe('ToastComponent', () => {
   });
 
   it('should render nothing when there are no messages', () => {
-    (toastServiceMock as any).messages = signal<ToastMessage[]>([]);
-
-    const fix = TestBed.createComponent(ToastComponent);
-    fix.detectChanges();
-
-    expect(fix.componentInstance.toastService.messages().length).toBe(0);
+    messagesSignal.set([]);
+    fixture.detectChanges();
+    expect(component.toastService.messages().length).toBe(0);
   });
 });

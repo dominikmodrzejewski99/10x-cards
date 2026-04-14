@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
+import { NO_ERRORS_SCHEMA, signal, WritableSignal } from '@angular/core';
 
 import { PartnerDashboardComponent } from './partner-dashboard.component';
 import { PartnerFacadeService } from '../../services/facades/partner-facade.service';
@@ -9,6 +9,7 @@ describe('PartnerDashboardComponent', () => {
   let component: PartnerDashboardComponent;
   let fixture: ComponentFixture<PartnerDashboardComponent>;
   let facadeMock: jasmine.SpyObj<PartnerFacadeService>;
+  let currentMonthStatsSignal: WritableSignal<PartnerMonthlyStatsDTO | null>;
 
   const mockStats: PartnerMonthlyStatsDTO = {
     author_id: 'user-1',
@@ -32,6 +33,8 @@ describe('PartnerDashboardComponent', () => {
   };
 
   beforeEach(async () => {
+    currentMonthStatsSignal = signal<PartnerMonthlyStatsDTO | null>(mockStats);
+
     facadeMock = jasmine.createSpyObj<PartnerFacadeService>('PartnerFacadeService', [
       'init', 'submitOnboarding', 'formatPln', 'formatPeriod',
     ], {
@@ -41,7 +44,7 @@ describe('PartnerDashboardComponent', () => {
       loadingSignal: signal<boolean>(false),
       submittingSignal: signal<boolean>(false),
       errorSignal: signal<string | null>(null),
-      currentMonthStatsSignal: signal<PartnerMonthlyStatsDTO | null>(mockStats),
+      currentMonthStatsSignal,
       lifetimeEarningsSignal: signal<number>(50000),
       pendingBalanceSignal: signal<number>(4500),
       readyForPayoutSignal: signal<boolean>(false),
@@ -90,9 +93,8 @@ describe('PartnerDashboardComponent', () => {
   });
 
   it('should return 0 earnings when current month stats are null', () => {
-    (facadeMock as any).currentMonthStatsSignal = signal<PartnerMonthlyStatsDTO | null>(null);
-    const fix = TestBed.createComponent(PartnerDashboardComponent);
-    fix.detectChanges();
-    expect((fix.componentInstance as any).currentMonthEarnings()).toBe(0);
+    currentMonthStatsSignal.set(null);
+    fixture.detectChanges();
+    expect((component as any).currentMonthEarnings()).toBe(0);
   });
 });

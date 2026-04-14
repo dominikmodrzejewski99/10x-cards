@@ -15,13 +15,13 @@ describe('ExploreFacadeService', () => {
 
   const mockSet: PublicSetDTO = {
     id: 1, name: 'Set A', description: 'desc', tags: ['angular'],
-    card_count: 10, author_email_masked: 'u***@example.com',
+    card_count: 10, author_id: 'u1', author_email_masked: 'u***@example.com',
     copy_count: 3, published_at: '2026-01-01T00:00:00Z',
   };
 
   const mockSet2: PublicSetDTO = {
     id: 2, name: 'Set B', description: null, tags: ['rxjs'],
-    card_count: 5, author_email_masked: 'a***@example.com',
+    card_count: 5, author_id: 'u2', author_email_masked: 'a***@example.com',
     copy_count: 0, published_at: '2026-01-02T00:00:00Z',
   };
 
