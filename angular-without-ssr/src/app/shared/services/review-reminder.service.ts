@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, of, map } from 'rxjs';
-import { ReviewApiService } from '../../services/review-api.service';
+import { ReviewApiService } from '../../services/api/review-api.service';
 
 @Injectable({
   providedIn: 'root'

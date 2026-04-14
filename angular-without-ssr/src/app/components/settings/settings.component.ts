@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { SettingsFacadeService } from '../../services/settings-facade.service';
+import { SettingsFacadeService } from '../../services/facades/settings-facade.service';
 
 @Component({
   selector: 'app-settings',

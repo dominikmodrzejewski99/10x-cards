@@ -3,7 +3,7 @@ import { Component, ChangeDetectionStrategy, inject, OnInit, OnDestroy, effect }
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { LanguageTestFacadeService } from '../../services/language-test-facade.service';
+import { LanguageTestFacadeService } from '../../services/facades/language-test-facade.service';
 import { TestLevel } from '../../../types';
 
 @Component({

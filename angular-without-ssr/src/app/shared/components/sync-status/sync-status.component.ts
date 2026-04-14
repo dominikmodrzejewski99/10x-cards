@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { ConnectivityService } from '../../../services/connectivity.service';
-import { OfflineQueueService } from '../../../services/offline-queue.service';
+import { ConnectivityService } from '../../../services/infrastructure/connectivity.service';
+import { OfflineQueueService } from '../../../services/infrastructure/offline-queue.service';
 
 @Component({
   selector: 'app-sync-status',

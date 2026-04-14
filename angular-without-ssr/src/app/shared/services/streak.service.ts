@@ -1,5 +1,5 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
-import { UserPreferencesService } from '../../services/user-preferences.service';
+import { UserPreferencesService } from '../../services/domain/user-preferences.service';
 
 @Injectable({ providedIn: 'root' })
 export class StreakService {

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { OnboardingComponent } from './onboarding.component';
-import { OnboardingFacadeService } from '../../services/onboarding-facade.service';
+import { OnboardingFacadeService } from '../../services/facades/onboarding-facade.service';
 
 describe('OnboardingComponent', () => {
   let component: OnboardingComponent;

@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { FriendsListComponent } from './friends-list.component';
-import { FriendsFacadeService } from '../../services/friends-facade.service';
+import { FriendsFacadeService } from '../../services/facades/friends-facade.service';
 
 describe('FriendsListComponent', () => {
   let component: FriendsListComponent;

@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { ShareToFriendDialogComponent } from './share-to-friend-dialog.component';
-import { FriendsFacadeService } from '../../services/friends-facade.service';
+import { FriendsFacadeService } from '../../services/facades/friends-facade.service';
 
 @Component({
   imports: [ShareToFriendDialogComponent],

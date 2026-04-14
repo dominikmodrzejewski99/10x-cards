@@ -10,7 +10,7 @@ import { LanguageTestWidgetComponent } from '../language-test/language-test-widg
 import { AuthStore } from '../../auth/store';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { DashboardFacadeService } from '../../services/dashboard-facade.service';
+import { DashboardFacadeService } from '../../services/facades/dashboard-facade.service';
 
 @Component({
   selector: 'app-dashboard',

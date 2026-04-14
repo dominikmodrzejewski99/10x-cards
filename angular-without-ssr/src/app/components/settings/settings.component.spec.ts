@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { SettingsComponent } from './settings.component';
-import { SettingsFacadeService } from '../../services/settings-facade.service';
+import { SettingsFacadeService } from '../../services/facades/settings-facade.service';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;

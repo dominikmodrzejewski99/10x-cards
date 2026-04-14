@@ -2,8 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Observable, from, map, catchError, throwError, of, switchMap } from 'rxjs';
 import { LoginUserCommand, RegisterUserCommand, UserDTO } from '../../types';
-import { SupabaseClientFactory } from '../services/supabase-client.factory';
-import { LoggerService } from '../services/logger.service';
+import { SupabaseClientFactory } from '../services/infrastructure/supabase-client.factory';
+import { LoggerService } from '../services/infrastructure/logger.service';
 
 @Injectable({
   providedIn: 'root'

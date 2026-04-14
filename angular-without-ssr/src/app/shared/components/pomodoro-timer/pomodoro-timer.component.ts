@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { Overlay, OverlayRef, OverlayModule } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { DialogComponent } from '../dialog/dialog.component';
-import { PomodoroFacadeService } from '../../../services/pomodoro-facade.service';
+import { PomodoroFacadeService } from '../../../services/facades/pomodoro-facade.service';
 
 @Component({
   selector: 'app-pomodoro-timer',

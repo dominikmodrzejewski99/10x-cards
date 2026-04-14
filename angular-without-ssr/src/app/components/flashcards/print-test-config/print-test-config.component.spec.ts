@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentRef } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { PrintTestConfigComponent } from './print-test-config.component';
-import { PrintTestConfig } from '../../../services/print-test.service';
+import { PrintTestConfig } from '../../../services/domain/print-test.service';
 
 describe('PrintTestConfigComponent', () => {
   let component: PrintTestConfigComponent;

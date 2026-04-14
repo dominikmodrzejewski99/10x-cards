@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { QuizListComponent } from './quiz-list.component';
-import { QuizFacadeService } from '../../services/quiz-facade.service';
+import { QuizFacadeService } from '../../services/facades/quiz-facade.service';
 
 describe('QuizListComponent', () => {
   let component: QuizListComponent;

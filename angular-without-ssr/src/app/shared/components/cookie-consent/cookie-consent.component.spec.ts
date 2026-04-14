@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { CookieConsentComponent } from './cookie-consent.component';
-import { CookieConsentService } from '../../../services/cookie-consent.service';
+import { CookieConsentService } from '../../../services/domain/cookie-consent.service';
 
 describe('CookieConsentComponent', () => {
   let component: CookieConsentComponent;

@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { StudyViewComponent } from './study-view.component';
-import { StudyFacadeService } from '../../services/study-facade.service';
+import { StudyFacadeService } from '../../services/facades/study-facade.service';
 import { FlashcardSetDTO, SessionResultDTO, StudyCardDTO } from '../../../types';
 
 describe('StudyViewComponent', () => {

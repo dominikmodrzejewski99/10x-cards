@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
-import { SupabaseClientFactory } from '../services/supabase-client.factory';
+import { SupabaseClientFactory } from '../services/infrastructure/supabase-client.factory';
 import { UserDTO } from '../../types';
 
 /**

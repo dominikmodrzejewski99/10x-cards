@@ -3,7 +3,7 @@ import { Component, ChangeDetectionStrategy, input, output, signal, computed, in
 import { FormsModule } from '@angular/forms';
 import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
 import { FlashcardProposalDTO } from '../../../../types';
-import { TextParserService, ParseError } from '../../../services/text-parser.service';
+import { TextParserService, ParseError } from '../../../services/domain/text-parser.service';
 
 interface ImportProposal extends FlashcardProposalDTO {
   _id: string;

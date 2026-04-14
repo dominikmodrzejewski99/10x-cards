@@ -6,7 +6,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { ResetPasswordComponent } from './reset-password.component';
 import { AuthStore } from '../store';
-import { SupabaseClientFactory } from '../../services/supabase-client.factory';
+import { SupabaseClientFactory } from '../../services/infrastructure/supabase-client.factory';
 
 describe('ResetPasswordComponent', () => {
   let fixture: ComponentFixture<ResetPasswordComponent>;

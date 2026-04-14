@@ -4,7 +4,7 @@ import {
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { SpinnerComponent } from '../../shared/components/spinner/spinner.component';
-import { FriendsFacadeService } from '../../services/friends-facade.service';
+import { FriendsFacadeService } from '../../services/facades/friends-facade.service';
 
 @Component({
   selector: 'app-friend-stats',

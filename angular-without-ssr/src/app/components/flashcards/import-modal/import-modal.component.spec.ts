@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { ImportModalComponent } from './import-modal.component';
-import { TextParserService, ParseResult } from '../../../services/text-parser.service';
+import { TextParserService, ParseResult } from '../../../services/domain/text-parser.service';
 import { FlashcardProposalDTO } from '../../../../types';
 
 describe('ImportModalComponent', () => {

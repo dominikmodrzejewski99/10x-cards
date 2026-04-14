@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { FeedbackFacadeService } from '../../services/feedback-facade.service';
+import { FeedbackFacadeService } from '../../services/facades/feedback-facade.service';
 
 @Component({
   selector: 'app-feedback',

@@ -4,7 +4,7 @@ import { TranslocoTestingModule } from '@jsverse/transloco';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { FeedbackComponent } from './feedback.component';
-import { FeedbackFacadeService } from '../../services/feedback-facade.service';
+import { FeedbackFacadeService } from '../../services/facades/feedback-facade.service';
 
 describe('FeedbackComponent', () => {
   let component: FeedbackComponent;

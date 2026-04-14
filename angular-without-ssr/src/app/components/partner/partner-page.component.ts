@@ -1,5 +1,5 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
-import { PartnerFacadeService } from '../../services/partner-facade.service';
+import { PartnerFacadeService } from '../../services/facades/partner-facade.service';
 import { PartnerDashboardComponent } from './partner-dashboard.component';
 import { PartnerOnboardingComponent } from './partner-onboarding.component';
 

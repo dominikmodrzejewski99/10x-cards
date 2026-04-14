@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { ExploreComponent } from './explore.component';
-import { ExploreFacadeService } from '../../services/explore-facade.service';
+import { ExploreFacadeService } from '../../services/facades/explore-facade.service';
 
 describe('ExploreComponent', () => {
   let component: ExploreComponent;

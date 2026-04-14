@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { ReviewReminderService } from './review-reminder.service';
-import { ReviewApiService } from '../../services/review-api.service';
+import { ReviewApiService } from '../../services/api/review-api.service';
 import { StudyCardDTO, FlashcardDTO, FlashcardReviewDTO } from '../../../types';
 
 function createMockStudyCard(id: number): StudyCardDTO {

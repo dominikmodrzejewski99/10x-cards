@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PomodoroTimerComponent } from './pomodoro-timer.component';
-import { PomodoroFacadeService } from '../../../services/pomodoro-facade.service';
+import { PomodoroFacadeService } from '../../../services/facades/pomodoro-facade.service';
 
 describe('PomodoroTimerComponent', () => {
   let component: PomodoroTimerComponent;

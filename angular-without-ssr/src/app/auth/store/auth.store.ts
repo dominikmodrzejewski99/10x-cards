@@ -7,10 +7,10 @@ import { switchMap, catchError, tap, timeout, exhaustMap } from 'rxjs/operators'
 import { UserDTO } from '../../../types';
 import { AuthService } from '../auth.service';
 import { AuthRedirectService } from '../services/auth-redirect.service';
-import { UserPreferencesService } from '../../services/user-preferences.service';
+import { UserPreferencesService } from '../../services/domain/user-preferences.service';
 import { StreakService } from '../../shared/services/streak.service';
-import { ThemeService } from '../../services/theme.service';
-import { LanguageService } from '../../services/language.service';
+import { ThemeService } from '../../services/domain/theme.service';
+import { LanguageService } from '../../services/domain/language.service';
 
 export interface AuthState {
   user: UserDTO | null;

@@ -2,7 +2,7 @@ import { Component, OnInit, inject, Injector, ChangeDetectionStrategy, effect } 
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { QuizFacadeService } from '../../services/quiz-facade.service';
+import { QuizFacadeService } from '../../services/facades/quiz-facade.service';
 import { QuizConfigComponent } from './quiz-config/quiz-config.component';
 import { QuizQuestionComponent } from './quiz-question/quiz-question.component';
 import { QuizResultsComponent } from './quiz-results/quiz-results.component';

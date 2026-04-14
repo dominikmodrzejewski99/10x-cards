@@ -1,6 +1,6 @@
 import { Component, inject, Signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { PartnerFacadeService } from '../../services/partner-facade.service';
+import { PartnerFacadeService } from '../../services/facades/partner-facade.service';
 import { PartnerOnboardingCommand } from '../../../types';
 
 /**

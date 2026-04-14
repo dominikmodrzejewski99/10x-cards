@@ -2,7 +2,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { QuizFacadeService } from '../../services/quiz-facade.service';
+import { QuizFacadeService } from '../../services/facades/quiz-facade.service';
 
 @Component({
   selector: 'app-quiz-list',

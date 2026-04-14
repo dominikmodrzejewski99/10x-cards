@@ -2,7 +2,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, ChangeDetectionStrategy, ViewEncapsulation, inject, OnInit, Signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { LanguageTestFacadeService } from '../../services/language-test-facade.service';
+import { LanguageTestFacadeService } from '../../services/facades/language-test-facade.service';
 import { LanguageTestResultDTO } from '../../../types';
 
 @Component({

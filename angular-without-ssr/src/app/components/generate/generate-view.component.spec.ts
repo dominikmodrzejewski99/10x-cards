@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { GenerateViewComponent } from './generate-view.component';
-import { GenerateFacadeService } from '../../services/generate-facade.service';
+import { GenerateFacadeService } from '../../services/facades/generate-facade.service';
 
 describe('GenerateViewComponent', () => {
   let component: GenerateViewComponent;

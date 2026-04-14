@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { QuizViewComponent } from './quiz-view.component';
-import { QuizFacadeService, QuizPhase } from '../../services/quiz-facade.service';
+import { QuizFacadeService, QuizPhase } from '../../services/facades/quiz-facade.service';
 import {
   FlashcardDTO,
   QuizConfig,

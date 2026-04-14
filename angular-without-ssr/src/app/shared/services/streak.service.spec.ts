@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { StreakService } from './streak.service';
-import { UserPreferencesService } from '../../services/user-preferences.service';
+import { UserPreferencesService } from '../../services/domain/user-preferences.service';
 import { UserPreferencesDTO } from '../../../types';
 
 function createMockPrefs(overrides: Partial<UserPreferencesDTO> = {}): UserPreferencesDTO {

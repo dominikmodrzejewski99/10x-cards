@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { LanguageTestListComponent } from './language-test-list.component';
-import { LanguageTestFacadeService } from '../../services/language-test-facade.service';
+import { LanguageTestFacadeService } from '../../services/facades/language-test-facade.service';
 import { TestLevel } from '../../../types';
 
 describe('LanguageTestListComponent', () => {

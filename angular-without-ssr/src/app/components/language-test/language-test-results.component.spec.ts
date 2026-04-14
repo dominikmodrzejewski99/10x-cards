@@ -4,7 +4,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { LanguageTestResultsComponent } from './language-test-results.component';
-import { LanguageTestFacadeService } from '../../services/language-test-facade.service';
+import { LanguageTestFacadeService } from '../../services/facades/language-test-facade.service';
 import { LanguageTestResultDTO } from '../../../types';
 
 describe('LanguageTestResultsComponent', () => {

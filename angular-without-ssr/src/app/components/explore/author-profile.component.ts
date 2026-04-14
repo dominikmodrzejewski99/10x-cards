@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject, signal, Signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { ExploreService } from '../../services/explore.service';
+import { ExploreService } from '../../services/api/explore.service';
 import { AuthorProfileDTO } from '../../../types';
 
 /**

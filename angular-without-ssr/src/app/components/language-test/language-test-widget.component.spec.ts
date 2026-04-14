@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { LanguageTestWidgetComponent } from './language-test-widget.component';
-import { LanguageTestFacadeService } from '../../services/language-test-facade.service';
+import { LanguageTestFacadeService } from '../../services/facades/language-test-facade.service';
 
 describe('LanguageTestWidgetComponent', () => {
   let component: LanguageTestWidgetComponent;

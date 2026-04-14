@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/cor
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { CookieConsentService } from '../../../services/cookie-consent.service';
+import { CookieConsentService } from '../../../services/domain/cookie-consent.service';
 
 @Component({
   selector: 'app-cookie-consent',

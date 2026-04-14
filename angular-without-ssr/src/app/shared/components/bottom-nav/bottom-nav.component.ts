@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, inject, Signal } from '@angular/cor
 import { RouterModule } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { AuthStore } from '../../../auth/store';
-import { PomodoroService } from '../../../services/pomodoro.service';
+import { PomodoroService } from '../../../services/domain/pomodoro.service';
 
 @Component({
   selector: 'app-bottom-nav',

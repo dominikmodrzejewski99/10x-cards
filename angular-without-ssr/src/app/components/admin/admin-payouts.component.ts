@@ -5,7 +5,7 @@ import {
   PendingPayoutsResponse,
   PendingPayoutRow,
   ExportPayoutsResponse,
-} from '../../services/admin-payouts.service';
+} from '../../services/api/admin-payouts.service';
 
 /**
  * Admin-only page for managing monthly payouts.

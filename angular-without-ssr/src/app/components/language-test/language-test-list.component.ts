@@ -1,7 +1,7 @@
 import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { LanguageTestFacadeService } from '../../services/language-test-facade.service';
+import { LanguageTestFacadeService } from '../../services/facades/language-test-facade.service';
 
 @Component({
   selector: 'app-language-test-list',

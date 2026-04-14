@@ -4,7 +4,7 @@ import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { LanguageTestViewComponent } from './language-test-view.component';
-import { LanguageTestFacadeService } from '../../services/language-test-facade.service';
+import { LanguageTestFacadeService } from '../../services/facades/language-test-facade.service';
 import {
   TestDefinition,
   MultipleChoiceQuestion,

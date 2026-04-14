@@ -1,7 +1,7 @@
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ShareService } from '../../services/share.service';
+import { ShareService } from '../../services/api/share.service';
 import { SpinnerComponent } from '../../shared/components/spinner/spinner.component';
 
 @Component({

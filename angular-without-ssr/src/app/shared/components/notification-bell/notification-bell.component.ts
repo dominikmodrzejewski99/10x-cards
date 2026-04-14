@@ -4,7 +4,7 @@ import {
 import { Router } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { NgClass } from '@angular/common';
-import { NotificationFacadeService } from '../../../services/notification-facade.service';
+import { NotificationFacadeService } from '../../../services/facades/notification-facade.service';
 
 @Component({
   selector: 'app-notification-bell',

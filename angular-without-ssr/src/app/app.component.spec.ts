@@ -6,7 +6,7 @@ import { TranslocoTestingModule } from '@jsverse/transloco';
 import { ToastService } from './shared/services/toast.service';
 import { AppComponent } from './app.component';
 import { AuthStore } from './auth/store';
-import { UpdateService } from './services/update.service';
+import { UpdateService } from './services/infrastructure/update.service';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;

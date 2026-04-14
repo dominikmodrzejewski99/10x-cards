@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RouterModule } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { Subscription } from 'rxjs';
-import { SupabaseClientFactory } from '../../services/supabase-client.factory';
+import { SupabaseClientFactory } from '../../services/infrastructure/supabase-client.factory';
 import { AuthStore } from '../store';
 
 @Component({

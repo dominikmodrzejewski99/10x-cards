@@ -4,7 +4,7 @@ import {
 import { TranslocoDirective } from '@jsverse/transloco';
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
 import { SpinnerComponent } from '../../shared/components/spinner/spinner.component';
-import { FriendsFacadeService } from '../../services/friends-facade.service';
+import { FriendsFacadeService } from '../../services/facades/friends-facade.service';
 
 @Component({
   selector: 'app-share-to-friend-dialog',

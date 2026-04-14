@@ -4,9 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { DashboardComponent } from './dashboard.component';
-import { DashboardFacadeService, CardBreakdown } from '../../services/dashboard-facade.service';
+import { DashboardFacadeService, CardBreakdown } from '../../services/facades/dashboard-facade.service';
 import { FlashcardSetDTO } from '../../../types';
-import { LanguageTestResultsService } from '../../services/language-test-results.service';
+import { LanguageTestResultsService } from '../../services/api/language-test-results.service';
 import { of } from 'rxjs';
 
 describe('DashboardComponent', () => {

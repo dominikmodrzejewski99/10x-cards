@@ -2,7 +2,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { ChangeDetectionStrategy, Component, effect, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { GenerateFacadeService } from '../../services/generate-facade.service';
+import { GenerateFacadeService } from '../../services/facades/generate-facade.service';
 
 import { LoadingIndicatorComponent } from './loading-indicator/loading-indicator.component';
 import { ErrorMessageComponent } from './error-message/error-message.component';

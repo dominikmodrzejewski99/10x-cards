@@ -1,7 +1,7 @@
 import { TranslocoDirective } from '@jsverse/transloco';
 import { Component, ChangeDetectionStrategy, input, output, InputSignal, OutputEmitterRef, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { PrintTestConfig } from '../../../services/print-test.service';
+import { PrintTestConfig } from '../../../services/domain/print-test.service';
 import { QuestionConfigState } from '../../../shared/utils/question-config';
 import { QuestionCountPickerComponent } from '../../../shared/components/question-count-picker/question-count-picker.component';
 import { QuestionTypeSelectorComponent, QuestionTypeOption } from '../../../shared/components/question-type-selector/question-type-selector.component';

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { FriendStatsComponent } from './friend-stats.component';
-import { FriendsFacadeService } from '../../services/friends-facade.service';
+import { FriendsFacadeService } from '../../services/facades/friends-facade.service';
 
 describe('FriendStatsComponent', () => {
   let component: FriendStatsComponent;

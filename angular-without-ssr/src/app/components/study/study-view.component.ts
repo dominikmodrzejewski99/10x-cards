@@ -12,7 +12,7 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { StudyFacadeService } from '../../services/study-facade.service';
+import { StudyFacadeService } from '../../services/facades/study-facade.service';
 import { ReviewQuality } from '../../../types';
 import { FlashcardFlipComponent } from './flashcard-flip/flashcard-flip.component';
 import { SyncStatusComponent } from '../../shared/components/sync-status/sync-status.component';

@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { ExploreFacadeService } from '../../services/explore-facade.service';
+import { ExploreFacadeService } from '../../services/facades/explore-facade.service';
 
 @Component({
   selector: 'app-explore',

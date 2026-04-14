@@ -7,9 +7,9 @@ import { ToastService } from '../../shared/services/toast.service';
 import { SpinnerComponent } from '../../shared/components/spinner/spinner.component';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 
-import { FlashcardsFacadeService } from '../../services/flashcards-facade.service';
-import { ShareService } from '../../services/share.service';
-import { PrintTestConfig } from '../../services/print-test.service';
+import { FlashcardsFacadeService } from '../../services/facades/flashcards-facade.service';
+import { ShareService } from '../../services/api/share.service';
+import { PrintTestConfig } from '../../services/domain/print-test.service';
 import { FlashcardTableComponent } from './flashcard-table/flashcard-table.component';
 import { FlashcardFormComponent } from './flashcard-form/flashcard-form.component';
 import { ImportModalComponent } from './import-modal/import-modal.component';

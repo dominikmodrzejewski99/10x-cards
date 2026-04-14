@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { ShareAcceptComponent } from './share-accept.component';
-import { ShareService } from '../../services/share.service';
+import { ShareService } from '../../services/api/share.service';
 
 describe('ShareAcceptComponent', () => {
   let component: ShareAcceptComponent;

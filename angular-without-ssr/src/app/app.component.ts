@@ -10,7 +10,7 @@ import { ToastComponent } from './shared/components/toast/toast.component';
 import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AuthStore } from './auth/store';
-import { UpdateService } from './services/update.service';
+import { UpdateService } from './services/infrastructure/update.service';
 
 @Component({
   selector: 'app-root',

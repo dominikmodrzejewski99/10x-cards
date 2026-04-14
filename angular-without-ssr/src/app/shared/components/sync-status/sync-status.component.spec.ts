@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { SyncStatusComponent } from './sync-status.component';
-import { ConnectivityService } from '../../../services/connectivity.service';
-import { OfflineQueueService } from '../../../services/offline-queue.service';
+import { ConnectivityService } from '../../../services/infrastructure/connectivity.service';
+import { OfflineQueueService } from '../../../services/infrastructure/offline-queue.service';
 
 describe('SyncStatusComponent', () => {
   let component: SyncStatusComponent;

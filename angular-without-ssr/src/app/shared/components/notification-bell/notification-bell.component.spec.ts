@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { NotificationBellComponent } from './notification-bell.component';
-import { NotificationFacadeService } from '../../../services/notification-facade.service';
+import { NotificationFacadeService } from '../../../services/facades/notification-facade.service';
 
 describe('NotificationBellComponent', () => {
   let component: NotificationBellComponent;
