@@ -132,6 +132,12 @@
       "offline": "No internet connection. Check your network and refresh the page.",
       "sessionExpired": "Session expired. Please log in again.",
       "loadFailed": "Failed to load data. Try refreshing the page."
+    },
+    "greetings": {
+      "night": "Late night study?",
+      "morning": "Good morning",
+      "afternoon": "Hello",
+      "evening": "Good evening"
     }
   },
   "study": {
@@ -364,6 +370,24 @@
       "deleteAccountPrompt": "Type <strong>USUŃ</strong> to confirm:",
       "cancel": "Cancel",
       "feedback": "Report a problem"
+    },
+    "errors": {
+      "registrationFailed": "Registration failed. Please try again.",
+      "anonymousAccountFailed": "Failed to create test account.",
+      "loginFailed": "Login failed. Please try again.",
+      "updatePasswordFailed": "Failed to update password.",
+      "unknownError": "An unknown error occurred. Please try again later.",
+      "emailNotConfirmed": "Email not confirmed. Please check your inbox.",
+      "invalidEmailAddress": "The email address provided is invalid. Please use a valid email address.",
+      "invalidCredentials": "Invalid email or password.",
+      "userAlreadyRegistered": "A user with this email already exists. Try logging in.",
+      "passwordTooShort": "Password must be at least 6 characters.",
+      "samePassword": "New password must be different from the current password.",
+      "sessionExpired": "Session expired. Please try resetting your password again.",
+      "rateLimited": "For security reasons, you can only make this request once every 60 seconds.",
+      "invalidEmailFormat": "Invalid email address format.",
+      "networkError": "No connection to the server. Check your internet connection.",
+      "genericError": "An error occurred. Please try again later."
     }
   },
   "nav": {
@@ -454,6 +478,12 @@
       "setNotFound": "Set not found.",
       "loadFlashcardsFailed": "Failed to load flashcards.",
       "minCards": "Set must have at least 4 flashcards to start a quiz."
+    },
+    "feedback": {
+      "excellent": "Excellent!",
+      "good": "Good job!",
+      "needsPractice": "Keep practicing",
+      "tryAgain": "Try again"
     }
   },
   "generate": {
@@ -1035,5 +1065,87 @@
     "successTitle": "Thank you!",
     "successText": "Your report has been submitted. We'll review it as soon as possible.",
     "sendAnother": "Send another"
+  },
+  "partner": {
+    "errors": {
+      "notLoggedIn": "You must be logged in.",
+      "saveFailed": "Failed to save profile."
+    },
+    "toasts": {
+      "welcomeTitle": "Welcome to the partner program!",
+      "welcomeDetail": "Your partner profile has been saved."
+    },
+    "dashboard": {
+      "title": "Partner Dashboard",
+      "subtitle": "Earnings from public flashcard sets.",
+      "payoutReady": "Your balance has reached the payout threshold.",
+      "payoutSchedule": "The next batch of transfers is processed on the first day of the month.",
+      "concentrationWarning": "Unusual usage concentration detected this month ({{pct}}% from a single learner). This month's payout may require manual review.",
+      "balanceLabel": "Payout balance",
+      "balanceHint": "Payout when balance ≥ {{min}}",
+      "thisMonth": "This month",
+      "paidUses": "{{count}} paid uses",
+      "lifetimeLabel": "Lifetime total",
+      "lifetimeHint": "Total credited to balance",
+      "historyHeader": "Monthly history",
+      "emptyHistory": "No activity. Publish a set in the public library to start earning.",
+      "colPeriod": "Period",
+      "colUses": "Uses",
+      "colLearners": "Learners",
+      "colEarnings": "Earnings",
+      "colNotes": "Notes",
+      "flagReview": "review"
+    }
+  },
+  "admin": {
+    "payouts": {
+      "title": "Partner Payouts",
+      "accessDenied": "Administrator access denied.",
+      "periodLabel": "Period (first day of the month)",
+      "refresh": "Refresh",
+      "loading": "Loading…",
+      "frozenBanner": "Period frozen (CSV export: {{date}}). Further aggregations for this month are blocked.",
+      "partnersWithBalance": "Partners with balance",
+      "readyForPayout": "Ready for payout",
+      "totalToPay": "Total to pay",
+      "colPartner": "Partner",
+      "colUses": "Uses",
+      "colMonthly": "Monthly",
+      "colBalance": "Balance",
+      "colStatus": "Status",
+      "missingKyc": "missing KYC",
+      "flagReview": "review",
+      "statusReady": "ready",
+      "statusWaiting": "waiting",
+      "redownloadCsv": "Re-download CSV",
+      "freezeAndExport": "Freeze period and export CSV",
+      "loadFailed": "Failed to load data.",
+      "exportFailed": "Export failed.",
+      "exportSuccessNew": "CSV downloaded. Created {{count}} ledger entries.",
+      "exportSuccessExisting": "CSV downloaded from existing ledger (period was already frozen)."
+    }
+  },
+  "openrouter": {
+    "errors": {
+      "translationFailed": "Failed to translate text after multiple attempts.",
+      "emptyResponse": "Received empty response from AI model after multiple attempts.",
+      "emptyResponseSingle": "Received empty response from AI model",
+      "sessionNotFound": "Session with the given ID was not found.",
+      "allModelsUnavailable": "All AI models are unavailable. Please try again later.",
+      "unknownApiError": "Unknown API error",
+      "timeout": "AI response timeout exceeded (60s).",
+      "apiResponseError": "API response error",
+      "networkError": "Network error: {{message}}",
+      "noConnection": "No connection to AI server. Check your internet connection.",
+      "badRequest": "Invalid API request. Please try again.",
+      "badRequestWithMessage": "AI model error: {{message}}",
+      "unauthorized": "Unauthorized. Check your Google AI Studio API key.",
+      "forbidden": "Access to selected model denied or limits exceeded.",
+      "modelNotFound": "Selected AI model does not exist. Check configuration.",
+      "rateLimited": "AI query limit exceeded. Please try again shortly.",
+      "serverError": "AI server temporarily unavailable ({{status}}). Please try again later.",
+      "unexpectedError": "Unexpected API error ({{status}}): {{details}}",
+      "noDetails": "no details"
+    }
   }
 }

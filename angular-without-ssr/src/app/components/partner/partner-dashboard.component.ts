@@ -1,4 +1,5 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { PartnerFacadeService } from '../../services/facades/partner-facade.service';
 import { PartnerMonthlyStatsDTO } from '../../../types';
 
@@ -12,6 +13,7 @@ import { PartnerMonthlyStatsDTO } from '../../../types';
  */
 @Component({
   selector: 'app-partner-dashboard',
+  imports: [TranslocoDirective],
   templateUrl: './partner-dashboard.component.html',
   styleUrls: ['./partner-dashboard.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

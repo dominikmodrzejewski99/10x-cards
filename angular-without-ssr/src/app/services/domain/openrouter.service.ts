@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { TranslocoService } from '@jsverse/transloco';
 import { SessionManager } from './session-manager.service';
 import { LoggerService } from '../infrastructure/logger.service';
 import {
@@ -42,6 +43,7 @@ const NON_RETRYABLE_STATUSES: ReadonlySet<number> = new Set([401, 403, 404]);
 export class OpenRouterService {
   private readonly http: HttpClient = inject(HttpClient);
   private readonly logger: LoggerService = inject(LoggerService);
+  private readonly t: TranslocoService = inject(TranslocoService);
   private readonly sessionManager: SessionManager = inject(SessionManager);
   private readonly supabaseFactory: SupabaseClientFactory = inject(SupabaseClientFactory);
 
@@ -66,8 +68,8 @@ export class OpenRouterService {
     const content: string | undefined = response?.choices?.[0]?.message?.content;
 
     if (!content) {
-      this.logger.error('OpenRouterService.sendMessage', 'Pusta odpowiedź od modelu AI');
-      throw new Error('Otrzymano pustą odpowiedź od modelu AI');
+      this.logger.error('OpenRouterService.sendMessage', 'Empty response from AI model');
+      throw new Error(this.t.translate('openrouter.errors.emptyResponseSingle'));
     }
 
     this.sessionManager.addMessage(session.id, {
@@ -107,12 +109,12 @@ export class OpenRouterService {
       } catch (error: unknown) {
         if (attempt === maxRetries - 1) {
           this.logger.error('OpenRouterService.translateText', error);
-          throw new Error('Nie udało się przetłumaczyć tekstu po wielu próbach.');
+          throw new Error(this.t.translate('openrouter.errors.translationFailed'));
         }
       }
     }
 
-    throw new Error('Otrzymano pustą odpowiedź od modelu AI po wielu próbach.');
+    throw new Error(this.t.translate('openrouter.errors.emptyResponse'));
   }
 
   public createSession(): Session {
@@ -129,7 +131,7 @@ export class OpenRouterService {
     if (sessionId) {
       const existing: Session | null = this.sessionManager.getSession(sessionId);
       if (!existing) {
-        throw new Error('Nie znaleziono sesji o podanym ID.');
+        throw new Error(this.t.translate('openrouter.errors.sessionNotFound'));
       }
       return existing;
     }
@@ -202,12 +204,12 @@ export class OpenRouterService {
         // Zamieniamy na user-friendly message
         const userMessage: string = error instanceof HttpErrorResponse
           ? this.getErrorMessage(error)
-          : (error instanceof Error ? error.message : 'Nieznany błąd API');
+          : (error instanceof Error ? error.message : this.t.translate('openrouter.errors.unknownApiError'));
         throw new Error(userMessage);
       }
     }
 
-    throw new Error('Wszystkie modele AI są niedostępne. Spróbuj ponownie później.');
+    throw new Error(this.t.translate('openrouter.errors.allModelsUnavailable'));
   }
 
   private callApi(payload: OpenRouterRequestPayload): Observable<OpenRouterResponse> {
@@ -218,7 +220,7 @@ export class OpenRouterService {
     });
 
     return this.http.post<OpenRouterResponse>(apiUrl, payload, { headers }).pipe(
-      timeout({ each: 60_000, with: () => throwError(() => new Error('Przekroczono czas oczekiwania na odpowiedź AI (60s).')) })
+      timeout({ each: 60_000, with: () => throwError(() => new Error(this.t.translate('openrouter.errors.timeout'))) })
     );
   }
 
@@ -226,7 +228,7 @@ export class OpenRouterService {
     const raw: Record<string, unknown> = response as unknown as Record<string, unknown>;
     if (raw['error']) {
       const errorObj: Record<string, unknown> = raw['error'] as Record<string, unknown>;
-      const message: string = (errorObj['message'] as string) || 'Błąd w odpowiedzi API';
+      const message: string = (errorObj['message'] as string) || this.t.translate('openrouter.errors.apiResponseError');
       const code: number = (errorObj['code'] as number) || 0;
       const isRetryable: boolean = code === 429 || message.includes('rate-limit');
       const err: Error & { retryable?: boolean } = new Error(message);
@@ -259,33 +261,36 @@ export class OpenRouterService {
 
   private getErrorMessage(error: HttpErrorResponse): string {
     if (error.error instanceof ErrorEvent) {
-      return `Błąd sieci: ${error.error.message}`;
+      return this.t.translate('openrouter.errors.networkError', { message: error.error.message });
     }
 
     const providerMessage: string | undefined = this.extractProviderMessage(error);
 
     switch (error.status) {
       case 0:
-        return 'Brak połączenia z serwerem AI. Sprawdź połączenie internetowe.';
+        return this.t.translate('openrouter.errors.noConnection');
       case 400:
         return providerMessage
-          ? `Błąd modelu AI: ${providerMessage}`
-          : 'Nieprawidłowe żądanie do API. Spróbuj ponownie.';
+          ? this.t.translate('openrouter.errors.badRequestWithMessage', { message: providerMessage })
+          : this.t.translate('openrouter.errors.badRequest');
       case 401:
-        return 'Brak autoryzacji. Sprawdź klucz API Google AI Studio.';
+        return this.t.translate('openrouter.errors.unauthorized');
       case 403:
-        return 'Brak dostępu do wybranego modelu lub przekroczone limity.';
+        return this.t.translate('openrouter.errors.forbidden');
       case 404:
-        return 'Wybrany model AI nie istnieje. Sprawdź konfigurację.';
+        return this.t.translate('openrouter.errors.modelNotFound');
       case 429:
-        return 'Przekroczono limit zapytań AI. Spróbuj ponownie za chwilę.';
+        return this.t.translate('openrouter.errors.rateLimited');
       case 500:
       case 502:
       case 503:
       case 504:
-        return `Serwer AI tymczasowo niedostępny (${error.status}). Spróbuj ponownie później.`;
+        return this.t.translate('openrouter.errors.serverError', { status: error.status });
       default:
-        return `Nieoczekiwany błąd API (${error.status}): ${error.statusText || 'brak szczegółów'}`;
+        return this.t.translate('openrouter.errors.unexpectedError', {
+          status: error.status,
+          details: error.statusText || this.t.translate('openrouter.errors.noDetails')
+        });
     }
   }
 

@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Observable, from, map, catchError, throwError, of, switchMap } from 'rxjs';
+import { TranslocoService } from '@jsverse/transloco';
 import { LoginUserCommand, RegisterUserCommand, UserDTO } from '../../types';
 import { SupabaseClientFactory } from '../services/infrastructure/supabase-client.factory';
 import { LoggerService } from '../services/infrastructure/logger.service';
@@ -10,6 +11,7 @@ import { LoggerService } from '../services/infrastructure/logger.service';
 })
 export class AuthService {
   private logger: LoggerService = inject(LoggerService);
+  private readonly t: TranslocoService = inject(TranslocoService);
   private supabase: SupabaseClient;
 
   constructor(private supabaseFactory: SupabaseClientFactory) {
@@ -89,7 +91,7 @@ export class AuthService {
           throw response.error;
         }
         if (!response.data.user) {
-          throw new Error('Nie udało się zarejestrować. Spróbuj ponownie.');
+          throw new Error(this.t.translate('auth.errors.registrationFailed'));
         }
 
         return this.mapUserToDTO(response.data.user);
@@ -119,7 +121,7 @@ export class AuthService {
           throw response.error;
         }
         if (!response.data.user) {
-          throw new Error('Nie udało się utworzyć konta testowego.');
+          throw new Error(this.t.translate('auth.errors.anonymousAccountFailed'));
         }
         return this.mapUserToDTO(response.data.user);
       }),
@@ -144,7 +146,7 @@ export class AuthService {
           throw response.error;
         }
         if (!response.data.user) {
-          throw new Error('Nie udało się zalogować. Spróbuj ponownie.');
+          throw new Error(this.t.translate('auth.errors.loginFailed'));
         }
         return this.mapUserToDTO(response.data.user);
       }),
@@ -184,7 +186,7 @@ export class AuthService {
           throw response.error;
         }
         if (!response.data.user) {
-          throw new Error('Nie udało się zaktualizować hasła.');
+          throw new Error(this.t.translate('auth.errors.updatePasswordFailed'));
         }
         return this.mapUserToDTO(response.data.user);
       }),
@@ -289,7 +291,7 @@ export class AuthService {
    * Obsługuje błędy autentykacji i zwraca przyjazne dla użytkownika komunikaty
    */
   private handleAuthError(error: unknown): Error {
-    let message = 'Wystąpił nieznany błąd. Spróbuj ponownie później.';
+    let message = this.t.translate('auth.errors.unknownError');
 
     if (typeof error === 'string') {
       return new Error(error);
@@ -299,45 +301,45 @@ export class AuthService {
     if (err.message) {
       if (err.message.includes('Email not confirmed') ||
           err.message.includes('Email verification required')) {
-        return new Error('Email nie został potwierdzony. Sprawdź swoją skrzynkę pocztową.');
+        return new Error(this.t.translate('auth.errors.emailNotConfirmed'));
       }
 
       // Sprawdzamy, czy błąd dotyczy nieprawidłowego adresu email
       if (err.message.includes('Email address') && err.message.includes('is invalid')) {
-        message = 'Podany adres email jest nieprawidłowy. Użyj poprawnego adresu email.';
+        message = this.t.translate('auth.errors.invalidEmailAddress');
       } else {
         // Mapowanie komunikatów błędów z Supabase na przyjazne dla użytkownika komunikaty
         switch (err.message) {
           case 'Invalid login credentials':
-            message = 'Nieprawidłowy email lub hasło.';
+            message = this.t.translate('auth.errors.invalidCredentials');
             break;
           case 'User already registered':
-            message = 'Użytkownik o podanym adresie email już istnieje. Spróbuj się zalogować.';
+            message = this.t.translate('auth.errors.userAlreadyRegistered');
             break;
           case 'Password should be at least 6 characters':
           case 'Password should be at least 6 characters.':
-            message = 'Hasło powinno mieć co najmniej 6 znaków.';
+            message = this.t.translate('auth.errors.passwordTooShort');
             break;
           case 'New password should be different from the old password.':
           case 'New password should be different from the old password':
-            message = 'Nowe hasło musi być inne niż obecne hasło.';
+            message = this.t.translate('auth.errors.samePassword');
             break;
           case 'Auth session missing!':
           case 'Auth session missing':
-            message = 'Sesja wygasła. Spróbuj ponownie zresetować hasło.';
+            message = this.t.translate('auth.errors.sessionExpired');
             break;
           case 'For security purposes, you can only request this once every 60 seconds':
-            message = 'Ze względów bezpieczeństwa możesz wysłać prośbę raz na 60 sekund.';
+            message = this.t.translate('auth.errors.rateLimited');
             break;
           case 'Unable to validate email address: invalid format':
-            message = 'Nieprawidłowy format adresu email.';
+            message = this.t.translate('auth.errors.invalidEmailFormat');
             break;
           default:
             // Don't expose raw error messages from Supabase
             if (err.message.includes('fetch') || err.message.includes('network') || err.message.includes('Failed to fetch')) {
-              message = 'Brak połączenia z serwerem. Sprawdź połączenie internetowe.';
+              message = this.t.translate('auth.errors.networkError');
             } else {
-              message = 'Wystąpił błąd. Spróbuj ponownie później.';
+              message = this.t.translate('auth.errors.genericError');
             }
         }
       }

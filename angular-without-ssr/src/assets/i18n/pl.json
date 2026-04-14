@@ -132,6 +132,12 @@
       "offline": "Brak połączenia z internetem. Sprawdź sieć i odśwież stronę.",
       "sessionExpired": "Sesja wygasła. Zaloguj się ponownie.",
       "loadFailed": "Nie udało się załadować danych. Spróbuj odświeżyć stronę."
+    },
+    "greetings": {
+      "night": "Nocna nauka?",
+      "morning": "Dzień dobry",
+      "afternoon": "Cześć",
+      "evening": "Dobry wieczór"
     }
   },
   "study": {
@@ -364,6 +370,24 @@
       "deleteAccountPrompt": "Wpisz <strong>USUŃ</strong> aby potwierdzić:",
       "cancel": "Anuluj",
       "feedback": "Zgłoś problem"
+    },
+    "errors": {
+      "registrationFailed": "Nie udało się zarejestrować. Spróbuj ponownie.",
+      "anonymousAccountFailed": "Nie udało się utworzyć konta testowego.",
+      "loginFailed": "Nie udało się zalogować. Spróbuj ponownie.",
+      "updatePasswordFailed": "Nie udało się zaktualizować hasła.",
+      "unknownError": "Wystąpił nieznany błąd. Spróbuj ponownie później.",
+      "emailNotConfirmed": "Email nie został potwierdzony. Sprawdź swoją skrzynkę pocztową.",
+      "invalidEmailAddress": "Podany adres email jest nieprawidłowy. Użyj poprawnego adresu email.",
+      "invalidCredentials": "Nieprawidłowy email lub hasło.",
+      "userAlreadyRegistered": "Użytkownik o podanym adresie email już istnieje. Spróbuj się zalogować.",
+      "passwordTooShort": "Hasło powinno mieć co najmniej 6 znaków.",
+      "samePassword": "Nowe hasło musi być inne niż obecne hasło.",
+      "sessionExpired": "Sesja wygasła. Spróbuj ponownie zresetować hasło.",
+      "rateLimited": "Ze względów bezpieczeństwa możesz wysłać prośbę raz na 60 sekund.",
+      "invalidEmailFormat": "Nieprawidłowy format adresu email.",
+      "networkError": "Brak połączenia z serwerem. Sprawdź połączenie internetowe.",
+      "genericError": "Wystąpił błąd. Spróbuj ponownie później."
     }
   },
   "nav": {
@@ -454,6 +478,12 @@
       "setNotFound": "Nie znaleziono zestawu.",
       "loadFlashcardsFailed": "Nie udało się pobrać fiszek.",
       "minCards": "Zestaw musi mieć minimum 4 fiszki, aby uruchomić test."
+    },
+    "feedback": {
+      "excellent": "Świetnie!",
+      "good": "Dobra robota!",
+      "needsPractice": "Poćwicz jeszcze",
+      "tryAgain": "Spróbuj ponownie"
     }
   },
   "generate": {
@@ -954,11 +984,11 @@
     "unpublished": "Zestaw nie jest już publiczny.",
     "unpublishFailed": "Nie udało się ukryć zestawu.",
     "confirmDeleteHeader": "Potwierdzenie usunięcia",
-    "confirmDeleteMessage": "Czy na pewno chcesz usunąć zestaw „{{ name }}\u201D? Wszystkie fiszki z tego zestawu zostaną również usunięte.",
+    "confirmDeleteMessage": "Czy na pewno chcesz usunąć zestaw „{{ name }}”? Wszystkie fiszki z tego zestawu zostaną również usunięte.",
     "confirmPublishHeader": "Publikacja zestawu",
-    "confirmPublishMessage": "Czy na pewno chcesz opublikować zestaw „{{ name }}\u201D? Będzie widoczny dla wszystkich użytkowników.",
+    "confirmPublishMessage": "Czy na pewno chcesz opublikować zestaw „{{ name }}”? Będzie widoczny dla wszystkich użytkowników.",
     "confirmUnpublishHeader": "Ukrycie zestawu",
-    "confirmUnpublishMessage": "Czy na pewno chcesz ukryć zestaw „{{ name }}\u201D? Nie będzie już widoczny publicznie.",
+    "confirmUnpublishMessage": "Czy na pewno chcesz ukryć zestaw „{{ name }}”? Nie będzie już widoczny publicznie.",
     "hide": "Ukryj"
   },
   "generate.toasts": {
@@ -1035,5 +1065,87 @@
     "successTitle": "Dziękujemy!",
     "successText": "Twoje zgłoszenie zostało wysłane. Przeanalizujemy je najszybciej jak to możliwe.",
     "sendAnother": "Wyślij kolejne"
+  },
+  "partner": {
+    "errors": {
+      "notLoggedIn": "Musisz być zalogowany.",
+      "saveFailed": "Nie udało się zapisać profilu."
+    },
+    "toasts": {
+      "welcomeTitle": "Witaj w programie partnerskim!",
+      "welcomeDetail": "Twój profil partnera został zapisany."
+    },
+    "dashboard": {
+      "title": "Panel partnera",
+      "subtitle": "Zarobki z publicznych zestawów fiszek.",
+      "payoutReady": "Twoje saldo osiągnęło próg wypłaty.",
+      "payoutSchedule": "Następna paczka przelewów jest realizowana pierwszego dnia miesiąca.",
+      "concentrationWarning": "W bieżącym miesiącu wykryto niezwykłą koncentrację użyć ({{pct}}% od jednego uczącego się). Wypłata za ten miesiąc może wymagać ręcznego przeglądu.",
+      "balanceLabel": "Saldo do wypłaty",
+      "balanceHint": "Wypłata przy saldzie ≥ {{min}}",
+      "thisMonth": "W tym miesiącu",
+      "paidUses": "{{count}} płatnych użyć",
+      "lifetimeLabel": "Łącznie do dziś",
+      "lifetimeHint": "Suma zaliczona do salda",
+      "historyHeader": "Historia miesięczna",
+      "emptyHistory": "Brak aktywności. Opublikuj zestaw w bibliotece publicznej, aby zacząć zarabiać.",
+      "colPeriod": "Okres",
+      "colUses": "Użycia",
+      "colLearners": "Uczących się",
+      "colEarnings": "Zarobek",
+      "colNotes": "Uwagi",
+      "flagReview": "przegląd"
+    }
+  },
+  "admin": {
+    "payouts": {
+      "title": "Wypłaty partnerskie",
+      "accessDenied": "Brak uprawnień administratora.",
+      "periodLabel": "Okres (pierwszy dzień miesiąca)",
+      "refresh": "Odśwież",
+      "loading": "Ładowanie…",
+      "frozenBanner": "Okres zamrożony (eksport CSV: {{date}}). Dalsze agregacje dla tego miesiąca są zablokowane.",
+      "partnersWithBalance": "Partnerów z saldem",
+      "readyForPayout": "Gotowych do wypłaty",
+      "totalToPay": "Suma do wypłaty",
+      "colPartner": "Partner",
+      "colUses": "Użycia",
+      "colMonthly": "Miesięcznie",
+      "colBalance": "Saldo",
+      "colStatus": "Status",
+      "missingKyc": "brak KYC",
+      "flagReview": "przegląd",
+      "statusReady": "gotowy",
+      "statusWaiting": "czeka",
+      "redownloadCsv": "Pobierz CSV ponownie",
+      "freezeAndExport": "Zamroź okres i eksportuj CSV",
+      "loadFailed": "Błąd ładowania danych.",
+      "exportFailed": "Błąd eksportu.",
+      "exportSuccessNew": "Pobrano CSV. Utworzono {{count}} wpisów w ledgerze.",
+      "exportSuccessExisting": "Pobrano CSV z istniejącego ledgera (okres już był zamrożony)."
+    }
+  },
+  "openrouter": {
+    "errors": {
+      "translationFailed": "Nie udało się przetłumaczyć tekstu po wielu próbach.",
+      "emptyResponse": "Otrzymano pustą odpowiedź od modelu AI po wielu próbach.",
+      "emptyResponseSingle": "Otrzymano pustą odpowiedź od modelu AI",
+      "sessionNotFound": "Nie znaleziono sesji o podanym ID.",
+      "allModelsUnavailable": "Wszystkie modele AI są niedostępne. Spróbuj ponownie później.",
+      "unknownApiError": "Nieznany błąd API",
+      "timeout": "Przekroczono czas oczekiwania na odpowiedź AI (60s).",
+      "apiResponseError": "Błąd w odpowiedzi API",
+      "networkError": "Błąd sieci: {{message}}",
+      "noConnection": "Brak połączenia z serwerem AI. Sprawdź połączenie internetowe.",
+      "badRequest": "Nieprawidłowe żądanie do API. Spróbuj ponownie.",
+      "badRequestWithMessage": "Błąd modelu AI: {{message}}",
+      "unauthorized": "Brak autoryzacji. Sprawdź klucz API Google AI Studio.",
+      "forbidden": "Brak dostępu do wybranego modelu lub przekroczone limity.",
+      "modelNotFound": "Wybrany model AI nie istnieje. Sprawdź konfigurację.",
+      "rateLimited": "Przekroczono limit zapytań AI. Spróbuj ponownie za chwilę.",
+      "serverError": "Serwer AI tymczasowo niedostępny ({{status}}). Spróbuj ponownie później.",
+      "unexpectedError": "Nieoczekiwany błąd API ({{status}}): {{details}}",
+      "noDetails": "brak szczegółów"
+    }
   }
 }

@@ -1,4 +1,5 @@
 import {TestBed} from '@angular/core/testing';
+import {TranslocoTestingModule} from '@jsverse/transloco';
 import {QuizService} from './quiz.service';
 import {FlashcardDTO, QuizAnswer, QuizConfig, QuizQuestion, QuizQuestionType, QuizResult} from '../../../types';
 
@@ -53,10 +54,28 @@ describe('QuizService', () => {
     timeMs
   });
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        TranslocoTestingModule.forRoot({
+          langs: {
+            pl: {
+              quiz: {
+                feedback: {
+                  excellent: 'Świetnie!',
+                  good: 'Dobra robota!',
+                  needsPractice: 'Poćwicz jeszcze',
+                  tryAgain: 'Spróbuj ponownie',
+                },
+              },
+            },
+          },
+          preloadLangs: true,
+          translocoConfig: { availableLangs: ['pl'], defaultLang: 'pl' },
+        }),
+      ],
       providers: [QuizService]
-    });
+    }).compileComponents();
     service = TestBed.inject(QuizService);
   });
 

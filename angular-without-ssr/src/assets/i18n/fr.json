@@ -127,6 +127,12 @@
     "sets": {
       "title": "Tes sets",
       "viewAll": "Voir tout"
+    },
+    "greetings": {
+      "night": "Étude nocturne ?",
+      "morning": "Bonjour",
+      "afternoon": "Salut",
+      "evening": "Bonsoir"
     }
   },
   "study": {
@@ -359,6 +365,24 @@
       "deleteAccountPrompt": "Tape <strong>USUŃ</strong> pour confirmer :",
       "cancel": "Annuler",
       "feedback": "Signaler un problème"
+    },
+    "errors": {
+      "registrationFailed": "L'inscription a échoué. Veuillez réessayer.",
+      "anonymousAccountFailed": "Échec de la création du compte test.",
+      "loginFailed": "La connexion a échoué. Veuillez réessayer.",
+      "updatePasswordFailed": "Échec de la mise à jour du mot de passe.",
+      "unknownError": "Une erreur inconnue s'est produite. Veuillez réessayer plus tard.",
+      "emailNotConfirmed": "L'email n'a pas été confirmé. Vérifiez votre boîte de réception.",
+      "invalidEmailAddress": "L'adresse email fournie est invalide. Veuillez utiliser une adresse email valide.",
+      "invalidCredentials": "Email ou mot de passe invalide.",
+      "userAlreadyRegistered": "Un utilisateur avec cet email existe déjà. Essayez de vous connecter.",
+      "passwordTooShort": "Le mot de passe doit comporter au moins 6 caractères.",
+      "samePassword": "Le nouveau mot de passe doit être différent du mot de passe actuel.",
+      "sessionExpired": "La session a expiré. Veuillez réessayer de réinitialiser votre mot de passe.",
+      "rateLimited": "Pour des raisons de sécurité, vous ne pouvez effectuer cette demande qu'une fois toutes les 60 secondes.",
+      "invalidEmailFormat": "Format d'adresse email invalide.",
+      "networkError": "Pas de connexion au serveur. Vérifiez votre connexion Internet.",
+      "genericError": "Une erreur s'est produite. Veuillez réessayer plus tard."
     }
   },
   "nav": {
@@ -443,6 +467,12 @@
       "cards": "cartes",
       "startQuiz": "Lancer le quiz",
       "minCards": "Min. 4 cartes"
+    },
+    "feedback": {
+      "excellent": "Excellent !",
+      "good": "Bon travail !",
+      "needsPractice": "Continue à pratiquer",
+      "tryAgain": "Réessaie"
     }
   },
   "generate": {
@@ -859,5 +889,87 @@
     "successTitle": "Merci !",
     "successText": "Votre signalement a été envoyé. Nous l'examinerons dès que possible.",
     "sendAnother": "Envoyer un autre"
+  },
+  "partner": {
+    "errors": {
+      "notLoggedIn": "Vous devez être connecté.",
+      "saveFailed": "Échec de l'enregistrement du profil."
+    },
+    "toasts": {
+      "welcomeTitle": "Bienvenue dans le programme partenaire !",
+      "welcomeDetail": "Votre profil partenaire a été enregistré."
+    },
+    "dashboard": {
+      "title": "Tableau de bord partenaire",
+      "subtitle": "Revenus des jeux de cartes publics.",
+      "payoutReady": "Votre solde a atteint le seuil de paiement.",
+      "payoutSchedule": "Le prochain lot de virements est traité le premier jour du mois.",
+      "concentrationWarning": "Concentration d'utilisation inhabituelle détectée ce mois-ci ({{pct}}% d'un seul apprenant). Le paiement de ce mois peut nécessiter un examen manuel.",
+      "balanceLabel": "Solde à verser",
+      "balanceHint": "Paiement lorsque le solde ≥ {{min}}",
+      "thisMonth": "Ce mois-ci",
+      "paidUses": "{{count}} utilisations payantes",
+      "lifetimeLabel": "Total à ce jour",
+      "lifetimeHint": "Total crédité au solde",
+      "historyHeader": "Historique mensuel",
+      "emptyHistory": "Aucune activité. Publiez un jeu dans la bibliothèque publique pour commencer à gagner.",
+      "colPeriod": "Période",
+      "colUses": "Utilisations",
+      "colLearners": "Apprenants",
+      "colEarnings": "Revenus",
+      "colNotes": "Remarques",
+      "flagReview": "examen"
+    }
+  },
+  "admin": {
+    "payouts": {
+      "title": "Paiements partenaires",
+      "accessDenied": "Accès administrateur refusé.",
+      "periodLabel": "Période (premier jour du mois)",
+      "refresh": "Actualiser",
+      "loading": "Chargement…",
+      "frozenBanner": "Période gelée (export CSV : {{date}}). Les agrégations supplémentaires pour ce mois sont bloquées.",
+      "partnersWithBalance": "Partenaires avec solde",
+      "readyForPayout": "Prêts pour le paiement",
+      "totalToPay": "Total à payer",
+      "colPartner": "Partenaire",
+      "colUses": "Utilisations",
+      "colMonthly": "Mensuel",
+      "colBalance": "Solde",
+      "colStatus": "Statut",
+      "missingKyc": "KYC manquant",
+      "flagReview": "examen",
+      "statusReady": "prêt",
+      "statusWaiting": "en attente",
+      "redownloadCsv": "Retélécharger le CSV",
+      "freezeAndExport": "Geler la période et exporter le CSV",
+      "loadFailed": "Erreur de chargement des données.",
+      "exportFailed": "Erreur d'exportation.",
+      "exportSuccessNew": "CSV téléchargé. {{count}} entrées créées dans le registre.",
+      "exportSuccessExisting": "CSV téléchargé depuis le registre existant (la période était déjà gelée)."
+    }
+  },
+  "openrouter": {
+    "errors": {
+      "translationFailed": "Échec de la traduction du texte après plusieurs tentatives.",
+      "emptyResponse": "Réponse vide reçue du modèle IA après plusieurs tentatives.",
+      "emptyResponseSingle": "Réponse vide reçue du modèle IA",
+      "sessionNotFound": "La session avec l'ID donné n'a pas été trouvée.",
+      "allModelsUnavailable": "Tous les modèles IA sont indisponibles. Veuillez réessayer plus tard.",
+      "unknownApiError": "Erreur API inconnue",
+      "timeout": "Délai d'attente de la réponse IA dépassé (60s).",
+      "apiResponseError": "Erreur dans la réponse de l'API",
+      "networkError": "Erreur réseau : {{message}}",
+      "noConnection": "Pas de connexion au serveur IA. Vérifiez votre connexion Internet.",
+      "badRequest": "Requête API invalide. Veuillez réessayer.",
+      "badRequestWithMessage": "Erreur du modèle IA : {{message}}",
+      "unauthorized": "Non autorisé. Vérifiez votre clé API Google AI Studio.",
+      "forbidden": "Accès au modèle sélectionné refusé ou limites dépassées.",
+      "modelNotFound": "Le modèle IA sélectionné n'existe pas. Vérifiez la configuration.",
+      "rateLimited": "Limite de requêtes IA dépassée. Veuillez réessayer dans un instant.",
+      "serverError": "Serveur IA temporairement indisponible ({{status}}). Veuillez réessayer plus tard.",
+      "unexpectedError": "Erreur API inattendue ({{status}}) : {{details}}",
+      "noDetails": "pas de détails"
+    }
   }
 }

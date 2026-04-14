@@ -1,10 +1,12 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
+import {TranslocoService} from '@jsverse/transloco';
 import {FlashcardDTO, QuizAnswer, QuizConfig, QuizQuestion, QuizQuestionType, QuizResult} from '../../../types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizService {
+  private readonly t: TranslocoService = inject(TranslocoService);
 
   public generateQuestions(flashcards: FlashcardDTO[], config: QuizConfig): QuizQuestion[] {
     const shuffled: FlashcardDTO[] = this.shuffle([...flashcards]);
@@ -39,10 +41,10 @@ export class QuizService {
   }
 
   public getGradeText(percentage: number): string {
-    if (percentage >= 90) return 'Świetnie!';
-    if (percentage >= 70) return 'Dobra robota!';
-    if (percentage >= 50) return 'Poćwicz jeszcze';
-    return 'Spróbuj ponownie';
+    if (percentage >= 90) return this.t.translate('quiz.feedback.excellent');
+    if (percentage >= 70) return this.t.translate('quiz.feedback.good');
+    if (percentage >= 50) return this.t.translate('quiz.feedback.needsPractice');
+    return this.t.translate('quiz.feedback.tryAgain');
   }
 
   public getWrongAnswers(answers: QuizAnswer[]): QuizAnswer[] {

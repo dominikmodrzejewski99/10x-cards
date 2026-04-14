@@ -127,6 +127,12 @@
     "sets": {
       "title": "Deine Sets",
       "viewAll": "Alle anzeigen"
+    },
+    "greetings": {
+      "night": "Nachtlernen?",
+      "morning": "Guten Morgen",
+      "afternoon": "Hallo",
+      "evening": "Guten Abend"
     }
   },
   "study": {
@@ -359,6 +365,24 @@
       "deleteAccountPrompt": "Gib <strong>USUŃ</strong> ein, um zu bestätigen:",
       "cancel": "Abbrechen",
       "feedback": "Problem melden"
+    },
+    "errors": {
+      "registrationFailed": "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+      "anonymousAccountFailed": "Testkonto konnte nicht erstellt werden.",
+      "loginFailed": "Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+      "updatePasswordFailed": "Passwort konnte nicht aktualisiert werden.",
+      "unknownError": "Ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
+      "emailNotConfirmed": "E-Mail nicht bestätigt. Bitte überprüfen Sie Ihren Posteingang.",
+      "invalidEmailAddress": "Die angegebene E-Mail-Adresse ist ungültig. Bitte verwenden Sie eine gültige E-Mail-Adresse.",
+      "invalidCredentials": "Ungültige E-Mail oder Passwort.",
+      "userAlreadyRegistered": "Ein Benutzer mit dieser E-Mail existiert bereits. Versuchen Sie sich anzumelden.",
+      "passwordTooShort": "Das Passwort muss mindestens 6 Zeichen lang sein.",
+      "samePassword": "Das neue Passwort muss sich vom aktuellen Passwort unterscheiden.",
+      "sessionExpired": "Sitzung abgelaufen. Bitte versuchen Sie erneut, Ihr Passwort zurückzusetzen.",
+      "rateLimited": "Aus Sicherheitsgründen können Sie diese Anfrage nur einmal alle 60 Sekunden stellen.",
+      "invalidEmailFormat": "Ungültiges E-Mail-Adressformat.",
+      "networkError": "Keine Verbindung zum Server. Überprüfen Sie Ihre Internetverbindung.",
+      "genericError": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut."
     }
   },
   "nav": {
@@ -443,6 +467,12 @@
       "cards": "Karten",
       "startQuiz": "Quiz starten",
       "minCards": "Mind. 4 Karten"
+    },
+    "feedback": {
+      "excellent": "Ausgezeichnet!",
+      "good": "Gute Arbeit!",
+      "needsPractice": "Übe weiter",
+      "tryAgain": "Versuche es erneut"
     }
   },
   "generate": {
@@ -859,5 +889,87 @@
     "successTitle": "Vielen Dank!",
     "successText": "Ihre Meldung wurde gesendet. Wir werden sie so schnell wie möglich prüfen.",
     "sendAnother": "Weitere senden"
+  },
+  "partner": {
+    "errors": {
+      "notLoggedIn": "Sie müssen angemeldet sein.",
+      "saveFailed": "Profil konnte nicht gespeichert werden."
+    },
+    "toasts": {
+      "welcomeTitle": "Willkommen im Partnerprogramm!",
+      "welcomeDetail": "Ihr Partnerprofil wurde gespeichert."
+    },
+    "dashboard": {
+      "title": "Partner-Dashboard",
+      "subtitle": "Einnahmen aus öffentlichen Karteikarten-Sets.",
+      "payoutReady": "Ihr Guthaben hat die Auszahlungsschwelle erreicht.",
+      "payoutSchedule": "Die nächste Überweisungsstapel wird am ersten Tag des Monats verarbeitet.",
+      "concentrationWarning": "Ungewöhnliche Nutzungskonzentration in diesem Monat festgestellt ({{pct}}% von einem einzelnen Lernenden). Die Auszahlung für diesen Monat erfordert möglicherweise eine manuelle Überprüfung.",
+      "balanceLabel": "Auszahlungsguthaben",
+      "balanceHint": "Auszahlung bei Guthaben ≥ {{min}}",
+      "thisMonth": "Diesen Monat",
+      "paidUses": "{{count}} bezahlte Nutzungen",
+      "lifetimeLabel": "Gesamtbetrag",
+      "lifetimeHint": "Gesamtbetrag gutgeschrieben",
+      "historyHeader": "Monatshistorie",
+      "emptyHistory": "Keine Aktivität. Veröffentlichen Sie ein Set in der öffentlichen Bibliothek, um zu verdienen.",
+      "colPeriod": "Zeitraum",
+      "colUses": "Nutzungen",
+      "colLearners": "Lernende",
+      "colEarnings": "Einnahmen",
+      "colNotes": "Hinweise",
+      "flagReview": "Überprüfung"
+    }
+  },
+  "admin": {
+    "payouts": {
+      "title": "Partner-Auszahlungen",
+      "accessDenied": "Administratorzugriff verweigert.",
+      "periodLabel": "Zeitraum (erster Tag des Monats)",
+      "refresh": "Aktualisieren",
+      "loading": "Laden…",
+      "frozenBanner": "Zeitraum eingefroren (CSV-Export: {{date}}). Weitere Aggregierungen für diesen Monat sind gesperrt.",
+      "partnersWithBalance": "Partner mit Guthaben",
+      "readyForPayout": "Bereit zur Auszahlung",
+      "totalToPay": "Gesamtbetrag zur Auszahlung",
+      "colPartner": "Partner",
+      "colUses": "Nutzungen",
+      "colMonthly": "Monatlich",
+      "colBalance": "Guthaben",
+      "colStatus": "Status",
+      "missingKyc": "KYC fehlt",
+      "flagReview": "Überprüfung",
+      "statusReady": "bereit",
+      "statusWaiting": "wartet",
+      "redownloadCsv": "CSV erneut herunterladen",
+      "freezeAndExport": "Zeitraum einfrieren und CSV exportieren",
+      "loadFailed": "Fehler beim Laden der Daten.",
+      "exportFailed": "Exportfehler.",
+      "exportSuccessNew": "CSV heruntergeladen. {{count}} Ledger-Einträge erstellt.",
+      "exportSuccessExisting": "CSV aus bestehendem Ledger heruntergeladen (Zeitraum war bereits eingefroren)."
+    }
+  },
+  "openrouter": {
+    "errors": {
+      "translationFailed": "Text konnte nach mehreren Versuchen nicht übersetzt werden.",
+      "emptyResponse": "Leere Antwort vom KI-Modell nach mehreren Versuchen erhalten.",
+      "emptyResponseSingle": "Leere Antwort vom KI-Modell erhalten",
+      "sessionNotFound": "Sitzung mit der angegebenen ID wurde nicht gefunden.",
+      "allModelsUnavailable": "Alle KI-Modelle sind nicht verfügbar. Bitte versuchen Sie es später erneut.",
+      "unknownApiError": "Unbekannter API-Fehler",
+      "timeout": "Zeitüberschreitung bei der KI-Antwort (60s).",
+      "apiResponseError": "API-Antwortfehler",
+      "networkError": "Netzwerkfehler: {{message}}",
+      "noConnection": "Keine Verbindung zum KI-Server. Überprüfen Sie Ihre Internetverbindung.",
+      "badRequest": "Ungültige API-Anfrage. Bitte versuchen Sie es erneut.",
+      "badRequestWithMessage": "KI-Modellfehler: {{message}}",
+      "unauthorized": "Nicht autorisiert. Überprüfen Sie Ihren Google AI Studio API-Schlüssel.",
+      "forbidden": "Zugriff auf das ausgewählte Modell verweigert oder Limits überschritten.",
+      "modelNotFound": "Das ausgewählte KI-Modell existiert nicht. Überprüfen Sie die Konfiguration.",
+      "rateLimited": "KI-Anfragelimit überschritten. Bitte versuchen Sie es in Kürze erneut.",
+      "serverError": "KI-Server vorübergehend nicht verfügbar ({{status}}). Bitte versuchen Sie es später erneut.",
+      "unexpectedError": "Unerwarteter API-Fehler ({{status}}): {{details}}",
+      "noDetails": "keine Details"
+    }
   }
 }

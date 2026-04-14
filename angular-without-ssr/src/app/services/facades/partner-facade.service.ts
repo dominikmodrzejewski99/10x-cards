@@ -1,5 +1,6 @@
 import { Injectable, Signal, WritableSignal, computed, inject, signal } from '@angular/core';
 import { SupabaseClient } from '@supabase/supabase-js';
+import { TranslocoService } from '@jsverse/transloco';
 import { PartnerApiService } from '../api/partner-api.service';
 import { SupabaseClientFactory } from '../infrastructure/supabase-client.factory';
 import { ToastService } from '../../shared/services/toast.service';
@@ -21,6 +22,7 @@ export class PartnerFacadeService {
   private readonly api: PartnerApiService = inject(PartnerApiService);
   private readonly supabase: SupabaseClient = inject(SupabaseClientFactory).getClient();
   private readonly toast: ToastService = inject(ToastService);
+  private readonly t: TranslocoService = inject(TranslocoService);
 
   private readonly _profile: WritableSignal<PartnerProfileDTO | null> = signal<PartnerProfileDTO | null>(null);
   private readonly _stats: WritableSignal<PartnerMonthlyStatsDTO[]> = signal<PartnerMonthlyStatsDTO[]>([]);
@@ -67,7 +69,7 @@ export class PartnerFacadeService {
     this.supabase.auth.getSession().then((response: { data: { session: { user: { id: string } } | null } }) => {
       const userId: string | undefined = response.data.session?.user?.id;
       if (!userId) {
-        this._error.set('Musisz być zalogowany.');
+        this._error.set(this.t.translate('partner.errors.notLoggedIn'));
         this._loading.set(false);
         return;
       }
@@ -96,7 +98,7 @@ export class PartnerFacadeService {
     this.supabase.auth.getSession().then((response: { data: { session: { user: { id: string } } | null } }) => {
       const userId: string | undefined = response.data.session?.user?.id;
       if (!userId) {
-        this._error.set('Musisz być zalogowany.');
+        this._error.set(this.t.translate('partner.errors.notLoggedIn'));
         this._submitting.set(false);
         return;
       }
@@ -107,12 +109,12 @@ export class PartnerFacadeService {
           this._submitting.set(false);
           this.toast.add({
             severity: 'success',
-            summary: 'Witaj w programie partnerskim!',
-            detail: 'Twój profil partnera został zapisany.',
+            summary: this.t.translate('partner.toasts.welcomeTitle'),
+            detail: this.t.translate('partner.toasts.welcomeDetail'),
           });
         },
         error: (err: unknown) => {
-          const msg: string = err instanceof Error ? err.message : 'Nie udało się zapisać profilu.';
+          const msg: string = err instanceof Error ? err.message : this.t.translate('partner.errors.saveFailed');
           this._error.set(msg);
           this._submitting.set(false);
         },

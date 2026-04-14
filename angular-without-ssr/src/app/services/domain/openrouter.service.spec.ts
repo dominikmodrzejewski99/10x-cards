@@ -1,4 +1,5 @@
 import { TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { OpenRouterService } from './openrouter.service';
 import { SessionManager } from './session-manager.service';
 import { OpenRouterResponse, Session } from '../../interfaces/openrouter.interface';
@@ -57,13 +58,46 @@ describe('OpenRouterService', () => {
   };
 
   // Przygotowanie mocków przed każdym testem
-  beforeEach(() => {
+  beforeEach(async () => {
     // Resetujemy mockSession przed każdym testem
     resetMockSession();
     const mockSessionManager = jasmine.createSpyObj('SessionManager',
       ['createSession', 'getSession', 'addMessage', 'removeSession']);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
+      imports: [
+        TranslocoTestingModule.forRoot({
+          langs: {
+            pl: {
+              openrouter: {
+                errors: {
+                  sessionNotFound: 'Nie znaleziono sesji o podanym ID.',
+                  unauthorized: 'Brak autoryzacji. Sprawdź klucz API Google AI Studio.',
+                  rateLimited: 'Przekroczono limit zapytań AI. Spróbuj ponownie za chwilę.',
+                  allModelsUnavailable: 'Wszystkie modele AI są niedostępne. Spróbuj ponownie później.',
+                  emptyResponse: 'Otrzymano pustą odpowiedź od modelu AI po wielu próbach.',
+                  emptyResponseSingle: 'Otrzymano pustą odpowiedź od modelu AI',
+                  translationFailed: 'Nie udało się przetłumaczyć tekstu po wielu próbach.',
+                  unknownApiError: 'Nieznany błąd API',
+                  timeout: 'Przekroczono czas oczekiwania na odpowiedź AI (60s).',
+                  apiResponseError: 'Błąd w odpowiedzi API',
+                  networkError: 'Błąd sieci: {{message}}',
+                  noConnection: 'Brak połączenia z serwerem AI. Sprawdź połączenie internetowe.',
+                  badRequest: 'Nieprawidłowe żądanie do API. Spróbuj ponownie.',
+                  badRequestWithMessage: 'Błąd modelu AI: {{message}}',
+                  forbidden: 'Brak dostępu do wybranego modelu lub przekroczone limity.',
+                  modelNotFound: 'Wybrany model AI nie istnieje. Sprawdź konfigurację.',
+                  serverError: 'Serwer AI tymczasowo niedostępny ({{status}}). Spróbuj ponownie później.',
+                  unexpectedError: 'Nieoczekiwany błąd API ({{status}}): {{details}}',
+                  noDetails: 'brak szczegółów',
+                },
+              },
+            },
+          },
+          preloadLangs: true,
+          translocoConfig: { availableLangs: ['pl'], defaultLang: 'pl' },
+        }),
+      ],
       providers: [
         OpenRouterService,
         { provide: SessionManager, useValue: mockSessionManager },
@@ -73,7 +107,7 @@ describe('OpenRouterService', () => {
         provideAnimationsAsync()
       ],
       schemas: [NO_ERRORS_SCHEMA]
-    });
+    }).compileComponents();
 
     service = TestBed.inject(OpenRouterService);
     httpMock = TestBed.inject(HttpTestingController);

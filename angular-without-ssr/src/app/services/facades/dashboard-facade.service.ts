@@ -60,10 +60,10 @@ export class DashboardFacadeService {
 
   public readonly greetingSignal: Signal<string> = computed<string>(() => {
     const hour: number = new Date().getHours();
-    if (hour < 6) return 'Nocna nauka?';
-    if (hour < 12) return 'Dzień dobry';
-    if (hour < 18) return 'Cześć';
-    return 'Dobry wieczór';
+    if (hour < 6) return this.t.translate('dashboard.greetings.night');
+    if (hour < 12) return this.t.translate('dashboard.greetings.morning');
+    if (hour < 18) return this.t.translate('dashboard.greetings.afternoon');
+    return this.t.translate('dashboard.greetings.evening');
   });
 
   public loadStreaks(): void {

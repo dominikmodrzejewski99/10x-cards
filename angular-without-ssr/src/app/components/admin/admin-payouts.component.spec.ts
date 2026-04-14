@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
 import { of, throwError } from 'rxjs';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { AdminPayoutsComponent } from './admin-payouts.component';
 import {
@@ -43,7 +44,14 @@ describe('AdminPayoutsComponent', () => {
     apiMock.listPendingPayouts.and.returnValue(of(mockResponse));
 
     await TestBed.configureTestingModule({
-      imports: [AdminPayoutsComponent],
+      imports: [
+        AdminPayoutsComponent,
+        TranslocoTestingModule.forRoot({
+          langs: { pl: {} },
+          preloadLangs: true,
+          translocoConfig: { availableLangs: ['pl'], defaultLang: 'pl' },
+        }),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: AdminPayoutsService, useValue: apiMock },

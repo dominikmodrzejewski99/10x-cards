@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject, signal, Signal, WritableSignal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import {
   AdminPayoutsService,
   PendingPayoutsResponse,
@@ -27,13 +28,14 @@ import {
  */
 @Component({
   selector: 'app-admin-payouts',
-  imports: [FormsModule],
+  imports: [FormsModule, TranslocoDirective],
   templateUrl: './admin-payouts.component.html',
   styleUrls: ['./admin-payouts.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminPayoutsComponent {
   private readonly api: AdminPayoutsService = inject(AdminPayoutsService);
+  private readonly t: TranslocoService = inject(TranslocoService);
 
   private readonly _data: WritableSignal<PendingPayoutsResponse | null> = signal<PendingPayoutsResponse | null>(null);
   private readonly _loading: WritableSignal<boolean> = signal<boolean>(true);
@@ -92,7 +94,7 @@ export class AdminPayoutsComponent {
         this._loading.set(false);
       },
       error: (err: unknown) => {
-        const msg: string = err instanceof Error ? err.message : 'Błąd ładowania danych.';
+        const msg: string = err instanceof Error ? err.message : this.t.translate('admin.payouts.loadFailed');
         this._error.set(msg);
         this._loading.set(false);
       },
@@ -109,15 +111,15 @@ export class AdminPayoutsComponent {
         const exportedCount: number = response.newly_created_count;
         this._exportMessage.set(
           exportedCount > 0
-            ? `Pobrano CSV. Utworzono ${exportedCount} wpisów w ledgerze.`
-            : 'Pobrano CSV z istniejącego ledgera (okres już był zamrożony).'
+            ? this.t.translate('admin.payouts.exportSuccessNew', { count: exportedCount })
+            : this.t.translate('admin.payouts.exportSuccessExisting')
         );
         this._exporting.set(false);
         // Refresh to show the frozen banner.
         this.reload();
       },
       error: (err: unknown) => {
-        const msg: string = err instanceof Error ? err.message : 'Błąd eksportu.';
+        const msg: string = err instanceof Error ? err.message : this.t.translate('admin.payouts.exportFailed');
         this._error.set(msg);
         this._exporting.set(false);
       },

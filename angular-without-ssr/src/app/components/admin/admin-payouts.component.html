@@ -1,87 +1,88 @@
-<div class="ap">
-  <h1 class="ap__title">Wypłaty partnerskie</h1>
+<ng-container *transloco="let t; prefix: 'admin.payouts'">
+  <div class="ap">
+    <h1 class="ap__title">{{ t('title') }}</h1>
 
-  @if (accessDenied()) {
-    <div class="ap__error">Brak uprawnień administratora.</div>
-  } @else {
-    <div class="ap__controls">
-      <label class="ap__field">
-        <span class="ap__label">Okres (pierwszy dzień miesiąca)</span>
-        <input class="ap__input" type="date" [(ngModel)]="period">
-      </label>
-      <button class="ap__btn" (click)="reload()" [disabled]="loading()">Odśwież</button>
-    </div>
+    @if (accessDenied()) {
+      <div class="ap__error">{{ t('accessDenied') }}</div>
+    } @else {
+      <div class="ap__controls">
+        <label class="ap__field">
+          <span class="ap__label">{{ t('periodLabel') }}</span>
+          <input class="ap__input" type="date" [(ngModel)]="period">
+        </label>
+        <button class="ap__btn" (click)="reload()" [disabled]="loading()">{{ t('refresh') }}</button>
+      </div>
 
-    @if (loading()) {
-      <div class="ap__loading">Ładowanie…</div>
-    } @else if (error()) {
-      <div class="ap__error">{{ error() }}</div>
-    } @else if (data(); as d) {
-      @if (d.state?.csv_exported_at) {
-        <div class="ap__banner ap__banner--frozen">
-          Okres zamrożony (eksport CSV: {{ formatDate(d.state!.csv_exported_at!) }}).
-          Dalsze agregacje dla tego miesiąca są zablokowane.
+      @if (loading()) {
+        <div class="ap__loading">{{ t('loading') }}</div>
+      } @else if (error()) {
+        <div class="ap__error">{{ error() }}</div>
+      } @else if (data(); as d) {
+        @if (d.state?.csv_exported_at) {
+          <div class="ap__banner ap__banner--frozen">
+            {{ t('frozenBanner', { date: formatDate(d.state!.csv_exported_at!) }) }}
+          </div>
+        }
+
+        <div class="ap__summary">
+          <div class="ap__summary-card">
+            <span class="ap__summary-label">{{ t('partnersWithBalance') }}</span>
+            <span class="ap__summary-value">{{ d.partners.length }}</span>
+          </div>
+          <div class="ap__summary-card">
+            <span class="ap__summary-label">{{ t('readyForPayout') }}</span>
+            <span class="ap__summary-value">{{ readyCount() }}</span>
+          </div>
+          <div class="ap__summary-card">
+            <span class="ap__summary-label">{{ t('totalToPay') }}</span>
+            <span class="ap__summary-value">{{ formatPln(readySumGrosz()) }}</span>
+          </div>
+        </div>
+
+        <table class="ap__table">
+          <thead>
+            <tr>
+              <th>{{ t('colPartner') }}</th>
+              <th class="ap__table-cell--num">{{ t('colUses') }}</th>
+              <th class="ap__table-cell--num">{{ t('colMonthly') }}</th>
+              <th class="ap__table-cell--num">{{ t('colBalance') }}</th>
+              <th>{{ t('colStatus') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of d.partners; track p.partner_user_id) {
+              <tr [class.ap__row--flagged]="p.period_concentration_flag">
+                <td>
+                  {{ p.legal_name ?? '—' }}
+                  @if (p.missing_kyc) { <span class="ap__flag ap__flag--warn">{{ t('missingKyc') }}</span> }
+                  @if (p.period_concentration_flag) { <span class="ap__flag ap__flag--warn">{{ t('flagReview') }}</span> }
+                </td>
+                <td class="ap__table-cell--num">{{ p.period_billable_uses }}</td>
+                <td class="ap__table-cell--num">{{ formatPln(p.period_earnings_grosz) }}</td>
+                <td class="ap__table-cell--num"><strong>{{ formatPln(p.pending_balance_grosz) }}</strong></td>
+                <td>
+                  @if (p.ready_for_payout) {
+                    <span class="ap__flag ap__flag--ready">{{ t('statusReady') }}</span>
+                  } @else {
+                    <span class="ap__flag">{{ t('statusWaiting') }}</span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
+        <div class="ap__actions">
+          <button class="ap__btn ap__btn--primary"
+                  (click)="exportAndDownload()"
+                  [disabled]="exporting() || d.state?.csv_exported_at">
+            {{ d.state?.csv_exported_at ? t('redownloadCsv') : t('freezeAndExport') }}
+          </button>
+          @if (exportMessage()) {
+            <span class="ap__msg">{{ exportMessage() }}</span>
+          }
         </div>
       }
-
-      <div class="ap__summary">
-        <div class="ap__summary-card">
-          <span class="ap__summary-label">Partnerów z saldem</span>
-          <span class="ap__summary-value">{{ d.partners.length }}</span>
-        </div>
-        <div class="ap__summary-card">
-          <span class="ap__summary-label">Gotowych do wypłaty</span>
-          <span class="ap__summary-value">{{ readyCount() }}</span>
-        </div>
-        <div class="ap__summary-card">
-          <span class="ap__summary-label">Suma do wypłaty</span>
-          <span class="ap__summary-value">{{ formatPln(readySumGrosz()) }}</span>
-        </div>
-      </div>
-
-      <table class="ap__table">
-        <thead>
-          <tr>
-            <th>Partner</th>
-            <th class="ap__table-cell--num">Użycia</th>
-            <th class="ap__table-cell--num">Miesięcznie</th>
-            <th class="ap__table-cell--num">Saldo</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (p of d.partners; track p.partner_user_id) {
-            <tr [class.ap__row--flagged]="p.period_concentration_flag">
-              <td>
-                {{ p.legal_name ?? '—' }}
-                @if (p.missing_kyc) { <span class="ap__flag ap__flag--warn">brak KYC</span> }
-                @if (p.period_concentration_flag) { <span class="ap__flag ap__flag--warn">przegląd</span> }
-              </td>
-              <td class="ap__table-cell--num">{{ p.period_billable_uses }}</td>
-              <td class="ap__table-cell--num">{{ formatPln(p.period_earnings_grosz) }}</td>
-              <td class="ap__table-cell--num"><strong>{{ formatPln(p.pending_balance_grosz) }}</strong></td>
-              <td>
-                @if (p.ready_for_payout) {
-                  <span class="ap__flag ap__flag--ready">gotowy</span>
-                } @else {
-                  <span class="ap__flag">czeka</span>
-                }
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-
-      <div class="ap__actions">
-        <button class="ap__btn ap__btn--primary"
-                (click)="exportAndDownload()"
-                [disabled]="exporting() || d.state?.csv_exported_at">
-          {{ d.state?.csv_exported_at ? 'Pobierz CSV ponownie' : 'Zamroź okres i eksportuj CSV' }}
-        </button>
-        @if (exportMessage()) {
-          <span class="ap__msg">{{ exportMessage() }}</span>
-        }
-      </div>
     }
-  }
-</div>
+  </div>
+</ng-container>

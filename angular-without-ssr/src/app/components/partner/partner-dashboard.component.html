@@ -1,72 +1,73 @@
-<div class="pd">
-  <h1 class="pd__title">Panel partnera</h1>
-  <p class="pd__subtitle">Zarobki z publicznych zestawów fiszek.</p>
+<ng-container *transloco="let t; prefix: 'partner.dashboard'">
+  <div class="pd">
+    <h1 class="pd__title">{{ t('title') }}</h1>
+    <p class="pd__subtitle">{{ t('subtitle') }}</p>
 
-  @if (facade.readyForPayoutSignal()) {
-    <div class="pd__banner">
-      <strong>Twoje saldo osiągnęło próg wypłaty.</strong>
-      Następna paczka przelewów jest realizowana pierwszego dnia miesiąca.
-    </div>
-  }
-
-  @if (currentMonthFlag()) {
-    <div class="pd__banner pd__banner--warn">
-      W bieżącym miesiącu wykryto niezwykłą koncentrację użyć ({{ currentMonthFlag() }}% od jednego uczącego się).
-      Wypłata za ten miesiąc może wymagać ręcznego przeglądu.
-    </div>
-  }
-
-  <div class="pd__metrics">
-    <div class="pd__card">
-      <p class="pd__card-label">Saldo do wypłaty</p>
-      <p class="pd__card-value pd__card-value--accent">{{ facade.formatPln(facade.pendingBalanceSignal()) }}</p>
-      <p class="pd__card-hint">Wypłata przy saldzie ≥ {{ minPayoutLabel() }}</p>
-    </div>
-    <div class="pd__card">
-      <p class="pd__card-label">W tym miesiącu</p>
-      <p class="pd__card-value">{{ facade.formatPln(currentMonthEarnings()) }}</p>
-      <p class="pd__card-hint">{{ currentMonthUses() }} płatnych użyć</p>
-    </div>
-    <div class="pd__card">
-      <p class="pd__card-label">Łącznie do dziś</p>
-      <p class="pd__card-value pd__card-value--success">{{ facade.formatPln(facade.lifetimeEarningsSignal()) }}</p>
-      <p class="pd__card-hint">Suma zaliczona do salda</p>
-    </div>
-  </div>
-
-  <div class="pd__history">
-    <div class="pd__history-header">Historia miesięczna</div>
-    @if (facade.statsSignal().length === 0) {
-      <div class="pd__empty">
-        Brak aktywności. Opublikuj zestaw w bibliotece publicznej, aby zacząć zarabiać.
+    @if (facade.readyForPayoutSignal()) {
+      <div class="pd__banner">
+        <strong>{{ t('payoutReady') }}</strong>
+        {{ t('payoutSchedule') }}
       </div>
-    } @else {
-      <table class="pd__table">
-        <thead>
-          <tr>
-            <th>Okres</th>
-            <th class="pd__table-cell--num">Użycia</th>
-            <th class="pd__table-cell--num">Uczących się</th>
-            <th class="pd__table-cell--num">Zarobek</th>
-            <th>Uwagi</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (stat of facade.statsSignal(); track stat.period) {
-            <tr>
-              <td>{{ facade.formatPeriod(stat.period) }}</td>
-              <td class="pd__table-cell--num">{{ stat.billable_uses }}</td>
-              <td class="pd__table-cell--num">{{ stat.unique_learners }}</td>
-              <td class="pd__table-cell--num"><strong>{{ facade.formatPln(stat.capped_earnings_grosz) }}</strong></td>
-              <td>
-                @if (stat.concentration_flag) {
-                  <span class="pd__flag">przegląd</span>
-                }
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
     }
+
+    @if (currentMonthFlag()) {
+      <div class="pd__banner pd__banner--warn">
+        {{ t('concentrationWarning', { pct: currentMonthFlag() }) }}
+      </div>
+    }
+
+    <div class="pd__metrics">
+      <div class="pd__card">
+        <p class="pd__card-label">{{ t('balanceLabel') }}</p>
+        <p class="pd__card-value pd__card-value--accent">{{ facade.formatPln(facade.pendingBalanceSignal()) }}</p>
+        <p class="pd__card-hint">{{ t('balanceHint', { min: minPayoutLabel() }) }}</p>
+      </div>
+      <div class="pd__card">
+        <p class="pd__card-label">{{ t('thisMonth') }}</p>
+        <p class="pd__card-value">{{ facade.formatPln(currentMonthEarnings()) }}</p>
+        <p class="pd__card-hint">{{ t('paidUses', { count: currentMonthUses() }) }}</p>
+      </div>
+      <div class="pd__card">
+        <p class="pd__card-label">{{ t('lifetimeLabel') }}</p>
+        <p class="pd__card-value pd__card-value--success">{{ facade.formatPln(facade.lifetimeEarningsSignal()) }}</p>
+        <p class="pd__card-hint">{{ t('lifetimeHint') }}</p>
+      </div>
+    </div>
+
+    <div class="pd__history">
+      <div class="pd__history-header">{{ t('historyHeader') }}</div>
+      @if (facade.statsSignal().length === 0) {
+        <div class="pd__empty">
+          {{ t('emptyHistory') }}
+        </div>
+      } @else {
+        <table class="pd__table">
+          <thead>
+            <tr>
+              <th>{{ t('colPeriod') }}</th>
+              <th class="pd__table-cell--num">{{ t('colUses') }}</th>
+              <th class="pd__table-cell--num">{{ t('colLearners') }}</th>
+              <th class="pd__table-cell--num">{{ t('colEarnings') }}</th>
+              <th>{{ t('colNotes') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (stat of facade.statsSignal(); track stat.period) {
+              <tr>
+                <td>{{ facade.formatPeriod(stat.period) }}</td>
+                <td class="pd__table-cell--num">{{ stat.billable_uses }}</td>
+                <td class="pd__table-cell--num">{{ stat.unique_learners }}</td>
+                <td class="pd__table-cell--num"><strong>{{ facade.formatPln(stat.capped_earnings_grosz) }}</strong></td>
+                <td>
+                  @if (stat.concentration_flag) {
+                    <span class="pd__flag">{{ t('flagReview') }}</span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
   </div>
-</div>
+</ng-container>

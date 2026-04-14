@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { AuthService } from './auth.service';
 import { SupabaseClientFactory } from '../services/infrastructure/supabase-client.factory';
 import { UserDTO } from '../../types';
@@ -62,17 +63,50 @@ describe('AuthService', () => {
     updated_at: '2026-01-01T00:00:00Z',
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     mockSupabase = createMockSupabaseClient();
     factorySpy = jasmine.createSpyObj<SupabaseClientFactory>('SupabaseClientFactory', ['getClient']);
     factorySpy.getClient.and.returnValue(mockSupabase as unknown as import('@supabase/supabase-js').SupabaseClient);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
+      imports: [
+        TranslocoTestingModule.forRoot({
+          langs: {
+            pl: {
+              auth: {
+                errors: {
+                  invalidCredentials: 'Nieprawidłowy email lub hasło.',
+                  userAlreadyRegistered: 'Użytkownik o podanym adresie email już istnieje. Spróbuj się zalogować.',
+                  passwordTooShort: 'Hasło powinno mieć co najmniej 6 znaków.',
+                  samePassword: 'Nowe hasło musi być inne niż obecne hasło.',
+                  sessionExpired: 'Sesja wygasła. Spróbuj ponownie zresetować hasło.',
+                  rateLimited: 'Ze względów bezpieczeństwa możesz wysłać prośbę raz na 60 sekund.',
+                  emailNotConfirmed: 'Email nie został potwierdzony. Sprawdź swoją skrzynkę pocztową.',
+                  invalidEmailFormat: 'Nieprawidłowy format adresu email.',
+                  invalidEmailAddress: 'Podany adres email jest nieprawidłowy. Użyj poprawnego adresu email.',
+                  genericError: 'Wystąpił błąd. Spróbuj ponownie później.',
+                  unknownError: 'Wystąpił nieznany błąd.',
+                  networkError: 'Błąd sieci. Sprawdź połączenie z internetem.',
+                  registrationFailed: 'Nie udało się zarejestrować. Spróbuj ponownie.',
+                  loginFailed: 'Nie udało się zalogować. Spróbuj ponownie.',
+                  anonymousAccountFailed: 'Nie udało się utworzyć konta testowego.',
+                  updatePasswordFailed: 'Nie udało się zaktualizować hasła.',
+                },
+              },
+            },
+          },
+          preloadLangs: true,
+          translocoConfig: {
+            availableLangs: ['pl'],
+            defaultLang: 'pl',
+          },
+        }),
+      ],
       providers: [
         AuthService,
         { provide: SupabaseClientFactory, useValue: factorySpy },
       ],
-    });
+    }).compileComponents();
 
     service = TestBed.inject(AuthService);
   });
