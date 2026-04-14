@@ -6,3 +6,4 @@ supabase/.env
 node_modules/
 angular-without-ssr/login-form-*.png
 angular-without-ssr/login-page.png
+angular-without-ssr/src/environments/environments.ts
