@@ -25,8 +25,8 @@ import { PomodoroFacadeService } from '../../../services/facades/pomodoro-facade
     <div class="pomodoro" #triggerEl>
       <!-- Inactive state: trigger button -->
       @if (!facade.isRunningSignal() && facade.timeRemainingSignal() === 0) {
-        <button class="pomodoro-trigger" (click)="toggleDropdown()">
-          <span class="pomodoro-trigger__icon">\uD83C\uDF45</span>
+        <button type="button" class="pomodoro-trigger" (click)="toggleDropdown()" aria-label="Pomodoro">
+          <span class="pomodoro-trigger__icon" aria-hidden="true">\uD83C\uDF45</span>
           <span class="pomodoro-trigger__text">Pomodoro</span>
         </button>
       }
@@ -34,7 +34,9 @@ import { PomodoroFacadeService } from '../../../services/facades/pomodoro-facade
       <!-- Active work state: green badge -->
       @if ((facade.isRunningSignal() || facade.timeRemainingSignal() > 0) && facade.phaseSignal() === 'work') {
         <button
+          type="button"
           class="pomodoro-badge pomodoro-badge--work"
+          aria-label="Pomodoro - sesja nauki"
           (click)="toggleDropdown()">
           {{ facade.formatTime(facade.timeRemainingSignal()) }}
           <span class="pomodoro-badge__session">{{ facade.sessionsCompletedSignal() + 1 }}/{{ facade.sessionsBeforeLongBreakSignal() }}</span>
@@ -44,7 +46,9 @@ import { PomodoroFacadeService } from '../../../services/facades/pomodoro-facade
       <!-- Break state: blue badge -->
       @if ((facade.isRunningSignal() || facade.timeRemainingSignal() > 0) && (facade.phaseSignal() === 'break' || facade.phaseSignal() === 'longBreak')) {
         <button
+          type="button"
           class="pomodoro-badge pomodoro-badge--break"
+          aria-label="Pomodoro - przerwa"
           (click)="toggleDropdown()">
           \u2615 przerwa
         </button>
@@ -68,18 +72,18 @@ import { PomodoroFacadeService } from '../../../services/facades/pomodoro-facade
         @if (facade.isRunningSignal() || facade.timeRemainingSignal() > 0) {
           <div class="pomodoro-dropdown__controls">
             @if (facade.isRunningSignal()) {
-              <button class="pomodoro-dropdown__control-btn" (click)="onPause()" title="Pauza">
+              <button type="button" class="pomodoro-dropdown__control-btn" (click)="onPause()" title="Pauza" aria-label="Pauza">
                 \u23F8
               </button>
             } @else {
-              <button class="pomodoro-dropdown__control-btn" (click)="onResume()" title="Wzn\u00f3w">
+              <button type="button" class="pomodoro-dropdown__control-btn" (click)="onResume()" title="Wzn\u00f3w" aria-label="Wzn\u00f3w">
                 \u25B6
               </button>
             }
-            <button class="pomodoro-dropdown__control-btn" (click)="onReset()" title="Reset">
+            <button type="button" class="pomodoro-dropdown__control-btn" (click)="onReset()" title="Reset" aria-label="Reset">
               \u21BA
             </button>
-            <button class="pomodoro-dropdown__control-btn" (click)="onSkip()" title="Pomi\u0144">
+            <button type="button" class="pomodoro-dropdown__control-btn" (click)="onSkip()" title="Pomi\u0144" aria-label="Pomi\u0144">
               \u23ED
             </button>
           </div>
@@ -93,11 +97,11 @@ import { PomodoroFacadeService } from '../../../services/facades/pomodoro-facade
             }
           </div>
 
-          <button class="pomodoro-dropdown__end" (click)="onReset()">
+          <button type="button" class="pomodoro-dropdown__end" (click)="onReset()">
             Zako\u0144cz sesj\u0119
           </button>
         } @else {
-          <button class="pomodoro-dropdown__start-btn" (click)="onStart()">
+          <button type="button" class="pomodoro-dropdown__start-btn" (click)="onStart()">
             Start
           </button>
         }
@@ -123,7 +127,7 @@ import { PomodoroFacadeService } from '../../../services/facades/pomodoro-facade
           <input type="checkbox" [(ngModel)]="dontShowAgainChecked" />
           Nie pokazuj ponownie
         </label>
-        <button class="focus-reminder__btn" (click)="onStartConfirmed()">
+        <button type="button" class="focus-reminder__btn" (click)="onStartConfirmed()">
           Zaczynamy!
         </button>
       </div>

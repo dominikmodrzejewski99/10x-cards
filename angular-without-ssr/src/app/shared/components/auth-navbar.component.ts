@@ -26,54 +26,56 @@ import { AuthStore } from '../../auth/store';
           <div class="navbar__links navbar__links--desktop">
             @if (authCheckedSignal() && isAuthenticatedSignal()) {
               <div class="navbar__dropdown" (mouseenter)="openSets()" (mouseleave)="scheduleCloseSets()">
-                <button class="navbar__link navbar__link--trigger"
+                <button type="button" class="navbar__link navbar__link--trigger"
                         [class.navbar__link--active]="isSetsRouteActive()"
+                        [attr.aria-expanded]="setsOpenSignal()"
                         (click)="toggleSets()">
-                  <i class="pi pi-folder"></i> {{ t('sets') }}
-                  <i class="pi pi-chevron-down navbar__chevron" [class.navbar__chevron--open]="setsOpenSignal()"></i>
+                  <i class="pi pi-folder" aria-hidden="true"></i> {{ t('sets') }}
+                  <i class="pi pi-chevron-down navbar__chevron" [class.navbar__chevron--open]="setsOpenSignal()" aria-hidden="true"></i>
                 </button>
                 @if (setsOpenSignal()) {
                   <div class="navbar__dropdown-menu" (mouseenter)="openSets()" (mouseleave)="scheduleCloseSets()">
                     <a routerLink="/sets" routerLinkActive="navbar__dropdown-item--active" class="navbar__dropdown-item" (click)="closeSets()">
-                      <i class="pi pi-folder"></i> {{ t('mySets') }}
+                      <i class="pi pi-folder" aria-hidden="true"></i> {{ t('mySets') }}
                     </a>
                     <a routerLink="/explore" routerLinkActive="navbar__dropdown-item--active" class="navbar__dropdown-item" (click)="closeSets()">
-                      <i class="pi pi-search"></i> {{ t('explore') }}
+                      <i class="pi pi-search" aria-hidden="true"></i> {{ t('explore') }}
                     </a>
-                    <div class="navbar__dropdown-divider"></div>
+                    <div class="navbar__dropdown-divider" role="separator"></div>
                     <a routerLink="/generate" routerLinkActive="navbar__dropdown-item--active" class="navbar__dropdown-item" (click)="closeSets()">
-                      <i class="pi pi-microchip-ai"></i> {{ t('generate') }}
+                      <i class="pi pi-microchip-ai" aria-hidden="true"></i> {{ t('generate') }}
                     </a>
                   </div>
                 }
               </div>
               <div class="navbar__dropdown" (mouseenter)="openLearn()" (mouseleave)="scheduleCloseLearn()">
-                <button class="navbar__link navbar__link--trigger"
+                <button type="button" class="navbar__link navbar__link--trigger"
                         [class.navbar__link--active]="isLearnRouteActive()"
+                        [attr.aria-expanded]="learnOpenSignal()"
                         (click)="toggleLearn()">
-                  <i class="pi pi-graduation-cap"></i> {{ t('learn') }}
-                  <i class="pi pi-chevron-down navbar__chevron" [class.navbar__chevron--open]="learnOpenSignal()"></i>
+                  <i class="pi pi-graduation-cap" aria-hidden="true"></i> {{ t('learn') }}
+                  <i class="pi pi-chevron-down navbar__chevron" [class.navbar__chevron--open]="learnOpenSignal()" aria-hidden="true"></i>
                 </button>
                 @if (learnOpenSignal()) {
                   <div class="navbar__dropdown-menu" (mouseenter)="openLearn()" (mouseleave)="scheduleCloseLearn()">
                     <a routerLink="/study" routerLinkActive="navbar__dropdown-item--active" class="navbar__dropdown-item" (click)="closeLearn()">
-                      <i class="pi pi-book"></i> {{ t('study') }}
+                      <i class="pi pi-book" aria-hidden="true"></i> {{ t('study') }}
                     </a>
                     <a routerLink="/quiz" routerLinkActive="navbar__dropdown-item--active" class="navbar__dropdown-item" (click)="closeLearn()">
-                      <i class="pi pi-file-edit"></i> {{ t('quiz') }}
+                      <i class="pi pi-file-edit" aria-hidden="true"></i> {{ t('quiz') }}
                     </a>
                     <a routerLink="/language-test" routerLinkActive="navbar__dropdown-item--active" class="navbar__dropdown-item" (click)="closeLearn()">
-                      <i class="pi pi-check-square"></i> {{ t('languageTests') }}
+                      <i class="pi pi-check-square" aria-hidden="true"></i> {{ t('languageTests') }}
                     </a>
-                    <div class="navbar__dropdown-divider"></div>
+                    <div class="navbar__dropdown-divider" role="separator"></div>
                     <a routerLink="/learning-guide" routerLinkActive="navbar__dropdown-item--active" class="navbar__dropdown-item" (click)="closeLearn()">
-                      <i class="pi pi-lightbulb"></i> {{ t('guide') }}
+                      <i class="pi pi-lightbulb" aria-hidden="true"></i> {{ t('guide') }}
                     </a>
                   </div>
                 }
               </div>
               <a routerLink="/friends" routerLinkActive="navbar__link--active" class="navbar__link">
-                <i class="pi pi-users"></i> {{ t('friends') }}
+                <i class="pi pi-users" aria-hidden="true"></i> {{ t('friends') }}
               </a>
             }
           </div>
@@ -83,10 +85,10 @@ import { AuthStore } from '../../auth/store';
               <app-pomodoro-timer></app-pomodoro-timer>
               <app-notification-bell></app-notification-bell>
               <app-user-menu></app-user-menu>
-              <button class="navbar__burger" (click)="toggleMobile()" [attr.aria-expanded]="mobileOpenSignal()">
-                <span class="navbar__burger-line"></span>
-                <span class="navbar__burger-line"></span>
-                <span class="navbar__burger-line"></span>
+              <button type="button" class="navbar__burger" (click)="toggleMobile()" [attr.aria-expanded]="mobileOpenSignal()" aria-label="Menu">
+                <span class="navbar__burger-line" aria-hidden="true"></span>
+                <span class="navbar__burger-line" aria-hidden="true"></span>
+                <span class="navbar__burger-line" aria-hidden="true"></span>
               </button>
             } @else {
               <a routerLink="/login" class="navbar__auth-btn navbar__auth-btn--login">{{ t('login') }}</a>
@@ -101,35 +103,35 @@ import { AuthStore } from '../../auth/store';
             <div class="navbar__drawer-section">
               <span class="navbar__drawer-heading">{{ t('sets') }}</span>
               <a routerLink="/sets" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
-                <i class="pi pi-folder"></i> {{ t('mySets') }}
+                <i class="pi pi-folder" aria-hidden="true"></i> {{ t('mySets') }}
               </a>
               <a routerLink="/explore" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
-                <i class="pi pi-search"></i> {{ t('explore') }}
+                <i class="pi pi-search" aria-hidden="true"></i> {{ t('explore') }}
               </a>
               <a routerLink="/generate" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
-                <i class="pi pi-microchip-ai"></i> {{ t('generate') }}
+                <i class="pi pi-microchip-ai" aria-hidden="true"></i> {{ t('generate') }}
               </a>
             </div>
             <div class="navbar__drawer-section">
               <span class="navbar__drawer-heading">{{ t('learn') }}</span>
               <a routerLink="/study" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
-                <i class="pi pi-book"></i> {{ t('study') }}
+                <i class="pi pi-book" aria-hidden="true"></i> {{ t('study') }}
               </a>
               <a routerLink="/quiz" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
-                <i class="pi pi-file-edit"></i> {{ t('quiz') }}
+                <i class="pi pi-file-edit" aria-hidden="true"></i> {{ t('quiz') }}
               </a>
               <a routerLink="/language-test" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
-                <i class="pi pi-check-square"></i> {{ t('languageTests') }}
+                <i class="pi pi-check-square" aria-hidden="true"></i> {{ t('languageTests') }}
               </a>
               <a routerLink="/learning-guide" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
-                <i class="pi pi-lightbulb"></i> {{ t('guide') }}
+                <i class="pi pi-lightbulb" aria-hidden="true"></i> {{ t('guide') }}
               </a>
             </div>
             <a routerLink="/friends" routerLinkActive="navbar__link--active" class="navbar__link" (click)="closeMobile()">
-              <i class="pi pi-users"></i> {{ t('friends') }}
+              <i class="pi pi-users" aria-hidden="true"></i> {{ t('friends') }}
             </a>
             <a routerLink="/feedback" routerLinkActive="navbar__link--active" class="navbar__link navbar__link--feedback" (click)="closeMobile()">
-              <i class="pi pi-comment"></i> {{ t('feedback') }}
+              <i class="pi pi-comment" aria-hidden="true"></i> {{ t('feedback') }}
             </a>
           </div>
         }

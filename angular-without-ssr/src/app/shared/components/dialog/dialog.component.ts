@@ -28,8 +28,8 @@ import { TemplatePortal } from '@angular/cdk/portal';
            [attr.aria-label]="header()">
         <div class="app-dialog-header">
           <h2 class="app-dialog-title">{{ header() }}</h2>
-          <button class="app-dialog-close" (click)="close()" aria-label="Zamknij">
-            <i class="pi pi-times"></i>
+          <button type="button" class="app-dialog-close" (click)="close()" aria-label="Zamknij">
+            <i class="pi pi-times" aria-hidden="true"></i>
           </button>
         </div>
         <div class="app-dialog-body">

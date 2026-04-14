@@ -4,7 +4,7 @@
       <div class="consent__inner">
         <!-- Header -->
         <div class="consent__header">
-          <i class="pi pi-shield consent__icon"></i>
+          <i class="pi pi-shield consent__icon" aria-hidden="true"></i>
           <h2 class="consent__title">{{ t('title') }}</h2>
         </div>
 
@@ -53,21 +53,21 @@
 
         <!-- Actions -->
         <div class="consent__actions">
-          <button class="consent__btn consent__btn--settings" (click)="toggleSettings()">
-            <i class="pi pi-cog"></i>
+          <button type="button" class="consent__btn consent__btn--settings" (click)="toggleSettings()">
+            <i class="pi pi-cog" aria-hidden="true"></i>
             {{ showSettings() ? t('hideSettings') : t('showSettings') }}
           </button>
           <div class="consent__actions-main">
             @if (showSettings()) {
-              <button class="consent__btn consent__btn--save" (click)="saveCustom()">
+              <button type="button" class="consent__btn consent__btn--save" (click)="saveCustom()">
                 {{ t('saveBtn') }}
               </button>
             } @else {
-              <button class="consent__btn consent__btn--reject" (click)="rejectNonEssential()">
+              <button type="button" class="consent__btn consent__btn--reject" (click)="rejectNonEssential()">
                 {{ t('rejectBtn') }}
               </button>
             }
-            <button class="consent__btn consent__btn--accept" (click)="acceptAll()">
+            <button type="button" class="consent__btn consent__btn--accept" (click)="acceptAll()">
               {{ t('acceptBtn') }}
             </button>
           </div>

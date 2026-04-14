@@ -3,7 +3,7 @@ import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 @Component({
   selector: 'app-spinner',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<div class="spinner" [style.width]="size()" [style.height]="size()"></div>`,
+  template: `<div class="spinner" role="status" aria-label="Ładowanie" [style.width]="size()" [style.height]="size()"></div>`,
   styles: [`
     :host { display: inline-flex; }
     .spinner {

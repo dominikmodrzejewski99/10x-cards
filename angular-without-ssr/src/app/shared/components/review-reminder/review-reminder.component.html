@@ -7,18 +7,18 @@
   [maxWidth]="'26rem'"
 >
   <div class="reminder">
-    <div class="reminder__icon">
+    <div class="reminder__icon" aria-hidden="true">
       <i class="pi pi-clock"></i>
     </div>
     <p class="reminder__message" [innerHTML]="dueCount() === 1 ? t('dueCountSingular') : t('dueCount', { count: dueCount() })"></p>
   </div>
   <div dialogFooter>
     <div class="reminder__actions">
-      <button class="reminder__btn--secondary" (click)="onDismiss()">
+      <button type="button" class="reminder__btn--secondary" (click)="onDismiss()">
         {{ t('dismiss') }}
       </button>
-      <button class="reminder__btn--primary" (click)="onStudy()">
-        <i class="pi pi-play-circle"></i>
+      <button type="button" class="reminder__btn--primary" (click)="onStudy()">
+        <i class="pi pi-play-circle" aria-hidden="true"></i>
         {{ t('study') }}
       </button>
     </div>

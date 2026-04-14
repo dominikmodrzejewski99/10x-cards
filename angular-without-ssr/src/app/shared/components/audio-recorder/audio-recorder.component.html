@@ -1,7 +1,7 @@
 <ng-container *transloco="let t; prefix: 'audioRecorder'">
 @if (errorSignal()) {
   <div class="audio-recorder__error">
-    <i class="pi pi-exclamation-circle"></i>
+    <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
     {{ errorSignal() }}
     <button
       class="audio-recorder__cancel"
@@ -19,7 +19,7 @@
       (click)="startRecording()"
       [disabled]="disabledSignal()"
       type="button">
-      <i class="pi pi-microphone"></i> {{ t('record') }}
+      <i class="pi pi-microphone" aria-hidden="true"></i> {{ t('record') }}
     </button>
     <button
       class="audio-recorder__cancel"
@@ -32,7 +32,7 @@
 
 @if (recordingSignal()) {
   <div class="audio-recorder__active">
-    <span class="audio-recorder__dot"></span>
+    <span class="audio-recorder__dot" aria-hidden="true"></span>
     <span class="audio-recorder__timer">
       {{ elapsedSignal() }}s / {{ maxDurationSignal() }}s
     </span>
@@ -43,7 +43,7 @@
       class="audio-recorder__stop"
       (click)="stopRecording()"
       type="button">
-      <i class="pi pi-stop-circle"></i> {{ t('stop') }}
+      <i class="pi pi-stop-circle" aria-hidden="true"></i> {{ t('stop') }}
     </button>
   </div>
 }
@@ -55,8 +55,9 @@
       class="audio-recorder__discard"
       (click)="discardRecording()"
       type="button"
-      [title]="t('discardTitle')">
-      <i class="pi pi-trash"></i>
+      [title]="t('discardTitle')"
+      [attr.aria-label]="t('discardTitle')">
+      <i class="pi pi-trash" aria-hidden="true"></i>
     </button>
   </div>
 }

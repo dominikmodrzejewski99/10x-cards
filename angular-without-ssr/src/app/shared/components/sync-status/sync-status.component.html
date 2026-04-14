@@ -2,13 +2,13 @@
 @if (!connectivity.onlineSignal() || offlineQueue.hasPendingSignal()) {
   <div class="sync-status" role="status" aria-live="polite">
     @if (offlineQueue.syncingSignal()) {
-      <i class="pi pi-spin pi-spinner sync-status__icon"></i>
+      <i class="pi pi-spin pi-spinner sync-status__icon" aria-hidden="true"></i>
       <span class="sync-status__text">{{ t('syncing') }}</span>
     } @else if (offlineQueue.hasPendingSignal()) {
-      <i class="pi pi-cloud-upload sync-status__icon"></i>
+      <i class="pi pi-cloud-upload sync-status__icon" aria-hidden="true"></i>
       <span class="sync-status__text">{{ t('pending', { count: offlineQueue.pendingCountSignal() }) }}</span>
     } @else if (!connectivity.onlineSignal()) {
-      <i class="pi pi-wifi sync-status__icon sync-status__icon--offline"></i>
+      <i class="pi pi-wifi sync-status__icon sync-status__icon--offline" aria-hidden="true"></i>
       <span class="sync-status__text">{{ t('offline') }}</span>
     }
   </div>

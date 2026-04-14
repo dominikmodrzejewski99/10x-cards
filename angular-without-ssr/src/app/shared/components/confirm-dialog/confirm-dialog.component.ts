@@ -21,19 +21,23 @@ import { ConfirmService } from '../../services/confirm.service';
   template: `
     <ng-template #confirmTpl>
       @if (confirmService.active(); as cfg) {
-        <div class="app-confirm-panel">
+        <div class="app-confirm-panel"
+             role="alertdialog"
+             aria-modal="true"
+             [attr.aria-label]="cfg.header">
           @if (cfg.icon) {
             <div class="app-confirm-icon">
-              <i [class]="'pi ' + cfg.icon"></i>
+              <i [class]="'pi ' + cfg.icon" aria-hidden="true"></i>
             </div>
           }
           <h3 class="app-confirm-title">{{ cfg.header }}</h3>
           <p class="app-confirm-text">{{ cfg.message }}</p>
           <div class="app-confirm-actions">
-            <button class="app-confirm-btn app-confirm-btn--cancel" (click)="confirmService.reject()">
+            <button type="button" class="app-confirm-btn app-confirm-btn--cancel" (click)="confirmService.reject()">
               {{ cfg.rejectLabel || 'Nie' }}
             </button>
             <button
+              type="button"
               class="app-confirm-btn"
               [class.app-confirm-btn--primary]="cfg.acceptClass !== 'danger'"
               [class.app-confirm-btn--danger]="cfg.acceptClass === 'danger'"

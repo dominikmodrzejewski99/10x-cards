@@ -14,13 +14,14 @@
     (click)="togglePlay()"
     [attr.aria-label]="playingSignal() ? 'Pauza' : 'Odtwórz'"
     type="button">
-    <i class="pi" [class.pi-play]="!playingSignal()" [class.pi-pause]="playingSignal()"></i>
+    <i class="pi" [class.pi-play]="!playingSignal()" [class.pi-pause]="playingSignal()" aria-hidden="true"></i>
   </button>
 
   <div
     class="audio-player__progress"
     (click)="onProgressClick($event)"
     role="progressbar"
+    aria-label="Postęp odtwarzania"
     [attr.aria-valuenow]="progressSignal()"
     aria-valuemin="0"
     aria-valuemax="100">

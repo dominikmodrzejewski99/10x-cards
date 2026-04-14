@@ -22,25 +22,25 @@ import { PomodoroService } from '../../../services/domain/pomodoro.service';
           }
           <a routerLink="/dashboard" routerLinkActive="bottom-nav__item--active"
              [routerLinkActiveOptions]="{exact: true}" class="bottom-nav__item">
-            <i class="pi pi-home bottom-nav__icon"></i>
+            <i class="pi pi-home bottom-nav__icon" aria-hidden="true"></i>
             <span class="bottom-nav__label">{{ t('dashboard') }}</span>
           </a>
           <a routerLink="/generate" routerLinkActive="bottom-nav__item--active" class="bottom-nav__item" data-tour-mobile="generate">
-            <i class="pi pi-microchip-ai bottom-nav__icon"></i>
+            <i class="pi pi-microchip-ai bottom-nav__icon" aria-hidden="true"></i>
             <span class="bottom-nav__label">{{ t('generate') }}</span>
           </a>
           <a routerLink="/study" routerLinkActive="bottom-nav__item--active" class="bottom-nav__item bottom-nav__item--study" data-tour-mobile="study">
-            <span class="bottom-nav__study-ring">
+            <span class="bottom-nav__study-ring" aria-hidden="true">
               <i class="pi pi-book bottom-nav__icon"></i>
             </span>
             <span class="bottom-nav__label">{{ t('study') }}</span>
           </a>
           <a routerLink="/sets" routerLinkActive="bottom-nav__item--active" class="bottom-nav__item" data-tour-mobile="sets">
-            <i class="pi pi-folder bottom-nav__icon"></i>
+            <i class="pi pi-folder bottom-nav__icon" aria-hidden="true"></i>
             <span class="bottom-nav__label">{{ t('sets') }}</span>
           </a>
           <a routerLink="/quiz" routerLinkActive="bottom-nav__item--active" class="bottom-nav__item">
-            <i class="pi pi-file-edit bottom-nav__icon"></i>
+            <i class="pi pi-file-edit bottom-nav__icon" aria-hidden="true"></i>
             <span class="bottom-nav__label">{{ t('quiz') }}</span>
           </a>
         </nav>

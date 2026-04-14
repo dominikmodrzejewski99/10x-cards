@@ -11,9 +11,9 @@ import { ToastService, ToastMessage } from '../../services/toast.service';
           <div class="toast toast--{{ msg.severity }}">
             <div class="toast__icon">
               @switch (msg.severity) {
-                @case ('success') { <i class="pi pi-check-circle"></i> }
-                @case ('error') { <i class="pi pi-times-circle"></i> }
-                @case ('warn') { <i class="pi pi-exclamation-triangle"></i> }
+                @case ('success') { <i class="pi pi-check-circle" aria-hidden="true"></i> }
+                @case ('error') { <i class="pi pi-times-circle" aria-hidden="true"></i> }
+                @case ('warn') { <i class="pi pi-exclamation-triangle" aria-hidden="true"></i> }
               }
             </div>
             <div class="toast__content">
@@ -22,8 +22,8 @@ import { ToastService, ToastMessage } from '../../services/toast.service';
               }
               <div class="toast__detail">{{ msg.detail }}</div>
             </div>
-            <button class="toast__close" (click)="toastService.remove(msg.id)" aria-label="Zamknij">
-              <i class="pi pi-times"></i>
+            <button type="button" class="toast__close" (click)="toastService.remove(msg.id)" aria-label="Zamknij">
+              <i class="pi pi-times" aria-hidden="true"></i>
             </button>
           </div>
         }

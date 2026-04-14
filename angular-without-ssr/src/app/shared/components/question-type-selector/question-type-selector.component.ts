@@ -26,7 +26,7 @@ export interface QuestionTypeOption {
         }
       </div>
       @if (showError()) {
-        <small class="cfg-error">{{ t('validationError') }}</small>
+        <small class="cfg-error" role="alert">{{ t('validationError') }}</small>
       }
     </ng-container>
   `,
