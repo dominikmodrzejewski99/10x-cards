@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './auth/guards/auth.guard';
 import { nonAuthGuard } from './auth/guards/non-auth.guard';
+import { adminGuard } from './auth/guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -109,7 +110,7 @@ export const routes: Routes = [
   {
     path: 'admin/payouts',
     loadComponent: () => import('./components/admin/admin-payouts.component').then(m => m.AdminPayoutsComponent),
-    canActivate: [authGuard]
+    canActivate: [authGuard, adminGuard]
   },
   {
     path: 'feedback',
