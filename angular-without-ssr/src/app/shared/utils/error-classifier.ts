@@ -1,12 +1,20 @@
 export interface ClassifiedError {
-  message: string;
+  messageKey: string;
+  messageParams?: Record<string, string>;
   isAuthError: boolean;
 }
 
+/**
+ * Classifies an HTTP/API error and returns a translation key
+ * instead of a hardcoded message. The caller is responsible for
+ * translating the key via TranslocoService.
+ *
+ * @param action - already-translated action description for interpolation
+ */
 export function classifyError(error: unknown, action: string): ClassifiedError {
   if (!navigator.onLine) {
     return {
-      message: 'Brak połączenia z internetem. Sprawdź sieć i spróbuj ponownie.',
+      messageKey: 'errors.offline',
       isAuthError: false
     };
   }
@@ -15,27 +23,29 @@ export function classifyError(error: unknown, action: string): ClassifiedError {
 
   if (err.status === 401 || err.message?.includes('nie jest zalogowany') || err.message?.includes('Sesja wygasła')) {
     return {
-      message: 'Sesja wygasła. Zaloguj się ponownie.',
+      messageKey: 'errors.sessionExpired',
       isAuthError: true
     };
   }
 
   if (err.status === 403) {
     return {
-      message: 'Brak uprawnień do wykonania tej operacji.',
+      messageKey: 'errors.forbidden',
       isAuthError: false
     };
   }
 
   if (err.status && err.status >= 500) {
     return {
-      message: `Błąd serwera podczas ${action}. Spróbuj ponownie później.`,
+      messageKey: 'errors.serverError',
+      messageParams: { action },
       isAuthError: false
     };
   }
 
   return {
-    message: `Nie udało się ${action}. Spróbuj ponownie.`,
+    messageKey: 'errors.actionFailed',
+    messageParams: { action },
     isAuthError: false
   };
 }

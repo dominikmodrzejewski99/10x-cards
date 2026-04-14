@@ -199,7 +199,9 @@
       "ariaNotFlipped": "Click to see answer"
     },
     "errors": {
-      "loadFailed": "Failed to load flashcards. Please try again."
+      "loadFailed": "Failed to load flashcards. Please try again.",
+      "loadAction": "load flashcards",
+      "saveAction": "save answers"
     },
     "confirmSetChange": "Changing the set will reset your current session. Continue?",
     "confirmSetChangeTitle": "Change set"
@@ -1147,5 +1149,12 @@
       "unexpectedError": "Unexpected API error ({{status}}): {{details}}",
       "noDetails": "no details"
     }
+  },
+  "errors": {
+    "offline": "No internet connection. Check your network and try again.",
+    "sessionExpired": "Session expired. Please log in again.",
+    "forbidden": "You do not have permission for this operation.",
+    "serverError": "Server error during {{action}}. Please try again later.",
+    "actionFailed": "Failed to {{action}}. Please try again."
   }
 }

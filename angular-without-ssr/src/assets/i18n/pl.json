@@ -199,7 +199,9 @@
       "ariaNotFlipped": "Kliknij aby zobaczyć odpowiedź"
     },
     "errors": {
-      "loadFailed": "Nie udało się załadować fiszek. Spróbuj ponownie."
+      "loadFailed": "Nie udało się załadować fiszek. Spróbuj ponownie.",
+      "loadAction": "załadować fiszek",
+      "saveAction": "zapisać odpowiedzi"
     },
     "confirmSetChange": "Zmiana zestawu zresetuje bieżącą sesję. Kontynuować?",
     "confirmSetChangeTitle": "Zmiana zestawu"
@@ -1147,5 +1149,12 @@
       "unexpectedError": "Nieoczekiwany błąd API ({{status}}): {{details}}",
       "noDetails": "brak szczegółów"
     }
+  },
+  "errors": {
+    "offline": "Brak połączenia z internetem. Sprawdź sieć i spróbuj ponownie.",
+    "sessionExpired": "Sesja wygasła. Zaloguj się ponownie.",
+    "forbidden": "Brak uprawnień do wykonania tej operacji.",
+    "serverError": "Błąd serwera podczas {{action}}. Spróbuj ponownie później.",
+    "actionFailed": "Nie udało się {{action}}. Spróbuj ponownie."
   }
 }

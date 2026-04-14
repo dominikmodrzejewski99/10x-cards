@@ -169,8 +169,8 @@ export class StudyFacadeService {
         }
       },
       error: (err: unknown) => {
-        const classified: ClassifiedError = classifyError(err, 'załadować fiszek');
-        this._error.set(classified.message);
+        const classified: ClassifiedError = classifyError(err, this.t.translate('study.errors.loadAction'));
+        this._error.set(this.t.translate(classified.messageKey, classified.messageParams));
         this._loading.set(false);
       }
     });
@@ -212,8 +212,8 @@ export class StudyFacadeService {
       },
       error: (err: unknown) => {
         this._saving.set(false);
-        const classified: ClassifiedError = classifyError(err, 'zapisać odpowiedzi');
-        this._error.set(classified.message);
+        const classified: ClassifiedError = classifyError(err, this.t.translate('study.errors.saveAction'));
+        this._error.set(this.t.translate(classified.messageKey, classified.messageParams));
       }
     });
   }

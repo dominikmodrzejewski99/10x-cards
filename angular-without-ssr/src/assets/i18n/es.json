@@ -194,7 +194,9 @@
       "ariaNotFlipped": "Clic para ver la respuesta"
     },
     "errors": {
-      "loadFailed": "No se pudieron cargar las tarjetas. Inténtalo de nuevo."
+      "loadFailed": "No se pudieron cargar las tarjetas. Inténtalo de nuevo.",
+      "loadAction": "cargar tarjetas",
+      "saveAction": "guardar respuestas"
     },
     "confirmSetChange": "Cambiar el set reiniciará la sesión actual. ¿Continuar?",
     "confirmSetChangeTitle": "Cambiar set"
@@ -971,5 +973,12 @@
       "unexpectedError": "Error de API inesperado ({{status}}): {{details}}",
       "noDetails": "sin detalles"
     }
+  },
+  "errors": {
+    "offline": "Sin conexión a internet. Verifica tu red e inténtalo de nuevo.",
+    "sessionExpired": "Sesión expirada. Inicia sesión de nuevo.",
+    "forbidden": "No tienes permiso para esta operación.",
+    "serverError": "Error del servidor durante {{action}}. Inténtalo más tarde.",
+    "actionFailed": "No se pudo {{action}}. Inténtalo de nuevo."
   }
 }

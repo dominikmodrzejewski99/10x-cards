@@ -194,7 +194,9 @@
       "ariaNotFlipped": "Klicken um die Antwort zu sehen"
     },
     "errors": {
-      "loadFailed": "Karteikarten konnten nicht geladen werden. Bitte erneut versuchen."
+      "loadFailed": "Karteikarten konnten nicht geladen werden. Bitte erneut versuchen.",
+      "loadAction": "Karteikarten laden",
+      "saveAction": "Antworten speichern"
     },
     "confirmSetChange": "Setwechsel setzt die aktuelle Sitzung zurück. Fortfahren?",
     "confirmSetChangeTitle": "Set wechseln"
@@ -971,5 +973,12 @@
       "unexpectedError": "Unerwarteter API-Fehler ({{status}}): {{details}}",
       "noDetails": "keine Details"
     }
+  },
+  "errors": {
+    "offline": "Keine Internetverbindung. Überprüfe dein Netzwerk und versuche es erneut.",
+    "sessionExpired": "Sitzung abgelaufen. Bitte melde dich erneut an.",
+    "forbidden": "Keine Berechtigung für diese Operation.",
+    "serverError": "Serverfehler bei {{action}}. Bitte versuche es später erneut.",
+    "actionFailed": "{{action}} fehlgeschlagen. Bitte versuche es erneut."
   }
 }

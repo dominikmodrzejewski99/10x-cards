@@ -194,7 +194,9 @@
       "ariaNotFlipped": "Clique pour voir la réponse"
     },
     "errors": {
-      "loadFailed": "Impossible de charger les cartes. Réessaie."
+      "loadFailed": "Impossible de charger les cartes. Réessaie.",
+      "loadAction": "charger les cartes",
+      "saveAction": "enregistrer les réponses"
     },
     "confirmSetChange": "Changer de set réinitialisera la session en cours. Continuer ?",
     "confirmSetChangeTitle": "Changer de set"
@@ -971,5 +973,12 @@
       "unexpectedError": "Erreur API inattendue ({{status}}) : {{details}}",
       "noDetails": "pas de détails"
     }
+  },
+  "errors": {
+    "offline": "Pas de connexion Internet. Vérifie ton réseau et réessaie.",
+    "sessionExpired": "Session expirée. Reconnecte-toi.",
+    "forbidden": "Vous n'avez pas la permission pour cette opération.",
+    "serverError": "Erreur serveur lors de {{action}}. Réessaie plus tard.",
+    "actionFailed": "Impossible de {{action}}. Réessaie."
   }
 }
