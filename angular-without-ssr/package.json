@@ -10,7 +10,7 @@
     "build-cloudflare": "node inject-env.js && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "test:quiz": "ng test --no-watch --browsers=ChromeHeadless --include=src/app/services/quiz.service.spec.ts --include=src/app/components/quiz/**/*.spec.ts",
+    "test:quiz": "ng test --no-watch --browsers=ChromeHeadless --include=src/app/services/domain/quiz.service.spec.ts --include=src/app/components/quiz/**/*.spec.ts",
     "e2e": "npx playwright test",
     "e2e:quiz": "npx playwright test tests/e2e/tests/quiz.spec.ts",
     "e2e:flow": "npx playwright test tests/e2e/tests/full-flow.spec.ts",

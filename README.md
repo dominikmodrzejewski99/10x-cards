@@ -56,6 +56,30 @@ Można też kliknąć „Wypróbuj bez rejestracji" aby korzystać anonimowo.
 ### Tryb bez rejestracji
 - Pełna funkcjonalność bez podawania emaila — anonimowe konto tworzone jednym kliknięciem
 
+### Znajomi i ranking
+- Zaproszenia do znajomych, podgląd statystyk
+- Ranking tygodniowy (streak, fiszki, aktywność)
+- Udostępnianie zestawów bezpośrednio znajomym
+
+### Explore — publiczne zestawy
+- Przeglądanie i kopiowanie publicznych zestawów
+- Profil autora z liczbą publikacji i pobrań
+
+### Program partnerski
+- Onboarding kreatora (KYC, dane do wypłat)
+- Dashboard z miesięcznymi statystykami (unikalni uczniowie, billable uses)
+- Panel admina do zarządzania wypłatami (eksport CSV dla przelewów bankowych)
+
+### Wielojęzyczność (i18n)
+- 6 języków interfejsu: PL, EN, DE, ES, FR, UK
+- Automatyczny wybór na podstawie języka przeglądarki
+- Transloco z lazy-loading tłumaczeń
+
+### PWA i offline
+- Service Worker z cache'owaniem zasobów
+- Timer Pomodoro z powiadomieniami push
+- Wykrywanie stanu połączenia, kolejka offline
+
 ### Poradnik nauki
 - 8 artykułów: Spaced Repetition, Active Recall, krzywa zapominania, efekt Dunninga-Krugera, technika Feynmana, Pomodoro, interleaving, growth mindset
 
@@ -71,8 +95,9 @@ Można też kliknąć „Wypróbuj bez rejestracji" aby korzystać anonimowo.
 |---------|-------------|
 | Frontend | Angular 21 (standalone, OnPush, signals, zoneless) |
 | State management | NgRx Signals |
-| UI | PrimeNG 21, SCSS |
+| UI | Angular CDK, SCSS, PrimeIcons |
 | Backend / Auth | Supabase (PostgreSQL, Auth, RLS, Storage, Edge Functions) |
+| i18n | Transloco (PL, EN, DE, ES, FR, UK) |
 | AI | OpenRouter API (Google Gemma 3) |
 | Monitoring | Sentry |
 | Testing | Karma/Jasmine (unit), Playwright (E2E) |
@@ -143,14 +168,21 @@ Każdy feature stosuje trójwarstwowy podział odpowiedzialności:
 │  routing, keyboard, confirm dialogs, fullscreen  │
 │  ZERO .subscribe() — czyste sygnały              │
 ├─────────────────────────────────────────────────┤
-│  Facade Service (stan + logika biznesowa)         │
+│  Facade Service  [services/facades/]             │
 │  private signals → public readonly (.asReadonly)  │
 │  .subscribe() do API, toasty, obliczenia         │
 │  providedIn: 'root'                              │
 ├─────────────────────────────────────────────────┤
-│  API Service (HTTP)                              │
+│  Domain Service  [services/domain/]              │
+│  logika biznesowa (SM-2, quiz, export, i18n)     │
+│  czyste funkcje i serwisy bez stanu UI           │
+├─────────────────────────────────────────────────┤
+│  API Service  [services/api/]                    │
 │  zwraca Observable, zero sygnałów                │
 │  Supabase client, error handling                 │
+├─────────────────────────────────────────────────┤
+│  Infrastructure  [services/infrastructure/]      │
+│  logger, auth interceptor, upload, Sentry        │
 ├─────────────────────────────────────────────────┤
 │  Dumb Components (prezentacja)                   │
 │  input() / output() — zero serwisów             │
@@ -162,11 +194,23 @@ Każdy feature stosuje trójwarstwowy podział odpowiedzialności:
 
 | Feature | Fasada | Smart Component | Dumb Components |
 |---------|--------|----------------|-----------------|
-| Zestawy | `SetsFacadeService` | `SetListComponent` | — |
-| Nauka | `StudyFacadeService` | `StudyViewComponent` | `FlashcardFlipComponent` |
-| Quiz | `QuizFacadeService` | `QuizViewComponent` | `QuizConfigComponent`, `QuizQuestionComponent`, `QuizResultsComponent` |
 | Dashboard | `DashboardFacadeService` | `DashboardComponent` | `ReviewReminderComponent` |
 | Fiszki | `FlashcardsFacadeService` | `FlashcardListComponent` | `FlashcardTableComponent`, `FlashcardFormComponent`, `ImportModalComponent` |
+| Zestawy | `SetsFacadeService` | `SetListComponent` | `SetCardComponent`, `SetFormDialogComponent` |
+| Nauka | `StudyFacadeService` | `StudyViewComponent` | `FlashcardFlipComponent` |
+| Quiz | `QuizFacadeService` | `QuizViewComponent` | `QuizConfigComponent`, `QuizQuestionComponent`, `QuizResultsComponent` |
+| Generator AI | `GenerateFacadeService` | `GenerateViewComponent` | `SourceTextareaComponent`, `FlashcardProposalListComponent` |
+| Znajomi | `FriendsFacadeService` | `FriendsListComponent` | `FriendStatsComponent`, `FriendsLeaderboardComponent` |
+| Testy językowe | `LanguageTestFacadeService` | `LanguageTestViewComponent` | `LanguageTestWidgetComponent` |
+| Explore | `ExploreFacadeService` | `ExploreComponent` | `AuthorProfileComponent` |
+| Ustawienia | `SettingsFacadeService` | `SettingsComponent` | — |
+| Partner | `PartnerFacadeService` | `PartnerPageComponent` | `PartnerDashboardComponent`, `PartnerOnboardingComponent` |
+| Feedback | `FeedbackFacadeService` | `FeedbackComponent` | — |
+| Pomodoro | `PomodoroFacadeService` | — | `PomodoroTimerComponent` |
+| Powiadomienia | `NotificationFacadeService` | — | `NotificationBellComponent` |
+| Onboarding | `OnboardingFacadeService` | — | `OnboardingComponent` |
+
+`FlashcardsFacadeService` deleguje zarządzanie mediami (upload obrazów/audio, tłumaczenia) do wydzielonego `FlashcardMediaService`.
 
 ### Zasady
 
@@ -180,21 +224,39 @@ Każdy feature stosuje trójwarstwowy podział odpowiedzialności:
 
 ```
 angular-without-ssr/src/app/
-├── auth/               # Autentykacja (NgRx Signal Store, guards, serwis)
+├── auth/                   # Autentykacja (NgRx Signal Store, guards, serwis)
+│   ├── store/              #   Signal Store (stan użytkownika)
+│   ├── guards/             #   authGuard, nonAuthGuard, adminGuard
+│   └── components/         #   Login, rejestracja, reset hasła
 ├── components/
-│   ├── dashboard/      # Panel główny ze statystykami
-│   ├── generate/       # Generator fiszek AI
-│   ├── flashcards/     # Lista fiszek, formularz, import, tabela
-│   ├── sets/           # Zarządzanie zestawami
-│   ├── study/          # Sesja nauki (SM-2)
-│   ├── quiz/           # Tryb testu (konfiguracja, pytania, wyniki)
-│   ├── language-test/  # Testy językowe (B1, B2-FCE, C1-CAE)
-│   ├── landing/        # Strona główna
-│   ├── learning-guide/ # Poradnik nauki (8 artykułów)
-│   └── onboarding/     # Onboarding po rejestracji
-├── services/           # Fasady (*-facade.service.ts) i serwisy API
-├── shared/             # Współdzielone komponenty (navbar, audio player/recorder)
-└── interfaces/         # Interfejsy TypeScript
+│   ├── dashboard/          # Panel główny ze statystykami
+│   ├── generate/           # Generator fiszek AI
+│   ├── flashcards/         # Lista fiszek, formularz, import, tabela
+│   ├── sets/               # Zarządzanie zestawami
+│   ├── study/              # Sesja nauki (SM-2)
+│   ├── quiz/               # Tryb testu (konfiguracja, pytania, wyniki)
+│   ├── language-test/      # Testy językowe (B1, B2-FCE, C1-CAE)
+│   ├── friends/            # Lista znajomych, ranking, udostępnianie
+│   ├── explore/            # Przeglądanie publicznych zestawów
+│   ├── partner/            # Program partnerski (dashboard, onboarding)
+│   ├── admin/              # Panel admina (wypłaty partnerskie)
+│   ├── settings/           # Ustawienia użytkownika
+│   ├── feedback/           # Formularz zgłoszeń
+│   ├── landing/            # Strona główna
+│   ├── learning-guide/     # Poradnik nauki (8 artykułów)
+│   ├── legal/              # Regulamin, polityka prywatności
+│   └── onboarding/         # Onboarding po rejestracji
+├── services/
+│   ├── api/                # Serwisy HTTP/Supabase (CRUD, RPC)
+│   ├── facades/            # Fasady — orkiestracja stanu UI (sygnały)
+│   ├── domain/             # Logika biznesowa (SM-2, quiz, export, i18n)
+│   └── infrastructure/     # Cross-cutting (logger, interceptor, upload, Sentry)
+├── shared/
+│   ├── components/         # Współdzielone UI (navbar, dialog, toast, audio)
+│   ├── models/             # Interfejsy współdzielone między warstwami
+│   ├── services/           # Współdzielone serwisy (toast, confirm, streak)
+│   └── utils/              # Helpery (confetti, error-classifier)
+└── interfaces/             # Interfejsy zewnętrzne (OpenRouter)
 
 supabase/functions/
 ├── chat/               # Proxy do OpenRouter (tłumaczenia, chat)
