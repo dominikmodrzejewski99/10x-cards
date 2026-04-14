@@ -1,4 +1,4 @@
-import { Component, input, InputSignal, signal, OnInit, OnDestroy, effect } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, InputSignal, signal, OnInit, OnDestroy, effect } from '@angular/core';
 
 interface Fact {
   icon: string;
@@ -15,7 +15,8 @@ interface FactSet {
 @Component({
   selector: 'app-loading-indicator',
   templateUrl: './loading-indicator.component.html',
-  styleUrls: ['./loading-indicator.component.scss']
+  styleUrls: ['./loading-indicator.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoadingIndicatorComponent implements OnInit, OnDestroy {
   public isLoadingSignal: InputSignal<boolean> = input<boolean>(false, { alias: 'isLoading' });

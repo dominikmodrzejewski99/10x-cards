@@ -1,11 +1,11 @@
-import { Component, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
-
+import { Component, ChangeDetectionStrategy, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
 
 @Component({
   selector: 'app-error-message',
   imports: [],
   templateUrl: './error-message.component.html',
-  styleUrls: ['./error-message.component.scss']
+  styleUrls: ['./error-message.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ErrorMessageComponent {
   public errorMessageSignal: InputSignal<string | null> = input<string | null>(null, { alias: 'errorMessage' });

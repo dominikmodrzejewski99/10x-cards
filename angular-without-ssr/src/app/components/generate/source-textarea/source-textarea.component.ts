@@ -1,12 +1,13 @@
 import { TranslocoDirective } from '@jsverse/transloco';
-import { Component, OnInit, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-source-textarea',
   imports: [FormsModule, TranslocoDirective],
   templateUrl: './source-textarea.component.html',
-  styleUrls: ['./source-textarea.component.scss']
+  styleUrls: ['./source-textarea.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SourceTextareaComponent implements OnInit {
   public minLengthSignal: InputSignal<number> = input<number>(1000, { alias: 'minLength' });

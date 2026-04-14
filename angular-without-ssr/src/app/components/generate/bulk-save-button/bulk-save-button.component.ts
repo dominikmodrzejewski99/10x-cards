@@ -1,10 +1,11 @@
-import { Component, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
 
 @Component({
   selector: 'app-bulk-save-button',
   imports: [],
   templateUrl: './bulk-save-button.component.html',
-  styleUrls: ['./bulk-save-button.component.scss']
+  styleUrls: ['./bulk-save-button.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BulkSaveButtonComponent {
   public labelSignal: InputSignal<string> = input<string>('Zapisz wszystkie propozycje', { alias: 'label' });

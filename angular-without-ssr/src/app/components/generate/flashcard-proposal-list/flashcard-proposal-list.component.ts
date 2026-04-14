@@ -1,5 +1,5 @@
 import { TranslocoDirective } from '@jsverse/transloco';
-import { Component, computed, input, output, InputSignal, OutputEmitterRef, Signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, computed, input, output, InputSignal, OutputEmitterRef, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
 import { FlashcardProposalDTO } from '../../../../types';
@@ -11,7 +11,8 @@ import { FlashcardProposalDTO } from '../../../../types';
     FormsModule
   , TranslocoDirective],
   templateUrl: './flashcard-proposal-list.component.html',
-  styleUrls: ['./flashcard-proposal-list.component.scss']
+  styleUrls: ['./flashcard-proposal-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FlashcardProposalListComponent {
   public proposalsSignal: InputSignal<(FlashcardProposalDTO & { accepted?: boolean })[]> =

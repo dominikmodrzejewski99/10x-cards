@@ -1,5 +1,5 @@
 import { TranslocoDirective } from '@jsverse/transloco';
-import { Component, computed, input, output, signal, InputSignal, OutputEmitterRef, Signal, WritableSignal, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, computed, input, output, signal, InputSignal, OutputEmitterRef, Signal, WritableSignal, OnDestroy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -14,7 +14,8 @@ import { TableLazyLoadEvent, ReorderEvent } from '../../../shared/models';
     NgxSkeletonLoaderModule
     , TranslocoDirective],
   templateUrl: './flashcard-table.component.html',
-  styleUrls: ['./flashcard-table.component.scss']
+  styleUrls: ['./flashcard-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FlashcardTableComponent implements OnDestroy {
   public flashcardsSignal: InputSignal<FlashcardDTO[]> = input<FlashcardDTO[]>([], { alias: 'flashcards' });

@@ -1,10 +1,11 @@
-import { Component, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
 
 @Component({
   selector: 'app-generate-button',
   imports: [],
   templateUrl: './generate-button.component.html',
-  styleUrls: ['./generate-button.component.scss']
+  styleUrls: ['./generate-button.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GenerateButtonComponent {
   public labelSignal: InputSignal<string> = input<string>('Generuj Fiszki', { alias: 'label' });
