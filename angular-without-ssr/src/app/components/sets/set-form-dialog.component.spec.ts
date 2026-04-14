@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
-import { SetFormDialogComponent, SetFormData } from './set-form-dialog.component';
+import { SetFormDialogComponent } from './set-form-dialog.component';
+import { SetFormData } from '../../shared/models';
 import { FlashcardSetDTO } from '../../../types';
 
 describe('SetFormDialogComponent', () => {

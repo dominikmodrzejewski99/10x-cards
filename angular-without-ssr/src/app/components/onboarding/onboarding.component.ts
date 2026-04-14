@@ -1,21 +1,8 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, HostListener, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { OnboardingFacadeService } from '../../services/onboarding-facade.service';
-
-export interface TourStep {
-  id: string;
-  targetSelector: string;
-  mobileTargetSelector: string;
-  titleKey: string;
-  descriptionKey: string;
-  icon: string;
-  iconColor: string;
-  position: 'top' | 'bottom' | 'left' | 'right';
-  mobilePosition: 'top' | 'bottom' | 'left' | 'right';
-  spotlightPadding?: number;
-  route?: string;
-}
+import { OnboardingFacadeService } from '../../services/facades/onboarding-facade.service';
+import { TourStep } from '../../shared/models';
 
 const TOUR_STEPS: TourStep[] = [
   {

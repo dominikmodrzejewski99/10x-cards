@@ -2,7 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
-import { FlashcardFormComponent, FlashcardFormData } from './flashcard-form.component';
+import { FlashcardFormComponent } from './flashcard-form.component';
+import { FlashcardFormData } from '../../../shared/models';
 import { FlashcardDTO, FlashcardLanguage } from '../../../../types';
 
 @Component({

@@ -4,22 +4,13 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { FlashcardDTO, FlashcardLanguage } from '../../../../types';
 import { AudioRecorderComponent } from '../../../shared/components/audio-recorder/audio-recorder.component';
 import { AudioPlayerComponent } from '../../../shared/components/audio-player/audio-player.component';
+import { FlashcardFormData } from '../../../shared/models';
 
 export function noWhitespaceValidator() {
   return (control: { value: string }) => {
     const isWhitespace: boolean = (control.value || '').trim().length === 0;
     return isWhitespace ? { 'whitespace': true } : null;
   };
-}
-
-export interface FlashcardFormData {
-  id?: number;
-  front: string;
-  back: string;
-  front_image_url?: string | null;
-  back_audio_url?: string | null;
-  front_language?: FlashcardLanguage | null;
-  back_language?: FlashcardLanguage | null;
 }
 
 @Component({

@@ -2,12 +2,13 @@ import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/cor
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { SetsFacadeService } from '../../services/sets-facade.service';
-import { ShareService } from '../../services/share.service';
+import { SetsFacadeService } from '../../services/facades/sets-facade.service';
+import { ShareService } from '../../services/api/share.service';
 import { ToastService } from '../../shared/services/toast.service';
 import { ConfirmService } from '../../shared/services/confirm.service';
 import { SetCardComponent } from './set-card.component';
-import { SetFormDialogComponent, SetFormData } from './set-form-dialog.component';
+import { SetFormDialogComponent } from './set-form-dialog.component';
+import { SetFormData } from '../../shared/models';
 import { FlashcardSetDTO } from '../../../types';
 
 @Component({

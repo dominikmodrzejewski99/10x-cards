@@ -4,12 +4,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
 import { TagInputComponent } from '../../shared/components/tag-input/tag-input.component';
 import { FlashcardSetDTO } from '../../../types';
-
-export interface SetFormData {
-  name: string;
-  description: string | null;
-  tags: string[];
-}
+import { SetFormData } from '../../shared/models';
 
 @Component({
   selector: 'app-set-form-dialog',

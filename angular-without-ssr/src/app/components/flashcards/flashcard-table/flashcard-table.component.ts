@@ -5,18 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 import { FlashcardDTO } from '../../../../types';
-
-export interface TableLazyLoadEvent {
-  first: number;
-  rows: number;
-  sortField: string;
-  sortOrder: number;
-}
-
-export interface ReorderEvent {
-  id: number;
-  newIndex: number;
-}
+import { TableLazyLoadEvent, ReorderEvent } from '../../../shared/models';
 
 @Component({
   selector: 'app-flashcard-table',

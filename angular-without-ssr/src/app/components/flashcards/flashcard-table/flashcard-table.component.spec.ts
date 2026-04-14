@@ -2,7 +2,8 @@ import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing'
 import {Component, NO_ERRORS_SCHEMA} from '@angular/core';
 import {TranslocoTestingModule} from '@jsverse/transloco';
 
-import {FlashcardTableComponent, TableLazyLoadEvent} from './flashcard-table.component';
+import {FlashcardTableComponent} from './flashcard-table.component';
+import {TableLazyLoadEvent} from '../../../shared/models';
 import {FlashcardDTO} from '../../../../types';
 
 const MOCK_FLASHCARD: FlashcardDTO = {
