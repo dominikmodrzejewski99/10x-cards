@@ -154,16 +154,25 @@ describe('FriendshipService', () => {
   });
 
   describe('removeFriend', () => {
-    it('powinien usunac friendship po id', async () => {
-      const deleteMock = { eq: jasmine.createSpy('eq').and.returnValue(Promise.resolve({ error: null })) };
-      const fromResult = { delete: jasmine.createSpy('delete').and.returnValue(deleteMock) };
-      fromSpy.and.returnValue(fromResult);
+    it('powinien usunac friendship po id z user_id check', async () => {
+      authSpy.and.returnValue(Promise.resolve({ data: { user: { id: 'user-1' } } }));
+      const orSpy = jasmine.createSpy('or').and.returnValue(Promise.resolve({ error: null }));
+      const eqSpy = jasmine.createSpy('eq').and.returnValue({ or: orSpy });
+      const deleteSpy = jasmine.createSpy('delete').and.returnValue({ eq: eqSpy });
+      fromSpy.and.returnValue({ delete: deleteSpy });
 
       await service.removeFriend('friend-123');
 
       expect(fromSpy).toHaveBeenCalledWith('friendships');
-      expect(fromResult.delete).toHaveBeenCalled();
-      expect(deleteMock.eq).toHaveBeenCalledWith('id', 'friend-123');
+      expect(deleteSpy).toHaveBeenCalled();
+      expect(eqSpy).toHaveBeenCalledWith('id', 'friend-123');
+      expect(orSpy).toHaveBeenCalledWith('requester_id.eq.user-1,addressee_id.eq.user-1');
+    });
+
+    it('powinien rzucic blad gdy niezalogowany', async () => {
+      authSpy.and.returnValue(Promise.resolve({ data: { user: null } }));
+
+      await expectAsync(service.removeFriend('friend-123')).toBeRejectedWithError('Not authenticated');
     });
   });
 

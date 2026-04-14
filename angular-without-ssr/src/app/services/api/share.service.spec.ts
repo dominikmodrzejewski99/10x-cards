@@ -120,7 +120,17 @@ describe('ShareService', () => {
   });
 
   describe('acceptShareLink', () => {
+    function mockSelfCheck(createdBy: string): void {
+      const singleSpy = jasmine.createSpy('single').and.returnValue(
+        Promise.resolve({ data: { created_by: createdBy }, error: null })
+      );
+      const eqSpy = jasmine.createSpy('eq').and.returnValue({ single: singleSpy });
+      const selectSpy = jasmine.createSpy('select').and.returnValue({ eq: eqSpy });
+      mockSupabase.from.and.returnValue({ select: selectSpy });
+    }
+
     it('should call rpc with link_id and return new set id', async () => {
+      mockSelfCheck('other-user');
       const newSetId = 99;
       mockSupabase.rpc.and.returnValue(
         Promise.resolve({ data: newSetId, error: null })
@@ -133,6 +143,7 @@ describe('ShareService', () => {
     });
 
     it('should throw on supabase error', async () => {
+      mockSelfCheck('other-user');
       mockSupabase.rpc.and.returnValue(
         Promise.resolve({ data: null, error: { message: 'Link expired' } })
       );
@@ -140,6 +151,15 @@ describe('ShareService', () => {
       await expectAsync(service.acceptShareLink(MOCK_LINK_ID)).toBeRejectedWith(
         jasmine.objectContaining({ message: 'Link expired' })
       );
+    });
+
+    it('should throw when accepting own share link', async () => {
+      mockSelfCheck(MOCK_USER_ID);
+
+      await expectAsync(service.acceptShareLink(MOCK_LINK_ID)).toBeRejectedWithError(
+        'Cannot accept your own share link'
+      );
+      expect(mockSupabase.rpc).not.toHaveBeenCalled();
     });
   });
 

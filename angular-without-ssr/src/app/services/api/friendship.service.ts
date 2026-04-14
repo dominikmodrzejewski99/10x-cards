@@ -36,10 +36,14 @@ export class FriendshipService {
   }
 
   async removeFriend(friendshipId: string): Promise<void> {
+    const userId = (await this.supabase.auth.getUser()).data.user?.id;
+    if (!userId) throw new Error('Not authenticated');
+
     const { error } = await this.supabase
       .from('friendships')
       .delete()
-      .eq('id', friendshipId);
+      .eq('id', friendshipId)
+      .or(`requester_id.eq.${userId},addressee_id.eq.${userId}`);
     if (error) throw error;
   }
 

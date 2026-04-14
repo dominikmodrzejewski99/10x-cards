@@ -29,6 +29,20 @@ export class ShareService {
   }
 
   async acceptShareLink(linkId: string): Promise<number> {
+    // Check if the link belongs to the current user (prevent self-acceptance)
+    const userId = (await this.supabase.auth.getUser()).data.user?.id;
+    if (userId) {
+      const { data: link } = await this.supabase
+        .from('share_links')
+        .select('created_by')
+        .eq('id', linkId)
+        .single();
+
+      if (link?.created_by === userId) {
+        throw new Error('Cannot accept your own share link');
+      }
+    }
+
     const { data, error } = await this.supabase.rpc('accept_share_link', {
       link_id: linkId,
     });

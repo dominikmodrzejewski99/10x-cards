@@ -96,7 +96,7 @@ export const routes: Routes = [
       import('./components/share/share-accept.component').then(
         (m) => m.ShareAcceptComponent
       ),
-    canActivate: [authGuard],
+    canActivate: [authGuard, registeredGuard],
   },
   {
     path: 'friends',
