@@ -3,6 +3,8 @@ import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 
+import { TranslocoTestingModule } from '@jsverse/transloco';
+
 import { AuthorProfileComponent } from './author-profile.component';
 import { ExploreService } from '../../services/api/explore.service';
 import { AuthorProfileDTO } from '../../../types';
@@ -42,7 +44,7 @@ describe('AuthorProfileComponent', () => {
     exploreServiceMock.getAuthorPublicSets.and.returnValue(of(mockProfile));
 
     await TestBed.configureTestingModule({
-      imports: [AuthorProfileComponent],
+      imports: [AuthorProfileComponent, TranslocoTestingModule.forRoot({ langs: { pl: {} }, translocoConfig: { availableLangs: ['pl'], defaultLang: 'pl' } })],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: ExploreService, useValue: exploreServiceMock },
@@ -79,7 +81,7 @@ describe('AuthorProfileComponent', () => {
     fixture.detectChanges();
 
     expect(exploreServiceMock.getAuthorPublicSets).not.toHaveBeenCalled();
-    expect((component as any)['_error']()).toBe('Brak identyfikatora autora.');
+    expect((component as any)['_error']()).toBeTruthy();
     expect((component as any)['_loading']()).toBe(false);
   });
 

@@ -1,4 +1,5 @@
-import { Injectable, signal, WritableSignal, computed } from '@angular/core';
+import { Injectable, inject, signal, WritableSignal, computed } from '@angular/core';
+import { SentryService } from '../infrastructure/sentry.service';
 
 export interface ConsentPreferences {
   necessary: true;
@@ -10,6 +11,8 @@ const MAX_AGE_DAYS = 365;
 
 @Injectable({ providedIn: 'root' })
 export class CookieConsentService {
+  private readonly sentryService: SentryService = inject(SentryService);
+
   readonly preferences: WritableSignal<ConsentPreferences | null> = signal<ConsentPreferences | null>(this.loadPreferences());
 
   readonly hasDecided = computed(() => this.preferences() !== null);
@@ -37,6 +40,10 @@ export class CookieConsentService {
     const encoded = encodeURIComponent(JSON.stringify(prefs));
     document.cookie = `${COOKIE_NAME}=${encoded}; path=/; max-age=${maxAge}; SameSite=Strict; Secure`;
     this.preferences.set(prefs);
+
+    if (!prefs.analytics) {
+      this.sentryService.disable();
+    }
   }
 
   private loadPreferences(): ConsentPreferences | null {

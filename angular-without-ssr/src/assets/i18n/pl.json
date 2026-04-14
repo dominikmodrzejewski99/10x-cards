@@ -194,7 +194,9 @@
     },
     "errors": {
       "loadFailed": "Nie udało się załadować fiszek. Spróbuj ponownie."
-    }
+    },
+    "confirmSetChange": "Zmiana zestawu zresetuje bieżącą sesję. Kontynuować?",
+    "confirmSetChangeTitle": "Zmiana zestawu"
   },
   "sets": {
     "title": "Moje zestawy",
@@ -243,6 +245,16 @@
     "copyConfirmCancel": "Anuluj",
     "copyConfirmOk": "Kopiuj",
     "clearTags": "Wyczyść"
+  },
+  "authorProfile": {
+    "loading": "Ładowanie profilu autora…",
+    "backToLibrary": "← Wróć do biblioteki",
+    "emptyAuthor": "Ten autor nie opublikował jeszcze żadnego zestawu.",
+    "missingAuthorId": "Brak identyfikatora autora.",
+    "loadError": "Nie udało się załadować profilu.",
+    "setsCount": "zestawów",
+    "copiesCount": "kopii",
+    "cardsCount": "fiszek"
   },
   "reviewReminder": {
     "title": "Czas na powtórkę!",

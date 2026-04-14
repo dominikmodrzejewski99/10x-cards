@@ -15,6 +15,17 @@ export class SentryService {
   }
 
   /**
+   * Disables Sentry for the rest of the session. Called when user
+   * rejects analytics cookies after initially accepting them.
+   */
+  public disable(): void {
+    const client = Sentry.getClient();
+    if (client) {
+      client.getOptions().enabled = false;
+    }
+  }
+
+  /**
    * Adds a breadcrumb to the Sentry trail for debugging context.
    */
   public addBreadcrumb(category: string, message: string, level: Sentry.SeverityLevel): void {

@@ -186,7 +186,12 @@
       "imageAlt": "Image pour : {{text}}",
       "ariaFlipped": "Clique pour voir la question",
       "ariaNotFlipped": "Clique pour voir la réponse"
-    }
+    },
+    "errors": {
+      "loadFailed": "Impossible de charger les cartes. Réessaie."
+    },
+    "confirmSetChange": "Changer de set réinitialisera la session en cours. Continuer ?",
+    "confirmSetChangeTitle": "Changer de set"
   },
   "sets": {
     "title": "Mes sets",
@@ -235,6 +240,16 @@
     "copyConfirmCancel": "Annuler",
     "copyConfirmOk": "Copier",
     "clearTags": "Effacer"
+  },
+  "authorProfile": {
+    "loading": "Chargement du profil de l'auteur…",
+    "backToLibrary": "← Retour à la bibliothèque",
+    "emptyAuthor": "Cet auteur n'a publié aucun set.",
+    "missingAuthorId": "Identifiant de l'auteur manquant.",
+    "loadError": "Impossible de charger le profil.",
+    "setsCount": "sets",
+    "copiesCount": "copies",
+    "cardsCount": "cartes"
   },
   "reviewReminder": {
     "title": "C’est l’heure de réviser !",

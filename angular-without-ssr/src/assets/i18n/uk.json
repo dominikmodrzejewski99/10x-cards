@@ -186,7 +186,12 @@
       "imageAlt": "Зображення до: {{text}}",
       "ariaFlipped": "Натисни, щоб побачити запитання",
       "ariaNotFlipped": "Натисни, щоб побачити відповідь"
-    }
+    },
+    "errors": {
+      "loadFailed": "Не вдалося завантажити картки. Спробуй знову."
+    },
+    "confirmSetChange": "Зміна набору скине поточну сесію. Продовжити?",
+    "confirmSetChangeTitle": "Зміна набору"
   },
   "sets": {
     "title": "Мої набори",
@@ -235,6 +240,16 @@
     "copyConfirmCancel": "Скасувати",
     "copyConfirmOk": "Копіювати",
     "clearTags": "Очистити"
+  },
+  "authorProfile": {
+    "loading": "Завантаження профілю автора…",
+    "backToLibrary": "← Повернутися до бібліотеки",
+    "emptyAuthor": "Цей автор ще не опублікував жодного набору.",
+    "missingAuthorId": "Відсутній ідентифікатор автора.",
+    "loadError": "Не вдалося завантажити профіль.",
+    "setsCount": "наборів",
+    "copiesCount": "копій",
+    "cardsCount": "карток"
   },
   "reviewReminder": {
     "title": "Час на повторення!",

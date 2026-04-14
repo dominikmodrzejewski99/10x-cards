@@ -17,7 +17,8 @@ import { ReviewQuality } from '../../../types';
 import { FlashcardFlipComponent } from './flashcard-flip/flashcard-flip.component';
 import { SyncStatusComponent } from '../../shared/components/sync-status/sync-status.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { ConfirmService } from '../../shared/services/confirm.service';
 
 @Component({
   selector: 'app-study-view',
@@ -33,6 +34,8 @@ import { TranslocoDirective } from '@jsverse/transloco';
 export class StudyViewComponent implements OnInit, OnDestroy {
   public readonly facade: StudyFacadeService = inject(StudyFacadeService);
   private readonly injector: Injector = inject(Injector);
+  private readonly confirmService: ConfirmService = inject(ConfirmService);
+  private readonly t: TranslocoService = inject(TranslocoService);
   private readonly queryParams = toSignal(inject(ActivatedRoute).queryParams, { initialValue: {} as Record<string, string> });
 
   public isFullscreenSignal: WritableSignal<boolean> = signal<boolean>(false);
@@ -55,10 +58,18 @@ export class StudyViewComponent implements OnInit, OnDestroy {
     this.isFullscreenSignal.set(!!document.fullscreenElement);
   }
 
-  public onSetChange(setId: number | null): void {
+  public async onSetChange(setId: number | null): Promise<void> {
     const hasProgress: boolean = this.facade.currentIndexSignal() > 0 && !this.facade.isSessionCompleteSignal();
-    if (hasProgress && !confirm('Zmiana zestawu zresetuje bieżącą sesję. Kontynuować?')) {
-      return;
+    if (hasProgress) {
+      const confirmed: boolean = await this.confirmService.confirm({
+        message: this.t.translate('study.confirmSetChange'),
+        header: this.t.translate('study.confirmSetChangeTitle'),
+        icon: 'pi pi-exclamation-triangle',
+        acceptLabel: this.t.translate('toasts.yes'),
+        rejectLabel: this.t.translate('toasts.no'),
+        acceptClass: 'danger'
+      });
+      if (!confirmed) return;
     }
     this.facade.selectSet(setId);
   }

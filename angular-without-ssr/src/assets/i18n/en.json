@@ -194,7 +194,9 @@
     },
     "errors": {
       "loadFailed": "Failed to load flashcards. Please try again."
-    }
+    },
+    "confirmSetChange": "Changing the set will reset your current session. Continue?",
+    "confirmSetChangeTitle": "Change set"
   },
   "sets": {
     "title": "My sets",
@@ -243,6 +245,16 @@
     "copyConfirmCancel": "Cancel",
     "copyConfirmOk": "Copy",
     "clearTags": "Clear"
+  },
+  "authorProfile": {
+    "loading": "Loading author profile…",
+    "backToLibrary": "← Back to library",
+    "emptyAuthor": "This author has not published any sets yet.",
+    "missingAuthorId": "Missing author identifier.",
+    "loadError": "Failed to load profile.",
+    "setsCount": "sets",
+    "copiesCount": "copies",
+    "cardsCount": "cards"
   },
   "reviewReminder": {
     "title": "Time for review!",

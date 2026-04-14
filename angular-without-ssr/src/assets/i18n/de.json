@@ -186,7 +186,12 @@
       "imageAlt": "Bild für: {{text}}",
       "ariaFlipped": "Klicken um die Frage zu sehen",
       "ariaNotFlipped": "Klicken um die Antwort zu sehen"
-    }
+    },
+    "errors": {
+      "loadFailed": "Karteikarten konnten nicht geladen werden. Bitte erneut versuchen."
+    },
+    "confirmSetChange": "Setwechsel setzt die aktuelle Sitzung zurück. Fortfahren?",
+    "confirmSetChangeTitle": "Set wechseln"
   },
   "sets": {
     "title": "Meine Sets",
@@ -235,6 +240,16 @@
     "copyConfirmCancel": "Abbrechen",
     "copyConfirmOk": "Kopieren",
     "clearTags": "Löschen"
+  },
+  "authorProfile": {
+    "loading": "Autorprofil laden…",
+    "backToLibrary": "← Zurück zur Bibliothek",
+    "emptyAuthor": "Dieser Autor hat noch keine Sets veröffentlicht.",
+    "missingAuthorId": "Fehlende Autoren-ID.",
+    "loadError": "Profil konnte nicht geladen werden.",
+    "setsCount": "Sets",
+    "copiesCount": "Kopien",
+    "cardsCount": "Karten"
   },
   "reviewReminder": {
     "title": "Zeit für Wiederholung!",
