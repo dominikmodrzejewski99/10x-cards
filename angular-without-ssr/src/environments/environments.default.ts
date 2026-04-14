@@ -8,9 +8,6 @@ declare global {
       supabaseUrl: string;
       supabaseKey: string;
       googleAiKey: string;
-      E2E_USERNAME_ID: string;
-      E2E_USERNAME: string;
-      E2E_PASSWORD: string;
       cfAnalyticsToken: string;
       sentryDsn: string;
     };
@@ -19,8 +16,6 @@ declare global {
 
 export const environment = {
   production: false,
-  // Wartości dla środowiska lokalnego - UZUPEŁNIJ SWOIMI DANYMI
-  // Jeśli window.RUNTIME_CONFIG jest dostępne, używamy wartości z niego
   get supabaseUrl() {
     return window.RUNTIME_CONFIG?.supabaseUrl || 'http://127.0.0.1:54321';
   },
@@ -29,15 +24,6 @@ export const environment = {
   },
   get googleAiKey() {
     return window.RUNTIME_CONFIG?.googleAiKey || '';
-  },
-  get E2E_USERNAME_ID() {
-    return window.RUNTIME_CONFIG?.E2E_USERNAME_ID || '';
-  },
-  get E2E_USERNAME() {
-    return window.RUNTIME_CONFIG?.E2E_USERNAME || '';
-  },
-  get E2E_PASSWORD() {
-    return window.RUNTIME_CONFIG?.E2E_PASSWORD || '';
   },
   get cfAnalyticsToken() {
     return window.RUNTIME_CONFIG?.cfAnalyticsToken || '';

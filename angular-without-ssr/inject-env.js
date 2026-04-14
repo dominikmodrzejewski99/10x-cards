@@ -14,9 +14,6 @@ const vars = {
   supabaseUrl: escapeForJs(process.env.supabaseUrl),
   supabaseKey: escapeForJs(process.env.supabaseKey),
   googleAiKey: escapeForJs(process.env.GOOGLE_AI_KEY),
-  E2E_USERNAME: escapeForJs(process.env.E2E_USERNAME),
-  E2E_PASSWORD: escapeForJs(process.env.E2E_PASSWORD),
-  E2E_USERNAME_ID: escapeForJs(process.env.E2E_USERNAME_ID),
   cfAnalyticsToken: escapeForJs(process.env.CF_ANALYTICS_TOKEN),
   sentryDsn: escapeForJs(process.env.SENTRY_DSN),
 };
@@ -30,9 +27,6 @@ export const environment = {
   supabaseUrl: '${vars.supabaseUrl}',
   supabaseKey: '${vars.supabaseKey}',
   googleAiKey: '${vars.googleAiKey}',
-  E2E_USERNAME_ID: '${vars.E2E_USERNAME_ID}',
-  E2E_USERNAME: '${vars.E2E_USERNAME}',
-  E2E_PASSWORD: '${vars.E2E_PASSWORD}',
   cfAnalyticsToken: '${vars.cfAnalyticsToken}',
   sentryDsn: '${vars.sentryDsn}'
 };
