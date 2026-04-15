@@ -6,6 +6,7 @@ import { FlashcardSetApiService } from '../api/flashcard-set-api.service';
 import { Sm2Result, SpacedRepetitionService } from '../domain/spaced-repetition.service';
 import { StreakService } from '../../shared/services/streak.service';
 import { UsageEventsApiService } from '../api/usage-events-api.service';
+import { LoggerService } from '../infrastructure/logger.service';
 import { FlashcardSetDTO, ReviewQuality, SessionResultDTO, StudyCardDTO } from '../../../types';
 import { launchConfetti } from '../../shared/utils/confetti';
 import { ClassifiedError, classifyError } from '../../shared/utils/error-classifier';
@@ -18,6 +19,7 @@ export class StudyFacadeService {
   private readonly streakService: StreakService = inject(StreakService);
   private readonly usageEvents: UsageEventsApiService = inject(UsageEventsApiService);
   private readonly t: TranslocoService = inject(TranslocoService);
+  private readonly logger: LoggerService = inject(LoggerService);
 
   /** Session ID sent with every usage event so fraud-analysis can cluster
    *  bursts from the same session. Reset whenever due cards are (re)loaded. */
@@ -194,7 +196,10 @@ export class StudyFacadeService {
       next: () => {
         // Record the billable usage event (fire-and-forget — failures do not
         // block the study flow). Server resolves author_id from the flashcard.
-        this.usageEvents.recordReview(card.flashcard.id, this.currentSessionId).subscribe();
+        // Errors are logged so partner-program billing drops are visible in Sentry.
+        this.usageEvents.recordReview(card.flashcard.id, this.currentSessionId).subscribe({
+          error: (err: unknown) => this.logger.error('StudyFacadeService.recordReview', err),
+        });
 
         this._sessionResults.update((r: SessionResultDTO) => ({
           known: quality >= 4 ? r.known + 1 : r.known,

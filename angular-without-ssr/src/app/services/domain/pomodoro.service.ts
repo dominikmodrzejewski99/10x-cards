@@ -1,5 +1,6 @@
 import { Injectable, inject, signal, DestroyRef } from '@angular/core';
 import { UserPreferencesService } from './user-preferences.service';
+import { LoggerService } from '../infrastructure/logger.service';
 import { Observable, tap } from 'rxjs';
 import { UserPreferencesDTO } from '../../../types';
 
@@ -19,6 +20,7 @@ const STORAGE_KEY = '10x_pomodoro_state';
 export class PomodoroService {
   private prefsService = inject(UserPreferencesService);
   private destroyRef = inject(DestroyRef);
+  private logger = inject(LoggerService);
   private intervalId: ReturnType<typeof setInterval> | null = null;
 
   // Settings (loaded from Supabase)
@@ -105,7 +107,9 @@ export class PomodoroService {
   /** Call after saving settings in SettingsPage to pick up new durations */
   reloadSettings(): void {
     this.prefsService.clearCache();
-    this.loadSettings().subscribe();
+    this.loadSettings().subscribe({
+      error: (err: unknown) => this.logger.error('PomodoroService.reloadSettings', err),
+    });
   }
 
   restoreState(): void {

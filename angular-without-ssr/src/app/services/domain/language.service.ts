@@ -1,6 +1,7 @@
 import { Injectable, inject, signal, WritableSignal } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 import { UserPreferencesService } from './user-preferences.service';
+import { LoggerService } from '../infrastructure/logger.service';
 import { AppLanguage } from '../../../types';
 
 const STORAGE_KEY = 'memlo-lang';
@@ -10,6 +11,7 @@ const SUPPORTED_LANGS: readonly string[] = ['pl', 'en', 'de', 'es', 'fr', 'uk'];
 export class LanguageService {
   private translocoService: TranslocoService = inject(TranslocoService);
   private prefsService: UserPreferencesService = inject(UserPreferencesService);
+  private logger: LoggerService = inject(LoggerService);
   private initialized: boolean = false;
 
   public readonly language: WritableSignal<AppLanguage> = signal<AppLanguage>(this.resolveDefault());
@@ -29,7 +31,9 @@ export class LanguageService {
   public setLanguage(lang: AppLanguage): void {
     this.initialized = true;
     this.applyLanguage(lang);
-    this.prefsService.updatePreferences({ language: lang }).subscribe();
+    this.prefsService.updatePreferences({ language: lang }).subscribe({
+      error: (err: unknown) => this.logger.error('LanguageService.setLanguage', err),
+    });
   }
 
   /** Reset to browser default on logout. */

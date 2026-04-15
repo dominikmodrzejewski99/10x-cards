@@ -4,6 +4,7 @@ import { Subject, Subscription, debounceTime, distinctUntilChanged } from 'rxjs'
 import { ExploreService } from '../api/explore.service';
 import { UserPreferencesService } from '../domain/user-preferences.service';
 import { ToastService } from '../../shared/services/toast.service';
+import { LoggerService } from '../infrastructure/logger.service';
 import { PublicSetDTO } from '../../../types';
 
 @Injectable({ providedIn: 'root' })
@@ -12,6 +13,7 @@ export class ExploreFacadeService {
   private readonly toastService: ToastService = inject(ToastService);
   private readonly prefsService: UserPreferencesService = inject(UserPreferencesService);
   private readonly t: TranslocoService = inject(TranslocoService);
+  private readonly logger: LoggerService = inject(LoggerService);
 
   private readonly _sets = signal<PublicSetDTO[]>([]);
   private readonly _loading = signal<boolean>(false);
@@ -142,7 +144,9 @@ export class ExploreFacadeService {
 
     if (this._copyDialogRemember()) {
       this.skipCopyConfirm = true;
-      this.prefsService.dismissDialog('copy_set_confirm').subscribe();
+      this.prefsService.dismissDialog('copy_set_confirm').subscribe({
+        error: (err: unknown) => this.logger.error('ExploreFacadeService.dismissCopyDialog', err),
+      });
     }
 
     this.executeCopy(setId);

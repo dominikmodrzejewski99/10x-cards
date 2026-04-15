@@ -1,11 +1,13 @@
 import { Injectable, inject, signal, Signal, WritableSignal } from '@angular/core';
 import { PomodoroService, PomodoroPhase } from '../domain/pomodoro.service';
 import { UserPreferencesService } from '../domain/user-preferences.service';
+import { LoggerService } from '../infrastructure/logger.service';
 
 @Injectable({ providedIn: 'root' })
 export class PomodoroFacadeService {
   private readonly pomodoroService: PomodoroService = inject(PomodoroService);
   private readonly prefsService: UserPreferencesService = inject(UserPreferencesService);
+  private readonly logger: LoggerService = inject(LoggerService);
 
   private readonly _showFocusReminder: WritableSignal<boolean> = signal<boolean>(false);
   private readonly _focusReminderDismissed: WritableSignal<boolean> = signal<boolean>(false);
@@ -52,7 +54,9 @@ export class PomodoroFacadeService {
       this._focusReminderDismissed.set(true);
       this.prefsService.updatePreferences({
         pomodoro_focus_reminder_dismissed: true,
-      }).subscribe();
+      }).subscribe({
+        error: (err: unknown) => this.logger.error('PomodoroFacadeService.startConfirmed', err),
+      });
     }
 
     this.pomodoroService.start();
