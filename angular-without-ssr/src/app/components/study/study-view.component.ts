@@ -19,6 +19,7 @@ import { SyncStatusComponent } from '../../shared/components/sync-status/sync-st
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { ConfirmService } from '../../shared/services/confirm.service';
+import { LoggerService } from '../../services/infrastructure/logger.service';
 
 @Component({
   selector: 'app-study-view',
@@ -36,6 +37,7 @@ export class StudyViewComponent implements OnInit, OnDestroy {
   private readonly injector: Injector = inject(Injector);
   private readonly confirmService: ConfirmService = inject(ConfirmService);
   private readonly t: TranslocoService = inject(TranslocoService);
+  private readonly logger: LoggerService = inject(LoggerService);
   private readonly queryParams = toSignal(inject(ActivatedRoute).queryParams, { initialValue: {} as Record<string, string> });
 
   public isFullscreenSignal: WritableSignal<boolean> = signal<boolean>(false);
@@ -131,12 +133,12 @@ export class StudyViewComponent implements OnInit, OnDestroy {
   public toggleFullscreen(): void {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch((err: unknown) => {
-        console.warn('Fullscreen request failed:', err);
+        this.logger.error('StudyViewComponent.requestFullscreen', err);
       });
       this.isFullscreenSignal.set(true);
     } else {
       document.exitFullscreen().catch((err: unknown) => {
-        console.warn('Exit fullscreen failed:', err);
+        this.logger.error('StudyViewComponent.exitFullscreen', err);
       });
       this.isFullscreenSignal.set(false);
     }
