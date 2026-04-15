@@ -544,7 +544,8 @@
       "shareInfo": "Link válido por 7 días. Cualquiera con el link puede copiar el set.",
       "copyLink": "Copiar link",
       "printTest": "Imprimir test",
-      "printTestTitle": "Imprimir test: {{ setName }}"
+      "printTestTitle": "Imprimir test: {{ setName }}",
+      "closeBtn": "Cerrar"
     },
     "table": {
       "search": "Buscar tarjetas...",
@@ -567,7 +568,9 @@
       "hasAudio": "Tiene nota de voz",
       "dragHandle": "Arrastra para reordenar",
       "editBtn": "Editar tarjeta",
-      "deleteBtn": "Eliminar tarjeta"
+      "deleteBtn": "Eliminar tarjeta",
+      "prevPage": "Página anterior",
+      "nextPage": "Página siguiente"
     },
     "form": {
       "previewTitle": "Vista previa",
@@ -610,7 +613,9 @@
       "audioHint": "MP3, WAV, OGG, WebM — máx. 30s / 2MB",
       "uploadingAudio": "Subiendo audio...",
       "cancel": "Cancelar",
-      "save": "Guardar"
+      "save": "Guardar",
+      "recordAriaLabel": "Grabar nota de voz",
+      "selectFileAriaLabel": "Elegir archivo de audio"
     },
     "import": {
       "title": "Importar tarjetas",
@@ -625,7 +630,17 @@
       "frontPlaceholder": "Frente",
       "backPlaceholder": "Dorso",
       "saving": "Guardando...",
-      "saveCount": "Guardar ({{ count }})"
+      "saveCount": "Guardar ({{ count }})",
+      "inputPlaceholder": "apple;jabłko\ndog;pies\ncat,kot",
+      "editTitle": "Editar",
+      "editAriaLabel": "Editar tarjeta",
+      "saveEditAriaLabel": "Guardar cambios",
+      "cancelEditAriaLabel": "Cancelar edición",
+      "acceptToggleTitle": "Aceptar/Rechazar",
+      "acceptCardAriaLabel": "Aceptar tarjeta",
+      "rejectCardAriaLabel": "Rechazar tarjeta",
+      "removeTitle": "Eliminar",
+      "removeAriaLabel": "Eliminar tarjeta"
     }
   },
   "languageTest": {
@@ -768,7 +783,11 @@
       "growthItem1": "\"Todavía no aprendí esto\"",
       "growthItem2": "Error = lección",
       "growthItem3": "Busco desafíos",
-      "growthItem4": "El esfuerzo fortalece el cerebro"
+      "growthItem4": "El esfuerzo fortalece el cerebro",
+      "spacedRepetitionAriaLabel": "Intervalos crecientes entre repasos",
+      "activeRecallAriaLabel": "Comparación de eficacia de métodos de estudio",
+      "interleavingAriaLabel": "Comparación de bloqueo e intercalación",
+      "mindsetAriaLabel": "Mentalidad fija vs. de crecimiento"
     }
   },
   "printTest": {
@@ -844,6 +863,7 @@
   "notifications": {
     "title": "Notificaciones",
     "markAllRead": "Marcar todas como leídas",
+    "loading": "Cargando",
     "empty": "No hay notificaciones",
     "friend_request": "{{ email }} quiere ser tu amigo",
     "friend_accepted": "{{ email }} aceptó tu invitación",
@@ -973,6 +993,14 @@
       "unexpectedError": "Error de API inesperado ({{status}}): {{details}}",
       "noDetails": "sin detalles"
     }
+  },
+  "audioPlayer": {
+    "play": "Reproducir",
+    "pause": "Pausar",
+    "progress": "Progreso de reproducción"
+  },
+  "common": {
+    "loading": "Cargando"
   },
   "errors": {
     "offline": "Sin conexión a internet. Verifica tu red e inténtalo de nuevo.",

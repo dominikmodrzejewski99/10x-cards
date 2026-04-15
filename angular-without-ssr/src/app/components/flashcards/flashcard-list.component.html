@@ -60,7 +60,7 @@
         <a [routerLink]="['/study']" [queryParams]="{setId: facade.setIdSignal()}" class="flist__saved-cta">
           <i class="pi pi-play-circle"></i> {{ t('startLearning') }}
         </a>
-        <button class="flist__saved-dismiss" (click)="facade.dismissSavedBanner()" aria-label="Zamknij">
+        <button class="flist__saved-dismiss" (click)="facade.dismissSavedBanner()" [attr.aria-label]="t('closeBtn')">
           <i class="pi pi-times"></i>
         </button>
       </div>
@@ -120,7 +120,7 @@
     <div class="flist__undo">
       <span class="flist__undo-text">{{ t('deleted') }}</span>
       <button class="flist__undo-btn" (click)="facade.undoDelete()">{{ t('undo') }}</button>
-      <button class="flist__undo-close" (click)="facade.dismissUndo()" aria-label="Zamknij">
+      <button class="flist__undo-close" (click)="facade.dismissUndo()" [attr.aria-label]="t('closeBtn')">
         <i class="pi pi-times"></i>
       </button>
     </div>

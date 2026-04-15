@@ -2,10 +2,11 @@ import {
   Component, ChangeDetectionStrategy, input, InputSignal,
   WritableSignal, signal, OnDestroy, ElementRef, viewChild, Signal, computed
 } from '@angular/core';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-audio-player',
-  imports: [],
+  imports: [TranslocoDirective],
   templateUrl: './audio-player.component.html',
   styleUrls: ['./audio-player.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

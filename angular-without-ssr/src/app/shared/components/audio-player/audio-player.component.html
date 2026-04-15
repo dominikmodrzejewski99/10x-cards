@@ -1,3 +1,4 @@
+<ng-container *transloco="let t; prefix: 'audioPlayer'">
 <div class="audio-player" [class.audio-player--compact]="compactSignal()">
   <audio
     #audioEl
@@ -12,7 +13,7 @@
   <button
     class="audio-player__btn"
     (click)="togglePlay()"
-    [attr.aria-label]="playingSignal() ? 'Pauza' : 'Odtwórz'"
+    [attr.aria-label]="playingSignal() ? t('pause') : t('play')"
     type="button">
     <i class="pi" [class.pi-play]="!playingSignal()" [class.pi-pause]="playingSignal()" aria-hidden="true"></i>
   </button>
@@ -21,7 +22,7 @@
     class="audio-player__progress"
     (click)="onProgressClick($event)"
     role="progressbar"
-    aria-label="Postęp odtwarzania"
+    [attr.aria-label]="t('progress')"
     [attr.aria-valuenow]="progressSignal()"
     aria-valuemin="0"
     aria-valuemax="100">
@@ -36,3 +37,4 @@
     }
   </span>
 </div>
+</ng-container>

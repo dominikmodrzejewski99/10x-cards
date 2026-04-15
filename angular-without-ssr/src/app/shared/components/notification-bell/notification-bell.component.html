@@ -20,7 +20,7 @@
 
       <div class="notif-bell__list">
         @if (facade.loadingSignal()) {
-          <div class="notif-bell__loading" role="status" aria-label="Ładowanie">
+          <div class="notif-bell__loading" role="status" [attr.aria-label]="t('loading')">
             <i class="pi pi-spin pi-spinner" aria-hidden="true"></i>
           </div>
         } @else if (facade.notificationsSignal().length === 0) {

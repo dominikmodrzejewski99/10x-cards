@@ -544,7 +544,8 @@
       "shareInfo": "Link 7 Tage gültig. Jeder mit dem Link kann das Set kopieren.",
       "copyLink": "Link kopieren",
       "printTest": "Test drucken",
-      "printTestTitle": "Test drucken: {{ setName }}"
+      "printTestTitle": "Test drucken: {{ setName }}",
+      "closeBtn": "Schließen"
     },
     "table": {
       "search": "Karteikarten durchsuchen...",
@@ -567,7 +568,9 @@
       "hasAudio": "Hat Sprachnotiz",
       "dragHandle": "Ziehen zum Umsortieren",
       "editBtn": "Karte bearbeiten",
-      "deleteBtn": "Karte löschen"
+      "deleteBtn": "Karte löschen",
+      "prevPage": "Vorherige Seite",
+      "nextPage": "Nächste Seite"
     },
     "form": {
       "previewTitle": "Kartenvorschau",
@@ -610,7 +613,9 @@
       "audioHint": "MP3, WAV, OGG, WebM — max. 30s / 2MB",
       "uploadingAudio": "Audio wird hochgeladen...",
       "cancel": "Abbrechen",
-      "save": "Speichern"
+      "save": "Speichern",
+      "recordAriaLabel": "Sprachnotiz aufnehmen",
+      "selectFileAriaLabel": "Audiodatei auswählen"
     },
     "import": {
       "title": "Karteikarten importieren",
@@ -625,7 +630,17 @@
       "frontPlaceholder": "Vorne",
       "backPlaceholder": "Hinten",
       "saving": "Speichern...",
-      "saveCount": "Speichern ({{ count }})"
+      "saveCount": "Speichern ({{ count }})",
+      "inputPlaceholder": "apple;jabłko\ndog;pies\ncat,kot",
+      "editTitle": "Bearbeiten",
+      "editAriaLabel": "Karteikarte bearbeiten",
+      "saveEditAriaLabel": "Änderungen speichern",
+      "cancelEditAriaLabel": "Bearbeitung abbrechen",
+      "acceptToggleTitle": "Akzeptieren/Ablehnen",
+      "acceptCardAriaLabel": "Karteikarte akzeptieren",
+      "rejectCardAriaLabel": "Karteikarte ablehnen",
+      "removeTitle": "Entfernen",
+      "removeAriaLabel": "Karteikarte entfernen"
     }
   },
   "languageTest": {
@@ -768,7 +783,11 @@
       "growthItem1": "\"Das hab ich noch nicht gelernt\"",
       "growthItem2": "Fehler = Lektion",
       "growthItem3": "Ich suche Herausforderungen",
-      "growthItem4": "Anstrengung stärkt das Gehirn"
+      "growthItem4": "Anstrengung stärkt das Gehirn",
+      "spacedRepetitionAriaLabel": "Wachsende Abstände zwischen Wiederholungen",
+      "activeRecallAriaLabel": "Wirksamkeitsvergleich der Lernmethoden",
+      "interleavingAriaLabel": "Vergleich von Blocking und Interleaving",
+      "mindsetAriaLabel": "Festes vs. wachstumsorientiertes Mindset"
     }
   },
   "printTest": {
@@ -844,6 +863,7 @@
   "notifications": {
     "title": "Benachrichtigungen",
     "markAllRead": "Alle als gelesen markieren",
+    "loading": "Wird geladen",
     "empty": "Keine Benachrichtigungen",
     "friend_request": "{{ email }} möchte dein Freund sein",
     "friend_accepted": "{{ email }} hat deine Einladung angenommen",
@@ -973,6 +993,14 @@
       "unexpectedError": "Unerwarteter API-Fehler ({{status}}): {{details}}",
       "noDetails": "keine Details"
     }
+  },
+  "audioPlayer": {
+    "play": "Abspielen",
+    "pause": "Pause",
+    "progress": "Wiedergabe-Fortschritt"
+  },
+  "common": {
+    "loading": "Wird geladen"
   },
   "errors": {
     "offline": "Keine Internetverbindung. Überprüfe dein Netzwerk und versuche es erneut.",

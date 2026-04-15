@@ -234,12 +234,12 @@
           <button
             type="button"
             class="audio-upload__btn audio-upload__btn--record"
-            aria-label="Nagraj notatkę głosową"
+            [attr.aria-label]="t('recordAriaLabel')"
             (click)="toggleRecorder()">
             <i class="pi pi-microphone"></i> {{ t('record') }}
           </button>
           <span class="audio-upload__divider">{{ t('orDivider') }}</span>
-          <label class="audio-upload__btn audio-upload__btn--file" aria-label="Wybierz plik audio">
+          <label class="audio-upload__btn audio-upload__btn--file" [attr.aria-label]="t('selectFileAriaLabel')">
             <i class="pi pi-upload"></i> {{ t('selectFile') }}
             <input
               type="file"

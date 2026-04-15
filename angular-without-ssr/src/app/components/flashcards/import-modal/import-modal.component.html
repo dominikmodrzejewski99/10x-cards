@@ -17,7 +17,7 @@
         [ngModel]="rawText()"
         (ngModelChange)="rawText.set($event)"
         (keydown.tab)="onTabKey($event)"
-        placeholder="apple;jabłko&#10;dog;pies&#10;cat,kot"
+        [placeholder]="t('inputPlaceholder')"
         rows="10"
         maxlength="50000">
       </textarea>
@@ -76,12 +76,12 @@
                   [placeholder]="t('backPlaceholder')" />
                 <div class="import__edit-actions">
                   <button class="import__btn import__btn--small import__btn--primary"
-                    aria-label="Zapisz zmiany"
+                    [attr.aria-label]="t('saveEditAriaLabel')"
                     (click)="saveEdit(proposal._id, frontInput.value, backInput.value)">
                     <i class="pi pi-check"></i>
                   </button>
                   <button class="import__btn import__btn--small import__btn--ghost"
-                    aria-label="Anuluj edycję"
+                    [attr.aria-label]="t('cancelEditAriaLabel')"
                     (click)="cancelEdit()">
                     <i class="pi pi-times"></i>
                   </button>
@@ -94,13 +94,13 @@
                 <div class="import__card-back">{{ proposal.back }}</div>
               </div>
               <div class="import__card-actions">
-                <button class="import__icon-btn" title="Edytuj" aria-label="Edytuj fiszkę" (click)="startEdit(proposal._id)">
+                <button class="import__icon-btn" [title]="t('editTitle')" [attr.aria-label]="t('editAriaLabel')" (click)="startEdit(proposal._id)">
                   <i class="pi pi-pencil"></i>
                 </button>
-                <button class="import__icon-btn" title="Akceptuj/Odrzuć" [attr.aria-label]="proposal.accepted ? 'Odrzuć fiszkę' : 'Akceptuj fiszkę'" (click)="toggleAccept(proposal._id)">
+                <button class="import__icon-btn" [title]="t('acceptToggleTitle')" [attr.aria-label]="proposal.accepted ? t('rejectCardAriaLabel') : t('acceptCardAriaLabel')" (click)="toggleAccept(proposal._id)">
                   <i [class]="proposal.accepted ? 'pi pi-check-circle' : 'pi pi-circle'"></i>
                 </button>
-                <button class="import__icon-btn import__icon-btn--danger" title="Usuń" aria-label="Usuń fiszkę" (click)="removeProposal(proposal._id)">
+                <button class="import__icon-btn import__icon-btn--danger" [title]="t('removeTitle')" [attr.aria-label]="t('removeAriaLabel')" (click)="removeProposal(proposal._id)">
                   <i class="pi pi-trash"></i>
                 </button>
               </div>

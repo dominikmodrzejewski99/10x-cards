@@ -83,7 +83,7 @@
             class="ftable__page-btn"
             [disabled]="firstSignal() === 0 || loadingSignal()"
             (click)="goToPage(firstSignal() - rowsSignal())"
-            aria-label="Poprzednia strona">
+            [attr.aria-label]="t('prevPage')">
             <i class="pi pi-chevron-left"></i>
           </button>
           <span class="ftable__page-info">
@@ -93,7 +93,7 @@
             class="ftable__page-btn"
             [disabled]="firstSignal() + rowsSignal() >= totalRecordsSignal() || loadingSignal()"
             (click)="goToPage(firstSignal() + rowsSignal())"
-            aria-label="Następna strona">
+            [attr.aria-label]="t('nextPage')">
             <i class="pi pi-chevron-right"></i>
           </button>
         </div>

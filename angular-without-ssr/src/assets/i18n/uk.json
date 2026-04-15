@@ -544,7 +544,8 @@
       "shareInfo": "Посилання дійсне 7 днів. Будь-хто з посиланням може скопіювати набір.",
       "copyLink": "Копіювати посилання",
       "printTest": "Друкувати тест",
-      "printTestTitle": "Друкувати тест: {{ setName }}"
+      "printTestTitle": "Друкувати тест: {{ setName }}",
+      "closeBtn": "Закрити"
     },
     "table": {
       "search": "Шукати серед карток...",
@@ -567,7 +568,9 @@
       "hasAudio": "Є голосова нотатка",
       "dragHandle": "Перетягни для зміни порядку",
       "editBtn": "Редагувати картку",
-      "deleteBtn": "Видалити картку"
+      "deleteBtn": "Видалити картку",
+      "prevPage": "Попередня сторінка",
+      "nextPage": "Наступна сторінка"
     },
     "form": {
       "previewTitle": "Попередній перегляд картки",
@@ -610,7 +613,9 @@
       "audioHint": "MP3, WAV, OGG, WebM — макс. 30с / 2 МБ",
       "uploadingAudio": "Завантаження аудіо...",
       "cancel": "Скасувати",
-      "save": "Зберегти"
+      "save": "Зберегти",
+      "recordAriaLabel": "Записати голосову нотатку",
+      "selectFileAriaLabel": "Вибрати аудіофайл"
     },
     "import": {
       "title": "Імпорт карток",
@@ -625,7 +630,17 @@
       "frontPlaceholder": "Перед",
       "backPlaceholder": "Зад",
       "saving": "Збереження...",
-      "saveCount": "Зберегти ({{ count }})"
+      "saveCount": "Зберегти ({{ count }})",
+      "inputPlaceholder": "apple;jabłko\ndog;pies\ncat,kot",
+      "editTitle": "Редагувати",
+      "editAriaLabel": "Редагувати картку",
+      "saveEditAriaLabel": "Зберегти зміни",
+      "cancelEditAriaLabel": "Скасувати редагування",
+      "acceptToggleTitle": "Прийняти/Відхилити",
+      "acceptCardAriaLabel": "Прийняти картку",
+      "rejectCardAriaLabel": "Відхилити картку",
+      "removeTitle": "Видалити",
+      "removeAriaLabel": "Видалити картку"
     }
   },
   "languageTest": {
@@ -768,7 +783,11 @@
       "growthItem1": "\"Я ще цього не вивчив\"",
       "growthItem2": "Помилка = урок",
       "growthItem3": "Я шукаю виклики",
-      "growthItem4": "Зусилля зміцнюють мозок"
+      "growthItem4": "Зусилля зміцнюють мозок",
+      "spacedRepetitionAriaLabel": "Зростаючі інтервали між повтореннями",
+      "activeRecallAriaLabel": "Порівняння ефективності методів навчання",
+      "interleavingAriaLabel": "Порівняння блокування та чергування",
+      "mindsetAriaLabel": "Фіксоване vs. зростаюче мислення"
     }
   },
   "printTest": {
@@ -844,6 +863,7 @@
   "notifications": {
     "title": "Сповіщення",
     "markAllRead": "Позначити всі як прочитані",
+    "loading": "Завантаження",
     "empty": "Немає сповіщень",
     "friend_request": "{{ email }} хоче стати вашим другом",
     "friend_accepted": "{{ email }} прийняв ваше запрошення",
@@ -973,6 +993,14 @@
       "unexpectedError": "Неочікувана помилка API ({{status}}): {{details}}",
       "noDetails": "немає деталей"
     }
+  },
+  "audioPlayer": {
+    "play": "Відтворити",
+    "pause": "Пауза",
+    "progress": "Прогрес відтворення"
+  },
+  "common": {
+    "loading": "Завантаження"
   },
   "errors": {
     "offline": "Немає з'єднання з інтернетом. Перевір мережу і спробуй знову.",

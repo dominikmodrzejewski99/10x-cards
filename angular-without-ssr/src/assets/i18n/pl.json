@@ -558,7 +558,8 @@
       "shareInfo": "Link ważny przez 7 dni. Każdy z linkiem może skopiować zestaw na swoje konto.",
       "copyLink": "Kopiuj link",
       "printTest": "Drukuj test",
-      "printTestTitle": "Drukuj test"
+      "printTestTitle": "Drukuj test",
+      "closeBtn": "Zamknij"
     },
     "table": {
       "search": "Szukaj wśród fiszek...",
@@ -581,7 +582,9 @@
       "hasAudio": "Ma notatkę głosową",
       "dragHandle": "Przeciągnij aby zmienić kolejność",
       "editBtn": "Edytuj fiszkę",
-      "deleteBtn": "Usuń fiszkę"
+      "deleteBtn": "Usuń fiszkę",
+      "prevPage": "Poprzednia strona",
+      "nextPage": "Następna strona"
     },
     "form": {
       "previewTitle": "Podgląd fiszki",
@@ -624,7 +627,9 @@
       "audioHint": "MP3, WAV, OGG, WebM — max. 30s / 2MB",
       "uploadingAudio": "Przesyłanie audio...",
       "cancel": "Anuluj",
-      "save": "Zapisz"
+      "save": "Zapisz",
+      "recordAriaLabel": "Nagraj notatkę głosową",
+      "selectFileAriaLabel": "Wybierz plik audio"
     },
     "import": {
       "title": "Importuj fiszki",
@@ -639,7 +644,17 @@
       "frontPlaceholder": "Przód",
       "backPlaceholder": "Tył",
       "saving": "Zapisywanie...",
-      "saveCount": "Zapisz ({{ count }})"
+      "saveCount": "Zapisz ({{ count }})",
+      "inputPlaceholder": "apple;jabłko\ndog;pies\ncat,kot",
+      "editTitle": "Edytuj",
+      "editAriaLabel": "Edytuj fiszkę",
+      "saveEditAriaLabel": "Zapisz zmiany",
+      "cancelEditAriaLabel": "Anuluj edycję",
+      "acceptToggleTitle": "Akceptuj/Odrzuć",
+      "acceptCardAriaLabel": "Akceptuj fiszkę",
+      "rejectCardAriaLabel": "Odrzuć fiszkę",
+      "removeTitle": "Usuń",
+      "removeAriaLabel": "Usuń fiszkę"
     }
   },
   "languageTest": {
@@ -787,7 +802,11 @@
       "growthItem1": "\"Jeszcze się tego nie nauczyłem\"",
       "growthItem2": "Błąd = lekcja",
       "growthItem3": "Szukam wyzwań",
-      "growthItem4": "Wysiłek wzmacnia mózg"
+      "growthItem4": "Wysiłek wzmacnia mózg",
+      "spacedRepetitionAriaLabel": "Rosnące odstępy między powtórkami",
+      "activeRecallAriaLabel": "Porównanie skuteczności metod nauki",
+      "interleavingAriaLabel": "Porównanie blokowania i przeplatania",
+      "mindsetAriaLabel": "Nastawienie stałe vs. na rozwój"
     }
   },
   "printTest": {
@@ -885,6 +904,7 @@
   "notifications": {
     "title": "Powiadomienia",
     "markAllRead": "Oznacz wszystkie jako przeczytane",
+    "loading": "Ładowanie",
     "empty": "Brak powiadomień",
     "friend_request": "{{ email }} chce być Twoim znajomym",
     "friend_accepted": "{{ email }} zaakceptował Twoje zaproszenie",
@@ -1149,6 +1169,14 @@
       "unexpectedError": "Nieoczekiwany błąd API ({{status}}): {{details}}",
       "noDetails": "brak szczegółów"
     }
+  },
+  "audioPlayer": {
+    "play": "Odtwórz",
+    "pause": "Pauza",
+    "progress": "Postęp odtwarzania"
+  },
+  "common": {
+    "loading": "Ładowanie"
   },
   "errors": {
     "offline": "Brak połączenia z internetem. Sprawdź sieć i spróbuj ponownie.",

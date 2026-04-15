@@ -544,7 +544,8 @@
       "shareInfo": "Lien valide 7 jours. Toute personne ayant le lien peut copier le set.",
       "copyLink": "Copier le lien",
       "printTest": "Imprimer le test",
-      "printTestTitle": "Imprimer le test : {{ setName }}"
+      "printTestTitle": "Imprimer le test : {{ setName }}",
+      "closeBtn": "Fermer"
     },
     "table": {
       "search": "Rechercher des cartes...",
@@ -567,7 +568,9 @@
       "hasAudio": "A une note vocale",
       "dragHandle": "Glisse pour réordonner",
       "editBtn": "Modifier la carte",
-      "deleteBtn": "Supprimer la carte"
+      "deleteBtn": "Supprimer la carte",
+      "prevPage": "Page précédente",
+      "nextPage": "Page suivante"
     },
     "form": {
       "previewTitle": "Aperçu de la carte",
@@ -610,7 +613,9 @@
       "audioHint": "MP3, WAV, OGG, WebM — max. 30s / 2 Mo",
       "uploadingAudio": "Upload de l'audio...",
       "cancel": "Annuler",
-      "save": "Enregistrer"
+      "save": "Enregistrer",
+      "recordAriaLabel": "Enregistrer une note vocale",
+      "selectFileAriaLabel": "Choisir un fichier audio"
     },
     "import": {
       "title": "Importer des cartes",
@@ -625,7 +630,17 @@
       "frontPlaceholder": "Recto",
       "backPlaceholder": "Verso",
       "saving": "Enregistrement...",
-      "saveCount": "Enregistrer ({{ count }})"
+      "saveCount": "Enregistrer ({{ count }})",
+      "inputPlaceholder": "apple;jabłko\ndog;pies\ncat,kot",
+      "editTitle": "Modifier",
+      "editAriaLabel": "Modifier la carte",
+      "saveEditAriaLabel": "Enregistrer les modifications",
+      "cancelEditAriaLabel": "Annuler la modification",
+      "acceptToggleTitle": "Accepter/Rejeter",
+      "acceptCardAriaLabel": "Accepter la carte",
+      "rejectCardAriaLabel": "Rejeter la carte",
+      "removeTitle": "Supprimer",
+      "removeAriaLabel": "Supprimer la carte"
     }
   },
   "languageTest": {
@@ -768,7 +783,11 @@
       "growthItem1": "\"Je n'ai pas encore appris ça\"",
       "growthItem2": "Erreur = leçon",
       "growthItem3": "Je cherche les défis",
-      "growthItem4": "L'effort renforce le cerveau"
+      "growthItem4": "L'effort renforce le cerveau",
+      "spacedRepetitionAriaLabel": "Intervalles croissants entre les révisions",
+      "activeRecallAriaLabel": "Comparaison de l'efficacité des méthodes d'apprentissage",
+      "interleavingAriaLabel": "Comparaison du blocage et de l'entrelacement",
+      "mindsetAriaLabel": "Mentalité fixe vs. de croissance"
     }
   },
   "printTest": {
@@ -844,6 +863,7 @@
   "notifications": {
     "title": "Notifications",
     "markAllRead": "Tout marquer comme lu",
+    "loading": "Chargement",
     "empty": "Aucune notification",
     "friend_request": "{{ email }} souhaite être votre ami",
     "friend_accepted": "{{ email }} a accepté votre invitation",
@@ -973,6 +993,14 @@
       "unexpectedError": "Erreur API inattendue ({{status}}) : {{details}}",
       "noDetails": "pas de détails"
     }
+  },
+  "audioPlayer": {
+    "play": "Lire",
+    "pause": "Pause",
+    "progress": "Progression de la lecture"
+  },
+  "common": {
+    "loading": "Chargement"
   },
   "errors": {
     "offline": "Pas de connexion Internet. Vérifie ton réseau et réessaie.",

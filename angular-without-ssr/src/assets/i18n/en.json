@@ -558,7 +558,8 @@
       "shareInfo": "Link valid for 7 days. Anyone with the link can copy the set to their account.",
       "copyLink": "Copy link",
       "printTest": "Print test",
-      "printTestTitle": "Print test: {{ setName }}"
+      "printTestTitle": "Print test: {{ setName }}",
+      "closeBtn": "Close"
     },
     "table": {
       "search": "Search flashcards...",
@@ -581,7 +582,9 @@
       "hasAudio": "Has voice note",
       "dragHandle": "Drag to reorder",
       "editBtn": "Edit flashcard",
-      "deleteBtn": "Delete flashcard"
+      "deleteBtn": "Delete flashcard",
+      "prevPage": "Previous page",
+      "nextPage": "Next page"
     },
     "form": {
       "previewTitle": "Card preview",
@@ -624,7 +627,9 @@
       "audioHint": "MP3, WAV, OGG, WebM — max. 30s / 2MB",
       "uploadingAudio": "Uploading audio...",
       "cancel": "Cancel",
-      "save": "Save"
+      "save": "Save",
+      "recordAriaLabel": "Record voice note",
+      "selectFileAriaLabel": "Choose audio file"
     },
     "import": {
       "title": "Import flashcards",
@@ -639,7 +644,17 @@
       "frontPlaceholder": "Front",
       "backPlaceholder": "Back",
       "saving": "Saving...",
-      "saveCount": "Save ({{ count }})"
+      "saveCount": "Save ({{ count }})",
+      "inputPlaceholder": "apple;jabłko\ndog;pies\ncat,kot",
+      "editTitle": "Edit",
+      "editAriaLabel": "Edit flashcard",
+      "saveEditAriaLabel": "Save changes",
+      "cancelEditAriaLabel": "Cancel edit",
+      "acceptToggleTitle": "Accept/Reject",
+      "acceptCardAriaLabel": "Accept flashcard",
+      "rejectCardAriaLabel": "Reject flashcard",
+      "removeTitle": "Remove",
+      "removeAriaLabel": "Remove flashcard"
     }
   },
   "languageTest": {
@@ -787,7 +802,11 @@
       "growthItem1": "\"I haven't learned this yet\"",
       "growthItem2": "Mistake = lesson",
       "growthItem3": "I seek challenges",
-      "growthItem4": "Effort strengthens the brain"
+      "growthItem4": "Effort strengthens the brain",
+      "spacedRepetitionAriaLabel": "Growing intervals between reviews",
+      "activeRecallAriaLabel": "Effectiveness comparison of study methods",
+      "interleavingAriaLabel": "Comparison of blocking and interleaving",
+      "mindsetAriaLabel": "Fixed vs. growth mindset"
     }
   },
   "printTest": {
@@ -885,6 +904,7 @@
   "notifications": {
     "title": "Notifications",
     "markAllRead": "Mark all as read",
+    "loading": "Loading",
     "empty": "No notifications",
     "friend_request": "{{ email }} wants to be your friend",
     "friend_accepted": "{{ email }} accepted your invitation",
@@ -1149,6 +1169,14 @@
       "unexpectedError": "Unexpected API error ({{status}}): {{details}}",
       "noDetails": "no details"
     }
+  },
+  "audioPlayer": {
+    "play": "Play",
+    "pause": "Pause",
+    "progress": "Playback progress"
+  },
+  "common": {
+    "loading": "Loading"
   },
   "errors": {
     "offline": "No internet connection. Check your network and try again.",

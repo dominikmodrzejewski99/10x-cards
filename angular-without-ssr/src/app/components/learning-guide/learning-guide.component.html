@@ -59,7 +59,7 @@
 
             <!-- ============ CHART: Spaced Repetition Timeline ============ -->
             @if (article.id === 'spaced-repetition') {
-              <div class="chart chart--timeline" aria-label="Rosnące odstępy między powtórkami">
+              <div class="chart chart--timeline" [attr.aria-label]="t('charts.spacedRepetitionAriaLabel')">
                 <div class="chart__label">{{ t('charts.spacedRepetitionLabel') }}</div>
                 <div class="chart__repetition-img">
                   <img
@@ -74,7 +74,7 @@
 
             <!-- ============ CHART: Active Recall Comparison Bars ============ -->
             @if (article.id === 'active-recall') {
-              <div class="chart chart--bars" aria-label="Porównanie skuteczności metod nauki">
+              <div class="chart chart--bars" [attr.aria-label]="t('charts.activeRecallAriaLabel')">
                 <div class="chart__label">{{ t('charts.activeRecallLabel') }}</div>
                 <div class="chart__bars">
                   <div class="chart__bar-row">
@@ -399,7 +399,7 @@
 
             <!-- ============ CHART: Interleaving Comparison ============ -->
             @if (article.id === 'interleaving') {
-              <div class="chart chart--interleaving" aria-label="Porównanie blokowania i przeplatania">
+              <div class="chart chart--interleaving" [attr.aria-label]="t('charts.interleavingAriaLabel')">
                 <div class="chart__label">{{ t('charts.interleavingLabel') }}</div>
                 <div class="chart__interleaving-compare">
                   <div class="chart__interleaving-col">
@@ -443,7 +443,7 @@
 
             <!-- ============ CHART: Growth Mindset ============ -->
             @if (article.id === 'growth-mindset') {
-              <div class="chart chart--mindset" aria-label="Nastawienie stałe vs. na rozwój">
+              <div class="chart chart--mindset" [attr.aria-label]="t('charts.mindsetAriaLabel')">
                 <div class="chart__label">{{ t('charts.mindsetLabel') }}</div>
                 <div class="chart__mindset-compare">
                   <div class="chart__mindset-col chart__mindset-col--fixed">
