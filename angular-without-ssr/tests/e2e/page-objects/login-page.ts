@@ -133,7 +133,7 @@ export class LoginPage extends BasePage {
       success = true;
       console.log('Metoda 1 zakończona sukcesem');
     } catch (error) {
-      console.log('Metoda 1 nie powiodła się:', error.message);
+      console.log('Metoda 1 nie powiodła się:', error instanceof Error ? error.message : String(error));
     }
 
     // Metoda 2: Użycie standardowych selektorów
@@ -151,7 +151,7 @@ export class LoginPage extends BasePage {
         success = true;
         console.log('Metoda 2 zakończona sukcesem');
       } catch (error) {
-        console.log('Metoda 2 nie powiodła się:', error.message);
+        console.log('Metoda 2 nie powiodła się:', error instanceof Error ? error.message : String(error));
       }
     }
 
@@ -165,7 +165,7 @@ export class LoginPage extends BasePage {
         success = true;
         console.log('Metoda 3 zakończona sukcesem');
       } catch (error) {
-        console.log('Metoda 3 nie powiodła się:', error.message);
+        console.log('Metoda 3 nie powiodła się:', error instanceof Error ? error.message : String(error));
       }
     }
 
@@ -173,19 +173,19 @@ export class LoginPage extends BasePage {
     if (!success) {
       try {
         console.log('Metoda 4: Próba użycia JavaScript...');
-        await this.page.evaluate((email, password) => {
-          const emailInput = document.querySelector('input[type="email"]');
-          const passwordInput = document.querySelector('input[type="password"]');
-          const submitButton = document.querySelector('button[type="submit"]');
+        await this.page.evaluate(({ email, password }: { email: string; password: string }) => {
+          const emailInput = document.querySelector<HTMLInputElement>('input[type="email"]');
+          const passwordInput = document.querySelector<HTMLInputElement>('input[type="password"]');
+          const submitButton = document.querySelector<HTMLButtonElement>('button[type="submit"]');
 
           if (emailInput) emailInput.value = email;
           if (passwordInput) passwordInput.value = password;
           if (submitButton) submitButton.click();
-        }, email, password);
+        }, { email, password });
         success = true;
         console.log('Metoda 4 zakończona sukcesem');
       } catch (error) {
-        console.log('Metoda 4 nie powiodła się:', error.message);
+        console.log('Metoda 4 nie powiodła się:', error instanceof Error ? error.message : String(error));
       }
     }
 

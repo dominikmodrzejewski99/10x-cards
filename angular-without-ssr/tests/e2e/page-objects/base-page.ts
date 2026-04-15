@@ -28,7 +28,8 @@ export class BasePage {
         console.log('Wskaźnik ładowania nie był widoczny, pomijamy oczekiwanie');
       }
     } catch (error) {
-      console.log('Błąd podczas oczekiwania na zniknięcie wskaźnika ładowania:', error.message);
+      const message = error instanceof Error ? error.message : String(error);
+      console.log('Błąd podczas oczekiwania na zniknięcie wskaźnika ładowania:', message);
       // Dodajemy zrzut ekranu dla diagnostyki
       await this.page.screenshot({ path: 'loading-indicator-error.png' });
     }
