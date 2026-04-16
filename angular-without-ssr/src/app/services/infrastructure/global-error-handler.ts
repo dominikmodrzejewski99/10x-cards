@@ -2,6 +2,18 @@ import { ErrorHandler, Injectable, NgZone, inject } from '@angular/core';
 import { ToastService } from '../../shared/services/toast.service';
 import { SentryService } from './sentry.service';
 
+/**
+ * NOTE: Polish strings in this class are intentionally NOT translated via TranslocoService.
+ *
+ * ErrorHandler is instantiated very early in Angular's DI lifecycle — before
+ * TranslocoService and its dependencies (HttpClient, TRANSLOCO_LOADER, etc.)
+ * are available. Injecting TranslocoService here causes circular-dependency /
+ * NULL-injector errors at bootstrap.
+ *
+ * Additionally, this handler is currently unused at runtime (app.config.ts
+ * registers Sentry.createErrorHandler instead), so the Polish strings only
+ * appear in unit tests.
+ */
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
   private toastService: ToastService = inject(ToastService);

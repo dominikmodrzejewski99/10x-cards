@@ -1,5 +1,6 @@
 import { computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslocoService } from '@jsverse/transloco';
 import { signalStore, withState, withComputed, withMethods, patchState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, of, TimeoutError } from 'rxjs';
@@ -45,6 +46,7 @@ export const AuthStore = signalStore(
     const streakService: StreakService = inject(StreakService);
     const themeService: ThemeService = inject(ThemeService);
     const languageService: LanguageService = inject(LanguageService);
+    const t: TranslocoService = inject(TranslocoService);
 
     return {
       clearError(): void {
@@ -65,8 +67,8 @@ export const AuthStore = signalStore(
               }),
               catchError((error: unknown) => {
                 const message: string = error instanceof TimeoutError
-                  ? 'Serwer nie odpowiada. Spróbuj ponownie później.'
-                  : handleError(error);
+                  ? t.translate('auth.errors.serverNotResponding')
+                  : handleError(error, t);
                 patchState(store, { loading: false, error: message });
                 return of(null);
               })
@@ -80,7 +82,7 @@ export const AuthStore = signalStore(
           tap(() => patchState(store, { loading: true, error: null })),
           switchMap(({ email, password, passwordConfirmation }) => {
             if (password !== passwordConfirmation) {
-              patchState(store, { loading: false, error: 'Hasła nie są zgodne' });
+              patchState(store, { loading: false, error: t.translate('auth.passwordMismatch') });
               return of(null);
             }
 
@@ -97,7 +99,7 @@ export const AuthStore = signalStore(
                 authRedirectService.redirectToSavedUrlOrDefault('/dashboard');
               }),
               catchError((error: unknown) => {
-                patchState(store, { loading: false, error: handleError(error) });
+                patchState(store, { loading: false, error: handleError(error, t) });
                 return of(null);
               })
             );
@@ -122,7 +124,7 @@ export const AuthStore = signalStore(
                 authRedirectService.redirectToSavedUrlOrDefault('/dashboard');
               }),
               catchError((error: unknown) => {
-                patchState(store, { loading: false, error: handleError(error) });
+                patchState(store, { loading: false, error: handleError(error, t) });
                 return of(null);
               })
             )
@@ -144,7 +146,7 @@ export const AuthStore = signalStore(
                 router.navigate(['/login']);
               }),
               catchError((error: unknown) => {
-                patchState(store, { loading: false, error: handleError(error) });
+                patchState(store, { loading: false, error: handleError(error, t) });
                 return of(null);
               })
             )
@@ -161,7 +163,7 @@ export const AuthStore = signalStore(
                 patchState(store, { loading: false, error: null });
               }),
               catchError((error: unknown) => {
-                patchState(store, { loading: false, error: handleError(error) });
+                patchState(store, { loading: false, error: handleError(error, t) });
                 return of(null);
               })
             )
@@ -179,7 +181,7 @@ export const AuthStore = signalStore(
                 router.navigate(['/dashboard']);
               }),
               catchError((error: unknown) => {
-                patchState(store, { loading: false, error: handleError(error) });
+                patchState(store, { loading: false, error: handleError(error, t) });
                 return of(null);
               })
             )
@@ -199,7 +201,7 @@ export const AuthStore = signalStore(
                 router.navigate(['/']);
               }),
               catchError((error: unknown) => {
-                patchState(store, { loading: false, error: handleError(error) });
+                patchState(store, { loading: false, error: handleError(error, t) });
                 return of(null);
               })
             )
@@ -231,7 +233,7 @@ export const AuthStore = signalStore(
   })
 );
 
-function handleError(error: unknown): string {
+function handleError(error: unknown, t: TranslocoService): string {
   if (error instanceof Error && error.message) {
     return error.message;
   }
@@ -253,5 +255,5 @@ function handleError(error: unknown): string {
     return error;
   }
 
-  return 'Wystąpił nieznany błąd. Spróbuj ponownie później.';
+  return t.translate('auth.errors.unknownError');
 }

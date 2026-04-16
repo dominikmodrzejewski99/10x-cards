@@ -1,11 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
+import { TranslocoService } from '@jsverse/transloco';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { UpdateService } from './update.service';
 
 describe('UpdateService', () => {
   let service: UpdateService;
   let swUpdateMock: jasmine.SpyObj<SwUpdate>;
+  let translocoServiceMock: jasmine.SpyObj<TranslocoService>;
   let versionUpdates$: Subject<VersionReadyEvent>;
 
   beforeEach(() => {
@@ -17,10 +19,21 @@ describe('UpdateService', () => {
     });
     swUpdateMock.checkForUpdate.and.returnValue(Promise.resolve(true));
 
+    translocoServiceMock = jasmine.createSpyObj<TranslocoService>('TranslocoService', [
+      'translate',
+    ]);
+    translocoServiceMock.translate.and.callFake((key: string) => {
+      if (key === 'update.newVersionAvailable') {
+        return 'Dostępna jest nowa wersja aplikacji. Czy chcesz ją załadować?' as any;
+      }
+      return key as any;
+    });
+
     TestBed.configureTestingModule({
       providers: [
         UpdateService,
         { provide: SwUpdate, useValue: swUpdateMock },
+        { provide: TranslocoService, useValue: translocoServiceMock },
       ]
     });
 
@@ -50,6 +63,7 @@ describe('UpdateService', () => {
       providers: [
         UpdateService,
         { provide: SwUpdate, useValue: disabledSwUpdate },
+        { provide: TranslocoService, useValue: translocoServiceMock },
       ]
     });
 

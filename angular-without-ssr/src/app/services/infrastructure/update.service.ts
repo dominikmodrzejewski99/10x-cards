@@ -1,11 +1,13 @@
 import { inject, Injectable, ApplicationRef, OnDestroy } from '@angular/core';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
+import { TranslocoService } from '@jsverse/transloco';
 import { Observable, Subscription, concat, interval, filter, first } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UpdateService implements OnDestroy {
   private readonly swUpdate: SwUpdate = inject(SwUpdate);
   private readonly appRef: ApplicationRef = inject(ApplicationRef);
+  private readonly t: TranslocoService = inject(TranslocoService);
   private readonly subscriptions: Subscription[] = [];
 
   public checkForUpdates(): void {
@@ -35,7 +37,7 @@ export class UpdateService implements OnDestroy {
         .pipe(filter((event: { type: string }): event is VersionReadyEvent => event.type === 'VERSION_READY'))
         .subscribe((): void => {
           const shouldUpdate: boolean = confirm(
-            'Dostępna jest nowa wersja aplikacji. Czy chcesz ją załadować?'
+            this.t.translate('update.newVersionAvailable')
           );
           if (shouldUpdate) {
             document.location.reload();
