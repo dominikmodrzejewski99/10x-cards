@@ -149,7 +149,7 @@ export class GenerateFacadeService {
       error: (error: unknown) => {
         this._proposals.set([]);
         this._generationResult.set(null);
-        this.handleApiError(error, 'generowania');
+        this.handleApiError(error, 'generate');
         this._isGenerating.set(false);
       },
     });
@@ -181,7 +181,7 @@ export class GenerateFacadeService {
         this._navigationTarget.set({ setId, savedCount: savedFlashcards.length });
       },
       error: (error: unknown) => {
-        this.handleApiError(error, 'zapisywania');
+        this.handleApiError(error, 'save');
         this._isSaving.set(false);
       },
     });
@@ -236,27 +236,21 @@ export class GenerateFacadeService {
 
   // --- Private methods ---
 
-  private handleApiError(error: unknown, action: 'generowania' | 'zapisywania'): void {
+  private handleApiError(error: unknown, action: 'generate' | 'save'): void {
     let message: string = this.t.translate('generate.toasts.unexpectedError', { action });
     let summary: string = this.t.translate('toasts.error');
     let redirectToLogin: boolean = false;
 
-    const err = error as { status?: number; error?: { details?: string }; message?: string };
+    const err = error as { status?: number; error?: { details?: string } };
 
     if (err.status === 400) {
       message = this.t.translate('generate.toasts.validationError', { action });
     } else if (err.status === 401) {
-      message = this.t.translate('generate.toasts.authLogin');
-      summary = this.t.translate('generate.toasts.authSummary');
-      redirectToLogin = true;
-    } else if (err.status && err.status >= 500) {
-      message = this.t.translate('generate.toasts.serverError', { action });
-    }
-
-    if (err.message && (err.message.includes('nie jest zalogowany') || err.message.includes('Sesja wygasła'))) {
       summary = this.t.translate('generate.toasts.authSummary');
       message = this.t.translate('generate.toasts.loginRequired', { action });
       redirectToLogin = true;
+    } else if (err.status && err.status >= 500) {
+      message = this.t.translate('generate.toasts.serverError', { action });
     }
 
     this._errorMessage.set(message);

@@ -108,7 +108,7 @@ export class FlashcardsFacadeService {
         this._loading.set(false);
         this._error.set(null);
       },
-      error: (error) => this.handleApiError(error, 'ładowania')
+      error: (error) => this.handleApiError(error, 'load')
     });
   }
 
@@ -187,7 +187,7 @@ export class FlashcardsFacadeService {
             detail: this.t.translate('flashcards.toasts.cardUpdated')
           });
         },
-        error: (error) => this.handleApiError(error, 'aktualizacji')
+        error: (error) => this.handleApiError(error, 'update')
       });
     } else {
       this.flashcardApi.createFlashcard({
@@ -210,7 +210,7 @@ export class FlashcardsFacadeService {
             detail: this.t.translate('flashcards.toasts.cardAdded')
           });
         },
-        error: (error) => this.handleApiError(error, 'dodawania')
+        error: (error) => this.handleApiError(error, 'add')
       });
     }
   }
@@ -229,7 +229,7 @@ export class FlashcardsFacadeService {
         }
         this.showUndoDelete(flashcard);
       },
-      error: (error) => this.handleApiError(error, 'usuwania')
+      error: (error) => this.handleApiError(error, 'delete')
     });
   }
 
@@ -445,7 +445,7 @@ export class FlashcardsFacadeService {
 
   private fetchAllFlashcards(
     callback: (flashcards: FlashcardDTO[]) => void,
-    errorContext: string = 'eksportowania',
+    errorContext: string = 'export',
     successMessage?: string
   ): void {
     this._loading.set(true);
@@ -477,10 +477,10 @@ export class FlashcardsFacadeService {
     let summary: string = this.t.translate('toasts.error');
     let redirectToLogin: boolean = false;
 
-    const err = error as { status?: number; message?: string };
+    const err = error as { status?: number };
 
     if (err.status === 401) {
-      errorMessage = this.t.translate('flashcards.toasts.authLogin');
+      errorMessage = this.t.translate('flashcards.toasts.loginRequired');
       summary = this.t.translate('flashcards.toasts.authSummary');
       redirectToLogin = true;
     } else if (err.status === 403) {
@@ -489,12 +489,6 @@ export class FlashcardsFacadeService {
     } else if (err.status === 404) {
       errorMessage = this.t.translate('flashcards.toasts.notFoundDetail');
       this.loadFlashcards();
-    }
-
-    if (err.message && (err.message.includes('nie jest zalogowany') || err.message.includes('Sesja wygasła'))) {
-      errorMessage = this.t.translate('flashcards.toasts.loginRequired');
-      summary = this.t.translate('flashcards.toasts.authSummary');
-      redirectToLogin = true;
     }
 
     this._loading.set(false);

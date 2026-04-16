@@ -19,9 +19,9 @@ export function classifyError(error: unknown, action: string): ClassifiedError {
     };
   }
 
-  const err: { status?: number; message?: string } = error as { status?: number; message?: string };
+  const err: { status?: number } = error as { status?: number };
 
-  if (err.status === 401 || err.message?.includes('nie jest zalogowany') || err.message?.includes('Sesja wygasła')) {
+  if (err.status === 401) {
     return {
       messageKey: 'errors.sessionExpired',
       isAuthError: true

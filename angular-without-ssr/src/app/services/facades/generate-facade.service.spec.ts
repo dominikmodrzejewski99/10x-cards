@@ -483,7 +483,7 @@ describe('GenerateFacadeService', () => {
 
     it('should set needsAuthRedirect for session-expired message', fakeAsync(() => {
       generationApiMock.generateFlashcards.and.returnValue(
-        throwError(() => ({ status: 403, message: 'Sesja wygasła, zaloguj ponownie' }))
+        throwError(() => ({ status: 401, message: 'Session expired' }))
       );
 
       facade.generate();
