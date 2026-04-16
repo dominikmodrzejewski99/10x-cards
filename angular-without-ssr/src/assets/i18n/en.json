@@ -369,9 +369,10 @@
       "logout": "Log out",
       "deleteAccountDialogTitle": "Delete account",
       "deleteAccountWarning": "This action is <strong>irreversible</strong>. All your flashcards, sets, and study history will be permanently deleted.",
-      "deleteAccountPrompt": "Type <strong>USUŃ</strong> to confirm:",
+      "deleteAccountPrompt": "Type <strong>DELETE</strong> to confirm:",
       "cancel": "Cancel",
-      "feedback": "Report a problem"
+      "feedback": "Report a problem",
+      "deleteConfirmWord": "DELETE"
     },
     "errors": {
       "registrationFailed": "Registration failed. Please try again.",
@@ -389,7 +390,8 @@
       "rateLimited": "For security reasons, you can only make this request once every 60 seconds.",
       "invalidEmailFormat": "Invalid email address format.",
       "networkError": "No connection to the server. Check your internet connection.",
-      "genericError": "An error occurred. Please try again later."
+      "genericError": "An error occurred. Please try again later.",
+      "serverNotResponding": "Server is not responding. Please try again later."
     }
   },
   "nav": {
@@ -533,6 +535,11 @@
       "backPlaceholder": "Enter an answer or definition...",
       "cancel": "Cancel",
       "save": "Save"
+    },
+    "errorMessage": {
+      "title": "An error occurred",
+      "retry": "Try again",
+      "dismiss": "Dismiss"
     }
   },
   "flashcards": {
@@ -807,6 +814,92 @@
       "activeRecallAriaLabel": "Effectiveness comparison of study methods",
       "interleavingAriaLabel": "Comparison of blocking and interleaving",
       "mindsetAriaLabel": "Fixed vs. growth mindset"
+    },
+    "articles": {
+      "spacedRepetition": {
+        "title": "Spaced Repetition",
+        "shortDescription": "A science-backed method of scheduling reviews that lets you remember more while studying less.",
+        "paragraph1": "Spaced repetition is a learning technique where material is reviewed at progressively longer intervals. Instead of cramming everything at once, you spread your study sessions over time.",
+        "paragraph2": "Scientific research confirms this is one of the most effective memorization strategies. The key is reviewing material just before you start forgetting it — the so-called \"optimal review point.\"",
+        "paragraph3": "The SM-2 algorithm, which powers many modern learning apps (including Memlo), automatically calculates the optimal moment for your next review based on how you rate the difficulty of the material.",
+        "paragraph4": "Practical tip: study regularly, even if it's just 10–15 minutes a day. Consistency matters more than the length of any single session.",
+        "keyTakeaway": "Regular, short review sessions are more effective than one-time, long study marathons."
+      },
+      "activeRecall": {
+        "title": "Active Recall",
+        "shortDescription": "Testing yourself instead of passively reading — the key to lasting memorization.",
+        "paragraph1": "Active recall means actively retrieving information from memory instead of passively reviewing notes. When you try to answer a question without looking at the answer, your brain forms stronger neural connections.",
+        "paragraph2": "Research shows that students who test themselves on material remember up to 50% more than those who merely re-read it. This is known as the \"testing effect.\"",
+        "paragraph3": "Flashcards are the perfect tool for active recall — you see the question (front of the card) and actively try to recall the answer before checking it.",
+        "paragraph4": "Tip: don't get discouraged when you can't remember an answer. The effort of trying to recall strengthens memory, even when you fail to retrieve the information.",
+        "keyTakeaway": "The effort you put into recalling information is what builds lasting memory."
+      },
+      "forgettingCurve": {
+        "title": "Ebbinghaus Forgetting Curve",
+        "shortDescription": "Why we forget and how reviews can flatten the forgetting curve.",
+        "paragraph1": "In 1885, Hermann Ebbinghaus discovered that newly learned information is forgotten in a predictable way. Without reviews, we forget about 70% of material within 24 hours and over 90% within a week.",
+        "paragraph2": "The forgetting curve shows an exponential decline in memory retention over time. However, each review \"resets\" the curve and slows the rate of forgetting — after several reviews, information enters long-term memory.",
+        "paragraph3": "This discovery is the foundation of spaced repetition. The first review should happen the next day, the next after a few days, then after a week, a month, and so on.",
+        "paragraph4": "That's why Memlo's algorithm schedules reviews at growing intervals — to catch you just before the moment of forgetting and reinforce the memory trace.",
+        "keyTakeaway": "Without reviews you forget 70% within a day. Regular reviews can retain nearly 100% of knowledge."
+      },
+      "dunningKruger": {
+        "title": "Dunning-Kruger Effect",
+        "shortDescription": "Why beginners overestimate their knowledge and experts underestimate it.",
+        "paragraph1": "The Dunning-Kruger effect is a psychological phenomenon where people with low competence in a given area overestimate their abilities, while highly competent people tend to underestimate theirs.",
+        "paragraph2": "In the context of learning, this means you may feel you \"know everything\" after reading the material once. This false sense of competence is dangerous — it leads to abandoning study too early.",
+        "paragraph3": "Recognizing this effect in yourself is the first step toward more effective learning. When you feel a topic is \"easy,\" test yourself — you may be surprised how little you actually remember.",
+        "paragraph4": "Flashcards and active recall help break this effect because they force you to prove your knowledge instead of relying on a false sense of familiarity.",
+        "keyTakeaway": "If you feel it's \"easy\" — test yourself. True knowledge only reveals itself when you try to recall it."
+      },
+      "feynmanTechnique": {
+        "title": "Feynman Technique",
+        "shortDescription": "Explain it simply — if you can't, you don't truly understand it yet.",
+        "paragraph1": "Richard Feynman, Nobel Prize-winning physicist, was known for explaining complex topics in simple terms. His learning technique is based on four steps.",
+        "paragraph2": "Step 1: Choose a topic and write down everything you know. Step 2: Explain it as if teaching a child — in simple language, no jargon. Step 3: Identify gaps in your explanation and return to source material. Step 4: Simplify and refine your explanation.",
+        "paragraph3": "This method is especially effective because it forces deep understanding rather than surface-level memorization. If you can't explain something in simple words, you don't understand it well enough.",
+        "paragraph4": "You can use flashcards for this — write a question on the front and your own simple explanation on the back, as plain as possible.",
+        "keyTakeaway": "True understanding is the ability to explain a topic in simple words."
+      },
+      "pomodoro": {
+        "title": "Pomodoro Technique",
+        "shortDescription": "Manage your study time in 25-minute blocks with breaks for recovery.",
+        "paragraph1": "The Pomodoro Technique, developed by Francesco Cirillo in the 1980s, divides work into 25-minute blocks (called \"pomodoros\") separated by 5-minute breaks. After four blocks, you take a longer break (15–30 minutes).",
+        "paragraph2": "Why does it work? Our brain is not designed for hours of uninterrupted focus. Short breaks prevent cognitive fatigue and maintain a high level of attention over a longer period.",
+        "paragraph3": "Research shows that regular breaks not only improve focus but also support memory consolidation — the process by which the brain solidifies newly learned information.",
+        "paragraph4": "Combine Pomodoro with flashcard study: one 25-minute block is ideal for a review session. Long enough to make progress, but not so long that you get tired.",
+        "keyTakeaway": "25 minutes of focused study + 5 minutes of break = more effective study time than hours-long marathons."
+      },
+      "interleaving": {
+        "title": "Interleaving Topics",
+        "shortDescription": "Mixing different subjects during a single study session instead of focusing on just one.",
+        "paragraph1": "Interleaving is a strategy of alternating between different skills or topics within a single study session, instead of focusing on one subject at a time (called \"blocking\").",
+        "paragraph2": "Although interleaving may feel harder and less comfortable, research clearly shows it leads to better long-term retention and the ability to transfer knowledge to new situations.",
+        "paragraph3": "This happens because interleaving forces the brain to constantly \"switch\" between contexts, strengthening the ability to distinguish similar concepts and choose the right strategy.",
+        "paragraph4": "In practice: instead of reviewing flashcards from one deck for an hour, mix several decks from different topics. Your scores may be worse at first, but long-term retention will be significantly better.",
+        "keyTakeaway": "Mixing topics during study is harder, but leads to deeper and more lasting understanding."
+      },
+      "growthMindset": {
+        "title": "Growth Mindset",
+        "shortDescription": "Your brain is plastic — intelligence is not fixed, it can be developed.",
+        "paragraph1": "Psychologist Carol Dweck identified two types of mindset: fixed (\"I'm either talented or not\") and growth (\"I can develop through effort\"). People with a growth mindset achieve significantly better learning outcomes.",
+        "paragraph2": "Brain neuroplasticity confirms this scientifically — our brain physically changes and creates new neural connections every time we learn something. You literally become \"smarter\" with every study session.",
+        "paragraph3": "The key is your approach to mistakes. When you don't remember an answer on a flashcard, don't treat it as failure — it's a signal that your brain needs another review, and each such review strengthens the memory trace.",
+        "paragraph4": "Instead of saying \"I can't learn this,\" say \"I haven't learned this yet.\" This small shift in thinking has a huge impact on motivation and persistence.",
+        "keyTakeaway": "Your intelligence is not fixed — every effort you put into learning physically strengthens your brain."
+      }
+    },
+    "dkStages": {
+      "stage1Label": "I don't know what I don't know",
+      "stage1Description": "Beginner — high confidence, low competence. Typical after first contact with a topic.",
+      "stage2Label": "Peak of confidence",
+      "stage2Description": "The Dunning-Kruger effect in full — \"this is easy!\" A false sense of competence.",
+      "stage3Label": "Valley of despair",
+      "stage3Description": "Realizing the scale of one's ignorance. The moment when many give up learning.",
+      "stage4Label": "Slope of enlightenment",
+      "stage4Description": "Gradual growth of competence and confidence — this time based on real knowledge.",
+      "stage5Label": "Stable knowledge",
+      "stage5Description": "Expertise — confidence comes from experience, but is lower than at the \"peak of stupidity.\""
     }
   },
   "printTest": {
@@ -1089,6 +1182,7 @@
     "sendAnother": "Send another"
   },
   "partner": {
+    "loading": "Loading…",
     "errors": {
       "notLoggedIn": "You must be logged in.",
       "saveFailed": "Failed to save profile."
@@ -1181,5 +1275,19 @@
     "forbidden": "You do not have permission for this operation.",
     "serverError": "Server error during {{action}}. Please try again later.",
     "actionFailed": "Failed to {{action}}. Please try again."
+  },
+  "shared": {
+    "spinner": {
+      "loading": "Loading"
+    },
+    "toast": {
+      "close": "Close"
+    },
+    "dialog": {
+      "close": "Close"
+    }
+  },
+  "update": {
+    "newVersionAvailable": "A new version of the application is available. Do you want to load it?"
   }
 }

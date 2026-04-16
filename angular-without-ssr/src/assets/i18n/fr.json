@@ -133,6 +133,11 @@
       "morning": "Bonjour",
       "afternoon": "Salut",
       "evening": "Bonsoir"
+    },
+    "errors": {
+      "loadFailed": "Impossible de charger les données. Essayez de rafraîchir la page.",
+      "offline": "Pas de connexion Internet. Vérifiez votre réseau et rafraîchissez la page.",
+      "sessionExpired": "Session expirée. Veuillez vous reconnecter."
     }
   },
   "study": {
@@ -364,9 +369,10 @@
       "logout": "Se déconnecter",
       "deleteAccountDialogTitle": "Suppression du compte",
       "deleteAccountWarning": "Cette action est <strong>irréversible</strong>. Toutes tes cartes, sets et ton historique d'étude seront définitivement supprimés.",
-      "deleteAccountPrompt": "Tape <strong>USUŃ</strong> pour confirmer :",
+      "deleteAccountPrompt": "Tape <strong>SUPPRIMER</strong> pour confirmer :",
       "cancel": "Annuler",
-      "feedback": "Signaler un problème"
+      "feedback": "Signaler un problème",
+      "deleteConfirmWord": "SUPPRIMER"
     },
     "errors": {
       "registrationFailed": "L'inscription a échoué. Veuillez réessayer.",
@@ -384,7 +390,8 @@
       "rateLimited": "Pour des raisons de sécurité, vous ne pouvez effectuer cette demande qu'une fois toutes les 60 secondes.",
       "invalidEmailFormat": "Format d'adresse email invalide.",
       "networkError": "Pas de connexion au serveur. Vérifiez votre connexion Internet.",
-      "genericError": "Une erreur s'est produite. Veuillez réessayer plus tard."
+      "genericError": "Une erreur s'est produite. Veuillez réessayer plus tard.",
+      "serverNotResponding": "Le serveur ne répond pas. Veuillez réessayer plus tard."
     }
   },
   "nav": {
@@ -475,6 +482,12 @@
       "good": "Bon travail !",
       "needsPractice": "Continue à pratiquer",
       "tryAgain": "Réessaie"
+    },
+    "errors": {
+      "loadFlashcardsFailed": "Impossible de charger les cartes.",
+      "loadSetsFailed": "Impossible de charger les sets.",
+      "minCards": "Le set doit contenir au moins 4 cartes pour lancer un quiz.",
+      "setNotFound": "Set introuvable."
     }
   },
   "generate": {
@@ -520,7 +533,14 @@
       "backPlaceholder": "Entre une réponse ou une définition...",
       "cancel": "Annuler",
       "save": "Enregistrer"
-    }
+    },
+    "errorMessage": {
+      "title": "Une erreur est survenue",
+      "retry": "Réessayer",
+      "dismiss": "Fermer"
+    },
+    "limitReached": "Limite quotidienne de générations atteinte — réessayez demain",
+    "remaining": "{{ count }} / {{ limit }} générations aujourd'hui"
   },
   "flashcards": {
     "list": {
@@ -545,7 +565,8 @@
       "copyLink": "Copier le lien",
       "printTest": "Imprimer le test",
       "printTestTitle": "Imprimer le test : {{ setName }}",
-      "closeBtn": "Fermer"
+      "closeBtn": "Fermer",
+      "shareToFriend": "Partager avec un ami"
     },
     "table": {
       "search": "Rechercher des cartes...",
@@ -686,6 +707,11 @@
       "today": "Aujourd'hui",
       "yesterday": "Hier",
       "daysAgo": "il y a {{ count }} jours"
+    },
+    "errors": {
+      "createFlashcardsFailed": "Impossible de créer les cartes. Veuillez réessayer.",
+      "loadResultsFailed": "Impossible de charger les résultats.",
+      "loadTestFailed": "Impossible de charger le test. Veuillez réessayer."
     }
   },
   "onboarding": {
@@ -788,6 +814,92 @@
       "activeRecallAriaLabel": "Comparaison de l'efficacité des méthodes d'apprentissage",
       "interleavingAriaLabel": "Comparaison du blocage et de l'entrelacement",
       "mindsetAriaLabel": "Mentalité fixe vs. de croissance"
+    },
+    "articles": {
+      "spacedRepetition": {
+        "title": "Répétition espacée",
+        "shortDescription": "Une méthode scientifique de planification des révisions qui permet de mémoriser plus en étudiant moins.",
+        "paragraph1": "La répétition espacée (Spaced Repetition) est une technique d'apprentissage où le matériel est révisé à des intervalles de plus en plus longs. Au lieu de tout mémoriser d'un coup, tu répartis ton apprentissage sur plusieurs sessions étalées dans le temps.",
+        "paragraph2": "Les études scientifiques confirment que cette méthode est l'une des stratégies de mémorisation les plus efficaces. La clé est de réviser le matériel juste avant de commencer à l'oublier — le fameux « point optimal de révision ».",
+        "paragraph3": "L'algorithme SM-2, sur lequel reposent de nombreuses applications d'apprentissage modernes (dont Memlo), calcule automatiquement le moment optimal de la prochaine révision en fonction de ton évaluation de la difficulté du matériel.",
+        "paragraph4": "Conseil pratique : étudie régulièrement, même si ce n'est que 10 à 15 minutes par jour. La régularité compte plus que la durée d'une seule session.",
+        "keyTakeaway": "Des sessions de révision courtes et régulières sont plus efficaces que de longues sessions uniques."
+      },
+      "activeRecall": {
+        "title": "Rappel actif",
+        "shortDescription": "Se tester plutôt que lire passivement — la clé d'une mémorisation durable.",
+        "paragraph1": "Le rappel actif (Active Recall) consiste à récupérer activement des informations en mémoire au lieu de relire passivement ses notes. Quand tu essaies de répondre à une question sans regarder la réponse, ton cerveau forme des connexions neuronales plus fortes.",
+        "paragraph2": "Les recherches montrent que les étudiants qui se testent retiennent jusqu'à 50 % de plus que ceux qui se contentent de relire. Ce phénomène est connu sous le nom d'« effet de test ».",
+        "paragraph3": "Les cartes mémoire sont l'outil parfait pour le rappel actif — tu vois la question (recto de la carte) et essaies activement de rappeler la réponse avant de la vérifier.",
+        "paragraph4": "Conseil : ne te décourage pas quand tu ne te souviens pas d'une réponse. Le simple effort de rappel renforce la mémoire, même quand tu ne parviens pas à retrouver l'information.",
+        "keyTakeaway": "L'effort investi dans le rappel d'informations est ce qui construit une mémoire durable."
+      },
+      "forgettingCurve": {
+        "title": "Courbe de l'oubli d'Ebbinghaus",
+        "shortDescription": "Pourquoi nous oublions et comment les révisions peuvent aplatir la courbe de l'oubli.",
+        "paragraph1": "En 1885, Hermann Ebbinghaus a découvert que les informations nouvellement apprises sont oubliées de manière prévisible. Sans révisions, nous oublions environ 70 % du matériel en 24 heures et plus de 90 % en une semaine.",
+        "paragraph2": "La courbe de l'oubli montre un déclin exponentiel de la rétention au fil du temps. Cependant, chaque révision « réinitialise » la courbe et ralentit le rythme de l'oubli — après plusieurs révisions, l'information entre dans la mémoire à long terme.",
+        "paragraph3": "Cette découverte est le fondement de la répétition espacée. La première révision doit avoir lieu le lendemain, la suivante après quelques jours, puis après une semaine, un mois, etc.",
+        "paragraph4": "C'est pourquoi l'algorithme de Memlo programme les révisions à intervalles croissants — pour t'attraper juste avant le moment de l'oubli et renforcer la trace mnésique.",
+        "keyTakeaway": "Sans révisions, tu oublies 70 % en un jour. Des révisions régulières peuvent conserver presque 100 % des connaissances."
+      },
+      "dunningKruger": {
+        "title": "Effet Dunning-Kruger",
+        "shortDescription": "Pourquoi les débutants surestiment leurs connaissances et les experts les sous-estiment.",
+        "paragraph1": "L'effet Dunning-Kruger est un phénomène psychologique où les personnes peu compétentes dans un domaine surestiment leurs capacités, tandis que les personnes très compétentes tendent à les sous-estimer.",
+        "paragraph2": "Dans le contexte de l'apprentissage, cela signifie qu'au début, tu peux avoir l'impression de « tout savoir » après avoir lu le matériel une fois. Ce faux sentiment de compétence est dangereux — il pousse à abandonner l'étude trop tôt.",
+        "paragraph3": "Reconnaître cet effet en soi est le premier pas vers un apprentissage plus efficace. Quand tu sens qu'un sujet est « facile », teste-toi — tu pourrais être surpris de combien tu te souviens réellement.",
+        "paragraph4": "Les cartes mémoire et le rappel actif aident à surmonter cet effet, car ils t'obligent à prouver tes connaissances au lieu de te fier à un faux sentiment de familiarité.",
+        "keyTakeaway": "Si tu sens que c'est « facile » — teste-toi. Le vrai savoir ne se révèle que lorsqu'on essaie de le rappeler."
+      },
+      "feynmanTechnique": {
+        "title": "Technique Feynman",
+        "shortDescription": "Explique-le simplement — si tu ne peux pas, c'est que tu ne le comprends pas encore.",
+        "paragraph1": "Richard Feynman, lauréat du prix Nobel de physique, était connu pour sa capacité à expliquer des sujets complexes simplement. Sa technique d'apprentissage repose sur quatre étapes.",
+        "paragraph2": "Étape 1 : Choisis un sujet et note tout ce que tu sais. Étape 2 : Explique-le comme à un enfant — en langage simple, sans jargon. Étape 3 : Identifie les lacunes dans ton explication et retourne au matériel source. Étape 4 : Simplifie et affine ton explication.",
+        "paragraph3": "Cette méthode est particulièrement efficace car elle force à une compréhension profonde plutôt qu'une mémorisation de surface. Si tu ne peux pas expliquer quelque chose avec des mots simples, tu ne le comprends pas assez bien.",
+        "paragraph4": "Tu peux utiliser des cartes mémoire pour cela — écris une question au recto et ton explication en tes propres mots au verso, la plus simple possible.",
+        "keyTakeaway": "La vraie compréhension, c'est la capacité d'expliquer un sujet avec des mots simples."
+      },
+      "pomodoro": {
+        "title": "Technique Pomodoro",
+        "shortDescription": "Gère ton temps d'étude en blocs de 25 minutes avec des pauses pour récupérer.",
+        "paragraph1": "La technique Pomodoro, développée par Francesco Cirillo dans les années 80, divise le travail en blocs de 25 minutes (appelés « pomodoros ») séparés par des pauses de 5 minutes. Après quatre blocs, tu prends une pause plus longue (15-30 minutes).",
+        "paragraph2": "Pourquoi ça marche ? Notre cerveau n'est pas conçu pour des heures de concentration ininterrompue. Les courtes pauses préviennent la fatigue cognitive et maintiennent un haut niveau d'attention sur une plus longue durée.",
+        "paragraph3": "Les études montrent que des pauses régulières améliorent non seulement la concentration, mais soutiennent aussi la consolidation de la mémoire — le processus par lequel le cerveau solidifie les informations nouvellement apprises.",
+        "paragraph4": "Combine Pomodoro avec l'étude par cartes : un bloc de 25 minutes est idéal pour une session de révision. Assez long pour progresser, mais pas au point de te fatiguer.",
+        "keyTakeaway": "25 minutes d'étude concentrée + 5 minutes de pause = plus de temps d'étude efficace que des marathons de plusieurs heures."
+      },
+      "interleaving": {
+        "title": "Entrelacement des sujets",
+        "shortDescription": "Mélanger différentes matières durant une session d'étude au lieu de se concentrer sur une seule.",
+        "paragraph1": "L'entrelacement (interleaving) est une stratégie consistant à alterner entre différentes compétences ou sujets au sein d'une même session d'étude, au lieu de se concentrer sur un seul (appelé « blocage »).",
+        "paragraph2": "Bien que l'entrelacement puisse sembler plus difficile et moins confortable, la recherche montre clairement qu'il conduit à une meilleure rétention à long terme et à la capacité de transférer les connaissances à de nouvelles situations.",
+        "paragraph3": "Cela se produit parce que l'entrelacement force le cerveau à « basculer » constamment entre les contextes, renforçant la capacité de distinguer des concepts similaires et de choisir la bonne stratégie.",
+        "paragraph4": "En pratique : au lieu de réviser des cartes d'un seul paquet pendant une heure, mélange plusieurs paquets de sujets différents. Tes résultats peuvent être moins bons au début, mais la rétention à long terme sera bien meilleure.",
+        "keyTakeaway": "Mélanger les sujets pendant l'étude est plus difficile, mais mène à une compréhension plus profonde et durable."
+      },
+      "growthMindset": {
+        "title": "Mentalité de croissance",
+        "shortDescription": "Ton cerveau est plastique — l'intelligence n'est pas fixe, elle peut être développée.",
+        "paragraph1": "La psychologue Carol Dweck a identifié deux types de mentalité : fixe (« je suis doué ou pas ») et de croissance (« je peux me développer par l'effort »). Les personnes avec une mentalité de croissance obtiennent des résultats d'apprentissage nettement meilleurs.",
+        "paragraph2": "La neuroplasticité du cerveau le confirme scientifiquement — notre cerveau change physiquement et crée de nouvelles connexions neuronales à chaque fois que nous apprenons quelque chose. Tu deviens littéralement « plus intelligent » à chaque session d'étude.",
+        "paragraph3": "La clé est ton approche des erreurs. Quand tu ne te souviens pas d'une réponse sur une carte, ne considère pas cela comme un échec — c'est un signal que ton cerveau a besoin d'une révision de plus, et chaque révision renforce la trace mnésique.",
+        "paragraph4": "Au lieu de dire « je ne suis pas capable d'apprendre ça », dis « je n'ai pas encore appris ça ». Ce petit changement de pensée a un impact énorme sur la motivation et la persévérance.",
+        "keyTakeaway": "Ton intelligence n'est pas fixe — chaque effort investi dans l'apprentissage renforce physiquement ton cerveau."
+      }
+    },
+    "dkStages": {
+      "stage1Label": "Je ne sais pas ce que je ne sais pas",
+      "stage1Description": "Débutant — haute confiance, faible compétence. Typique après un premier contact avec un sujet.",
+      "stage2Label": "Pic de confiance",
+      "stage2Description": "L'effet Dunning-Kruger à son comble — « c'est facile ! » Un faux sentiment de compétence.",
+      "stage3Label": "Vallée du désespoir",
+      "stage3Description": "Prise de conscience de l'ampleur de sa propre ignorance. Le moment où beaucoup abandonnent l'apprentissage.",
+      "stage4Label": "Pente de l'illumination",
+      "stage4Description": "Croissance progressive de la compétence et de la confiance — basée cette fois sur un savoir réel.",
+      "stage5Label": "Savoir stable",
+      "stage5Description": "Expertise — la confiance vient de l'expérience, mais reste inférieure à celle du « pic de la stupidité »."
     }
   },
   "printTest": {
@@ -858,6 +970,28 @@
       "totalSessions": "Sessions totales",
       "totalCards": "Cartes révisées",
       "errorLoading": "Impossible de charger les statistiques."
+    },
+    "cancel": "Annuler",
+    "cancelledSuccess": "Invitation annulée",
+    "sentRequests": "Invitations envoyées",
+    "statusPending": "En attente",
+    "statusRejected": "Rejetée",
+    "leaderboardBtn": "Classement",
+    "leaderboard": {
+      "back": "Retour",
+      "cardsThisWeek": "Cartes cette semaine",
+      "noEntries": "Ajoutez des amis pour voir le classement",
+      "streak": "Série",
+      "title": "Classement des amis",
+      "totalCards": "Total de cartes",
+      "you": "(Vous)"
+    },
+    "shareDeck": {
+      "already": "Déjà partagé",
+      "noFriends": "Aucun ami avec qui partager",
+      "send": "Partager",
+      "sent": "Partagé",
+      "title": "Partager le deck avec un ami"
     }
   },
   "notifications": {
@@ -867,7 +1001,10 @@
     "empty": "Aucune notification",
     "friend_request": "{{ email }} souhaite être votre ami",
     "friend_accepted": "{{ email }} a accepté votre invitation",
-    "nudge": "{{ email }} vous rappelle de réviser ! Au travail !"
+    "nudge": "{{ email }} vous rappelle de réviser ! Au travail !",
+    "acceptDeck": "Accepter",
+    "acceptFailed": "Impossible d'accepter le deck partagé.",
+    "deck_shared": "{{ email }} a partagé \"{{ set_name }}\" avec vous"
   },
   "cookieConsent": {
     "title": "Paramètres de confidentialité",
@@ -913,6 +1050,7 @@
     "sendAnother": "Envoyer un autre"
   },
   "partner": {
+    "loading": "Chargement…",
     "errors": {
       "notLoggedIn": "Vous devez être connecté.",
       "saveFailed": "Échec de l'enregistrement du profil."
@@ -1005,5 +1143,151 @@
     "forbidden": "Vous n'avez pas la permission pour cette opération.",
     "serverError": "Erreur serveur lors de {{action}}. Réessaie plus tard.",
     "actionFailed": "Impossible de {{action}}. Réessaie."
+  },
+  "update": {
+    "newVersionAvailable": "Une nouvelle version de l'application est disponible. Voulez-vous la charger ?"
+  },
+  "shared": {
+    "spinner": {
+      "loading": "Chargement"
+    },
+    "toast": {
+      "close": "Fermer"
+    },
+    "dialog": {
+      "close": "Fermer"
+    }
+  },
+  "toasts": {
+    "accepted": "Accepté",
+    "cancel": "Annuler",
+    "cancelled": "Annulé",
+    "copied": "Copié",
+    "deleted": "Supprimé",
+    "error": "Erreur",
+    "genericError": "Une erreur est survenue. Veuillez réessayer plus tard.",
+    "hidden": "Masqué",
+    "no": "Non",
+    "noPermission": "Vous n'avez pas la permission d'effectuer cette action.",
+    "offline": "Pas de connexion Internet. Vérifiez votre réseau et réessayez.",
+    "operationFailed": "Opération échouée. Veuillez réessayer.",
+    "publish": "Publier",
+    "published": "Publié",
+    "sent": "Envoyé",
+    "serverError": "Erreur serveur. Veuillez réessayer plus tard.",
+    "sessionExpired": "Session expirée. Veuillez vous reconnecter.",
+    "shared": "Partagé",
+    "success": "Succès",
+    "warning": "Avertissement",
+    "yes": "Oui"
+  },
+  "friends.toasts": {
+    "loadFailed": "Impossible de charger les données des amis.",
+    "inviteSent": "Invitation envoyée !",
+    "inviteSendFailed": "Impossible d'envoyer l'invitation.",
+    "friendAccepted": "Ajouté aux amis !",
+    "acceptFailed": "Impossible d'accepter.",
+    "rejectFailed": "Impossible de rejeter.",
+    "friendRemoved": "Retiré des amis.",
+    "removeFailed": "Impossible de retirer.",
+    "nudgeSent": "Rappel envoyé !",
+    "nudgeSendFailed": "Impossible d'envoyer le rappel.",
+    "inviteCancelled": "Invitation annulée.",
+    "cancelFailed": "Impossible d'annuler l'invitation.",
+    "statsFailed": "Impossible de charger les statistiques.",
+    "leaderboardFailed": "Impossible de charger le classement.",
+    "loadFriendsFailed": "Impossible de charger les amis.",
+    "setShared": "Deck partagé !",
+    "shareFailed": "Impossible de partager le deck.",
+    "deckAcceptFailed": "Impossible d'accepter le deck partagé."
+  },
+  "flashcards.toasts": {
+    "loadFailed": "Impossible de charger les cartes.",
+    "authError": "Erreur d'autorisation",
+    "cardUpdated": "Carte mise à jour.",
+    "cardAdded": "Nouvelle carte ajoutée.",
+    "cardsDeleted": "{{ count }} cartes supprimées.",
+    "partialDeleteFailed": "Impossible de supprimer {{ count }} cartes.",
+    "deleteFailed": "Impossible de supprimer les cartes. Veuillez réessayer.",
+    "orderChanged": "Ordre des cartes mis à jour.",
+    "orderSaveFailed": "Impossible de sauvegarder l'ordre. Actualisation...",
+    "cardsImported": "{{ count }} cartes importées.",
+    "linkGenerationFailed": "Impossible de générer le lien de partage.",
+    "linkCopied": "Lien copié dans le presse-papiers.",
+    "linkCopyFailed": "Impossible de copier le lien.",
+    "restoreFailed": "Impossible de restaurer la carte.",
+    "setCopied": "Le set a été copié dans votre compte.",
+    "restored": "Carte restaurée.",
+    "restoredSummary": "Restaurée",
+    "cardsExported": "{{ count }} cartes exportées.",
+    "popupBlocked": "Popup bloqué",
+    "popupBlockedDetail": "Autorisez les popups dans votre navigateur pour imprimer le test.",
+    "authLogin": "Erreur d'autorisation. Veuillez vous reconnecter.",
+    "authSummary": "Erreur d'autorisation",
+    "permissionError": "Vous n'avez pas la permission d'effectuer cette action.",
+    "permissionSummary": "Erreur de permissions",
+    "notFoundDetail": "Carte introuvable. Elle a peut-être été supprimée.",
+    "loginRequired": "Vous devez être connecté pour gérer les cartes.",
+    "loadFailedAuth": "Vous devez être connecté pour voir vos cartes.",
+    "operationFailed": "Impossible d'effectuer l'opération {{ action }}. Veuillez réessayer plus tard.",
+    "partialSuccess": "Succès partiel",
+    "partialDeleteDetail": "{{ success }} sur {{ total }} supprimées. Impossible de supprimer {{ failed }}.",
+    "confirmDeleteHeader": "Confirmer la suppression",
+    "confirmDeleteMessage": "Êtes-vous sûr de vouloir supprimer la carte \"{{ front }}\" ?",
+    "confirmBulkDeleteMessage": "Êtes-vous sûr de vouloir supprimer {{ count }} cartes ?"
+  },
+  "sets.toasts": {
+    "loadFailed": "Impossible de charger les sets.",
+    "setUpdated": "Set mis à jour.",
+    "updateFailed": "Impossible de mettre à jour le set.",
+    "setCreated": "Set créé.",
+    "createFailed": "Impossible de créer le set.",
+    "setDeleted": "Set supprimé.",
+    "deleteFailed": "Impossible de supprimer le set.",
+    "shareLinkCopied": "Lien de partage copié dans le presse-papiers (valide 7 jours).",
+    "linkGenerationFailed": "Impossible de générer le lien de partage.",
+    "published": "Le set est maintenant public.",
+    "publishFailed": "Impossible de publier le set.",
+    "unpublished": "Le set n'est plus public.",
+    "unpublishFailed": "Impossible de dépublier le set.",
+    "confirmDeleteHeader": "Confirmer la suppression",
+    "confirmDeleteMessage": "Êtes-vous sûr de vouloir supprimer le set \"{{ name }}\" ? Toutes les cartes de ce set seront également supprimées.",
+    "confirmPublishHeader": "Publier le set",
+    "confirmPublishMessage": "Êtes-vous sûr de vouloir publier le set \"{{ name }}\" ? Il sera visible par tous les utilisateurs.",
+    "confirmUnpublishHeader": "Masquer le set",
+    "confirmUnpublishMessage": "Êtes-vous sûr de vouloir masquer le set \"{{ name }}\" ? Il ne sera plus visible publiquement.",
+    "hide": "Masquer"
+  },
+  "generate.toasts": {
+    "createSetFailed": "Impossible de créer le set.",
+    "flashcardsSaved": "{{ count }} cartes sauvegardées.",
+    "proposalUpdated": "Proposition de carte mise à jour.",
+    "generationFailed": "Impossible de générer les cartes.",
+    "tooManyRequests": "Trop de requêtes. Veuillez réessayer dans un instant.",
+    "textTooLong": "Le texte est trop long.",
+    "proposalRejected": "Proposition de carte rejetée.",
+    "validationError": "Erreur de validation lors de {{ action }}. Vérifiez vos données.",
+    "authLogin": "Erreur d'autorisation. Veuillez vous reconnecter.",
+    "authSummary": "Erreur d'autorisation",
+    "serverError": "Erreur serveur lors de {{ action }}. Veuillez réessayer plus tard.",
+    "loginRequired": "Vous devez être connecté pour utiliser les fonctionnalités {{ action }}.",
+    "unexpectedError": "Une erreur inattendue est survenue lors de {{ action }}. Veuillez réessayer plus tard.",
+    "info": "Info"
+  },
+  "explore.toasts": {
+    "setCopied": "Le set a été copié dans vos sets.",
+    "cannotCopyOwnSet": "Vous ne pouvez pas copier votre propre set.",
+    "copyFailed": "Impossible de copier le set."
+  },
+  "feedback.toasts": {
+    "bugSubmitted": "Rapport de bug soumis !",
+    "ideaSubmitted": "Idée soumise !",
+    "submitFailed": "Impossible de soumettre. Veuillez réessayer."
+  },
+  "share.toasts": {
+    "invalidLink": "Lien invalide.",
+    "linkExpired": "Le lien a expiré. Demandez au propriétaire un nouveau lien.",
+    "linkInvalidOrDeleted": "Le lien est invalide ou a été supprimé.",
+    "emptySet": "Le set ne contient aucune carte."
   }
 }

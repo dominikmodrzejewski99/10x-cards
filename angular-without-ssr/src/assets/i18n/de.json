@@ -133,6 +133,11 @@
       "morning": "Guten Morgen",
       "afternoon": "Hallo",
       "evening": "Guten Abend"
+    },
+    "errors": {
+      "loadFailed": "Daten konnten nicht geladen werden. Versuchen Sie, die Seite zu aktualisieren.",
+      "offline": "Keine Internetverbindung. Prüfen Sie Ihr Netzwerk und aktualisieren Sie die Seite.",
+      "sessionExpired": "Sitzung abgelaufen. Bitte melden Sie sich erneut an."
     }
   },
   "study": {
@@ -364,9 +369,10 @@
       "logout": "Abmelden",
       "deleteAccountDialogTitle": "Konto löschen",
       "deleteAccountWarning": "Diese Aktion ist <strong>unwiderruflich</strong>. Alle deine Karteikarten, Sets und dein Lernverlauf werden dauerhaft gelöscht.",
-      "deleteAccountPrompt": "Gib <strong>USUŃ</strong> ein, um zu bestätigen:",
+      "deleteAccountPrompt": "Gib <strong>LÖSCHEN</strong> ein, um zu bestätigen:",
       "cancel": "Abbrechen",
-      "feedback": "Problem melden"
+      "feedback": "Problem melden",
+      "deleteConfirmWord": "LÖSCHEN"
     },
     "errors": {
       "registrationFailed": "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.",
@@ -384,7 +390,8 @@
       "rateLimited": "Aus Sicherheitsgründen können Sie diese Anfrage nur einmal alle 60 Sekunden stellen.",
       "invalidEmailFormat": "Ungültiges E-Mail-Adressformat.",
       "networkError": "Keine Verbindung zum Server. Überprüfen Sie Ihre Internetverbindung.",
-      "genericError": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut."
+      "genericError": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
+      "serverNotResponding": "Der Server antwortet nicht. Bitte versuchen Sie es später erneut."
     }
   },
   "nav": {
@@ -475,6 +482,12 @@
       "good": "Gute Arbeit!",
       "needsPractice": "Übe weiter",
       "tryAgain": "Versuche es erneut"
+    },
+    "errors": {
+      "loadFlashcardsFailed": "Fehler beim Laden der Karteikarten.",
+      "loadSetsFailed": "Fehler beim Laden der Sets.",
+      "minCards": "Das Set muss mindestens 4 Karteikarten enthalten, um ein Quiz zu starten.",
+      "setNotFound": "Set nicht gefunden."
     }
   },
   "generate": {
@@ -520,7 +533,14 @@
       "backPlaceholder": "Antwort oder Definition eingeben...",
       "cancel": "Abbrechen",
       "save": "Speichern"
-    }
+    },
+    "errorMessage": {
+      "title": "Ein Fehler ist aufgetreten",
+      "retry": "Erneut versuchen",
+      "dismiss": "Schließen"
+    },
+    "limitReached": "Tägliches Generierungslimit erreicht — versuchen Sie es morgen erneut",
+    "remaining": "{{ count }} / {{ limit }} Generierungen heute"
   },
   "flashcards": {
     "list": {
@@ -545,7 +565,8 @@
       "copyLink": "Link kopieren",
       "printTest": "Test drucken",
       "printTestTitle": "Test drucken: {{ setName }}",
-      "closeBtn": "Schließen"
+      "closeBtn": "Schließen",
+      "shareToFriend": "An Freund teilen"
     },
     "table": {
       "search": "Karteikarten durchsuchen...",
@@ -686,6 +707,11 @@
       "today": "Heute",
       "yesterday": "Gestern",
       "daysAgo": "vor {{ count }} Tagen"
+    },
+    "errors": {
+      "createFlashcardsFailed": "Fehler beim Erstellen der Karteikarten. Bitte versuchen Sie es erneut.",
+      "loadResultsFailed": "Fehler beim Laden der Ergebnisse.",
+      "loadTestFailed": "Fehler beim Laden des Tests. Bitte versuchen Sie es erneut."
     }
   },
   "onboarding": {
@@ -788,6 +814,92 @@
       "activeRecallAriaLabel": "Wirksamkeitsvergleich der Lernmethoden",
       "interleavingAriaLabel": "Vergleich von Blocking und Interleaving",
       "mindsetAriaLabel": "Festes vs. wachstumsorientiertes Mindset"
+    },
+    "articles": {
+      "spacedRepetition": {
+        "title": "Verteiltes Wiederholen",
+        "shortDescription": "Eine wissenschaftliche Methode zur Planung von Wiederholungen, mit der du mehr behältst und weniger lernen musst.",
+        "paragraph1": "Verteiltes Wiederholen (Spaced Repetition) ist eine Lerntechnik, bei der Stoff in immer größeren Zeitabständen wiederholt wird. Statt alles auf einmal zu pauken, verteilst du dein Lernen auf viele Sitzungen über die Zeit.",
+        "paragraph2": "Wissenschaftliche Studien bestätigen, dass diese Methode eine der effektivsten Strategien zum Merken ist. Der Schlüssel liegt darin, den Stoff kurz bevor du ihn vergisst zu wiederholen — der sogenannte „optimale Wiederholungspunkt“.",
+        "paragraph3": "Der SM-2-Algorithmus, auf dem viele moderne Lern-Apps (einschließlich Memlo) basieren, berechnet automatisch den optimalen Zeitpunkt für die nächste Wiederholung basierend auf deiner Schwierigkeitsbewertung.",
+        "paragraph4": "Praktischer Tipp: Lerne regelmäßig, auch wenn es nur 10–15 Minuten am Tag sind. Beständigkeit ist wichtiger als die Länge einer einzelnen Sitzung.",
+        "keyTakeaway": "Regelmäßige, kurze Wiederholungssitzungen sind effektiver als einmalige, lange Lernsitzungen."
+      },
+      "activeRecall": {
+        "title": "Aktives Abrufen",
+        "shortDescription": "Sich selbst testen statt passiv lesen — der Schlüssel zu dauerhaftem Merken.",
+        "paragraph1": "Aktives Abrufen (Active Recall) bedeutet, Informationen aktiv aus dem Gedächtnis abzurufen, anstatt Notizen passiv durchzulesen. Wenn du versuchst, eine Frage zu beantworten, ohne die Antwort zu sehen, bildet dein Gehirn stärkere neuronale Verbindungen.",
+        "paragraph2": "Studien zeigen, dass Studierende, die sich selbst testen, bis zu 50 % mehr behalten als jene, die den Stoff nur erneut lesen. Dieses Phänomen ist als „Testeffekt“ bekannt.",
+        "paragraph3": "Karteikarten sind das perfekte Werkzeug für aktives Abrufen — du siehst die Frage (Vorderseite) und versuchst aktiv, die Antwort abzurufen, bevor du sie prüfst.",
+        "paragraph4": "Tipp: Lass dich nicht entmutigen, wenn du eine Antwort nicht erinnerst. Allein der Versuch, sich zu erinnern, stärkt das Gedächtnis — auch wenn der Abruf nicht gelingt.",
+        "keyTakeaway": "Die Anstrengung, sich Informationen ins Gedächtnis zu rufen, ist das, was dauerhaftes Erinnern aufbaut."
+      },
+      "forgettingCurve": {
+        "title": "Vergessenskurve nach Ebbinghaus",
+        "shortDescription": "Warum wir vergessen und wie Wiederholungen die Vergessenskurve abflachen können.",
+        "paragraph1": "Im Jahr 1885 entdeckte Hermann Ebbinghaus, dass neu gelernte Informationen auf vorhersagbare Weise vergessen werden. Ohne Wiederholungen vergessen wir etwa 70 % des Stoffs innerhalb von 24 Stunden und über 90 % innerhalb einer Woche.",
+        "paragraph2": "Die Vergessenskurve zeigt einen exponentiellen Rückgang der Gedächtnisleistung. Jede Wiederholung „setzt“ die Kurve jedoch zurück und verlangsamt das Vergessen — nach mehreren Wiederholungen gelangt die Information ins Langzeitgedächtnis.",
+        "paragraph3": "Diese Entdeckung ist die Grundlage des verteilten Wiederholens. Die erste Wiederholung sollte am nächsten Tag erfolgen, die nächste nach einigen Tagen, dann nach einer Woche, einem Monat usw.",
+        "paragraph4": "Deshalb plant der Memlo-Algorithmus Wiederholungen in wachsenden Abständen — um dich kurz vor dem Moment des Vergessens zu erwischen und die Gedächtnisspur zu stärken.",
+        "keyTakeaway": "Ohne Wiederholungen vergisst du 70 % innerhalb eines Tages. Regelmäßige Wiederholungen können nahezu 100 % des Wissens erhalten."
+      },
+      "dunningKruger": {
+        "title": "Dunning-Kruger-Effekt",
+        "shortDescription": "Warum Anfänger ihr Wissen überschätzen und Experten es unterschätzen.",
+        "paragraph1": "Der Dunning-Kruger-Effekt ist ein psychologisches Phänomen, bei dem Personen mit geringer Kompetenz ihre Fähigkeiten überschätzen, während hoch kompetente Personen dazu neigen, ihre zu unterschätzen.",
+        "paragraph2": "Im Lernkontext bedeutet das, dass du anfangs das Gefühl haben kannst, nach einmaligem Lesen „alles zu wissen“. Dieses trügerische Kompetenzgefühl ist gefährlich — es führt dazu, das Lernen zu früh aufzugeben.",
+        "paragraph3": "Diesen Effekt bei dir selbst zu erkennen, ist der erste Schritt zu effektiverem Lernen. Wenn du das Gefühl hast, ein Thema sei „leicht“, teste dich — du könntest überrascht sein, wie wenig du wirklich erinnerst.",
+        "paragraph4": "Karteikarten und aktives Abrufen helfen, diesen Effekt zu überwinden, weil sie dich zwingen, dein Wissen zu beweisen, statt dich auf ein trügerisches Gefühl der Vertrautheit zu verlassen.",
+        "keyTakeaway": "Wenn du das Gefühl hast, es sei „einfach“ — teste dich. Wahres Wissen zeigt sich erst beim Versuch, es abzurufen."
+      },
+      "feynmanTechnique": {
+        "title": "Feynman-Technik",
+        "shortDescription": "Erkläre es einfach — wenn du es nicht kannst, verstehst du es noch nicht.",
+        "paragraph1": "Richard Feynman, Physik-Nobelpreisträger, war bekannt dafür, komplexe Themen einfach zu erklären. Seine Lerntechnik basiert auf vier Schritten.",
+        "paragraph2": "Schritt 1: Wähle ein Thema und schreib alles auf, was du weißt. Schritt 2: Erkläre es, als würdest du es einem Kind erklären — in einfacher Sprache, ohne Fachbegriffe. Schritt 3: Finde Lücken in deiner Erklärung und kehre zum Quellmaterial zurück. Schritt 4: Vereinfache und verfeinere deine Erklärung.",
+        "paragraph3": "Diese Methode ist besonders wirksam, weil sie tiefes Verständnis statt oberflächlichem Auswendiglernen erzwingt. Wenn du etwas nicht in einfachen Worten erklären kannst, verstehst du es nicht gut genug.",
+        "paragraph4": "Du kannst Karteikarten dafür nutzen — schreib eine Frage auf die Vorderseite und deine eigene, möglichst einfache Erklärung auf die Rückseite.",
+        "keyTakeaway": "Wahres Verständnis ist die Fähigkeit, ein Thema in einfachen Worten zu erklären."
+      },
+      "pomodoro": {
+        "title": "Pomodoro-Technik",
+        "shortDescription": "Verwalte deine Lernzeit in 25-Minuten-Blöcken mit Pausen zur Erholung.",
+        "paragraph1": "Die Pomodoro-Technik, entwickelt von Francesco Cirillo in den 1980ern, teilt die Arbeit in 25-Minuten-Blöcke (genannt „Pomodoros“), getrennt durch 5-minütige Pausen. Nach vier Blöcken machst du eine längere Pause (15–30 Minuten).",
+        "paragraph2": "Warum funktioniert das? Unser Gehirn ist nicht für stundenlange, ununterbrochene Konzentration ausgelegt. Kurze Pausen verhindern kognitive Ermüdung und halten ein hohes Aufmerksamkeitsniveau über längere Zeit aufrecht.",
+        "paragraph3": "Studien zeigen, dass regelmäßige Pausen nicht nur die Konzentration verbessern, sondern auch die Gedächtniskonsolidierung unterstützen — den Prozess, bei dem das Gehirn neu Gelerntes festigt.",
+        "paragraph4": "Kombiniere Pomodoro mit Karteikartenlernen: Ein 25-Minuten-Block ist ideal für eine Wiederholungssitzung. Lang genug, um Fortschritte zu machen, aber nicht so lang, dass du ermüdest.",
+        "keyTakeaway": "25 Minuten konzentriertes Lernen + 5 Minuten Pause = mehr effektive Lernzeit als stundenlange Marathons."
+      },
+      "interleaving": {
+        "title": "Themen verschachteln",
+        "shortDescription": "Verschiedene Themen in einer Lernsitzung mischen, statt sich auf eines zu konzentrieren.",
+        "paragraph1": "Verschachtelung (Interleaving) ist eine Strategie, bei der verschiedene Fähigkeiten oder Themen innerhalb einer Lernsitzung abwechselnd geübt werden, statt sich auf ein Thema zu konzentrieren (sog. „Blocken“).",
+        "paragraph2": "Obwohl Verschachteln schwieriger und unbequemer erscheinen mag, zeigt die Forschung eindeutig, dass es zu besserer Langzeitspeicherung und der Fähigkeit führt, Wissen auf neue Situationen zu übertragen.",
+        "paragraph3": "Das liegt daran, dass Verschachteln das Gehirn zwingt, ständig zwischen Kontexten zu „wechseln“, was die Fähigkeit stärkt, ähnliche Konzepte zu unterscheiden und die richtige Strategie zu wählen.",
+        "paragraph4": "In der Praxis: Statt eine Stunde lang Karteikarten aus einem Deck zu wiederholen, mische mehrere Decks aus verschiedenen Themen. Deine Ergebnisse mögen anfangs schlechter sein, aber die Langzeitspeicherung wird deutlich besser.",
+        "keyTakeaway": "Themen beim Lernen zu mischen ist schwieriger, führt aber zu tieferem und dauerhafterem Verständnis."
+      },
+      "growthMindset": {
+        "title": "Wachstumsorientierte Denkweise",
+        "shortDescription": "Dein Gehirn ist plastisch — Intelligenz ist nicht festgelegt, sie kann entwickelt werden.",
+        "paragraph1": "Die Psychologin Carol Dweck unterschied zwei Arten von Denkweisen: die feste („Ich bin entweder begabt oder nicht“) und die wachstumsorientierte („Ich kann mich durch Anstrengung entwickeln“). Menschen mit wachstumsorientierter Denkweise erzielen deutlich bessere Lernergebnisse.",
+        "paragraph2": "Die Neuroplastizität des Gehirns bestätigt dies wissenschaftlich — unser Gehirn verändert sich physisch und bildet jedes Mal neue neuronale Verbindungen, wenn wir etwas lernen. Du wirst buchstäblich mit jeder Lernsitzung „schlauer“.",
+        "paragraph3": "Entscheidend ist der Umgang mit Fehlern. Wenn du eine Karteikarten-Antwort nicht erinnerst, betrachte das nicht als Versagen — es ist ein Signal, dass dein Gehirn eine weitere Wiederholung braucht, und jede solche Wiederholung stärkt die Gedächtnisspur.",
+        "paragraph4": "Statt zu sagen „Ich kann das nicht lernen“, sag „Ich habe das noch nicht gelernt“. Diese kleine Änderung im Denken hat einen enormen Einfluss auf Motivation und Durchhaltevermögen.",
+        "keyTakeaway": "Deine Intelligenz ist nicht festgelegt — jede Anstrengung beim Lernen stärkt physisch dein Gehirn."
+      }
+    },
+    "dkStages": {
+      "stage1Label": "Ich weiß nicht, was ich nicht weiß",
+      "stage1Description": "Anfänger — hohes Selbstvertrauen, geringe Kompetenz. Typisch nach dem ersten Kontakt mit einem Thema.",
+      "stage2Label": "Gipfel der Selbstsicherheit",
+      "stage2Description": "Der Dunning-Kruger-Effekt in voller Ausprägung — „Das ist doch einfach!“ Ein trügerisches Kompetenzgefühl.",
+      "stage3Label": "Tal der Verzweiflung",
+      "stage3Description": "Erkenntnis über das Ausmaß des eigenen Unwissens. Der Moment, in dem viele das Lernen aufgeben.",
+      "stage4Label": "Weg der Erleuchtung",
+      "stage4Description": "Schrittweiser Anstieg von Kompetenz und Selbstvertrauen — diesmal auf echtem Wissen basierend.",
+      "stage5Label": "Stabiles Wissen",
+      "stage5Description": "Expertise — Selbstvertrauen basiert auf Erfahrung, ist aber niedriger als auf dem „Gipfel der Dummheit“."
     }
   },
   "printTest": {
@@ -858,6 +970,28 @@
       "totalSessions": "Sitzungen gesamt",
       "totalCards": "Wiederholte Karten",
       "errorLoading": "Statistiken konnten nicht geladen werden."
+    },
+    "cancel": "Abbrechen",
+    "cancelledSuccess": "Einladung zurückgezogen",
+    "sentRequests": "Gesendete Einladungen",
+    "statusPending": "Ausstehend",
+    "statusRejected": "Abgelehnt",
+    "leaderboardBtn": "Rangliste",
+    "leaderboard": {
+      "back": "Zurück",
+      "cardsThisWeek": "Karten diese Woche",
+      "noEntries": "Fügen Sie Freunde hinzu, um die Rangliste zu sehen",
+      "streak": "Serie",
+      "title": "Freunde-Rangliste",
+      "totalCards": "Karten insgesamt",
+      "you": "(Du)"
+    },
+    "shareDeck": {
+      "already": "Bereits geteilt",
+      "noFriends": "Keine Freunde zum Teilen",
+      "send": "Teilen",
+      "sent": "Geteilt",
+      "title": "Deck an einen Freund teilen"
     }
   },
   "notifications": {
@@ -867,7 +1001,10 @@
     "empty": "Keine Benachrichtigungen",
     "friend_request": "{{ email }} möchte dein Freund sein",
     "friend_accepted": "{{ email }} hat deine Einladung angenommen",
-    "nudge": "{{ email }} erinnert dich ans Lernen! Ran an die Arbeit!"
+    "nudge": "{{ email }} erinnert dich ans Lernen! Ran an die Arbeit!",
+    "acceptDeck": "Annehmen",
+    "acceptFailed": "Fehler beim Annehmen des geteilten Decks.",
+    "deck_shared": "{{ email }} hat \"{{ set_name }}\" mit Ihnen geteilt"
   },
   "cookieConsent": {
     "title": "Datenschutzeinstellungen",
@@ -913,6 +1050,7 @@
     "sendAnother": "Weitere senden"
   },
   "partner": {
+    "loading": "Laden…",
     "errors": {
       "notLoggedIn": "Sie müssen angemeldet sein.",
       "saveFailed": "Profil konnte nicht gespeichert werden."
@@ -1005,5 +1143,151 @@
     "forbidden": "Keine Berechtigung für diese Operation.",
     "serverError": "Serverfehler bei {{action}}. Bitte versuche es später erneut.",
     "actionFailed": "{{action}} fehlgeschlagen. Bitte versuche es erneut."
+  },
+  "update": {
+    "newVersionAvailable": "Eine neue Version der Anwendung ist verfügbar. Möchten Sie sie laden?"
+  },
+  "shared": {
+    "spinner": {
+      "loading": "Laden"
+    },
+    "toast": {
+      "close": "Schließen"
+    },
+    "dialog": {
+      "close": "Schließen"
+    }
+  },
+  "toasts": {
+    "accepted": "Angenommen",
+    "cancel": "Abbrechen",
+    "cancelled": "Abgebrochen",
+    "copied": "Kopiert",
+    "deleted": "Gelöscht",
+    "error": "Fehler",
+    "genericError": "Etwas ist schiefgelaufen. Bitte versuchen Sie es später erneut.",
+    "hidden": "Ausgeblendet",
+    "no": "Nein",
+    "noPermission": "Sie haben keine Berechtigung, diese Aktion auszuführen.",
+    "offline": "Keine Internetverbindung. Prüfen Sie Ihr Netzwerk und versuchen Sie es erneut.",
+    "operationFailed": "Vorgang fehlgeschlagen. Bitte versuchen Sie es erneut.",
+    "publish": "Veröffentlichen",
+    "published": "Veröffentlicht",
+    "sent": "Gesendet",
+    "serverError": "Serverfehler. Bitte versuchen Sie es später erneut.",
+    "sessionExpired": "Sitzung abgelaufen. Bitte melden Sie sich erneut an.",
+    "shared": "Geteilt",
+    "success": "Erfolg",
+    "warning": "Warnung",
+    "yes": "Ja"
+  },
+  "friends.toasts": {
+    "loadFailed": "Fehler beim Laden der Freundesdaten.",
+    "inviteSent": "Einladung gesendet!",
+    "inviteSendFailed": "Fehler beim Senden der Einladung.",
+    "friendAccepted": "Zu Freunden hinzugefügt!",
+    "acceptFailed": "Fehler beim Annehmen.",
+    "rejectFailed": "Fehler beim Ablehnen.",
+    "friendRemoved": "Aus Freunden entfernt.",
+    "removeFailed": "Fehler beim Entfernen.",
+    "nudgeSent": "Erinnerung gesendet!",
+    "nudgeSendFailed": "Fehler beim Senden der Erinnerung.",
+    "inviteCancelled": "Einladung zurückgezogen.",
+    "cancelFailed": "Fehler beim Zurückziehen der Einladung.",
+    "statsFailed": "Fehler beim Laden der Statistiken.",
+    "leaderboardFailed": "Fehler beim Laden der Rangliste.",
+    "loadFriendsFailed": "Fehler beim Laden der Freunde.",
+    "setShared": "Deck geteilt!",
+    "shareFailed": "Fehler beim Teilen des Decks.",
+    "deckAcceptFailed": "Fehler beim Annehmen des geteilten Decks."
+  },
+  "flashcards.toasts": {
+    "loadFailed": "Fehler beim Laden der Karteikarten.",
+    "authError": "Autorisierungsfehler",
+    "cardUpdated": "Karteikarte aktualisiert.",
+    "cardAdded": "Neue Karteikarte hinzugefügt.",
+    "cardsDeleted": "{{ count }} Karteikarten gelöscht.",
+    "partialDeleteFailed": "{{ count }} Karteikarten konnten nicht gelöscht werden.",
+    "deleteFailed": "Fehler beim Löschen der Karteikarten. Bitte versuchen Sie es erneut.",
+    "orderChanged": "Reihenfolge der Karteikarten aktualisiert.",
+    "orderSaveFailed": "Fehler beim Speichern der Reihenfolge. Wird aktualisiert...",
+    "cardsImported": "{{ count }} Karteikarten importiert.",
+    "linkGenerationFailed": "Fehler beim Generieren des Teillinks.",
+    "linkCopied": "Link in Zwischenablage kopiert.",
+    "linkCopyFailed": "Fehler beim Kopieren des Links.",
+    "restoreFailed": "Fehler beim Wiederherstellen der Karteikarte.",
+    "setCopied": "Set wurde in Ihr Konto kopiert.",
+    "restored": "Karteikarte wiederhergestellt.",
+    "restoredSummary": "Wiederhergestellt",
+    "cardsExported": "{{ count }} Karteikarten exportiert.",
+    "popupBlocked": "Popup blockiert",
+    "popupBlockedDetail": "Erlauben Sie Popups in Ihrem Browser, um den Test zu drucken.",
+    "authLogin": "Autorisierungsfehler. Bitte melden Sie sich erneut an.",
+    "authSummary": "Autorisierungsfehler",
+    "permissionError": "Sie haben keine Berechtigung, diese Aktion auszuführen.",
+    "permissionSummary": "Berechtigungsfehler",
+    "notFoundDetail": "Karteikarte nicht gefunden. Sie wurde möglicherweise gelöscht.",
+    "loginRequired": "Sie müssen angemeldet sein, um Karteikarten zu verwalten.",
+    "loadFailedAuth": "Sie müssen angemeldet sein, um Ihre Karteikarten zu sehen.",
+    "operationFailed": "Fehler bei der {{ action }}-Operation. Bitte versuchen Sie es später erneut.",
+    "partialSuccess": "Teilweiser Erfolg",
+    "partialDeleteDetail": "{{ success }} von {{ total }} gelöscht. {{ failed }} konnten nicht gelöscht werden.",
+    "confirmDeleteHeader": "Löschen bestätigen",
+    "confirmDeleteMessage": "Möchten Sie die Karteikarte \"{{ front }}\" wirklich löschen?",
+    "confirmBulkDeleteMessage": "Möchten Sie wirklich {{ count }} Karteikarten löschen?"
+  },
+  "sets.toasts": {
+    "loadFailed": "Fehler beim Laden der Sets.",
+    "setUpdated": "Set aktualisiert.",
+    "updateFailed": "Fehler beim Aktualisieren des Sets.",
+    "setCreated": "Set erstellt.",
+    "createFailed": "Fehler beim Erstellen des Sets.",
+    "setDeleted": "Set gelöscht.",
+    "deleteFailed": "Fehler beim Löschen des Sets.",
+    "shareLinkCopied": "Teillink in Zwischenablage kopiert (7 Tage gültig).",
+    "linkGenerationFailed": "Fehler beim Generieren des Teillinks.",
+    "published": "Set ist jetzt öffentlich.",
+    "publishFailed": "Fehler beim Veröffentlichen des Sets.",
+    "unpublished": "Set ist nicht mehr öffentlich.",
+    "unpublishFailed": "Fehler beim Aufheben der Veröffentlichung des Sets.",
+    "confirmDeleteHeader": "Löschen bestätigen",
+    "confirmDeleteMessage": "Möchten Sie das Set \"{{ name }}\" wirklich löschen? Alle Karteikarten in diesem Set werden ebenfalls gelöscht.",
+    "confirmPublishHeader": "Set veröffentlichen",
+    "confirmPublishMessage": "Möchten Sie das Set \"{{ name }}\" wirklich veröffentlichen? Es wird für alle Benutzer sichtbar sein.",
+    "confirmUnpublishHeader": "Set ausblenden",
+    "confirmUnpublishMessage": "Möchten Sie das Set \"{{ name }}\" wirklich ausblenden? Es wird nicht mehr öffentlich sichtbar sein.",
+    "hide": "Ausblenden"
+  },
+  "generate.toasts": {
+    "createSetFailed": "Fehler beim Erstellen des Sets.",
+    "flashcardsSaved": "{{ count }} Karteikarten gespeichert.",
+    "proposalUpdated": "Karteikarten-Vorschlag aktualisiert.",
+    "generationFailed": "Fehler beim Generieren der Karteikarten.",
+    "tooManyRequests": "Zu viele Anfragen. Bitte versuchen Sie es gleich erneut.",
+    "textTooLong": "Text ist zu lang.",
+    "proposalRejected": "Karteikarten-Vorschlag abgelehnt.",
+    "validationError": "Eingabevalidierungsfehler bei {{ action }}. Überprüfen Sie Ihre Daten.",
+    "authLogin": "Autorisierungsfehler. Bitte melden Sie sich erneut an.",
+    "authSummary": "Autorisierungsfehler",
+    "serverError": "Serverfehler bei {{ action }}. Bitte versuchen Sie es später erneut.",
+    "loginRequired": "Sie müssen angemeldet sein, um {{ action }}-Funktionen zu nutzen.",
+    "unexpectedError": "Ein unerwarteter Fehler ist bei {{ action }} aufgetreten. Bitte versuchen Sie es später erneut.",
+    "info": "Info"
+  },
+  "explore.toasts": {
+    "setCopied": "Set wurde in Ihre Sets kopiert.",
+    "cannotCopyOwnSet": "Sie können Ihr eigenes Set nicht kopieren.",
+    "copyFailed": "Fehler beim Kopieren des Sets."
+  },
+  "feedback.toasts": {
+    "bugSubmitted": "Fehlerbericht eingereicht!",
+    "ideaSubmitted": "Idee eingereicht!",
+    "submitFailed": "Fehler beim Einreichen. Bitte versuchen Sie es erneut."
+  },
+  "share.toasts": {
+    "invalidLink": "Ungültiger Link.",
+    "linkExpired": "Link ist abgelaufen. Bitten Sie den Besitzer um einen neuen Link.",
+    "linkInvalidOrDeleted": "Link ist ungültig oder wurde gelöscht.",
+    "emptySet": "Set enthält keine Karteikarten."
   }
 }
