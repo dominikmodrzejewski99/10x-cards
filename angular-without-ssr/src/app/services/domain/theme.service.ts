@@ -13,8 +13,11 @@ export class ThemeService {
 
   /** Load theme from DB and apply it. Called once after auth is ready. */
   loadTheme(): void {
-    this.prefsService.getPreferences().subscribe(prefs => {
-      this.applyTheme(prefs.theme ?? 'light');
+    this.prefsService.getPreferences().subscribe({
+      next: (prefs) => {
+        this.applyTheme(prefs.theme ?? 'light');
+      },
+      error: (err: unknown) => this.logger.error('ThemeService.loadTheme', err),
     });
   }
 

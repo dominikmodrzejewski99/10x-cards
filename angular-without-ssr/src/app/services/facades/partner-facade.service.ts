@@ -4,6 +4,7 @@ import { TranslocoService } from '@jsverse/transloco';
 import { PartnerApiService } from '../api/partner-api.service';
 import { SupabaseClientFactory } from '../infrastructure/supabase-client.factory';
 import { ToastService } from '../../shared/services/toast.service';
+import { LoggerService } from '../infrastructure/logger.service';
 import {
   PartnerProfileDTO,
   PartnerMonthlyStatsDTO,
@@ -23,6 +24,7 @@ export class PartnerFacadeService {
   private readonly supabase: SupabaseClient = inject(SupabaseClientFactory).getClient();
   private readonly toast: ToastService = inject(ToastService);
   private readonly t: TranslocoService = inject(TranslocoService);
+  private readonly logger: LoggerService = inject(LoggerService);
 
   private readonly _profile: WritableSignal<PartnerProfileDTO | null> = signal<PartnerProfileDTO | null>(null);
   private readonly _stats: WritableSignal<PartnerMonthlyStatsDTO[]> = signal<PartnerMonthlyStatsDTO[]>([]);
@@ -74,7 +76,10 @@ export class PartnerFacadeService {
         return;
       }
 
-      this.api.getConfig().subscribe((cfg: PartnerConfigDTO) => this._config.set(cfg));
+      this.api.getConfig().subscribe({
+        next: (cfg: PartnerConfigDTO) => this._config.set(cfg),
+        error: (err: unknown) => this.logger.error('PartnerFacadeService.init', err),
+      });
 
       this.api.getProfile(userId).subscribe({
         next: (profile: PartnerProfileDTO | null) => {

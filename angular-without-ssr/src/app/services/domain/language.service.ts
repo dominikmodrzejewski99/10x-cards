@@ -21,9 +21,12 @@ export class LanguageService {
     // If user already changed language this session, don't overwrite with DB value
     if (this.initialized) return;
 
-    this.prefsService.getPreferences().subscribe(prefs => {
-      this.initialized = true;
-      this.applyLanguage(prefs.language ?? this.resolveDefault());
+    this.prefsService.getPreferences().subscribe({
+      next: (prefs) => {
+        this.initialized = true;
+        this.applyLanguage(prefs.language ?? this.resolveDefault());
+      },
+      error: (err: unknown) => this.logger.error('LanguageService.loadLanguage', err),
     });
   }
 

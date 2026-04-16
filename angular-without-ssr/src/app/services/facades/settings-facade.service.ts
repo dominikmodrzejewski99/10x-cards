@@ -3,6 +3,7 @@ import { UserPreferencesService } from '../domain/user-preferences.service';
 import { PomodoroService } from '../domain/pomodoro.service';
 import { ThemeService, Theme } from '../domain/theme.service';
 import { LanguageService } from '../domain/language.service';
+import { LoggerService } from '../infrastructure/logger.service';
 import { AppLanguage } from '../../../types';
 
 @Injectable({ providedIn: 'root' })
@@ -11,6 +12,7 @@ export class SettingsFacadeService {
   private readonly pomodoroService: PomodoroService = inject(PomodoroService);
   private readonly themeService: ThemeService = inject(ThemeService);
   private readonly languageService: LanguageService = inject(LanguageService);
+  private readonly logger: LoggerService = inject(LoggerService);
 
   private readonly _workDuration = signal<number>(25);
   private readonly _breakDuration = signal<number>(5);
@@ -36,13 +38,16 @@ export class SettingsFacadeService {
   private savedTimer: ReturnType<typeof setTimeout> | null = null;
 
   public init(): void {
-    this.prefsService.getPreferences().subscribe(prefs => {
-      this._workDuration.set(prefs.pomodoro_work_duration);
-      this._breakDuration.set(prefs.pomodoro_break_duration);
-      this._longBreakDuration.set(prefs.pomodoro_long_break_duration);
-      this._sessionsBeforeLongBreak.set(prefs.pomodoro_sessions_before_long_break);
-      this._soundEnabled.set(prefs.pomodoro_sound_enabled);
-      this._notificationsEnabled.set(prefs.pomodoro_notifications_enabled);
+    this.prefsService.getPreferences().subscribe({
+      next: (prefs) => {
+        this._workDuration.set(prefs.pomodoro_work_duration);
+        this._breakDuration.set(prefs.pomodoro_break_duration);
+        this._longBreakDuration.set(prefs.pomodoro_long_break_duration);
+        this._sessionsBeforeLongBreak.set(prefs.pomodoro_sessions_before_long_break);
+        this._soundEnabled.set(prefs.pomodoro_sound_enabled);
+        this._notificationsEnabled.set(prefs.pomodoro_notifications_enabled);
+      },
+      error: (err: unknown) => this.logger.error('SettingsFacadeService.init', err),
     });
   }
 
