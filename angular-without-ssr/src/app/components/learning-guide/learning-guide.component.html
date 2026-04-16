@@ -43,8 +43,8 @@
             <i [class]="article.icon"></i>
           </div>
           <div class="guide__card-intro">
-            <h2 class="guide__card-title">{{ article.title }}</h2>
-            <p class="guide__card-desc">{{ article.shortDescription }}</p>
+            <h2 class="guide__card-title">{{ t('articles.' + article.key + '.title') }}</h2>
+            <p class="guide__card-desc">{{ t('articles.' + article.key + '.shortDescription') }}</p>
           </div>
           <div class="guide__card-chevron">
             <i class="pi" [class.pi-chevron-down]="!isExpanded(article.id)" [class.pi-chevron-up]="isExpanded(article.id)"></i>
@@ -53,8 +53,8 @@
 
         @if (isExpanded(article.id)) {
           <div class="guide__card-body" [id]="'article-' + article.id" role="region">
-            @for (paragraph of article.paragraphs; track $index) {
-              <p class="guide__card-paragraph">{{ paragraph }}</p>
+            @for (paragraphKey of article.paragraphKeys; track $index) {
+              <p class="guide__card-paragraph">{{ t('articles.' + article.key + '.' + paragraphKey) }}</p>
             }
 
             <!-- ============ CHART: Spaced Repetition Timeline ============ -->
@@ -336,7 +336,7 @@
                 </svg>
                 <!-- Stage description tooltip -->
                 <div class="chart__dk-stages">
-                  @for (stage of dkStages; track $index) {
+                  @for (stageRef of dkStageRefs; track $index) {
                     <button
                       class="chart__dk-stage"
                       [class.chart__dk-stage--active]="dkActiveStageSignal() === $index"
@@ -345,13 +345,13 @@
                       (click)="setDkStage(dkActiveStageSignal() === $index ? null : $index)"
                     >
                       <span class="chart__dk-stage-num">{{ $index + 1 }}</span>
-                      <span class="chart__dk-stage-label">{{ stage.label }}</span>
+                      <span class="chart__dk-stage-label">{{ t('dkStages.stage' + stageRef.stageNumber + 'Label') }}</span>
                     </button>
                   }
                 </div>
                 @if (dkActiveStageSignal() !== null) {
                   <div class="chart__dk-tooltip">
-                    {{ dkStages[dkActiveStageSignal()!].description }}
+                    {{ t('dkStages.stage' + dkStageRefs[dkActiveStageSignal()!].stageNumber + 'Description') }}
                   </div>
                 }
               </div>
@@ -478,7 +478,7 @@
               </div>
               <div class="guide__card-takeaway-content">
                 <div class="guide__card-takeaway-label">{{ t('keyTakeaway') }}</div>
-                <p class="guide__card-takeaway-text">{{ article.keyTakeaway }}</p>
+                <p class="guide__card-takeaway-text">{{ t('articles.' + article.key + '.keyTakeaway') }}</p>
               </div>
             </div>
           </div>

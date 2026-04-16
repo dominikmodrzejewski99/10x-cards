@@ -29,8 +29,8 @@ describe('LearningGuideComponent', () => {
       expect(component.articles.length).toBeGreaterThan(0);
     });
 
-    it('should have dkStages populated', () => {
-      expect(component.dkStages.length).toBe(5);
+    it('should have dkStageRefs populated', () => {
+      expect(component.dkStageRefs.length).toBe(5);
     });
 
     it('should have no expanded articles initially', () => {
