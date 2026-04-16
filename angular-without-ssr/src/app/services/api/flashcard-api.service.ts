@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, from, map, catchError, throwError, switchMap, of, expand, reduce, forkJoin, EMPTY } from 'rxjs';
+import { AppError } from '../../shared/utils/app-error';
 import { FlashcardProposalDTO, FlashcardDTO, CreateFlashcardCommand, UpdateFlashcardCommand } from '../../../types';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from '../infrastructure/supabase-client.factory';
@@ -29,11 +30,11 @@ export class FlashcardApiService {
     return from(this.supabase.auth.getSession()).pipe(
       map(response => {
         if (response.error || !response.data.session) {
-          throw new Error('Użytkownik nie jest zalogowany');
+          throw new AppError(401, 'User not authenticated');
         }
         return response.data.session.user.id;
       }),
-      catchError(() => throwError(() => new Error('Sesja wygasła. Zaloguj się ponownie.')))
+      catchError(() => throwError(() => new AppError(401, 'Session expired')))
     );
   }
 
@@ -68,7 +69,7 @@ export class FlashcardApiService {
               .eq('user_id', userId).order('created_at', { ascending: false }).limit(flashcardsToInsert.length));
           }),
           map(response => {
-            if (response.error) throw new Error(`Błąd Supabase: ${response.error.message}`);
+            if (response.error) throw new AppError(500, `Supabase error: ${response.error.message}`);
             return response.data as FlashcardDTO[];
           }),
           catchError(error => throwError(() => error))
@@ -108,7 +109,7 @@ export class FlashcardApiService {
 
         return from(query).pipe(
           map(response => {
-            if (response.error) throw new Error(`Błąd Supabase: ${response.error.message}`);
+            if (response.error) throw new AppError(500, `Supabase error: ${response.error.message}`);
             return {
               flashcards: response.data as FlashcardDTO[],
               totalRecords: response.count || 0
@@ -177,9 +178,9 @@ export class FlashcardApiService {
               .eq('user_id', userId).order('created_at', { ascending: false }).limit(1));
           }),
           map(response => {
-            if (response.error) throw new Error(`Błąd Supabase: ${response.error.message}`);
+            if (response.error) throw new AppError(500, `Supabase error: ${response.error.message}`);
             if (!response.data || response.data.length === 0) {
-              throw new Error('Nie znaleziono fiszki');
+              throw new AppError(404, 'Flashcard not found');
             }
             return response.data[0] as FlashcardDTO;
           }),
@@ -202,8 +203,8 @@ export class FlashcardApiService {
           .select(FLASHCARD_COLUMNS)
         ).pipe(
           map(response => {
-            if (response.error) throw new Error(`Błąd Supabase: ${response.error.message}`);
-            if (response.data.length === 0) throw new Error('Nie znaleziono fiszki lub brak uprawnień do edycji');
+            if (response.error) throw new AppError(500, `Supabase error: ${response.error.message}`);
+            if (response.data.length === 0) throw new AppError(404, 'Flashcard not found or no edit permission');
             return response.data[0] as FlashcardDTO;
           }),
           catchError(error => throwError(() => error))
@@ -222,7 +223,7 @@ export class FlashcardApiService {
           .eq('user_id', userId)
         ).pipe(
           map(response => {
-            if (response.error) throw new Error(`Błąd Supabase: ${response.error.message}`);
+            if (response.error) throw new AppError(500, `Supabase error: ${response.error.message}`);
             return undefined;
           }),
           catchError(error => throwError(() => error))
@@ -242,7 +243,7 @@ export class FlashcardApiService {
             .eq('user_id', userId)
           ).pipe(
             map(response => {
-              if (response.error) throw new Error(`Błąd Supabase: ${response.error.message}`);
+              if (response.error) throw new AppError(500, `Supabase error: ${response.error.message}`);
             })
           )
         );

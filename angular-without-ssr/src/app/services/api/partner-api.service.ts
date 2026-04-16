@@ -3,6 +3,7 @@ import { Observable, from, map, of, catchError } from 'rxjs';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from '../infrastructure/supabase-client.factory';
 import { LoggerService } from '../infrastructure/logger.service';
+import { AppError } from '../../shared/utils/app-error';
 import {
   PartnerProfileDTO,
   PartnerMonthlyStatsDTO,
@@ -125,7 +126,7 @@ export class PartnerApiService {
       map((response: { data: unknown; error: unknown }) => {
         if (response.error) {
           const msg: string = (response.error as { message: string }).message;
-          throw new Error(`Błąd zapisu profilu partnera: ${msg}`);
+          throw new AppError(500, `Partner profile save error: ${msg}`);
         }
         return response.data as PartnerProfileDTO;
       })

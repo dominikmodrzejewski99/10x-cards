@@ -170,7 +170,7 @@ describe('UserPreferencesService', () => {
       service.getPreferences().subscribe({
         next: () => done.fail('Expected error'),
         error: (err: Error) => {
-          expect(err.message).toContain('nie jest zalogowany');
+          expect(err.message).toContain('not authenticated');
           done();
         }
       });

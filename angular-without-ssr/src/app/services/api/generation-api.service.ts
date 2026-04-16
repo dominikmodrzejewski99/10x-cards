@@ -3,6 +3,7 @@ import { Observable, from, map, switchMap } from 'rxjs';
 import { GenerateFlashcardsCommand, GenerationDTO, FlashcardProposalDTO } from '../../../types';
 import { OpenRouterService } from '../domain/openrouter.service';
 import { LoggerService } from '../infrastructure/logger.service';
+import { AppError } from '../../shared/utils/app-error';
 import { SupabaseClientFactory } from '../infrastructure/supabase-client.factory';
 
 const MAX_FLASHCARDS = 15;
@@ -112,7 +113,7 @@ PRZYKŁAD POPRAWNEJ ODPOWIEDZI:
         }
 
         if (flashcards.length === 0) {
-          throw new Error('Nie udało się wygenerować fiszek. Model AI zwrócił niepoprawną odpowiedź. Spróbuj ponownie lub zmień tekst źródłowy.');
+          throw new AppError(500, 'AI model returned an invalid response. Try again or change the source text.');
         }
 
         const endTime = new Date();
@@ -166,7 +167,7 @@ PRZYKŁAD POPRAWNEJ ODPOWIEDZI:
 
       if (error) {
         if (error.message?.includes('Daily generation limit reached')) {
-          throw new Error(`Osiągnięto dzienny limit generacji (${DAILY_GENERATION_LIMIT}). Spróbuj ponownie jutro.`);
+          throw new AppError(429, `Daily generation limit reached (${DAILY_GENERATION_LIMIT}). Try again tomorrow.`);
         }
         this.logger.error('GenerationApiService.saveGeneration', error);
         return generation;

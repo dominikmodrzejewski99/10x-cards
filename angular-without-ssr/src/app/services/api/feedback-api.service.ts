@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, from, map, switchMap, catchError, throwError } from 'rxjs';
+import { AppError } from '../../shared/utils/app-error';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from '../infrastructure/supabase-client.factory';
 import { CreateFeedbackCommand, FeedbackDTO } from '../../../types';
@@ -18,7 +19,7 @@ export class FeedbackApiService {
     return from(this.supabase.auth.getSession()).pipe(
       map(response => {
         if (response.error || !response.data.session) {
-          throw new Error('Użytkownik nie jest zalogowany');
+          throw new AppError(401, 'User not authenticated');
         }
         return response.data.session.user.id;
       })
@@ -42,7 +43,7 @@ export class FeedbackApiService {
         ).pipe(
           map(response => {
             if (response.error) {
-              throw new Error(`Błąd zapisu: ${response.error.message}`);
+              throw new AppError(500, `Save error: ${response.error.message}`);
             }
             return response.data as FeedbackDTO;
           })

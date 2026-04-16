@@ -132,7 +132,7 @@ describe('ImageUploadService', () => {
       const file: File = new File(['data'], 'photo.jpg', { type: 'image/jpeg' });
       service.uploadImage(file).subscribe({
         error: (err: Error) => {
-          expect(err.message).toBe('Użytkownik nie jest zalogowany');
+          expect(err.message).toBe('User not authenticated');
           done();
         }
       });
@@ -145,7 +145,7 @@ describe('ImageUploadService', () => {
       const file: File = new File(['data'], 'photo.png', { type: 'image/png' });
       service.uploadImage(file).subscribe({
         error: (err: Error) => {
-          expect(err.message).toBe('Użytkownik nie jest zalogowany');
+          expect(err.message).toBe('User not authenticated');
           done();
         }
       });
@@ -180,7 +180,7 @@ describe('ImageUploadService', () => {
     it('should throw error for invalid URL (missing bucket path)', (done: DoneFn) => {
       service.deleteImage('https://invalid.com/random/path.jpg').subscribe({
         error: (err: Error) => {
-          expect(err.message).toBe('Nieprawidłowy URL obrazka');
+          expect(err.message).toBe('Invalid image URL');
           done();
         }
       });

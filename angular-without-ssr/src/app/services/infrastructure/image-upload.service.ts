@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, from, map, switchMap, throwError } from 'rxjs';
+import { AppError } from '../../shared/utils/app-error';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from './supabase-client.factory';
 import { environment } from '../../../environments/environments';
@@ -27,7 +28,7 @@ export class ImageUploadService {
     return from(this.supabase.auth.getSession()).pipe(
       switchMap(response => {
         if (response.error || !response.data.session) {
-          return throwError(() => new Error('Użytkownik nie jest zalogowany'));
+          return throwError(() => new AppError(401, 'User not authenticated'));
         }
 
         const userId: string = response.data.session.user.id;
@@ -40,7 +41,7 @@ export class ImageUploadService {
         })).pipe(
           map(uploadResponse => {
             if (uploadResponse.error) {
-              throw new Error(`Błąd uploadu: ${uploadResponse.error.message}`);
+              throw new AppError(500, `Upload error: ${uploadResponse.error.message}`);
             }
 
             const publicUrl: string = `${environment.supabaseUrl}/storage/v1/object/public/${BUCKET_NAME}/${fileName}`;
@@ -54,13 +55,13 @@ export class ImageUploadService {
   public deleteImage(url: string): Observable<void> {
     const path: string | null = this.extractPathFromUrl(url);
     if (!path) {
-      return throwError(() => new Error('Nieprawidłowy URL obrazka'));
+      return throwError(() => new AppError(400, 'Invalid image URL'));
     }
 
     return from(this.supabase.storage.from(BUCKET_NAME).remove([path])).pipe(
       map(response => {
         if (response.error) {
-          throw new Error(`Błąd usuwania: ${response.error.message}`);
+          throw new AppError(500, `Delete error: ${response.error.message}`);
         }
       })
     );

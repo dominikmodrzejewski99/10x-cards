@@ -88,7 +88,7 @@ describe('FeedbackApiService', () => {
     service.submitFeedback(command).subscribe({
       next: () => done.fail('Should have thrown'),
       error: (err) => {
-        expect(err.message).toContain('nie jest zalogowany');
+        expect(err.message).toContain('not authenticated');
         done();
       }
     });

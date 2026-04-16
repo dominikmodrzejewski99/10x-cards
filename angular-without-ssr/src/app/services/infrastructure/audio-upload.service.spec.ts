@@ -98,7 +98,7 @@ describe('AudioUploadService', () => {
       const file: File = new File(['data'], 'test.mp3', { type: 'audio/mpeg' });
       service.uploadAudio(file).subscribe({
         error: (err: Error) => {
-          expect(err.message).toBe('Użytkownik nie jest zalogowany');
+          expect(err.message).toBe('User not authenticated');
           done();
         }
       });
@@ -119,7 +119,7 @@ describe('AudioUploadService', () => {
     it('should throw error for invalid URL', (done: DoneFn) => {
       service.deleteAudio('https://invalid.com/file.mp3').subscribe({
         error: (err: Error) => {
-          expect(err.message).toBe('Nieprawidłowy URL pliku audio');
+          expect(err.message).toBe('Invalid audio file URL');
           done();
         }
       });

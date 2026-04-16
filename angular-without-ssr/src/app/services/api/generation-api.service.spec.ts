@@ -138,7 +138,7 @@ describe('GenerationApiService', () => {
 
       service.generateFlashcards(command).subscribe({
         error: (err: Error) => {
-          expect(err.message).toContain('Nie udało się wygenerować fiszek');
+          expect(err.message).toContain('AI model returned an invalid response');
           done();
         }
       });
@@ -149,7 +149,7 @@ describe('GenerationApiService', () => {
 
       service.generateFlashcards(command).subscribe({
         error: (err: Error) => {
-          expect(err.message).toContain('Nie udało się wygenerować fiszek');
+          expect(err.message).toContain('AI model returned an invalid response');
           done();
         }
       });
@@ -162,7 +162,7 @@ describe('GenerationApiService', () => {
 
       service.generateFlashcards(command).subscribe({
         error: (err: Error) => {
-          expect(err.message).toContain('Nie udało się wygenerować fiszek');
+          expect(err.message).toContain('AI model returned an invalid response');
           done();
         }
       });

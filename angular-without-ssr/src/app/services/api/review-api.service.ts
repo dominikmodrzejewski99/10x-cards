@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, from, map, switchMap, throwError, catchError, of } from 'rxjs';
+import { AppError } from '../../shared/utils/app-error';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from '../infrastructure/supabase-client.factory';
 import { ConnectivityService } from '../infrastructure/connectivity.service';
@@ -21,7 +22,7 @@ export class ReviewApiService {
     return this.getCurrentUserId().pipe(
       switchMap((userId: string | null) => {
         if (!userId) {
-          return throwError(() => new Error('Użytkownik nie jest zalogowany'));
+          return throwError(() => new AppError(401, 'User not authenticated'));
         }
 
         let query = this.supabase
@@ -51,7 +52,7 @@ export class ReviewApiService {
         return from(query).pipe(
           map((response: { data: unknown; error: unknown }) => {
             if (response.error) {
-              throw new Error(`Błąd Supabase: ${(response.error as { message: string }).message}`);
+              throw new AppError(500, `Supabase error: ${(response.error as { message: string }).message}`);
             }
 
             const now: Date = new Date();
@@ -83,7 +84,7 @@ export class ReviewApiService {
     return this.getCurrentUserId().pipe(
       switchMap((userId: string | null) => {
         if (!userId) {
-          return throwError(() => new Error('Użytkownik nie jest zalogowany'));
+          return throwError(() => new AppError(401, 'User not authenticated'));
         }
 
         // If already offline, skip network call and queue immediately
@@ -96,7 +97,7 @@ export class ReviewApiService {
         // Try network, fall back to queue on failure
         return this.doSupabaseUpsert(flashcardId, userId, reviewData).pipe(
           catchError((error: unknown) => {
-            this.logger.warn('ReviewApiService.saveReview', 'Sieć niedostępna, zapisuję w kolejce offline');
+            this.logger.warn('ReviewApiService.saveReview', 'Network unavailable, queuing offline');
             return from(this.offlineQueue.enqueue(flashcardId, userId, reviewData)).pipe(
               map(() => this.buildSyntheticReview(flashcardId, userId, reviewData))
             );
@@ -114,7 +115,7 @@ export class ReviewApiService {
     return this.getCurrentUserId().pipe(
       switchMap((userId: string | null) => {
         if (!userId) {
-          return throwError(() => new Error('Użytkownik nie jest zalogowany'));
+          return throwError(() => new AppError(401, 'User not authenticated'));
         }
 
         return from(
@@ -132,7 +133,7 @@ export class ReviewApiService {
         ).pipe(
           map((response: { data: unknown; error: unknown }) => {
             if (response.error) {
-              throw new Error(`Błąd Supabase: ${(response.error as { message: string }).message}`);
+              throw new AppError(500, `Supabase error: ${(response.error as { message: string }).message}`);
             }
 
             const rows = (response.data ?? []) as Array<FlashcardDTO & { flashcard_reviews: FlashcardReviewDTO[] }>;
@@ -200,11 +201,11 @@ export class ReviewApiService {
     ).pipe(
       map((response: { data: unknown; error: unknown }) => {
         if (response.error) {
-          throw new Error(`Błąd Supabase: ${(response.error as { message: string }).message}`);
+          throw new AppError(500, `Supabase error: ${(response.error as { message: string }).message}`);
         }
         const data: FlashcardReviewDTO[] = (response.data ?? []) as FlashcardReviewDTO[];
         if (!data[0]) {
-          throw new Error('Brak zwróconych danych po zapisie recenzji');
+          throw new AppError(500, 'No data returned after review save');
         }
         return data[0];
       })

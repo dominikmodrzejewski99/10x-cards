@@ -249,7 +249,7 @@ describe('FlashcardApiService', () => {
 
       service.createFlashcard(command).subscribe({
         error: (err: Error) => {
-          expect(err.message).toContain('Sesja wygasła');
+          expect(err.message).toContain('Session expired');
           done();
         }
       });
@@ -280,7 +280,7 @@ describe('FlashcardApiService', () => {
 
       service.updateFlashcard(999, { front: 'X' }).subscribe({
         error: (err: Error) => {
-          expect(err.message).toContain('Nie znaleziono');
+          expect(err.message).toContain('Flashcard not found');
           done();
         }
       });

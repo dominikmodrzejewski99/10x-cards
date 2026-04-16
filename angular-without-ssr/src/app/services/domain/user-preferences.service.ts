@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, from, map, switchMap, throwError, catchError, of, shareReplay } from 'rxjs';
+import { AppError } from '../../shared/utils/app-error';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from '../infrastructure/supabase-client.factory';
 import { LoggerService } from '../infrastructure/logger.service';
@@ -15,7 +16,7 @@ export class UserPreferencesService {
     return from(this.supabase.auth.getSession()).pipe(
       map(response => {
         const userId = response.data.session?.user?.id;
-        if (!userId) throw new Error('Użytkownik nie jest zalogowany');
+        if (!userId) throw new AppError(401, 'User not authenticated');
         return userId;
       })
     );

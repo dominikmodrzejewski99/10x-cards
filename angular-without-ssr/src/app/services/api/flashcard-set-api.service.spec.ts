@@ -308,7 +308,7 @@ describe('FlashcardSetApiService', () => {
 
     it('should reject blank tag on create', () => {
       expect(() => service.createSet({ name: 'OK', tags: ['good', '  '] }))
-        .toThrowError(/pusty/);
+        .toThrowError(/cannot be empty/);
     });
 
     it('should reject tag exceeding max length on create', () => {

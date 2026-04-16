@@ -196,7 +196,7 @@ export class OpenRouterService {
         if (!isLast && apiError.retryable) {
           this.logger.warn(
             'OpenRouterService.callWithFallback',
-            `Model ${model} zwrócił błąd (${apiError.status ?? 'network'}): ${apiError.message}. Przełączam na ${models[i + 1]}...`
+            `Model ${model} returned error (${apiError.status ?? 'network'}): ${apiError.message}. Switching to ${models[i + 1]}...`
           );
           continue;
         }

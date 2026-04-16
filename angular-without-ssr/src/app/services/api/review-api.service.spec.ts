@@ -198,7 +198,7 @@ describe('ReviewApiService', () => {
 
       service.getDueCards().subscribe({
         error: (err: Error) => {
-          expect(err.message).toContain('nie jest zalogowany');
+          expect(err.message).toContain('not authenticated');
           done();
         }
       });
@@ -297,7 +297,7 @@ describe('ReviewApiService', () => {
 
       service.saveReview(1, sm2Result).subscribe({
         error: (err: Error) => {
-          expect(err.message).toContain('nie jest zalogowany');
+          expect(err.message).toContain('not authenticated');
           done();
         }
       });

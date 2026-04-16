@@ -3,6 +3,7 @@ import { Observable, from, map, catchError, throwError, switchMap } from 'rxjs';
 import { FlashcardSetDTO, CreateFlashcardSetCommand, UpdateFlashcardSetCommand } from '../../../types';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseClientFactory } from '../infrastructure/supabase-client.factory';
+import { AppError } from '../../shared/utils/app-error';
 
 export const SET_CONSTRAINTS = {
   NAME_MAX: 100,
@@ -22,19 +23,19 @@ export class FlashcardSetApiService {
       const trimmed = data.name.trim();
       if (trimmed.length < 1) throw new Error('Nazwa zestawu nie może być pusta');
       if (trimmed.length > SET_CONSTRAINTS.NAME_MAX)
-        throw new Error(`Nazwa zestawu może mieć max ${SET_CONSTRAINTS.NAME_MAX} znaków`);
+        throw new AppError(400, `Set name exceeds max ${SET_CONSTRAINTS.NAME_MAX} characters`);
     }
     if ('description' in data && data.description) {
       if (data.description.length > SET_CONSTRAINTS.DESCRIPTION_MAX)
-        throw new Error(`Opis może mieć max ${SET_CONSTRAINTS.DESCRIPTION_MAX} znaków`);
+        throw new AppError(400, `Description exceeds max ${SET_CONSTRAINTS.DESCRIPTION_MAX} characters`);
     }
     if ('tags' in data && data.tags) {
       if (data.tags.length > SET_CONSTRAINTS.TAGS_MAX_COUNT)
-        throw new Error(`Maksymalnie ${SET_CONSTRAINTS.TAGS_MAX_COUNT} tagów`);
+        throw new AppError(400, `Maximum ${SET_CONSTRAINTS.TAGS_MAX_COUNT} tags allowed`);
       for (const tag of data.tags) {
-        if (tag.trim().length < 1) throw new Error('Tag nie może być pusty');
+        if (tag.trim().length < 1) throw new AppError(400, 'Tag cannot be empty');
         if (tag.length > SET_CONSTRAINTS.TAG_MAX_LENGTH)
-          throw new Error(`Tag może mieć max ${SET_CONSTRAINTS.TAG_MAX_LENGTH} znaków`);
+          throw new AppError(400, `Tag exceeds max ${SET_CONSTRAINTS.TAG_MAX_LENGTH} characters`);
       }
     }
   }
@@ -43,7 +44,7 @@ export class FlashcardSetApiService {
     return from(this.supabase.auth.getSession()).pipe(
       map(response => {
         const userId = response.data.session?.user?.id;
-        if (!userId) throw new Error('Użytkownik nie jest zalogowany');
+        if (!userId) throw new AppError(401, 'User not authenticated');
         return userId;
       })
     );
