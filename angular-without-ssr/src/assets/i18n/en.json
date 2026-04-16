@@ -645,7 +645,7 @@
       "backPlaceholder": "Back",
       "saving": "Saving...",
       "saveCount": "Save ({{ count }})",
-      "inputPlaceholder": "apple;jabłko\ndog;pies\ncat,kot",
+      "inputPlaceholder": "hello;hola\ndog;perro\ncat,gato",
       "editTitle": "Edit",
       "editAriaLabel": "Edit flashcard",
       "saveEditAriaLabel": "Save changes",
@@ -1174,9 +1174,6 @@
     "play": "Play",
     "pause": "Pause",
     "progress": "Playback progress"
-  },
-  "common": {
-    "loading": "Loading"
   },
   "errors": {
     "offline": "No internet connection. Check your network and try again.",

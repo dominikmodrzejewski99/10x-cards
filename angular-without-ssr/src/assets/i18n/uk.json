@@ -631,7 +631,7 @@
       "backPlaceholder": "Зад",
       "saving": "Збереження...",
       "saveCount": "Зберегти ({{ count }})",
-      "inputPlaceholder": "apple;jabłko\ndog;pies\ncat,kot",
+      "inputPlaceholder": "apple;яблуко\ndog;пес\ncat,кіт",
       "editTitle": "Редагувати",
       "editAriaLabel": "Редагувати картку",
       "saveEditAriaLabel": "Зберегти зміни",
@@ -998,9 +998,6 @@
     "play": "Відтворити",
     "pause": "Пауза",
     "progress": "Прогрес відтворення"
-  },
-  "common": {
-    "loading": "Завантаження"
   },
   "errors": {
     "offline": "Немає з'єднання з інтернетом. Перевір мережу і спробуй знову.",

@@ -631,7 +631,7 @@
       "backPlaceholder": "Dorso",
       "saving": "Guardando...",
       "saveCount": "Guardar ({{ count }})",
-      "inputPlaceholder": "apple;jabłko\ndog;pies\ncat,kot",
+      "inputPlaceholder": "apple;manzana\ndog;perro\ncat,gato",
       "editTitle": "Editar",
       "editAriaLabel": "Editar tarjeta",
       "saveEditAriaLabel": "Guardar cambios",
@@ -998,9 +998,6 @@
     "play": "Reproducir",
     "pause": "Pausar",
     "progress": "Progreso de reproducción"
-  },
-  "common": {
-    "loading": "Cargando"
   },
   "errors": {
     "offline": "Sin conexión a internet. Verifica tu red e inténtalo de nuevo.",

@@ -631,7 +631,7 @@
       "backPlaceholder": "Hinten",
       "saving": "Speichern...",
       "saveCount": "Speichern ({{ count }})",
-      "inputPlaceholder": "apple;jabłko\ndog;pies\ncat,kot",
+      "inputPlaceholder": "apple;Apfel\ndog;Hund\ncat,Katze",
       "editTitle": "Bearbeiten",
       "editAriaLabel": "Karteikarte bearbeiten",
       "saveEditAriaLabel": "Änderungen speichern",
@@ -998,9 +998,6 @@
     "play": "Abspielen",
     "pause": "Pause",
     "progress": "Wiedergabe-Fortschritt"
-  },
-  "common": {
-    "loading": "Wird geladen"
   },
   "errors": {
     "offline": "Keine Internetverbindung. Überprüfe dein Netzwerk und versuche es erneut.",

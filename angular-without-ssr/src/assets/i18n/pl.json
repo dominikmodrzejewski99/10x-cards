@@ -1175,9 +1175,6 @@
     "pause": "Pauza",
     "progress": "Postęp odtwarzania"
   },
-  "common": {
-    "loading": "Ładowanie"
-  },
   "errors": {
     "offline": "Brak połączenia z internetem. Sprawdź sieć i spróbuj ponownie.",
     "sessionExpired": "Sesja wygasła. Zaloguj się ponownie.",

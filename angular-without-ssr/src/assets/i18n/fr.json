@@ -631,7 +631,7 @@
       "backPlaceholder": "Verso",
       "saving": "Enregistrement...",
       "saveCount": "Enregistrer ({{ count }})",
-      "inputPlaceholder": "apple;jabłko\ndog;pies\ncat,kot",
+      "inputPlaceholder": "apple;pomme\ndog;chien\ncat,chat",
       "editTitle": "Modifier",
       "editAriaLabel": "Modifier la carte",
       "saveEditAriaLabel": "Enregistrer les modifications",
@@ -998,9 +998,6 @@
     "play": "Lire",
     "pause": "Pause",
     "progress": "Progression de la lecture"
-  },
-  "common": {
-    "loading": "Chargement"
   },
   "errors": {
     "offline": "Pas de connexion Internet. Vérifie ton réseau et réessaie.",
