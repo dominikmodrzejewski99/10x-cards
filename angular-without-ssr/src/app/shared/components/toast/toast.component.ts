@@ -1,10 +1,13 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { ToastService, ToastMessage } from '../../services/toast.service';
 
 @Component({
   selector: 'app-toast',
+  imports: [TranslocoDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
+    <ng-container *transloco="let t; prefix: 'shared.toast'">
     @if (toastService.messages().length > 0) {
       <div class="toast-container" role="status" aria-live="polite">
         @for (msg of toastService.messages(); track msg.id) {
@@ -22,13 +25,14 @@ import { ToastService, ToastMessage } from '../../services/toast.service';
               }
               <div class="toast__detail">{{ msg.detail }}</div>
             </div>
-            <button type="button" class="toast__close" (click)="toastService.remove(msg.id)" aria-label="Zamknij">
+            <button type="button" class="toast__close" (click)="toastService.remove(msg.id)" [attr.aria-label]="t('close')">
               <i class="pi pi-times" aria-hidden="true"></i>
             </button>
           </div>
         }
       </div>
     }
+    </ng-container>
   `,
   styleUrl: './toast.component.scss'
 })

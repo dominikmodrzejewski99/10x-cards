@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Component } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { ErrorMessageComponent } from './error-message.component';
 
@@ -37,7 +38,13 @@ describe('ErrorMessageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TestHostComponent]
+      imports: [
+        TestHostComponent,
+        TranslocoTestingModule.forRoot({
+          langs: { pl: { generate: { errorMessage: { title: 'Wystąpił błąd', retry: 'Spróbuj ponownie', dismiss: 'Zamknij' } } } },
+          translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' }
+        })
+      ]
     }).compileComponents();
 
     hostFixture = TestBed.createComponent(TestHostComponent);

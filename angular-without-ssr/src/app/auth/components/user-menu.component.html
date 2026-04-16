@@ -66,13 +66,13 @@
           type="text"
           class="delete-dialog__input"
           [(ngModel)]="deleteConfirmText"
-          placeholder="USUŃ"
+          [placeholder]="t('deleteConfirmWord')"
           autocomplete="off" />
         <div class="delete-dialog__actions">
           <button class="delete-dialog__btn delete-dialog__btn--cancel" (click)="cancelDeleteAccount()">{{ t('cancel') }}</button>
           <button
             class="delete-dialog__btn delete-dialog__btn--delete"
-            [disabled]="deleteConfirmText.trim().toUpperCase() !== 'USUŃ'"
+            [disabled]="deleteConfirmText.trim().toUpperCase() !== t('deleteConfirmWord').toUpperCase()"
             (click)="confirmDeleteAccount()">
             {{ t('deleteAccount') }}
           </button>

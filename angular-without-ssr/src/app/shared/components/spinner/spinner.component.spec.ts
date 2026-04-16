@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { SpinnerComponent } from './spinner.component';
 
@@ -9,7 +10,13 @@ describe('SpinnerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SpinnerComponent],
+      imports: [
+        SpinnerComponent,
+        TranslocoTestingModule.forRoot({
+          langs: { pl: {} },
+          translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' }
+        })
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 

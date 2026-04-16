@@ -1,9 +1,11 @@
 import { Component, ChangeDetectionStrategy, input } from '@angular/core';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-spinner',
+  imports: [TranslocoDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<div class="spinner" role="status" aria-label="Ładowanie" [style.width]="size()" [style.height]="size()"></div>`,
+  template: `<ng-container *transloco="let t; prefix: 'shared.spinner'"><div class="spinner" role="status" [attr.aria-label]="t('loading')" [style.width]="size()" [style.height]="size()"></div></ng-container>`,
   styles: [`
     :host { display: inline-flex; }
     .spinner {

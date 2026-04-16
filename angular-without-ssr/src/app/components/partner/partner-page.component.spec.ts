@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { PartnerPageComponent } from './partner-page.component';
 import { PartnerFacadeService } from '../../services/facades/partner-facade.service';
@@ -27,7 +28,13 @@ describe('PartnerPageComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [PartnerPageComponent],
+      imports: [
+        PartnerPageComponent,
+        TranslocoTestingModule.forRoot({
+          langs: { pl: {} },
+          translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' }
+        })
+      ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: PartnerFacadeService, useValue: facadeMock },

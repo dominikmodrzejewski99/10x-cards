@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, WritableSignal, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
 import { UserDTO } from '../../../types';
 import { AuthStore } from '../store';
@@ -18,6 +18,7 @@ import { AuthStore } from '../store';
 })
 export class UserMenuComponent {
   private authStore = inject(AuthStore);
+  private transloco = inject(TranslocoService);
 
   public isAuthenticatedSignal: Signal<boolean> = this.authStore.isAuthenticated;
   public userSignal: Signal<UserDTO | null> = this.authStore.user;
@@ -50,7 +51,8 @@ export class UserMenuComponent {
   }
 
   public confirmDeleteAccount(): void {
-    if (this.deleteConfirmText.trim().toUpperCase() !== 'USUŃ') return;
+    const expected: string = this.transloco.translate('auth.userMenu.deleteConfirmWord');
+    if (this.deleteConfirmText.trim().toUpperCase() !== expected.toUpperCase()) return;
     this.isDeleteDialogVisibleSignal.set(false);
     this.authStore.deleteAccount();
   }

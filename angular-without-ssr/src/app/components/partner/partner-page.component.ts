@@ -1,4 +1,5 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { PartnerFacadeService } from '../../services/facades/partner-facade.service';
 import { PartnerDashboardComponent } from './partner-dashboard.component';
 import { PartnerOnboardingComponent } from './partner-onboarding.component';
@@ -18,7 +19,7 @@ import { PartnerOnboardingComponent } from './partner-onboarding.component';
  */
 @Component({
   selector: 'app-partner-page',
-  imports: [PartnerDashboardComponent, PartnerOnboardingComponent],
+  imports: [TranslocoDirective, PartnerDashboardComponent, PartnerOnboardingComponent],
   templateUrl: './partner-page.component.html',
   styleUrls: ['./partner-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

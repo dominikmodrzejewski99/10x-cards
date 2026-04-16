@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { Overlay, OverlayModule, OverlayRef } from '@angular/cdk/overlay';
 import { Subject } from 'rxjs';
 
@@ -37,7 +38,14 @@ describe('DialogComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [DialogComponent, OverlayModule],
+      imports: [
+        DialogComponent,
+        OverlayModule,
+        TranslocoTestingModule.forRoot({
+          langs: { pl: {} },
+          translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' }
+        })
+      ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: Overlay, useValue: overlayMock },

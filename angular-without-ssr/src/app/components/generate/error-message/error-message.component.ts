@@ -1,8 +1,9 @@
 import { Component, ChangeDetectionStrategy, input, output, InputSignal, OutputEmitterRef } from '@angular/core';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-error-message',
-  imports: [],
+  imports: [TranslocoDirective],
   templateUrl: './error-message.component.html',
   styleUrls: ['./error-message.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

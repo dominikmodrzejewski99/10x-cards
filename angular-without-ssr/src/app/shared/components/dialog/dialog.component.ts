@@ -13,14 +13,16 @@ import {
 } from '@angular/core';
 import { Overlay, OverlayRef, OverlayModule } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [OverlayModule],
+  imports: [OverlayModule, TranslocoDirective],
   template: `
     <ng-template #dialogTpl>
+      <ng-container *transloco="let t; prefix: 'shared.dialog'">
       <div class="app-dialog-panel"
            [style.max-width]="isMobile() ? 'none' : maxWidth()"
            role="dialog"
@@ -28,7 +30,7 @@ import { TemplatePortal } from '@angular/cdk/portal';
            [attr.aria-label]="header()">
         <div class="app-dialog-header">
           <h2 class="app-dialog-title">{{ header() }}</h2>
-          <button type="button" class="app-dialog-close" (click)="close()" aria-label="Zamknij">
+          <button type="button" class="app-dialog-close" (click)="close()" [attr.aria-label]="t('close')">
             <i class="pi pi-times" aria-hidden="true"></i>
           </button>
         </div>
@@ -39,6 +41,7 @@ import { TemplatePortal } from '@angular/cdk/portal';
           <ng-content select="[dialogFooter]" />
         </div>
       </div>
+      </ng-container>
     </ng-template>
   `,
   styleUrl: './dialog.component.scss'

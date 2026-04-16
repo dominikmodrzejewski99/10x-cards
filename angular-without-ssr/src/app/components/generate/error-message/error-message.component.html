@@ -1,21 +1,23 @@
+<ng-container *transloco="let t; prefix: 'generate.errorMessage'">
 @if (errorMessageSignal()) {
 <div class="error-msg fade-in">
   <div class="error-msg__icon">
     <i class="pi pi-exclamation-circle"></i>
   </div>
   <div class="error-msg__body">
-    <h3 class="error-msg__title">Wystąpił błąd</h3>
+    <h3 class="error-msg__title">{{ t('title') }}</h3>
     <p class="error-msg__text">{{ errorMessageSignal() }}</p>
     <div class="error-msg__actions">
       @if (retrySignal()) {
         <button type="button" class="error-msg__btn" (click)="retryAction()">
-          Spróbuj ponownie
+          {{ t('retry') }}
         </button>
       }
       <button type="button" class="error-msg__btn error-msg__btn--dismiss" (click)="dismissError()">
-        Zamknij
+        {{ t('dismiss') }}
       </button>
     </div>
   </div>
 </div>
 }
+</ng-container>

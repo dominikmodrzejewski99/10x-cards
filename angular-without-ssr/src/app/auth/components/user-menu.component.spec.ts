@@ -34,7 +34,7 @@ describe('UserMenuComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [UserMenuComponent, TranslocoTestingModule.forRoot({ langs: { pl: { auth: { userMenu: { endSession: 'Zakończ sesję', myAccount: 'Moje konto', settings: 'Ustawienia', deleteAccount: 'Usuń konto', logout: 'Wyloguj się', deleteAccountDialogTitle: 'Usuwanie konta', deleteAccountWarning: 'Ta operacja jest <strong>nieodwracalna</strong>. Wszystkie Twoje fiszki, zestawy i historia nauki zostaną trwale usunięte.', deleteAccountPrompt: 'Wpisz <strong>USUŃ</strong> aby potwierdzić:', cancel: 'Anuluj' } } } }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
+      imports: [UserMenuComponent, TranslocoTestingModule.forRoot({ langs: { pl: { auth: { userMenu: { endSession: 'Zakończ sesję', myAccount: 'Moje konto', settings: 'Ustawienia', deleteAccount: 'Usuń konto', logout: 'Wyloguj się', deleteAccountDialogTitle: 'Usuwanie konta', deleteAccountWarning: 'Ta operacja jest <strong>nieodwracalna</strong>. Wszystkie Twoje fiszki, zestawy i historia nauki zostaną trwale usunięte.', deleteAccountPrompt: 'Wpisz <strong>USUŃ</strong> aby potwierdzić:', deleteConfirmWord: 'USUŃ', cancel: 'Anuluj' } } } }, translocoConfig: { availableLangs: ['pl', 'en'], defaultLang: 'pl' } })],
       providers: [
         provideRouter([]),
         { provide: AuthStore, useValue: mockAuthStore },
