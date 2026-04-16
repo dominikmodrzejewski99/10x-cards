@@ -59,9 +59,10 @@ export class ExploreFacadeService {
       this.loadSets();
     });
 
-    this.prefsService.isDialogDismissed('copy_set_confirm').subscribe(
-      (dismissed: boolean) => this.skipCopyConfirm = dismissed,
-    );
+    this.prefsService.isDialogDismissed('copy_set_confirm').subscribe({
+      next: (dismissed: boolean) => this.skipCopyConfirm = dismissed,
+      error: (err: unknown) => this.logger.error('ExploreFacadeService.init.isDialogDismissed', err),
+    });
 
     this.loadPopularTags();
     this.loadSets();

@@ -196,10 +196,8 @@ export class StudyFacadeService {
       next: () => {
         // Record the billable usage event (fire-and-forget — failures do not
         // block the study flow). Server resolves author_id from the flashcard.
-        // Errors are logged so partner-program billing drops are visible in Sentry.
-        this.usageEvents.recordReview(card.flashcard.id, this.currentSessionId).subscribe({
-          error: (err: unknown) => this.logger.error('StudyFacadeService.recordReview', err),
-        });
+        // Errors are caught and logged inside UsageEventsApiService.
+        this.usageEvents.recordReview(card.flashcard.id, this.currentSessionId).subscribe();
 
         this._sessionResults.update((r: SessionResultDTO) => ({
           known: quality >= 4 ? r.known + 1 : r.known,

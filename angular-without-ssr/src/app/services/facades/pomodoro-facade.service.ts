@@ -24,13 +24,17 @@ export class PomodoroFacadeService {
   public readonly sessionsCompletedSignal: Signal<number> = this.pomodoroService.sessionsCompleted;
 
   public init(): void {
-    this.pomodoroService.loadSettings().subscribe(() => {
-      this.pomodoroService.restoreState();
+    this.pomodoroService.loadSettings().subscribe({
+      next: () => this.pomodoroService.restoreState(),
+      error: (err: unknown) => this.logger.error('PomodoroFacadeService.init.loadSettings', err),
     });
 
-    this.prefsService.getPreferences().subscribe((prefs) => {
-      this._focusReminderDismissed.set(prefs.pomodoro_focus_reminder_dismissed ?? false);
-      this._sessionsBeforeLongBreak.set(prefs.pomodoro_sessions_before_long_break ?? 4);
+    this.prefsService.getPreferences().subscribe({
+      next: (prefs) => {
+        this._focusReminderDismissed.set(prefs.pomodoro_focus_reminder_dismissed ?? false);
+        this._sessionsBeforeLongBreak.set(prefs.pomodoro_sessions_before_long_break ?? 4);
+      },
+      error: (err: unknown) => this.logger.error('PomodoroFacadeService.init.getPreferences', err),
     });
   }
 
