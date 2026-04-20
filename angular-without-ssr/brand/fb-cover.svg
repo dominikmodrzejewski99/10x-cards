@@ -15,18 +15,16 @@
   <rect width="820" height="312" fill="#F8FAFC"/>
   <rect width="820" height="312" fill="url(#grid-c)"/>
 
-  <g transform="translate(130,156)">
-    <g transform="rotate(-6)">
-      <rect x="-90" y="-90" width="180" height="180" rx="14" fill="#EDE7D7"/>
-    </g>
-    <g transform="rotate(3)" filter="url(#cshadow)">
-      <rect x="-90" y="-90" width="180" height="180" rx="14" fill="#ffffff"/>
-      <g transform="translate(-48,-48)">
-        <svg width="96" height="96" viewBox="0 0 100 100" fill="none">
-          <rect x="10" y="16" width="62" height="82" rx="10" fill="none" stroke="#0F172A" stroke-width="5"/>
-          <rect x="28" y="2" width="62" height="82" rx="10" fill="#0F172A"/>
-          <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#3B4CCA" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+  <g transform="translate(130,156)" filter="url(#cshadow)">
+    <g transform="scale(1.4)">
+      <g transform="translate(50 54) rotate(-10) translate(-28 -34)">
+        <rect width="56" height="68" rx="8" fill="#EDEFFF"/>
+        <rect x="10" y="14" width="36" height="3" rx="1.5" fill="#3B4CCA" opacity="0.45"/>
+        <rect x="10" y="22" width="24" height="3" rx="1.5" fill="#3B4CCA" opacity="0.45"/>
+      </g>
+      <g transform="translate(52 50) rotate(8) translate(-28 -34)">
+        <rect width="56" height="68" rx="8" fill="#3B4CCA"/>
+        <text x="28" y="48" text-anchor="middle" font-family="Instrument Serif, Georgia, serif" font-size="42" font-style="italic" fill="#ffffff">?</text>
       </g>
     </g>
   </g>

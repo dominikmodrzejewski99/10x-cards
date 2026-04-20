@@ -17,14 +17,16 @@
   <text x="80" y="470" class="sans" font-size="20" fill="#1E293B">Algorytm SM-2 planuje powtórki, Ty tylko odwracasz karty.</text>
   <text x="80" y="500" class="sans" font-size="20" fill="#1E293B">Reszta działa sama.</text>
 
-  <g transform="translate(80,560)">
-    <g transform="scale(0.4)">
-      <rect x="10" y="16" width="62" height="82" rx="10" fill="#ffffff" stroke="#0F172A" stroke-width="5"/>
-      <rect x="28" y="2" width="62" height="82" rx="10" fill="#0F172A"/>
-      <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#3B4CCA" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(80,545) scale(0.4)">
+    <g transform="translate(50 54) rotate(-10) translate(-28 -34)">
+      <rect width="56" height="68" rx="8" fill="#ffffff"/>
     </g>
-    <text x="54" y="32" class="display" font-size="34" fill="#0F172A" letter-spacing="-0.34">Meml<tspan font-style="italic" fill="#3B4CCA">o</tspan></text>
+    <g transform="translate(52 50) rotate(8) translate(-28 -34)">
+      <rect width="56" height="68" rx="8" fill="#3B4CCA"/>
+      <text x="28" y="46" text-anchor="middle" font-family="Instrument Serif, Georgia, serif" font-size="40" font-style="italic" fill="#FFFFFF">?</text>
+    </g>
   </g>
+  <text x="140" y="592" class="display" font-size="34" fill="#0F172A" letter-spacing="-0.34">Meml<tspan font-style="italic" fill="#3B4CCA">o</tspan></text>
 
   <rect x="720" y="0" width="480" height="630" fill="#0F172A"/>
   <text x="780" y="100" class="mono" font-size="13" letter-spacing="2.34" fill="#8a8579">· DZIŚ</text>

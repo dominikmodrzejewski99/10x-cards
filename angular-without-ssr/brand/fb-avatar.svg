@@ -1,17 +1,22 @@
 <svg width="640" height="640" viewBox="0 0 640 640" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="glow" cx="50%" cy="120%" r="60%">
+    <radialGradient id="glow" cx="50%" cy="110%" r="60%">
       <stop offset="0%" stop-color="#EDEFFF"/>
       <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <rect width="640" height="640" fill="#ffffff"/>
   <rect width="640" height="640" fill="url(#glow)"/>
-  <circle cx="320" cy="320" r="270" fill="none" stroke="#E2E8F0" stroke-width="1.5"/>
-  <g transform="translate(160,160)">
-    <svg width="320" height="320" viewBox="0 0 100 100" fill="none">
-      <rect x="14" y="14" width="72" height="72" rx="14" fill="#3B4CCA"/>
-      <path d="M32 34 L32 68 L50 54 L68 68 L68 34" stroke="#ffffff" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
+
+  <g transform="translate(110,110) scale(4.2)">
+    <g transform="translate(50 54) rotate(-10) translate(-28 -34)">
+      <rect width="56" height="68" rx="8" fill="#EDEFFF"/>
+      <rect x="10" y="14" width="36" height="3" rx="1.5" fill="#3B4CCA" opacity="0.45"/>
+      <rect x="10" y="22" width="24" height="3" rx="1.5" fill="#3B4CCA" opacity="0.45"/>
+    </g>
+    <g transform="translate(52 50) rotate(8) translate(-28 -34)">
+      <rect width="56" height="68" rx="8" fill="#3B4CCA"/>
+      <text x="28" y="48" text-anchor="middle" font-family="Instrument Serif, Georgia, serif" font-size="42" font-style="italic" fill="#ffffff">?</text>
+    </g>
   </g>
 </svg>

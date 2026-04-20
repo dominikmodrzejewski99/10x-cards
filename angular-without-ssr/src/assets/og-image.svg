@@ -21,14 +21,16 @@
   <text x="96" y="280" class="display" font-size="140" fill="#0F172A" letter-spacing="-2.8">Przestań zapominać.</text>
   <text x="96" y="420" class="display" font-size="140" fill="#3B4CCA" font-style="italic" letter-spacing="-2.8">Zacznij pamiętać.</text>
 
-  <g transform="translate(96,530)">
-    <g transform="scale(0.44)">
-      <rect x="10" y="16" width="62" height="82" rx="10" fill="#ffffff" stroke="#0F172A" stroke-width="5"/>
-      <rect x="28" y="2" width="62" height="82" rx="10" fill="#0F172A"/>
-      <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#3B4CCA" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(96,510) scale(0.44)">
+    <g transform="translate(50 54) rotate(-10) translate(-28 -34)">
+      <rect width="56" height="68" rx="8" fill="#EDEFFF"/>
     </g>
-    <text x="58" y="38" class="display" font-size="40" fill="#0F172A" letter-spacing="-0.4">Meml<tspan font-style="italic" fill="#3B4CCA">o</tspan></text>
+    <g transform="translate(52 50) rotate(8) translate(-28 -34)">
+      <rect width="56" height="68" rx="8" fill="#3B4CCA"/>
+      <text x="28" y="46" text-anchor="middle" font-family="Instrument Serif, Georgia, serif" font-size="40" font-style="italic" fill="#FFFFFF">?</text>
+    </g>
   </g>
+  <text x="148" y="568" class="display" font-size="40" fill="#0F172A" letter-spacing="-0.4">Meml<tspan font-style="italic" fill="#3B4CCA">o</tspan></text>
 
   <text x="1152" y="570" class="mono" font-size="14" fill="#1E293B" text-anchor="end">memlo.app</text>
 </svg>
