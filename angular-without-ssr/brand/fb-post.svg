@@ -1,0 +1,36 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;display=swap');
+      .display { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+      .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+      .sans { font-family: 'Inter', -apple-system, sans-serif; }
+    </style>
+  </defs>
+  <rect width="1200" height="630" fill="#EDEFFF"/>
+
+  <text x="80" y="120" class="mono" font-size="14" letter-spacing="2.8" fill="#475569">· NOWE OD MEMLO</text>
+
+  <text x="80" y="320" class="display" font-size="108" fill="#0F172A" letter-spacing="-2.16">Twoje fiszki,</text>
+  <text x="80" y="420" class="display" font-size="108" fill="#3B4CCA" font-style="italic" letter-spacing="-2.16">jak należy.</text>
+
+  <text x="80" y="470" class="sans" font-size="20" fill="#1E293B">Algorytm SM-2 planuje powtórki, Ty tylko odwracasz karty.</text>
+  <text x="80" y="500" class="sans" font-size="20" fill="#1E293B">Reszta działa sama.</text>
+
+  <g transform="translate(80,560)">
+    <g transform="scale(0.4)">
+      <rect x="10" y="16" width="62" height="82" rx="10" fill="#ffffff" stroke="#0F172A" stroke-width="5"/>
+      <rect x="28" y="2" width="62" height="82" rx="10" fill="#0F172A"/>
+      <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#3B4CCA" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <text x="54" y="32" class="display" font-size="34" fill="#0F172A" letter-spacing="-0.34">Meml<tspan font-style="italic" fill="#3B4CCA">o</tspan></text>
+  </g>
+
+  <rect x="720" y="0" width="480" height="630" fill="#0F172A"/>
+  <text x="780" y="100" class="mono" font-size="13" letter-spacing="2.34" fill="#8a8579">· DZIŚ</text>
+  <text x="780" y="310" class="display" font-size="200" fill="#3B4CCA" letter-spacing="-4">12</text>
+  <text x="780" y="380" class="display" font-size="46" fill="#F5F1E8" letter-spacing="-0.46">powtórek</text>
+  <text x="780" y="428" class="display" font-size="46" fill="#F5F1E8" letter-spacing="-0.46">czeka.</text>
+  <line x1="780" y1="540" x2="1140" y2="540" stroke="#F5F1E8" stroke-opacity="0.18" stroke-width="1"/>
+  <text x="780" y="590" class="mono" font-size="12" letter-spacing="1.68" fill="#8a8579">MEMLO.APP</text>
+</svg>

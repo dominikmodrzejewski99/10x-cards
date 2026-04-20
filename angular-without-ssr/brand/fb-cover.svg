@@ -1,0 +1,38 @@
+<svg width="820" height="312" viewBox="0 0 820 312" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=JetBrains+Mono:wght@500&amp;display=swap');
+      .display { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+      .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    </style>
+    <pattern id="grid-c" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#0F172A" stroke-width="1" stroke-opacity="0.035"/>
+    </pattern>
+    <filter id="cshadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  <rect width="820" height="312" fill="#F8FAFC"/>
+  <rect width="820" height="312" fill="url(#grid-c)"/>
+
+  <g transform="translate(130,156)">
+    <g transform="rotate(-6)">
+      <rect x="-90" y="-90" width="180" height="180" rx="14" fill="#EDE7D7"/>
+    </g>
+    <g transform="rotate(3)" filter="url(#cshadow)">
+      <rect x="-90" y="-90" width="180" height="180" rx="14" fill="#ffffff"/>
+      <g transform="translate(-48,-48)">
+        <svg width="96" height="96" viewBox="0 0 100 100" fill="none">
+          <rect x="10" y="16" width="62" height="82" rx="10" fill="none" stroke="#0F172A" stroke-width="5"/>
+          <rect x="28" y="2" width="62" height="82" rx="10" fill="#0F172A"/>
+          <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#3B4CCA" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </g>
+    </g>
+  </g>
+
+  <text x="260" y="76" class="mono" font-size="10" letter-spacing="2.2" fill="#475569">· MEMLO · INTELIGENTNE FISZKI</text>
+  <text x="260" y="142" class="display" font-size="58" fill="#0F172A" letter-spacing="-1.16">Przestań zapominać.</text>
+  <text x="260" y="204" class="display" font-size="58" fill="#3B4CCA" font-style="italic" letter-spacing="-1.16">Zacznij pamiętać.</text>
+  <text x="260" y="246" class="mono" font-size="12" letter-spacing="1.44" fill="#1E293B">MEMLO.APP →</text>
+</svg>

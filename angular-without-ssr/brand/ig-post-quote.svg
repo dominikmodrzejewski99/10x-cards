@@ -1,0 +1,27 @@
+<svg width="1080" height="1080" viewBox="0 0 1080 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=JetBrains+Mono:wght@500&amp;display=swap');
+      .display { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+      .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    </style>
+  </defs>
+  <rect width="1080" height="1080" fill="#0F172A"/>
+
+  <text x="80" y="280" class="display" font-size="260" fill="#3B4CCA" fill-opacity="0.9">&#8222;</text>
+
+  <text x="92" y="400" class="display" font-size="84" fill="#F5F1E8" letter-spacing="-0.84">Pamięć nie jest</text>
+  <text x="92" y="496" class="display" font-size="84" fill="#F5F1E8" letter-spacing="-0.84">kwestią <tspan font-style="italic" fill="#3B4CCA">talentu</tspan>.</text>
+  <text x="92" y="592" class="display" font-size="84" fill="#F5F1E8" letter-spacing="-0.84">To kwestia <tspan font-style="italic" fill="#3B4CCA">systemu</tspan>.</text>
+
+  <text x="92" y="988" class="mono" font-size="16" letter-spacing="2.88" fill="#8a8579">— MANIFEST MEMLO</text>
+
+  <g transform="translate(880,960)">
+    <g transform="scale(0.36)">
+      <rect x="10" y="16" width="62" height="82" rx="10" fill="none" stroke="#F5F1E8" stroke-width="5"/>
+      <rect x="28" y="2" width="62" height="82" rx="10" fill="#F5F1E8"/>
+      <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#3B4CCA" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <text x="52" y="32" class="display" font-size="32" fill="#F5F1E8" letter-spacing="-0.32">Meml<tspan font-style="italic" fill="#3B4CCA">o</tspan></text>
+  </g>
+</svg>

@@ -1,0 +1,33 @@
+<svg width="1080" height="1080" viewBox="0 0 1080 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=JetBrains+Mono:wght@500&amp;display=swap');
+      .display { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+      .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    </style>
+  </defs>
+  <rect width="1080" height="1080" fill="#3B4CCA"/>
+
+  <text x="72" y="98" class="mono" font-size="18" letter-spacing="3.6" fill="#ffffff" fill-opacity="0.75">· TIP #01</text>
+  <text x="1008" y="98" class="mono" font-size="18" letter-spacing="3.6" fill="#ffffff" fill-opacity="0.75" text-anchor="end">SCIENCE OF MEMORY</text>
+
+  <text x="72" y="300" class="mono" font-size="18" letter-spacing="3.6" fill="#ffffff" fill-opacity="0.8">EFEKT ODSTĘPU</text>
+
+  <text x="72" y="430" class="display" font-size="120" fill="#ffffff" letter-spacing="-2.4">3 powtórki rozłożone</text>
+  <text x="72" y="546" class="display" font-size="120" fill="#ffffff" letter-spacing="-2.4">w czasie działają</text>
+  <text x="72" y="672" class="display" font-size="120" fill="#ffffff" font-style="italic" letter-spacing="-2.4" text-decoration="underline">200% lepiej</text>
+  <line x1="72" y1="690" x2="530" y2="690" stroke="#ffffff" stroke-width="4"/>
+  <text x="72" y="788" class="display" font-size="120" fill="#ffffff" letter-spacing="-2.4">niż 10 pod rząd.</text>
+
+  <text x="72" y="980" class="mono" font-size="15" fill="#ffffff" fill-opacity="0.9">Źródło: Ebbinghaus (1885),</text>
+  <text x="72" y="1005" class="mono" font-size="15" fill="#ffffff" fill-opacity="0.9">Cepeda et al. (2006)</text>
+
+  <g transform="translate(870,960)">
+    <g transform="scale(0.44)">
+      <rect x="10" y="16" width="62" height="82" rx="10" fill="none" stroke="#ffffff" stroke-width="5"/>
+      <rect x="28" y="2" width="62" height="82" rx="10" fill="#ffffff"/>
+      <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#3B4CCA" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <text x="64" y="40" class="display" font-size="40" fill="#ffffff" letter-spacing="-0.4">Meml<tspan font-style="italic">o</tspan></text>
+  </g>
+</svg>

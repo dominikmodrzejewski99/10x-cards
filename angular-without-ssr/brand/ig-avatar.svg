@@ -1,0 +1,21 @@
+<svg width="640" height="640" viewBox="0 0 640 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="lift" cx="30%" cy="25%" r="55%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="drop" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="640" height="640" fill="#3B4CCA"/>
+  <rect width="640" height="640" fill="url(#lift)"/>
+  <circle cx="320" cy="320" r="260" fill="none" stroke="#ffffff" stroke-opacity="0.14" stroke-width="1.5"/>
+  <circle cx="320" cy="320" r="210" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1.5"/>
+  <g transform="translate(170,170)" filter="url(#drop)">
+    <svg width="300" height="300" viewBox="0 0 100 100" fill="none">
+      <rect x="14" y="14" width="72" height="72" rx="14" fill="#ffffff"/>
+      <path d="M32 34 L32 68 L50 54 L68 68 L68 34" stroke="#3B4CCA" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </g>
+</svg>

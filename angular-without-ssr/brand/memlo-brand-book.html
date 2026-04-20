@@ -1,0 +1,957 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Memlo — Brand Book</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "palette": "memlo",
+  "accent": "#3b4cca",
+  "surface": "#F8FAFC",
+  "ink": "#0F172A",
+  "showGrid": false
+}/*EDITMODE-END*/;
+</script>
+<style>
+  :root{
+    /* Memlo tokens — from live site */
+    --ink:#0F172A;          /* text-heading */
+    --ink-2:#1E293B;        /* text */
+    --muted:#475569;        /* text-secondary */
+    --surface:#F8FAFC;      /* bg */
+    --surface-2:#f6f7fb;    /* bg-alt */
+    --paper:#edefff;        /* primary-light */
+    --card:#ffffff;         /* white */
+    --accent:#3b4cca;       /* primary */
+    --accent-2:#2f3db3;     /* primary-hover */
+    --accent-ink:#fff;
+    --line:#E2E8F0;         /* border */
+    --line-2:#edeff5;       /* border-light */
+
+    --font-display:"Instrument Serif", ui-serif, Georgia, serif;
+    --font-sans:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:var(--font-sans);
+    color:var(--ink);
+    background:var(--surface);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    font-feature-settings:"cv11","ss01";
+  }
+  a{color:inherit}
+
+  /* ---------- page shell ---------- */
+  .page{max-width:1240px; margin:0 auto; padding:56px 40px 120px}
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-bottom:28px; border-bottom:1px solid var(--line);
+    margin-bottom:56px;
+  }
+  .topbar .brand{display:flex; align-items:center; gap:12px; font-family:var(--font-display); font-size:26px; letter-spacing:-.01em}
+  .topbar .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--accent)}
+  .topbar .meta{font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted)}
+
+  .hero{
+    display:grid; grid-template-columns: 1.2fr .8fr; gap:40px; align-items:end;
+    padding:40px 0 64px;
+  }
+  .eyebrow{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--muted); margin-bottom:24px;
+  }
+  h1.title{
+    font-family:var(--font-display); font-weight:400;
+    font-size:clamp(56px, 9vw, 128px); line-height:.95; letter-spacing:-.02em;
+    margin:0 0 8px;
+  }
+  h1.title em{font-style:italic; color:var(--accent)}
+  .kicker{
+    font-size:17px; line-height:1.5; color:var(--ink-2); max-width:40ch;
+  }
+  .hero .side{
+    font-family:var(--font-mono); font-size:12px; line-height:1.7;
+    color:var(--muted); padding-bottom:14px;
+  }
+  .hero .side b{color:var(--ink); font-weight:500}
+
+  /* ---------- sections ---------- */
+  section.block{margin:96px 0}
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:24px; margin-bottom:24px; padding-bottom:14px; border-bottom:1px solid var(--line);
+  }
+  .section-head h2{
+    font-family:var(--font-display); font-weight:400;
+    font-size:44px; letter-spacing:-.01em; margin:0;
+  }
+  .section-head .num{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted);
+  }
+  .section-head .desc{
+    font-size:14px; color:var(--ink-2); max-width:42ch; text-align:right;
+  }
+
+  /* ---------- asset cards (previews) ---------- */
+  .grid{display:grid; gap:18px}
+  .g-2{grid-template-columns:repeat(2,1fr)}
+  .g-3{grid-template-columns:repeat(3,1fr)}
+  .g-4{grid-template-columns:repeat(4,1fr)}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    display:flex; flex-direction:column;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .card:hover{transform:translateY(-2px); box-shadow:0 16px 40px -20px rgba(0,0,0,.15)}
+  .card .frame{
+    position:relative;
+    background:
+      linear-gradient(var(--line-2) 1px, transparent 1px) 0 0/20px 20px,
+      linear-gradient(90deg, var(--line-2) 1px, transparent 1px) 0 0/20px 20px,
+      #fafafa;
+    display:flex; align-items:center; justify-content:center;
+    padding:18px;
+    min-height:180px;
+    overflow:hidden;
+  }
+  .card .frame.ink{background:var(--ink)}
+  .card .foot{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 16px; border-top:1px solid var(--line);
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.06em;
+    color:var(--muted); text-transform:uppercase; background:#fff;
+  }
+  .card .foot b{color:var(--ink); font-weight:500; text-transform:none; letter-spacing:0; font-family:var(--font-sans); font-size:13px}
+  .card .foot a{text-decoration:none; padding:5px 10px; border:1px solid var(--line); border-radius:999px; color:var(--ink)}
+  .card .foot a:hover{background:var(--ink); color:#fff; border-color:var(--ink)}
+
+  /* ---------- scaled previews: wrap a fixed-size asset, scale to fit ---------- */
+  .scaler{position:relative; width:100%; aspect-ratio:var(--ar, 1/1); overflow:hidden; border-radius:8px}
+  .scaler > .asset{
+    position:absolute; top:0; left:0;
+    transform-origin:top left;
+  }
+
+  /* =====================================================
+     LOGO SYSTEM
+     ===================================================== */
+  .logo{
+    display:inline-flex; align-items:center; gap:.42em;
+    font-family:var(--font-display); font-weight:400;
+    letter-spacing:-.01em;
+    color:var(--ink);
+    line-height:1;
+  }
+  .logo .mark{
+    --s:1em;
+    width:var(--s); height:var(--s);
+    display:inline-grid; place-items:center;
+    flex:none;
+  }
+  .logo .mark svg{width:100%; height:100%; display:block}
+  .logo .wordmark{display:inline-flex; align-items:baseline; gap:.03em}
+  .logo .wordmark i{font-style:italic; color:var(--accent)}
+  .logo.on-dark{color:#F5F1E8}
+
+  /* logo size helpers */
+  .logo.sz-sm{font-size:28px}
+  .logo.sz-md{font-size:56px}
+  .logo.sz-lg{font-size:96px}
+  .logo.sz-xl{font-size:140px}
+
+  /* ---------- palette ---------- */
+  .swatch{
+    border-radius:12px; border:1px solid var(--line);
+    padding:20px; aspect-ratio: 1.2/1;
+    display:flex; flex-direction:column; justify-content:space-between;
+    font-family:var(--font-mono); font-size:11px;
+  }
+  .swatch .name{font-family:var(--font-sans); font-size:14px; font-weight:500}
+  .swatch .hex{letter-spacing:.08em; opacity:.7}
+  .swatch.ink{background:var(--ink); color:#F5F1E8; border-color:transparent}
+  .swatch.accent{background:var(--accent); color:#fff; border-color:transparent}
+  .swatch.surface{background:var(--surface)}
+  .swatch.paper{background:var(--paper)}
+  .swatch.surf2{background:var(--surface-2)}
+  .swatch.card{background:#fff}
+
+  /* ---------- type specimen ---------- */
+  .type-grid{display:grid; grid-template-columns: 1fr 1fr; gap:28px}
+  .type-card{background:#fff; border:1px solid var(--line); border-radius:14px; padding:28px 30px}
+  .type-card .label{font-family:var(--font-mono); font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.14em; margin-bottom:16px}
+  .type-card .big{font-family:var(--font-display); font-size:96px; line-height:.9; letter-spacing:-.02em; margin:0 0 10px}
+  .type-card.sans .big{font-family:var(--font-sans); font-weight:500; font-size:88px; letter-spacing:-.03em}
+  .type-card .meta{font-family:var(--font-mono); font-size:11px; color:var(--muted); display:flex; justify-content:space-between; border-top:1px solid var(--line); padding-top:14px; margin-top:18px}
+  .type-card .sample{font-size:14px; line-height:1.55; color:var(--ink-2); max-width:46ch}
+
+  /* ---------- tweaks panel ---------- */
+  .tweaks{
+    position:fixed; right:20px; bottom:20px; z-index:50;
+    width:280px; background:#fff; border:1px solid var(--line); border-radius:14px;
+    padding:18px; box-shadow:0 20px 50px -20px rgba(0,0,0,.25);
+    font-family:var(--font-sans); font-size:13px;
+    display:none;
+  }
+  .tweaks.open{display:block}
+  .tweaks h4{margin:0 0 14px; font-family:var(--font-display); font-weight:400; font-size:20px}
+  .tweaks .row{margin-bottom:14px}
+  .tweaks label{display:block; font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); margin-bottom:6px}
+  .tweaks .palettes{display:grid; grid-template-columns:repeat(4,1fr); gap:6px}
+  .tweaks .palettes button{
+    aspect-ratio:1/1; border-radius:8px; border:2px solid transparent; cursor:pointer;
+    position:relative; overflow:hidden; padding:0;
+  }
+  .tweaks .palettes button[aria-selected="true"]{border-color:var(--ink)}
+  .tweaks .palettes button span{position:absolute; inset:0; display:block}
+  .tweaks .palettes button span:nth-child(1){top:0; bottom:50%}
+  .tweaks .palettes button span:nth-child(2){top:50%; bottom:0; right:50%}
+  .tweaks .palettes button span:nth-child(3){top:50%; bottom:0; left:50%}
+  .tweaks input[type="color"]{width:100%; height:34px; border:1px solid var(--line); border-radius:6px; background:none; padding:2px}
+
+  /* ---------- print ---------- */
+  @media print{
+    body{background:#fff}
+    .tweaks{display:none !important}
+    .page{max-width:none; padding:20mm}
+    .card{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ========== TOP BAR ========== -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="dot"></span>
+      Memlo <span style="color:var(--muted); font-family:var(--font-mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase; margin-left:6px">Brand Book</span>
+    </div>
+    <div class="meta">v1.0 · 04.2026 · internal</div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero">
+    <div>
+      <div class="eyebrow">00 — Identity</div>
+      <h1 class="title">Przestań<br>zapominać.<br><em>Zacznij pamiętać.</em></h1>
+      <p class="kicker">System wizualny dla Memlo — aplikacji do inteligentnych powtórek. Papierowa ciepłota, dyscyplina siatki, jeden akcent który wraca w każdym touchpoincie.</p>
+    </div>
+    <aside class="side">
+      <b>Spis treści</b><br>
+      01 &nbsp; Logo &amp; monogram<br>
+      02 &nbsp; Paleta kolorów<br>
+      03 &nbsp; Typografia<br>
+      04 &nbsp; OG &amp; link preview<br>
+      05 &nbsp; Instagram<br>
+      06 &nbsp; Facebook<br>
+      07 &nbsp; Avatary &amp; favicon
+    </aside>
+  </section>
+
+  <!-- ========== 01 LOGO ========== -->
+  <section class="block" id="s-logo">
+    <div class="section-head">
+      <div>
+        <div class="num">01 — Logo</div>
+        <h2>Znak &amp; wordmark</h2>
+      </div>
+      <div class="desc">Monogram zbudowany z odwróconej karty. Wordmark łączy serif (Instrument Serif) z kursywą na ostatniej literze — sygnał "mem" (pamięć) + "o" jako pętla powtórki.</div>
+    </div>
+
+    <!-- wordmarks -->
+    <div class="grid g-2" style="margin-bottom:18px">
+      <div class="card">
+        <div class="frame" style="min-height:280px">
+          <div class="logo sz-xl">
+            <span class="mark"><svg viewBox="0 0 100 100" fill="none">
+              <rect x="10" y="16" width="62" height="82" rx="10" fill="#fff" stroke="currentColor" stroke-width="5"/>
+              <rect x="28" y="2" width="62" height="82" rx="10" fill="currentColor"/>
+              <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="var(--accent)" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg></span>
+            <span class="wordmark">Meml<i>o</i></span>
+          </div>
+        </div>
+        <div class="foot"><b>Primary lockup</b><span>mark + wordmark</span></div>
+      </div>
+      <div class="card">
+        <div class="frame ink" style="min-height:280px">
+          <div class="logo sz-xl on-dark">
+            <span class="mark"><svg viewBox="0 0 100 100" fill="none">
+              <rect x="10" y="16" width="62" height="82" rx="10" fill="transparent" stroke="currentColor" stroke-width="5"/>
+              <rect x="28" y="2" width="62" height="82" rx="10" fill="currentColor"/>
+              <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="var(--accent)" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg></span>
+            <span class="wordmark">Meml<i>o</i></span>
+          </div>
+        </div>
+        <div class="foot"><b>Reverse</b><span>on ink</span></div>
+      </div>
+    </div>
+
+    <!-- size scale + mark only -->
+    <div class="grid g-3">
+      <div class="card">
+        <div class="frame" style="gap:26px; flex-direction:column; min-height:220px">
+          <div class="logo sz-lg"><span class="mark"><svg viewBox="0 0 100 100" fill="none"><rect x="10" y="16" width="62" height="82" rx="10" fill="#fff" stroke="currentColor" stroke-width="5"/><rect x="28" y="2" width="62" height="82" rx="10" fill="currentColor"/><path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="var(--accent)" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="wordmark">Meml<i>o</i></span></div>
+          <div class="logo sz-md"><span class="mark"><svg viewBox="0 0 100 100" fill="none"><rect x="10" y="16" width="62" height="82" rx="10" fill="#fff" stroke="currentColor" stroke-width="5"/><rect x="28" y="2" width="62" height="82" rx="10" fill="currentColor"/><path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="var(--accent)" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="wordmark">Meml<i>o</i></span></div>
+          <div class="logo sz-sm"><span class="mark"><svg viewBox="0 0 100 100" fill="none"><rect x="10" y="16" width="62" height="82" rx="10" fill="#fff" stroke="currentColor" stroke-width="5"/><rect x="28" y="2" width="62" height="82" rx="10" fill="currentColor"/><path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="var(--accent)" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="wordmark">Meml<i>o</i></span></div>
+        </div>
+        <div class="foot"><b>Size scale</b><span>96 / 56 / 28 px</span></div>
+      </div>
+      <div class="card">
+        <div class="frame" style="background:var(--accent)">
+          <svg width="140" height="140" viewBox="0 0 100 100" fill="none">
+            <rect x="10" y="16" width="62" height="82" rx="10" fill="#F5F1E8" stroke="#161512" stroke-width="5"/>
+            <rect x="28" y="2" width="62" height="82" rx="10" fill="#161512"/>
+            <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#F5F1E8" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="foot"><b>Monogram</b><span>stacked cards</span></div>
+      </div>
+      <div class="card">
+        <div class="frame">
+          <div style="display:grid; grid-template-columns:repeat(3,64px); gap:16px">
+            <svg viewBox="0 0 100 100" fill="none"><rect x="10" y="16" width="62" height="82" rx="10" fill="#fff" stroke="#161512" stroke-width="5"/><rect x="28" y="2" width="62" height="82" rx="10" fill="#161512"/><path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="var(--accent)" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg viewBox="0 0 100 100" fill="none"><rect x="10" y="16" width="62" height="82" rx="10" fill="#fff" stroke="#161512" stroke-width="5"/><rect x="28" y="2" width="62" height="82" rx="10" fill="var(--accent)"/><path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg viewBox="0 0 100 100" fill="none"><rect x="10" y="16" width="62" height="82" rx="10" fill="none" stroke="#161512" stroke-width="5"/><rect x="28" y="2" width="62" height="82" rx="10" fill="none" stroke="#161512" stroke-width="5"/><path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#161512" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="foot"><b>Colorways</b><span>fill / accent / outline</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 02 PALETTE ========== -->
+  <section class="block" id="s-palette">
+    <div class="section-head">
+      <div>
+        <div class="num">02 — Colors</div>
+        <h2>Paleta</h2>
+      </div>
+      <div class="desc">Ciepła kość słoniowa jako tło (papier notatnika), atramentowy grafit jako tekst, ognisty koralowy jako akcent — jeden, konsekwentny.</div>
+    </div>
+    <div class="grid g-4">
+      <div class="swatch accent"><div class="name">Primary · Indigo</div><div class="hex">#3B4CCA · --accent</div></div>
+      <div class="swatch" style="background:#2f3db3; color:#fff; border-color:transparent"><div class="name">Primary Hover</div><div class="hex">#2F3DB3 · --accent-2</div></div>
+      <div class="swatch paper"><div class="name">Primary Light</div><div class="hex">#EDEFFF · --paper</div></div>
+      <div class="swatch ink"><div class="name">Heading</div><div class="hex">#0F172A · --ink</div></div>
+      <div class="swatch" style="background:#1E293B; color:#F8FAFC; border-color:transparent"><div class="name">Text</div><div class="hex">#1E293B · --ink-2</div></div>
+      <div class="swatch" style="background:#475569; color:#fff; border-color:transparent"><div class="name">Secondary</div><div class="hex">#475569 · --muted</div></div>
+      <div class="swatch surface"><div class="name">Background</div><div class="hex">#F8FAFC · --surface</div></div>
+      <div class="swatch card"><div class="name">White</div><div class="hex">#FFFFFF · --card</div></div>
+      <div class="swatch" style="background:#15803d; color:#fff; border-color:transparent"><div class="name">Success</div><div class="hex">#15803D</div></div>
+      <div class="swatch" style="background:#dc2626; color:#fff; border-color:transparent"><div class="name">Error</div><div class="hex">#DC2626</div></div>
+      <div class="swatch" style="background:#b45309; color:#fff; border-color:transparent"><div class="name">Warning</div><div class="hex">#B45309</div></div>
+      <div class="swatch" style="background:#7c3aed; color:#fff; border-color:transparent"><div class="name">Purple</div><div class="hex">#7C3AED</div></div>
+    </div>
+  </section>
+
+  <!-- ========== 03 TYPE ========== -->
+  <section class="block" id="s-type">
+    <div class="section-head">
+      <div>
+        <div class="num">03 — Typography</div>
+        <h2>Typografia</h2>
+      </div>
+      <div class="desc">Instrument Serif dla tytułów (ciepło, redakcyjny charakter). Geist dla UI i tekstu (neutralny, świetny na ekranie). Geist Mono do metadanych.</div>
+    </div>
+    <div class="type-grid">
+      <div class="type-card">
+        <div class="label">Display — Instrument Serif</div>
+        <p class="big">Pamiętaj <em style="color:var(--accent)">lepiej</em>.</p>
+        <p class="sample">Serif z ciepłą kursywą używamy w nagłówkach, kartach i key artach. Akcentujemy kluczowe słowo kursywą + kolorem Indigo.</p>
+        <div class="meta"><span>Regular · Italic</span><span>Title / Editorial</span></div>
+      </div>
+      <div class="type-card sans">
+        <div class="label">Text — Inter</div>
+        <p class="big">Ab Cc Dd 123</p>
+        <p class="sample">Inter niesie cały interfejs i tekst biegnący — zgodnie ze stroną memlo. Wagi: 400 (body), 600 (nagłówki UI), 700/900 (CTA, display).</p>
+        <div class="meta"><span>300 / 400 / 500 / 600 / 700 / 900</span><span>UI / Body</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 04 OG IMAGE ========== -->
+  <section class="block" id="s-og">
+    <div class="section-head">
+      <div>
+        <div class="num">04 — Open Graph</div>
+        <h2>Link preview · 1200 × 630</h2>
+      </div>
+      <div class="desc">Obraz do <code style="font-family:var(--font-mono); font-size:12px">og:image</code> oraz <code style="font-family:var(--font-mono); font-size:12px">twitter:image</code>. Dwie wersje — manifest i produkt.</div>
+    </div>
+
+    <div class="grid g-2">
+      <!-- OG A: manifesto -->
+      <div class="card">
+        <div class="frame" style="padding:0">
+          <div class="scaler" style="--ar:1200/630">
+            <div class="asset og-a"></div>
+          </div>
+        </div>
+        <div class="foot"><b>OG · Manifesto</b><span>1200 × 630</span></div>
+      </div>
+      <!-- OG B: product -->
+      <div class="card">
+        <div class="frame" style="padding:0">
+          <div class="scaler" style="--ar:1200/630">
+            <div class="asset og-b"></div>
+          </div>
+        </div>
+        <div class="foot"><b>OG · Product</b><span>1200 × 630</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 05 INSTAGRAM ========== -->
+  <section class="block" id="s-ig">
+    <div class="section-head">
+      <div>
+        <div class="num">05 — Instagram</div>
+        <h2>Feed, stories, profil</h2>
+      </div>
+      <div class="desc">Trzy posty kwadratowe (system: manifest / quote / product), story pionowe, avatar koła 320 × 320.</div>
+    </div>
+
+    <!-- IG posts 1:1 -->
+    <div class="grid g-3" style="margin-bottom:18px">
+      <div class="card">
+        <div class="frame" style="padding:0"><div class="scaler" style="--ar:1/1"><div class="asset ig-1"></div></div></div>
+        <div class="foot"><b>Post · Manifesto</b><span>1080 × 1080</span></div>
+      </div>
+      <div class="card">
+        <div class="frame" style="padding:0"><div class="scaler" style="--ar:1/1"><div class="asset ig-2"></div></div></div>
+        <div class="foot"><b>Post · Quote</b><span>1080 × 1080</span></div>
+      </div>
+      <div class="card">
+        <div class="frame" style="padding:0"><div class="scaler" style="--ar:1/1"><div class="asset ig-3"></div></div></div>
+        <div class="foot"><b>Post · Tip</b><span>1080 × 1080</span></div>
+      </div>
+    </div>
+
+    <!-- IG story + avatar -->
+    <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; gap:18px">
+      <div class="card" style="grid-column:span 2">
+        <div class="frame" style="padding:28px">
+          <div class="scaler" style="--ar:9/16; max-width:360px; margin:0 auto">
+            <div class="asset ig-story"></div>
+          </div>
+        </div>
+        <div class="foot"><b>Story</b><span>1080 × 1920</span></div>
+      </div>
+      <div class="card">
+        <div class="frame">
+          <div style="width:220px; height:220px; border-radius:50%; overflow:hidden; box-shadow:0 10px 30px -10px rgba(0,0,0,.2); position:relative">
+            <div class="scaler" style="--ar:1/1; height:100%"><div class="asset avatar"></div></div>
+          </div>
+        </div>
+        <div class="foot"><b>Avatar</b><span>320 × 320 · circle</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 06 FACEBOOK ========== -->
+  <section class="block" id="s-fb">
+    <div class="section-head">
+      <div>
+        <div class="num">06 — Facebook</div>
+        <h2>Fanpage cover &amp; post</h2>
+      </div>
+      <div class="desc">Okładka fanpage 820 × 312 (safe zone 640 × 312 po środku), plus post landscape 1200 × 630.</div>
+    </div>
+
+    <div class="grid" style="grid-template-columns: 1fr; gap:18px; margin-bottom:18px">
+      <div class="card">
+        <div class="frame" style="padding:0">
+          <div class="scaler" style="--ar:820/312"><div class="asset fb-cover"></div></div>
+        </div>
+        <div class="foot"><b>Fanpage cover</b><span>820 × 312 · safe 640 × 312</span></div>
+      </div>
+    </div>
+
+    <div class="grid g-2">
+      <div class="card">
+        <div class="frame" style="padding:0"><div class="scaler" style="--ar:1200/630"><div class="asset fb-post"></div></div></div>
+        <div class="foot"><b>Link post</b><span>1200 × 630</span></div>
+      </div>
+      <div class="card">
+        <div class="frame">
+          <div style="width:180px; height:180px; border-radius:50%; overflow:hidden; box-shadow:0 10px 30px -10px rgba(0,0,0,.2); position:relative">
+            <div class="scaler" style="--ar:1/1; height:100%"><div class="asset avatar-fb"></div></div>
+          </div>
+        </div>
+        <div class="foot"><b>Profile picture</b><span>320 × 320</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 07 FAVICON ========== -->
+  <section class="block" id="s-fav">
+    <div class="section-head">
+      <div>
+        <div class="num">07 — Favicon &amp; app icon</div>
+        <h2>Małe rozmiary</h2>
+      </div>
+      <div class="desc">Przy bardzo małych rozmiarach redukujemy do samego monogramu z usuniętą białą kartą — zostaje czytelna forma.</div>
+    </div>
+    <div class="grid g-4">
+      <div class="card"><div class="frame"><svg width="180" height="180" viewBox="0 0 100 100" fill="none" style="border-radius:22px; background:var(--accent)"><rect x="22" y="22" width="56" height="56" rx="10" fill="#F5F1E8"/><path d="M38 38 L38 62 L50 54 L62 62 L62 38" stroke="#161512" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="foot"><b>App icon</b><span>512 × 512</span></div></div>
+      <div class="card"><div class="frame"><svg width="128" height="128" viewBox="0 0 100 100" fill="none" style="border-radius:18px; background:var(--ink)"><rect x="22" y="22" width="56" height="56" rx="10" fill="#F5F1E8"/><path d="M38 38 L38 62 L50 54 L62 62 L62 38" stroke="var(--accent)" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="foot"><b>Dark</b><span>256 × 256</span></div></div>
+      <div class="card"><div class="frame"><svg width="96" height="96" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="#F5F1E8"/><rect x="22" y="22" width="56" height="56" rx="10" fill="#161512"/><path d="M38 38 L38 62 L50 54 L62 62 L62 38" stroke="var(--accent)" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="foot"><b>Light</b><span>128 × 128</span></div></div>
+      <div class="card"><div class="frame" style="gap:12px"><svg width="48" height="48" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="#161512"/><rect x="24" y="24" width="52" height="52" rx="8" fill="#F5F1E8"/><path d="M40 40 L40 62 L50 54 L60 62 L60 40" stroke="var(--accent)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><svg width="32" height="32" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="#161512"/><rect x="24" y="24" width="52" height="52" rx="8" fill="#F5F1E8"/><path d="M40 40 L40 62 L50 54 L60 62 L60 40" stroke="var(--accent)" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><svg width="16" height="16" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="#161512"/><rect x="24" y="24" width="52" height="52" rx="8" fill="#F5F1E8"/><path d="M40 40 L40 62 L50 54 L60 62 L60 40" stroke="var(--accent)" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="foot"><b>Favicon</b><span>48 / 32 / 16</span></div></div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer style="margin-top:96px; padding-top:32px; border-top:1px solid var(--line); display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.14em; color:var(--muted)">
+    <span>Memlo · brand system v1.0</span>
+    <span>Ctrl/Cmd + P → zapisz jako PDF</span>
+  </footer>
+</div>
+
+<!-- ========== ASSET TEMPLATES (rendered at full size, scaled down via transform) ========== -->
+<!-- Each asset is a 1:1 pixel-correct canvas we scale into its card frame -->
+<template id="tpl-og-a">
+  <div style="width:1200px; height:630px; background:var(--surface); color:var(--ink); position:relative; overflow:hidden; font-family:var(--font-sans)">
+    <!-- paper grid -->
+    <div style="position:absolute; inset:0; background:
+      linear-gradient(rgba(22,21,18,.04) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(90deg, rgba(22,21,18,.04) 1px, transparent 1px) 0 0/40px 40px"></div>
+    <!-- margin rule -->
+    <div style="position:absolute; left:80px; top:0; bottom:0; width:1px; background:rgba(232,90,44,.35)"></div>
+    <!-- top bar -->
+    <div style="position:absolute; top:48px; left:96px; right:48px; display:flex; justify-content:space-between; align-items:center; font-family:var(--font-mono); font-size:14px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted)">
+      <span>memlo · inteligentne fiszki</span>
+      <span>algorytm sm-2</span>
+    </div>
+    <!-- headline -->
+    <div style="position:absolute; left:96px; right:96px; top:160px">
+      <div style="font-family:var(--font-display); font-size:140px; line-height:.94; letter-spacing:-.02em">
+        Przestań zapominać.<br>
+        <em style="color:var(--accent); font-style:italic">Zacznij pamiętać.</em>
+      </div>
+    </div>
+    <!-- footer -->
+    <div style="position:absolute; left:96px; right:48px; bottom:52px; display:flex; justify-content:space-between; align-items:end">
+      <div style="display:flex; align-items:center; gap:14px">
+        <svg width="44" height="44" viewBox="0 0 100 100" fill="none">
+          <rect x="10" y="16" width="62" height="82" rx="10" fill="#fff" stroke="#161512" stroke-width="5"/>
+          <rect x="28" y="2" width="62" height="82" rx="10" fill="#161512"/>
+          <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#E85A2C" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div style="font-family:var(--font-display); font-size:36px; letter-spacing:-.01em">Meml<i style="color:var(--accent)">o</i></div>
+      </div>
+      <div style="font-family:var(--font-mono); font-size:14px; color:var(--ink-2)">memlo.app</div>
+    </div>
+    <!-- corner stamp -->
+    <div style="position:absolute; top:48px; right:96px; text-align:right">
+    </div>
+  </div>
+</template>
+
+<template id="tpl-og-b">
+  <div style="width:1200px; height:630px; background:var(--ink); color:#F5F1E8; position:relative; overflow:hidden; font-family:var(--font-sans)">
+    <!-- left column -->
+    <div style="position:absolute; left:80px; top:80px; right:540px; bottom:80px; display:flex; flex-direction:column; justify-content:space-between">
+      <div>
+        <div style="font-family:var(--font-mono); font-size:13px; letter-spacing:.2em; text-transform:uppercase; color:#8a8579; margin-bottom:20px">· dzisiejsza powtórka</div>
+        <div style="font-family:var(--font-display); font-size:88px; line-height:.95; letter-spacing:-.02em">12 kart<br><em style="color:var(--accent)">czeka na Ciebie.</em></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:14px">
+        <svg width="40" height="40" viewBox="0 0 100 100" fill="none">
+          <rect x="10" y="16" width="62" height="82" rx="10" fill="none" stroke="#F5F1E8" stroke-width="5"/>
+          <rect x="28" y="2" width="62" height="82" rx="10" fill="#F5F1E8"/>
+          <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#E85A2C" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div style="font-family:var(--font-display); font-size:34px">Meml<i style="color:var(--accent)">o</i></div>
+      </div>
+    </div>
+    <!-- right column: card stack -->
+    <div style="position:absolute; right:80px; top:90px; bottom:90px; width:420px">
+      <div style="position:absolute; inset:0; transform:rotate(6deg); background:#EDE7D7; border-radius:22px; box-shadow:0 30px 60px -20px rgba(0,0,0,.5)"></div>
+      <div style="position:absolute; inset:0; transform:rotate(-3deg); background:#F5F1E8; border-radius:22px; box-shadow:0 30px 60px -20px rgba(0,0,0,.5)"></div>
+      <div style="position:absolute; inset:0; background:#FBF8F1; color:var(--ink); border-radius:22px; padding:40px 42px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 40px 80px -20px rgba(0,0,0,.6)">
+        <div style="font-family:var(--font-mono); font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); display:flex; justify-content:space-between">
+          <span>Przód</span><span>4 / 12</span>
+        </div>
+        <div style="font-family:var(--font-display); font-size:54px; line-height:1.02; letter-spacing:-.01em">Co to jest <em style="color:var(--accent)">odstęp optymalny</em> w SM-2?</div>
+        <div style="display:flex; gap:10px">
+          <div style="flex:1; padding:14px 0; border-radius:10px; background:#EDE7D7; text-align:center; font-family:var(--font-mono); font-size:12px; letter-spacing:.1em">TRUDNE</div>
+          <div style="flex:1; padding:14px 0; border-radius:10px; background:var(--accent); color:#fff; text-align:center; font-family:var(--font-mono); font-size:12px; letter-spacing:.1em">POKAŻ</div>
+          <div style="flex:1; padding:14px 0; border-radius:10px; background:#EDE7D7; text-align:center; font-family:var(--font-mono); font-size:12px; letter-spacing:.1em">ŁATWE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- IG 1: Manifesto square -->
+<template id="tpl-ig-1">
+  <div style="width:1080px; height:1080px; background:var(--surface); color:var(--ink); position:relative; overflow:hidden; font-family:var(--font-sans)">
+    <div style="position:absolute; inset:0; background:
+      linear-gradient(rgba(22,21,18,.035) 1px, transparent 1px) 0 0/54px 54px,
+      linear-gradient(90deg, rgba(22,21,18,.035) 1px, transparent 1px) 0 0/54px 54px"></div>
+    <div style="position:absolute; left:72px; top:72px; right:72px; display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:18px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted)">
+      <span>· memlo</span><span>01 / 03</span>
+    </div>
+    <div style="position:absolute; left:72px; right:72px; top:240px">
+      <div style="font-family:var(--font-display); font-size:148px; line-height:.94; letter-spacing:-.02em">Przestań<br>zapominać.<br><em style="color:var(--accent); font-style:italic">Zacznij pamiętać.</em></div>
+    </div>
+    <div style="position:absolute; left:72px; right:72px; bottom:72px; display:flex; justify-content:space-between; align-items:end">
+      <div style="display:flex; align-items:center; gap:14px">
+        <svg width="48" height="48" viewBox="0 0 100 100" fill="none">
+          <rect x="10" y="16" width="62" height="82" rx="10" fill="#fff" stroke="#161512" stroke-width="5"/>
+          <rect x="28" y="2" width="62" height="82" rx="10" fill="#161512"/>
+          <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#E85A2C" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span style="font-family:var(--font-display); font-size:40px">Meml<i style="color:var(--accent)">o</i></span>
+      </div>
+      <div style="font-family:var(--font-mono); font-size:15px; color:var(--ink-2); text-align:right; line-height:1.5">algorytm SM-2<br>sprawdzone od 1987</div>
+    </div>
+  </div>
+</template>
+
+<!-- IG 2: Quote -->
+<template id="tpl-ig-2">
+  <div style="width:1080px; height:1080px; background:var(--ink); color:#F5F1E8; position:relative; overflow:hidden; font-family:var(--font-sans)">
+    <div style="position:absolute; left:80px; top:80px; font-family:var(--font-display); font-size:200px; line-height:.6; color:var(--accent); opacity:.9">„</div>
+    <div style="position:absolute; left:92px; right:92px; top:260px">
+      <div style="font-family:var(--font-display); font-size:84px; line-height:1.1; letter-spacing:-.01em">
+        Pamięć nie jest<br>
+        kwestią <em style="color:var(--accent)">talentu</em>.<br>
+        To kwestia <em style="color:var(--accent)">systemu</em>.
+      </div>
+    </div>
+    <div style="position:absolute; left:92px; bottom:92px; right:92px; display:flex; justify-content:space-between; align-items:end">
+      <div style="font-family:var(--font-mono); font-size:16px; letter-spacing:.18em; text-transform:uppercase; color:#8a8579">— manifest memlo</div>
+      <div style="display:flex; align-items:center; gap:12px; font-family:var(--font-display); font-size:32px">
+        <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
+          <rect x="10" y="16" width="62" height="82" rx="10" fill="none" stroke="#F5F1E8" stroke-width="5"/>
+          <rect x="28" y="2" width="62" height="82" rx="10" fill="#F5F1E8"/>
+          <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#E85A2C" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Meml<i style="color:var(--accent)">o</i>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- IG 3: Tip -->
+<template id="tpl-ig-3">
+  <div style="width:1080px; height:1080px; background:var(--accent); color:#fff; position:relative; overflow:hidden; font-family:var(--font-sans)">
+    <div style="position:absolute; left:72px; top:72px; right:72px; display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:18px; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.75)">
+      <span>· tip #01</span><span>science of memory</span>
+    </div>
+    <div style="position:absolute; left:72px; right:72px; top:220px">
+      <div style="font-family:var(--font-mono); font-size:18px; letter-spacing:.2em; text-transform:uppercase; opacity:.8; margin-bottom:24px">efekt odstępu</div>
+      <div style="font-family:var(--font-display); font-size:120px; line-height:.96; letter-spacing:-.02em">
+        3 powtórki rozłożone<br>
+        w czasie działają<br>
+        <em style="font-style:italic; text-decoration:underline; text-decoration-thickness:4px; text-underline-offset:14px">200% lepiej</em><br>
+        niż 10 pod rząd.
+      </div>
+    </div>
+    <div style="position:absolute; left:72px; right:72px; bottom:72px; display:flex; justify-content:space-between; align-items:end">
+      <div style="font-family:var(--font-mono); font-size:15px; line-height:1.5; max-width:420px; opacity:.9">
+        Źródło: Ebbinghaus (1885),<br>Cepeda et al. (2006)
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; font-family:var(--font-display); font-size:40px">
+        <svg width="44" height="44" viewBox="0 0 100 100" fill="none">
+          <rect x="10" y="16" width="62" height="82" rx="10" fill="none" stroke="#fff" stroke-width="5"/>
+          <rect x="28" y="2" width="62" height="82" rx="10" fill="#fff"/>
+          <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#E85A2C" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Meml<i>o</i>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- IG STORY 9:16 -->
+<template id="tpl-ig-story">
+  <div style="width:1080px; height:1920px; background:var(--surface); color:var(--ink); position:relative; overflow:hidden; font-family:var(--font-sans)">
+    <div style="position:absolute; inset:0; background:
+      linear-gradient(rgba(22,21,18,.035) 1px, transparent 1px) 0 0/60px 60px,
+      linear-gradient(90deg, rgba(22,21,18,.035) 1px, transparent 1px) 0 0/60px 60px"></div>
+    <!-- top -->
+    <div style="position:absolute; left:80px; top:120px; right:80px; display:flex; align-items:center; gap:16px">
+      <svg width="54" height="54" viewBox="0 0 100 100" fill="none">
+        <rect x="10" y="16" width="62" height="82" rx="10" fill="#fff" stroke="#161512" stroke-width="5"/>
+        <rect x="28" y="2" width="62" height="82" rx="10" fill="#161512"/>
+        <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#E85A2C" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div style="font-family:var(--font-display); font-size:44px">Meml<i style="color:var(--accent)">o</i></div>
+    </div>
+    <!-- middle card -->
+    <div style="position:absolute; left:100px; right:100px; top:460px; background:#fff; border-radius:28px; padding:70px 60px; box-shadow:0 40px 80px -30px rgba(0,0,0,.25); border:1px solid rgba(22,21,18,.08)">
+      <div style="font-family:var(--font-mono); font-size:20px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:24px">· fiszka dnia</div>
+      <div style="font-family:var(--font-display); font-size:120px; line-height:.98; letter-spacing:-.02em; margin-bottom:50px">
+        <em style="color:var(--accent)">Memento</em><br>mori.
+      </div>
+      <div style="height:1px; background:rgba(22,21,18,.12); margin:30px 0"></div>
+      <div style="font-family:var(--font-sans); font-size:28px; line-height:1.45; color:var(--ink-2)">Łacina · pamiętaj, że musisz umrzeć. Popularna fraza filozoficzna przypominająca o przemijaniu.</div>
+    </div>
+    <!-- cta -->
+    <div style="position:absolute; left:100px; right:100px; bottom:280px; text-align:center">
+      <div style="font-family:var(--font-display); font-size:80px; line-height:1; letter-spacing:-.02em">Jedna fiszka.<br><em style="color:var(--accent)">Cały dzień pamięci.</em></div>
+    </div>
+    <div style="position:absolute; left:100px; right:100px; bottom:120px; background:var(--ink); color:#F5F1E8; padding:36px; border-radius:20px; text-align:center; font-family:var(--font-sans); font-weight:500; font-size:32px; letter-spacing:-.01em">
+      Przesuń w górę → dodaj własną ↑
+    </div>
+  </div>
+</template>
+
+<!-- Avatar 1:1 — Instagram, centered monogram on indigo -->
+<template id="tpl-avatar">
+  <div style="width:640px; height:640px; background:var(--accent); position:relative; overflow:hidden; display:grid; place-items:center">
+    <div style="position:absolute; inset:0; background:radial-gradient(circle at 30% 25%, rgba(255,255,255,.18), transparent 55%)"></div>
+    <div style="position:absolute; inset:60px; border:1.5px solid rgba(255,255,255,.14); border-radius:50%"></div>
+    <div style="position:absolute; inset:110px; border:1.5px solid rgba(255,255,255,.08); border-radius:50%"></div>
+    <svg width="300" height="300" viewBox="0 0 100 100" fill="none" style="position:relative; filter:drop-shadow(0 10px 30px rgba(0,0,0,.25))">
+      <rect x="14" y="14" width="72" height="72" rx="14" fill="#fff"/>
+      <path d="M32 34 L32 68 L50 54 L68 68 L68 34" stroke="var(--accent)" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</template>
+
+<!-- Avatar FB variant — white bg, indigo mark -->
+<template id="tpl-avatar-fb">
+  <div style="width:640px; height:640px; background:#fff; position:relative; overflow:hidden; display:grid; place-items:center">
+    <div style="position:absolute; inset:0; background:radial-gradient(circle at 50% 120%, var(--paper), transparent 60%)"></div>
+    <div style="position:absolute; inset:50px; border:1.5px solid var(--line); border-radius:50%"></div>
+    <svg width="320" height="320" viewBox="0 0 100 100" fill="none" style="position:relative">
+      <rect x="14" y="14" width="72" height="72" rx="14" fill="var(--accent)"/>
+      <path d="M32 34 L32 68 L50 54 L68 68 L68 34" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</template>
+
+<!-- FB cover 820 x 312 -->
+<template id="tpl-fb-cover">
+  <div style="width:820px; height:312px; background:var(--surface); color:var(--ink); position:relative; overflow:hidden; font-family:var(--font-sans)">
+    <div style="position:absolute; inset:0; background:
+      linear-gradient(rgba(22,21,18,.035) 1px, transparent 1px) 0 0/32px 32px,
+      linear-gradient(90deg, rgba(22,21,18,.035) 1px, transparent 1px) 0 0/32px 32px"></div>
+    <!-- safe zone indicator marks (visual guide only, kept subtle) -->
+    <!-- left: visual -->
+    <div style="position:absolute; left:40px; top:50%; transform:translateY(-50%); width:180px; height:180px">
+      <!-- stacked cards mini -->
+      <div style="position:absolute; inset:0; transform:rotate(-6deg); background:#EDE7D7; border-radius:14px"></div>
+      <div style="position:absolute; inset:0; transform:rotate(3deg); background:#fff; border-radius:14px; box-shadow:0 10px 30px -10px rgba(0,0,0,.15); display:flex; align-items:center; justify-content:center">
+        <svg width="96" height="96" viewBox="0 0 100 100" fill="none">
+          <rect x="10" y="16" width="62" height="82" rx="10" fill="none" stroke="#161512" stroke-width="5"/>
+          <rect x="28" y="2" width="62" height="82" rx="10" fill="#161512"/>
+          <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#E85A2C" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <!-- text -->
+    <div style="position:absolute; left:260px; top:60px; right:40px">
+      <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">· memlo · inteligentne fiszki</div>
+      <div style="font-family:var(--font-display); font-size:58px; line-height:.98; letter-spacing:-.02em">Przestań zapominać.<br><em style="color:var(--accent)">Zacznij pamiętać.</em></div>
+      <div style="margin-top:14px; font-family:var(--font-mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-2)">memlo.app →</div>
+    </div>
+  </div>
+</template>
+
+<!-- FB post landscape 1200 x 630 -->
+<template id="tpl-fb-post">
+  <div style="width:1200px; height:630px; background:var(--paper); color:var(--ink); position:relative; overflow:hidden; font-family:var(--font-sans); display:flex">
+    <!-- left -->
+    <div style="width:60%; padding:80px; display:flex; flex-direction:column; justify-content:space-between">
+      <div style="font-family:var(--font-mono); font-size:14px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted)">· nowe od memlo</div>
+      <div>
+        <div style="font-family:var(--font-display); font-size:108px; line-height:.95; letter-spacing:-.02em">Twoje fiszki,<br><em style="color:var(--accent)">jak należy.</em></div>
+        <div style="margin-top:28px; font-size:20px; line-height:1.5; color:var(--ink-2); max-width:44ch">Algorytm SM-2 planuje powtórki, Ty tylko odwracasz karty. Reszta działa sama.</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:14px">
+        <svg width="40" height="40" viewBox="0 0 100 100" fill="none">
+          <rect x="10" y="16" width="62" height="82" rx="10" fill="#fff" stroke="#161512" stroke-width="5"/>
+          <rect x="28" y="2" width="62" height="82" rx="10" fill="#161512"/>
+          <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#E85A2C" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div style="font-family:var(--font-display); font-size:34px">Meml<i style="color:var(--accent)">o</i></div>
+      </div>
+    </div>
+    <!-- right block -->
+    <div style="width:40%; background:var(--ink); position:relative; color:#F5F1E8; padding:80px 60px">
+      <div style="font-family:var(--font-mono); font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:#8a8579; margin-bottom:20px">· dziś</div>
+      <div style="font-family:var(--font-display); font-size:200px; line-height:.9; color:var(--accent)">12</div>
+      <div style="font-family:var(--font-display); font-size:46px; line-height:1">powtórek<br>czeka.</div>
+      <div style="position:absolute; bottom:80px; left:60px; right:60px; height:1px; background:rgba(245,241,232,.18)"></div>
+      <div style="position:absolute; bottom:40px; left:60px; font-family:var(--font-mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:#8a8579">memlo.app</div>
+    </div>
+  </div>
+</template>
+
+<!-- ========== TWEAKS ========== -->
+<aside class="tweaks" id="tweaks">
+  <h4>Tweaks</h4>
+  <div class="row">
+    <label>Paleta</label>
+    <div class="palettes" id="palettes"></div>
+  </div>
+  <div class="row">
+    <label>Akcent</label>
+    <input type="color" id="accentInput" value="#E85A2C">
+  </div>
+  <div class="row">
+    <label>Powierzchnia</label>
+    <input type="color" id="surfaceInput" value="#F5F1E8">
+  </div>
+  <div class="row">
+    <label>Atrament</label>
+    <input type="color" id="inkInput" value="#161512">
+  </div>
+  <div class="row" style="font-family:var(--font-mono); font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.12em; border-top:1px solid var(--line); padding-top:12px">Ctrl/Cmd+P — eksport PDF</div>
+</aside>
+
+<script>
+/* =========================================================
+   Asset rendering: clone each template into its .asset holder
+   then scale it down to fit the card
+   ========================================================= */
+const ASSETS = [
+  {sel:'.og-a', tpl:'#tpl-og-a', w:1200, h:630},
+  {sel:'.og-b', tpl:'#tpl-og-b', w:1200, h:630},
+  {sel:'.ig-1', tpl:'#tpl-ig-1', w:1080, h:1080},
+  {sel:'.ig-2', tpl:'#tpl-ig-2', w:1080, h:1080},
+  {sel:'.ig-3', tpl:'#tpl-ig-3', w:1080, h:1080},
+  {sel:'.ig-story', tpl:'#tpl-ig-story', w:1080, h:1920},
+  {sel:'.avatar', tpl:'#tpl-avatar', w:640, h:640},
+  {sel:'.avatar-fb', tpl:'#tpl-avatar-fb', w:640, h:640},
+  {sel:'.fb-cover', tpl:'#tpl-fb-cover', w:820, h:312},
+  {sel:'.fb-post', tpl:'#tpl-fb-post', w:1200, h:630},
+];
+
+function renderAssets(){
+  ASSETS.forEach(a=>{
+    document.querySelectorAll(a.sel).forEach(host=>{
+      host.innerHTML='';
+      const tpl = document.querySelector(a.tpl);
+      if(!tpl) return;
+      const clone = tpl.content.cloneNode(true);
+      const wrap = document.createElement('div');
+      wrap.style.width = a.w+'px';
+      wrap.style.height = a.h+'px';
+      wrap.appendChild(clone);
+      host.appendChild(wrap);
+      host._srcW = a.w; host._srcH = a.h; host._inner = wrap;
+    });
+  });
+  fitAssets();
+}
+
+function fitAssets(){
+  document.querySelectorAll('.scaler').forEach(scaler=>{
+    const asset = scaler.querySelector('.asset');
+    if(!asset || !asset._inner) return;
+    const rect = scaler.getBoundingClientRect();
+    if(rect.width===0) return;
+    const sx = rect.width / asset._srcW;
+    asset._inner.style.transformOrigin = 'top left';
+    asset._inner.style.transform = `scale(${sx})`;
+    asset.style.width = asset._srcW+'px';
+    asset.style.height = asset._srcH+'px';
+  });
+}
+
+window.addEventListener('resize', fitAssets);
+document.fonts && document.fonts.ready.then(fitAssets);
+
+/* =========================================================
+   Tweaks
+   ========================================================= */
+const PALETTES = {
+  memlo:     {surface:'#F8FAFC', ink:'#0F172A', accent:'#3b4cca', paper:'#edefff', surface2:'#f6f7fb'},
+  ink:       {surface:'#0F172A', ink:'#F8FAFC', accent:'#818cf8', paper:'#1E293B', surface2:'#1a2540'},
+  purple:    {surface:'#F8FAFC', ink:'#0F172A', accent:'#7c3aed', paper:'#f3eeff', surface2:'#f6f7fb'},
+  emerald:   {surface:'#F8FAFC', ink:'#0F172A', accent:'#15803d', paper:'#e8f8f0', surface2:'#f6f7fb'},
+};
+
+function applyPalette(name){
+  const p = PALETTES[name]; if(!p) return;
+  const r = document.documentElement.style;
+  r.setProperty('--surface', p.surface);
+  r.setProperty('--ink', p.ink);
+  r.setProperty('--accent', p.accent);
+  r.setProperty('--paper', p.paper);
+  r.setProperty('--surface-2', p.surface2);
+  // update sidebar color inputs
+  document.getElementById('accentInput').value = p.accent;
+  document.getElementById('surfaceInput').value = p.surface;
+  document.getElementById('inkInput').value = p.ink;
+  // selection state
+  document.querySelectorAll('#palettes button').forEach(b=>b.setAttribute('aria-selected', b.dataset.name===name?'true':'false'));
+  postKeys({palette:name, accent:p.accent, surface:p.surface, ink:p.ink});
+  renderAssets();
+}
+
+function buildPaletteButtons(){
+  const host = document.getElementById('palettes');
+  host.innerHTML='';
+  Object.entries(PALETTES).forEach(([name, p])=>{
+    const b = document.createElement('button');
+    b.dataset.name = name;
+    b.title = name;
+    b.innerHTML = `<span style="background:${p.surface}"></span><span style="background:${p.ink}"></span><span style="background:${p.accent}"></span>`;
+    b.addEventListener('click', ()=>applyPalette(name));
+    host.appendChild(b);
+  });
+}
+
+function postKeys(edits){
+  try{ window.parent && window.parent.postMessage({type:'__edit_mode_set_keys', edits}, '*'); }catch(e){}
+}
+
+/* edit-mode protocol */
+window.addEventListener('message', (e)=>{
+  const d = e.data || {};
+  if(d.type==='__activate_edit_mode') document.getElementById('tweaks').classList.add('open');
+  if(d.type==='__deactivate_edit_mode') document.getElementById('tweaks').classList.remove('open');
+});
+
+window.addEventListener('DOMContentLoaded', ()=>{
+  buildPaletteButtons();
+  renderAssets();
+  setTimeout(fitAssets, 60);
+  setTimeout(fitAssets, 300);
+
+  // bind color pickers
+  document.getElementById('accentInput').addEventListener('input', e=>{
+    document.documentElement.style.setProperty('--accent', e.target.value);
+    postKeys({accent: e.target.value});
+    renderAssets();
+  });
+  document.getElementById('surfaceInput').addEventListener('input', e=>{
+    document.documentElement.style.setProperty('--surface', e.target.value);
+    postKeys({surface: e.target.value});
+    renderAssets();
+  });
+  document.getElementById('inkInput').addEventListener('input', e=>{
+    document.documentElement.style.setProperty('--ink', e.target.value);
+    postKeys({ink: e.target.value});
+    renderAssets();
+  });
+
+  // select default palette visual state
+  const btn = document.querySelector(`#palettes button[data-name="${TWEAK_DEFAULTS.palette||'memlo'}"]`);
+  if(btn) btn.setAttribute('aria-selected','true');
+
+  try{ window.parent && window.parent.postMessage({type:'__edit_mode_available'}, '*'); }catch(e){}
+});
+</script>
+</body>
+</html>

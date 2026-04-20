@@ -1,0 +1,33 @@
+<svg width="1080" height="1080" viewBox="0 0 1080 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;display=swap');
+      .display { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+      .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    </style>
+    <pattern id="grid-m" width="54" height="54" patternUnits="userSpaceOnUse">
+      <path d="M 54 0 L 0 0 0 54" fill="none" stroke="#0F172A" stroke-width="1" stroke-opacity="0.035"/>
+    </pattern>
+  </defs>
+  <rect width="1080" height="1080" fill="#F8FAFC"/>
+  <rect width="1080" height="1080" fill="url(#grid-m)"/>
+
+  <text x="72" y="98" class="mono" font-size="18" letter-spacing="3.6" fill="#475569">· MEMLO</text>
+  <text x="1008" y="98" class="mono" font-size="18" letter-spacing="3.6" fill="#475569" text-anchor="end">01 / 03</text>
+
+  <text x="72" y="360" class="display" font-size="148" fill="#0F172A" letter-spacing="-2.96">Przestań</text>
+  <text x="72" y="508" class="display" font-size="148" fill="#0F172A" letter-spacing="-2.96">zapominać.</text>
+  <text x="72" y="656" class="display" font-size="148" fill="#3B4CCA" font-style="italic" letter-spacing="-2.96">Zacznij pamiętać.</text>
+
+  <g transform="translate(72,950)">
+    <g transform="scale(0.48)">
+      <rect x="10" y="16" width="62" height="82" rx="10" fill="#ffffff" stroke="#0F172A" stroke-width="5"/>
+      <rect x="28" y="2" width="62" height="82" rx="10" fill="#0F172A"/>
+      <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#3B4CCA" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <text x="68" y="44" class="display" font-size="48" fill="#0F172A" letter-spacing="-0.48">Meml<tspan font-style="italic" fill="#3B4CCA">o</tspan></text>
+  </g>
+
+  <text x="1008" y="970" class="mono" font-size="15" fill="#1E293B" text-anchor="end">algorytm SM-2</text>
+  <text x="1008" y="995" class="mono" font-size="15" fill="#1E293B" text-anchor="end">sprawdzone od 1987</text>
+</svg>
