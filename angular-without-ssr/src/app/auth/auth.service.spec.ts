@@ -422,7 +422,7 @@ describe('AuthService', () => {
       });
     });
 
-    it('should pass through string errors directly', (done: DoneFn) => {
+    it('should translate raw string errors to genericError (no leak)', (done: DoneFn) => {
       mockSupabase.auth.signInWithPassword.and.returnValue(
         Promise.resolve({ data: { user: null }, error: 'Some string error' })
       );
@@ -430,7 +430,7 @@ describe('AuthService', () => {
       service.login({ email: 'a@b.com', password: 'pass123' }).subscribe({
         next: () => done.fail('Expected error'),
         error: (err: Error) => {
-          expect(err.message).toBe('Some string error');
+          expect(err.message).toBe('Wystąpił błąd. Spróbuj ponownie później.');
           done();
         },
       });

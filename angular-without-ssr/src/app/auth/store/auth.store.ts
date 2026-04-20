@@ -237,23 +237,5 @@ function handleError(error: unknown, t: TranslocoService): string {
   if (error instanceof Error && error.message) {
     return error.message;
   }
-
-  if (typeof error === 'object' && error !== null) {
-    const err: Record<string, unknown> = error as Record<string, unknown>;
-    if (typeof err['message'] === 'string') {
-      return err['message'];
-    }
-    if (typeof err['error'] === 'object' && err['error'] !== null) {
-      const innerErr: Record<string, unknown> = err['error'] as Record<string, unknown>;
-      if (typeof innerErr['message'] === 'string') {
-        return innerErr['message'];
-      }
-    }
-  }
-
-  if (typeof error === 'string') {
-    return error;
-  }
-
   return t.translate('auth.errors.unknownError');
 }

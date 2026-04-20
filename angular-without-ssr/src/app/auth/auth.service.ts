@@ -294,7 +294,7 @@ export class AuthService {
     let message = this.t.translate('auth.errors.unknownError');
 
     if (typeof error === 'string') {
-      return new Error(error);
+      return new Error(this.t.translate('auth.errors.genericError'));
     }
 
     const err = error as { message?: string; status?: number };
