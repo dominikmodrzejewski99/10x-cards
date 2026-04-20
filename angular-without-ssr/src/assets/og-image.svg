@@ -1,87 +1,34 @@
 <svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg-grad" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#f8f9ff"/>
-      <stop offset="100%" stop-color="#eef0fb"/>
-    </linearGradient>
-    <linearGradient id="card-shine" x1="100" y1="0" x2="340" y2="320" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#fff"/>
-      <stop offset="100%" stop-color="#f0f1ff"/>
-    </linearGradient>
-    <linearGradient id="badge" x1="280" y1="260" x2="340" y2="320" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#22d67a"/>
-      <stop offset="100%" stop-color="#17b865"/>
-    </linearGradient>
-    <linearGradient id="accent" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#5b6bff"/>
-      <stop offset="100%" stop-color="#3344ee"/>
-    </linearGradient>
-    <linearGradient id="bar" x1="0" y1="0" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#5b6bff"/>
-      <stop offset="50%" stop-color="#4255ff"/>
-      <stop offset="100%" stop-color="#22d67a"/>
-    </linearGradient>
-    <filter id="card-shadow" x="-10%" y="-10%" width="130%" height="130%">
-      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#1a2066" flood-opacity="0.12"/>
-    </filter>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;display=swap');
+      .display { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+      .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+      .sans { font-family: 'Inter', -apple-system, sans-serif; }
+    </style>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#0F172A" stroke-width="1" stroke-opacity="0.04"/>
+    </pattern>
   </defs>
 
-  <!-- Background -->
-  <rect width="1200" height="630" fill="url(#bg-grad)"/>
-
-  <!-- Subtle grid pattern -->
-  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-    <circle cx="20" cy="20" r="0.5" fill="#4255ff" opacity="0.06"/>
-  </pattern>
+  <rect width="1200" height="630" fill="#F8FAFC"/>
   <rect width="1200" height="630" fill="url(#grid)"/>
+  <line x1="80" y1="0" x2="80" y2="630" stroke="#3B4CCA" stroke-opacity="0.25" stroke-width="1"/>
 
-  <!-- Right side: card stack -->
-  <g transform="translate(680, 80)">
-    <rect x="0" y="70" width="260" height="340" rx="24" fill="#d0d3e6" opacity="0.5" transform="rotate(-7 130 240)"/>
-    <rect x="55" y="35" width="260" height="340" rx="24" fill="#e8eaff" opacity="0.7" transform="rotate(-3 185 205)"/>
-    <g filter="url(#card-shadow)">
-      <rect x="110" y="0" width="260" height="340" rx="24" fill="url(#card-shine)" stroke="#e0e3f0" stroke-width="1"/>
+  <text x="96" y="72" class="mono" font-size="14" letter-spacing="2.5" fill="#475569">MEMLO · INTELIGENTNE FISZKI</text>
+  <text x="1152" y="72" class="mono" font-size="14" letter-spacing="2.5" fill="#475569" text-anchor="end">ALGORYTM SM-2</text>
+
+  <text x="96" y="280" class="display" font-size="140" fill="#0F172A" letter-spacing="-2.8">Przestań zapominać.</text>
+  <text x="96" y="420" class="display" font-size="140" fill="#3B4CCA" font-style="italic" letter-spacing="-2.8">Zacznij pamiętać.</text>
+
+  <g transform="translate(96,530)">
+    <g transform="scale(0.44)">
+      <rect x="10" y="16" width="62" height="82" rx="10" fill="#ffffff" stroke="#0F172A" stroke-width="5"/>
+      <rect x="28" y="2" width="62" height="82" rx="10" fill="#0F172A"/>
+      <path d="M44 30 L44 58 L54 48 L64 58 L64 30" stroke="#3B4CCA" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
     </g>
-
-    <!-- Card content -->
-    <rect x="145" y="48" width="140" height="10" rx="5" fill="#282e3e" opacity="0.7"/>
-    <rect x="145" y="78" width="180" height="8" rx="4" fill="#4255ff" opacity="0.2"/>
-    <rect x="145" y="100" width="150" height="8" rx="4" fill="#4255ff" opacity="0.14"/>
-    <rect x="145" y="122" width="120" height="8" rx="4" fill="#4255ff" opacity="0.08"/>
-
-    <!-- Divider -->
-    <line x1="145" y1="155" x2="335" y2="155" stroke="#4255ff" stroke-width="1.5" stroke-opacity="0.1"/>
-
-    <!-- Answer area -->
-    <rect x="145" y="180" width="190" height="110" rx="16" fill="#f4f5ff"/>
-    <rect x="170" y="210" width="120" height="6" rx="3" fill="#4255ff" opacity="0.18"/>
-    <rect x="170" y="230" width="90" height="6" rx="3" fill="#4255ff" opacity="0.12"/>
-    <rect x="170" y="250" width="100" height="6" rx="3" fill="#4255ff" opacity="0.08"/>
-
-    <!-- Success badge -->
-    <circle cx="340" cy="305" r="36" fill="url(#badge)"/>
-    <path d="M322 305 L334 317 L358 293" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="58" y="38" class="display" font-size="40" fill="#0F172A" letter-spacing="-0.4">Meml<tspan font-style="italic" fill="#3B4CCA">o</tspan></text>
   </g>
 
-  <!-- Left side: wordmark (Inter 900 paths) -->
-  <g transform="translate(100 210) scale(4)">
-    <path d="M5.91 20L1.20 20L1.20 6.90L5.50 6.90L5.80 10.44L5.47 10.44Q5.79 9.10 6.40 8.29Q7.01 7.47 7.82 7.10Q8.64 6.73 9.54 6.73L9.54 6.73Q10.93 6.73 11.79 7.65Q12.64 8.56 13.18 10.81L13.18 10.81L12.67 10.81Q13.01 9.31 13.71 8.42Q14.41 7.52 15.33 7.13Q16.25 6.73 17.23 6.73L17.23 6.73Q18.48 6.73 19.43 7.29Q20.38 7.84 20.91 8.83Q21.45 9.82 21.45 11.16L21.45 11.16L21.45 20L16.73 20L16.73 12.36Q16.73 11.50 16.30 11.02Q15.87 10.53 15.14 10.53L15.14 10.53Q14.66 10.53 14.30 10.75Q13.95 10.98 13.76 11.38Q13.57 11.79 13.57 12.36L13.57 12.36L13.57 20L9.07 20L9.07 12.36Q9.07 11.50 8.64 11.02Q8.20 10.53 7.48 10.53L7.48 10.53Q6.98 10.53 6.63 10.75Q6.28 10.98 6.09 11.38Q5.91 11.79 5.91 12.36L5.91 12.36L5.91 20ZM30.12 20.23L30.12 20.23Q28.02 20.23 26.50 19.43Q24.98 18.63 24.18 17.12Q23.37 15.61 23.37 13.48L23.37 13.48Q23.37 11.46 24.18 9.94Q25.00 8.42 26.48 7.58Q27.97 6.73 30 6.73L30 6.73Q31.49 6.73 32.69 7.20Q33.89 7.66 34.75 8.53Q35.60 9.41 36.06 10.65Q36.52 11.89 36.52 13.46L36.52 13.46L36.52 14.54L24.82 14.54L24.82 11.96L34.31 11.96L32.11 12.50Q32.11 11.70 31.88 11.16Q31.64 10.61 31.18 10.33Q30.73 10.04 30.05 10.04L30.05 10.04Q29.37 10.04 28.91 10.33Q28.45 10.61 28.22 11.16Q27.98 11.70 27.98 12.50L27.98 12.50L27.98 14.38Q27.98 15.24 28.26 15.81Q28.54 16.38 29.04 16.65Q29.54 16.93 30.21 16.93L30.21 16.93Q30.69 16.93 31.08 16.79Q31.48 16.66 31.76 16.41Q32.04 16.16 32.18 15.79L32.18 15.79L36.33 16.40Q36 17.57 35.17 18.44Q34.34 19.30 33.06 19.77Q31.79 20.23 30.12 20.23ZM43.10 20L38.39 20L38.39 6.90L42.69 6.90L43.00 10.44L42.67 10.44Q42.98 9.10 43.59 8.29Q44.20 7.47 45.02 7.10Q45.83 6.73 46.73 6.73L46.73 6.73Q48.13 6.73 48.98 7.65Q49.84 8.56 50.38 10.81L50.38 10.81L49.86 10.81Q50.20 9.31 50.91 8.42Q51.61 7.52 52.53 7.13Q53.45 6.73 54.42 6.73L54.42 6.73Q55.68 6.73 56.63 7.29Q57.57 7.84 58.11 8.83Q58.64 9.82 58.64 11.16L58.64 11.16L58.64 20L53.93 20L53.93 12.36Q53.93 11.50 53.50 11.02Q53.06 10.53 52.34 10.53L52.34 10.53Q51.86 10.53 51.50 10.75Q51.14 10.98 50.95 11.38Q50.77 11.79 50.77 12.36L50.77 12.36L50.77 20L46.27 20L46.27 12.36Q46.27 11.50 45.83 11.02Q45.40 10.53 44.67 10.53L44.67 10.53Q44.18 10.53 43.83 10.75Q43.48 10.98 43.29 11.38Q43.10 11.79 43.10 12.36L43.10 12.36L43.10 20Z" fill="#282e3e"/>
-    <path d="M61.03 2.54L65.74 2.54L65.74 20L61.03 20L61.03 2.54ZM74.45 20.23L74.45 20.23Q72.32 20.23 70.79 19.38Q69.27 18.54 68.47 17.02Q67.66 15.50 67.66 13.48L67.66 13.48Q67.66 11.47 68.47 9.95Q69.27 8.43 70.79 7.58Q72.32 6.73 74.45 6.73L74.45 6.73Q76.58 6.73 78.09 7.58Q79.61 8.43 80.41 9.95Q81.21 11.47 81.21 13.48L81.21 13.48Q81.21 15.50 80.41 17.02Q79.61 18.54 78.09 19.38Q76.58 20.23 74.45 20.23ZM74.45 16.72L74.45 16.72Q75.06 16.72 75.50 16.33Q75.94 15.95 76.17 15.21Q76.41 14.48 76.41 13.46L76.41 13.46Q76.41 12.43 76.17 11.71Q75.94 11 75.50 10.63Q75.06 10.25 74.45 10.25L74.45 10.25Q73.83 10.25 73.38 10.63Q72.94 11 72.70 11.71Q72.47 12.43 72.47 13.46L72.47 13.46Q72.47 14.48 72.70 15.21Q72.94 15.95 73.38 16.33Q73.83 16.72 74.45 16.72Z" fill="url(#accent)"/>
-  </g>
-
-  <!-- Tagline -->
-  <text x="104" y="365" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="500" font-size="32" fill="#586380">Ucz si&#x119; m&#x105;drzej z fiszkami.</text>
-
-  <!-- Pill badges -->
-  <g transform="translate(100, 400)">
-    <rect width="80" height="32" rx="16" fill="#4255ff" opacity="0.08"/>
-    <text x="40" y="21" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="600" font-size="13" fill="#4255ff">AI</text>
-    <rect x="92" width="140" height="32" rx="16" fill="#17b865" opacity="0.08"/>
-    <text x="162" y="21" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="600" font-size="13" fill="#17b865">Spaced Rep</text>
-    <rect x="244" width="100" height="32" rx="16" fill="#4255ff" opacity="0.08"/>
-    <text x="294" y="21" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="600" font-size="13" fill="#4255ff">Fiszki</text>
-  </g>
-
-  <!-- Bottom gradient bar -->
-  <rect x="0" y="612" width="1200" height="18" rx="0" fill="url(#bar)"/>
+  <text x="1152" y="570" class="mono" font-size="14" fill="#1E293B" text-anchor="end">memlo.app</text>
 </svg>
