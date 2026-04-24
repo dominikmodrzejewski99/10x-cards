@@ -636,7 +636,20 @@
       "cancel": "Cancel",
       "save": "Save",
       "recordAriaLabel": "Record voice note",
-      "selectFileAriaLabel": "Choose audio file"
+      "selectFileAriaLabel": "Choose audio file",
+      "tts": {
+        "preview": "Listen",
+        "stop": "Stop",
+        "generate": "Generate audio",
+        "previewAriaLabel": "Listen to the answer text",
+        "generateAriaLabel": "Generate audio from answer text",
+        "errors": {
+          "empty": "No text to generate audio from.",
+          "tooLong": "Text too long. Maximum {{max}} characters.",
+          "timeout": "Audio generation timed out.",
+          "failed": "Audio generation failed."
+        }
+      }
     },
     "import": {
       "title": "Import flashcards",

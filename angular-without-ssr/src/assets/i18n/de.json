@@ -636,7 +636,20 @@
       "cancel": "Abbrechen",
       "save": "Speichern",
       "recordAriaLabel": "Sprachnotiz aufnehmen",
-      "selectFileAriaLabel": "Audiodatei auswählen"
+      "selectFileAriaLabel": "Audiodatei auswählen",
+      "tts": {
+        "preview": "Anhören",
+        "stop": "Stopp",
+        "generate": "Audio erstellen",
+        "previewAriaLabel": "Antworttext anhören",
+        "generateAriaLabel": "Audio aus Antworttext erstellen",
+        "errors": {
+          "empty": "Kein Text zum Erstellen des Audios.",
+          "tooLong": "Text zu lang. Maximal {{max}} Zeichen.",
+          "timeout": "Zeitüberschreitung bei der Audio-Erstellung.",
+          "failed": "Audio-Erstellung fehlgeschlagen."
+        }
+      }
     },
     "import": {
       "title": "Karteikarten importieren",

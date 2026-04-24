@@ -636,7 +636,20 @@
       "cancel": "Cancelar",
       "save": "Guardar",
       "recordAriaLabel": "Grabar nota de voz",
-      "selectFileAriaLabel": "Elegir archivo de audio"
+      "selectFileAriaLabel": "Elegir archivo de audio",
+      "tts": {
+        "preview": "Escuchar",
+        "stop": "Detener",
+        "generate": "Generar audio",
+        "previewAriaLabel": "Escuchar el texto de la respuesta",
+        "generateAriaLabel": "Generar audio desde el texto de la respuesta",
+        "errors": {
+          "empty": "No hay texto para generar audio.",
+          "tooLong": "Texto demasiado largo. Máximo {{max}} caracteres.",
+          "timeout": "Tiempo de espera agotado al generar audio.",
+          "failed": "Error al generar el audio."
+        }
+      }
     },
     "import": {
       "title": "Importar tarjetas",

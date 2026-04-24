@@ -636,7 +636,20 @@
       "cancel": "Annuler",
       "save": "Enregistrer",
       "recordAriaLabel": "Enregistrer une note vocale",
-      "selectFileAriaLabel": "Choisir un fichier audio"
+      "selectFileAriaLabel": "Choisir un fichier audio",
+      "tts": {
+        "preview": "Écouter",
+        "stop": "Arrêter",
+        "generate": "Générer l'audio",
+        "previewAriaLabel": "Écouter le texte de la réponse",
+        "generateAriaLabel": "Générer l'audio depuis le texte de la réponse",
+        "errors": {
+          "empty": "Aucun texte pour générer l'audio.",
+          "tooLong": "Texte trop long. Maximum {{max}} caractères.",
+          "timeout": "Délai dépassé pour la génération audio.",
+          "failed": "Échec de la génération audio."
+        }
+      }
     },
     "import": {
       "title": "Importer des cartes",

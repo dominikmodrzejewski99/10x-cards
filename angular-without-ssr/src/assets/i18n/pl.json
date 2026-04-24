@@ -636,7 +636,20 @@
       "cancel": "Anuluj",
       "save": "Zapisz",
       "recordAriaLabel": "Nagraj notatkę głosową",
-      "selectFileAriaLabel": "Wybierz plik audio"
+      "selectFileAriaLabel": "Wybierz plik audio",
+      "tts": {
+        "preview": "Podsłuchaj",
+        "stop": "Stop",
+        "generate": "Wygeneruj audio",
+        "previewAriaLabel": "Podsłuchaj tekst odpowiedzi",
+        "generateAriaLabel": "Wygeneruj audio z tekstu odpowiedzi",
+        "errors": {
+          "empty": "Brak tekstu do wygenerowania audio.",
+          "tooLong": "Tekst za długi. Maksymalnie {{max}} znaków.",
+          "timeout": "Przekroczono czas oczekiwania na audio.",
+          "failed": "Nie udało się wygenerować audio."
+        }
+      }
     },
     "import": {
       "title": "Importuj fiszki",
