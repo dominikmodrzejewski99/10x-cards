@@ -20,6 +20,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { ConfirmService } from '../../shared/services/confirm.service';
 import { LoggerService } from '../../services/infrastructure/logger.service';
+import { WebSpeechService } from '../../services/infrastructure/web-speech.service';
 
 @Component({
   selector: 'app-study-view',
@@ -38,6 +39,7 @@ export class StudyViewComponent implements OnInit, OnDestroy {
   private readonly confirmService: ConfirmService = inject(ConfirmService);
   private readonly t: TranslocoService = inject(TranslocoService);
   private readonly logger: LoggerService = inject(LoggerService);
+  private readonly webSpeech: WebSpeechService = inject(WebSpeechService);
   private readonly queryParams = toSignal(inject(ActivatedRoute).queryParams, { initialValue: {} as Record<string, string> });
 
   public isFullscreenSignal: WritableSignal<boolean> = signal<boolean>(false);
@@ -50,9 +52,23 @@ export class StudyViewComponent implements OnInit, OnDestroy {
       const setId: number | null = params['setId'] ? Number(params['setId']) : null;
       this.facade.selectSet(setId);
     }, { injector: this.injector });
+    effect(() => {
+      const flipped: boolean = this.facade.isFlippedSignal();
+      if (!flipped) {
+        this.webSpeech.stop();
+        return;
+      }
+      if (this.facade.displayBackAudioSignal()) {
+        return;
+      }
+      const text: string = this.facade.displayBackSignal();
+      if (!text) return;
+      this.webSpeech.speak(text, this.facade.displayBackLanguageSignal());
+    }, { injector: this.injector });
   }
 
   public ngOnDestroy(): void {
+    this.webSpeech.stop();
     this.facade.destroy();
   }
 

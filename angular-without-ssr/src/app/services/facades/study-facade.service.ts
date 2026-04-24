@@ -7,7 +7,7 @@ import { Sm2Result, SpacedRepetitionService } from '../domain/spaced-repetition.
 import { StreakService } from '../../shared/services/streak.service';
 import { UsageEventsApiService } from '../api/usage-events-api.service';
 import { LoggerService } from '../infrastructure/logger.service';
-import { FlashcardSetDTO, ReviewQuality, SessionResultDTO, StudyCardDTO } from '../../../types';
+import { FlashcardLanguage, FlashcardSetDTO, ReviewQuality, SessionResultDTO, StudyCardDTO } from '../../../types';
 import { launchConfetti } from '../../shared/utils/confetti';
 import { ClassifiedError, classifyError } from '../../shared/utils/error-classifier';
 
@@ -113,6 +113,12 @@ export class StudyFacadeService {
     const card: StudyCardDTO | null = this.currentCardSignal();
     if (!card) return null;
     return this._isReversed() ? null : card.flashcard.back_audio_url;
+  });
+
+  public readonly displayBackLanguageSignal: Signal<FlashcardLanguage | null> = computed<FlashcardLanguage | null>(() => {
+    const card: StudyCardDTO | null = this.currentCardSignal();
+    if (!card) return null;
+    return this._isReversed() ? card.flashcard.front_language : card.flashcard.back_language;
   });
 
   public readonly currentSetNameSignal: Signal<string | null> = computed<string | null>(() => {
