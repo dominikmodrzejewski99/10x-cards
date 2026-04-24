@@ -415,6 +415,9 @@ export class FlashcardsFacadeService {
   public uploadImage(file: File): void { this.media.uploadImage(file); }
   public deleteImage(): void { this.media.deleteImage(); }
   public uploadAudio(file: File): void { this.media.uploadAudio(file); }
+  public generateTtsAudio(text: string, lang: FlashcardLanguage | null): void {
+    this.media.generateTtsAudio(text, lang);
+  }
   public deleteAudio(): void { this.media.deleteAudio(); }
   public requestTranslation(text: string, fromLang: FlashcardLanguage, toLang: FlashcardLanguage): void {
     this.media.requestTranslation(text, fromLang, toLang);

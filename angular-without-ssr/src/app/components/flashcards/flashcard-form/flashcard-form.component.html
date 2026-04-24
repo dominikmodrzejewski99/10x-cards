@@ -247,6 +247,28 @@
               (change)="onAudioFileSelected($event)"
               class="audio-upload__input" />
           </label>
+          <span class="audio-upload__divider">{{ t('orDivider') }}</span>
+          @if (speechSupported) {
+            <button
+              type="button"
+              class="audio-upload__btn"
+              [disabled]="!backControl?.value?.trim()"
+              [attr.aria-label]="t('tts.previewAriaLabel')"
+              (click)="previewBackSpeech()"
+              data-test-id="tts-preview-button">
+              <i class="pi" [class.pi-volume-up]="!speakingSignal()" [class.pi-stop-circle]="speakingSignal()"></i>
+              {{ speakingSignal() ? t('tts.stop') : t('tts.preview') }}
+            </button>
+          }
+          <button
+            type="button"
+            class="audio-upload__btn"
+            [disabled]="!backControl?.value?.trim() || audioUploadingSignal()"
+            [attr.aria-label]="t('tts.generateAriaLabel')"
+            (click)="requestTtsForBack()"
+            data-test-id="tts-generate-button">
+            <i class="pi pi-sparkles"></i> {{ t('tts.generate') }}
+          </button>
         </div>
         <small class="audio-upload__hint">{{ t('audioHint') }}</small>
       </div>

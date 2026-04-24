@@ -1,9 +1,10 @@
 import { TranslocoDirective } from '@jsverse/transloco';
-import { Component, OnInit, signal, effect, input, output, InputSignal, OutputEmitterRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, signal, effect, input, output, inject, InputSignal, OutputEmitterRef, ChangeDetectionStrategy, Signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FlashcardDTO, FlashcardLanguage } from '../../../../types';
 import { AudioRecorderComponent } from '../../../shared/components/audio-recorder/audio-recorder.component';
 import { AudioPlayerComponent } from '../../../shared/components/audio-player/audio-player.component';
+import { WebSpeechService } from '../../../services/infrastructure/web-speech.service';
 import { FlashcardFormData } from '../../../shared/models';
 
 export function noWhitespaceValidator() {
@@ -49,6 +50,11 @@ export class FlashcardFormComponent implements OnInit {
   public audioRemoved: OutputEmitterRef<void> = output<void>();
   public translationRequested: OutputEmitterRef<{ text: string; fromLang: FlashcardLanguage; toLang: FlashcardLanguage }> = output<{ text: string; fromLang: FlashcardLanguage; toLang: FlashcardLanguage }>();
   public translationAccepted: OutputEmitterRef<void> = output<void>();
+  public ttsRequested: OutputEmitterRef<{ text: string; lang: FlashcardLanguage | null }> = output<{ text: string; lang: FlashcardLanguage | null }>();
+
+  private readonly webSpeech: WebSpeechService = inject(WebSpeechService);
+  public readonly speechSupported: boolean = this.webSpeech.isSupported();
+  public readonly speakingSignal: Signal<boolean> = this.webSpeech.speakingSignal;
 
   private fb: FormBuilder = new FormBuilder();
 
@@ -186,6 +192,22 @@ export class FlashcardFormComponent implements OnInit {
 
   public removeAudio(): void {
     this.audioRemoved.emit();
+  }
+
+  public previewBackSpeech(): void {
+    if (this.speakingSignal()) {
+      this.webSpeech.stop();
+      return;
+    }
+    const text: string = this.flashcardForm.get('back')?.value?.trim() || '';
+    if (!text) return;
+    this.webSpeech.speak(text, this.backLanguageSignal());
+  }
+
+  public requestTtsForBack(): void {
+    const text: string = this.flashcardForm.get('back')?.value?.trim() || '';
+    if (!text) return;
+    this.ttsRequested.emit({ text, lang: this.backLanguageSignal() });
   }
 
   public toggleRecorder(): void {

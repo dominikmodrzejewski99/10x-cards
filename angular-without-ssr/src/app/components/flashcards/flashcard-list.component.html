@@ -111,6 +111,7 @@
       (audioFileSelected)="facade.uploadAudio($event)"
       (audioRecorded)="facade.uploadAudio($event)"
       (audioRemoved)="facade.deleteAudio()"
+      (ttsRequested)="facade.generateTtsAudio($event.text, $event.lang)"
       (translationRequested)="facade.requestTranslation($event.text, $event.fromLang, $event.toLang)"
       (translationAccepted)="facade.clearTranslationSuggestion()">
     </app-flashcard-form>

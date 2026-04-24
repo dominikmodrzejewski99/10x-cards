@@ -1,6 +1,7 @@
 import { Injectable, inject, signal, Signal, WritableSignal } from '@angular/core';
 import { ImageUploadService } from '../infrastructure/image-upload.service';
 import { AudioUploadService } from '../infrastructure/audio-upload.service';
+import { TtsApiService } from '../infrastructure/tts-api.service';
 import { OpenRouterService } from '../domain/openrouter.service';
 import { LoggerService } from '../infrastructure/logger.service';
 import { FlashcardDTO, FlashcardLanguage } from '../../../types';
@@ -9,6 +10,7 @@ import { FlashcardDTO, FlashcardLanguage } from '../../../types';
 export class FlashcardMediaService {
   private readonly imageUploadService: ImageUploadService = inject(ImageUploadService);
   private readonly audioUploadService: AudioUploadService = inject(AudioUploadService);
+  private readonly ttsApiService: TtsApiService = inject(TtsApiService);
   private readonly openRouterService: OpenRouterService = inject(OpenRouterService);
   private readonly logger: LoggerService = inject(LoggerService);
 
@@ -73,6 +75,33 @@ export class FlashcardMediaService {
       next: (url: string) => {
         this._audioPreview.set(url);
         this._audioUploading.set(false);
+      },
+      error: (err: Error) => {
+        this._audioError.set(err.message);
+        this._audioUploading.set(false);
+      }
+    });
+  }
+
+  public generateTtsAudio(text: string, lang: FlashcardLanguage | null): void {
+    this._audioError.set(null);
+    if (!text.trim()) {
+      return;
+    }
+    this._audioUploading.set(true);
+    this.ttsApiService.generateAudio(text, lang).subscribe({
+      next: (blob: Blob) => {
+        const file: File = new File([blob], `tts-${Date.now()}.wav`, { type: 'audio/wav' });
+        this.audioUploadService.uploadAudio(file).subscribe({
+          next: (url: string) => {
+            this._audioPreview.set(url);
+            this._audioUploading.set(false);
+          },
+          error: (err: Error) => {
+            this._audioError.set(err.message);
+            this._audioUploading.set(false);
+          }
+        });
       },
       error: (err: Error) => {
         this._audioError.set(err.message);
