@@ -187,6 +187,7 @@
     "swipeHard": "Hard",
     "kbdFlip": "space = flip",
     "kbdRate": "1 = Know  |  2 = Hard  |  3 = Don’t know",
+    "kbdReplay": "S = replay voice",
     "kbdFullscreen": "F = fullscreen",
     "kbdMobileFlip": "Tap card to flip",
     "kbdMobileRate": "→ Know  |  ↑ Hard  |  ← Don’t know",

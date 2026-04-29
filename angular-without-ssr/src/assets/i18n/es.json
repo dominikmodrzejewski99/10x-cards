@@ -187,6 +187,7 @@
     "swipeHard": "Difícil",
     "kbdFlip": "espacio = voltear",
     "kbdRate": "1 = Lo sé  |  2 = Difícil  |  3 = No lo sé",
+    "kbdReplay": "S = repetir voz",
     "kbdFullscreen": "F = pantalla completa",
     "kbdMobileFlip": "Toca la tarjeta para voltear",
     "kbdMobileRate": "→ Lo sé  |  ↑ Difícil  |  ← No lo sé",

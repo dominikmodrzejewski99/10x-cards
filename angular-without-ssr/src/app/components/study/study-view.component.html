@@ -340,6 +340,9 @@
           {{ t('kbdFlip') }}
         } @else {
           {{ t('kbdRate') }}
+          @if (!facade.displayBackAudioSignal() && facade.displayBackSignal()) {
+            &nbsp;|&nbsp; {{ t('kbdReplay') }}
+          }
         }
         &nbsp;|&nbsp; {{ t('kbdFullscreen') }}
       </p>

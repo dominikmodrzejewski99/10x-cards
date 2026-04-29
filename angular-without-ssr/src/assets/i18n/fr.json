@@ -187,6 +187,7 @@
     "swipeHard": "Difficile",
     "kbdFlip": "espace = retourner",
     "kbdRate": "1 = Je sais  |  2 = Difficile  |  3 = Je ne sais pas",
+    "kbdReplay": "S = rejouer la voix",
     "kbdFullscreen": "F = plein écran",
     "kbdMobileFlip": "Touche la carte pour la retourner",
     "kbdMobileRate": "→ Je sais  |  ↑ Difficile  |  ← Je ne sais pas",

@@ -96,6 +96,7 @@ export class StudyViewComponent implements OnInit, OnDestroy {
     if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
       return;
     }
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
     if (this.facade.isSessionCompleteSignal() || this.facade.savingSignal()) return;
 
     switch (event.key) {
@@ -124,6 +125,16 @@ export class StudyViewComponent implements OnInit, OnDestroy {
       case 'F':
         if (!this.showSetModalSignal()) {
           this.toggleFullscreen();
+        }
+        break;
+      case 's':
+      case 'S':
+        if (this.facade.isFlippedSignal() && !this.facade.displayBackAudioSignal()) {
+          const text: string = this.facade.displayBackSignal();
+          if (text) {
+            this.webSpeech.stop();
+            this.webSpeech.speak(text, this.facade.displayBackLanguageSignal());
+          }
         }
         break;
       case 'Escape':
