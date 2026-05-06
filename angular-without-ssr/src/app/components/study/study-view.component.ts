@@ -140,6 +140,8 @@ export class StudyViewComponent implements OnInit, OnDestroy {
       case 'Escape':
         if (this.showSetModalSignal()) {
           this.showSetModalSignal.set(false);
+        } else if (this.webSpeech.speakingSignal()) {
+          this.webSpeech.stop();
         }
         break;
     }
